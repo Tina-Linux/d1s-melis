@@ -1,0 +1,170 @@
+menu "GUI Setup"
+
+config  GUI_WIN_MANWIN_EN
+        bool "Support manwin"
+        default y
+ 
+config  GUI_WIN_FRMWIN_EN
+        bool "support frmwinwin"
+        default y 
+
+config  GUI_WIN_CTRLWIN_EN
+        bool "Support ctrlwi"
+        default y 
+
+config  GUI_CORE_MEMDEV_EN
+        bool "Support memdev"
+        default y 
+
+config  GUI_WIN_DIALOG_EN
+        bool "Support dialog"
+        default y 
+
+config  GUI_WIDGET_EN
+        bool "Support widget"
+        default y
+ 
+config  GUI_WIDGET_BUTTON_EN
+        bool "Support button"
+        default y 
+
+config  GUI_WIDGET_STATIC_EN
+        bool "Support static"
+        default y 
+
+config  GUI_WIDGET_LISTMENU_EN
+        bool "Support listmenu"
+        default y 
+
+config  GUI_WIDGET_PROGSHEET_EN
+        bool "Support progsheet"
+        default n 
+		
+config  GUI_WIDGET_SLIDER_EN
+        bool "Support slider"
+        default y
+ 
+config  GUI_WIDGET_TXTBOX_EN
+        bool "Support txtbox"
+        default y 
+
+config  GUI_WIDGET_GMSGBOX_EN
+        bool "Support gmsgbox"
+        default y 
+
+config  GUI_WIDGET_SPINBOX_EN
+        bool "Support spinbox"
+        default n 
+
+config  GUI_WIDGET_PROGBAR_EN
+        bool "Support progbar"
+        default n 
+		
+config  GUI_WIDGET_SLISTBOX_EN
+        bool "Support slistbox"
+        default y
+ 
+config  GUI_WIDGET_SICONS_EN
+        bool "Support sicons"
+        default n 
+
+config  GUI_WIDGET_STIMESTATIC_EN
+        bool "Support stimestatic"
+        default n 
+
+config  GUI_CORE_LONGNAME_EN
+        bool "Support longname"
+        default y 
+
+config  GUI_CORE_FONT_SFT_EN
+        bool "Support sft font"
+        default y 
+		
+config  GUI_CORE_FONT_TTF_EN
+        bool "Support ture type font"
+        default n
+ 
+config  GUI_CORE_FONT_T1_EN
+        bool "Support type1 font"
+        default n 
+
+config  GUI_CORE_FONT_CFF_EN
+        bool "Support cff font"
+        default n 
+
+config  GUI_CORE_FONT_T1CID_EN
+        bool "Support t1cid font"
+        default n 
+
+config  GUI_CORE_FONT_PFR_EN
+        bool "Support pfr font"
+        default n 
+
+config  GUI_CORE_FONT_T42_EN
+        bool "Support type42 font"
+        default n
+ 
+config  GUI_CORE_FONT_WINFNT_EN
+        bool "Support winfnt font"
+        default n 
+
+config  GUI_CORE_FONT_PCF_EN
+        bool "Support pcf font"
+        default n 
+
+config  GUI_CORE_FONT_PSAUX_EN
+        bool "Support psaux font"
+        default n 
+
+config  GUI_CORE_FONT_PSNAMES_EN
+        bool "Support psnames font"
+        default n 
+		
+config  GUI_CORE_FONT_PSHINTER_EN
+        bool "Support pshinter font"
+        default n
+ 
+config  GUI_CORE_FONT_BDF_EN
+        bool "Support bdf font"
+        default n 
+
+config  GUI_CORE_FONT_AUTOFIT_EN
+        bool "Support autofit font"
+        default n 
+ 
+config  GUI_COMMON_REGION_EN
+        bool "Support region"
+        default n 
+
+config  GUI_KERNEL_ALLOC_EN
+        bool "Support alloc"
+        default n 
+
+config  GUI_KERNEL_KERNEL_EN
+        bool "Support kernel"
+        default n 
+
+config  GUI_KERNEL_LOCK_EN
+        bool "Support lock"
+        default n 
+
+config  GUI_KERNEL_TIME_EN
+        bool "Support time"
+        default n 
+
+config  GUI_MEMDEV_WIDTH
+        int "Memdevice width size"
+        default 800 
+	range 0 10000
+
+config  GUI_MEMDEV_HEIGHT
+        int "Memdevice height size"
+        default 480 
+	range 0 10000
+		
+config  GUI_MEMDEV_PIXELFORMAT
+        int "Memdevice pixelformat size"
+        default 4
+	range 0 1000
+		
+endmenu

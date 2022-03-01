@@ -1,0 +1,10 @@
+menu "SBI Setup"
+
+config SBI_PATH
+    string  "sbi binary path"
+	default "projects/f133-evb-board/sbi-bin/sbi.bin"
+	depends on RISCV
+	help
+		"sbi binary will be included to kernel"
+
+endmenu

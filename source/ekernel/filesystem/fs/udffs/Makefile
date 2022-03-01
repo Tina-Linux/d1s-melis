@@ -1,0 +1,17 @@
+obj-y+= udf_balloc.o
+obj-y+= udf_crc.o
+obj-y+= udf_dir.o
+obj-y+= udf_directory.o
+obj-y+= udf_file.o
+obj-y+= udf_fs.o
+obj-y+= udf_fsync.o
+obj-y+= udf_ialloc.o
+obj-y+= udf_inode.o
+obj-y+= udf_lowlevel.o
+obj-y+= udf_misc.o
+obj-y+= udf_namei.o
+obj-y+= udf_partition.o
+obj-y+= udf_super.o
+obj-y+= udf_time.o
+obj-y+= udf_truncate.o
+obj-y+= udf_unicode.o

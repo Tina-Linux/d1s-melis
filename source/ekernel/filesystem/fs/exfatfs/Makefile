@@ -1,0 +1,12 @@
+obj-y += exfat_bitmap.o
+obj-y += exfat_cache.o
+obj-y += exfat_cluster.o
+obj-y += exfat_dir.o
+obj-y += exfat_fatent.o
+obj-y += exfat_file.o
+obj-y += exfatfs.o
+obj-y += exfat_inode.o
+obj-y += exfat_namei.o
+obj-y += exfat_super.o
+obj-y += exfat_upcase.o
+obj-y += exfat_utils.o

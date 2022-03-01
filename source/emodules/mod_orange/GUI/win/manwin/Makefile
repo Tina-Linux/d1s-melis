@@ -1,0 +1,1 @@
+obj-$(CONFIG_GUI_WIN_MANWIN_EN) += manwin.o

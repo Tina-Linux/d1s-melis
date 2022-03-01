@@ -1,0 +1,18 @@
+menuconfig PACKAGE_eyesee_mpp_framework
+    bool "eyesee-mpp-framework"
+    default n
+    help
+      eyesee-mpp-framework wraps uses of eyesee-mpp-middleware, provide simple class interface to apps.
+
+if PACKAGE_eyesee_mpp_framework
+comment "config eyesee mpp framework"
+
+config mpp_framework_videoresizer
+    bool "support video resizer"
+    default n
+    help
+      video resizer can decode big picture and encode it to small picture.
+      If need it, enable videoResizer in framework.
+
+endif #PACKAGE_eyesee_mpp_framework
+

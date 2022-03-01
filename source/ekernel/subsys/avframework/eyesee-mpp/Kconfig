@@ -1,0 +1,16 @@
+menuconfig ENABLE_MPP
+    bool "enable mpp support"
+    help
+      enable mpp support, use mpp to implement multimedia function. 
+
+if ENABLE_MPP
+
+source "ekernel/subsys/avframework/eyesee-mpp/system/public/Kconfig"
+
+if SOC_SUN8IW19P1
+    source "ekernel/subsys/avframework/eyesee-mpp/middleware/sun8iw19p1/Kconfig"
+    source "ekernel/subsys/avframework/eyesee-mpp/framework/sun8iw19p1/Kconfig"
+endif
+
+endif #ENABLE_MPP
+

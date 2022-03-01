@@ -1,0 +1,21 @@
+总用量 1008
+-rwxrwxr-x 1 caozilong caozilong  17044 10月 11 11:38 di.drv
+-rwxrwxr-x 1 caozilong caozilong 171940 10月 11 11:38 display.drv
+-rwxrwxr-x 1 caozilong caozilong  18432 10月 11 11:38 ir.drv
+-rwxrwxr-x 1 caozilong caozilong  17072 10月 11 11:38 key.drv
+-rwxrwxr-x 1 caozilong caozilong  72804 10月 11 11:38 monitor.drv
+-rwxrwxr-x 1 caozilong caozilong  20976 10月 11 11:38 power.drv
+-rwxrwxr-x 1 caozilong caozilong  17212 10月 11 11:38 pwm.drv
+-rwxrwxr-x 1 caozilong caozilong  22244 10月 11 11:38 rtc.drv
+-rwxrwxr-x 1 caozilong caozilong  45516 10月 11 11:38 sdmmc2.drv
+-rwxrwxr-x 1 caozilong caozilong  48632 10月 11 11:38 sdmmc.drv
+-rwxrwxr-x 1 caozilong caozilong  14940 10月 11 11:38 slib.mod
+-rwxrwxr-x 1 caozilong caozilong  29036 10月 11 11:38 smc.drv
+-rwxrwxr-x 1 caozilong caozilong  22988 10月 11 11:38 spi.drv
+-rwxrwxr-x 1 caozilong caozilong  29380 10月 11 11:38 spinor.drv
+-rwxrwxr-x 1 caozilong caozilong   8460 10月 11 11:38 standby.bin
+-rwxrwxr-x 1 caozilong caozilong  26420 10月 11 11:38 tvd.drv
+-rwxrwxr-x 1 caozilong caozilong  25740 10月 11 11:38 twi.drv
+-rwxrwxr-x 1 caozilong caozilong  24700 10月 11 11:38 uart.drv
+-rwxrwxr-x 1 caozilong caozilong 123416 10月 11 11:38 usbd.drv
+-rwxrwxr-x 1 caozilong caozilong 224252 10月 11 11:38 usb_host0.drv

@@ -1,0 +1,1 @@
+obj-y += sfte_os.o

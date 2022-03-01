@@ -1,0 +1,127 @@
+# Kconfig - general configuration options
+
+#
+# Copyright (c) 2014-2015 Wind River Systems, Inc.
+# Copyright (c) 2016 Intel Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+menu "Drivers Test Sample"
+
+    config  SUNXI_SPINOR_TEST
+        bool "Spinor Test"
+        default n
+
+    config  SUNXI_PART_TEST
+        bool "Part Test"
+        default n
+
+    config  SUNXI_IO_MULTIPLEX_TEST
+        bool "Io Multiplex Test"
+        default n
+
+    config  SUNXI_PWM_TEST
+        bool "Pwm Test"
+        default n
+
+    config  SUNXI_KEYBOARD_TEST
+        bool "Keyboard Test"
+        default n
+
+    config  SUNXI_GPIO_TEST
+        bool "Gpio Test"
+        default n
+
+    config  SUNXI_REGULATOR_TEST
+        bool "Regulator Test"
+        default n
+
+    config  SUNXI_TWI_TEST
+        bool "Twi Test"
+        default n
+
+    config  SUNXI_SPI_TEST
+        bool "Spi Test"
+        default n
+
+    config  SUNXI_RTC_TEST
+        bool "Rtc Test"
+        default n
+
+    config  SUNXI_UART_TEST
+        bool "Uart Test"
+        default n
+
+    config  SUNXI_USB_TEST
+        bool "Usb Test"
+        default n
+
+    config  SUNXI_G2D_TEST
+        bool "G2D Test"
+        default n
+
+    config  SUNXI_CEDAR_TEST
+        bool "cedar Test"
+        default n
+
+    config  SUNXI_CE_TEST
+        bool "Ce Test"
+        default n
+
+    config  SUNXI_DISP2_TEST
+        bool "Disp2 test"
+        default n
+
+    config  SUNXI_ORANGE_TEST
+        bool "Orange test"
+        default n
+
+    config  SUNXI_LEDC_TEST
+	bool "LEDC test"
+        default n
+
+    config  SUNXI_CIR_TEST
+	bool "Cir test"
+	default n
+
+    config SUNXI_WDT_TEST
+	bool "watchdog test"
+	default n
+
+    config  SUNXI_RTP_TEST
+        bool "rtp test"
+        default n
+
+    config SUNXI_STANDBY_TEST
+        bool "standby test"
+        default n
+
+    config  SUNXI_WILLOW_TEST
+    bool "Willow test"
+    default n
+
+	menu "Net Work"
+		config  LOOP_TEST
+			bool "wifi loop test"
+			select LWIP
+			default n
+		config  TCPIP_TEST
+			bool "wifi tcpip test"
+			select LWIP
+			default n
+		config  SOCKET_TEST
+			bool "wifi socket test"
+			select LWIP
+			default n
+	endmenu
+endmenu

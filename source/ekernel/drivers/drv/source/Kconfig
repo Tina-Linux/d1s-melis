@@ -1,0 +1,96 @@
+menu "Melis Source Support"
+
+config  DRIVER_SDMMC
+        bool "Support SDMMC Driver"
+        default n
+
+config  DRIVER_GPIO
+        bool "Support GPIO Driver"
+        default y
+
+config  DRIVER_CRYPTO_ENGINE
+        bool "Support CE Driver"
+        default y
+
+config  DRIVER_INPUT
+        bool "Support input Driver"
+        default y
+
+config  DRIVER_SOUND
+        bool "Support sound Driver"
+        default y
+
+config  DRIVER_SPIBUS
+        bool "Support spi bus Driver"
+        default y
+
+config  DRIVER_SPINOR
+        bool "Support spi nor Driver"
+        default y
+
+config  DRIVER_TIMER
+        bool "Support timer Driver"
+        default y
+
+config  DRIVER_TWIBUS
+        bool "Support i2c bus Driver"
+        default y
+
+config  DRIVER_G2D_RCQ
+        bool "Support g2d rcq Driver"
+        default y
+
+config  DRIVER_DI
+        bool "Support di Driver"
+        default y
+
+config  DRIVER_EISE
+        bool "Support eise Driver"
+        default y
+
+config  DRIVER_RTC
+        bool "Support rtc Driver"
+        default y
+
+config  DRIVER_PWM
+        bool "Support pwm Driver"
+        default y
+
+config  DRIVER_THERMAL
+		bool "Support thermal Driver"
+		select DRIVERS_THERMAL 
+		default y
+
+#config  DRIVER_KEYBOARD
+#       bool "Support keyboard Driver"
+#       depends on DRIVER_INPUT
+
+config  DRIVER_LEDC
+        bool "Support ledc Driver"
+        default n
+
+config  DRV_RTP
+	bool "Support touchscreen(tpadc) Driver"
+	depends on DRIVER_INPUT
+	default n
+
+config  DRIVER_WDT
+	bool "Support Watchdog Driver"
+	default n
+
+
+config  DRIVER_ADC_POWER
+	bool "Support adc power Driver"
+	default n if SOC_SUN8IW19P1
+	default y if SOC_SUN20IW1P1
+	
+menu "adc select"
+	depends on DRIVER_ADC_POWER
+
+source "ekernel/drivers/drv/source/adc_power/Kconfig"
+
+endmenu
+
+source "ekernel/drivers/drv/source/usb/Kconfig"
+
+endmenu

@@ -1,0 +1,3 @@
+config STANDBY
+	def_bool n
+	prompt "standby support"

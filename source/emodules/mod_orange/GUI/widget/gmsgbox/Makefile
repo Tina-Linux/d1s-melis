@@ -1,0 +1,1 @@
+obj-y += gmsgbox.o

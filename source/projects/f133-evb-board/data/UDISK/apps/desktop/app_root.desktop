@@ -1,0 +1,3 @@
+<applications>
+    <application name="application://app_root"	exec="d:\apps\app_root.axf" standby="yes"/>	
+</applications>

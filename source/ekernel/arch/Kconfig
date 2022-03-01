@@ -1,0 +1,52 @@
+menu "ARCH Support"
+ 
+config  ARM
+	bool "Support ARM family processors"
+	default y
+ 
+config  MIPS
+	bool "Support MIPS ISA processors"
+	default n 
+
+config  CSKY
+	bool "Support C-SKY ISA processors"
+	default n 
+
+config  ANDES
+	bool "Support andes ISA processors"
+	default n 
+
+config  RISCV
+	bool "Support riscv ISA processors"
+	default n 
+
+config  XTENSA
+	bool "Support xtensa ISA processors"
+	default n 
+
+choice
+	prompt "ARM ISA Version selection"
+    	default ARMV7_A if SOC_SUN8I
+    	default ARMV5TE if SOC_SUN3I
+	depends on ARM
+
+    	config ARMV7_A
+		bool "ARMV7-A ISA"
+		help
+		cortex A5, A7, A8, A15.
+
+    	config ARMV5TE
+		bool "ARMV5TE ISA"
+		help
+		Arm926ejs processor.
+endchoice
+
+if ARM
+source "ekernel/arch/arm/Kconfig"
+endif
+
+if RISCV
+source "ekernel/arch/riscv/Kconfig"
+endif
+
+endmenu

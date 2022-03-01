@@ -1,0 +1,24 @@
+ccflags-y   += -I$(srctree)/ekernel/core/rt-thread/include
+
+obj-y += blk_dev.o
+obj-y += buffer.o
+obj-y += ctype.o
+obj-y += dcache.o
+obj-y += dir.o
+obj-y += file.o
+obj-y += fsman.o
+obj-y += fstime.o
+obj-y += fstools.o
+obj-y += inode.o
+obj-y += namei.o
+obj-y += nls_base.o
+obj-y += page_pool.o
+obj-y += slab.o
+obj-y += super.o
+obj-${CONFIG_DEVFS} += devfs/
+obj-${CONFIG_MINFS} += minfs/
+obj-${CONFIG_EXFAT} += exfatfs/
+obj-${CONFIG_CDFS} += cdfs/
+obj-${CONFIG_NTFS} += ntfs/
+obj-${CONFIG_FAT} += fatfs/
+obj-${CONFIG_UDFFS} += udffs/

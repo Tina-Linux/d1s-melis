@@ -1,0 +1,15 @@
+[system]
+scriptver =100
+uistyle	  =LiveTouch_demo
+name	  =LiveTouch
+author	  =Andy.zhang
+solution  =epdkdemo
+;以下不要修改
+stylename =userstyle
+;styleid   = 1
+
+; resource
+; id 从1开始逐个分配，file为NULL，id也递增
+; 资源section的顺序不可改变
+
+

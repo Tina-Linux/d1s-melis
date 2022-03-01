@@ -1,0 +1,12 @@
+obj-y += cdfs.o
+obj-y += cdfs_compress.o
+obj-y += cdfs_dir.o
+obj-y += cdfs_export.o
+obj-y += cdfs_file.o
+obj-y += cdfs_inode.o
+obj-y += cdfs_joliet.o
+obj-y += cdfs_lowlevel.o
+obj-y += cdfs_namei.o
+obj-y += cdfs_rock.o
+obj-y += cdfs_super.o
+obj-y += cdfs_util.o

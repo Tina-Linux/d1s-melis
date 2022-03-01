@@ -1,0 +1,32 @@
+<OSDTable>
+<Groups count="19">
+	<OSDItem name="init" startid="1" maxid="1000" file="init/init.txt"/>
+	<OSDItem name="home" startid="1001" maxid="2000" file="home/home.txt"/>
+	<OSDItem name="explorer" startid="2001" maxid="3000" file="explorer/explorer.txt"/>
+	<OSDItem name="movie" startid="3001" maxid="4000" file="movie/movie.txt"/>
+	<OSDItem name="music" startid="4001" maxid="5000" file="music/music.txt"/>
+	<OSDItem name="calendar" startid="5001" maxid="6000" file="calendar/calendar.txt"/>
+	<OSDItem name="setting" startid="6001" maxid="7000" file="setting/setting.txt"/>
+	<OSDItem name="photo" startid="7001" maxid="8000" file="photo/photo.txt"/>
+	<OSDItem name="ebook" startid="8001" maxid="9000" file="ebook/ebook.txt"/>
+	<OSDItem name="record" startid="9001" maxid="10000" file="record/record.txt"/>
+	<OSDItem name="fm" startid="10001" maxid="11000" file="fm/fm.txt"/>
+	<OSDItem name="dialog" startid="11001" maxid="12000" file="dialog/dialog.txt"/>
+	<OSDItem name="loading" startid="12001" maxid="13000" file="loading/loading.txt"/>
+	<OSDItem name="alarm" startid="13001" maxid="14000" file="alarm/alarm.txt"/>
+	<OSDItem name="root" startid="14001" maxid="15000" file="root/root.txt"/>
+	<OSDItem name="linein" startid="15001" maxid="16000" file="linein/linein.txt"/>
+	<OSDItem name="game" startid="16001" maxid="17000" file="game/game.txt"/>
+	<OSDItem name="dict" startid="17001" maxid="18000" file="dict/dict.txt"/>
+	<OSDItem name="dtv" startid="18001" maxid="19000" file="dtv/dtv.txt"/>
+</Groups>
+
+<LangType count="3">
+	<LangItem name="ChineseS" langId="0x410"/>
+	<LangItem name="ChineseT" langId="0x420"/>
+	<LangItem name="English" langId="0x400"/>
+</LangType>
+
+<Output bin="./lang.bin" head="./lang.h"/>
+
+</OSDTable>

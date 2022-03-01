@@ -1,0 +1,1 @@
+obj-y += type1cid.o     	

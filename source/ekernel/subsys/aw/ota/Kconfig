@@ -1,0 +1,23 @@
+menu "AW OTA Compenents"
+
+config COMPONENTS_AW_UPGRADE
+    bool "Melis OTA AW_UPGRADE"
+    default y
+    help
+        Tina RTOS OTA aw_upgrade support.
+        If unsure, say N.
+
+config AW_OTA_DEMO
+    bool "aw ota demo"
+    default y
+    help
+	melis awota demo support.
+	If unsure, say N.
+
+#config IS_SUPPORT_DUAL_SYSTEMS
+#    bool "Whether to support dual systems"
+#    default y
+#    help
+#	If melis supports dual systems, say y.
+
+endmenu

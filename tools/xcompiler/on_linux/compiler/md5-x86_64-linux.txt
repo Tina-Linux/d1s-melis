@@ -1,0 +1,2 @@
+97d23608d675db0ecf66c3eda1fdad0a *gcc-arm-melis-eabi-9-2020-q2-update-x86_64-linux.tar.bz2
+a79118b90dcbadd3b8139a83fac7e7c0 *gcc-arm-melis-eabi-9-2020-q2-update-src.tar.bz2

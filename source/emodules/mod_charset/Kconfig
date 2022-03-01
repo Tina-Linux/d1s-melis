@@ -1,0 +1,131 @@
+menu "Charset Setup"
+
+	config  CHARSET_UTF8_EN
+        bool "Support UTF8"
+        default y
+ 
+	config  CHARSET_UTF16BE_EN
+			bool "support UTF16BE"
+			default y 
+
+	config  CHARSET_UTF16LE_EN
+			bool "Support UTF16LE"
+			default y 
+
+	config  CHARSET_BIG5_EN
+			bool "Support BIG5"
+			default y 
+
+	config  CHARSET_GBK_EN
+			bool "Support GBK"
+			default y 
+
+	config  CHARSET_SJIS_EN
+			bool "Support SJIS"
+			default n
+	 
+	config  CHARSET_EUC_KR_EN
+			bool "Support EUC_KR"
+			default n 
+
+	config  CHARSET_KIO8_R_EN
+			bool "Support KIO8_R"
+			default n 
+
+	config  CHARSET_ISO_8859_1_EN
+			bool "Support ISO_8859_1"
+			default n 
+
+	config  CHARSET_ISO_8859_2_EN
+			bool "Support ISO_8859_2"
+			default n 
+			
+	config  CHARSET_ISO_8859_3_EN
+			bool "Support ISO_8859_3"
+			default n
+	 
+	config  CHARSET_ISO_8859_4_EN
+			bool "Support ISO_8859_4"
+			default n 
+
+	config  CHARSET_ISO_8859_5_EN
+			bool "Support ISO_8859_5"
+			default n 
+
+	config  CHARSET_ISO_8859_6_EN
+			bool "Support ISO_8859_6"
+			default n 
+
+	config  CHARSET_ISO_8859_7_EN
+			bool "Support ISO_8859_7"
+			default n 
+			
+	config  CHARSET_ISO_8859_8_EN
+			bool "Support ISO_8859_8"
+			default n
+	 
+	config  CHARSET_ISO_8859_9_EN
+			bool "Support ISO_8859_9"
+			default n 
+
+	config  CHARSET_ISO_8859_10_EN
+			bool "Support ISO_8859_10"
+			default n 
+
+	config  CHARSET_ISO_8859_11_EN
+			bool "Support ISO_8859_11"
+			default n 
+
+	config  CHARSET_ISO_8859_13_EN
+			bool "Support ISO_8859_13"
+			default n 
+			
+	config  CHARSET_ISO_8859_14_EN
+			bool "Support ISO_8859_14"
+			default n
+	 
+	config  CHARSET_ISO_8859_15_EN
+			bool "Support ISO_8859_15"
+			default n 
+
+	config  CHARSET_ISO_8859_16_EN
+			bool "Support ISO_8859_16"
+			default n 
+
+	config  CHARSET_CP874_EN
+			bool "Support CP874"
+			default n 
+
+	config  CHARSET_CP1250_EN
+			bool "Support CP1250"
+			default n 
+
+	config  CHARSET_CP1251_EN
+			bool "Support CP1251"
+			default n
+	 
+	config  CHARSET_CP1252_EN
+			bool "Support CP1252"
+			default n 
+
+	config  CHARSET_CP1253_EN
+			bool "Support CP1253"
+			default n 
+
+	config  CHARSET_CP1254_EN
+			bool "Support CP1254"
+			default n 
+
+	config  CHARSET_CP1255_EN
+			bool "Support CP1255"
+			default n 
+			
+	config  CHARSET_CP1256_EN
+			bool "Support CP1256"
+			default n
+	 
+	config  CHARSET_CP1257_EN
+			bool "Support CP1257"
+			default n 
+		
+endmenu

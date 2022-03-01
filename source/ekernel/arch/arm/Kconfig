@@ -1,0 +1,10 @@
+menu "ARM ARCH Setup"
+
+config CPU_DCACHE_DISABLE
+	bool  "Disable ARM CPU Dcache"
+	default n
+	depends on ARM
+	help
+		Disable ARM CPU Dcache.
+
+endmenu

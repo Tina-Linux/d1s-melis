@@ -1,0 +1,106 @@
+
+========================================================================
+
+** ELF Header Information
+
+    File Name: __image.axf
+
+    Machine class: ELFCLASS32 (32-bit)
+    Data encoding: ELFDATA2LSB (Little endian)
+    Header version: EV_CURRENT (Current version)
+    Operating System ABI: none
+    ABI Version: 0
+    File Type: ET_EXEC (Executable) (2)
+    Machine: EM_ARM (ARM)
+
+    Image Entry point: Not specified
+    Flags: EF_ARM_SYMSARESORTED + EF_ARM_MAPSYMSFIRST (0x04000014)
+
+    ABI conformance : ABI for the ARM Architecture v1.0
+
+    Built with
+    ARM/Thumb Macro Assembler, RVCT2.2 [Build 349]
+    ARM/Thumb C/C++ Compiler, RVCT2.2 [Build 349]
+    ARM Linker, RVCT2.2 [Build 349] 
+
+    Header size: 52 bytes (0x34)
+    Program header entry size: 32 bytes (0x20)
+    Section header entry size: 40 bytes (0x28)
+
+    Program header entries: 1
+    Section header entries: 15
+
+    Program header offset: 322716 (0x0004ec9c)
+    Section header offset: 322748 (0x0004ecbc)
+
+    Section header string table index: 14
+
+========================================================================
+
+** Program header #0 (PT_LOAD) [PF_X + PF_R]
+    Size : 16104 bytes
+    Virtual address: 0xe4400000
+
+
+========================================================================
+
+** Section #1 'EXEC_MOD' (SHT_PROGBITS) [SHF_ALLOC]
+    Size   : 16052 bytes (alignment 4)
+    Address: 0xe4400000
+
+
+** Section #2 'MAGIC' (SHT_PROGBITS) [SHF_ALLOC]
+    Size   : 52 bytes (alignment 4)
+    Address: 0xffff0000
+
+
+** Section #3 '.debug_abbrev' (SHT_PROGBITS)
+    Size   : 1220 bytes
+
+
+** Section #4 '.debug_frame' (SHT_PROGBITS)
+    Size   : 1520 bytes
+
+
+** Section #5 '.debug_info' (SHT_PROGBITS)
+    Size   : 153652 bytes
+
+
+** Section #6 '.debug_line' (SHT_PROGBITS)
+    Size   : 19404 bytes
+
+
+** Section #7 '.debug_loc' (SHT_PROGBITS)
+    Size   : 5148 bytes
+
+
+** Section #8 '.debug_macinfo' (SHT_PROGBITS)
+    Size   : 99520 bytes
+
+
+** Section #9 '.debug_pubnames' (SHT_PROGBITS)
+    Size   : 2644 bytes
+
+
+** Section #10 '.symtab' (SHT_SYMTAB)
+    Size   : 3632 bytes (alignment 4)
+    String table '.strtab'
+    Last local symbol no. 165
+
+
+** Section #11 '.strtab' (SHT_STRTAB)
+    Size   : 1704 bytes
+
+
+** Section #12 '.note' (SHT_NOTE)
+    Size   : 24 bytes (alignment 4)
+
+
+** Section #13 '.comment' (SHT_PROGBITS)
+    Size   : 17940 bytes
+
+
+** Section #14 '.shstrtab' (SHT_STRTAB)
+    Size   : 152 bytes
+
+

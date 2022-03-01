@@ -1,0 +1,6 @@
+menu "devicetree support"
+
+config OF
+    bool "support devicetree runtime configuration or not"
+    default y
+endmenu

@@ -1,0 +1,1 @@
+obj-y += thermal_drv.o

@@ -1,0 +1,26 @@
+menu "Plan Setup"
+
+choice
+	prompt "sdk plan select"
+	default PLAN_BEETLES
+
+    config PLAN_BEETLES
+		bool "Beetles"
+
+	config PLAN_SPRITE
+		bool "Sprite"
+
+	config PLAN_NULL
+		bool "null"
+endchoice
+
+	config  SUNXI_APPLETS_TEST
+    bool "Applets sprite test"
+    depends on PLAN_SPRITE
+    default y
+
+        config  SUNXI_QA_TEST
+    bool "Beetles qa test"
+    depends on PLAN_BEETLES
+    default n
+endmenu

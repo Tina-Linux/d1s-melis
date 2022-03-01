@@ -1,0 +1,11 @@
+obj-y += cursor.o
+obj-y += fb_ops.o
+obj-y += logiclayer.o
+obj-y += lyrwin.o
+obj-y += lyrwin_alpha.o
+obj-y += lyrwin_cache.o
+obj-y += lyrwin_ck.o
+obj-y += lyrwin_lock.o
+obj-y += lyrwin_move.o
+obj-y += lyrwin_setbottom.o
+obj-y += lyrwin_settop.o

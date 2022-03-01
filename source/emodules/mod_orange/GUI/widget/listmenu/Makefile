@@ -1,0 +1,11 @@
+obj-y += GlideCurve.o
+obj-y += ListBox.o
+obj-y += ListBox_Process.o
+obj-y += ListBuffer.o
+obj-y += ListLayer.o
+obj-y += ListLayer_Item.o
+obj-y += ListLayer_Process.o
+obj-y += Listmenu.o
+obj-y += MenuItem.o
+obj-y += MenuList.o
+obj-y += speed_step.o

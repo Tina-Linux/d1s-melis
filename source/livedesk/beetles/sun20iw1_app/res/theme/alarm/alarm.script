@@ -1,0 +1,102 @@
+[res_8001]
+name	  	=ALARM_ALARM_ANI2_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./alarm/alarm_ani2.bmp
+commentCN 	=ALARM_ANI2
+commentEN 	=ALARM_ANI2
+
+[res_8002]
+name	  	=ALARM_10_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./alarm/10.bmp
+commentCN 	=10
+commentEN 	=10
+
+[res_8003]
+name	  	=ALARM_8_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./alarm/8.bmp
+commentCN 	=8
+commentEN 	=8
+
+[res_8004]
+name	  	=ALARM_4_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./alarm/4.bmp
+commentCN 	=4
+commentEN 	=4
+
+[res_8005]
+name	  	=ALARM_ALARM_ANI3_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./alarm/alarm_ani3.bmp
+commentCN 	=ALARM_ANI3
+commentEN 	=ALARM_ANI3
+
+[res_8006]
+name	  	=ALARM_7_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./alarm/7.bmp
+commentCN 	=7
+commentEN 	=7
+
+[res_8007]
+name	  	=ALARM_5_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./alarm/5.bmp
+commentCN 	=5
+commentEN 	=5
+
+[res_8008]
+name	  	=ALARM_1_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./alarm/1.bmp
+commentCN 	=1
+commentEN 	=1
+
+[res_8009]
+name	  	=ALARM_ALARM_ANI1_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./alarm/alarm_ani1.bmp
+commentCN 	=ALARM_ANI1
+commentEN 	=ALARM_ANI1
+
+[res_8010]
+name	  	=ALARM_2_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./alarm/2.bmp
+commentCN 	=2
+commentEN 	=2
+
+[res_8011]
+name	  	=ALARM_6_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./alarm/6.bmp
+commentCN 	=6
+commentEN 	=6
+
+[res_8012]
+name	  	=ALARM_ALARM_BG_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./alarm/alarm_bg.bmp
+commentCN 	=ALARM_BG
+commentEN 	=ALARM_BG
+
+[res_8013]
+name	  	=ALARM_BUTTON_UNF_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./alarm/button_unf.bmp
+commentCN 	=BUTTON_UNF
+commentEN 	=BUTTON_UNF
+
+[res_8014]
+name	  	=ALARM_0_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./alarm/0.bmp
+commentCN 	=0
+commentEN 	=0
+
+[res_8015]
+name	  	=ALARM_BUTTON_F_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./alarm/button_f.bmp
+commentCN 	=BUTTON_F
+commentEN 	=BUTTON_F
+
+[res_8016]
+name	  	=ALARM_9_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./alarm/9.bmp
+commentCN 	=9
+commentEN 	=9
+
+[res_8017]
+name	  	=ALARM_3_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./alarm/3.bmp
+commentCN 	=3
+commentEN 	=3
+

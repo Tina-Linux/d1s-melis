@@ -1,0 +1,86 @@
+menu "Subsystem support"
+
+config CMSIS
+    bool "ARM CMSIS interface support"
+    default n
+    help
+       CMSIS enables consistent device support and simple software interfaces to the processor and its peripherals, simplifying software reuse, reducing the learning curve for microcontroller developers, 
+       and reducing the time to market for new devices.
+
+config PTHREAD
+    bool "Posix Thread Support"
+    default n
+    help
+        Allow pthread_xxx interface to develop application.
+
+config CXX
+    bool "CXX Support"
+    default n
+    help
+        Support CXX compile.
+
+config BENCHMARK
+    bool "BenchMark Test Support"
+    default n
+    help
+        benchmark test for cpu evolution.
+
+config COMPONENT_ADBD
+    bool "Enable Adb support"
+    depends on RT_USING_FINSH && DRIVERS_USB_GADGET_ADB
+
+config COMPONENTS_ADBD_SOCKETS
+    bool "adbd socket service"
+    select LWIP
+    default n
+	depends on COMPONENT_ADBD && NETWORK
+    help
+	adbd socket ervice
+
+config COMPONENT_MTP
+    bool "Enable mtp support"
+    depends on RT_USING_FINSH && DRIVERS_USB_GADGET_MTP
+
+config DEBUG_BACKTRACE
+    bool "Enable Backtrace Support"
+    default y
+
+config SUBSYS_ARCHIVAL
+    bool "Enable Archival Support"
+    default y
+
+config NETWORK
+    bool "Enable Network Support"
+    default y
+
+menu "Libc library"
+
+    choice
+    prompt "C library"
+    default LIBCNEWLIB
+
+    config  LIBCNEWLIB
+	    bool "newlib "
+
+    config  LIBCNONE
+	    bool "none"
+    endchoice
+
+config EXTERN_LIBC
+    bool
+    default n if LIBCNONE
+    default y if LIBCNEWLIB
+endmenu
+
+source "ekernel/subsys/samples/Kconfig"
+source "ekernel/subsys/net/rt-thread/Kconfig"
+source "ekernel/subsys/config/devicetree/Kconfig"
+source "ekernel/subsys/thirdparty/Kconfig"
+source "ekernel/subsys/aw/Kconfig"
+source "ekernel/subsys/env/Kconfig"
+source "ekernel/subsys/avframework/Kconfig"
+source "ekernel/subsys/finsh_cli/Kconfig"
+source "ekernel/subsys/cplusplus/Kconfig"
+source "ekernel/subsys/standby/Kconfig"
+
+endmenu

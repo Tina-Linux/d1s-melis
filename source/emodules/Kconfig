@@ -1,0 +1,53 @@
+menu "Modules Setup"
+source "emodules/mod_orange/Kconfig"
+source "emodules/mod_charset/Kconfig"
+
+config MOD_CEDAR_ENABLE
+	bool "cedar module support"
+	default n if SOC_SUN8IW19P1
+	default y if SOC_SUN20IW1P1
+	help
+          enable cedar module support, use cedar to implement multimedia function.
+
+config MOD_ORANGE_ENABLE
+	bool "orange module support"
+	default n if SOC_SUN8IW19P1
+	default y if SOC_SUN20IW1P1
+	help
+          enable orange module support
+
+config MOD_DISPLAY_ENABLE
+	bool "display module support"
+	default n if SOC_SUN8IW19P1
+	default y if SOC_SUN20IW1P1
+	help
+          enable display module support
+		  
+config MOD_CHARSET_ENABLE
+	bool "charset module support"
+	default n if SOC_SUN8IW19P1
+	default y if SOC_SUN20IW1P1
+	help
+          enable charset module support
+
+config MOD_WILLOW_ENABLE
+	bool "willow module support"
+	default n if SOC_SUN8IW19P1
+	default y if SOC_SUN20IW1P1
+	help
+          enable willow module support
+          
+config MOD_MIXTURE_ENABLE
+	bool "mixture module support"
+	default n if SOC_SUN8IW19P1
+	default y if SOC_SUN20IW1P1
+	help
+          enable mixture module support		
+
+config MOD_JPEG_CODEC_ENABLE
+	bool "jpg picture decode module support"
+	default n if SOC_SUN8IW19P1
+	default y if SOC_SUN20IW1P1
+	help
+          enable jpg picture decode module support			  
+endmenu

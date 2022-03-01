@@ -1,0 +1,10 @@
+menuconfig PACKAGE_eyesee_mpp_system
+    bool "eyesee-mpp-system"
+    default y
+    help
+      eyesee-mpp-system is as eyesee-mpp low level libraries
+
+if PACKAGE_eyesee_mpp_system
+comment "config eyesee mpp system"
+endif #PACKAGE_eyesee-mpp-system
+

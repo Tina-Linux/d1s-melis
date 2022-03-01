@@ -1,0 +1,62 @@
+menu "File system support"
+
+config  MELIS_VIRTUAL_FILESYSTEM
+        bool "Support melis virtual file system"
+        default n
+
+config  DEVFS
+        bool "Support devfs file system"
+        select MELIS_VIRTUAL_FILESYSTEM
+        default n
+
+config  MINFS
+        bool "Support minfs file system"
+        select MELIS_VIRTUAL_FILESYSTEM
+        default n
+
+config  CDFS
+        bool "Support cdfs file system"
+        select MELIS_VIRTUAL_FILESYSTEM
+        default n
+
+config  UDFFS
+        bool "Support udffs file system"
+        select MELIS_VIRTUAL_FILESYSTEM
+        default n
+
+config  FSYS_UDFFS_RW
+        bool "Support udffs file system read/write"
+        depends on UDFFS
+        default n
+
+config  EXFAT
+        bool "Support exFAT file system"
+        select MELIS_VIRTUAL_FILESYSTEM
+        default n
+
+config  FSYS_EXFAT_RW
+        bool "Support exFAT file system read/write"
+        depends on EXFAT
+        default n
+
+config  NTFS
+        bool "Support ntfs file system"
+        select MELIS_VIRTUAL_FILESYSTEM
+        default y 
+
+config  FSYS_NTFS_RW
+        bool "Support ntfs file system read/write"
+        depends on NTFS
+        default n
+
+config  FAT
+        bool "Support fat file system"
+        select MELIS_VIRTUAL_FILESYSTEM
+        default y 
+
+config  FSYS_FAT_RW
+        bool "Support fat file system read/write"
+        depends on FAT
+        default y
+
+endmenu

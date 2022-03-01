@@ -1,0 +1,26 @@
+menu "RISC-V ARCH Setup"
+
+config SUPPORT_FP_KERNEL
+	bool  "kernel compiled with/without 'fd' flag, AKA vfp support"
+	default n
+	depends on RISCV
+	help
+		kernel compiled with/without 'fd' flag, AKA vfp support"
+
+config 64BIT
+	bool  "CPU Support 64bit ISA"
+	default y
+	depends on RISCV
+	help
+		processor supports 64bit mode.
+
+config CPU_DCACHE_DISABLE
+        bool  "Disable RISCV CPU Dcache"
+	default n
+	depends on RISCV
+	help
+		Disable RISCV CPU Dcache.
+
+source ekernel/arch/riscv/sbi/Kconfig
+
+endmenu

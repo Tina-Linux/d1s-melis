@@ -1,0 +1,10 @@
+obj-y += minfs.o
+obj-y += minfs_compress.o
+obj-y += minfs_device.o
+obj-y += minfs_dir.o
+obj-y += minfs_file.o
+obj-y += minfs_inode.o
+obj-y += minfs_namei.o
+obj-y += minfs_super.o
+obj-y += lzma/LzmaDec.o
+obj-y += lzma/LzmaLib.o

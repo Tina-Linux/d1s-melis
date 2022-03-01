@@ -1,0 +1,47 @@
+menu "Kernel Setup"
+
+source "ekernel/arch/Kconfig"
+source "ekernel/core/Kconfig"
+source "ekernel/drivers/drv/Kconfig"
+source "ekernel/drivers/test/Kconfig"
+source "ekernel/filesystem/Kconfig"
+source "ekernel/subsys/Kconfig"
+source "ekernel/legacy/Kconfig"
+
+config ARMCPU_HIGH_VECTOR_ADDRESS
+	bool  "USE HIGH Exception Vector Address"
+	default y
+	help
+	if y, the exception vector would be located 0xffff0000
+	else would be 0.
+
+config IOREGS_VBASE
+	hex  "Virtual base address of IO Register"
+	default 0xf0000000
+
+config SRAM_VBASE
+	hex  "Virtual base address of Sram"
+	default 0xf0000000
+
+config CLK_TUNING_VBASE
+	hex  "clk tunning code and data running address."
+	default 0xffff2000
+
+choice
+	prompt "Rootfs Filesystem Type"
+	default ROOTFS_LITTLEFS
+
+    config ROOTFS_LITTLEFS
+		bool "ARM Littlefs Filesystem"
+		depends on RT_USING_DFS
+
+	config ROOTFS_MINFS
+	depends on MINFS
+		bool "Allwinner Minfs Filesystem"
+
+	config ROOTFS_FATFS
+		bool "Fat Filesystem"
+
+endchoice
+
+endmenu

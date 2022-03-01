@@ -1,0 +1,18 @@
+target remote 127.0.0.1:3333
+set confirm off
+set height 0
+
+#file fw_jump.out
+#load
+#
+#restore /home/caozilong/WorkSpace/melis-iot/melis-v3.0/source/ekernel/melis30.bin binary 0x40200000
+restore ../../../ekernel/melis30.bin binary 0x40000000
+
+# load symbols of boot and firmware.
+file fw_jump.out
+file ../../../ekernel/melis30.elf
+
+set $pc=0x40000000
+hb start_kernel
+#hb *0x40200000
+#hb *0x40000000

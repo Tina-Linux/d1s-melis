@@ -1,0 +1,42 @@
+[res_9001]
+name	  	=LINEIN_AUX_UT_BACK_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./linein/aux_ut_back.bmp
+commentCN 	=AUX_UT_BACK
+commentEN 	=AUX_UT_BACK
+
+[res_9002]
+name	  	=LINEIN_AUX_BG_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./linein/aux_bg.bmp
+commentCN 	=AUX_BG
+commentEN 	=AUX_BG
+
+[res_9003]
+name	  	=LINEIN_AUX_T_PLAY_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./linein/aux_t_play.bmp
+commentCN 	=AUX_T_PLAY
+commentEN 	=AUX_T_PLAY
+
+[res_9004]
+name	  	=LINEIN_AUX_T_BACK_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./linein/aux_t_back.bmp
+commentCN 	=AUX_T_BACK
+commentEN 	=AUX_T_BACK
+
+[res_9005]
+name	  	=LINEIN_AUX_UT_PAUSE_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./linein/aux_ut_pause.bmp
+commentCN 	=AUX_UT_PAUSE
+commentEN 	=AUX_UT_PAUSE
+
+[res_9006]
+name	  	=LINEIN_AUX_UT_PLAY_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./linein/aux_ut_play.bmp
+commentCN 	=AUX_UT_PLAY
+commentEN 	=AUX_UT_PLAY
+
+[res_9007]
+name	  	=LINEIN_AUX_T_PAUSE_BMP
+file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./linein/aux_t_pause.bmp
+commentCN 	=AUX_T_PAUSE
+commentEN 	=AUX_T_PAUSE
+

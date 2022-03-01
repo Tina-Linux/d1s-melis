@@ -1,0 +1,1 @@
+当前屏蔽了游戏和电子词典，若要添加请更改相应makefile,app_root_scene,bettles_apps.h
