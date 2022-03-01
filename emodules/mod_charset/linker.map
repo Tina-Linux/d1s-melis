@@ -1,0 +1,901 @@
+Archive member included to satisfy reference by file (symbol)
+
+./elibrary/bin/libminic.a(elibs_string.o)
+                              emodules/mod_charset/built-in.o (eLIBs_memcpy)
+
+Discarded input sections
+
+ .text          0x0000000000000000        0x0 emodules/mod_charset/mod_charset.o
+ .data          0x0000000000000000        0x0 emodules/mod_charset/mod_charset.o
+ .bss           0x0000000000000000        0x0 emodules/mod_charset/mod_charset.o
+ .text          0x0000000000000000        0x0 emodules/mod_charset/magic.o
+ .data          0x0000000000000000        0x0 emodules/mod_charset/magic.o
+ .bss           0x0000000000000000        0x0 emodules/mod_charset/magic.o
+ .text          0x0000000000000000        0x0 emodules/mod_charset/built-in.o
+ .data          0x0000000000000000        0x0 emodules/mod_charset/built-in.o
+ .bss           0x0000000000000000        0x0 emodules/mod_charset/built-in.o
+ .text          0x0000000000000000        0x0 ./elibrary/bin/libminic.a(elibs_string.o)
+ .data          0x0000000000000000        0x0 ./elibrary/bin/libminic.a(elibs_string.o)
+ .bss           0x0000000000000000        0x0 ./elibrary/bin/libminic.a(elibs_string.o)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+dram0_0_seg      0x00000000c2000000 0x0000000004000000 xrw
+dram0_1_seg      0x00000000e0000000 0x0000000010000000 xrw
+dram0_2_seg      0x00000000e4400000 0x0000000000100000 xrw
+magic_info_seg   0x00000000ffff0000 0x0000000000000100 r
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD emodules/mod_charset/mod_charset.o
+LOAD emodules/mod_charset/magic.o
+LOAD emodules/mod_charset/built-in.o
+START GROUP
+START GROUP
+LOAD ./elibrary/bin/libsyscall.a
+LOAD ./elibrary/bin/libminic.a
+END GROUP
+LOAD /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libstdc++.a
+LOAD /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a
+LOAD /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/rv64imafdcxtheadc/lp64d/libgcc.a
+LOAD /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libm.a
+END GROUP
+                0x00000000e4400000                __DRAM0_MOD_BASE = ORIGIN (dram0_2_seg)
+                0x00000000ffff0000                __DRAM0_INF_BASE = ORIGIN (magic_info_seg)
+                0x00000000e4400000                __DRAM0_MOD_BASE = ORIGIN (dram0_2_seg)
+                0x00000000ffff0000                __DRAM0_INF_BASE = ORIGIN (magic_info_seg)
+                0x00000000e4400000                . = __DRAM0_MOD_BASE
+
+CHARSET_API_TBL
+                0x00000000e4400000       0x20
+ *built-in.o(CHARSET_API_TBL)
+ CHARSET_API_TBL
+                0x00000000e4400000       0x20 emodules/mod_charset/built-in.o
+                0x00000000e4400000                charset_api
+
+.mod.text       0x00000000e4400020      0x608
+ *(.text)
+ *(.text.*)
+ .text._CHS_Init
+                0x00000000e4400020        0x4 emodules/mod_charset/mod_charset.o
+                0x00000000e4400020                _CHS_Init
+ .text._CHS_Exit
+                0x00000000e4400024        0x2 emodules/mod_charset/mod_charset.o
+                0x00000000e4400024                _CHS_Exit
+ .text.CHS_Uni2Char
+                0x00000000e4400026       0x54 emodules/mod_charset/mod_charset.o
+                0x00000000e4400026                CHS_Uni2Char
+ .text.CHS_Char2Uni
+                0x00000000e440007a       0x54 emodules/mod_charset/mod_charset.o
+                0x00000000e440007a                CHS_Char2Uni
+ .text.CHS_GetChUpperTbl
+                0x00000000e44000ce       0x34 emodules/mod_charset/mod_charset.o
+                0x00000000e44000ce                CHS_GetChUpperTbl
+ .text.CHS_GetChLowerTbl
+                0x00000000e4400102       0x34 emodules/mod_charset/mod_charset.o
+                0x00000000e4400102                CHS_GetChLowerTbl
+ .text.MOpen    0x00000000e4400136        0x4 emodules/mod_charset/magic.o
+                0x00000000e4400136                MOpen
+ .text.MClose   0x00000000e440013a        0x4 emodules/mod_charset/magic.o
+                0x00000000e440013a                MClose
+ .text.MRead    0x00000000e440013e        0x6 emodules/mod_charset/magic.o
+                0x00000000e440013e                MRead
+ .text.MIoctrl  0x00000000e4400144        0x4 emodules/mod_charset/magic.o
+                0x00000000e4400144                MIoctrl
+ .text.MInit    0x00000000e4400148       0x10 emodules/mod_charset/magic.o
+                0x00000000e4400148                MInit
+ .text.MExit    0x00000000e4400158       0x10 emodules/mod_charset/magic.o
+                0x00000000e4400158                MExit
+ .text.MWrite   0x00000000e4400168        0x6 emodules/mod_charset/magic.o
+                0x00000000e4400168                MWrite
+ .text.UTF8_uni2char
+                0x00000000e440016e       0x60 emodules/mod_charset/built-in.o
+                0x00000000e440016e                UTF8_uni2char
+ .text.UTF8_char2uni
+                0x00000000e44001ce       0x64 emodules/mod_charset/built-in.o
+                0x00000000e44001ce                UTF8_char2uni
+ .text.UTF8_get_charset2upper_table
+                0x00000000e4400232        0x4 emodules/mod_charset/built-in.o
+                0x00000000e4400232                UTF8_get_charset2upper_table
+ .text.UTF8_get_charset2lower_table
+                0x00000000e4400236        0x4 emodules/mod_charset/built-in.o
+                0x00000000e4400236                UTF8_get_charset2lower_table
+ .text.UTF16BE_uni2char
+                0x00000000e440023a       0x1c emodules/mod_charset/built-in.o
+                0x00000000e440023a                UTF16BE_uni2char
+ .text.UTF16BE_char2uni
+                0x00000000e4400256       0x20 emodules/mod_charset/built-in.o
+                0x00000000e4400256                UTF16BE_char2uni
+ .text.UTF16BE_get_charset2upper_table
+                0x00000000e4400276        0x4 emodules/mod_charset/built-in.o
+                0x00000000e4400276                UTF16BE_get_charset2upper_table
+ .text.UTF16BE_get_charset2lower_table
+                0x00000000e440027a        0x4 emodules/mod_charset/built-in.o
+                0x00000000e440027a                UTF16BE_get_charset2lower_table
+ .text.UTF16LE_uni2char
+                0x00000000e440027e       0x12 emodules/mod_charset/built-in.o
+                0x00000000e440027e                UTF16LE_uni2char
+ .text.UTF16LE_char2uni
+                0x00000000e4400290       0x20 emodules/mod_charset/built-in.o
+                0x00000000e4400290                UTF16LE_char2uni
+ .text.UTF16LE_get_charset2upper_table
+                0x00000000e44002b0        0x4 emodules/mod_charset/built-in.o
+                0x00000000e44002b0                UTF16LE_get_charset2upper_table
+ .text.UTF16LE_get_charset2lower_table
+                0x00000000e44002b4        0x4 emodules/mod_charset/built-in.o
+                0x00000000e44002b4                UTF16LE_get_charset2lower_table
+ .text.BIG5_uni2char
+                0x00000000e44002b8       0x4a emodules/mod_charset/built-in.o
+                0x00000000e44002b8                BIG5_uni2char
+ .text.BIG5_char2uni
+                0x00000000e4400302       0x3a emodules/mod_charset/built-in.o
+                0x00000000e4400302                BIG5_char2uni
+ .text.BIG5_get_charset2upper_table
+                0x00000000e440033c       0x3a emodules/mod_charset/built-in.o
+                0x00000000e440033c                BIG5_get_charset2upper_table
+ .text.BIG5_get_charset2lower_table
+                0x00000000e4400376       0x3a emodules/mod_charset/built-in.o
+                0x00000000e4400376                BIG5_get_charset2lower_table
+ .text.GBK_uni2char
+                0x00000000e44003b0       0x96 emodules/mod_charset/built-in.o
+                0x00000000e44003b0                GBK_uni2char
+ .text.GBK_char2uni
+                0x00000000e4400446       0x48 emodules/mod_charset/built-in.o
+                0x00000000e4400446                GBK_char2uni
+ .text.GBK_get_charset2upper_table
+                0x00000000e440048e       0x3a emodules/mod_charset/built-in.o
+                0x00000000e440048e                GBK_get_charset2upper_table
+ .text.GBK_get_charset2lower_table
+                0x00000000e44004c8       0x3a emodules/mod_charset/built-in.o
+                0x00000000e44004c8                GBK_get_charset2lower_table
+ .text.eLIBs_strlen
+                0x00000000e4400502        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+                0x00000000e4400502                eLIBs_strlen
+ .text.eLIBs_strnlen
+                0x00000000e440050e        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+                0x00000000e440050e                eLIBs_strnlen
+ .text.eLIBs_strcpy
+                0x00000000e440051a        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+                0x00000000e440051a                eLIBs_strcpy
+ .text.eLIBs_strncpy
+                0x00000000e4400526        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+                0x00000000e4400526                eLIBs_strncpy
+ .text.eLIBs_strcat
+                0x00000000e4400532        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+                0x00000000e4400532                eLIBs_strcat
+ .text.eLIBs_strncat
+                0x00000000e440053e        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+                0x00000000e440053e                eLIBs_strncat
+ .text.eLIBs_strcmp
+                0x00000000e440054a        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+                0x00000000e440054a                eLIBs_strcmp
+ .text.eLIBs_stricmp
+                0x00000000e4400556        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+                0x00000000e4400556                eLIBs_stricmp
+ .text.eLIBs_strncmp
+                0x00000000e4400562        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+                0x00000000e4400562                eLIBs_strncmp
+ .text.eLIBs_strnicmp
+                0x00000000e440056e        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+                0x00000000e440056e                eLIBs_strnicmp
+ .text.eLIBs_strchr
+                0x00000000e440057a        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+                0x00000000e440057a                eLIBs_strchr
+ .text.eLIBs_strnchr
+                0x00000000e4400586        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+                0x00000000e4400586                eLIBs_strnchr
+ .text.eLIBs_strchrlast
+                0x00000000e4400592        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+                0x00000000e4400592                eLIBs_strchrlast
+ .text.eLIBs_strstr
+                0x00000000e440059e        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+                0x00000000e440059e                eLIBs_strstr
+ .text.eLIBs_memclr
+                0x00000000e44005aa       0x10 ./elibrary/bin/libminic.a(elibs_string.o)
+                0x00000000e44005aa                eLIBs_memclr
+ .text.eLIBs_memset
+                0x00000000e44005ba        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+                0x00000000e44005ba                eLIBs_memset
+ .text.eLIBs_memcpy
+                0x00000000e44005c6        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+                0x00000000e44005c6                eLIBs_memcpy
+ .text.eLIBs_memcmp
+                0x00000000e44005d2       0x18 ./elibrary/bin/libminic.a(elibs_string.o)
+                0x00000000e44005d2                eLIBs_memcmp
+ .text.eLIBs_memmove
+                0x00000000e44005ea       0x3c ./elibrary/bin/libminic.a(elibs_string.o)
+                0x00000000e44005ea                eLIBs_memmove
+                0x00000000e4400628                . = ALIGN (0x4)
+ *fill*         0x00000000e4400626        0x2 
+
+.mod.rodata     0x00000000e4400628    0x36340
+ *(.rodata)
+ *(.rodata.*)
+ .rodata.CHS_Uni2Char
+                0x00000000e4400628       0x18 emodules/mod_charset/mod_charset.o
+ .rodata.CHS_Char2Uni
+                0x00000000e4400640       0x18 emodules/mod_charset/mod_charset.o
+ .rodata.CHS_GetChUpperTbl
+                0x00000000e4400658       0x18 emodules/mod_charset/mod_charset.o
+ .rodata.CHS_GetChLowerTbl
+                0x00000000e4400670       0x18 emodules/mod_charset/mod_charset.o
+ .rodata.utf8_table
+                0x00000000e4400688       0xe0 emodules/mod_charset/built-in.o
+ .rodata.BIG5_charset2lower
+                0x00000000e4400768      0x100 emodules/mod_charset/built-in.o
+ .rodata.BIG5_charset2upper
+                0x00000000e4400868      0x100 emodules/mod_charset/built-in.o
+ .rodata.c2u_A1
+                0x00000000e4400968      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_A2
+                0x00000000e4400d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_A3
+                0x00000000e4401168      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_A4
+                0x00000000e4401568      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_A5
+                0x00000000e4401968      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_A6
+                0x00000000e4401d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_A7
+                0x00000000e4402168      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_A8
+                0x00000000e4402568      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_A9
+                0x00000000e4402968      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_AA
+                0x00000000e4402d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_AB
+                0x00000000e4403168      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_AC
+                0x00000000e4403568      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_AD
+                0x00000000e4403968      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_AE
+                0x00000000e4403d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_AF
+                0x00000000e4404168      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_B0
+                0x00000000e4404568      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_B1
+                0x00000000e4404968      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_B2
+                0x00000000e4404d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_B3
+                0x00000000e4405168      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_B4
+                0x00000000e4405568      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_B5
+                0x00000000e4405968      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_B6
+                0x00000000e4405d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_B7
+                0x00000000e4406168      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_B8
+                0x00000000e4406568      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_B9
+                0x00000000e4406968      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_BA
+                0x00000000e4406d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_BB
+                0x00000000e4407168      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_BC
+                0x00000000e4407568      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_BD
+                0x00000000e4407968      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_BE
+                0x00000000e4407d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_BF
+                0x00000000e4408168      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_C0
+                0x00000000e4408568      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_C1
+                0x00000000e4408968      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_C2
+                0x00000000e4408d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_C3
+                0x00000000e4409168      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_C4
+                0x00000000e4409568      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_C5
+                0x00000000e4409968      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_C6
+                0x00000000e4409d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_C9
+                0x00000000e440a168      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_CA
+                0x00000000e440a568      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_CB
+                0x00000000e440a968      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_CC
+                0x00000000e440ad68      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_CD
+                0x00000000e440b168      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_CE
+                0x00000000e440b568      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_CF
+                0x00000000e440b968      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_D0
+                0x00000000e440bd68      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_D1
+                0x00000000e440c168      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_D2
+                0x00000000e440c568      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_D3
+                0x00000000e440c968      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_D4
+                0x00000000e440cd68      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_D5
+                0x00000000e440d168      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_D6
+                0x00000000e440d568      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_D7
+                0x00000000e440d968      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_D8
+                0x00000000e440dd68      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_D9
+                0x00000000e440e168      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_DA
+                0x00000000e440e568      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_DB
+                0x00000000e440e968      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_DC
+                0x00000000e440ed68      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_DD
+                0x00000000e440f168      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_DE
+                0x00000000e440f568      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_DF
+                0x00000000e440f968      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_E0
+                0x00000000e440fd68      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_E1
+                0x00000000e4410168      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_E2
+                0x00000000e4410568      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_E3
+                0x00000000e4410968      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_E4
+                0x00000000e4410d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_E5
+                0x00000000e4411168      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_E6
+                0x00000000e4411568      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_E7
+                0x00000000e4411968      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_E8
+                0x00000000e4411d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_E9
+                0x00000000e4412168      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_EA
+                0x00000000e4412568      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_EB
+                0x00000000e4412968      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_EC
+                0x00000000e4412d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_ED
+                0x00000000e4413168      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_EE
+                0x00000000e4413568      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_EF
+                0x00000000e4413968      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_F0
+                0x00000000e4413d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_F1
+                0x00000000e4414168      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_F2
+                0x00000000e4414568      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_F3
+                0x00000000e4414968      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_F4
+                0x00000000e4414d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_F5
+                0x00000000e4415168      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_F6
+                0x00000000e4415568      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_F7
+                0x00000000e4415968      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_F8
+                0x00000000e4415d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.c2u_F9
+                0x00000000e4416168      0x400 emodules/mod_charset/built-in.o
+ .rodata.page_charset2uni
+                0x00000000e4416568     0x1000 emodules/mod_charset/built-in.o
+ .rodata.page_uni2charset
+                0x00000000e4417568     0x1000 emodules/mod_charset/built-in.o
+ .rodata.u2c_02
+                0x00000000e4418568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_03
+                0x00000000e4418968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_20
+                0x00000000e4418d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_21
+                0x00000000e4419168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_22
+                0x00000000e4419568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_23
+                0x00000000e4419968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_25
+                0x00000000e4419d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_26
+                0x00000000e441a168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_30
+                0x00000000e441a568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_31
+                0x00000000e441a968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_32
+                0x00000000e441ad68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_33
+                0x00000000e441b168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_4E
+                0x00000000e441b568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_4F
+                0x00000000e441b968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_50
+                0x00000000e441bd68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_51
+                0x00000000e441c168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_52
+                0x00000000e441c568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_53
+                0x00000000e441c968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_54
+                0x00000000e441cd68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_55
+                0x00000000e441d168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_56
+                0x00000000e441d568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_57
+                0x00000000e441d968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_58
+                0x00000000e441dd68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_59
+                0x00000000e441e168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_5A
+                0x00000000e441e568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_5B
+                0x00000000e441e968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_5C
+                0x00000000e441ed68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_5D
+                0x00000000e441f168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_5E
+                0x00000000e441f568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_5F
+                0x00000000e441f968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_60
+                0x00000000e441fd68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_61
+                0x00000000e4420168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_62
+                0x00000000e4420568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_63
+                0x00000000e4420968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_64
+                0x00000000e4420d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_65
+                0x00000000e4421168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_66
+                0x00000000e4421568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_67
+                0x00000000e4421968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_68
+                0x00000000e4421d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_69
+                0x00000000e4422168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_6A
+                0x00000000e4422568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_6B
+                0x00000000e4422968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_6C
+                0x00000000e4422d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_6D
+                0x00000000e4423168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_6E
+                0x00000000e4423568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_6F
+                0x00000000e4423968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_70
+                0x00000000e4423d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_71
+                0x00000000e4424168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_72
+                0x00000000e4424568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_73
+                0x00000000e4424968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_74
+                0x00000000e4424d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_75
+                0x00000000e4425168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_76
+                0x00000000e4425568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_77
+                0x00000000e4425968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_78
+                0x00000000e4425d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_79
+                0x00000000e4426168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_7A
+                0x00000000e4426568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_7B
+                0x00000000e4426968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_7C
+                0x00000000e4426d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_7D
+                0x00000000e4427168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_7E
+                0x00000000e4427568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_7F
+                0x00000000e4427968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_80
+                0x00000000e4427d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_81
+                0x00000000e4428168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_82
+                0x00000000e4428568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_83
+                0x00000000e4428968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_84
+                0x00000000e4428d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_85
+                0x00000000e4429168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_86
+                0x00000000e4429568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_87
+                0x00000000e4429968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_88
+                0x00000000e4429d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_89
+                0x00000000e442a168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_8A
+                0x00000000e442a568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_8B
+                0x00000000e442a968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_8C
+                0x00000000e442ad68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_8D
+                0x00000000e442b168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_8E
+                0x00000000e442b568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_8F
+                0x00000000e442b968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_90
+                0x00000000e442bd68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_91
+                0x00000000e442c168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_92
+                0x00000000e442c568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_93
+                0x00000000e442c968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_94
+                0x00000000e442cd68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_95
+                0x00000000e442d168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_96
+                0x00000000e442d568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_97
+                0x00000000e442d968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_98
+                0x00000000e442dd68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_99
+                0x00000000e442e168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_9A
+                0x00000000e442e568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_9B
+                0x00000000e442e968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_9C
+                0x00000000e442ed68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_9D
+                0x00000000e442f168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_9E
+                0x00000000e442f568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_9F
+                0x00000000e442f968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_DC
+                0x00000000e442fd68      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_F9
+                0x00000000e4430168      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_FA
+                0x00000000e4430568      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_FE
+                0x00000000e4430968      0x400 emodules/mod_charset/built-in.o
+ .rodata.u2c_FF
+                0x00000000e4430d68      0x400 emodules/mod_charset/built-in.o
+ .rodata.GBK_charset2lower
+                0x00000000e4431168      0x100 emodules/mod_charset/built-in.o
+ .rodata.GBK_charset2upper
+                0x00000000e4431268      0x100 emodules/mod_charset/built-in.o
+ .rodata.c2u_81
+                0x00000000e4431368      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_82
+                0x00000000e4431568      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_83
+                0x00000000e4431768      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_84
+                0x00000000e4431968      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_85
+                0x00000000e4431b68      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_86
+                0x00000000e4431d68      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_87
+                0x00000000e4431f68      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_88
+                0x00000000e4432168      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_89
+                0x00000000e4432368      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_8A
+                0x00000000e4432568      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_8B
+                0x00000000e4432768      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_8C
+                0x00000000e4432968      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_8D
+                0x00000000e4432b68      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_8E
+                0x00000000e4432d68      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_8F
+                0x00000000e4432f68      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_90
+                0x00000000e4433168      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_91
+                0x00000000e4433368      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_92
+                0x00000000e4433568      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_93
+                0x00000000e4433768      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_94
+                0x00000000e4433968      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_95
+                0x00000000e4433b68      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_96
+                0x00000000e4433d68      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_97
+                0x00000000e4433f68      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_98
+                0x00000000e4434168      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_99
+                0x00000000e4434368      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_9A
+                0x00000000e4434568      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_9B
+                0x00000000e4434768      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_9C
+                0x00000000e4434968      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_9D
+                0x00000000e4434b68      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_9E
+                0x00000000e4434d68      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_9F
+                0x00000000e4434f68      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_A0
+                0x00000000e4435168      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_C7
+                0x00000000e4435368      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_C8
+                0x00000000e4435568      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_FA
+                0x00000000e4435768      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_FB
+                0x00000000e4435968      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_FC
+                0x00000000e4435b68      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_FD
+                0x00000000e4435d68      0x200 emodules/mod_charset/built-in.o
+ .rodata.c2u_FE
+                0x00000000e4435f68      0x200 emodules/mod_charset/built-in.o
+ .rodata.u2c_00
+                0x00000000e4436168      0x200 emodules/mod_charset/built-in.o
+ .rodata.u2c_01
+                0x00000000e4436368      0x200 emodules/mod_charset/built-in.o
+ .rodata.u2c_04
+                0x00000000e4436568      0x200 emodules/mod_charset/built-in.o
+ .rodata.u2c_24
+                0x00000000e4436768      0x200 emodules/mod_charset/built-in.o
+                0x00000000e4436968                . = ALIGN (0x4)
+
+.mod.data       0x00000000e4436968        0x0
+ *(.data)
+ *(.data.*)
+ *(.gnu.linkonce.d.*)
+ *(.sdata)
+ *(.sdata.*)
+ *(.gnu.linkonce.s.*)
+ *(.sdata2)
+ *(.sdata2.*)
+ *(.gnu.linkonce.s2.*)
+                0x00000000e4436968                . = ALIGN (0x4)
+
+.mod.bss        0x00000000e4436968        0x0
+                0x00000000e4436968                __bss_start = ABSOLUTE (.)
+ *(.bss)
+ *(.bss.*)
+ *(.gnu.linkonce.b.*)
+ *(.sbss)
+ *(.sbss.*)
+ *(.gnu.linkonce.sb.*)
+ *(.sbss2)
+ *(.sbss2.*)
+ *(.gnu.linkonce.sb2.*)
+ *(COMMON)
+ *(.scommon)
+                0x00000000e4436968                . = ALIGN (0x4)
+                0x00000000e4436968                __bss_end = ABSOLUTE (.)
+                0x00000000e4436968                _end = ABSOLUTE (.)
+
+MAGIC           0x00000000ffff0000       0x50
+ *magic.o(.magic)
+ .magic         0x00000000ffff0000       0x50 emodules/mod_charset/magic.o
+                0x00000000ffff0000                modinfo
+
+.reginfo
+ *(.reginfo)
+
+.mdebug
+ *(.mdebug)
+
+.note
+ *(.note)
+
+.comment        0x0000000000000000       0x32
+ *(.comment)
+ .comment       0x0000000000000000       0x32 emodules/mod_charset/mod_charset.o
+                                         0x33 (size before relaxing)
+ .comment       0x0000000000000032       0x33 emodules/mod_charset/magic.o
+ .comment       0x0000000000000032      0x132 emodules/mod_charset/built-in.o
+ .comment       0x0000000000000032       0x33 ./elibrary/bin/libminic.a(elibs_string.o)
+
+.riscv.attributes
+                0x0000000000000000       0x3d
+ .riscv.attributes
+                0x0000000000000000       0x3d emodules/mod_charset/mod_charset.o
+ .riscv.attributes
+                0x000000000000003d       0x3d emodules/mod_charset/magic.o
+ .riscv.attributes
+                0x000000000000007a       0x3d emodules/mod_charset/built-in.o
+ .riscv.attributes
+                0x00000000000000b7       0x3d ./elibrary/bin/libminic.a(elibs_string.o)
+
+.ARM.attributes
+ *(.ARM.attributes)
+
+/DISCARD/
+ *(.note.GNU-stack)
+ *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+OUTPUT(emodules/mod_charset/charset.o elf64-littleriscv)
+
+.debug_info     0x0000000000000000     0x72a5
+ .debug_info    0x0000000000000000      0x3e8 emodules/mod_charset/mod_charset.o
+ .debug_info    0x00000000000003e8     0x11c7 emodules/mod_charset/magic.o
+ .debug_info    0x00000000000015af     0x51cd emodules/mod_charset/built-in.o
+ .debug_info    0x000000000000677c      0xb29 ./elibrary/bin/libminic.a(elibs_string.o)
+
+.debug_abbrev   0x0000000000000000      0xee5
+ .debug_abbrev  0x0000000000000000      0x128 emodules/mod_charset/mod_charset.o
+ .debug_abbrev  0x0000000000000128      0x2ab emodules/mod_charset/magic.o
+ .debug_abbrev  0x00000000000003d3      0x9cc emodules/mod_charset/built-in.o
+ .debug_abbrev  0x0000000000000d9f      0x146 ./elibrary/bin/libminic.a(elibs_string.o)
+
+.debug_loc      0x0000000000000000     0x1b4f
+ .debug_loc     0x0000000000000000      0x8bc emodules/mod_charset/mod_charset.o
+ .debug_loc     0x00000000000008bc      0x124 emodules/mod_charset/magic.o
+ .debug_loc     0x00000000000009e0      0xa6a emodules/mod_charset/built-in.o
+ .debug_loc     0x000000000000144a      0x705 ./elibrary/bin/libminic.a(elibs_string.o)
+
+.debug_aranges  0x0000000000000000      0x420
+ .debug_aranges
+                0x0000000000000000       0x80 emodules/mod_charset/mod_charset.o
+ .debug_aranges
+                0x0000000000000080       0x80 emodules/mod_charset/magic.o
+ .debug_aranges
+                0x0000000000000100      0x1d0 emodules/mod_charset/built-in.o
+ .debug_aranges
+                0x00000000000002d0      0x150 ./elibrary/bin/libminic.a(elibs_string.o)
+
+.debug_line     0x0000000000000000     0x265a
+ .debug_line    0x0000000000000000      0x504 emodules/mod_charset/mod_charset.o
+ .debug_line    0x0000000000000504      0x3c9 emodules/mod_charset/magic.o
+ .debug_line    0x00000000000008cd     0x17c1 emodules/mod_charset/built-in.o
+ .debug_line    0x000000000000208e      0x5cc ./elibrary/bin/libminic.a(elibs_string.o)
+
+.debug_str      0x0000000000000000     0x1ba5
+ .debug_str     0x0000000000000000      0x68b emodules/mod_charset/mod_charset.o
+                                        0x724 (size before relaxing)
+ .debug_str     0x000000000000068b      0x72b emodules/mod_charset/magic.o
+                                        0x9fa (size before relaxing)
+ .debug_str     0x0000000000000db6      0xa2f emodules/mod_charset/built-in.o
+                                       0x2d7e (size before relaxing)
+ .debug_str     0x00000000000017e5      0x3c0 ./elibrary/bin/libminic.a(elibs_string.o)
+                                        0x662 (size before relaxing)
+
+.debug_frame    0x0000000000000000      0x600
+ .debug_frame   0x0000000000000000       0xd0 emodules/mod_charset/mod_charset.o
+ .debug_frame   0x00000000000000d0       0xd8 emodules/mod_charset/magic.o
+ .debug_frame   0x00000000000001a8      0x270 emodules/mod_charset/built-in.o
+ .debug_frame   0x0000000000000418      0x1e8 ./elibrary/bin/libminic.a(elibs_string.o)
+
+Cross Reference Table
+
+Symbol                                            File
+BIG5_char2uni                                     emodules/mod_charset/built-in.o
+                                                  emodules/mod_charset/mod_charset.o
+BIG5_get_charset2lower_table                      emodules/mod_charset/built-in.o
+                                                  emodules/mod_charset/mod_charset.o
+BIG5_get_charset2upper_table                      emodules/mod_charset/built-in.o
+                                                  emodules/mod_charset/mod_charset.o
+BIG5_uni2char                                     emodules/mod_charset/built-in.o
+                                                  emodules/mod_charset/mod_charset.o
+CHS_Char2Uni                                      emodules/mod_charset/mod_charset.o
+                                                  emodules/mod_charset/built-in.o
+CHS_GetChLowerTbl                                 emodules/mod_charset/mod_charset.o
+                                                  emodules/mod_charset/built-in.o
+CHS_GetChUpperTbl                                 emodules/mod_charset/mod_charset.o
+                                                  emodules/mod_charset/built-in.o
+CHS_Uni2Char                                      emodules/mod_charset/mod_charset.o
+                                                  emodules/mod_charset/built-in.o
+GBK_char2uni                                      emodules/mod_charset/built-in.o
+                                                  emodules/mod_charset/mod_charset.o
+GBK_get_charset2lower_table                       emodules/mod_charset/built-in.o
+                                                  emodules/mod_charset/mod_charset.o
+GBK_get_charset2upper_table                       emodules/mod_charset/built-in.o
+                                                  emodules/mod_charset/mod_charset.o
+GBK_uni2char                                      emodules/mod_charset/built-in.o
+                                                  emodules/mod_charset/mod_charset.o
+MClose                                            emodules/mod_charset/magic.o
+MExit                                             emodules/mod_charset/magic.o
+MInit                                             emodules/mod_charset/magic.o
+MIoctrl                                           emodules/mod_charset/magic.o
+MOpen                                             emodules/mod_charset/magic.o
+MRead                                             emodules/mod_charset/magic.o
+MWrite                                            emodules/mod_charset/magic.o
+UTF16BE_char2uni                                  emodules/mod_charset/built-in.o
+                                                  emodules/mod_charset/mod_charset.o
+UTF16BE_get_charset2lower_table                   emodules/mod_charset/built-in.o
+                                                  emodules/mod_charset/mod_charset.o
+UTF16BE_get_charset2upper_table                   emodules/mod_charset/built-in.o
+                                                  emodules/mod_charset/mod_charset.o
+UTF16BE_uni2char                                  emodules/mod_charset/built-in.o
+                                                  emodules/mod_charset/mod_charset.o
+UTF16LE_char2uni                                  emodules/mod_charset/built-in.o
+                                                  emodules/mod_charset/mod_charset.o
+UTF16LE_get_charset2lower_table                   emodules/mod_charset/built-in.o
+                                                  emodules/mod_charset/mod_charset.o
+UTF16LE_get_charset2upper_table                   emodules/mod_charset/built-in.o
+                                                  emodules/mod_charset/mod_charset.o
+UTF16LE_uni2char                                  emodules/mod_charset/built-in.o
+                                                  emodules/mod_charset/mod_charset.o
+UTF8_char2uni                                     emodules/mod_charset/built-in.o
+                                                  emodules/mod_charset/mod_charset.o
+UTF8_get_charset2lower_table                      emodules/mod_charset/built-in.o
+                                                  emodules/mod_charset/mod_charset.o
+UTF8_get_charset2upper_table                      emodules/mod_charset/built-in.o
+                                                  emodules/mod_charset/mod_charset.o
+UTF8_uni2char                                     emodules/mod_charset/built-in.o
+                                                  emodules/mod_charset/mod_charset.o
+_CHS_Exit                                         emodules/mod_charset/mod_charset.o
+                                                  emodules/mod_charset/magic.o
+_CHS_Init                                         emodules/mod_charset/mod_charset.o
+                                                  emodules/mod_charset/magic.o
+charset_api                                       emodules/mod_charset/built-in.o
+eLIBs_memclr                                      ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_memcmp                                      ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_memcpy                                      ./elibrary/bin/libminic.a(elibs_string.o)
+                                                  emodules/mod_charset/built-in.o
+eLIBs_memmove                                     ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_memset                                      ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_strcat                                      ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_strchr                                      ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_strchrlast                                  ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_strcmp                                      ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_strcpy                                      ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_stricmp                                     ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_strlen                                      ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_strncat                                     ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_strnchr                                     ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_strncmp                                     ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_strncpy                                     ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_strnicmp                                    ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_strnlen                                     ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_strstr                                      ./elibrary/bin/libminic.a(elibs_string.o)
+modinfo                                           emodules/mod_charset/magic.o

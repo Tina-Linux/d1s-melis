@@ -1,0 +1,2830 @@
+Archive member included to satisfy reference by file (symbol)
+
+./elibrary/bin/libsyscall.a(syscall.o)
+                              emodules/fm/dev_fm.o (esCFG_GetKeyValue)
+./elibrary/bin/libsyscall.a(syscall_fops.o)
+                              emodules/fm/fm_module/fm_all/fm_all_drv.o (ioctl)
+./elibrary/bin/libminic.a(elibs_stdio.o)
+                              emodules/fm/fm_module/fm_all/fm_all_drv.o (printk)
+./elibrary/bin/libminic.a(elibs_string.o)
+                              ./elibrary/bin/libminic.a(elibs_stdio.o) (eLIBs_strlen)
+./elibrary/bin/libminic.a(elibs_sprintf.o)
+                              ./elibrary/bin/libminic.a(elibs_stdio.o) (eLIBs_vscnprintf)
+/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-malloc.o)
+                              emodules/fm/fm_module/fm_all/fm_all_drv.o (malloc)
+/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-memcpy.o)
+                              emodules/fm/circle_buf.o (memcpy)
+/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-memset.o)
+                              emodules/fm/dev_fm.o (memset)
+/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-sysclose.o)
+                              emodules/fm/dev_fm.o (close)
+/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-sysopen.o)
+                              emodules/fm/dev_fm.o (open)
+/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-syswrite.o)
+                              emodules/fm/dev_fm.o (write)
+/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-impure.o)
+                              /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-malloc.o) (_impure_ptr)
+
+Discarded input sections
+
+ .text          0x0000000000000000        0x0 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .data          0x0000000000000000        0x0 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .bss           0x0000000000000000        0x0 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_manual_search_rtc6207m
+                0x0000000000000000        0x8 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.rtc6207m_get_vol
+                0x0000000000000000        0xa emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_vol_get_rtc6207m
+                0x0000000000000000        0xa emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.RTC6207E_Read_ID
+                0x0000000000000000       0x34 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.QN8065_Delay
+                0x0000000000000000       0x1c emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.QN8065_FREQ2CHREG
+                0x0000000000000000       0x10 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_vol_get_qn8065
+                0x0000000000000000        0xa emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.ReadRDAFM
+                0x0000000000000000       0x6a emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_stereo_choose_rda5807
+                0x0000000000000000       0x3a emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.RDA5807P_GetSigLvl
+                0x0000000000000000       0x20 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_auto_search_rda5807
+                0x0000000000000000        0x8 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_vol_get_rda5807
+                0x0000000000000000        0xc emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.delay_5ms
+                0x0000000000000000        0xc emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.RTC6222_mute
+                0x0000000000000000       0x34 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.RTC6222_read_cur_seeking_freq
+                0x0000000000000000       0x18 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_mute_rtc6222
+                0x0000000000000000        0x4 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_auto_search_rtc6222
+                0x0000000000000000        0x8 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_vol_get_rtc6222
+                0x0000000000000000        0xa emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_init_rtc6222
+                0x0000000000000000       0x14 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_exit_rtc6222
+                0x0000000000000000       0x14 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.I2c_delay
+                0x0000000000000000        0x2 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.Delay1us
+                0x0000000000000000        0x2 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.EnableWire2
+                0x0000000000000000        0x2 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.BK1080_FreqToChan
+                0x0000000000000000        0xa emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.Chip_wire2_Initialize
+                0x0000000000000000       0x8e emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.BK1080_SearchByTune
+                0x0000000000000000       0x4e emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_vol_set_bk1080
+                0x0000000000000000        0x4 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_vol_get_bk1080
+                0x0000000000000000        0xa emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_read_id_bk1080
+                0x0000000000000000       0x2a emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.is_online_bk1080
+                0x0000000000000000       0x20 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_init_bk1080
+                0x0000000000000000       0x14 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_exit_bk1080
+                0x0000000000000000       0x14 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_manual_search_bk1080
+                0x0000000000000000       0x20 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_manual_search_qn8065
+                0x0000000000000000        0x8 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_vol_set_rtc6207m
+                0x0000000000000000       0x14 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_signal_gain
+                0x0000000000000000        0x4 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .data.HW_Reg   0x0000000000000000       0x44 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .rodata.__func__.9941
+                0x0000000000000000        0xa emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text          0x0000000000000000        0x0 emodules/fm/dev_fm.o
+ .data          0x0000000000000000        0x0 emodules/fm/dev_fm.o
+ .bss           0x0000000000000000        0x0 emodules/fm/dev_fm.o
+ .text.monitor_task
+                0x0000000000000000       0xfe emodules/fm/dev_fm.o
+ .rodata.__func__.9599
+                0x0000000000000000        0xd emodules/fm/dev_fm.o
+ .rodata.monitor_task.str1.8
+                0x0000000000000000       0x48 emodules/fm/dev_fm.o
+ .text          0x0000000000000000        0x0 emodules/fm/drv_fm.o
+ .data          0x0000000000000000        0x0 emodules/fm/drv_fm.o
+ .bss           0x0000000000000000        0x0 emodules/fm/drv_fm.o
+ .text          0x0000000000000000        0x0 emodules/fm/magic.o
+ .data          0x0000000000000000        0x0 emodules/fm/magic.o
+ .bss           0x0000000000000000        0x0 emodules/fm/magic.o
+ .text          0x0000000000000000        0x0 emodules/fm/circle_buf.o
+ .data          0x0000000000000000        0x0 emodules/fm/circle_buf.o
+ .bss           0x0000000000000000        0x0 emodules/fm/circle_buf.o
+ .text.CircleBufReadZero
+                0x0000000000000000      0x17e emodules/fm/circle_buf.o
+ .text.CircleBufFlush
+                0x0000000000000000       0x34 emodules/fm/circle_buf.o
+ .text.CircleBufResize
+                0x0000000000000000       0x40 emodules/fm/circle_buf.o
+ .text          0x0000000000000000        0x0 ./elibrary/bin/libsyscall.a(syscall.o)
+ .data          0x0000000000000000        0x0 ./elibrary/bin/libsyscall.a(syscall.o)
+ .bss           0x0000000000000000        0x0 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCFG_Exit_Ex
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCFG_GetGPIOSecData
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCFG_GetGPIOSecData_Ex
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCFG_GetGPIOSecKeyCount
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCFG_GetGPIOSecKeyCount_Ex
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCFG_GetKeyValue_Ex
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCFG_GetSecCount
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCFG_GetSecCount_Ex
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCFG_GetSecKeyCount
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCFG_GetSecKeyCount_Ex
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCFG_Init_Ex
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCHS_Char2Uni
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCHS_GetChLowerTbl
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCHS_GetChUpperTbl
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCHS_Uni2Char
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCLK_CloseMclk
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCLK_GetMclkDiv
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCLK_GetMclkSrc
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCLK_GetRound_Rate
+                0x0000000000000000       0x20 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCLK_GetSrcFreq
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCLK_MclkAssert
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCLK_MclkDeassert
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCLK_MclkGetRstStatus
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCLK_MclkOnOff
+                0x0000000000000000       0x20 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCLK_MclkRegCb
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCLK_MclkReset
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCLK_MclkUnregCb
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCLK_ModInfo
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCLK_OpenMclk
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCLK_SetMclkDiv
+                0x0000000000000000       0x20 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCLK_SetMclkSrc
+                0x0000000000000000       0x20 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCLK_SetSrcFreq
+                0x0000000000000000       0x20 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esCLK_SysInfo
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDEV_Close
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDEV_DevReg
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDEV_DevUnreg
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDEV_Insmod
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDEV_Ioctl
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDEV_Lock
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDEV_Open
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDEV_Plugin
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDEV_Plugout
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDEV_Read
+                0x0000000000000000       0x20 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDEV_Unimod
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDEV_Unlock
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDEV_Write
+                0x0000000000000000       0x20 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDMA_ChangeMode
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDMA_DisableINT
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDMA_EnableINT
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDMA_Information
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDMA_QueryDst
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDMA_QueryRestCount
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDMA_QuerySrc
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDMA_QueryStat
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDMA_RegDmaHdler
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDMA_Release
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDMA_Request
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDMA_Restart
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDMA_Setting
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDMA_Start
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDMA_Stop
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esDMA_UnregDmaHdler
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esEXEC_PCreate
+                0x0000000000000000       0x1e ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esEXEC_PDel
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esEXEC_PDelReq
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esEXEC_Run
+                0x0000000000000000       0x1e ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_clearpartupdateflag
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_closedir
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_fclose
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_fd2file
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_ferrclr
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_ferror
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_file2fd
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_fioctrl
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_fopen
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_format
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_fread
+                0x0000000000000000       0x20 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_fsdbg
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_fseek
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_fseekex
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_fsreg
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_fstat
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_fsunreg
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_fsync
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_ftell
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_ftellex
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_ftruncate
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_fwrite
+                0x0000000000000000       0x20 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_getfscharset
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_mkdir
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_mntfs
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_mntparts
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_open
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_opendir
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_partfslck
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_partfsunlck
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_pclose
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_pdreg
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_pdunreg
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_perrclr
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_perror
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_pioctrl
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_popen
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_pread
+                0x0000000000000000       0x20 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_premove
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_prename
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_pwrite
+                0x0000000000000000       0x20 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_querypartupdateflag
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_readdir
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_remove
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_rename
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_rewinddir
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_rmdir
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_setfs
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_statfs
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_statpt
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_umntfs
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esFSYS_umntparts
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esHID_hiddevreg
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esHID_hiddevunreg
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esHID_SendMsg
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esINPUT_GetLdevID
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esINPUT_LdevCtl
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esINPUT_LdevFeedback
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esINPUT_LdevGrab
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esINPUT_LdevRelease
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esINPUT_RegDev
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esINPUT_SendEvent
+                0x0000000000000000       0x20 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esINPUT_UnregDev
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esINT_DisableINT
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esINT_EnableINT
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esINT_InsFIR
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esINT_InsISR
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esINT_SetIRQPrio
+                0x0000000000000000       0x20 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esINT_UniFIR
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esINT_UniISR
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_CallBack
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_DumpStack
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_FlagAccept
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_FlagCreate
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_FlagDel
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_FlagNameGet
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_FlagNameSet
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_FlagPend
+                0x0000000000000000       0x20 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_FlagPendGetFlagsRdy
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_FlagPost
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_FlagQuery
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_GetCallBack
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_GetTIDCur
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_InterruptDisable
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_InterruptEnable
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_MboxAccept
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_MboxCreate
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_MboxDel
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_MboxPend
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_MboxPost
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_MboxPostOpt
+                0x0000000000000000       0x1e ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_MboxQuery
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_MemLeakChk
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_MutexCreate
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_MutexDel
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_MutexPend
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_MutexPost
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_QAccept
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_QCreate
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_QDel
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_QFlush
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_QPend
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_QPost
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_QPostFront
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_QPostOpt
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_QQuery
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_SemAccept
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_SemQuery
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_SemSet
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_SktAccept
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_SktCreate
+                0x0000000000000000       0x22 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_SktDel
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_SktPend
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_SktPost
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_TaskPrefEn
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_TaskQuery
+                0x0000000000000000       0x1e ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_TaskResume
+                0x0000000000000000       0x1e ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_TaskNameSet
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_TaskSuspend
+                0x0000000000000000       0x1e ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_Time
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_TimeGet
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_TimeSet
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_TmrCreate
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_TmrDel
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_TmrError
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_TmrRemainGet
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_TmrStart
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_TmrStateGet
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_TmrStop
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKRNL_Version
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_ClearWatchDog
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_DisableWatchDog
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_DisableWatchDogSrv
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_EnableWatchDog
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_EnableWatchDogSrv
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_GetAddPara
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_GetDramCfgPara
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_GetHighMsg
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_GetLowMsg
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_GetMsg
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_GetPara
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_GetSocID
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_GetTargetPara
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_GetVersion
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_Get_Display_Hld
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_Save_Mixture_Hld
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_Get_Mixture_Hld
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_memcpy
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_memset
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_PowerOff
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_Random
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_Reset
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_Save_Display_Hld
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_SendMsg
+                0x0000000000000000       0x20 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_SendMsgEx
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esKSRV_SysInfo
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_Balloc
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_Bfree
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_Calloc
+                0x0000000000000000       0x1e ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_CleanDCache
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_CleanDCacheRegion
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_CleanFlushCache
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_CleanFlushCacheRegion
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_CleanFlushDCache
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_CleanFlushDCacheRegion
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_CleanInvalidateCacheAll
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_FlushCache
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_FlushCacheRegion
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_FlushDCache
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_FlushDCacheRegion
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_FlushICache
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_FlushICacheRegion
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_FreeMemSize
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_GetIoVAByPA
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_HeapCreate
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_HeapDel
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_Info
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_Malloc
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_Mfree
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_Realloc
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_TotalMemSize
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_VA2PA
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_VMalloc
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_VMCreate
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_VMDelete
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEMS_VMfree
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEM_BWDisable
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEM_BWEnable
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEM_BWGet
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEM_DramSuspend
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEM_DramWakeup
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEM_MasterGet
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEM_MasterSet
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEM_RegDramAccess
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEM_ReleaseDramUsrMode
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEM_RequestDramUsrMode
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEM_SramRelBlk
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEM_SramReqBlk
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEM_SramSwitchBlk
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMEM_UnRegDramAccess
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMODS_MClose
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMODS_MInstall
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMODS_MIoctrl
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMODS_MOpen
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMODS_MRead
+                0x0000000000000000       0x20 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMODS_MUninstall
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMODS_MWrite
+                0x0000000000000000       0x20 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMSTUB_GetFuncEntry
+                0x0000000000000000       0x1e ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMSTUB_RegFuncTbl
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esMSTUB_UnRegFuncTbl
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esPINS_ClearPending
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esPINS_DisbaleInt
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esPINS_EnbaleInt
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esPINS_GetPinGrpStat
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esPINS_GetPinStat
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esPINS_QueryInt
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esPINS_RegIntHdler
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esPINS_SetIntMode
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esPINS_SetPinDrive
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esPINS_SetPinStat
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esPINS_UnregIntHdler
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esPWRMAN_EnterStandby
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esPWRMAN_GetStandbyPara
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esPWRMAN_LockCpuFreq
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esPWRMAN_RegDevice
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esPWRMAN_RelPwrmanMode
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esPWRMAN_ReqPwrmanMode
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esPWRMAN_SetStandbyMode
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esPWRMAN_UnlockCpuFreq
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esPWRMAN_UnregDevice
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esPWRMAN_UsrEventNotify
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esRESM_RClose
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esRESM_ROpen
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esRESM_RRead
+                0x0000000000000000       0x20 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esRESM_RSeek
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSIOS_getchar
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSIOS_gets
+                0x0000000000000000       0x14 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSIOS_putarg
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSIOS_setbaud
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegCloseNode
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegClrError
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegCreateKey
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegCreatePath
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegCreateSet
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegDeleteKey
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegDeleteNode
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegDeletePath
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegDeleteSet
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegGetError
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegGetFirstKey
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegGetFirstSet
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegGetKeyCount
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegGetKeyValue
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegGetNextKey
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegGetNextSet
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegGetRootPath
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegGetSetCount
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegIni2Reg
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegOpenNode
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegReg2Ini
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegSetKeyValue
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_RegSetRootPath
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_ResourceRel
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esSVC_ResourceReq
+                0x0000000000000000       0x22 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_ContiCntr
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_GetDate
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_GetTime
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_PauseCntr
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_QuerryAlarm
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_QuerryCntr
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_QuerryCntrStat
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_QuerryTimer
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_ReleaseAlarm
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_ReleaseCntr
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_ReleaseTimer
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_RequestAlarm
+                0x0000000000000000       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_RequestCntr
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_RequestTimer
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_SetCntrPrescale
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_SetCntrValue
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_SetDate
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_SetTime
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_StartAlarm
+                0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_StartCntr
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_StartTimer
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_StopAlarm
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_StopCntr
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.esTIME_StopTimer
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text.backtrace
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+ .text          0x0000000000000000        0x0 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .data          0x0000000000000000        0x0 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .bss           0x0000000000000000        0x0 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text.closedir
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text.fioctrl  0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text._fstat_r
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text._lseek_r
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text._rename_r
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text._stat_r  0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text._mkdir_r
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text.fsync    0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text._unlink_r
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text._read_r  0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text._gettimeofday_r
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text.settimeofday
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text._realloc_r
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text._calloc_r
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text._isatty_r
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text._isatty  0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text.__libc_init_array
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text._system  0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text.__malloc_lock
+                0x0000000000000000        0x2 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text.__malloc_unlock
+                0x0000000000000000        0x2 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text.ftruncate
+                0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text.mkdir    0x0000000000000000       0x1c ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text.opendir  0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text.readdir  0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text.remove   0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text.rewinddir
+                0x0000000000000000       0x16 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text.rmdir    0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text.statfs   0x0000000000000000       0x18 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .text          0x0000000000000000        0x0 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .data          0x0000000000000000        0x0 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .bss           0x0000000000000000        0x0 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_remove
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_rename
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_fopen
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_fclose
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_fsync
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_fread
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_fwrite
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_ftruncate
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_ftell
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_flltell
+                0x0000000000000000       0x26 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_fioctrl
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_ferror
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_ferrclr
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_opendir
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_closedir
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_readdir
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_rewinddir
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_mkdir
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_rmdir
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_DirEnt2Attr
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_DirEnt2Name
+                0x0000000000000000       0x2e ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_DirEnt2Size
+                0x0000000000000000        0x6 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_DirEnt2Time
+                0x0000000000000000        0x4 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetNumFiles
+                0x0000000000000000       0x3e ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetNumSubItems
+                0x0000000000000000       0x4e ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetFileAttributes
+                0x0000000000000000       0x4c ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_SetFileAttributes
+                0x0000000000000000        0x4 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetDirSize
+                0x0000000000000000      0x108 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetFileSize
+                0x0000000000000000       0x40 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_format
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetVolName
+                0x0000000000000000       0x4a ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetVolNameCharset
+                0x0000000000000000       0x52 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetVolTSpace
+                0x0000000000000000       0x30 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetVolFSpace
+                0x0000000000000000       0x30 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetVolClustSize
+                0x0000000000000000       0x26 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetFSName
+                0x0000000000000000       0x48 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetFSAttribute
+                0x0000000000000000       0x36 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_disklock
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_diskunlock
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetDiskArray
+                0x0000000000000000       0x62 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_feof
+                0x0000000000000000       0x1e ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_fgetc
+                0x0000000000000000       0x2c ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_fgets
+                0x0000000000000000       0x6c ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_fputc
+                0x0000000000000000       0x32 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_fputs
+                0x0000000000000000       0x42 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetFileATime
+                0x0000000000000000       0x50 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetFileMTime
+                0x0000000000000000       0x50 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetFileCTime
+                0x0000000000000000       0x50 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetDirATime
+                0x0000000000000000       0x48 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetDirMTime
+                0x0000000000000000       0x48 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetDirCTime
+                0x0000000000000000       0x48 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetFSCharset
+                0x0000000000000000       0x10 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_file2fd
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_fd2file
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_open
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_fstat
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_statfs
+                0x0000000000000000        0xc ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_fseek
+                0x0000000000000000       0x64 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_fllseek
+                0x0000000000000000       0x6c ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetPTName
+                0x0000000000000000       0xa2 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_IsPartFormated
+                0x0000000000000000       0xdc ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetDevName.part.0
+                0x0000000000000000       0x4c ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetDevName
+                0x0000000000000000       0x76 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetDevParts
+                0x0000000000000000       0x88 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetTime
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_GetDate
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text.eLIBs_setfs
+                0x0000000000000000        0x8 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .bss.dir_level.6341
+                0x0000000000000000        0x4 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .rodata.__func__.6248
+                0x0000000000000000        0xc ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .rodata.__func__.6254
+                0x0000000000000000        0xe ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .rodata.__func__.6395
+                0x0000000000000000       0x10 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .rodata.__func__.6400
+                0x0000000000000000       0x15 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .rodata.__func__.6530
+                0x0000000000000000       0x11 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .rodata.eLIBs_GetDirSize.str1.8
+                0x0000000000000000        0x2 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .rodata.eLIBs_GetFileAttributes.str1.8
+                0x0000000000000000        0x3 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .rodata.eLIBs_GetPTName.str1.8
+                0x0000000000000000       0x2e ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .rodata.eLIBs_GetVolNameCharset.str1.8
+                0x0000000000000000        0x5 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .rodata.eLIBs_fseek.str1.8
+                0x0000000000000000       0x60 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .text          0x0000000000000000        0x0 ./elibrary/bin/libminic.a(elibs_string.o)
+ .data          0x0000000000000000        0x0 ./elibrary/bin/libminic.a(elibs_string.o)
+ .bss           0x0000000000000000        0x0 ./elibrary/bin/libminic.a(elibs_string.o)
+ .text.eLIBs_strlen
+                0x0000000000000000        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+ .text.eLIBs_strnlen
+                0x0000000000000000        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+ .text.eLIBs_strcpy
+                0x0000000000000000        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+ .text.eLIBs_strncpy
+                0x0000000000000000        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+ .text.eLIBs_strcat
+                0x0000000000000000        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+ .text.eLIBs_strncat
+                0x0000000000000000        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+ .text.eLIBs_strcmp
+                0x0000000000000000        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+ .text.eLIBs_stricmp
+                0x0000000000000000        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+ .text.eLIBs_strncmp
+                0x0000000000000000        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+ .text.eLIBs_strnicmp
+                0x0000000000000000        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+ .text.eLIBs_strchr
+                0x0000000000000000        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+ .text.eLIBs_strnchr
+                0x0000000000000000        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+ .text.eLIBs_strchrlast
+                0x0000000000000000        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+ .text.eLIBs_strstr
+                0x0000000000000000        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+ .text.eLIBs_memclr
+                0x0000000000000000       0x10 ./elibrary/bin/libminic.a(elibs_string.o)
+ .text.eLIBs_memcpy
+                0x0000000000000000        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+ .text.eLIBs_memcmp
+                0x0000000000000000       0x18 ./elibrary/bin/libminic.a(elibs_string.o)
+ .text.eLIBs_memmove
+                0x0000000000000000       0x3c ./elibrary/bin/libminic.a(elibs_string.o)
+ .text          0x0000000000000000        0x0 ./elibrary/bin/libminic.a(elibs_sprintf.o)
+ .data          0x0000000000000000        0x0 ./elibrary/bin/libminic.a(elibs_sprintf.o)
+ .bss           0x0000000000000000        0x0 ./elibrary/bin/libminic.a(elibs_sprintf.o)
+ .text.eLIBs_snprintf
+                0x0000000000000000       0x20 ./elibrary/bin/libminic.a(elibs_sprintf.o)
+ .text.eLIBs_scnprintf
+                0x0000000000000000       0x2e ./elibrary/bin/libminic.a(elibs_sprintf.o)
+ .text.eLIBs_vsprintf
+                0x0000000000000000        0xe ./elibrary/bin/libminic.a(elibs_sprintf.o)
+ .text.eLIBs_sprintf
+                0x0000000000000000       0x26 ./elibrary/bin/libminic.a(elibs_sprintf.o)
+ .data          0x0000000000000000        0x0 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-malloc.o)
+ .bss           0x0000000000000000        0x0 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-malloc.o)
+ .data          0x0000000000000000        0x0 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-memcpy.o)
+ .bss           0x0000000000000000        0x0 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-memcpy.o)
+ .data          0x0000000000000000        0x0 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-memset.o)
+ .bss           0x0000000000000000        0x0 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-memset.o)
+ .data          0x0000000000000000        0x0 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-sysclose.o)
+ .bss           0x0000000000000000        0x0 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-sysclose.o)
+ .data          0x0000000000000000        0x0 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-sysopen.o)
+ .bss           0x0000000000000000        0x0 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-sysopen.o)
+ .data          0x0000000000000000        0x0 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-syswrite.o)
+ .bss           0x0000000000000000        0x0 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-syswrite.o)
+ .text          0x0000000000000000        0x0 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-impure.o)
+ .bss           0x0000000000000000        0x0 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-impure.o)
+ .rodata        0x0000000000000000        0x8 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-impure.o)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+dram0_0_seg      0x00000000c2000000 0x0000000004000000 xrw
+dram0_1_seg      0x00000000e0000000 0x0000000010000000 xrw
+dram0_2_seg      0x00000000e0700000 0x0000000000010000 xrw
+magic_info_seg   0x00000000ffff0000 0x0000000000000100 r
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD emodules/fm/fm_module/fm_all/fm_all_drv.o
+LOAD emodules/fm/dev_fm.o
+LOAD emodules/fm/drv_fm.o
+LOAD emodules/fm/magic.o
+LOAD emodules/fm/circle_buf.o
+START GROUP
+START GROUP
+LOAD ./elibrary/bin/libsyscall.a
+LOAD ./elibrary/bin/libminic.a
+LOAD ./elibrary/bin/libpub0.a
+END GROUP
+LOAD /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libstdc++.a
+LOAD /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a
+LOAD /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/rv64imafdcxtheadc/lp64d/libgcc.a
+LOAD /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libm.a
+END GROUP
+                0x00000000e0700000                __DRAM0_MOD_BASE = ORIGIN (dram0_2_seg)
+                0x00000000ffff0000                __DRAM0_INF_BASE = ORIGIN (magic_info_seg)
+
+.mod.text       0x00000000e0700000     0x3014
+ *(.text)
+ .text          0x00000000e0700000       0x2c /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-malloc.o)
+                0x00000000e0700000                malloc
+                0x00000000e0700010                free
+ *fill*         0x00000000e070002c        0x4 
+ .text          0x00000000e0700030       0xd0 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-memcpy.o)
+                0x00000000e0700030                memcpy
+ .text          0x00000000e0700100       0xaa /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-memset.o)
+                0x00000000e0700100                memset
+ *fill*         0x00000000e07001aa        0x6 
+ .text          0x00000000e07001b0       0x1e /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-sysclose.o)
+                0x00000000e07001b0                close
+ *fill*         0x00000000e07001ce        0x2 
+ .text          0x00000000e07001d0       0x3e /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-sysopen.o)
+                0x00000000e07001d0                open
+ *fill*         0x00000000e070020e        0x2 
+ .text          0x00000000e0700210       0x1e /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-syswrite.o)
+                0x00000000e0700210                write
+ *(.text.*)
+ .text.iic_read_data
+                0x00000000e070022e       0x60 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.iic_write_data
+                0x00000000e070028e       0x7a emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.MPIO1_OUTEN
+                0x00000000e0700308        0xa emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.MPIO1_OUTVALUE
+                0x00000000e0700312        0xa emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_read_data_rtc6207m
+                0x00000000e070031c       0x6c emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_write_data_rtc6207m
+                0x00000000e0700388       0x68 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .text.fm_area_choose_rtc6207m
+                0x00000000e07003f0       0x64 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07003f0                fm_area_choose_rtc6207m
+ .text.fm_mute_rtc6207m
+                0x00000000e0700454       0x52 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0700454                fm_mute_rtc6207m
+ .text.fm_play_rtc6207m
+                0x00000000e07004a6       0x52 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07004a6                fm_play_rtc6207m
+ .text.RTC6207E_ValidStop
+                0x00000000e07004f8      0x104 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07004f8                RTC6207E_ValidStop
+ .text.fm_auto_search_rtc6207m
+                0x00000000e07005fc       0x62 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07005fc                fm_auto_search_rtc6207m
+ .text.fm_exit_rtc6207m
+                0x00000000e070065e       0x1a emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e070065e                fm_exit_rtc6207m
+ .text.RTC6207E_Power_Up
+                0x00000000e0700678       0x5a emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0700678                RTC6207E_Power_Up
+ .text.is_online_rtc6207e
+                0x00000000e07006d2       0x58 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07006d2                is_online_rtc6207e
+ .text.QN8065_ReadReg
+                0x00000000e070072a       0x62 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e070072a                QN8065_ReadReg
+ .text.QN8065_WriteReg
+                0x00000000e070078c       0x62 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e070078c                QN8065_WriteReg
+ .text.QN8065_SetMute
+                0x00000000e07007ee        0xe emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07007ee                QN8065_SetMute
+ .text.QN8065_SetCh
+                0x00000000e07007fc       0x6c emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07007fc                QN8065_SetCh
+ .text.QN8065_Init
+                0x00000000e0700868       0x8c emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0700868                QN8065_Init
+ .text.QN8065_TuneToCH
+                0x00000000e07008f4       0xf2 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07008f4                QN8065_TuneToCH
+ .text.QN8065_ScanNoiseFloor
+                0x00000000e07009e6       0xa8 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07009e6                QN8065_ScanNoiseFloor
+ .text.QN8065_RXSetTH
+                0x00000000e0700a8e       0x62 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0700a8e                QN8065_RXSetTH
+ .text.QN8065_RXValidCH
+                0x00000000e0700af0      0x110 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0700af0                QN8065_RXValidCH
+ .text.QN8065_RXConfigAudio
+                0x00000000e0700c00       0x46 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0700c00                QN8065_RXConfigAudio
+ .text.QND8065_SetSysMode
+                0x00000000e0700c46       0x80 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0700c46                QND8065_SetSysMode
+ .text.fm_vol_set_qn8065
+                0x00000000e0700cc6       0x30 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0700cc6                fm_vol_set_qn8065
+ .text.fm_exit_qn8065
+                0x00000000e0700cf6       0x18 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0700cf6                fm_exit_qn8065
+ .text.fm_play_qn8065
+                0x00000000e0700d0e       0x16 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0700d0e                fm_play_qn8065
+ .text.fm_area_choose_qn8065
+                0x00000000e0700d24       0x22 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0700d24                fm_area_choose_qn8065
+ .text.fm_mute_qn8065
+                0x00000000e0700d46       0x28 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0700d46                fm_mute_qn8065
+ .text.is_online_qn8065
+                0x00000000e0700d6e       0x1c emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0700d6e                is_online_qn8065
+ .text.OperationRDAFM_2w
+                0x00000000e0700d8a       0xbe emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0700d8a                OperationRDAFM_2w
+ .text.fm_area_choose_rda5807
+                0x00000000e0700e48       0x64 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0700e48                fm_area_choose_rda5807
+ .text.fm_mute_rda5807
+                0x00000000e0700eac       0x56 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0700eac                fm_mute_rda5807
+ .text.RDA5807P_FreqToChan
+                0x00000000e0700f02       0x40 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0700f02                RDA5807P_FreqToChan
+ .text.fm_play_rda5807
+                0x00000000e0700f42       0x58 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0700f42                fm_play_rda5807
+ .text.RDA5807P_ValidStop
+                0x00000000e0700f9a       0xc2 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0700f9a                RDA5807P_ValidStop
+ .text.fm_manual_search_rda5807
+                0x00000000e070105c       0x4a emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e070105c                fm_manual_search_rda5807
+ .text.fm_vol_set_rda5807
+                0x00000000e07010a6       0x3c emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07010a6                fm_vol_set_rda5807
+ .text.fm_init_rda5807
+                0x00000000e07010e2      0x1d6 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07010e2                fm_init_rda5807
+ .text.fm_exit_rda5807
+                0x00000000e07012b8       0x1a emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07012b8                fm_exit_rda5807
+ .text.is_online_rda5807
+                0x00000000e07012d2       0x6c emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07012d2                is_online_rda5807
+ .text.OperationRTC6222_write
+                0x00000000e070133e       0x62 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e070133e                OperationRTC6222_write
+ .text.OperationRTC6222_read
+                0x00000000e07013a0       0x70 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07013a0                OperationRTC6222_read
+ .text.is_online_rtc6222
+                0x00000000e0701410       0x3e emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701410                is_online_rtc6222
+ .text.RTC6222_init
+                0x00000000e070144e       0xb4 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e070144e                RTC6222_init
+ .text.RTC6222_off
+                0x00000000e0701502        0xc emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701502                RTC6222_off
+ .text.RTC6222_set_vol
+                0x00000000e070150e        0xc emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e070150e                RTC6222_set_vol
+ .text.RTC6222_set_freq
+                0x00000000e070151a       0x74 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e070151a                RTC6222_set_freq
+ .text.RTC6222_seek
+                0x00000000e070158e       0xa4 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e070158e                RTC6222_seek
+ .text.fm_area_choose_rtc6222
+                0x00000000e0701632       0x6a emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701632                fm_area_choose_rtc6222
+ .text.fm_play_rtc6222
+                0x00000000e070169c       0x1a emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e070169c                fm_play_rtc6222
+ .text.fm_manual_search_rtc6222
+                0x00000000e07016b6       0x4e emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07016b6                fm_manual_search_rtc6222
+ .text.fm_vol_set_rtc6222
+                0x00000000e0701704       0x1a emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701704                fm_vol_set_rtc6222
+ .text.BEKEN_I2C_init
+                0x00000000e070171e       0x18 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e070171e                BEKEN_I2C_init
+ .text.BEKEN_I2C_Start
+                0x00000000e0701736       0x1e emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701736                BEKEN_I2C_Start
+ .text.BEKEN_I2C_Stop
+                0x00000000e0701754       0x1e emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701754                BEKEN_I2C_Stop
+ .text.BEKEN_I2C_ack
+                0x00000000e0701772       0x24 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701772                BEKEN_I2C_ack
+ .text.BEKEN_I2C_nack
+                0x00000000e0701796       0x24 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701796                BEKEN_I2C_nack
+ .text.BEKEN_I2C_ReceiveACK
+                0x00000000e07017ba       0x32 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07017ba                BEKEN_I2C_ReceiveACK
+ .text.BEKEN_I2C_sendbyte
+                0x00000000e07017ec       0x44 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07017ec                BEKEN_I2C_sendbyte
+ .text.BEKEN_I2c_Readbyte
+                0x00000000e0701830       0x4c emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701830                BEKEN_I2c_Readbyte
+ .text.BEKEN_I2c_Read
+                0x00000000e070187c       0x72 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e070187c                BEKEN_I2c_Read
+ .text.BEKEN_I2c_Write
+                0x00000000e07018ee       0x54 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07018ee                BEKEN_I2c_Write
+ .text.bk1080_off
+                0x00000000e0701942       0x26 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701942                bk1080_off
+ .text.BK1080_SetFreq
+                0x00000000e0701968       0x60 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701968                BK1080_SetFreq
+ .text.BK1080_ValidStop
+                0x00000000e07019c8       0xfe emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07019c8                BK1080_ValidStop
+ .text.fm_play_bk1080
+                0x00000000e0701ac6       0x1c emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701ac6                fm_play_bk1080
+ .text.fm_area_choose_bk1080
+                0x00000000e0701ae2       0x64 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701ae2                fm_area_choose_bk1080
+ .text.fm_exit  0x00000000e0701b46       0x4e emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701b46                fm_exit
+ .text.fm_play  0x00000000e0701b94       0x4e emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701b94                fm_play
+ .text.fm_manual_search
+                0x00000000e0701be2       0x5c emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701be2                fm_manual_search
+ .text.fm_area_choose
+                0x00000000e0701c3e       0x4e emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701c3e                fm_area_choose
+ .text.fm_mute  0x00000000e0701c8c       0x36 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701c8c                fm_mute
+ .text.rtc6207m_set_vol
+                0x00000000e0701cc2       0x5c emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701cc2                rtc6207m_set_vol
+ .text.fm_init_rtc6207m
+                0x00000000e0701d1e       0x68 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701d1e                fm_init_rtc6207m
+ .text.fm_auto_search_qn8065
+                0x00000000e0701d86       0x42 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701d86                fm_auto_search_qn8065
+ .text.fm_auto_search_bk1080
+                0x00000000e0701dc8       0x4c emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701dc8                fm_auto_search_bk1080
+ .text.fm_auto_search
+                0x00000000e0701e14       0x3e emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701e14                fm_auto_search
+ .text.fm_vol_set
+                0x00000000e0701e52       0x42 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701e52                fm_vol_set
+ .text.fm_init_qn8065
+                0x00000000e0701e94       0x1c emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701e94                fm_init_qn8065
+ .text.fm_init  0x00000000e0701eb0       0xfe emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701eb0                fm_init
+ .text.fm_vol_get
+                0x00000000e0701fae       0x3e emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701fae                fm_vol_get
+ .text.fm_get_status
+                0x00000000e0701fec        0x4 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701fec                fm_get_status
+ .text.fm_signal_level
+                0x00000000e0701ff0        0x4 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701ff0                fm_signal_level
+ .text.fm_send  0x00000000e0701ff4        0x4 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701ff4                fm_send
+ .text.fm_send_on
+                0x00000000e0701ff8        0x4 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701ff8                fm_send_on
+ .text.fm_send_off
+                0x00000000e0701ffc        0x4 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0701ffc                fm_send_off
+ .text.fm_pa_gain
+                0x00000000e0702000        0x4 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0702000                fm_pa_gain
+ .text.fm_stereo_choose
+                0x00000000e0702004        0x4 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0702004                fm_stereo_choose
+ .text.sunxi_fm_init
+                0x00000000e0702008        0x4 emodules/fm/dev_fm.o
+ .text.sunxi_fm_open
+                0x00000000e070200c       0x20 emodules/fm/dev_fm.o
+ .text.sunxi_fm_close
+                0x00000000e070202c       0x20 emodules/fm/dev_fm.o
+ .text.sunxi_fm_write
+                0x00000000e070204c        0x4 emodules/fm/dev_fm.o
+ .text.sunxi_fm_control
+                0x00000000e0702050       0x26 emodules/fm/dev_fm.o
+ .text.rec_task
+                0x00000000e0702076      0x176 emodules/fm/dev_fm.o
+ .text.play_task
+                0x00000000e07021ec      0x164 emodules/fm/dev_fm.o
+ .text.hal_fm_control
+                0x00000000e0702350      0x1da emodules/fm/dev_fm.o
+                0x00000000e0702350                hal_fm_control
+ .text.sunxi_fm_read
+                0x00000000e070252a        0x4 emodules/fm/dev_fm.o
+ .text.audio_start
+                0x00000000e070252e       0x4e emodules/fm/dev_fm.o
+                0x00000000e070252e                audio_start
+ .text.audio_stop
+                0x00000000e070257c       0xa4 emodules/fm/dev_fm.o
+                0x00000000e070257c                audio_stop
+ .text.hal_fm_init
+                0x00000000e0702620      0x10e emodules/fm/dev_fm.o
+                0x00000000e0702620                hal_fm_init
+ .text.hal_fm_uninit
+                0x00000000e070272e       0x4a emodules/fm/dev_fm.o
+                0x00000000e070272e                hal_fm_uninit
+ .text.sunxi_driver_fm_init
+                0x00000000e0702778       0xb2 emodules/fm/dev_fm.o
+                0x00000000e0702778                sunxi_driver_fm_init
+ .text.sunxi_driver_fm_uninit
+                0x00000000e070282a       0x58 emodules/fm/dev_fm.o
+                0x00000000e070282a                sunxi_driver_fm_uninit
+ .text.DRV_FM_MInit
+                0x00000000e0702882       0x22 emodules/fm/drv_fm.o
+                0x00000000e0702882                DRV_FM_MInit
+ .text.DRV_FM_MExit
+                0x00000000e07028a4       0x20 emodules/fm/drv_fm.o
+                0x00000000e07028a4                DRV_FM_MExit
+ .text.DRV_FM_MOpen
+                0x00000000e07028c4        0xe emodules/fm/drv_fm.o
+                0x00000000e07028c4                DRV_FM_MOpen
+ .text.DRV_FM_MClose
+                0x00000000e07028d2        0x4 emodules/fm/drv_fm.o
+                0x00000000e07028d2                DRV_FM_MClose
+ .text.DRV_FM_MRead
+                0x00000000e07028d6        0x6 emodules/fm/drv_fm.o
+                0x00000000e07028d6                DRV_FM_MRead
+ .text.DRV_FM_MWrite
+                0x00000000e07028dc        0x6 emodules/fm/drv_fm.o
+                0x00000000e07028dc                DRV_FM_MWrite
+ .text.DRV_FM_MIoctrl
+                0x00000000e07028e2       0xb2 emodules/fm/drv_fm.o
+                0x00000000e07028e2                DRV_FM_MIoctrl
+ .text.CircleBufCreate
+                0x00000000e0702994       0x58 emodules/fm/circle_buf.o
+                0x00000000e0702994                CircleBufCreate
+ .text.CircleBufDestroy
+                0x00000000e07029ec       0x3c emodules/fm/circle_buf.o
+                0x00000000e07029ec                CircleBufDestroy
+ .text.CircleBufRead
+                0x00000000e0702a28      0x110 emodules/fm/circle_buf.o
+                0x00000000e0702a28                CircleBufRead
+ .text.CircleBufWrite
+                0x00000000e0702b38      0x154 emodules/fm/circle_buf.o
+                0x00000000e0702b38                CircleBufWrite
+ .text.CircleBufQuerySize
+                0x00000000e0702c8c       0x26 emodules/fm/circle_buf.o
+                0x00000000e0702c8c                CircleBufQuerySize
+ .text.esCFG_GetKeyValue
+                0x00000000e0702cb2       0x18 ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702cb2                esCFG_GetKeyValue
+ .text.rt_device_register
+                0x00000000e0702cca       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702cca                rt_device_register
+ .text.rt_device_unregister
+                0x00000000e0702ce0       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702ce0                rt_device_unregister
+ .text.esKRNL_SchedLock
+                0x00000000e0702cf6       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702cf6                esKRNL_SchedLock
+ .text.esKRNL_SchedUnlock
+                0x00000000e0702d0c       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702d0c                esKRNL_SchedUnlock
+ .text.esKRNL_SemCreate
+                0x00000000e0702d22       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702d22                esKRNL_SemCreate
+ .text.esKRNL_SemDel
+                0x00000000e0702d38       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702d38                esKRNL_SemDel
+ .text.esKRNL_SemPend
+                0x00000000e0702d4e       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702d4e                esKRNL_SemPend
+ .text.esKRNL_SemPost
+                0x00000000e0702d64       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702d64                esKRNL_SemPost
+ .text.esKRNL_TCreate
+                0x00000000e0702d7e       0x1c ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702d7e                esKRNL_TCreate
+ .text.esKRNL_TDel
+                0x00000000e0702d9a       0x1e ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702d9a                esKRNL_TDel
+ .text.esKRNL_TDelReq
+                0x00000000e0702db8       0x1e ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702db8                esKRNL_TDelReq
+ .text.esKRNL_TimeDly
+                0x00000000e0702dd6       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702dd6                esKRNL_TimeDly
+ .text.esKRNL_TimeDlyResume
+                0x00000000e0702dec       0x1e ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702dec                esKRNL_TimeDlyResume
+ .text.esMEMS_Palloc
+                0x00000000e0702e0a       0x1e ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702e0a                esMEMS_Palloc
+ .text.esMEMS_Pfree
+                0x00000000e0702e28       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702e28                esMEMS_Pfree
+ .text.esPINS_PinGrpRel
+                0x00000000e0702e42       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702e42                esPINS_PinGrpRel
+ .text.esPINS_PinGrpReq
+                0x00000000e0702e58       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702e58                esPINS_PinGrpReq
+ .text.esPINS_ReadPinData
+                0x00000000e0702e6e       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702e6e                esPINS_ReadPinData
+ .text.esPINS_SetPinIO
+                0x00000000e0702e84       0x16 ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702e84                esPINS_SetPinIO
+ .text.esPINS_SetPinPull
+                0x00000000e0702e9a       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702e9a                esPINS_SetPinPull
+ .text.esPINS_WritePinData
+                0x00000000e0702eb4       0x1a ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702eb4                esPINS_WritePinData
+ .text.esSIOS_putstr
+                0x00000000e0702ece       0x14 ./elibrary/bin/libsyscall.a(syscall.o)
+                0x00000000e0702ece                esSIOS_putstr
+ .text._close_r
+                0x00000000e0702ee2       0x18 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+                0x00000000e0702ee2                _close_r
+ .text._open_r  0x00000000e0702efa       0x18 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+                0x00000000e0702efa                _open_r
+ .text._write_r
+                0x00000000e0702f12       0x16 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+                0x00000000e0702f12                _write_r
+ .text._malloc_r
+                0x00000000e0702f28       0x16 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+                0x00000000e0702f28                _malloc_r
+ .text._free_r  0x00000000e0702f3e       0x16 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+                0x00000000e0702f3e                _free_r
+ .text.ioctl    0x00000000e0702f54       0x28 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+                0x00000000e0702f54                ioctl
+ .text.eLIBs_vprintf
+                0x00000000e0702f7c       0x42 ./elibrary/bin/libminic.a(elibs_stdio.o)
+                0x00000000e0702f7c                eLIBs_vprintf
+ .text.eLIBs_printf
+                0x00000000e0702fbe       0x20 ./elibrary/bin/libminic.a(elibs_stdio.o)
+                0x00000000e0702fbe                eLIBs_printf
+                0x00000000e0702fbe                printk
+ .text.eLIBs_memset
+                0x00000000e0702fde        0xc ./elibrary/bin/libminic.a(elibs_string.o)
+                0x00000000e0702fde                eLIBs_memset
+ .text.eLIBs_vsnprintf
+                0x00000000e0702fea        0xc ./elibrary/bin/libminic.a(elibs_sprintf.o)
+                0x00000000e0702fea                eLIBs_vsnprintf
+ .text.eLIBs_vscnprintf
+                0x00000000e0702ff6       0x1c ./elibrary/bin/libminic.a(elibs_sprintf.o)
+                0x00000000e0702ff6                eLIBs_vscnprintf
+ *(.stub)
+ *(.gnu.warning)
+ *(.gnu.linkonce.t*)
+                0x00000000e0703014                . = ALIGN (0x4)
+ *fill*         0x00000000e0703012        0x2 
+
+.mod.rodata     0x00000000e0703014      0x73c
+ *(.rodata)
+ *(.rodata.*)
+ *fill*         0x00000000e0703014        0x4 
+ .rodata.OperationRDAFM_2w.str1.8
+                0x00000000e0703018       0x60 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .rodata.OperationRTC6222_read.str1.8
+                0x00000000e0703078       0x37 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ *fill*         0x00000000e07030af        0x1 
+ .rodata.OperationRTC6222_write.str1.8
+                0x00000000e07030b0       0x38 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .rodata.QN8065_ReadReg.str1.8
+                0x00000000e07030e8       0x36 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ *fill*         0x00000000e070311e        0x2 
+ .rodata.QN8065_TuneToCH.cst8
+                0x00000000e0703120        0x8 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .rodata.QN8065_WriteReg.str1.8
+                0x00000000e0703128       0x37 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ *fill*         0x00000000e070315f        0x1 
+ .rodata.RTC62XX_CKHopping
+                0x00000000e0703160       0x2e emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0703160                RTC62XX_CKHopping
+ *fill*         0x00000000e070318e        0x2 
+ .rodata.RTC62XX_Initial_value
+                0x00000000e0703190        0xe emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0703190                RTC62XX_Initial_value
+ *fill*         0x00000000e070319e        0x2 
+ .rodata.RTC62XX_Initial_value1
+                0x00000000e07031a0        0xe emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07031a0                RTC62XX_Initial_value1
+ *fill*         0x00000000e07031ae        0x2 
+ .rodata.RTC62XX_power_up
+                0x00000000e07031b0       0x10 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07031b0                RTC62XX_power_up
+ .rodata.RTC62XX_turnoff
+                0x00000000e07031c0       0x1e emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07031c0                RTC62XX_turnoff
+ *fill*         0x00000000e07031de        0x2 
+ .rodata.RTC62XX_turnon
+                0x00000000e07031e0       0x1e emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e07031e0                RTC62XX_turnon
+ *fill*         0x00000000e07031fe        0x2 
+ .rodata.__func__.10035
+                0x00000000e0703200       0x16 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ *fill*         0x00000000e0703216        0x2 
+ .rodata.__func__.10042
+                0x00000000e0703218       0x15 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ *fill*         0x00000000e070322d        0x3 
+ .rodata.__func__.10330
+                0x00000000e0703230        0x8 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .rodata.__func__.9692
+                0x00000000e0703238       0x17 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ *fill*         0x00000000e070324f        0x1 
+ .rodata.__func__.9698
+                0x00000000e0703250       0x16 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ *fill*         0x00000000e0703266        0x2 
+ .rodata.__func__.9783
+                0x00000000e0703268        0xe emodules/fm/fm_module/fm_all/fm_all_drv.o
+ *fill*         0x00000000e0703276        0x2 
+ .rodata.__func__.9790
+                0x00000000e0703278        0xd emodules/fm/fm_module/fm_all/fm_all_drv.o
+ *fill*         0x00000000e0703285        0x3 
+ .rodata.__func__.9934
+                0x00000000e0703288       0x12 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ *fill*         0x00000000e070329a        0x6 
+ .rodata.fm_area_choose_rtc6207m.cst8
+                0x00000000e07032a0       0x10 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .rodata.fm_init.str1.8
+                0x00000000e07032b0       0x7e emodules/fm/fm_module/fm_all/fm_all_drv.o
+ *fill*         0x00000000e070332e        0x2 
+ .rodata.fm_read_data_rtc6207m.str1.8
+                0x00000000e0703330       0x71 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ *fill*         0x00000000e07033a1        0x7 
+ .rodata.fm_write_data_rtc6207m.str1.8
+                0x00000000e07033a8       0x42 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ *fill*         0x00000000e07033ea        0x2 
+ .rodata.hal_fm_control
+                0x00000000e07033ec       0x48 emodules/fm/dev_fm.o
+ *fill*         0x00000000e0703434        0x4 
+ .rodata.__func__.9574
+                0x00000000e0703438        0xa emodules/fm/dev_fm.o
+ *fill*         0x00000000e0703442        0x6 
+ .rodata.__func__.9587
+                0x00000000e0703448        0x9 emodules/fm/dev_fm.o
+ *fill*         0x00000000e0703451        0x7 
+ .rodata.__func__.9618
+                0x00000000e0703458        0xc emodules/fm/dev_fm.o
+ *fill*         0x00000000e0703464        0x4 
+ .rodata.__func__.9707
+                0x00000000e0703468        0xf emodules/fm/dev_fm.o
+ *fill*         0x00000000e0703477        0x1 
+ .rodata.__func__.9718
+                0x00000000e0703478       0x17 emodules/fm/dev_fm.o
+ *fill*         0x00000000e070348f        0x1 
+ .rodata.hal_fm_control.str1.8
+                0x00000000e0703490       0x10 emodules/fm/dev_fm.o
+ .rodata.hal_fm_init.str1.8
+                0x00000000e07034a0       0x90 emodules/fm/dev_fm.o
+ .rodata.play_task.str1.8
+                0x00000000e0703530       0x4a emodules/fm/dev_fm.o
+ *fill*         0x00000000e070357a        0x6 
+ .rodata.rec_task.str1.8
+                0x00000000e0703580       0x68 emodules/fm/dev_fm.o
+                                         0x98 (size before relaxing)
+ .rodata.sunxi_driver_fm_init.str1.8
+                0x00000000e07035e8       0x5e emodules/fm/dev_fm.o
+ *fill*         0x00000000e0703646        0x2 
+ .rodata.sunxi_driver_fm_uninit.str1.8
+                0x00000000e0703648       0x5a emodules/fm/dev_fm.o
+ *fill*         0x00000000e07036a2        0x6 
+ .rodata.sunxi_hal_fm_driver
+                0x00000000e07036a8       0x18 emodules/fm/dev_fm.o
+ .rodata.DRV_FM_MIoctrl.str1.8
+                0x00000000e07036c0       0x2c emodules/fm/drv_fm.o
+                                         0x5c (size before relaxing)
+ *fill*         0x00000000e07036ec        0x4 
+ .rodata.__func__.6005
+                0x00000000e07036f0        0xf emodules/fm/drv_fm.o
+ *fill*         0x00000000e07036ff        0x1 
+ .rodata.CircleBufWrite.str1.8
+                0x00000000e0703700       0x40 emodules/fm/circle_buf.o
+                                         0x70 (size before relaxing)
+ .rodata.__func__.7848
+                0x00000000e0703740        0xf emodules/fm/circle_buf.o
+ *(.gnu.linkonce.r*)
+                0x00000000e0703750                . = ALIGN (0x4)
+ *fill*         0x00000000e070374f        0x1 
+
+.mod.data       0x00000000e0703750      0x8c4
+ *(.data)
+ .data          0x00000000e0703750      0x750 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-impure.o)
+                0x00000000e0703750                _impure_ptr
+ *(.data.*)
+ .data.QN8065_NoiseFloor
+                0x00000000e0703ea0        0x1 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0703ea0                QN8065_NoiseFloor
+ .data.QN8065_PreNoiseFloor
+                0x00000000e0703ea1        0x1 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0703ea1                QN8065_PreNoiseFloor
+ *fill*         0x00000000e0703ea2        0x6 
+ .data.RDA5807N_initialization_reg
+                0x00000000e0703ea8       0x4e emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0703ea8                RDA5807N_initialization_reg
+ *fill*         0x00000000e0703ef6        0x2 
+ .data.RDA5807PE_initialization_reg
+                0x00000000e0703ef8       0x68 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0703ef8                RDA5807PE_initialization_reg
+ .data.RDA5807PH_initialization_reg
+                0x00000000e0703f60       0x6e emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0703f60                RDA5807PH_initialization_reg
+ *fill*         0x00000000e0703fce        0x2 
+ .data.RDA5807P_initialization_reg
+                0x00000000e0703fd0       0x40 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0703fd0                RDA5807P_initialization_reg
+ .data.fiic     0x00000000e0704010        0x4 emodules/fm/dev_fm.o
+                0x00000000e0704010                fiic
+ *(.gnu.linkonce.d.*)
+ *(.sdata)
+ *(.sdata.*)
+ *(.gnu.linkonce.s.*)
+ *(.sdata2)
+ *(.sdata2.*)
+ *(.gnu.linkonce.s2.*)
+                0x00000000e0704014                . = ALIGN (0x4)
+
+.mod.bss        0x00000000e0704014      0x53c
+                0x00000000e0704014                __bss_start = ABSOLUTE (.)
+ *(.bss)
+ *(.bss.*)
+ *fill*         0x00000000e0704014        0x4 
+ .bss.RDA5807P_REG
+                0x00000000e0704018        0xa emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .bss.VolValue  0x00000000e0704022        0x1 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0704022                VolValue
+ .bss.fm_type   0x00000000e0704023        0x1 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                0x00000000e0704023                fm_type
+ .bss.gChipID   0x00000000e0704024        0x2 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .bss.g_last_freq_deviation_value.10271
+                0x00000000e0704026        0x2 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .bss.last_tuned_freq.10270
+                0x00000000e0704028        0x2 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .bss.max_freq  0x00000000e070402a        0x2 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .bss.min_freq  0x00000000e070402c        0x2 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ *fill*         0x00000000e070402e        0x2 
+ .bss.circle_buf
+                0x00000000e0704030       0x28 emodules/fm/dev_fm.o
+                0x00000000e0704030                circle_buf
+ .bss.fm        0x00000000e0704058       0xb8 emodules/fm/dev_fm.o
+                0x00000000e0704058                fm
+ .bss.monitor_task_id
+                0x00000000e0704110        0x4 emodules/fm/dev_fm.o
+ .bss.play_task_id
+                0x00000000e0704114        0x4 emodules/fm/dev_fm.o
+ .bss.rec_task_id
+                0x00000000e0704118        0x4 emodules/fm/dev_fm.o
+ *fill*         0x00000000e070411c        0x4 
+ .bss.fm_drv    0x00000000e0704120       0x28 emodules/fm/drv_fm.o
+                0x00000000e0704120                fm_drv
+ .bss.fm_lock   0x00000000e0704148        0x8 emodules/fm/drv_fm.o
+                0x00000000e0704148                fm_lock
+ .bss.buffer.6522
+                0x00000000e0704150      0x400 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ *(.gnu.linkonce.b.*)
+ *(.sbss)
+ *(.sbss.*)
+ *(.gnu.linkonce.sb.*)
+ *(.sbss2)
+ *(.sbss2.*)
+ *(.gnu.linkonce.sb2.*)
+ *(COMMON)
+ *(.scommon)
+                0x00000000e0704550                . = ALIGN (0x4)
+                0x00000000e0704550                __bss_end = ABSOLUTE (.)
+                0x00000000e0704550                _end = ABSOLUTE (.)
+
+MAGIC           0x00000000ffff0000       0x50
+ *.o(.magic)
+ .magic         0x00000000ffff0000       0x50 emodules/fm/magic.o
+                0x00000000ffff0000                modinfo
+
+.note
+ *(.note)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.mdebug
+ *(.mdebug)
+
+.reginfo
+ *(.reginfo)
+
+.comment        0x0000000000000000       0x32
+ *(.comment)
+ .comment       0x0000000000000000       0x32 emodules/fm/fm_module/fm_all/fm_all_drv.o
+                                         0x33 (size before relaxing)
+ .comment       0x0000000000000032       0x33 emodules/fm/dev_fm.o
+ .comment       0x0000000000000032       0x33 emodules/fm/drv_fm.o
+ .comment       0x0000000000000032       0x33 emodules/fm/magic.o
+ .comment       0x0000000000000032       0x33 emodules/fm/circle_buf.o
+ .comment       0x0000000000000032       0x33 ./elibrary/bin/libsyscall.a(syscall.o)
+ .comment       0x0000000000000032       0x33 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .comment       0x0000000000000032       0x33 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .comment       0x0000000000000032       0x33 ./elibrary/bin/libminic.a(elibs_string.o)
+ .comment       0x0000000000000032       0x33 ./elibrary/bin/libminic.a(elibs_sprintf.o)
+ .comment       0x0000000000000032       0x33 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-malloc.o)
+ .comment       0x0000000000000032       0x33 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-memcpy.o)
+ .comment       0x0000000000000032       0x33 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-sysclose.o)
+ .comment       0x0000000000000032       0x33 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-sysopen.o)
+ .comment       0x0000000000000032       0x33 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-syswrite.o)
+ .comment       0x0000000000000032       0x33 /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-impure.o)
+
+.ARM.attributes
+ *(.ARM.attributes)
+
+.riscv.attributes
+                0x0000000000000000       0x48
+ *(.riscv.attributes)
+ .riscv.attributes
+                0x0000000000000000       0x3d emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .riscv.attributes
+                0x000000000000003d       0x3d emodules/fm/dev_fm.o
+ .riscv.attributes
+                0x000000000000007a       0x3d emodules/fm/drv_fm.o
+ .riscv.attributes
+                0x00000000000000b7       0x3d emodules/fm/magic.o
+ .riscv.attributes
+                0x00000000000000f4       0x3d emodules/fm/circle_buf.o
+ .riscv.attributes
+                0x0000000000000131       0x3d ./elibrary/bin/libsyscall.a(syscall.o)
+ .riscv.attributes
+                0x000000000000016e       0x3d ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .riscv.attributes
+                0x00000000000001ab       0x3d ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .riscv.attributes
+                0x00000000000001e8       0x3d ./elibrary/bin/libminic.a(elibs_string.o)
+ .riscv.attributes
+                0x0000000000000225       0x3d ./elibrary/bin/libminic.a(elibs_sprintf.o)
+ .riscv.attributes
+                0x0000000000000262       0x3e /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-malloc.o)
+ .riscv.attributes
+                0x00000000000002a0       0x3e /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-memcpy.o)
+ .riscv.attributes
+                0x00000000000002de       0x3e /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-memset.o)
+ .riscv.attributes
+                0x000000000000031c       0x3e /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-sysclose.o)
+ .riscv.attributes
+                0x000000000000035a       0x3e /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-sysopen.o)
+ .riscv.attributes
+                0x0000000000000398       0x3e /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-syswrite.o)
+ .riscv.attributes
+                0x00000000000003d6       0x3e /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-impure.o)
+
+/DISCARD/
+ *(.note.GNU-stack)
+ *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+OUTPUT(emodules/fm/fm.o elf64-littleriscv)
+
+.debug_info     0x0000000000000000    0x24bb9
+ .debug_info    0x0000000000000000     0x4b80 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .debug_info    0x0000000000004b80     0x343e emodules/fm/dev_fm.o
+ .debug_info    0x0000000000007fbe     0x175c emodules/fm/drv_fm.o
+ .debug_info    0x000000000000971a     0x11c9 emodules/fm/magic.o
+ .debug_info    0x000000000000a8e3     0x137f emodules/fm/circle_buf.o
+ .debug_info    0x000000000000bc62    0x12385 ./elibrary/bin/libsyscall.a(syscall.o)
+ .debug_info    0x000000000001dfe7     0x2d27 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .debug_info    0x0000000000020d0e     0x2bb0 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .debug_info    0x00000000000238be      0xb29 ./elibrary/bin/libminic.a(elibs_string.o)
+ .debug_info    0x00000000000243e7      0x7d2 ./elibrary/bin/libminic.a(elibs_sprintf.o)
+
+.debug_abbrev   0x0000000000000000     0x2085
+ .debug_abbrev  0x0000000000000000      0x5f2 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .debug_abbrev  0x00000000000005f2      0x4f6 emodules/fm/dev_fm.o
+ .debug_abbrev  0x0000000000000ae8      0x319 emodules/fm/drv_fm.o
+ .debug_abbrev  0x0000000000000e01      0x1db emodules/fm/magic.o
+ .debug_abbrev  0x0000000000000fdc      0x302 emodules/fm/circle_buf.o
+ .debug_abbrev  0x00000000000012de      0x3a2 ./elibrary/bin/libsyscall.a(syscall.o)
+ .debug_abbrev  0x0000000000001680      0x376 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .debug_abbrev  0x00000000000019f6      0x40b ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .debug_abbrev  0x0000000000001e01      0x146 ./elibrary/bin/libminic.a(elibs_string.o)
+ .debug_abbrev  0x0000000000001f47      0x13e ./elibrary/bin/libminic.a(elibs_sprintf.o)
+
+.debug_loc      0x0000000000000000    0x168c0
+ .debug_loc     0x0000000000000000     0x392b emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .debug_loc     0x000000000000392b      0xb7e emodules/fm/dev_fm.o
+ .debug_loc     0x00000000000044a9      0x2e4 emodules/fm/drv_fm.o
+ .debug_loc     0x000000000000478d      0xabb emodules/fm/circle_buf.o
+ .debug_loc     0x0000000000005248     0xd5f0 ./elibrary/bin/libsyscall.a(syscall.o)
+ .debug_loc     0x0000000000012838     0x116f ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .debug_loc     0x00000000000139a7     0x2422 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .debug_loc     0x0000000000015dc9      0x705 ./elibrary/bin/libminic.a(elibs_string.o)
+ .debug_loc     0x00000000000164ce      0x3f2 ./elibrary/bin/libminic.a(elibs_sprintf.o)
+
+.debug_aranges  0x0000000000000000     0x29b0
+ .debug_aranges
+                0x0000000000000000      0x730 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .debug_aranges
+                0x0000000000000730      0x110 emodules/fm/dev_fm.o
+ .debug_aranges
+                0x0000000000000840       0x80 emodules/fm/drv_fm.o
+ .debug_aranges
+                0x00000000000008c0       0x20 emodules/fm/magic.o
+ .debug_aranges
+                0x00000000000008e0       0xa0 emodules/fm/circle_buf.o
+ .debug_aranges
+                0x0000000000000980     0x17c0 ./elibrary/bin/libsyscall.a(syscall.o)
+ .debug_aranges
+                0x0000000000002140      0x230 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .debug_aranges
+                0x0000000000002370      0x470 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .debug_aranges
+                0x00000000000027e0      0x150 ./elibrary/bin/libminic.a(elibs_string.o)
+ .debug_aranges
+                0x0000000000002930       0x80 ./elibrary/bin/libminic.a(elibs_sprintf.o)
+
+.debug_line     0x0000000000000000    0x1ac53
+ .debug_line    0x0000000000000000     0x56e0 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .debug_line    0x00000000000056e0     0x19d9 emodules/fm/dev_fm.o
+ .debug_line    0x00000000000070b9      0x5aa emodules/fm/drv_fm.o
+ .debug_line    0x0000000000007663      0x324 emodules/fm/magic.o
+ .debug_line    0x0000000000007987      0xf42 emodules/fm/circle_buf.o
+ .debug_line    0x00000000000088c9     0xe157 ./elibrary/bin/libsyscall.a(syscall.o)
+ .debug_line    0x0000000000016a20     0x165e ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .debug_line    0x000000000001807e     0x21a2 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .debug_line    0x000000000001a220      0x5cc ./elibrary/bin/libminic.a(elibs_string.o)
+ .debug_line    0x000000000001a7ec      0x467 ./elibrary/bin/libminic.a(elibs_sprintf.o)
+
+.debug_str      0x0000000000000000     0x7074
+ .debug_str     0x0000000000000000     0x1c2c emodules/fm/fm_module/fm_all/fm_all_drv.o
+                                       0x1e2c (size before relaxing)
+ .debug_str     0x0000000000001c2c     0x16f9 emodules/fm/dev_fm.o
+                                       0x253e (size before relaxing)
+ .debug_str     0x0000000000003325       0xb0 emodules/fm/drv_fm.o
+                                        0xe85 (size before relaxing)
+ .debug_str     0x00000000000033d5       0x62 emodules/fm/magic.o
+                                        0xa89 (size before relaxing)
+ .debug_str     0x0000000000003437       0xc5 emodules/fm/circle_buf.o
+                                        0xbfb (size before relaxing)
+ .debug_str     0x00000000000034fc     0x2b4f ./elibrary/bin/libsyscall.a(syscall.o)
+                                       0x3a2a (size before relaxing)
+ .debug_str     0x000000000000604b      0x1c7 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+                                        0xf9e (size before relaxing)
+ .debug_str     0x0000000000006212      0xa67 ./elibrary/bin/libminic.a(elibs_stdio.o)
+                                       0x1590 (size before relaxing)
+ .debug_str     0x0000000000006c79      0x37a ./elibrary/bin/libminic.a(elibs_string.o)
+                                        0x662 (size before relaxing)
+ .debug_str     0x0000000000006ff3       0x81 ./elibrary/bin/libminic.a(elibs_sprintf.o)
+                                        0x55d (size before relaxing)
+
+.debug_frame    0x0000000000000000     0x6520
+ .debug_frame   0x0000000000000000     0x1290 emodules/fm/fm_module/fm_all/fm_all_drv.o
+ .debug_frame   0x0000000000001290      0x2e8 emodules/fm/dev_fm.o
+ .debug_frame   0x0000000000001578       0xf0 emodules/fm/drv_fm.o
+ .debug_frame   0x0000000000001668      0x1a0 emodules/fm/circle_buf.o
+ .debug_frame   0x0000000000001808     0x3b20 ./elibrary/bin/libsyscall.a(syscall.o)
+ .debug_frame   0x0000000000005328      0x540 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ .debug_frame   0x0000000000005868      0x9f0 ./elibrary/bin/libminic.a(elibs_stdio.o)
+ .debug_frame   0x0000000000006258      0x1e8 ./elibrary/bin/libminic.a(elibs_string.o)
+ .debug_frame   0x0000000000006440       0xe0 ./elibrary/bin/libminic.a(elibs_sprintf.o)
+
+Cross Reference Table
+
+Symbol                                            File
+BEKEN_I2C_ReceiveACK                              emodules/fm/fm_module/fm_all/fm_all_drv.o
+BEKEN_I2C_Start                                   emodules/fm/fm_module/fm_all/fm_all_drv.o
+BEKEN_I2C_Stop                                    emodules/fm/fm_module/fm_all/fm_all_drv.o
+BEKEN_I2C_ack                                     emodules/fm/fm_module/fm_all/fm_all_drv.o
+BEKEN_I2C_init                                    emodules/fm/fm_module/fm_all/fm_all_drv.o
+BEKEN_I2C_nack                                    emodules/fm/fm_module/fm_all/fm_all_drv.o
+BEKEN_I2C_sendbyte                                emodules/fm/fm_module/fm_all/fm_all_drv.o
+BEKEN_I2c_Read                                    emodules/fm/fm_module/fm_all/fm_all_drv.o
+BEKEN_I2c_Readbyte                                emodules/fm/fm_module/fm_all/fm_all_drv.o
+BEKEN_I2c_Write                                   emodules/fm/fm_module/fm_all/fm_all_drv.o
+BK1080_FreqToChan                                 emodules/fm/fm_module/fm_all/fm_all_drv.o
+BK1080_SearchByTune                               emodules/fm/fm_module/fm_all/fm_all_drv.o
+BK1080_SetFreq                                    emodules/fm/fm_module/fm_all/fm_all_drv.o
+BK1080_ValidStop                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+Chip_wire2_Initialize                             emodules/fm/fm_module/fm_all/fm_all_drv.o
+CircleBufCreate                                   emodules/fm/circle_buf.o
+                                                  emodules/fm/dev_fm.o
+CircleBufDestroy                                  emodules/fm/circle_buf.o
+                                                  emodules/fm/dev_fm.o
+CircleBufFlush                                    emodules/fm/circle_buf.o
+CircleBufQuerySize                                emodules/fm/circle_buf.o
+                                                  emodules/fm/dev_fm.o
+CircleBufRead                                     emodules/fm/circle_buf.o
+                                                  emodules/fm/dev_fm.o
+CircleBufReadZero                                 emodules/fm/circle_buf.o
+CircleBufResize                                   emodules/fm/circle_buf.o
+CircleBufWrite                                    emodules/fm/circle_buf.o
+                                                  emodules/fm/dev_fm.o
+DRV_FM_MClose                                     emodules/fm/drv_fm.o
+                                                  emodules/fm/magic.o
+DRV_FM_MExit                                      emodules/fm/drv_fm.o
+                                                  emodules/fm/magic.o
+DRV_FM_MInit                                      emodules/fm/drv_fm.o
+                                                  emodules/fm/magic.o
+DRV_FM_MIoctrl                                    emodules/fm/drv_fm.o
+                                                  emodules/fm/magic.o
+DRV_FM_MOpen                                      emodules/fm/drv_fm.o
+                                                  emodules/fm/magic.o
+DRV_FM_MRead                                      emodules/fm/drv_fm.o
+                                                  emodules/fm/magic.o
+DRV_FM_MWrite                                     emodules/fm/drv_fm.o
+                                                  emodules/fm/magic.o
+Delay1us                                          emodules/fm/fm_module/fm_all/fm_all_drv.o
+EnableWire2                                       emodules/fm/fm_module/fm_all/fm_all_drv.o
+HW_Reg                                            emodules/fm/fm_module/fm_all/fm_all_drv.o
+I2c_delay                                         emodules/fm/fm_module/fm_all/fm_all_drv.o
+OperationRDAFM_2w                                 emodules/fm/fm_module/fm_all/fm_all_drv.o
+OperationRTC6222_read                             emodules/fm/fm_module/fm_all/fm_all_drv.o
+OperationRTC6222_write                            emodules/fm/fm_module/fm_all/fm_all_drv.o
+QN8065_Delay                                      emodules/fm/fm_module/fm_all/fm_all_drv.o
+QN8065_FREQ2CHREG                                 emodules/fm/fm_module/fm_all/fm_all_drv.o
+QN8065_Init                                       emodules/fm/fm_module/fm_all/fm_all_drv.o
+QN8065_NoiseFloor                                 emodules/fm/fm_module/fm_all/fm_all_drv.o
+QN8065_PreNoiseFloor                              emodules/fm/fm_module/fm_all/fm_all_drv.o
+QN8065_RXConfigAudio                              emodules/fm/fm_module/fm_all/fm_all_drv.o
+QN8065_RXSetTH                                    emodules/fm/fm_module/fm_all/fm_all_drv.o
+QN8065_RXValidCH                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+QN8065_ReadReg                                    emodules/fm/fm_module/fm_all/fm_all_drv.o
+QN8065_ScanNoiseFloor                             emodules/fm/fm_module/fm_all/fm_all_drv.o
+QN8065_SetCh                                      emodules/fm/fm_module/fm_all/fm_all_drv.o
+QN8065_SetMute                                    emodules/fm/fm_module/fm_all/fm_all_drv.o
+QN8065_TuneToCH                                   emodules/fm/fm_module/fm_all/fm_all_drv.o
+QN8065_WriteReg                                   emodules/fm/fm_module/fm_all/fm_all_drv.o
+QND8065_SetSysMode                                emodules/fm/fm_module/fm_all/fm_all_drv.o
+RDA5807N_initialization_reg                       emodules/fm/fm_module/fm_all/fm_all_drv.o
+RDA5807PE_initialization_reg                      emodules/fm/fm_module/fm_all/fm_all_drv.o
+RDA5807PH_initialization_reg                      emodules/fm/fm_module/fm_all/fm_all_drv.o
+RDA5807P_FreqToChan                               emodules/fm/fm_module/fm_all/fm_all_drv.o
+RDA5807P_GetSigLvl                                emodules/fm/fm_module/fm_all/fm_all_drv.o
+RDA5807P_ValidStop                                emodules/fm/fm_module/fm_all/fm_all_drv.o
+RDA5807P_initialization_reg                       emodules/fm/fm_module/fm_all/fm_all_drv.o
+RTC6207E_Power_Up                                 emodules/fm/fm_module/fm_all/fm_all_drv.o
+RTC6207E_Read_ID                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+RTC6207E_ValidStop                                emodules/fm/fm_module/fm_all/fm_all_drv.o
+RTC6222_init                                      emodules/fm/fm_module/fm_all/fm_all_drv.o
+RTC6222_mute                                      emodules/fm/fm_module/fm_all/fm_all_drv.o
+RTC6222_off                                       emodules/fm/fm_module/fm_all/fm_all_drv.o
+RTC6222_read_cur_seeking_freq                     emodules/fm/fm_module/fm_all/fm_all_drv.o
+RTC6222_seek                                      emodules/fm/fm_module/fm_all/fm_all_drv.o
+RTC6222_set_freq                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+RTC6222_set_vol                                   emodules/fm/fm_module/fm_all/fm_all_drv.o
+RTC62XX_CKHopping                                 emodules/fm/fm_module/fm_all/fm_all_drv.o
+RTC62XX_Initial_value                             emodules/fm/fm_module/fm_all/fm_all_drv.o
+RTC62XX_Initial_value1                            emodules/fm/fm_module/fm_all/fm_all_drv.o
+RTC62XX_power_up                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+RTC62XX_turnoff                                   emodules/fm/fm_module/fm_all/fm_all_drv.o
+RTC62XX_turnon                                    emodules/fm/fm_module/fm_all/fm_all_drv.o
+ReadRDAFM                                         emodules/fm/fm_module/fm_all/fm_all_drv.o
+VolValue                                          emodules/fm/fm_module/fm_all/fm_all_drv.o
+__libc_init_array                                 ./elibrary/bin/libsyscall.a(syscall_fops.o)
+__malloc_lock                                     ./elibrary/bin/libsyscall.a(syscall_fops.o)
+__malloc_unlock                                   ./elibrary/bin/libsyscall.a(syscall_fops.o)
+_calloc_r                                         ./elibrary/bin/libsyscall.a(syscall_fops.o)
+_close_r                                          ./elibrary/bin/libsyscall.a(syscall_fops.o)
+                                                  /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-sysclose.o)
+_free_r                                           ./elibrary/bin/libsyscall.a(syscall_fops.o)
+                                                  /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-malloc.o)
+_fstat_r                                          ./elibrary/bin/libsyscall.a(syscall_fops.o)
+_gettimeofday_r                                   ./elibrary/bin/libsyscall.a(syscall_fops.o)
+_global_impure_ptr                                /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-impure.o)
+_impure_ptr                                       /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-impure.o)
+                                                  /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-syswrite.o)
+                                                  /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-sysopen.o)
+                                                  /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-sysclose.o)
+                                                  /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-malloc.o)
+_isatty                                           ./elibrary/bin/libsyscall.a(syscall_fops.o)
+_isatty_r                                         ./elibrary/bin/libsyscall.a(syscall_fops.o)
+_lseek_r                                          ./elibrary/bin/libsyscall.a(syscall_fops.o)
+_malloc_r                                         ./elibrary/bin/libsyscall.a(syscall_fops.o)
+                                                  /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-malloc.o)
+_mkdir_r                                          ./elibrary/bin/libsyscall.a(syscall_fops.o)
+_open_r                                           ./elibrary/bin/libsyscall.a(syscall_fops.o)
+                                                  /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-sysopen.o)
+_read_r                                           ./elibrary/bin/libsyscall.a(syscall_fops.o)
+_realloc_r                                        ./elibrary/bin/libsyscall.a(syscall_fops.o)
+_rename_r                                         ./elibrary/bin/libsyscall.a(syscall_fops.o)
+_stat_r                                           ./elibrary/bin/libsyscall.a(syscall_fops.o)
+_system                                           ./elibrary/bin/libsyscall.a(syscall_fops.o)
+_unlink_r                                         ./elibrary/bin/libsyscall.a(syscall_fops.o)
+_write_r                                          ./elibrary/bin/libsyscall.a(syscall_fops.o)
+                                                  /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-syswrite.o)
+audio_start                                       emodules/fm/dev_fm.o
+audio_stop                                        emodules/fm/dev_fm.o
+backtrace                                         ./elibrary/bin/libsyscall.a(syscall.o)
+bk1080_off                                        emodules/fm/fm_module/fm_all/fm_all_drv.o
+circle_buf                                        emodules/fm/dev_fm.o
+close                                             /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-sysclose.o)
+                                                  emodules/fm/dev_fm.o
+closedir                                          ./elibrary/bin/libsyscall.a(syscall_fops.o)
+delay_5ms                                         emodules/fm/fm_module/fm_all/fm_all_drv.o
+eLIBs_DirEnt2Attr                                 ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_DirEnt2Name                                 ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_DirEnt2Size                                 ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_DirEnt2Time                                 ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetDate                                     ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetDevName                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetDevParts                                 ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetDirATime                                 ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetDirCTime                                 ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetDirMTime                                 ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetDirSize                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetDiskArray                                ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetFSAttribute                              ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetFSCharset                                ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetFSName                                   ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetFileATime                                ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetFileAttributes                           ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetFileCTime                                ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetFileMTime                                ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetFileSize                                 ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetNumFiles                                 ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetNumSubItems                              ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetPTName                                   ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetTime                                     ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetVolClustSize                             ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetVolFSpace                                ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetVolName                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetVolNameCharset                           ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_GetVolTSpace                                ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_IsPartFormated                              ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_SetFileAttributes                           ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_closedir                                    ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_disklock                                    ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_diskunlock                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_fclose                                      ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_fd2file                                     ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_feof                                        ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_ferrclr                                     ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_ferror                                      ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_fgetc                                       ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_fgets                                       ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_file2fd                                     ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_fioctrl                                     ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_fllseek                                     ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_flltell                                     ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_fopen                                       ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_format                                      ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_fputc                                       ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_fputs                                       ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_fread                                       ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_fseek                                       ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_fstat                                       ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_fsync                                       ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_ftell                                       ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_ftruncate                                   ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_fwrite                                      ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_memclr                                      ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_memcmp                                      ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_memcpy                                      ./elibrary/bin/libminic.a(elibs_string.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_memmove                                     ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_memset                                      ./elibrary/bin/libminic.a(elibs_string.o)
+                                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+eLIBs_mkdir                                       ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_open                                        ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_opendir                                     ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_printf                                      ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_readdir                                     ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_remove                                      ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_rename                                      ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_rewinddir                                   ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_rmdir                                       ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_scnprintf                                   ./elibrary/bin/libminic.a(elibs_sprintf.o)
+eLIBs_setfs                                       ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_snprintf                                    ./elibrary/bin/libminic.a(elibs_sprintf.o)
+eLIBs_sprintf                                     ./elibrary/bin/libminic.a(elibs_sprintf.o)
+eLIBs_statfs                                      ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_strcat                                      ./elibrary/bin/libminic.a(elibs_string.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_strchr                                      ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_strchrlast                                  ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_strcmp                                      ./elibrary/bin/libminic.a(elibs_string.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_strcpy                                      ./elibrary/bin/libminic.a(elibs_string.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_stricmp                                     ./elibrary/bin/libminic.a(elibs_string.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_strlen                                      ./elibrary/bin/libminic.a(elibs_string.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_strncat                                     ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_strnchr                                     ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_strncmp                                     ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_strncpy                                     ./elibrary/bin/libminic.a(elibs_string.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_strnicmp                                    ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_strnlen                                     ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_strstr                                      ./elibrary/bin/libminic.a(elibs_string.o)
+eLIBs_vprintf                                     ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_vscnprintf                                  ./elibrary/bin/libminic.a(elibs_sprintf.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+eLIBs_vsnprintf                                   ./elibrary/bin/libminic.a(elibs_sprintf.o)
+eLIBs_vsprintf                                    ./elibrary/bin/libminic.a(elibs_sprintf.o)
+esCFG_Exit_Ex                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esCFG_GetGPIOSecData                              ./elibrary/bin/libsyscall.a(syscall.o)
+esCFG_GetGPIOSecData_Ex                           ./elibrary/bin/libsyscall.a(syscall.o)
+esCFG_GetGPIOSecKeyCount                          ./elibrary/bin/libsyscall.a(syscall.o)
+esCFG_GetGPIOSecKeyCount_Ex                       ./elibrary/bin/libsyscall.a(syscall.o)
+esCFG_GetKeyValue                                 ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  emodules/fm/dev_fm.o
+esCFG_GetKeyValue_Ex                              ./elibrary/bin/libsyscall.a(syscall.o)
+esCFG_GetSecCount                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esCFG_GetSecCount_Ex                              ./elibrary/bin/libsyscall.a(syscall.o)
+esCFG_GetSecKeyCount                              ./elibrary/bin/libsyscall.a(syscall.o)
+esCFG_GetSecKeyCount_Ex                           ./elibrary/bin/libsyscall.a(syscall.o)
+esCFG_Init_Ex                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esCHS_Char2Uni                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esCHS_GetChLowerTbl                               ./elibrary/bin/libsyscall.a(syscall.o)
+esCHS_GetChUpperTbl                               ./elibrary/bin/libsyscall.a(syscall.o)
+esCHS_Uni2Char                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esCLK_CloseMclk                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esCLK_GetMclkDiv                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esCLK_GetMclkSrc                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esCLK_GetRound_Rate                               ./elibrary/bin/libsyscall.a(syscall.o)
+esCLK_GetSrcFreq                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esCLK_MclkAssert                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esCLK_MclkDeassert                                ./elibrary/bin/libsyscall.a(syscall.o)
+esCLK_MclkGetRstStatus                            ./elibrary/bin/libsyscall.a(syscall.o)
+esCLK_MclkOnOff                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esCLK_MclkRegCb                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esCLK_MclkReset                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esCLK_MclkUnregCb                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esCLK_ModInfo                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esCLK_OpenMclk                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esCLK_SetMclkDiv                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esCLK_SetMclkSrc                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esCLK_SetSrcFreq                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esCLK_SysInfo                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esDEV_Close                                       ./elibrary/bin/libsyscall.a(syscall.o)
+esDEV_DevReg                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esDEV_DevUnreg                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esDEV_Insmod                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esDEV_Ioctl                                       ./elibrary/bin/libsyscall.a(syscall.o)
+esDEV_Lock                                        ./elibrary/bin/libsyscall.a(syscall.o)
+esDEV_Open                                        ./elibrary/bin/libsyscall.a(syscall.o)
+esDEV_Plugin                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esDEV_Plugout                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esDEV_Read                                        ./elibrary/bin/libsyscall.a(syscall.o)
+esDEV_Unimod                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esDEV_Unlock                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esDEV_Write                                       ./elibrary/bin/libsyscall.a(syscall.o)
+esDMA_ChangeMode                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esDMA_DisableINT                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esDMA_EnableINT                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esDMA_Information                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esDMA_QueryDst                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esDMA_QueryRestCount                              ./elibrary/bin/libsyscall.a(syscall.o)
+esDMA_QuerySrc                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esDMA_QueryStat                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esDMA_RegDmaHdler                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esDMA_Release                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esDMA_Request                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esDMA_Restart                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esDMA_Setting                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esDMA_Start                                       ./elibrary/bin/libsyscall.a(syscall.o)
+esDMA_Stop                                        ./elibrary/bin/libsyscall.a(syscall.o)
+esDMA_UnregDmaHdler                               ./elibrary/bin/libsyscall.a(syscall.o)
+esEXEC_PCreate                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esEXEC_PDel                                       ./elibrary/bin/libsyscall.a(syscall.o)
+esEXEC_PDelReq                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esEXEC_Run                                        ./elibrary/bin/libsyscall.a(syscall.o)
+esFSYS_clearpartupdateflag                        ./elibrary/bin/libsyscall.a(syscall.o)
+esFSYS_closedir                                   ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_fclose                                     ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_fd2file                                    ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_ferrclr                                    ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_ferror                                     ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_file2fd                                    ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_fioctrl                                    ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_fopen                                      ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_format                                     ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_fread                                      ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_fsdbg                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esFSYS_fseek                                      ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_fseekex                                    ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_fsreg                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esFSYS_fstat                                      ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_fsunreg                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esFSYS_fsync                                      ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_ftell                                      ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_ftellex                                    ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_ftruncate                                  ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_fwrite                                     ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_getfscharset                               ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_mkdir                                      ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_mntfs                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esFSYS_mntparts                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esFSYS_open                                       ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_opendir                                    ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_partfslck                                  ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_partfsunlck                                ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_pclose                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esFSYS_pdreg                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esFSYS_pdunreg                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esFSYS_perrclr                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esFSYS_perror                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esFSYS_pioctrl                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esFSYS_popen                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esFSYS_pread                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esFSYS_premove                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esFSYS_prename                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esFSYS_pwrite                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esFSYS_querypartupdateflag                        ./elibrary/bin/libsyscall.a(syscall.o)
+esFSYS_readdir                                    ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_remove                                     ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_rename                                     ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_rewinddir                                  ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_rmdir                                      ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_setfs                                      ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_statfs                                     ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_statpt                                     ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esFSYS_umntfs                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esFSYS_umntparts                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esHID_SendMsg                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esHID_hiddevreg                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esHID_hiddevunreg                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esINPUT_GetLdevID                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esINPUT_LdevCtl                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esINPUT_LdevFeedback                              ./elibrary/bin/libsyscall.a(syscall.o)
+esINPUT_LdevGrab                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esINPUT_LdevRelease                               ./elibrary/bin/libsyscall.a(syscall.o)
+esINPUT_RegDev                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esINPUT_SendEvent                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esINPUT_UnregDev                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esINT_DisableINT                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esINT_EnableINT                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esINT_InsFIR                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esINT_InsISR                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esINT_SetIRQPrio                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esINT_UniFIR                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esINT_UniISR                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_CallBack                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_DumpStack                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_FlagAccept                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_FlagCreate                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_FlagDel                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_FlagNameGet                                ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_FlagNameSet                                ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_FlagPend                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_FlagPendGetFlagsRdy                        ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_FlagPost                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_FlagQuery                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_GetCallBack                                ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_GetTIDCur                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_InterruptDisable                           ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_InterruptEnable                            ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_MboxAccept                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_MboxCreate                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_MboxDel                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_MboxPend                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_MboxPost                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_MboxPostOpt                                ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_MboxQuery                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_MemLeakChk                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_MutexCreate                                ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_MutexDel                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_MutexPend                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_MutexPost                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_QAccept                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_QCreate                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_QDel                                       ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_QFlush                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_QPend                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_QPost                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_QPostFront                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_QPostOpt                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_QQuery                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_SchedLock                                  ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  emodules/fm/circle_buf.o
+esKRNL_SchedUnlock                                ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  emodules/fm/circle_buf.o
+esKRNL_SemAccept                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_SemCreate                                  ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  emodules/fm/drv_fm.o
+esKRNL_SemDel                                     ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  emodules/fm/drv_fm.o
+esKRNL_SemPend                                    ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  emodules/fm/dev_fm.o
+esKRNL_SemPost                                    ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  emodules/fm/dev_fm.o
+esKRNL_SemQuery                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_SemSet                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_SktAccept                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_SktCreate                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_SktDel                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_SktPend                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_SktPost                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_TCreate                                    ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  emodules/fm/dev_fm.o
+esKRNL_TDel                                       ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  emodules/fm/dev_fm.o
+esKRNL_TDelReq                                    ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  emodules/fm/dev_fm.o
+esKRNL_TaskNameSet                                ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_TaskPrefEn                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_TaskQuery                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_TaskResume                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_TaskSuspend                                ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_Time                                       ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_TimeDly                                    ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  emodules/fm/dev_fm.o
+                                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+esKRNL_TimeDlyResume                              ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  emodules/fm/dev_fm.o
+esKRNL_TimeGet                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_TimeSet                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_TmrCreate                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_TmrDel                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_TmrError                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_TmrRemainGet                               ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_TmrStart                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_TmrStateGet                                ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_TmrStop                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esKRNL_Version                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_ClearWatchDog                              ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_DisableWatchDog                            ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_DisableWatchDogSrv                         ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_EnableWatchDog                             ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_EnableWatchDogSrv                          ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_GetAddPara                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_GetDramCfgPara                             ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_GetHighMsg                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_GetLowMsg                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_GetMsg                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_GetPara                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_GetSocID                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_GetTargetPara                              ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_GetVersion                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_Get_Display_Hld                            ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_Get_Mixture_Hld                            ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_PowerOff                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_Random                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_Reset                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_Save_Display_Hld                           ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_Save_Mixture_Hld                           ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_SendMsg                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_SendMsgEx                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_SysInfo                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_memcpy                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esKSRV_memset                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_Balloc                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_Bfree                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_Calloc                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_CleanDCache                                ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_CleanDCacheRegion                          ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_CleanFlushCache                            ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_CleanFlushCacheRegion                      ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_CleanFlushDCache                           ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_CleanFlushDCacheRegion                     ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_CleanInvalidateCacheAll                    ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_FlushCache                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_FlushCacheRegion                           ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_FlushDCache                                ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_FlushDCacheRegion                          ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_FlushICache                                ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_FlushICacheRegion                          ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_FreeMemSize                                ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_GetIoVAByPA                                ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_HeapCreate                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_HeapDel                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_Info                                       ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_Malloc                                     ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esMEMS_Mfree                                      ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esMEMS_Palloc                                     ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  emodules/fm/circle_buf.o
+esMEMS_Pfree                                      ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  emodules/fm/circle_buf.o
+esMEMS_Realloc                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_TotalMemSize                               ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_VA2PA                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_VMCreate                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_VMDelete                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_VMalloc                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esMEMS_VMfree                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esMEM_BWDisable                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esMEM_BWEnable                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esMEM_BWGet                                       ./elibrary/bin/libsyscall.a(syscall.o)
+esMEM_DramSuspend                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esMEM_DramWakeup                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esMEM_MasterGet                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esMEM_MasterSet                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esMEM_RegDramAccess                               ./elibrary/bin/libsyscall.a(syscall.o)
+esMEM_ReleaseDramUsrMode                          ./elibrary/bin/libsyscall.a(syscall.o)
+esMEM_RequestDramUsrMode                          ./elibrary/bin/libsyscall.a(syscall.o)
+esMEM_SramRelBlk                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esMEM_SramReqBlk                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esMEM_SramSwitchBlk                               ./elibrary/bin/libsyscall.a(syscall.o)
+esMEM_UnRegDramAccess                             ./elibrary/bin/libsyscall.a(syscall.o)
+esMODS_MClose                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esMODS_MInstall                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esMODS_MIoctrl                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esMODS_MOpen                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esMODS_MRead                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esMODS_MUninstall                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esMODS_MWrite                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esMSTUB_GetFuncEntry                              ./elibrary/bin/libsyscall.a(syscall.o)
+esMSTUB_RegFuncTbl                                ./elibrary/bin/libsyscall.a(syscall.o)
+esMSTUB_UnRegFuncTbl                              ./elibrary/bin/libsyscall.a(syscall.o)
+esPINS_ClearPending                               ./elibrary/bin/libsyscall.a(syscall.o)
+esPINS_DisbaleInt                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esPINS_EnbaleInt                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esPINS_GetPinGrpStat                              ./elibrary/bin/libsyscall.a(syscall.o)
+esPINS_GetPinStat                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esPINS_PinGrpRel                                  ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  emodules/fm/dev_fm.o
+esPINS_PinGrpReq                                  ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  emodules/fm/dev_fm.o
+esPINS_QueryInt                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esPINS_ReadPinData                                ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+esPINS_RegIntHdler                                ./elibrary/bin/libsyscall.a(syscall.o)
+esPINS_SetIntMode                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esPINS_SetPinDrive                                ./elibrary/bin/libsyscall.a(syscall.o)
+esPINS_SetPinIO                                   ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+esPINS_SetPinPull                                 ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  emodules/fm/dev_fm.o
+esPINS_SetPinStat                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esPINS_UnregIntHdler                              ./elibrary/bin/libsyscall.a(syscall.o)
+esPINS_WritePinData                               ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  emodules/fm/dev_fm.o
+                                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+esPWRMAN_EnterStandby                             ./elibrary/bin/libsyscall.a(syscall.o)
+esPWRMAN_GetStandbyPara                           ./elibrary/bin/libsyscall.a(syscall.o)
+esPWRMAN_LockCpuFreq                              ./elibrary/bin/libsyscall.a(syscall.o)
+esPWRMAN_RegDevice                                ./elibrary/bin/libsyscall.a(syscall.o)
+esPWRMAN_RelPwrmanMode                            ./elibrary/bin/libsyscall.a(syscall.o)
+esPWRMAN_ReqPwrmanMode                            ./elibrary/bin/libsyscall.a(syscall.o)
+esPWRMAN_SetStandbyMode                           ./elibrary/bin/libsyscall.a(syscall.o)
+esPWRMAN_UnlockCpuFreq                            ./elibrary/bin/libsyscall.a(syscall.o)
+esPWRMAN_UnregDevice                              ./elibrary/bin/libsyscall.a(syscall.o)
+esPWRMAN_UsrEventNotify                           ./elibrary/bin/libsyscall.a(syscall.o)
+esRESM_RClose                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esRESM_ROpen                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esRESM_RRead                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esRESM_RSeek                                      ./elibrary/bin/libsyscall.a(syscall.o)
+esSIOS_getchar                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esSIOS_gets                                       ./elibrary/bin/libsyscall.a(syscall.o)
+esSIOS_putarg                                     ./elibrary/bin/libsyscall.a(syscall.o)
+esSIOS_putstr                                     ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esSIOS_setbaud                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegCloseNode                                ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegClrError                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegCreateKey                                ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegCreatePath                               ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegCreateSet                                ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegDeleteKey                                ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegDeleteNode                               ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegDeletePath                               ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegDeleteSet                                ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegGetError                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegGetFirstKey                              ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegGetFirstSet                              ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegGetKeyCount                              ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegGetKeyValue                              ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegGetNextKey                               ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegGetNextSet                               ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegGetRootPath                              ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegGetSetCount                              ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegIni2Reg                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegOpenNode                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegReg2Ini                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegSetKeyValue                              ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_RegSetRootPath                              ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_ResourceRel                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esSVC_ResourceReq                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esTIME_ContiCntr                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esTIME_GetDate                                    ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esTIME_GetTime                                    ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+esTIME_PauseCntr                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esTIME_QuerryAlarm                                ./elibrary/bin/libsyscall.a(syscall.o)
+esTIME_QuerryCntr                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esTIME_QuerryCntrStat                             ./elibrary/bin/libsyscall.a(syscall.o)
+esTIME_QuerryTimer                                ./elibrary/bin/libsyscall.a(syscall.o)
+esTIME_ReleaseAlarm                               ./elibrary/bin/libsyscall.a(syscall.o)
+esTIME_ReleaseCntr                                ./elibrary/bin/libsyscall.a(syscall.o)
+esTIME_ReleaseTimer                               ./elibrary/bin/libsyscall.a(syscall.o)
+esTIME_RequestAlarm                               ./elibrary/bin/libsyscall.a(syscall.o)
+esTIME_RequestCntr                                ./elibrary/bin/libsyscall.a(syscall.o)
+esTIME_RequestTimer                               ./elibrary/bin/libsyscall.a(syscall.o)
+esTIME_SetCntrPrescale                            ./elibrary/bin/libsyscall.a(syscall.o)
+esTIME_SetCntrValue                               ./elibrary/bin/libsyscall.a(syscall.o)
+esTIME_SetDate                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esTIME_SetTime                                    ./elibrary/bin/libsyscall.a(syscall.o)
+esTIME_StartAlarm                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esTIME_StartCntr                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esTIME_StartTimer                                 ./elibrary/bin/libsyscall.a(syscall.o)
+esTIME_StopAlarm                                  ./elibrary/bin/libsyscall.a(syscall.o)
+esTIME_StopCntr                                   ./elibrary/bin/libsyscall.a(syscall.o)
+esTIME_StopTimer                                  ./elibrary/bin/libsyscall.a(syscall.o)
+fiic                                              emodules/fm/dev_fm.o
+                                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+fioctrl                                           ./elibrary/bin/libsyscall.a(syscall_fops.o)
+fm                                                emodules/fm/dev_fm.o
+fm_area_choose                                    emodules/fm/fm_module/fm_all/fm_all_drv.o
+                                                  emodules/fm/dev_fm.o
+fm_area_choose_bk1080                             emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_area_choose_qn8065                             emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_area_choose_rda5807                            emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_area_choose_rtc6207m                           emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_area_choose_rtc6222                            emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_auto_search                                    emodules/fm/fm_module/fm_all/fm_all_drv.o
+                                                  emodules/fm/dev_fm.o
+fm_auto_search_bk1080                             emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_auto_search_qn8065                             emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_auto_search_rda5807                            emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_auto_search_rtc6207m                           emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_auto_search_rtc6222                            emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_drv                                            emodules/fm/drv_fm.o
+                                                  emodules/fm/dev_fm.o
+fm_exit                                           emodules/fm/fm_module/fm_all/fm_all_drv.o
+                                                  emodules/fm/dev_fm.o
+fm_exit_bk1080                                    emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_exit_qn8065                                    emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_exit_rda5807                                   emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_exit_rtc6207m                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_exit_rtc6222                                   emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_get_status                                     emodules/fm/fm_module/fm_all/fm_all_drv.o
+                                                  emodules/fm/dev_fm.o
+fm_init                                           emodules/fm/fm_module/fm_all/fm_all_drv.o
+                                                  emodules/fm/dev_fm.o
+fm_init_bk1080                                    emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_init_qn8065                                    emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_init_rda5807                                   emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_init_rtc6207m                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_init_rtc6222                                   emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_lock                                           emodules/fm/drv_fm.o
+                                                  emodules/fm/dev_fm.o
+fm_manual_search                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+                                                  emodules/fm/dev_fm.o
+fm_manual_search_bk1080                           emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_manual_search_qn8065                           emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_manual_search_rda5807                          emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_manual_search_rtc6207m                         emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_manual_search_rtc6222                          emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_mute                                           emodules/fm/fm_module/fm_all/fm_all_drv.o
+                                                  emodules/fm/dev_fm.o
+fm_mute_qn8065                                    emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_mute_rda5807                                   emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_mute_rtc6207m                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_mute_rtc6222                                   emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_pa_gain                                        emodules/fm/fm_module/fm_all/fm_all_drv.o
+                                                  emodules/fm/dev_fm.o
+fm_play                                           emodules/fm/fm_module/fm_all/fm_all_drv.o
+                                                  emodules/fm/dev_fm.o
+fm_play_bk1080                                    emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_play_qn8065                                    emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_play_rda5807                                   emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_play_rtc6207m                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_play_rtc6222                                   emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_read_id_bk1080                                 emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_send                                           emodules/fm/fm_module/fm_all/fm_all_drv.o
+                                                  emodules/fm/dev_fm.o
+fm_send_off                                       emodules/fm/fm_module/fm_all/fm_all_drv.o
+                                                  emodules/fm/dev_fm.o
+fm_send_on                                        emodules/fm/fm_module/fm_all/fm_all_drv.o
+                                                  emodules/fm/dev_fm.o
+fm_signal_gain                                    emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_signal_level                                   emodules/fm/fm_module/fm_all/fm_all_drv.o
+                                                  emodules/fm/dev_fm.o
+fm_stereo_choose                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+                                                  emodules/fm/dev_fm.o
+fm_stereo_choose_rda5807                          emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_type                                           emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_vol_get                                        emodules/fm/fm_module/fm_all/fm_all_drv.o
+                                                  emodules/fm/dev_fm.o
+fm_vol_get_bk1080                                 emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_vol_get_qn8065                                 emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_vol_get_rda5807                                emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_vol_get_rtc6207m                               emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_vol_get_rtc6222                                emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_vol_set                                        emodules/fm/fm_module/fm_all/fm_all_drv.o
+                                                  emodules/fm/dev_fm.o
+fm_vol_set_bk1080                                 emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_vol_set_qn8065                                 emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_vol_set_rda5807                                emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_vol_set_rtc6207m                               emodules/fm/fm_module/fm_all/fm_all_drv.o
+fm_vol_set_rtc6222                                emodules/fm/fm_module/fm_all/fm_all_drv.o
+free                                              /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-malloc.o)
+                                                  emodules/fm/dev_fm.o
+                                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+fsync                                             ./elibrary/bin/libsyscall.a(syscall_fops.o)
+ftruncate                                         ./elibrary/bin/libsyscall.a(syscall_fops.o)
+hal_fm_control                                    emodules/fm/dev_fm.o
+hal_fm_init                                       emodules/fm/dev_fm.o
+hal_fm_uninit                                     emodules/fm/dev_fm.o
+ioctl                                             ./elibrary/bin/libsyscall.a(syscall_fops.o)
+                                                  emodules/fm/dev_fm.o
+                                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+is_online_bk1080                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+is_online_qn8065                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+is_online_rda5807                                 emodules/fm/fm_module/fm_all/fm_all_drv.o
+is_online_rtc6207e                                emodules/fm/fm_module/fm_all/fm_all_drv.o
+is_online_rtc6222                                 emodules/fm/fm_module/fm_all/fm_all_drv.o
+malloc                                            /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-malloc.o)
+                                                  emodules/fm/dev_fm.o
+                                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+memcpy                                            /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-memcpy.o)
+                                                  emodules/fm/circle_buf.o
+memset                                            /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-memset.o)
+                                                  ./elibrary/bin/libminic.a(elibs_stdio.o)
+                                                  emodules/fm/circle_buf.o
+                                                  emodules/fm/dev_fm.o
+mkdir                                             ./elibrary/bin/libsyscall.a(syscall_fops.o)
+modinfo                                           emodules/fm/magic.o
+monitor_task                                      emodules/fm/dev_fm.o
+open                                              /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-sysopen.o)
+                                                  emodules/fm/dev_fm.o
+opendir                                           ./elibrary/bin/libsyscall.a(syscall_fops.o)
+printk                                            ./elibrary/bin/libminic.a(elibs_stdio.o)
+                                                  emodules/fm/circle_buf.o
+                                                  emodules/fm/drv_fm.o
+                                                  emodules/fm/dev_fm.o
+                                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+readdir                                           ./elibrary/bin/libsyscall.a(syscall_fops.o)
+remove                                            ./elibrary/bin/libsyscall.a(syscall_fops.o)
+rewinddir                                         ./elibrary/bin/libsyscall.a(syscall_fops.o)
+rmdir                                             ./elibrary/bin/libsyscall.a(syscall_fops.o)
+rt_device_register                                ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  emodules/fm/dev_fm.o
+rt_device_unregister                              ./elibrary/bin/libsyscall.a(syscall.o)
+                                                  emodules/fm/dev_fm.o
+rtc6207m_get_vol                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+rtc6207m_set_vol                                  emodules/fm/fm_module/fm_all/fm_all_drv.o
+settimeofday                                      ./elibrary/bin/libsyscall.a(syscall_fops.o)
+statfs                                            ./elibrary/bin/libsyscall.a(syscall_fops.o)
+sunxi_driver_fm_init                              emodules/fm/dev_fm.o
+                                                  emodules/fm/drv_fm.o
+sunxi_driver_fm_uninit                            emodules/fm/dev_fm.o
+                                                  emodules/fm/drv_fm.o
+write                                             /home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/toolchain/riscv64-elf-x86_64-20201104/bin/../lib/gcc/riscv64-unknown-elf/8.4.0/../../../../riscv64-unknown-elf/lib/rv64imafdcxtheadc/lp64d/libc.a(lib_a-syswrite.o)
+                                                  emodules/fm/dev_fm.o

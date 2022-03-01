@@ -1,0 +1,18 @@
+[res_14001]
+name	  	=GAME_SELECT_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./game/select.bmp
+commentCN 	=SELECT
+commentEN 	=SELECT
+
+[res_14002]
+name	  	=GAME_SELECT_F_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./game/select_f.bmp
+commentCN 	=SELECT_F
+commentEN 	=SELECT_F
+
+[res_14003]
+name	  	=GAME_MSGBOXBG_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./game/msgboxbg.bmp
+commentCN 	=MSGBOXBG
+commentEN 	=MSGBOXBG
+

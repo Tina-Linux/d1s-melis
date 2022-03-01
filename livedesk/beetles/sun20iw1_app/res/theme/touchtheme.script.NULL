@@ -1,0 +1,17904 @@
+[system]
+scriptver =100
+uistyle	  =LiveTouch_demo
+name	  =LiveTouch
+author	  =Andy.zhang
+solution  =epdkdemo
+;以下不要修改
+stylename =userstyle
+;styleid   = 1
+
+; resource
+; id 从1开始逐个分配，file为NULL，id也递增
+; 资源section的顺序不可改变
+
+
+[res_1]
+name	  	=INIT_CHARGE_ENERGY_4_BMP
+file	  	=NULL
+commentCN 	=CHARGE_ENERGY_4
+commentEN 	=CHARGE_ENERGY_4
+
+[res_2]
+name	  	=INIT_POINT_BMP
+file	  	=NULL
+commentCN 	=POINT
+commentEN 	=POINT
+
+[res_3]
+name	  	=INIT_CHARGE_ENERGY_0_BMP
+file	  	=NULL
+commentCN 	=CHARGE_ENERGY_0
+commentEN 	=CHARGE_ENERGY_0
+
+[res_4]
+name	  	=INIT_CHARGE_ENERGY_3_BMP
+file	  	=NULL
+commentCN 	=CHARGE_ENERGY_3
+commentEN 	=CHARGE_ENERGY_3
+
+[res_5]
+name	  	=INIT_PROG_BG_BMP
+file	  	=NULL
+commentCN 	=PROG_BG
+commentEN 	=PROG_BG
+
+[res_6]
+name	  	=INIT_PROG_MID_BMP
+file	  	=NULL
+commentCN 	=PROG_MID
+commentEN 	=PROG_MID
+
+[res_7]
+name	  	=INIT_CHARGE_BMP1_BMP
+file	  	=NULL
+commentCN 	=CHARGE_BMP1
+commentEN 	=CHARGE_BMP1
+
+[res_8]
+name	  	=INIT_CHARGE_ENERGY_2_BMP
+file	  	=NULL
+commentCN 	=CHARGE_ENERGY_2
+commentEN 	=CHARGE_ENERGY_2
+
+[res_9]
+name	  	=INIT_PAUSE_BMP
+file	  	=NULL
+commentCN 	=PAUSE
+commentEN 	=PAUSE
+
+[res_10]
+name	  	=INIT_HBAR_BG_BMP
+file	  	=NULL
+commentCN 	=HBAR_BG
+commentEN 	=HBAR_BG
+
+[res_11]
+name	  	=INIT_ENERGY_4_BMP
+file	  	=NULL
+commentCN 	=ENERGY_4
+commentEN 	=ENERGY_4
+
+[res_12]
+name	  	=INIT_BRIGHT_BG_BMP
+file	  	=NULL
+commentCN 	=BRIGHT_BG
+commentEN 	=BRIGHT_BG
+
+[res_13]
+name	  	=INIT_ENERGY_0_BMP
+file	  	=NULL
+commentCN 	=ENERGY_0
+commentEN 	=ENERGY_0
+
+[res_14]
+name	  	=INIT_BRIGHT_BMP
+file	  	=NULL
+commentCN 	=BRIGHT
+commentEN 	=BRIGHT
+
+[res_15]
+name	  	=INIT_MUSIC_BMP
+file	  	=NULL
+commentCN 	=MUSIC
+commentEN 	=MUSIC
+
+[res_16]
+name	  	=INIT_PROG_CURSOR_BMP
+file	  	=NULL
+commentCN 	=PROG_CURSOR
+commentEN 	=PROG_CURSOR
+
+[res_17]
+name	  	=INIT_VOLUME_BG_BMP
+file	  	=NULL
+commentCN 	=VOLUME_BG
+commentEN 	=VOLUME_BG
+
+[res_18]
+name	  	=INIT_ENERGY_1_BMP
+file	  	=NULL
+commentCN 	=ENERGY_1
+commentEN 	=ENERGY_1
+
+[res_19]
+name	  	=INIT_CHARGE_BMP2_BMP
+file	  	=NULL
+commentCN 	=CHARGE_BMP2
+commentEN 	=CHARGE_BMP2
+
+[res_20]
+name	  	=INIT_CHARGE_ENERGY_1_BMP
+file	  	=NULL
+commentCN 	=CHARGE_ENERGY_1
+commentEN 	=CHARGE_ENERGY_1
+
+[res_21]
+name	  	=INIT_LINEIN_BMP
+file	  	=NULL
+commentCN 	=LINEIN
+commentEN 	=LINEIN
+
+[res_22]
+name	  	=INIT_PROG_LEFT_BMP
+file	  	=NULL
+commentCN 	=PROG_LEFT
+commentEN 	=PROG_LEFT
+
+[res_23]
+name	  	=INIT_CHARGE_BMP0_BMP
+file	  	=NULL
+commentCN 	=CHARGE_BMP0
+commentEN 	=CHARGE_BMP0
+
+[res_24]
+name	  	=INIT_CHARGE_ENERGY_5_BMP
+file	  	=NULL
+commentCN 	=CHARGE_ENERGY_5
+commentEN 	=CHARGE_ENERGY_5
+
+[res_25]
+name	  	=INIT_VOLUME_BMP
+file	  	=NULL
+commentCN 	=VOLUME
+commentEN 	=VOLUME
+
+[res_26]
+name	  	=INIT_ENERGY_2_BMP
+file	  	=NULL
+commentCN 	=ENERGY_2
+commentEN 	=ENERGY_2
+
+[res_27]
+name	  	=INIT_HOME_BMP
+file	  	=NULL
+commentCN 	=HOME
+commentEN 	=HOME
+
+[res_28]
+name	  	=INIT_ENERGY_5_BMP
+file	  	=NULL
+commentCN 	=ENERGY_5
+commentEN 	=ENERGY_5
+
+[res_29]
+name	  	=INIT_HOME_FCS_BMP
+file	  	=NULL
+commentCN 	=HOME_FCS
+commentEN 	=HOME_FCS
+
+[res_30]
+name	  	=INIT_ENERGY_3_BMP
+file	  	=NULL
+commentCN 	=ENERGY_3
+commentEN 	=ENERGY_3
+
+[res_1001]
+name	  	=HOME_NEW_AUX_UF_BMP
+file	  	=NULL
+commentCN 	=NEW_AUX_UF
+commentEN 	=NEW_AUX_UF
+
+[res_1002]
+name	  	=HOME_NEW_TV_UF_BMP
+file	  	=NULL
+commentCN 	=NEW_TV_UF
+commentEN 	=NEW_TV_UF
+
+[res_1003]
+name	  	=HOME_NEW_PICTURE_UF_BMP
+file	  	=NULL
+commentCN 	=NEW_PICTURE_UF
+commentEN 	=NEW_PICTURE_UF
+
+[res_1004]
+name	  	=HOME_NEW_EBOOK_UF_BMP
+file	  	=NULL
+commentCN 	=NEW_EBOOK_UF
+commentEN 	=NEW_EBOOK_UF
+
+[res_1005]
+name	  	=HOME_NEW_EXPLORER_UF_BMP
+file	  	=NULL
+commentCN 	=NEW_EXPLORER_UF
+commentEN 	=NEW_EXPLORER_UF
+
+[res_1006]
+name	  	=HOME_NEW_MUSIC_UF_BMP
+file	  	=NULL
+commentCN 	=NEW_MUSIC_UF
+commentEN 	=NEW_MUSIC_UF
+
+[res_1007]
+name	  	=HOME_NEW_DICT_UF_BMP
+file	  	=NULL
+commentCN 	=NEW_DICT_UF
+commentEN 	=NEW_DICT_UF
+
+[res_1008]
+name	  	=HOME_NEW_MOVIE_UF_BMP
+file	  	=NULL
+commentCN 	=NEW_MOVIE_UF
+commentEN 	=NEW_MOVIE_UF
+
+[res_1009]
+name	  	=HOME_NEW_AUX_FC_BMP
+file	  	=NULL
+commentCN 	=NEW_AUX_FC
+commentEN 	=NEW_AUX_FC
+
+[res_1010]
+name	  	=HOME_NEW_TV_FC_BMP
+file	  	=NULL
+commentCN 	=NEW_TV_FC
+commentEN 	=NEW_TV_FC
+
+[res_1011]
+name	  	=HOME_NEW_KARAOKE_UF_BMP
+file	  	=NULL
+commentCN 	=NEW_KARAOKE_UF
+commentEN 	=NEW_KARAOKE_UF
+
+[res_1012]
+name	  	=HOME_NEW_SETTING_FC_BMP
+file	  	=NULL
+commentCN 	=NEW_SETTING_FC
+commentEN 	=NEW_SETTING_FC
+
+[res_1013]
+name	  	=HOME_NEW_GAME_UF_BMP
+file	  	=NULL
+commentCN 	=NEW_GAME_UF
+commentEN 	=NEW_GAME_UF
+
+[res_1014]
+name	  	=HOME_NEW_ALARM_FC_BMP
+file	  	=NULL
+commentCN 	=NEW_ALARM_FC
+commentEN 	=NEW_ALARM_FC
+
+[res_1015]
+name	  	=HOME_NEW_EXPLORER_FC_BMP
+file	  	=NULL
+commentCN 	=NEW_EXPLORER_FC
+commentEN 	=NEW_EXPLORER_FC
+
+[res_1016]
+name	  	=HOME_NEW_RECORD_UF_BMP
+file	  	=NULL
+commentCN 	=NEW_RECORD_UF
+commentEN 	=NEW_RECORD_UF
+
+[res_1017]
+name	  	=HOME_NEW_MOVIE_FC_BMP
+file	  	=NULL
+commentCN 	=NEW_MOVIE_FC
+commentEN 	=NEW_MOVIE_FC
+
+[res_1018]
+name	  	=HOME_NEW_ALARM_UF_BMP
+file	  	=NULL
+commentCN 	=NEW_ALARM_UF
+commentEN 	=NEW_ALARM_UF
+
+[res_1019]
+name	  	=HOME_NEW_FM_FC_BMP
+file	  	=NULL
+commentCN 	=NEW_FM_FC
+commentEN 	=NEW_FM_FC
+
+[res_1020]
+name	  	=HOME_NEW_SETTING_UF_BMP
+file	  	=NULL
+commentCN 	=NEW_SETTING_UF
+commentEN 	=NEW_SETTING_UF
+
+[res_1021]
+name	  	=HOME_NEW_DICT_FC_BMP
+file	  	=NULL
+commentCN 	=NEW_DICT_FC
+commentEN 	=NEW_DICT_FC
+
+[res_1022]
+name	  	=HOME_NEW_FM_UF_BMP
+file	  	=NULL
+commentCN 	=NEW_FM_UF
+commentEN 	=NEW_FM_UF
+
+[res_1023]
+name	  	=HOME_NEW_CALENDAR_UF_BMP
+file	  	=NULL
+commentCN 	=NEW_CALENDAR_UF
+commentEN 	=NEW_CALENDAR_UF
+
+[res_1024]
+name	  	=HOME_NEW_EBOOK_FC_BMP
+file	  	=NULL
+commentCN 	=NEW_EBOOK_FC
+commentEN 	=NEW_EBOOK_FC
+
+[res_1025]
+name	  	=HOME_NEW_KARAOKE_FC_BMP
+file	  	=NULL
+commentCN 	=NEW_KARAOKE_FC
+commentEN 	=NEW_KARAOKE_FC
+
+[res_1026]
+name	  	=HOME_NEW_GAME_FC_BMP
+file	  	=NULL
+commentCN 	=NEW_GAME_FC
+commentEN 	=NEW_GAME_FC
+
+[res_1027]
+name	  	=HOME_NEW_MUSIC_FC_BMP
+file	  	=NULL
+commentCN 	=NEW_MUSIC_FC
+commentEN 	=NEW_MUSIC_FC
+
+[res_1028]
+name	  	=HOME_NEW_RECORD_FC_BMP
+file	  	=NULL
+commentCN 	=NEW_RECORD_FC
+commentEN 	=NEW_RECORD_FC
+
+[res_1029]
+name	  	=HOME_NEW_CALENDAR_FC_BMP
+file	  	=NULL
+commentCN 	=NEW_CALENDAR_FC
+commentEN 	=NEW_CALENDAR_FC
+
+[res_1030]
+name	  	=HOME_NEW_PICTURE_FC_BMP
+file	  	=NULL
+commentCN 	=NEW_PICTURE_FC
+commentEN 	=NEW_PICTURE_FC
+
+[res_2001]
+name	  	=MOVIE_SSET_NEXT_UF_BMP
+file	  	=NULL
+commentCN 	=SSET_NEXT_UF
+commentEN 	=SSET_NEXT_UF
+
+[res_2002]
+name	  	=MOVIE_SPSC_PROG_CURSOR_BMP
+file	  	=NULL
+commentCN 	=SPSC_PROG_CURSOR
+commentEN 	=SPSC_PROG_CURSOR
+
+[res_2003]
+name	  	=MOVIE_SPSC_CHANNEL_BMP
+file	  	=NULL
+commentCN 	=SPSC_CHANNEL
+commentEN 	=SPSC_CHANNEL
+
+[res_2004]
+name	  	=MOVIE_SSET_PAUSE_UF_BMP
+file	  	=NULL
+commentCN 	=SSET_PAUSE_UF
+commentEN 	=SSET_PAUSE_UF
+
+[res_2005]
+name	  	=MOVIE_SSET_TVOUT_F_BMP
+file	  	=NULL
+commentCN 	=SSET_TVOUT_F
+commentEN 	=SSET_TVOUT_F
+
+[res_2006]
+name	  	=MOVIE_SSET_PREV_F_BMP
+file	  	=NULL
+commentCN 	=SSET_PREV_F
+commentEN 	=SSET_PREV_F
+
+[res_2007]
+name	  	=MOVIE_PAUSESTA_BMP
+file	  	=NULL
+commentCN 	=PAUSESTA
+commentEN 	=PAUSESTA
+
+[res_2008]
+name	  	=MOVIE_SPSC_ROTATE_ONE_BMP
+file	  	=NULL
+commentCN 	=SPSC_ROTATE_ONE
+commentEN 	=SPSC_ROTATE_ONE
+
+[res_2009]
+name	  	=MOVIE_SSET_A_B_F_BMP
+file	  	=NULL
+commentCN 	=SSET_A_B_F
+commentEN 	=SSET_A_B_F
+
+[res_2010]
+name	  	=MOVIE_SSET_RETURN_UF_BMP
+file	  	=NULL
+commentCN 	=SSET_RETURN_UF
+commentEN 	=SSET_RETURN_UF
+
+[res_2011]
+name	  	=MOVIE_SUBMENU_FCS_BMP
+file	  	=NULL
+commentCN 	=SUBMENU_FCS
+commentEN 	=SUBMENU_FCS
+
+[res_2012]
+name	  	=MOVIE_SSET_BG_LINE_BMP
+file	  	=NULL
+commentCN 	=SSET_BG_LINE
+commentEN 	=SSET_BG_LINE
+
+[res_2013]
+name	  	=MOVIE_SSET_CHANNEL_UF_BMP
+file	  	=NULL
+commentCN 	=SSET_CHANNEL_UF
+commentEN 	=SSET_CHANNEL_UF
+
+[res_2014]
+name	  	=MOVIE_SSET_PLAY_MODE_F_BMP
+file	  	=NULL
+commentCN 	=SSET_PLAY_MODE_F
+commentEN 	=SSET_PLAY_MODE_F
+
+[res_2015]
+name	  	=MOVIE_DLG_BG_BMP
+file	  	=NULL
+commentCN 	=DLG_BG
+commentEN 	=DLG_BG
+
+[res_2016]
+name	  	=MOVIE_PROG_BG_BMP
+file	  	=NULL
+commentCN 	=PROG_BG
+commentEN 	=PROG_BG
+
+[res_2017]
+name	  	=MOVIE_SSET_PREV_UF_BMP
+file	  	=NULL
+commentCN 	=SSET_PREV_UF
+commentEN 	=SSET_PREV_UF
+
+[res_2018]
+name	  	=MOVIE_PROG_MID_BMP
+file	  	=NULL
+commentCN 	=PROG_MID
+commentEN 	=PROG_MID
+
+[res_2019]
+name	  	=MOVIE_SPSC_RANDOM_BMP
+file	  	=NULL
+commentCN 	=SPSC_RANDOM
+commentEN 	=SPSC_RANDOM
+
+[res_2020]
+name	  	=MOVIE_SPSC_TVOUT_UF_BMP
+file	  	=NULL
+commentCN 	=SPSC_TVOUT_UF
+commentEN 	=SPSC_TVOUT_UF
+
+[res_2021]
+name	  	=MOVIE_INFOR_BMP
+file	  	=NULL
+commentCN 	=INFOR
+commentEN 	=INFOR
+
+[res_2022]
+name	  	=MOVIE_SSET_PLAY_F_BMP
+file	  	=NULL
+commentCN 	=SSET_PLAY_F
+commentEN 	=SSET_PLAY_F
+
+[res_2023]
+name	  	=MOVIE_SPSC_PREV_UF_BMP
+file	  	=NULL
+commentCN 	=SPSC_PREV_UF
+commentEN 	=SPSC_PREV_UF
+
+[res_2024]
+name	  	=MOVIE_SSETF_BMP
+file	  	=NULL
+commentCN 	=SSETF
+commentEN 	=SSETF
+
+[res_2025]
+name	  	=MOVIE_SPSC_ONLY_ONCE_BMP
+file	  	=NULL
+commentCN 	=SPSC_ONLY_ONCE
+commentEN 	=SPSC_ONLY_ONCE
+
+[res_2026]
+name	  	=MOVIE_SPSC_PLAY_UF_BMP
+file	  	=NULL
+commentCN 	=SPSC_PLAY_UF
+commentEN 	=SPSC_PLAY_UF
+
+[res_2027]
+name	  	=MOVIE_SSET_CHANNEL_F_BMP
+file	  	=NULL
+commentCN 	=SSET_CHANNEL_F
+commentEN 	=SSET_CHANNEL_F
+
+[res_2028]
+name	  	=MOVIE_SUBMENU_UNFCS_BMP
+file	  	=NULL
+commentCN 	=SUBMENU_UNFCS
+commentEN 	=SUBMENU_UNFCS
+
+[res_2029]
+name	  	=MOVIE_PROG_CURSOR_BMP
+file	  	=NULL
+commentCN 	=PROG_CURSOR
+commentEN 	=PROG_CURSOR
+
+[res_2030]
+name	  	=MOVIE_DLG_BTN_F_BMP
+file	  	=NULL
+commentCN 	=DLG_BTN_F
+commentEN 	=DLG_BTN_F
+
+[res_2031]
+name	  	=MOVIE_SPSC_4R3_BMP
+file	  	=NULL
+commentCN 	=SPSC_4R3
+commentEN 	=SPSC_4R3
+
+[res_2032]
+name	  	=MOVIE_SPSC_PROG_MID_BMP
+file	  	=NULL
+commentCN 	=SPSC_PROG_MID
+commentEN 	=SPSC_PROG_MID
+
+[res_2033]
+name	  	=MOVIE_SSET_RETURN_F_BMP
+file	  	=NULL
+commentCN 	=SSET_RETURN_F
+commentEN 	=SSET_RETURN_F
+
+[res_2034]
+name	  	=MOVIE_SPSC_TVOUT_F_BMP
+file	  	=NULL
+commentCN 	=SPSC_TVOUT_F
+commentEN 	=SPSC_TVOUT_F
+
+[res_2035]
+name	  	=MOVIE_SPSC_BG_BMP
+file	  	=NULL
+commentCN 	=SPSC_BG
+commentEN 	=SPSC_BG
+
+[res_2036]
+name	  	=MOVIE_SPSC_PROG_LEFT_BMP
+file	  	=NULL
+commentCN 	=SPSC_PROG_LEFT
+commentEN 	=SPSC_PROG_LEFT
+
+[res_2037]
+name	  	=MOVIE_SPSC_16R9_BMP
+file	  	=NULL
+commentCN 	=SPSC_16R9
+commentEN 	=SPSC_16R9
+
+[res_2038]
+name	  	=MOVIE_PROG_LEFT_BMP
+file	  	=NULL
+commentCN 	=PROG_LEFT
+commentEN 	=PROG_LEFT
+
+[res_2039]
+name	  	=MOVIE_PAL_BMP
+file	  	=NULL
+commentCN 	=PAL
+commentEN 	=PAL
+
+[res_2040]
+name	  	=MOVIE_SPSC_VIDEO_RATIO_BMP
+file	  	=NULL
+commentCN 	=SPSC_VIDEO_RATIO
+commentEN 	=SPSC_VIDEO_RATIO
+
+[res_2041]
+name	  	=MOVIE_SPSC_SUBTITLE_BMP
+file	  	=NULL
+commentCN 	=SPSC_SUBTITLE
+commentEN 	=SPSC_SUBTITLE
+
+[res_2042]
+name	  	=MOVIE_SSET_TRACK_F_BMP
+file	  	=NULL
+commentCN 	=SSET_TRACK_F
+commentEN 	=SSET_TRACK_F
+
+[res_2043]
+name	  	=MOVIE_SPSC_PREV_F_BMP
+file	  	=NULL
+commentCN 	=SPSC_PREV_F
+commentEN 	=SPSC_PREV_F
+
+[res_2044]
+name	  	=MOVIE_SSET_PSUSE_F_BMP
+file	  	=NULL
+commentCN 	=SSET_PSUSE_F
+commentEN 	=SSET_PSUSE_F
+
+[res_2045]
+name	  	=MOVIE_SSET_PLAY_MODE_UF_BMP
+file	  	=NULL
+commentCN 	=SSET_PLAY_MODE_UF
+commentEN 	=SSET_PLAY_MODE_UF
+
+[res_2046]
+name	  	=MOVIE_INFOR_FCS_BMP
+file	  	=NULL
+commentCN 	=INFOR_FCS
+commentEN 	=INFOR_FCS
+
+[res_2047]
+name	  	=MOVIE_SSET_PAUSE_F_BMP
+file	  	=NULL
+commentCN 	=SSET_PAUSE_F
+commentEN 	=SSET_PAUSE_F
+
+[res_2048]
+name	  	=MOVIE_SPSC_PAUSE_UF_BMP
+file	  	=NULL
+commentCN 	=SPSC_PAUSE_UF
+commentEN 	=SPSC_PAUSE_UF
+
+[res_2049]
+name	  	=MOVIE_SSET_SUBTITLE_F_BMP
+file	  	=NULL
+commentCN 	=SSET_SUBTITLE_F
+commentEN 	=SSET_SUBTITLE_F
+
+[res_2050]
+name	  	=MOVIE_SSET_TVOUT_UF_BMP
+file	  	=NULL
+commentCN 	=SSET_TVOUT_UF
+commentEN 	=SSET_TVOUT_UF
+
+[res_2051]
+name	  	=MOVIE_SPSC_ROTATE_ALL_BMP
+file	  	=NULL
+commentCN 	=SPSC_ROTATE_ALL
+commentEN 	=SPSC_ROTATE_ALL
+
+[res_2052]
+name	  	=MOVIE_SPSC_SEQUENCE_BMP
+file	  	=NULL
+commentCN 	=SPSC_SEQUENCE
+commentEN 	=SPSC_SEQUENCE
+
+[res_2053]
+name	  	=MOVIE_SSET_SCREENSET_F_BMP
+file	  	=NULL
+commentCN 	=SSET_SCREENSET_F
+commentEN 	=SSET_SCREENSET_F
+
+[res_2054]
+name	  	=MOVIE_SSET_NEXT_F_BMP
+file	  	=NULL
+commentCN 	=SSET_NEXT_F
+commentEN 	=SSET_NEXT_F
+
+[res_2055]
+name	  	=MOVIE_SPSC_SCREEN_RATIO_BMP
+file	  	=NULL
+commentCN 	=SPSC_SCREEN_RATIO
+commentEN 	=SPSC_SCREEN_RATIO
+
+[res_2056]
+name	  	=MOVIE_SSET_A_B_UF_BMP
+file	  	=NULL
+commentCN 	=SSET_A_B_UF
+commentEN 	=SSET_A_B_UF
+
+[res_2057]
+name	  	=MOVIE_PLAYSTA_BMP
+file	  	=NULL
+commentCN 	=PLAYSTA
+commentEN 	=PLAYSTA
+
+[res_2058]
+name	  	=MOVIE_WKM_BMP
+file	  	=NULL
+commentCN 	=WKM
+commentEN 	=WKM
+
+[res_2059]
+name	  	=MOVIE_FFRR_BG_BMP
+file	  	=NULL
+commentCN 	=FFRR_BG
+commentEN 	=FFRR_BG
+
+[res_2060]
+name	  	=MOVIE_SSET_TRACK_UF_BMP
+file	  	=NULL
+commentCN 	=SSET_TRACK_UF
+commentEN 	=SSET_TRACK_UF
+
+[res_2061]
+name	  	=MOVIE_DLG_BTN_UF_BMP
+file	  	=NULL
+commentCN 	=DLG_BTN_UF
+commentEN 	=DLG_BTN_UF
+
+[res_2062]
+name	  	=MOVIE_SSET_PLAY_UF_BMP
+file	  	=NULL
+commentCN 	=SSET_PLAY_UF
+commentEN 	=SSET_PLAY_UF
+
+[res_2063]
+name	  	=MOVIE_SSET_CURSOR_BMP
+file	  	=NULL
+commentCN 	=SSET_CURSOR
+commentEN 	=SSET_CURSOR
+
+[res_2064]
+name	  	=MOVIE_SPSC_PROG_BG_BMP
+file	  	=NULL
+commentCN 	=SPSC_PROG_BG
+commentEN 	=SPSC_PROG_BG
+
+[res_2065]
+name	  	=MOVIE_SPSC_NEXT_F_BMP
+file	  	=NULL
+commentCN 	=SPSC_NEXT_F
+commentEN 	=SPSC_NEXT_F
+
+[res_2066]
+name	  	=MOVIE_SSET_SCREENSET_UF_BMP
+file	  	=NULL
+commentCN 	=SSET_SCREENSET_UF
+commentEN 	=SSET_SCREENSET_UF
+
+[res_2067]
+name	  	=MOVIE_SPSC_ORIGIN_SIZE_BMP
+file	  	=NULL
+commentCN 	=SPSC_ORIGIN_SIZE
+commentEN 	=SPSC_ORIGIN_SIZE
+
+[res_2068]
+name	  	=MOVIE_SSET_SUBTITLE_UF_BMP
+file	  	=NULL
+commentCN 	=SSET_SUBTITLE_UF
+commentEN 	=SSET_SUBTITLE_UF
+
+[res_2069]
+name	  	=MOVIE_SPSC_NEXT_UF_BMP
+file	  	=NULL
+commentCN 	=SPSC_NEXT_UF
+commentEN 	=SPSC_NEXT_UF
+
+[res_3001]
+name	  	=EXPLORER_LEFT_LIST_MUSIC_F_BMP
+file	  	=NULL
+commentCN 	=LEFT_LIST_MUSIC_F
+commentEN 	=LEFT_LIST_MUSIC_F
+
+[res_3002]
+name	  	=EXPLORER_LEFT_LIST_PHOTO_UF_BMP
+file	  	=NULL
+commentCN 	=LEFT_LIST_PHOTO_UF
+commentEN 	=LEFT_LIST_PHOTO_UF
+
+[res_3003]
+name	  	=EXPLORER_FILE_MANAGER_BMP
+file	  	=NULL
+commentCN 	=FILE_MANAGER
+commentEN 	=FILE_MANAGER
+
+[res_3004]
+name	  	=EXPLORER_LEFT_LIST_UF_BMP
+file	  	=NULL
+commentCN 	=LEFT_LIST_UF
+commentEN 	=LEFT_LIST_UF
+
+[res_3005]
+name	  	=EXPLORER_DELETE_ICON_F_BMP
+file	  	=NULL
+commentCN 	=DELETE_ICON_F
+commentEN 	=DELETE_ICON_F
+
+[res_3006]
+name	  	=EXPLORER_FILE_MANAGE_ICON_BMP
+file	  	=NULL
+commentCN 	=FILE_MANAGE_ICON
+commentEN 	=FILE_MANAGE_ICON
+
+[res_3007]
+name	  	=EXPLORER_LISTBAR_ITEM_ROLL_BMP
+file	  	=NULL
+commentCN 	=LISTBAR_ITEM_ROLL
+commentEN 	=LISTBAR_ITEM_ROLL
+
+[res_3008]
+name	  	=EXPLORER_CP_MOV_BMP
+file	  	=NULL
+commentCN 	=CP_MOV
+commentEN 	=CP_MOV
+
+[res_3009]
+name	  	=EXPLORER_MINIATURE_BMP
+file	  	=NULL
+commentCN 	=MINIATURE
+commentEN 	=MINIATURE
+
+[res_3010]
+name	  	=EXPLORER_SD_ICON_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=SD_ICON_FOCUSED
+commentEN 	=SD_ICON_FOCUSED
+
+[res_3011]
+name	  	=EXPLORER_LEFT_LIST_MOVIE_UF_BMP
+file	  	=NULL
+commentCN 	=LEFT_LIST_MOVIE_UF
+commentEN 	=LEFT_LIST_MOVIE_UF
+
+[res_3012]
+name	  	=EXPLORER_RETURN_F_BMP
+file	  	=NULL
+commentCN 	=RETURN_F
+commentEN 	=RETURN_F
+
+[res_3013]
+name	  	=EXPLORER_LEFT_LIST_EBOOK_UF_BMP
+file	  	=NULL
+commentCN 	=LEFT_LIST_EBOOK_UF
+commentEN 	=LEFT_LIST_EBOOK_UF
+
+[res_3014]
+name	  	=EXPLORER_ERROR_BMP
+file	  	=NULL
+commentCN 	=ERROR
+commentEN 	=ERROR
+
+[res_3015]
+name	  	=EXPLORER_GAME_ICON_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=GAME_ICON_FOCUSED
+commentEN 	=GAME_ICON_FOCUSED
+
+[res_3016]
+name	  	=EXPLORER_VIDEO_ICON_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=VIDEO_ICON_FOCUSED
+commentEN 	=VIDEO_ICON_FOCUSED
+
+[res_3017]
+name	  	=EXPLORER_MUSIC_ICON_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=MUSIC_ICON_FOCUSED
+commentEN 	=MUSIC_ICON_FOCUSED
+
+[res_3018]
+name	  	=EXPLORER_SD_UF_BMP
+file	  	=NULL
+commentCN 	=SD_UF
+commentEN 	=SD_UF
+
+[res_3019]
+name	  	=EXPLORER_UNKNOWN_FILE_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=UNKNOWN_FILE_FOCUSED
+commentEN 	=UNKNOWN_FILE_FOCUSED
+
+[res_3020]
+name	  	=EXPLORER_MUSIC_FILE_BMP
+file	  	=NULL
+commentCN 	=MUSIC_FILE
+commentEN 	=MUSIC_FILE
+
+[res_3021]
+name	  	=EXPLORER_PHOTO_FILE_BMP
+file	  	=NULL
+commentCN 	=PHOTO_FILE
+commentEN 	=PHOTO_FILE
+
+[res_3022]
+name	  	=EXPLORER_LISTBAR_ITEM_UF_BMP
+file	  	=NULL
+commentCN 	=LISTBAR_ITEM_UF
+commentEN 	=LISTBAR_ITEM_UF
+
+[res_3023]
+name	  	=EXPLORER_INFO_BG_BMP
+file	  	=NULL
+commentCN 	=INFO_BG
+commentEN 	=INFO_BG
+
+[res_3024]
+name	  	=EXPLORER_FOLDER_ICON_BMP
+file	  	=NULL
+commentCN 	=FOLDER_ICON
+commentEN 	=FOLDER_ICON
+
+[res_3025]
+name	  	=EXPLORER_1_BMP
+file	  	=NULL
+commentCN 	=1
+commentEN 	=1
+
+[res_3026]
+name	  	=EXPLORER_FILE_TYPE_BG_BMP
+file	  	=NULL
+commentCN 	=FILE_TYPE_BG
+commentEN 	=FILE_TYPE_BG
+
+[res_3027]
+name	  	=EXPLORER_CP_MOV_F_BMP
+file	  	=NULL
+commentCN 	=CP_MOV_F
+commentEN 	=CP_MOV_F
+
+[res_3028]
+name	  	=EXPLORER_LEFT_LIST_EBOOK_F_BMP
+file	  	=NULL
+commentCN 	=LEFT_LIST_EBOOK_F
+commentEN 	=LEFT_LIST_EBOOK_F
+
+[res_3029]
+name	  	=EXPLORER_LIST_SCROLL_BMP
+file	  	=NULL
+commentCN 	=LIST_SCROLL
+commentEN 	=LIST_SCROLL
+
+[res_3030]
+name	  	=EXPLORER_LEFT_LIST_PHOTO_F_BMP
+file	  	=NULL
+commentCN 	=LEFT_LIST_PHOTO_F
+commentEN 	=LEFT_LIST_PHOTO_F
+
+[res_3031]
+name	  	=EXPLORER_LEFT_LIST_MUSIC_UF_BMP
+file	  	=NULL
+commentCN 	=LEFT_LIST_MUSIC_UF
+commentEN 	=LEFT_LIST_MUSIC_UF
+
+[res_3032]
+name	  	=EXPLORER_LIST_SCROLL_BG_BMP
+file	  	=NULL
+commentCN 	=LIST_SCROLL_BG
+commentEN 	=LIST_SCROLL_BG
+
+[res_3033]
+name	  	=EXPLORER_RETURN_UF_BMP
+file	  	=NULL
+commentCN 	=RETURN_UF
+commentEN 	=RETURN_UF
+
+[res_3034]
+name	  	=EXPLORER_FILE_TYPE_TXT_BMP
+file	  	=NULL
+commentCN 	=FILE_TYPE_TXT
+commentEN 	=FILE_TYPE_TXT
+
+[res_3035]
+name	  	=EXPLORER_LEFT_LIST_MOVIE_F_BMP
+file	  	=NULL
+commentCN 	=LEFT_LIST_MOVIE_F
+commentEN 	=LEFT_LIST_MOVIE_F
+
+[res_3036]
+name	  	=EXPLORER_USB_ICON_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=USB_ICON_FOCUSED
+commentEN 	=USB_ICON_FOCUSED
+
+[res_3037]
+name	  	=EXPLORER_LEFT_LIST_F_BMP
+file	  	=NULL
+commentCN 	=LEFT_LIST_F
+commentEN 	=LEFT_LIST_F
+
+[res_3038]
+name	  	=EXPLORER_EBOOK_FILE_BMP
+file	  	=NULL
+commentCN 	=EBOOK_FILE
+commentEN 	=EBOOK_FILE
+
+[res_3039]
+name	  	=EXPLORER_LEFT_LIST_GAME_UF_BMP
+file	  	=NULL
+commentCN 	=LEFT_LIST_GAME_UF
+commentEN 	=LEFT_LIST_GAME_UF
+
+[res_3040]
+name	  	=EXPLORER_VIDEO_FILE_BMP
+file	  	=NULL
+commentCN 	=VIDEO_FILE
+commentEN 	=VIDEO_FILE
+
+[res_3041]
+name	  	=EXPLORER_USB_F_BMP
+file	  	=NULL
+commentCN 	=USB_F
+commentEN 	=USB_F
+
+[res_3042]
+name	  	=EXPLORER_LEFT_LIST_GAME_F_BMP
+file	  	=NULL
+commentCN 	=LEFT_LIST_GAME_F
+commentEN 	=LEFT_LIST_GAME_F
+
+[res_3043]
+name	  	=EXPLORER_DELETE_ICON_UF_BMP
+file	  	=NULL
+commentCN 	=DELETE_ICON_UF
+commentEN 	=DELETE_ICON_UF
+
+[res_3044]
+name	  	=EXPLORER_LEFT_ALL_FILE_UF_BMP
+file	  	=NULL
+commentCN 	=LEFT_ALL_FILE_UF
+commentEN 	=LEFT_ALL_FILE_UF
+
+[res_3045]
+name	  	=EXPLORER_USB_UF_BMP
+file	  	=NULL
+commentCN 	=USB_UF
+commentEN 	=USB_UF
+
+[res_3046]
+name	  	=EXPLORER_GAME_FILE_BMP
+file	  	=NULL
+commentCN 	=GAME_FILE
+commentEN 	=GAME_FILE
+
+[res_3047]
+name	  	=EXPLORER_LEFT_LIST_BG_BMP
+file	  	=NULL
+commentCN 	=LEFT_LIST_BG
+commentEN 	=LEFT_LIST_BG
+
+[res_3048]
+name	  	=EXPLORER_EBOOK_ICON_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=EBOOK_ICON_FOCUSED
+commentEN 	=EBOOK_ICON_FOCUSED
+
+[res_3049]
+name	  	=EXPLORER_SD_F_BMP
+file	  	=NULL
+commentCN 	=SD_F
+commentEN 	=SD_F
+
+[res_3050]
+name	  	=EXPLORER_LEFT_ALL_FILE_FC_BMP
+file	  	=NULL
+commentCN 	=LEFT_ALL_FILE_FC
+commentEN 	=LEFT_ALL_FILE_FC
+
+[res_3051]
+name	  	=EXPLORER_PHOTO_ICON_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=PHOTO_ICON_FOCUSED
+commentEN 	=PHOTO_ICON_FOCUSED
+
+[res_3052]
+name	  	=EXPLORER_BOTTOM_BMP
+file	  	=NULL
+commentCN 	=BOTTOM
+commentEN 	=BOTTOM
+
+[res_3053]
+name	  	=EXPLORER_LISTBAR_ITEM_F_BMP
+file	  	=NULL
+commentCN 	=LISTBAR_ITEM_F
+commentEN 	=LISTBAR_ITEM_F
+
+[res_3054]
+name	  	=EXPLORER_2_BMP
+file	  	=NULL
+commentCN 	=2
+commentEN 	=2
+
+[res_4001]
+name	  	=MUSIC_PLAY_NEXT_BTN_PRESSED_BMP
+file	  	=NULL
+commentCN 	=PLAY_NEXT_BTN_PRESSED
+commentEN 	=PLAY_NEXT_BTN_PRESSED
+
+[res_4002]
+name	  	=MUSIC_BL_10S_BMP
+file	  	=NULL
+commentCN 	=BL_10S
+commentEN 	=BL_10S
+
+[res_4003]
+name	  	=MUSIC_PLAYBAR_BMP
+file	  	=NULL
+commentCN 	=PLAYBAR
+commentEN 	=PLAYBAR
+
+[res_4004]
+name	  	=MUSIC_REPEAT_ONE_BTN_PRESSED_BMP
+file	  	=NULL
+commentCN 	=REPEAT_ONE_BTN_PRESSED
+commentEN 	=REPEAT_ONE_BTN_PRESSED
+
+[res_4005]
+name	  	=MUSIC_PLAY_RANDOM_BTN_PRESSED_BMP
+file	  	=NULL
+commentCN 	=PLAY_RANDOM_BTN_PRESSED
+commentEN 	=PLAY_RANDOM_BTN_PRESSED
+
+[res_4006]
+name	  	=MUSIC_PLAY_ALL_BMP
+file	  	=NULL
+commentCN 	=PLAY_ALL
+commentEN 	=PLAY_ALL
+
+[res_4007]
+name	  	=MUSIC_EQ_CHANGE0_BMP
+file	  	=NULL
+commentCN 	=EQ_CHANGE0
+commentEN 	=EQ_CHANGE0
+
+[res_4008]
+name	  	=MUSIC_EQ_POP_BMP
+file	  	=NULL
+commentCN 	=EQ_POP
+commentEN 	=EQ_POP
+
+[res_4009]
+name	  	=MUSIC_BL_90S_BMP
+file	  	=NULL
+commentCN 	=BL_90S
+commentEN 	=BL_90S
+
+[res_4010]
+name	  	=MUSIC_PLAY_PRE_BTN_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=PLAY_PRE_BTN_FOCUSED
+commentEN 	=PLAY_PRE_BTN_FOCUSED
+
+[res_4011]
+name	  	=MUSIC_VOL_BAR_BG_BMP
+file	  	=NULL
+commentCN 	=VOL_BAR_BG
+commentEN 	=VOL_BAR_BG
+
+[res_4012]
+name	  	=MUSIC_PLAY_ONE_BTN_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=PLAY_ONE_BTN_FOCUSED
+commentEN 	=PLAY_ONE_BTN_FOCUSED
+
+[res_4013]
+name	  	=MUSIC_PLAY_PAUSE_BTN_PRESSED_BMP
+file	  	=NULL
+commentCN 	=PLAY_PAUSE_BTN_PRESSED
+commentEN 	=PLAY_PAUSE_BTN_PRESSED
+
+[res_4014]
+name	  	=MUSIC_AB1_BMP
+file	  	=NULL
+commentCN 	=AB1
+commentEN 	=AB1
+
+[res_4015]
+name	  	=MUSIC_SD_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=SD_FOCUSED
+commentEN 	=SD_FOCUSED
+
+[res_4016]
+name	  	=MUSIC_BG_BMP
+file	  	=NULL
+commentCN 	=BG
+commentEN 	=BG
+
+[res_4017]
+name	  	=MUSIC_PLAY_PAUSE_BTN_UNFOCUSED_BMP
+file	  	=NULL
+commentCN 	=PLAY_PAUSE_BTN_UNFOCUSED
+commentEN 	=PLAY_PAUSE_BTN_UNFOCUSED
+
+[res_4018]
+name	  	=MUSIC_PROCESS_BAR_BODY0_BMP
+file	  	=NULL
+commentCN 	=PROCESS_BAR_BODY0
+commentEN 	=PROCESS_BAR_BODY0
+
+[res_4019]
+name	  	=MUSIC_BL_60S_BMP
+file	  	=NULL
+commentCN 	=BL_60S
+commentEN 	=BL_60S
+
+[res_4020]
+name	  	=MUSIC_REPEAT_ALL_BMP
+file	  	=NULL
+commentCN 	=REPEAT_ALL
+commentEN 	=REPEAT_ALL
+
+[res_4021]
+name	  	=MUSIC_EQ_CLASSIC_BMP
+file	  	=NULL
+commentCN 	=EQ_CLASSIC
+commentEN 	=EQ_CLASSIC
+
+[res_4022]
+name	  	=MUSIC_VOLUME_STATUS_BMP
+file	  	=NULL
+commentCN 	=VOLUME_STATUS
+commentEN 	=VOLUME_STATUS
+
+[res_4023]
+name	  	=MUSIC_PROCESS_BAR_FLAG_BMP
+file	  	=NULL
+commentCN 	=PROCESS_BAR_FLAG
+commentEN 	=PROCESS_BAR_FLAG
+
+[res_4024]
+name	  	=MUSIC_NEXT_STATUS_BMP
+file	  	=NULL
+commentCN 	=NEXT_STATUS
+commentEN 	=NEXT_STATUS
+
+[res_4025]
+name	  	=MUSIC_MENU_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=MENU_FOCUSED
+commentEN 	=MENU_FOCUSED
+
+[res_4026]
+name	  	=MUSIC_PLAY_ALL_BTN_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=PLAY_ALL_BTN_FOCUSED
+commentEN 	=PLAY_ALL_BTN_FOCUSED
+
+[res_4027]
+name	  	=MUSIC_LIST_ITEM_UNFOCUS0_BMP
+file	  	=NULL
+commentCN 	=LIST_ITEM_UNFOCUS0
+commentEN 	=LIST_ITEM_UNFOCUS0
+
+[res_4028]
+name	  	=MUSIC_PLAY_MODE1_BMP
+file	  	=NULL
+commentCN 	=PLAY_MODE1
+commentEN 	=PLAY_MODE1
+
+[res_4029]
+name	  	=MUSIC_PAUSE_STATUS_BMP
+file	  	=NULL
+commentCN 	=PAUSE_STATUS
+commentEN 	=PAUSE_STATUS
+
+[res_4030]
+name	  	=MUSIC_BETTERY0_BMP
+file	  	=NULL
+commentCN 	=BETTERY0
+commentEN 	=BETTERY0
+
+[res_4031]
+name	  	=MUSIC_PAUSE0_BMP
+file	  	=NULL
+commentCN 	=PAUSE0
+commentEN 	=PAUSE0
+
+[res_4032]
+name	  	=MUSIC_PROCESS_BAR_HEAD_BMP
+file	  	=NULL
+commentCN 	=PROCESS_BAR_HEAD
+commentEN 	=PROCESS_BAR_HEAD
+
+[res_4033]
+name	  	=MUSIC_MENU_SEL_BMP
+file	  	=NULL
+commentCN 	=MENU_SEL
+commentEN 	=MENU_SEL
+
+[res_4034]
+name	  	=MUSIC_HEADBAR_BG_BMP
+file	  	=NULL
+commentCN 	=HEADBAR_BG
+commentEN 	=HEADBAR_BG
+
+[res_4035]
+name	  	=MUSIC_BETTERY1_BMP
+file	  	=NULL
+commentCN 	=BETTERY1
+commentEN 	=BETTERY1
+
+[res_4036]
+name	  	=MUSIC_MENU_UNFCS_BMP
+file	  	=NULL
+commentCN 	=MENU_UNFCS
+commentEN 	=MENU_UNFCS
+
+[res_4037]
+name	  	=MUSIC_EQ_MODE_BTN_UNFOCUSED_BMP
+file	  	=NULL
+commentCN 	=EQ_MODE_BTN_UNFOCUSED
+commentEN 	=EQ_MODE_BTN_UNFOCUSED
+
+[res_4038]
+name	  	=MUSIC_BOUY_YELLOW_BMP
+file	  	=NULL
+commentCN 	=BOUY_YELLOW
+commentEN 	=BOUY_YELLOW
+
+[res_4039]
+name	  	=MUSIC_MENU_FCS_BMP
+file	  	=NULL
+commentCN 	=MENU_FCS
+commentEN 	=MENU_FCS
+
+[res_4040]
+name	  	=MUSIC_LIST_SCROLL_BG_BMP
+file	  	=NULL
+commentCN 	=LIST_SCROLL_BG
+commentEN 	=LIST_SCROLL_BG
+
+[res_4041]
+name	  	=MUSIC_PARTICLE_BMP
+file	  	=NULL
+commentCN 	=PARTICLE
+commentEN 	=PARTICLE
+
+[res_4042]
+name	  	=MUSIC_VOL_SPEAKER_RIGHT_BMP
+file	  	=NULL
+commentCN 	=VOL_SPEAKER_RIGHT
+commentEN 	=VOL_SPEAKER_RIGHT
+
+[res_4043]
+name	  	=MUSIC_LONG_STR_SCROLL_BMP
+file	  	=NULL
+commentCN 	=LONG_STR_SCROLL
+commentEN 	=LONG_STR_SCROLL
+
+[res_4044]
+name	  	=MUSIC_BETTERY4_BMP
+file	  	=NULL
+commentCN 	=BETTERY4
+commentEN 	=BETTERY4
+
+[res_4045]
+name	  	=MUSIC_DIGIT_BG_BMP
+file	  	=NULL
+commentCN 	=DIGIT_BG
+commentEN 	=DIGIT_BG
+
+[res_4046]
+name	  	=MUSIC_BOUY_BMP
+file	  	=NULL
+commentCN 	=BOUY
+commentEN 	=BOUY
+
+[res_4047]
+name	  	=MUSIC_ALBUM_BMP
+file	  	=NULL
+commentCN 	=ALBUM
+commentEN 	=ALBUM
+
+[res_4048]
+name	  	=MUSIC_PROCESS_BAR_POINT_BMP
+file	  	=NULL
+commentCN 	=PROCESS_BAR_POINT
+commentEN 	=PROCESS_BAR_POINT
+
+[res_4049]
+name	  	=MUSIC_VOL_SPEAKER_LEFT_BMP
+file	  	=NULL
+commentCN 	=VOL_SPEAKER_LEFT
+commentEN 	=VOL_SPEAKER_LEFT
+
+[res_4050]
+name	  	=MUSIC_PLAY_BACKWARD_BTN_PRESSED_BMP
+file	  	=NULL
+commentCN 	=PLAY_BACKWARD_BTN_PRESSED
+commentEN 	=PLAY_BACKWARD_BTN_PRESSED
+
+[res_4051]
+name	  	=MUSIC_BACK0_BMP
+file	  	=NULL
+commentCN 	=BACK0
+commentEN 	=BACK0
+
+[res_4052]
+name	  	=MUSIC_PLAY_FORWARD_BTN_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=PLAY_FORWARD_BTN_FOCUSED
+commentEN 	=PLAY_FORWARD_BTN_FOCUSED
+
+[res_4053]
+name	  	=MUSIC_AB0_BMP
+file	  	=NULL
+commentCN 	=AB0
+commentEN 	=AB0
+
+[res_4054]
+name	  	=MUSIC_REPEAT_ALL_BTN_PRESSED_BMP
+file	  	=NULL
+commentCN 	=REPEAT_ALL_BTN_PRESSED
+commentEN 	=REPEAT_ALL_BTN_PRESSED
+
+[res_4055]
+name	  	=MUSIC_BL_30S_BMP
+file	  	=NULL
+commentCN 	=BL_30S
+commentEN 	=BL_30S
+
+[res_4056]
+name	  	=MUSIC_PLAY_NEXT_BTN_UNFOCUSED_BMP
+file	  	=NULL
+commentCN 	=PLAY_NEXT_BTN_UNFOCUSED
+commentEN 	=PLAY_NEXT_BTN_UNFOCUSED
+
+[res_4057]
+name	  	=MUSIC_PLAY_FORWARD_BTN_UNFOCUSED_BMP
+file	  	=NULL
+commentCN 	=PLAY_FORWARD_BTN_UNFOCUSED
+commentEN 	=PLAY_FORWARD_BTN_UNFOCUSED
+
+[res_4058]
+name	  	=MUSIC_PALETTE_BMP
+file	  	=NULL
+commentCN 	=PALETTE
+commentEN 	=PALETTE
+
+[res_4059]
+name	  	=MUSIC_PALY_PAUSE_BTN_UNFOCUSED_BMP
+file	  	=NULL
+commentCN 	=PALY_PAUSE_BTN_UNFOCUSED
+commentEN 	=PALY_PAUSE_BTN_UNFOCUSED
+
+[res_4060]
+name	  	=MUSIC_PROCESS_BAR_BODY_BMP
+file	  	=NULL
+commentCN 	=PROCESS_BAR_BODY
+commentEN 	=PROCESS_BAR_BODY
+
+[res_4061]
+name	  	=MUSIC_SD_UNFOCUSED_BMP
+file	  	=NULL
+commentCN 	=SD_UNFOCUSED
+commentEN 	=SD_UNFOCUSED
+
+[res_4062]
+name	  	=MUSIC_PLAY_BACKWARD_BTN_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=PLAY_BACKWARD_BTN_FOCUSED
+commentEN 	=PLAY_BACKWARD_BTN_FOCUSED
+
+[res_4063]
+name	  	=MUSIC_MODE_UNFCS_BMP
+file	  	=NULL
+commentCN 	=MODE_UNFCS
+commentEN 	=MODE_UNFCS
+
+[res_4064]
+name	  	=MUSIC_PLAY_PRE_BTN_UNFOCUSED_BMP
+file	  	=NULL
+commentCN 	=PLAY_PRE_BTN_UNFOCUSED
+commentEN 	=PLAY_PRE_BTN_UNFOCUSED
+
+[res_4065]
+name	  	=MUSIC_MENU_UNFOCUSED_BMP
+file	  	=NULL
+commentCN 	=MENU_UNFOCUSED
+commentEN 	=MENU_UNFOCUSED
+
+[res_4066]
+name	  	=MUSIC_BACK1_BMP
+file	  	=NULL
+commentCN 	=BACK1
+commentEN 	=BACK1
+
+[res_4067]
+name	  	=MUSIC_LIST_ITEM_FOCUS0_BMP
+file	  	=NULL
+commentCN 	=LIST_ITEM_FOCUS0
+commentEN 	=LIST_ITEM_FOCUS0
+
+[res_4068]
+name	  	=MUSIC_PLAY_ONE_BMP
+file	  	=NULL
+commentCN 	=PLAY_ONE
+commentEN 	=PLAY_ONE
+
+[res_4069]
+name	  	=MUSIC_VOL_BAR_BODY_BMP
+file	  	=NULL
+commentCN 	=VOL_BAR_BODY
+commentEN 	=VOL_BAR_BODY
+
+[res_4070]
+name	  	=MUSIC_LIST_SCROLL_TAIL_BMP
+file	  	=NULL
+commentCN 	=LIST_SCROLL_TAIL
+commentEN 	=LIST_SCROLL_TAIL
+
+[res_4071]
+name	  	=MUSIC_INFO_BAR_BMP
+file	  	=NULL
+commentCN 	=INFO_BAR
+commentEN 	=INFO_BAR
+
+[res_4072]
+name	  	=MUSIC_LIST_ITEM_FOCUS_BMP
+file	  	=NULL
+commentCN 	=LIST_ITEM_FOCUS
+commentEN 	=LIST_ITEM_FOCUS
+
+[res_4073]
+name	  	=MUSIC_PERFORMER_NAME_BMP
+file	  	=NULL
+commentCN 	=PERFORMER_NAME
+commentEN 	=PERFORMER_NAME
+
+[res_4074]
+name	  	=MUSIC_REPEAT_ALL_BTN_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=REPEAT_ALL_BTN_FOCUSED
+commentEN 	=REPEAT_ALL_BTN_FOCUSED
+
+[res_4075]
+name	  	=MUSIC_MODE_FCS_BMP
+file	  	=NULL
+commentCN 	=MODE_FCS
+commentEN 	=MODE_FCS
+
+[res_4076]
+name	  	=MUSIC_BL_TIME_BTN_PRESSED_BMP
+file	  	=NULL
+commentCN 	=BL_TIME_BTN_PRESSED
+commentEN 	=BL_TIME_BTN_PRESSED
+
+[res_4077]
+name	  	=MUSIC_FORWARD_STATUS_BMP
+file	  	=NULL
+commentCN 	=FORWARD_STATUS
+commentEN 	=FORWARD_STATUS
+
+[res_4078]
+name	  	=MUSIC_PLAY_RANDOM_BMP
+file	  	=NULL
+commentCN 	=PLAY_RANDOM
+commentEN 	=PLAY_RANDOM
+
+[res_4079]
+name	  	=MUSIC_BL_ON_BMP
+file	  	=NULL
+commentCN 	=BL_ON
+commentEN 	=BL_ON
+
+[res_4080]
+name	  	=MUSIC_REPEAT_ONE_BMP
+file	  	=NULL
+commentCN 	=REPEAT_ONE
+commentEN 	=REPEAT_ONE
+
+[res_4081]
+name	  	=MUSIC_PLAY_PAUSE_BTN_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=PLAY_PAUSE_BTN_FOCUSED
+commentEN 	=PLAY_PAUSE_BTN_FOCUSED
+
+[res_4082]
+name	  	=MUSIC_EQ_SOFT_BMP
+file	  	=NULL
+commentCN 	=EQ_SOFT
+commentEN 	=EQ_SOFT
+
+[res_4083]
+name	  	=MUSIC_ALBUM_NAME_BMP
+file	  	=NULL
+commentCN 	=ALBUM_NAME
+commentEN 	=ALBUM_NAME
+
+[res_4084]
+name	  	=MUSIC_PLAY_FORWARD_BTN_PRESSED_BMP
+file	  	=NULL
+commentCN 	=PLAY_FORWARD_BTN_PRESSED
+commentEN 	=PLAY_FORWARD_BTN_PRESSED
+
+[res_4085]
+name	  	=MUSIC_EQ_CHANGE1_BMP
+file	  	=NULL
+commentCN 	=EQ_CHANGE1
+commentEN 	=EQ_CHANGE1
+
+[res_4086]
+name	  	=MUSIC_EQ_MODE_BTN_PRESSED_BMP
+file	  	=NULL
+commentCN 	=EQ_MODE_BTN_PRESSED
+commentEN 	=EQ_MODE_BTN_PRESSED
+
+[res_4087]
+name	  	=MUSIC_BETTERY2_BMP
+file	  	=NULL
+commentCN 	=BETTERY2
+commentEN 	=BETTERY2
+
+[res_4088]
+name	  	=MUSIC_EQ_VOICE_BMP
+file	  	=NULL
+commentCN 	=EQ_VOICE
+commentEN 	=EQ_VOICE
+
+[res_4089]
+name	  	=MUSIC_PAUSE1_BMP
+file	  	=NULL
+commentCN 	=PAUSE1
+commentEN 	=PAUSE1
+
+[res_4090]
+name	  	=MUSIC_PLAY_PRE_BTN_PRESSED_BMP
+file	  	=NULL
+commentCN 	=PLAY_PRE_BTN_PRESSED
+commentEN 	=PLAY_PRE_BTN_PRESSED
+
+[res_4091]
+name	  	=MUSIC_BACKWARD_STATUS_BMP
+file	  	=NULL
+commentCN 	=BACKWARD_STATUS
+commentEN 	=BACKWARD_STATUS
+
+[res_4092]
+name	  	=MUSIC_LIST_ITEM_UNFOCUS_BMP
+file	  	=NULL
+commentCN 	=LIST_ITEM_UNFOCUS
+commentEN 	=LIST_ITEM_UNFOCUS
+
+[res_4093]
+name	  	=MUSIC_PLAY1_BMP
+file	  	=NULL
+commentCN 	=PLAY1
+commentEN 	=PLAY1
+
+[res_4094]
+name	  	=MUSIC_EQ_DANCE_BMP
+file	  	=NULL
+commentCN 	=EQ_DANCE
+commentEN 	=EQ_DANCE
+
+[res_4095]
+name	  	=MUSIC_REPEAT_ONE_BTN_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=REPEAT_ONE_BTN_FOCUSED
+commentEN 	=REPEAT_ONE_BTN_FOCUSED
+
+[res_4096]
+name	  	=MUSIC_BL_TIME_BTN_UNFOCUSED_BMP
+file	  	=NULL
+commentCN 	=BL_TIME_BTN_UNFOCUSED
+commentEN 	=BL_TIME_BTN_UNFOCUSED
+
+[res_4097]
+name	  	=MUSIC_PLAY_NEXT_BTN_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=PLAY_NEXT_BTN_FOCUSED
+commentEN 	=PLAY_NEXT_BTN_FOCUSED
+
+[res_4098]
+name	  	=MUSIC_BIT_RATE_BMP
+file	  	=NULL
+commentCN 	=BIT_RATE
+commentEN 	=BIT_RATE
+
+[res_4099]
+name	  	=MUSIC_PLAY_BACKWARD_BTN_UNFOCUSED_BMP
+file	  	=NULL
+commentCN 	=PLAY_BACKWARD_BTN_UNFOCUSED
+commentEN 	=PLAY_BACKWARD_BTN_UNFOCUSED
+
+[res_4100]
+name	  	=MUSIC_PLAY_ALL_BTN_PRESSED_BMP
+file	  	=NULL
+commentCN 	=PLAY_ALL_BTN_PRESSED
+commentEN 	=PLAY_ALL_BTN_PRESSED
+
+[res_4101]
+name	  	=MUSIC_VOL_BAR_POINT_BMP
+file	  	=NULL
+commentCN 	=VOL_BAR_POINT
+commentEN 	=VOL_BAR_POINT
+
+[res_4102]
+name	  	=MUSIC_BL_TIME_BTN_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=BL_TIME_BTN_FOCUSED
+commentEN 	=BL_TIME_BTN_FOCUSED
+
+[res_4103]
+name	  	=MUSIC_PLAY_MODE0_BMP
+file	  	=NULL
+commentCN 	=PLAY_MODE0
+commentEN 	=PLAY_MODE0
+
+[res_4104]
+name	  	=MUSIC_PLAY0_BMP
+file	  	=NULL
+commentCN 	=PLAY0
+commentEN 	=PLAY0
+
+[res_4105]
+name	  	=MUSIC_EQ_LYRICS0_BMP
+file	  	=NULL
+commentCN 	=EQ_LYRICS0
+commentEN 	=EQ_LYRICS0
+
+[res_4106]
+name	  	=MUSIC_LIST_SCROLL_BODY_BMP
+file	  	=NULL
+commentCN 	=LIST_SCROLL_BODY
+commentEN 	=LIST_SCROLL_BODY
+
+[res_4107]
+name	  	=MUSIC_PLAY_RANDOM_BTN_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=PLAY_RANDOM_BTN_FOCUSED
+commentEN 	=PLAY_RANDOM_BTN_FOCUSED
+
+[res_4108]
+name	  	=MUSIC_USB_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=USB_FOCUSED
+commentEN 	=USB_FOCUSED
+
+[res_4109]
+name	  	=MUSIC_FILE_UNFOCUSED_BMP
+file	  	=NULL
+commentCN 	=FILE_UNFOCUSED
+commentEN 	=FILE_UNFOCUSED
+
+[res_4110]
+name	  	=MUSIC_MENU_BG_BMP
+file	  	=NULL
+commentCN 	=MENU_BG
+commentEN 	=MENU_BG
+
+[res_4111]
+name	  	=MUSIC_PROCESS_BAR_TAIL_BMP
+file	  	=NULL
+commentCN 	=PROCESS_BAR_TAIL
+commentEN 	=PROCESS_BAR_TAIL
+
+[res_4112]
+name	  	=MUSIC_BETTERY5_BMP
+file	  	=NULL
+commentCN 	=BETTERY5
+commentEN 	=BETTERY5
+
+[res_4113]
+name	  	=MUSIC_EQ_DDB_BMP
+file	  	=NULL
+commentCN 	=EQ_DDB
+commentEN 	=EQ_DDB
+
+[res_4114]
+name	  	=MUSIC_PLAY_ONE_BTN_PRESSED_BMP
+file	  	=NULL
+commentCN 	=PLAY_ONE_BTN_PRESSED
+commentEN 	=PLAY_ONE_BTN_PRESSED
+
+[res_4115]
+name	  	=MUSIC_VOL_SHUT_DOWN_BMP
+file	  	=NULL
+commentCN 	=VOL_SHUT_DOWN
+commentEN 	=VOL_SHUT_DOWN
+
+[res_4116]
+name	  	=MUSIC_BETTERY3_BMP
+file	  	=NULL
+commentCN 	=BETTERY3
+commentEN 	=BETTERY3
+
+[res_4117]
+name	  	=MUSIC_EQ_NORMAL_BMP
+file	  	=NULL
+commentCN 	=EQ_NORMAL
+commentEN 	=EQ_NORMAL
+
+[res_4118]
+name	  	=MUSIC_USB_UNFOCUSED_BMP
+file	  	=NULL
+commentCN 	=USB_UNFOCUSED
+commentEN 	=USB_UNFOCUSED
+
+[res_4119]
+name	  	=MUSIC_EQ_LYRICS1_BMP
+file	  	=NULL
+commentCN 	=EQ_LYRICS1
+commentEN 	=EQ_LYRICS1
+
+[res_4120]
+name	  	=MUSIC_FILE_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=FILE_FOCUSED
+commentEN 	=FILE_FOCUSED
+
+[res_4121]
+name	  	=MUSIC_PREVIOUS_STATUS_BMP
+file	  	=NULL
+commentCN 	=PREVIOUS_STATUS
+commentEN 	=PREVIOUS_STATUS
+
+[res_4122]
+name	  	=MUSIC_BOTTOM_BMP
+file	  	=NULL
+commentCN 	=BOTTOM
+commentEN 	=BOTTOM
+
+[res_4123]
+name	  	=MUSIC_PLAYING_STATUS_BMP
+file	  	=NULL
+commentCN 	=PLAYING_STATUS
+commentEN 	=PLAYING_STATUS
+
+[res_4124]
+name	  	=MUSIC_EQ_ROCK_BMP
+file	  	=NULL
+commentCN 	=EQ_ROCK
+commentEN 	=EQ_ROCK
+
+[res_4125]
+name	  	=MUSIC_LIST_SCROLL_HEAD_BMP
+file	  	=NULL
+commentCN 	=LIST_SCROLL_HEAD
+commentEN 	=LIST_SCROLL_HEAD
+
+[res_4126]
+name	  	=MUSIC_EQ_MODE_BTN_FOCUSED_BMP
+file	  	=NULL
+commentCN 	=EQ_MODE_BTN_FOCUSED
+commentEN 	=EQ_MODE_BTN_FOCUSED
+
+[res_4127]
+name	  	=MUSIC_EQ_JAZZ_BMP
+file	  	=NULL
+commentCN 	=EQ_JAZZ
+commentEN 	=EQ_JAZZ
+
+[res_4128]
+name	  	=MUSIC_EQ_VOCAL_BMP
+file	  	=NULL
+commentCN 	=EQ_VOCAL
+commentEN 	=EQ_VOCAL
+
+[res_4129]
+name	  	=MUSIC_EQ_DBB_BMP
+file	  	=NULL
+commentCN 	=EQ_DBB
+commentEN 	=EQ_DBB
+
+[res_4130]
+name	  	=MUSIC_FILE_SIZE_BMP
+file	  	=NULL
+commentCN 	=FILE_SIZE
+commentEN 	=FILE_SIZE
+
+[res_4131]
+name	  	=MUSIC_MENU_UNSEL_BMP
+file	  	=NULL
+commentCN 	=MENU_UNSEL
+commentEN 	=MENU_UNSEL
+
+[res_5001]
+name	  	=SETTING_RETURN_FCS_BMP
+file	  	=NULL
+commentCN 	=RETURN_FCS
+commentEN 	=RETURN_FCS
+
+[res_5002]
+name	  	=SETTING_NEW_ITEM_L_FCS_BMP
+file	  	=NULL
+commentCN 	=NEW_ITEM_L_FCS
+commentEN 	=NEW_ITEM_L_FCS
+
+[res_5003]
+name	  	=SETTING_8_BMP
+file	  	=NULL
+commentCN 	=8
+commentEN 	=8
+
+[res_5004]
+name	  	=SETTING_RETURN_UFCS_BMP
+file	  	=NULL
+commentCN 	=RETURN_UFCS
+commentEN 	=RETURN_UFCS
+
+[res_5005]
+name	  	=SETTING_NEW_SET_BUTT_R_F_BMP
+file	  	=NULL
+commentCN 	=NEW_SET_BUTT_R_F
+commentEN 	=NEW_SET_BUTT_R_F
+
+[res_5006]
+name	  	=SETTING_NEW_SET_BUTT_L_F_BMP
+file	  	=NULL
+commentCN 	=NEW_SET_BUTT_L_F
+commentEN 	=NEW_SET_BUTT_L_F
+
+[res_5007]
+name	  	=SETTING_4_BMP
+file	  	=NULL
+commentCN 	=4
+commentEN 	=4
+
+[res_5008]
+name	  	=SETTING_SET_BSYSSE_BMP
+file	  	=NULL
+commentCN 	=SET_BSYSSE
+commentEN 	=SET_BSYSSE
+
+[res_5009]
+name	  	=SETTING_5_BMP
+file	  	=NULL
+commentCN 	=5
+commentEN 	=5
+
+[res_5010]
+name	  	=SETTING_NEW_ITEM_R_FCS_BMP
+file	  	=NULL
+commentCN 	=NEW_ITEM_R_FCS
+commentEN 	=NEW_ITEM_R_FCS
+
+[res_5011]
+name	  	=SETTING_BG_BMP
+file	  	=NULL
+commentCN 	=BG
+commentEN 	=BG
+
+[res_5012]
+name	  	=SETTING_3_BMP
+file	  	=NULL
+commentCN 	=3
+commentEN 	=3
+
+[res_5013]
+name	  	=SETTING_LONG_STR_BG_BMP
+file	  	=NULL
+commentCN 	=LONG_STR_BG
+commentEN 	=LONG_STR_BG
+
+[res_5014]
+name	  	=SETTING_SET_INFO_BMP
+file	  	=NULL
+commentCN 	=SET_INFO
+commentEN 	=SET_INFO
+
+[res_5015]
+name	  	=SETTING_0_BMP
+file	  	=NULL
+commentCN 	=0
+commentEN 	=0
+
+[res_5016]
+name	  	=SETTING_OK_BMP
+file	  	=NULL
+commentCN 	=OK
+commentEN 	=OK
+
+[res_5017]
+name	  	=SETTING_TIP_F_BMP
+file	  	=NULL
+commentCN 	=TIP_F
+commentEN 	=TIP_F
+
+[res_5018]
+name	  	=SETTING_SET_TIPS_BMP
+file	  	=NULL
+commentCN 	=SET_TIPS
+commentEN 	=SET_TIPS
+
+[res_5019]
+name	  	=SETTING_WINDOW_BG_BMP
+file	  	=NULL
+commentCN 	=WINDOW_BG
+commentEN 	=WINDOW_BG
+
+[res_5020]
+name	  	=SETTING_NEW_POWER_FLAG_F_BMP
+file	  	=NULL
+commentCN 	=NEW_POWER_FLAG_F
+commentEN 	=NEW_POWER_FLAG_F
+
+[res_5021]
+name	  	=SETTING_NEW_ALARM_FLAG_UF_BMP
+file	  	=NULL
+commentCN 	=NEW_ALARM_FLAG_UF
+commentEN 	=NEW_ALARM_FLAG_UF
+
+[res_5022]
+name	  	=SETTING_DOWN_F_BMP
+file	  	=NULL
+commentCN 	=DOWN_F
+commentEN 	=DOWN_F
+
+[res_5023]
+name	  	=SETTING_NEW_SCROLL_BLOCK_BMP
+file	  	=NULL
+commentCN 	=NEW_SCROLL_BLOCK
+commentEN 	=NEW_SCROLL_BLOCK
+
+[res_5024]
+name	  	=SETTING_NEW_POWER_FLAG_UF_BMP
+file	  	=NULL
+commentCN 	=NEW_POWER_FLAG_UF
+commentEN 	=NEW_POWER_FLAG_UF
+
+[res_5025]
+name	  	=SETTING_SET_BUTT_LF_BMP
+file	  	=NULL
+commentCN 	=SET_BUTT_LF
+commentEN 	=SET_BUTT_LF
+
+[res_5026]
+name	  	=SETTING_NEW_SCROLL_BG_BMP
+file	  	=NULL
+commentCN 	=NEW_SCROLL_BG
+commentEN 	=NEW_SCROLL_BG
+
+[res_5027]
+name	  	=SETTING_CLOCK_BG_BMP
+file	  	=NULL
+commentCN 	=CLOCK_BG
+commentEN 	=CLOCK_BG
+
+[res_5028]
+name	  	=SETTING_SET_BUTT_RF_BMP
+file	  	=NULL
+commentCN 	=SET_BUTT_RF
+commentEN 	=SET_BUTT_RF
+
+[res_5029]
+name	  	=SETTING_GENERAL_ICON_BMP
+file	  	=NULL
+commentCN 	=GENERAL_ICON
+commentEN 	=GENERAL_ICON
+
+[res_5030]
+name	  	=SETTING_NEW_SET_FLAG_UF_BMP
+file	  	=NULL
+commentCN 	=NEW_SET_FLAG_UF
+commentEN 	=NEW_SET_FLAG_UF
+
+[res_5031]
+name	  	=SETTING_NEW_ALARM_FLAG_F_BMP
+file	  	=NULL
+commentCN 	=NEW_ALARM_FLAG_F
+commentEN 	=NEW_ALARM_FLAG_F
+
+[res_5032]
+name	  	=SETTING_NEW_ITEM_L_UFCS_BMP
+file	  	=NULL
+commentCN 	=NEW_ITEM_L_UFCS
+commentEN 	=NEW_ITEM_L_UFCS
+
+[res_5033]
+name	  	=SETTING_PAGE_BMP
+file	  	=NULL
+commentCN 	=PAGE
+commentEN 	=PAGE
+
+[res_5034]
+name	  	=SETTING_NEW_WINDOW_BG_BMP
+file	  	=NULL
+commentCN 	=NEW_WINDOW_BG
+commentEN 	=NEW_WINDOW_BG
+
+[res_5035]
+name	  	=SETTING_1_BMP
+file	  	=NULL
+commentCN 	=1
+commentEN 	=1
+
+[res_5036]
+name	  	=SETTING_POWER_MANAGEMENT_ICON_BMP
+file	  	=NULL
+commentCN 	=POWER_MANAGEMENT_ICON
+commentEN 	=POWER_MANAGEMENT_ICON
+
+[res_5037]
+name	  	=SETTING_UP_F_BMP
+file	  	=NULL
+commentCN 	=UP_F
+commentEN 	=UP_F
+
+[res_5038]
+name	  	=SETTING_NEW_ITEM_R_UFCS_BMP
+file	  	=NULL
+commentCN 	=NEW_ITEM_R_UFCS
+commentEN 	=NEW_ITEM_R_UFCS
+
+[res_5039]
+name	  	=SETTING_SET_SETICON00_BMP
+file	  	=NULL
+commentCN 	=SET_SETICON00
+commentEN 	=SET_SETICON00
+
+[res_5040]
+name	  	=SETTING_BUTTON_UF_BMP
+file	  	=NULL
+commentCN 	=BUTTON_UF
+commentEN 	=BUTTON_UF
+
+[res_5041]
+name	  	=SETTING_NEW_SET_BUTT_L_UF_BMP
+file	  	=NULL
+commentCN 	=NEW_SET_BUTT_L_UF
+commentEN 	=NEW_SET_BUTT_L_UF
+
+[res_5042]
+name	  	=SETTING_LIST_ITEM_FOCUS_BMP
+file	  	=NULL
+commentCN 	=LIST_ITEM_FOCUS
+commentEN 	=LIST_ITEM_FOCUS
+
+[res_5043]
+name	  	=SETTING_DOWN_UNF_BMP
+file	  	=NULL
+commentCN 	=DOWN_UNF
+commentEN 	=DOWN_UNF
+
+[res_5044]
+name	  	=SETTING_BUTTON_FC_BMP
+file	  	=NULL
+commentCN 	=BUTTON_FC
+commentEN 	=BUTTON_FC
+
+[res_5045]
+name	  	=SETTING_SET_BUTT_R_F_BMP
+file	  	=NULL
+commentCN 	=SET_BUTT_R_F
+commentEN 	=SET_BUTT_R_F
+
+[res_5046]
+name	  	=SETTING_LEFT_BG_BMP
+file	  	=NULL
+commentCN 	=LEFT_BG
+commentEN 	=LEFT_BG
+
+[res_5047]
+name	  	=SETTING_UP_UNF_BMP
+file	  	=NULL
+commentCN 	=UP_UNF
+commentEN 	=UP_UNF
+
+[res_5048]
+name	  	=SETTING_SET_BUTT_L_UF_BMP
+file	  	=NULL
+commentCN 	=SET_BUTT_L_UF
+commentEN 	=SET_BUTT_L_UF
+
+[res_5049]
+name	  	=SETTING_SET_ITEM_F_BMP
+file	  	=NULL
+commentCN 	=SET_ITEM_F
+commentEN 	=SET_ITEM_F
+
+[res_5050]
+name	  	=SETTING_TIP_UF_BMP
+file	  	=NULL
+commentCN 	=TIP_UF
+commentEN 	=TIP_UF
+
+[res_5051]
+name	  	=SETTING_SET_BSYSSET_BMP
+file	  	=NULL
+commentCN 	=SET_BSYSSET
+commentEN 	=SET_BSYSSET
+
+[res_5052]
+name	  	=SETTING_GAME_ITEM_BMP
+file	  	=NULL
+commentCN 	=GAME_ITEM
+commentEN 	=GAME_ITEM
+
+[res_5053]
+name	  	=SETTING_SET_BOTTOM_BMP
+file	  	=NULL
+commentCN 	=SET_BOTTOM
+commentEN 	=SET_BOTTOM
+
+[res_5054]
+name	  	=SETTING_NEW_SET_BUTT_R_UF_BMP
+file	  	=NULL
+commentCN 	=NEW_SET_BUTT_R_UF
+commentEN 	=NEW_SET_BUTT_R_UF
+
+[res_5055]
+name	  	=SETTING_SET_BUTT_R_UF_BMP
+file	  	=NULL
+commentCN 	=SET_BUTT_R_UF
+commentEN 	=SET_BUTT_R_UF
+
+[res_5056]
+name	  	=SETTING_SET_BUTT_L_F_BMP
+file	  	=NULL
+commentCN 	=SET_BUTT_L_F
+commentEN 	=SET_BUTT_L_F
+
+[res_5057]
+name	  	=SETTING_6_BMP
+file	  	=NULL
+commentCN 	=6
+commentEN 	=6
+
+[res_5058]
+name	  	=SETTING_7_BMP
+file	  	=NULL
+commentCN 	=7
+commentEN 	=7
+
+[res_5059]
+name	  	=SETTING_WKM_BMP
+file	  	=NULL
+commentCN 	=WKM
+commentEN 	=WKM
+
+[res_5060]
+name	  	=SETTING_NEW_SET_FLAG_F_BMP
+file	  	=NULL
+commentCN 	=NEW_SET_FLAG_F
+commentEN 	=NEW_SET_FLAG_F
+
+[res_5061]
+name	  	=SETTING_2_BMP
+file	  	=NULL
+commentCN 	=2
+commentEN 	=2
+
+[res_5062]
+name	  	=SETTING_SYS_INFO_TIPS_BMP
+file	  	=NULL
+commentCN 	=SYS_INFO_TIPS
+commentEN 	=SYS_INFO_TIPS
+
+[res_5063]
+name	  	=SETTING_SET_ITEM_UFCS_BMP
+file	  	=NULL
+commentCN 	=SET_ITEM_UFCS
+commentEN 	=SET_ITEM_UFCS
+
+[res_5064]
+name	  	=SETTING_9_BMP
+file	  	=NULL
+commentCN 	=9
+commentEN 	=9
+
+[res_6001]
+name	  	=DIALOG_MSGBOX_1_BMP
+file	  	=NULL
+commentCN 	=MSGBOX_1
+commentEN 	=MSGBOX_1
+
+[res_6002]
+name	  	=DIALOG_MSGBOX_BTN_N_BMP
+file	  	=NULL
+commentCN 	=MSGBOX_BTN_N
+commentEN 	=MSGBOX_BTN_N
+
+[res_6003]
+name	  	=DIALOG_MSGBOX_BMP
+file	  	=NULL
+commentCN 	=MSGBOX
+commentEN 	=MSGBOX
+
+[res_6004]
+name	  	=DIALOG_ICON_INFORMATION_BMP
+file	  	=NULL
+commentCN 	=ICON_INFORMATION
+commentEN 	=ICON_INFORMATION
+
+[res_6005]
+name	  	=DIALOG_MSGBOX_BTN_F_BMP
+file	  	=NULL
+commentCN 	=MSGBOX_BTN_F
+commentEN 	=MSGBOX_BTN_F
+
+[res_7001]
+name	  	=LOADING_BUFF11_BMP
+file	  	=NULL
+commentCN 	=BUFF11
+commentEN 	=BUFF11
+
+[res_7002]
+name	  	=LOADING_BUFF8_BMP
+file	  	=NULL
+commentCN 	=BUFF8
+commentEN 	=BUFF8
+
+[res_7003]
+name	  	=LOADING_BUFF12_BMP
+file	  	=NULL
+commentCN 	=BUFF12
+commentEN 	=BUFF12
+
+[res_7004]
+name	  	=LOADING_BUFF2_BMP
+file	  	=NULL
+commentCN 	=BUFF2
+commentEN 	=BUFF2
+
+[res_7005]
+name	  	=LOADING_BUFF5_BMP
+file	  	=NULL
+commentCN 	=BUFF5
+commentEN 	=BUFF5
+
+[res_7006]
+name	  	=LOADING_BUFF13_BMP
+file	  	=NULL
+commentCN 	=BUFF13
+commentEN 	=BUFF13
+
+[res_7007]
+name	  	=LOADING_BUFF9_BMP
+file	  	=NULL
+commentCN 	=BUFF9
+commentEN 	=BUFF9
+
+[res_7008]
+name	  	=LOADING_BUFF4_BMP
+file	  	=NULL
+commentCN 	=BUFF4
+commentEN 	=BUFF4
+
+[res_7009]
+name	  	=LOADING_BUFF10_BMP
+file	  	=NULL
+commentCN 	=BUFF10
+commentEN 	=BUFF10
+
+[res_7010]
+name	  	=LOADING_BUFF1_BMP
+file	  	=NULL
+commentCN 	=BUFF1
+commentEN 	=BUFF1
+
+[res_7011]
+name	  	=LOADING_BUFF7_BMP
+file	  	=NULL
+commentCN 	=BUFF7
+commentEN 	=BUFF7
+
+[res_7012]
+name	  	=LOADING_BUFF6_BMP
+file	  	=NULL
+commentCN 	=BUFF6
+commentEN 	=BUFF6
+
+[res_7013]
+name	  	=LOADING_BUFF3_BMP
+file	  	=NULL
+commentCN 	=BUFF3
+commentEN 	=BUFF3
+
+[res_8001]
+name	  	=ALARM_BUTTON_F_BMP
+file	  	=NULL
+commentCN 	=BUTTON_F
+commentEN 	=BUTTON_F
+
+[res_8002]
+name	  	=ALARM_8_BMP
+file	  	=NULL
+commentCN 	=8
+commentEN 	=8
+
+[res_8003]
+name	  	=ALARM_4_BMP
+file	  	=NULL
+commentCN 	=4
+commentEN 	=4
+
+[res_8004]
+name	  	=ALARM_5_BMP
+file	  	=NULL
+commentCN 	=5
+commentEN 	=5
+
+[res_8005]
+name	  	=ALARM_3_BMP
+file	  	=NULL
+commentCN 	=3
+commentEN 	=3
+
+[res_8006]
+name	  	=ALARM_0_BMP
+file	  	=NULL
+commentCN 	=0
+commentEN 	=0
+
+[res_8007]
+name	  	=ALARM_ALARM_ANI2_BMP
+file	  	=NULL
+commentCN 	=ALARM_ANI2
+commentEN 	=ALARM_ANI2
+
+[res_8008]
+name	  	=ALARM_ALARM_ANI3_BMP
+file	  	=NULL
+commentCN 	=ALARM_ANI3
+commentEN 	=ALARM_ANI3
+
+[res_8009]
+name	  	=ALARM_1_BMP
+file	  	=NULL
+commentCN 	=1
+commentEN 	=1
+
+[res_8010]
+name	  	=ALARM_10_BMP
+file	  	=NULL
+commentCN 	=10
+commentEN 	=10
+
+[res_8011]
+name	  	=ALARM_ALARM_BG_BMP
+file	  	=NULL
+commentCN 	=ALARM_BG
+commentEN 	=ALARM_BG
+
+[res_8012]
+name	  	=ALARM_ALARM_ANI1_BMP
+file	  	=NULL
+commentCN 	=ALARM_ANI1
+commentEN 	=ALARM_ANI1
+
+[res_8013]
+name	  	=ALARM_6_BMP
+file	  	=NULL
+commentCN 	=6
+commentEN 	=6
+
+[res_8014]
+name	  	=ALARM_7_BMP
+file	  	=NULL
+commentCN 	=7
+commentEN 	=7
+
+[res_8015]
+name	  	=ALARM_2_BMP
+file	  	=NULL
+commentCN 	=2
+commentEN 	=2
+
+[res_8016]
+name	  	=ALARM_BUTTON_UNF_BMP
+file	  	=NULL
+commentCN 	=BUTTON_UNF
+commentEN 	=BUTTON_UNF
+
+[res_8017]
+name	  	=ALARM_9_BMP
+file	  	=NULL
+commentCN 	=9
+commentEN 	=9
+
+[res_9001]
+name	  	=LINEIN_AUX_UT_BACK_BMP
+file	  	=NULL
+commentCN 	=AUX_UT_BACK
+commentEN 	=AUX_UT_BACK
+
+[res_9002]
+name	  	=LINEIN_AUX_T_BACK_BMP
+file	  	=NULL
+commentCN 	=AUX_T_BACK
+commentEN 	=AUX_T_BACK
+
+[res_9003]
+name	  	=LINEIN_AUX_T_PLAY_BMP
+file	  	=NULL
+commentCN 	=AUX_T_PLAY
+commentEN 	=AUX_T_PLAY
+
+[res_9004]
+name	  	=LINEIN_AUX_T_PAUSE_BMP
+file	  	=NULL
+commentCN 	=AUX_T_PAUSE
+commentEN 	=AUX_T_PAUSE
+
+[res_9005]
+name	  	=LINEIN_AUX_UT_PAUSE_BMP
+file	  	=NULL
+commentCN 	=AUX_UT_PAUSE
+commentEN 	=AUX_UT_PAUSE
+
+[res_9006]
+name	  	=LINEIN_AUX_UT_PLAY_BMP
+file	  	=NULL
+commentCN 	=AUX_UT_PLAY
+commentEN 	=AUX_UT_PLAY
+
+[res_9007]
+name	  	=LINEIN_AUX_BG_BMP
+file	  	=NULL
+commentCN 	=AUX_BG
+commentEN 	=AUX_BG
+
+[res_10001]
+name	  	=EBOOK_0N_BMP
+file	  	=NULL
+commentCN 	=0N
+commentEN 	=0N
+
+[res_10002]
+name	  	=EBOOK_1N_BMP
+file	  	=NULL
+commentCN 	=1N
+commentEN 	=1N
+
+[res_10003]
+name	  	=EBOOK_SELECT_OPT_BMP
+file	  	=NULL
+commentCN 	=SELECT_OPT
+commentEN 	=SELECT_OPT
+
+[res_10004]
+name	  	=EBOOK_SHOW_GOTO_PAGE_BMP
+file	  	=NULL
+commentCN 	=SHOW_GOTO_PAGE
+commentEN 	=SHOW_GOTO_PAGE
+
+[res_10005]
+name	  	=EBOOK_2N_BMP
+file	  	=NULL
+commentCN 	=2N
+commentEN 	=2N
+
+[res_10006]
+name	  	=EBOOK_MUSIC_F_BMP
+file	  	=NULL
+commentCN 	=MUSIC_F
+commentEN 	=MUSIC_F
+
+[res_10007]
+name	  	=EBOOK_3N_BMP
+file	  	=NULL
+commentCN 	=3N
+commentEN 	=3N
+
+[res_10008]
+name	  	=EBOOK_HEAD_BMP
+file	  	=NULL
+commentCN 	=HEAD
+commentEN 	=HEAD
+
+[res_10009]
+name	  	=EBOOK_GOTO_BG_BMP
+file	  	=NULL
+commentCN 	=GOTO_BG
+commentEN 	=GOTO_BG
+
+[res_10010]
+name	  	=EBOOK_FONTCOLOR_F_BMP
+file	  	=NULL
+commentCN 	=FONTCOLOR_F
+commentEN 	=FONTCOLOR_F
+
+[res_10011]
+name	  	=EBOOK_COUSOR_BMP
+file	  	=NULL
+commentCN 	=COUSOR
+commentEN 	=COUSOR
+
+[res_10012]
+name	  	=EBOOK_DEL_N_BMP
+file	  	=NULL
+commentCN 	=DEL_N
+commentEN 	=DEL_N
+
+[res_10013]
+name	  	=EBOOK_EXIT_UF_BMP
+file	  	=NULL
+commentCN 	=EXIT_UF
+commentEN 	=EXIT_UF
+
+[res_10014]
+name	  	=EBOOK_8N_BMP
+file	  	=NULL
+commentCN 	=8N
+commentEN 	=8N
+
+[res_10015]
+name	  	=EBOOK_3F_BMP
+file	  	=NULL
+commentCN 	=3F
+commentEN 	=3F
+
+[res_10016]
+name	  	=EBOOK_NAME_ROLL_BMP
+file	  	=NULL
+commentCN 	=NAME_ROLL
+commentEN 	=NAME_ROLL
+
+[res_10017]
+name	  	=EBOOK_GOTO_BOTTOM_BMP
+file	  	=NULL
+commentCN 	=GOTO_BOTTOM
+commentEN 	=GOTO_BOTTOM
+
+[res_10018]
+name	  	=EBOOK_FONTCOLOR_UF_BMP
+file	  	=NULL
+commentCN 	=FONTCOLOR_UF
+commentEN 	=FONTCOLOR_UF
+
+[res_10019]
+name	  	=EBOOK_7F_BMP
+file	  	=NULL
+commentCN 	=7F
+commentEN 	=7F
+
+[res_10020]
+name	  	=EBOOK_4N_BMP
+file	  	=NULL
+commentCN 	=4N
+commentEN 	=4N
+
+[res_10021]
+name	  	=EBOOK_PAGE_BOTTOM_BMP
+file	  	=NULL
+commentCN 	=PAGE_BOTTOM
+commentEN 	=PAGE_BOTTOM
+
+[res_10022]
+name	  	=EBOOK_QUIT_F_BMP
+file	  	=NULL
+commentCN 	=QUIT_F
+commentEN 	=QUIT_F
+
+[res_10023]
+name	  	=EBOOK_6F_BMP
+file	  	=NULL
+commentCN 	=6F
+commentEN 	=6F
+
+[res_10024]
+name	  	=EBOOK_2F_BMP
+file	  	=NULL
+commentCN 	=2F
+commentEN 	=2F
+
+[res_10025]
+name	  	=EBOOK_MUSIC_UF_BMP
+file	  	=NULL
+commentCN 	=MUSIC_UF
+commentEN 	=MUSIC_UF
+
+[res_10026]
+name	  	=EBOOK_9F_BMP
+file	  	=NULL
+commentCN 	=9F
+commentEN 	=9F
+
+[res_10027]
+name	  	=EBOOK_DOT_BMP
+file	  	=NULL
+commentCN 	=DOT
+commentEN 	=DOT
+
+[res_10028]
+name	  	=EBOOK_4F_BMP
+file	  	=NULL
+commentCN 	=4F
+commentEN 	=4F
+
+[res_10029]
+name	  	=EBOOK_1_BMP
+file	  	=NULL
+commentCN 	=1
+commentEN 	=1
+
+[res_10030]
+name	  	=EBOOK_TTS_UF_BMP
+file	  	=NULL
+commentCN 	=TTS_UF
+commentEN 	=TTS_UF
+
+[res_10031]
+name	  	=EBOOK_PAGE_BOTTOM11_BMP
+file	  	=NULL
+commentCN 	=PAGE_BOTTOM11
+commentEN 	=PAGE_BOTTOM11
+
+[res_10032]
+name	  	=EBOOK_6N_BMP
+file	  	=NULL
+commentCN 	=6N
+commentEN 	=6N
+
+[res_10033]
+name	  	=EBOOK_9N_BMP
+file	  	=NULL
+commentCN 	=9N
+commentEN 	=9N
+
+[res_10034]
+name	  	=EBOOK_5N_BMP
+file	  	=NULL
+commentCN 	=5N
+commentEN 	=5N
+
+[res_10035]
+name	  	=EBOOK_ENTER_F_BMP
+file	  	=NULL
+commentCN 	=ENTER_F
+commentEN 	=ENTER_F
+
+[res_10036]
+name	  	=EBOOK_PAUSE_BMP
+file	  	=NULL
+commentCN 	=PAUSE
+commentEN 	=PAUSE
+
+[res_10037]
+name	  	=EBOOK_ENTER_NF_BMP
+file	  	=NULL
+commentCN 	=ENTER_NF
+commentEN 	=ENTER_NF
+
+[res_10038]
+name	  	=EBOOK_AUTO_F_BMP
+file	  	=NULL
+commentCN 	=AUTO_F
+commentEN 	=AUTO_F
+
+[res_10039]
+name	  	=EBOOK_AUTO_UF_BMP
+file	  	=NULL
+commentCN 	=AUTO_UF
+commentEN 	=AUTO_UF
+
+[res_10040]
+name	  	=EBOOK_EXIT_F_BMP
+file	  	=NULL
+commentCN 	=EXIT_F
+commentEN 	=EXIT_F
+
+[res_10041]
+name	  	=EBOOK_1F_BMP
+file	  	=NULL
+commentCN 	=1F
+commentEN 	=1F
+
+[res_10042]
+name	  	=EBOOK_BMARK_UF_BMP
+file	  	=NULL
+commentCN 	=BMARK_UF
+commentEN 	=BMARK_UF
+
+[res_10043]
+name	  	=EBOOK_WKM_BMP
+file	  	=NULL
+commentCN 	=WKM
+commentEN 	=WKM
+
+[res_10044]
+name	  	=EBOOK_QUIT_NF_BMP
+file	  	=NULL
+commentCN 	=QUIT_NF
+commentEN 	=QUIT_NF
+
+[res_10045]
+name	  	=EBOOK_5F_BMP
+file	  	=NULL
+commentCN 	=5F
+commentEN 	=5F
+
+[res_10046]
+name	  	=EBOOK_GOTO_PAGE_F_BMP
+file	  	=NULL
+commentCN 	=GOTO_PAGE_F
+commentEN 	=GOTO_PAGE_F
+
+[res_10047]
+name	  	=EBOOK_DEL_F_BMP
+file	  	=NULL
+commentCN 	=DEL_F
+commentEN 	=DEL_F
+
+[res_10048]
+name	  	=EBOOK_BMARK_F_BMP
+file	  	=NULL
+commentCN 	=BMARK_F
+commentEN 	=BMARK_F
+
+[res_10049]
+name	  	=EBOOK_TTS_F_BMP
+file	  	=NULL
+commentCN 	=TTS_F
+commentEN 	=TTS_F
+
+[res_10050]
+name	  	=EBOOK_PAGE_BG_BMP
+file	  	=NULL
+commentCN 	=PAGE_BG
+commentEN 	=PAGE_BG
+
+[res_10051]
+name	  	=EBOOK_PLAY_BMP
+file	  	=NULL
+commentCN 	=PLAY
+commentEN 	=PLAY
+
+[res_10052]
+name	  	=EBOOK_8F_BMP
+file	  	=NULL
+commentCN 	=8F
+commentEN 	=8F
+
+[res_10053]
+name	  	=EBOOK_0F_BMP
+file	  	=NULL
+commentCN 	=0F
+commentEN 	=0F
+
+[res_10054]
+name	  	=EBOOK_2_BMP
+file	  	=NULL
+commentCN 	=2
+commentEN 	=2
+
+[res_10055]
+name	  	=EBOOK_BODY_BMP
+file	  	=NULL
+commentCN 	=BODY
+commentEN 	=BODY
+
+[res_10056]
+name	  	=EBOOK_7N_BMP
+file	  	=NULL
+commentCN 	=7N
+commentEN 	=7N
+
+[res_10057]
+name	  	=EBOOK_MENU_BOTTOM_BMP
+file	  	=NULL
+commentCN 	=MENU_BOTTOM
+commentEN 	=MENU_BOTTOM
+
+[res_10058]
+name	  	=EBOOK_GOTO_PAGE_UF_BMP
+file	  	=NULL
+commentCN 	=GOTO_PAGE_UF
+commentEN 	=GOTO_PAGE_UF
+
+[res_11001]
+name	  	=FM_L8_BMP
+file	  	=NULL
+commentCN 	=L8
+commentEN 	=L8
+
+[res_11002]
+name	  	=FM_L4_BMP
+file	  	=NULL
+commentCN 	=L4
+commentEN 	=L4
+
+[res_11003]
+name	  	=FM_POINT_BMP
+file	  	=NULL
+commentCN 	=POINT
+commentEN 	=POINT
+
+[res_11004]
+name	  	=FM_MONO_BMP
+file	  	=NULL
+commentCN 	=MONO
+commentEN 	=MONO
+
+[res_11005]
+name	  	=FM_M8_BMP
+file	  	=NULL
+commentCN 	=M8
+commentEN 	=M8
+
+[res_11006]
+name	  	=FM_BTN_RECORD_F_BMP
+file	  	=NULL
+commentCN 	=BTN_RECORD_F
+commentEN 	=BTN_RECORD_F
+
+[res_11007]
+name	  	=FM_L5_BMP
+file	  	=NULL
+commentCN 	=L5
+commentEN 	=L5
+
+[res_11008]
+name	  	=FM_ICON_LIST_SEL_BMP
+file	  	=NULL
+commentCN 	=ICON_LIST_SEL
+commentEN 	=ICON_LIST_SEL
+
+[res_11009]
+name	  	=FM_87FREQSCALE_BMP
+file	  	=NULL
+commentCN 	=87FREQSCALE
+commentEN 	=87FREQSCALE
+
+[res_11010]
+name	  	=FM_M7_BMP
+file	  	=NULL
+commentCN 	=M7
+commentEN 	=M7
+
+[res_11011]
+name	  	=FM_M0_BMP
+file	  	=NULL
+commentCN 	=M0
+commentEN 	=M0
+
+[res_11012]
+name	  	=FM_BTN_AUTOSEARCH_N_BMP
+file	  	=NULL
+commentCN 	=BTN_AUTOSEARCH_N
+commentEN 	=BTN_AUTOSEARCH_N
+
+[res_11013]
+name	  	=FM_L9_BMP
+file	  	=NULL
+commentCN 	=L9
+commentEN 	=L9
+
+[res_11014]
+name	  	=FM_B2_BMP
+file	  	=NULL
+commentCN 	=B2
+commentEN 	=B2
+
+[res_11015]
+name	  	=FM_B5_BMP
+file	  	=NULL
+commentCN 	=B5
+commentEN 	=B5
+
+[res_11016]
+name	  	=FM_B3_BMP
+file	  	=NULL
+commentCN 	=B3
+commentEN 	=B3
+
+[res_11017]
+name	  	=FM_BTN_AUTOSEARCH_F_BMP
+file	  	=NULL
+commentCN 	=BTN_AUTOSEARCH_F
+commentEN 	=BTN_AUTOSEARCH_F
+
+[res_11018]
+name	  	=FM_MHZ_BMP
+file	  	=NULL
+commentCN 	=MHZ
+commentEN 	=MHZ
+
+[res_11019]
+name	  	=FM_CH_BMP
+file	  	=NULL
+commentCN 	=CH
+commentEN 	=CH
+
+[res_11020]
+name	  	=FM_M9_BMP
+file	  	=NULL
+commentCN 	=M9
+commentEN 	=M9
+
+[res_11021]
+name	  	=FM_B0_BMP
+file	  	=NULL
+commentCN 	=B0
+commentEN 	=B0
+
+[res_11022]
+name	  	=FM_BTN_SAVE_0_BMP
+file	  	=NULL
+commentCN 	=BTN_SAVE_0
+commentEN 	=BTN_SAVE_0
+
+[res_11023]
+name	  	=FM_STEREO_BMP
+file	  	=NULL
+commentCN 	=STEREO
+commentEN 	=STEREO
+
+[res_11024]
+name	  	=FM_M4_BMP
+file	  	=NULL
+commentCN 	=M4
+commentEN 	=M4
+
+[res_11025]
+name	  	=FM_M6_BMP
+file	  	=NULL
+commentCN 	=M6
+commentEN 	=M6
+
+[res_11026]
+name	  	=FM_B7_BMP
+file	  	=NULL
+commentCN 	=B7
+commentEN 	=B7
+
+[res_11027]
+name	  	=FM_SLASH_BMP
+file	  	=NULL
+commentCN 	=SLASH
+commentEN 	=SLASH
+
+[res_11028]
+name	  	=FM_B4_BMP
+file	  	=NULL
+commentCN 	=B4
+commentEN 	=B4
+
+[res_11029]
+name	  	=FM_BTN_RECORD_N_BMP
+file	  	=NULL
+commentCN 	=BTN_RECORD_N
+commentEN 	=BTN_RECORD_N
+
+[res_11030]
+name	  	=FM_L7_BMP
+file	  	=NULL
+commentCN 	=L7
+commentEN 	=L7
+
+[res_11031]
+name	  	=FM_M1_BMP
+file	  	=NULL
+commentCN 	=M1
+commentEN 	=M1
+
+[res_11032]
+name	  	=FM_87_5FREQSCALE_BMP
+file	  	=NULL
+commentCN 	=87_5FREQSCALE
+commentEN 	=87_5FREQSCALE
+
+[res_11033]
+name	  	=FM_L0_BMP
+file	  	=NULL
+commentCN 	=L0
+commentEN 	=L0
+
+[res_11034]
+name	  	=FM_BTN_EXIT_F_BMP
+file	  	=NULL
+commentCN 	=BTN_EXIT_F
+commentEN 	=BTN_EXIT_F
+
+[res_11035]
+name	  	=FM_BTN_MANUALSEARCH_F_BMP
+file	  	=NULL
+commentCN 	=BTN_MANUALSEARCH_F
+commentEN 	=BTN_MANUALSEARCH_F
+
+[res_11036]
+name	  	=FM_B8_BMP
+file	  	=NULL
+commentCN 	=B8
+commentEN 	=B8
+
+[res_11037]
+name	  	=FM_L6_BMP
+file	  	=NULL
+commentCN 	=L6
+commentEN 	=L6
+
+[res_11038]
+name	  	=FM_B9_BMP
+file	  	=NULL
+commentCN 	=B9
+commentEN 	=B9
+
+[res_11039]
+name	  	=FM_BTN_CHANNEL_N_BMP
+file	  	=NULL
+commentCN 	=BTN_CHANNEL_N
+commentEN 	=BTN_CHANNEL_N
+
+[res_11040]
+name	  	=FM_M5_BMP
+file	  	=NULL
+commentCN 	=M5
+commentEN 	=M5
+
+[res_11041]
+name	  	=FM_SCALE_THUMB_N_BMP
+file	  	=NULL
+commentCN 	=SCALE_THUMB_N
+commentEN 	=SCALE_THUMB_N
+
+[res_11042]
+name	  	=FM_BTN_MANUALSEARCH_N_BMP
+file	  	=NULL
+commentCN 	=BTN_MANUALSEARCH_N
+commentEN 	=BTN_MANUALSEARCH_N
+
+[res_11043]
+name	  	=FM_BTN_AUDIO_N_BMP
+file	  	=NULL
+commentCN 	=BTN_AUDIO_N
+commentEN 	=BTN_AUDIO_N
+
+[res_11044]
+name	  	=FM_B6_BMP
+file	  	=NULL
+commentCN 	=B6
+commentEN 	=B6
+
+[res_11045]
+name	  	=FM_BTN_EXIT_N_BMP
+file	  	=NULL
+commentCN 	=BTN_EXIT_N
+commentEN 	=BTN_EXIT_N
+
+[res_11046]
+name	  	=FM_UPDATE0_BG_BMP
+file	  	=NULL
+commentCN 	=UPDATE0_BG
+commentEN 	=UPDATE0_BG
+
+[res_11047]
+name	  	=FM_87_5MHZ_BMP
+file	  	=NULL
+commentCN 	=87_5MHZ
+commentEN 	=87_5MHZ
+
+[res_11048]
+name	  	=FM_SCALE_THUMB_F_BMP
+file	  	=NULL
+commentCN 	=SCALE_THUMB_F
+commentEN 	=SCALE_THUMB_F
+
+[res_11049]
+name	  	=FM_UPDATE_BG_BMP
+file	  	=NULL
+commentCN 	=UPDATE_BG
+commentEN 	=UPDATE_BG
+
+[res_11050]
+name	  	=FM_87MHZ_BMP
+file	  	=NULL
+commentCN 	=87MHZ
+commentEN 	=87MHZ
+
+[res_11051]
+name	  	=FM_M3_BMP
+file	  	=NULL
+commentCN 	=M3
+commentEN 	=M3
+
+[res_11052]
+name	  	=FM_L3_BMP
+file	  	=NULL
+commentCN 	=L3
+commentEN 	=L3
+
+[res_11053]
+name	  	=FM_BTN_SAVE_1_BMP
+file	  	=NULL
+commentCN 	=BTN_SAVE_1
+commentEN 	=BTN_SAVE_1
+
+[res_11054]
+name	  	=FM_BTN_CHANNEL_F_BMP
+file	  	=NULL
+commentCN 	=BTN_CHANNEL_F
+commentEN 	=BTN_CHANNEL_F
+
+[res_11055]
+name	  	=FM_BTN_AUDIO_F_BMP
+file	  	=NULL
+commentCN 	=BTN_AUDIO_F
+commentEN 	=BTN_AUDIO_F
+
+[res_11056]
+name	  	=FM_SSET_MENU_BG_BMP
+file	  	=NULL
+commentCN 	=SSET_MENU_BG
+commentEN 	=SSET_MENU_BG
+
+[res_11057]
+name	  	=FM_L1_BMP
+file	  	=NULL
+commentCN 	=L1
+commentEN 	=L1
+
+[res_11058]
+name	  	=FM_PRESET_BMP
+file	  	=NULL
+commentCN 	=PRESET
+commentEN 	=PRESET
+
+[res_11059]
+name	  	=FM_COLOURTABLE_BMP
+file	  	=NULL
+commentCN 	=COLOURTABLE
+commentEN 	=COLOURTABLE
+
+[res_11060]
+name	  	=FM_L2_BMP
+file	  	=NULL
+commentCN 	=L2
+commentEN 	=L2
+
+[res_11061]
+name	  	=FM_CURSOR_CHANNEL_BMP
+file	  	=NULL
+commentCN 	=CURSOR_CHANNEL
+commentEN 	=CURSOR_CHANNEL
+
+[res_11062]
+name	  	=FM_M2_BMP
+file	  	=NULL
+commentCN 	=M2
+commentEN 	=M2
+
+[res_11063]
+name	  	=FM_CURSOR_SEL_BMP
+file	  	=NULL
+commentCN 	=CURSOR_SEL
+commentEN 	=CURSOR_SEL
+
+[res_11064]
+name	  	=FM_B1_BMP
+file	  	=NULL
+commentCN 	=B1
+commentEN 	=B1
+
+[res_11065]
+name	  	=FM_108MHZ_BMP
+file	  	=NULL
+commentCN 	=108MHZ
+commentEN 	=108MHZ
+
+[res_12001]
+name	  	=PHOTO_BTN_AUTOPLAY_N_BMP
+file	  	=NULL
+commentCN 	=BTN_AUTOPLAY_N
+commentEN 	=BTN_AUTOPLAY_N
+
+[res_12002]
+name	  	=PHOTO_BTN_SETBG_N_BMP
+file	  	=NULL
+commentCN 	=BTN_SETBG_N
+commentEN 	=BTN_SETBG_N
+
+[res_12003]
+name	  	=PHOTO_BTN_ZOOMOUT_N_BMP
+file	  	=NULL
+commentCN 	=BTN_ZOOMOUT_N
+commentEN 	=BTN_ZOOMOUT_N
+
+[res_12004]
+name	  	=PHOTO_BTN_BGMUSICON_N_BMP
+file	  	=NULL
+commentCN 	=BTN_BGMUSICON_N
+commentEN 	=BTN_BGMUSICON_N
+
+[res_12005]
+name	  	=PHOTO_ICON_LIST_SEL_BMP
+file	  	=NULL
+commentCN 	=ICON_LIST_SEL
+commentEN 	=ICON_LIST_SEL
+
+[res_12006]
+name	  	=PHOTO_BTN_ZOOMCLOSE_N_BMP
+file	  	=NULL
+commentCN 	=BTN_ZOOMCLOSE_N
+commentEN 	=BTN_ZOOMCLOSE_N
+
+[res_12007]
+name	  	=PHOTO_BTN_ZOOMRIGHT_N_BMP
+file	  	=NULL
+commentCN 	=BTN_ZOOMRIGHT_N
+commentEN 	=BTN_ZOOMRIGHT_N
+
+[res_12008]
+name	  	=PHOTO_BTN_BGMUSICON_F_BMP
+file	  	=NULL
+commentCN 	=BTN_BGMUSICON_F
+commentEN 	=BTN_BGMUSICON_F
+
+[res_12009]
+name	  	=PHOTO_ERROR_BMP
+file	  	=NULL
+commentCN 	=ERROR
+commentEN 	=ERROR
+
+[res_12010]
+name	  	=PHOTO_MENU_BACK2_BMP
+file	  	=NULL
+commentCN 	=MENU_BACK2
+commentEN 	=MENU_BACK2
+
+[res_12011]
+name	  	=PHOTO_BTN_ZOOM_F_BMP
+file	  	=NULL
+commentCN 	=BTN_ZOOM_F
+commentEN 	=BTN_ZOOM_F
+
+[res_12012]
+name	  	=PHOTO_ICON_PLAYPREV_BMP
+file	  	=NULL
+commentCN 	=ICON_PLAYPREV
+commentEN 	=ICON_PLAYPREV
+
+[res_12013]
+name	  	=PHOTO_DECODING_BMP
+file	  	=NULL
+commentCN 	=DECODING
+commentEN 	=DECODING
+
+[res_12014]
+name	  	=PHOTO_MENU_BACK1_BMP
+file	  	=NULL
+commentCN 	=MENU_BACK1
+commentEN 	=MENU_BACK1
+
+[res_12015]
+name	  	=PHOTO_BTN_ZOOMUP_F_BMP
+file	  	=NULL
+commentCN 	=BTN_ZOOMUP_F
+commentEN 	=BTN_ZOOMUP_F
+
+[res_12016]
+name	  	=PHOTO_BTN_SUB_F_BMP
+file	  	=NULL
+commentCN 	=BTN_SUB_F
+commentEN 	=BTN_SUB_F
+
+[res_12017]
+name	  	=PHOTO_BTN_FILEINFO_N_BMP
+file	  	=NULL
+commentCN 	=BTN_FILEINFO_N
+commentEN 	=BTN_FILEINFO_N
+
+[res_12018]
+name	  	=PHOTO_BTN_SLIDESHOW_N_BMP
+file	  	=NULL
+commentCN 	=BTN_SLIDESHOW_N
+commentEN 	=BTN_SLIDESHOW_N
+
+[res_12019]
+name	  	=PHOTO_BTN_ZOOMUP_N_BMP
+file	  	=NULL
+commentCN 	=BTN_ZOOMUP_N
+commentEN 	=BTN_ZOOMUP_N
+
+[res_12020]
+name	  	=PHOTO_ICON_PLAYBACKWARD_BMP
+file	  	=NULL
+commentCN 	=ICON_PLAYBACKWARD
+commentEN 	=ICON_PLAYBACKWARD
+
+[res_12021]
+name	  	=PHOTO_BTN_ZOOMIN_F_BMP
+file	  	=NULL
+commentCN 	=BTN_ZOOMIN_F
+commentEN 	=BTN_ZOOMIN_F
+
+[res_12022]
+name	  	=PHOTO_ICON_AUTOPLAY_BMP
+file	  	=NULL
+commentCN 	=ICON_AUTOPLAY
+commentEN 	=ICON_AUTOPLAY
+
+[res_12023]
+name	  	=PHOTO_BTN_ROTATERIGHT_N_BMP
+file	  	=NULL
+commentCN 	=BTN_ROTATERIGHT_N
+commentEN 	=BTN_ROTATERIGHT_N
+
+[res_12024]
+name	  	=PHOTO_BTN_EXIT_F_BMP
+file	  	=NULL
+commentCN 	=BTN_EXIT_F
+commentEN 	=BTN_EXIT_F
+
+[res_12025]
+name	  	=PHOTO_BTN_ROTATELEFT_N_BMP
+file	  	=NULL
+commentCN 	=BTN_ROTATELEFT_N
+commentEN 	=BTN_ROTATELEFT_N
+
+[res_12026]
+name	  	=PHOTO_BTN_SETBG_F_BMP
+file	  	=NULL
+commentCN 	=BTN_SETBG_F
+commentEN 	=BTN_SETBG_F
+
+[res_12027]
+name	  	=PHOTO_BTN_ZOOMIN_N_BMP
+file	  	=NULL
+commentCN 	=BTN_ZOOMIN_N
+commentEN 	=BTN_ZOOMIN_N
+
+[res_12028]
+name	  	=PHOTO_BTN_AUTOPLAY_F_BMP
+file	  	=NULL
+commentCN 	=BTN_AUTOPLAY_F
+commentEN 	=BTN_AUTOPLAY_F
+
+[res_12029]
+name	  	=PHOTO_BTN_ADD_N_BMP
+file	  	=NULL
+commentCN 	=BTN_ADD_N
+commentEN 	=BTN_ADD_N
+
+[res_12030]
+name	  	=PHOTO_BTN_ZOOMRIGHT_F_BMP
+file	  	=NULL
+commentCN 	=BTN_ZOOMRIGHT_F
+commentEN 	=BTN_ZOOMRIGHT_F
+
+[res_12031]
+name	  	=PHOTO_ICON_PLAYFORWARD_BMP
+file	  	=NULL
+commentCN 	=ICON_PLAYFORWARD
+commentEN 	=ICON_PLAYFORWARD
+
+[res_12032]
+name	  	=PHOTO_ICON_PLAYNEXT_BMP
+file	  	=NULL
+commentCN 	=ICON_PLAYNEXT
+commentEN 	=ICON_PLAYNEXT
+
+[res_12033]
+name	  	=PHOTO_ICON_PAUSE_BMP
+file	  	=NULL
+commentCN 	=ICON_PAUSE
+commentEN 	=ICON_PAUSE
+
+[res_12034]
+name	  	=PHOTO_BTN_ZOOMLEFT_N_BMP
+file	  	=NULL
+commentCN 	=BTN_ZOOMLEFT_N
+commentEN 	=BTN_ZOOMLEFT_N
+
+[res_12035]
+name	  	=PHOTO_BTN_ROTATELEFT_F_BMP
+file	  	=NULL
+commentCN 	=BTN_ROTATELEFT_F
+commentEN 	=BTN_ROTATELEFT_F
+
+[res_12036]
+name	  	=PHOTO_BTN_INTERVAL_N_BMP
+file	  	=NULL
+commentCN 	=BTN_INTERVAL_N
+commentEN 	=BTN_INTERVAL_N
+
+[res_12037]
+name	  	=PHOTO_BTN_ADD_F_BMP
+file	  	=NULL
+commentCN 	=BTN_ADD_F
+commentEN 	=BTN_ADD_F
+
+[res_12038]
+name	  	=PHOTO_BTN_EXIT_N_BMP
+file	  	=NULL
+commentCN 	=BTN_EXIT_N
+commentEN 	=BTN_EXIT_N
+
+[res_12039]
+name	  	=PHOTO_BTN_ZOOMDOWN_N_BMP
+file	  	=NULL
+commentCN 	=BTN_ZOOMDOWN_N
+commentEN 	=BTN_ZOOMDOWN_N
+
+[res_12040]
+name	  	=PHOTO_BTN_ZOOMLEFT_F_BMP
+file	  	=NULL
+commentCN 	=BTN_ZOOMLEFT_F
+commentEN 	=BTN_ZOOMLEFT_F
+
+[res_12041]
+name	  	=PHOTO_BTN_ZOOMCLOSE_F_BMP
+file	  	=NULL
+commentCN 	=BTN_ZOOMCLOSE_F
+commentEN 	=BTN_ZOOMCLOSE_F
+
+[res_12042]
+name	  	=PHOTO_BTN_FILEINFO_F_BMP
+file	  	=NULL
+commentCN 	=BTN_FILEINFO_F
+commentEN 	=BTN_FILEINFO_F
+
+[res_12043]
+name	  	=PHOTO_BTN_ZOOM_N_BMP
+file	  	=NULL
+commentCN 	=BTN_ZOOM_N
+commentEN 	=BTN_ZOOM_N
+
+[res_12044]
+name	  	=PHOTO_LISTITEMBACK_BMP
+file	  	=NULL
+commentCN 	=LISTITEMBACK
+commentEN 	=LISTITEMBACK
+
+[res_12045]
+name	  	=PHOTO_FILEINFO_BG_BMP
+file	  	=NULL
+commentCN 	=FILEINFO_BG
+commentEN 	=FILEINFO_BG
+
+[res_12046]
+name	  	=PHOTO_MENU_BACK0_BMP
+file	  	=NULL
+commentCN 	=MENU_BACK0
+commentEN 	=MENU_BACK0
+
+[res_12047]
+name	  	=PHOTO_BTN_ZOOMOUT_F_BMP
+file	  	=NULL
+commentCN 	=BTN_ZOOMOUT_F
+commentEN 	=BTN_ZOOMOUT_F
+
+[res_12048]
+name	  	=PHOTO_BTN_INTERVAL_F_BMP
+file	  	=NULL
+commentCN 	=BTN_INTERVAL_F
+commentEN 	=BTN_INTERVAL_F
+
+[res_12049]
+name	  	=PHOTO_BTN_SUB_N_BMP
+file	  	=NULL
+commentCN 	=BTN_SUB_N
+commentEN 	=BTN_SUB_N
+
+[res_12050]
+name	  	=PHOTO_BTN_ZOOMDOWN_F_BMP
+file	  	=NULL
+commentCN 	=BTN_ZOOMDOWN_F
+commentEN 	=BTN_ZOOMDOWN_F
+
+[res_12051]
+name	  	=PHOTO_BTN_SLIDESHOW_F_BMP
+file	  	=NULL
+commentCN 	=BTN_SLIDESHOW_F
+commentEN 	=BTN_SLIDESHOW_F
+
+[res_12052]
+name	  	=PHOTO_BTN_ROTATERIGHT_F_BMP
+file	  	=NULL
+commentCN 	=BTN_ROTATERIGHT_F
+commentEN 	=BTN_ROTATERIGHT_F
+
+[res_13001]
+name	  	=RECORD_ANI_3_BMP
+file	  	=NULL
+commentCN 	=ANI_3
+commentEN 	=ANI_3
+
+[res_13002]
+name	  	=RECORD_MENU_QUALITY_1_BMP
+file	  	=NULL
+commentCN 	=MENU_QUALITY_1
+commentEN 	=MENU_QUALITY_1
+
+[res_13003]
+name	  	=RECORD_MUSIC_PARTICLE_BMP
+file	  	=NULL
+commentCN 	=MUSIC_PARTICLE
+commentEN 	=MUSIC_PARTICLE
+
+[res_13004]
+name	  	=RECORD_MUSICLIST_BG_BMP
+file	  	=NULL
+commentCN 	=MUSICLIST_BG
+commentEN 	=MUSICLIST_BG
+
+[res_13005]
+name	  	=RECORD_BATTERY_ADD4_BMP
+file	  	=NULL
+commentCN 	=BATTERY_ADD4
+commentEN 	=BATTERY_ADD4
+
+[res_13006]
+name	  	=RECORD_8_BMP
+file	  	=NULL
+commentCN 	=8
+commentEN 	=8
+
+[res_13007]
+name	  	=RECORD_MENU_BACK_0_BMP
+file	  	=NULL
+commentCN 	=MENU_BACK_0
+commentEN 	=MENU_BACK_0
+
+[res_13008]
+name	  	=RECORD_VOL_BAR_BG_BMP
+file	  	=NULL
+commentCN 	=VOL_BAR_BG
+commentEN 	=VOL_BAR_BG
+
+[res_13009]
+name	  	=RECORD_ANI_4_BMP
+file	  	=NULL
+commentCN 	=ANI_4
+commentEN 	=ANI_4
+
+[res_13010]
+name	  	=RECORD_PRE_0_BMP
+file	  	=NULL
+commentCN 	=PRE_0
+commentEN 	=PRE_0
+
+[res_13011]
+name	  	=RECORD_4_BMP
+file	  	=NULL
+commentCN 	=4
+commentEN 	=4
+
+[res_13012]
+name	  	=RECORD_5_BMP
+file	  	=NULL
+commentCN 	=5
+commentEN 	=5
+
+[res_13013]
+name	  	=RECORD_VOL_MID_BMP
+file	  	=NULL
+commentCN 	=VOL_MID
+commentEN 	=VOL_MID
+
+[res_13014]
+name	  	=RECORD_66_FLAG_BMP
+file	  	=NULL
+commentCN 	=66_FLAG
+commentEN 	=66_FLAG
+
+[res_13015]
+name	  	=RECORD_NEXT_1_BMP
+file	  	=NULL
+commentCN 	=NEXT_1
+commentEN 	=NEXT_1
+
+[res_13016]
+name	  	=RECORD_MENU_RECORD_1_BMP
+file	  	=NULL
+commentCN 	=MENU_RECORD_1
+commentEN 	=MENU_RECORD_1
+
+[res_13017]
+name	  	=RECORD_66_LEFT_BMP
+file	  	=NULL
+commentCN 	=66_LEFT
+commentEN 	=66_LEFT
+
+[res_13018]
+name	  	=RECORD_BG_BMP
+file	  	=NULL
+commentCN 	=BG
+commentEN 	=BG
+
+[res_13019]
+name	  	=RECORD_3_BMP
+file	  	=NULL
+commentCN 	=3
+commentEN 	=3
+
+[res_13020]
+name	  	=RECORD_PLAY_PAUSE1_BMP
+file	  	=NULL
+commentCN 	=PLAY_PAUSE1
+commentEN 	=PLAY_PAUSE1
+
+[res_13021]
+name	  	=RECORD_QUALITY_FLAG_BMP
+file	  	=NULL
+commentCN 	=QUALITY_FLAG
+commentEN 	=QUALITY_FLAG
+
+[res_13022]
+name	  	=RECORD_BATTERY_ADD2_BMP
+file	  	=NULL
+commentCN 	=BATTERY_ADD2
+commentEN 	=BATTERY_ADD2
+
+[res_13023]
+name	  	=RECORD_DEL_SEL_1_BMP
+file	  	=NULL
+commentCN 	=DEL_SEL_1
+commentEN 	=DEL_SEL_1
+
+[res_13024]
+name	  	=RECORD_VOL_OFF_BMP
+file	  	=NULL
+commentCN 	=VOL_OFF
+commentEN 	=VOL_OFF
+
+[res_13025]
+name	  	=RECORD_ANI_7_BMP
+file	  	=NULL
+commentCN 	=ANI_7
+commentEN 	=ANI_7
+
+[res_13026]
+name	  	=RECORD_ANI_2_BMP
+file	  	=NULL
+commentCN 	=ANI_2
+commentEN 	=ANI_2
+
+[res_13027]
+name	  	=RECORD_0_BMP
+file	  	=NULL
+commentCN 	=0
+commentEN 	=0
+
+[res_13028]
+name	  	=RECORD_ANI_BG_BMP
+file	  	=NULL
+commentCN 	=ANI_BG
+commentEN 	=ANI_BG
+
+[res_13029]
+name	  	=RECORD_MUSIC_PROGRESS_BG_BMP
+file	  	=NULL
+commentCN 	=MUSIC_PROGRESS_BG
+commentEN 	=MUSIC_PROGRESS_BG
+
+[res_13030]
+name	  	=RECORD_MUSIC_PROGRESS_UP_BMP
+file	  	=NULL
+commentCN 	=MUSIC_PROGRESS_UP
+commentEN 	=MUSIC_PROGRESS_UP
+
+[res_13031]
+name	  	=RECORD_BATTERY_5_BMP
+file	  	=NULL
+commentCN 	=BATTERY_5
+commentEN 	=BATTERY_5
+
+[res_13032]
+name	  	=RECORD_LIST_BG_BMP
+file	  	=NULL
+commentCN 	=LIST_BG
+commentEN 	=LIST_BG
+
+[res_13033]
+name	  	=RECORD_PLAYBAR_BG_BMP
+file	  	=NULL
+commentCN 	=PLAYBAR_BG
+commentEN 	=PLAYBAR_BG
+
+[res_13034]
+name	  	=RECORD_ANI_5_BMP
+file	  	=NULL
+commentCN 	=ANI_5
+commentEN 	=ANI_5
+
+[res_13035]
+name	  	=RECORD_DEL_0_BMP
+file	  	=NULL
+commentCN 	=DEL_0
+commentEN 	=DEL_0
+
+[res_13036]
+name	  	=RECORD_MENU_LIST_1_BMP
+file	  	=NULL
+commentCN 	=MENU_LIST_1
+commentEN 	=MENU_LIST_1
+
+[res_13037]
+name	  	=RECORD_VOL_SPEAKER_RIGHT_BMP
+file	  	=NULL
+commentCN 	=VOL_SPEAKER_RIGHT
+commentEN 	=VOL_SPEAKER_RIGHT
+
+[res_13038]
+name	  	=RECORD_MUSIC_BOUY_BMP
+file	  	=NULL
+commentCN 	=MUSIC_BOUY
+commentEN 	=MUSIC_BOUY
+
+[res_13039]
+name	  	=RECORD_DEL_1_BMP
+file	  	=NULL
+commentCN 	=DEL_1
+commentEN 	=DEL_1
+
+[res_13040]
+name	  	=RECORD_BATTERY_4_BMP
+file	  	=NULL
+commentCN 	=BATTERY_4
+commentEN 	=BATTERY_4
+
+[res_13041]
+name	  	=RECORD_LIST_WIN_BG_BMP
+file	  	=NULL
+commentCN 	=LIST_WIN_BG
+commentEN 	=LIST_WIN_BG
+
+[res_13042]
+name	  	=RECORD_BATTERY_0_BMP
+file	  	=NULL
+commentCN 	=BATTERY_0
+commentEN 	=BATTERY_0
+
+[res_13043]
+name	  	=RECORD_MUSICPLAY_BG_BMP
+file	  	=NULL
+commentCN 	=MUSICPLAY_BG
+commentEN 	=MUSICPLAY_BG
+
+[res_13044]
+name	  	=RECORD_MUSIC_PROGRESS_FOCUS_BMP
+file	  	=NULL
+commentCN 	=MUSIC_PROGRESS_FOCUS
+commentEN 	=MUSIC_PROGRESS_FOCUS
+
+[res_13045]
+name	  	=RECORD_PLAY_START1_BMP
+file	  	=NULL
+commentCN 	=PLAY_START1
+commentEN 	=PLAY_START1
+
+[res_13046]
+name	  	=RECORD_BAR_BOTTOM_BMP
+file	  	=NULL
+commentCN 	=BAR_BOTTOM
+commentEN 	=BAR_BOTTOM
+
+[res_13047]
+name	  	=RECORD_DEL_SEL_0_BMP
+file	  	=NULL
+commentCN 	=DEL_SEL_0
+commentEN 	=DEL_SEL_0
+
+[res_13048]
+name	  	=RECORD_SEL_LIST_BMP
+file	  	=NULL
+commentCN 	=SEL_LIST
+commentEN 	=SEL_LIST
+
+[res_13049]
+name	  	=RECORD_BATTERY_2_BMP
+file	  	=NULL
+commentCN 	=BATTERY_2
+commentEN 	=BATTERY_2
+
+[res_13050]
+name	  	=RECORD_MENU_SAVE_0_BMP
+file	  	=NULL
+commentCN 	=MENU_SAVE_0
+commentEN 	=MENU_SAVE_0
+
+[res_13051]
+name	  	=RECORD_1_BMP
+file	  	=NULL
+commentCN 	=1
+commentEN 	=1
+
+[res_13052]
+name	  	=RECORD_BATTERY_NO_BMP
+file	  	=NULL
+commentCN 	=BATTERY_NO
+commentEN 	=BATTERY_NO
+
+[res_13053]
+name	  	=RECORD_66_BMP
+file	  	=NULL
+commentCN 	=66
+commentEN 	=66
+
+[res_13054]
+name	  	=RECORD_BATTERY_1_BMP
+file	  	=NULL
+commentCN 	=BATTERY_1
+commentEN 	=BATTERY_1
+
+[res_13055]
+name	  	=RECORD_BACK_0_BMP
+file	  	=NULL
+commentCN 	=BACK_0
+commentEN 	=BACK_0
+
+[res_13056]
+name	  	=RECORD_10_BMP
+file	  	=NULL
+commentCN 	=10
+commentEN 	=10
+
+[res_13057]
+name	  	=RECORD_VOL_BAR_BODY_BMP
+file	  	=NULL
+commentCN 	=VOL_BAR_BODY
+commentEN 	=VOL_BAR_BODY
+
+[res_13058]
+name	  	=RECORD_MUSIC_PROGRESS_FLAG_BMP
+file	  	=NULL
+commentCN 	=MUSIC_PROGRESS_FLAG
+commentEN 	=MUSIC_PROGRESS_FLAG
+
+[res_13059]
+name	  	=RECORD_BATTERY_ADD0_BMP
+file	  	=NULL
+commentCN 	=BATTERY_ADD0
+commentEN 	=BATTERY_ADD0
+
+[res_13060]
+name	  	=RECORD_PLAY_PAUSE_BMP
+file	  	=NULL
+commentCN 	=PLAY_PAUSE
+commentEN 	=PLAY_PAUSE
+
+[res_13061]
+name	  	=RECORD_VOL_RIGHT_BMP
+file	  	=NULL
+commentCN 	=VOL_RIGHT
+commentEN 	=VOL_RIGHT
+
+[res_13062]
+name	  	=RECORD_MUSIC_PROGRESS_DOWN_BMP
+file	  	=NULL
+commentCN 	=MUSIC_PROGRESS_DOWN
+commentEN 	=MUSIC_PROGRESS_DOWN
+
+[res_13063]
+name	  	=RECORD_BATTERY_3_BMP
+file	  	=NULL
+commentCN 	=BATTERY_3
+commentEN 	=BATTERY_3
+
+[res_13064]
+name	  	=RECORD_MENU_SAVE_1_BMP
+file	  	=NULL
+commentCN 	=MENU_SAVE_1
+commentEN 	=MENU_SAVE_1
+
+[res_13065]
+name	  	=RECORD_ANI_6_BMP
+file	  	=NULL
+commentCN 	=ANI_6
+commentEN 	=ANI_6
+
+[res_13066]
+name	  	=RECORD_ANI_1_BMP
+file	  	=NULL
+commentCN 	=ANI_1
+commentEN 	=ANI_1
+
+[res_13067]
+name	  	=RECORD_BACK_1_BMP
+file	  	=NULL
+commentCN 	=BACK_1
+commentEN 	=BACK_1
+
+[res_13068]
+name	  	=RECORD_BATTERY_ADD3_BMP
+file	  	=NULL
+commentCN 	=BATTERY_ADD3
+commentEN 	=BATTERY_ADD3
+
+[res_13069]
+name	  	=RECORD_BG0_BMP
+file	  	=NULL
+commentCN 	=BG0
+commentEN 	=BG0
+
+[res_13070]
+name	  	=RECORD_MENU_RECORD_0_BMP
+file	  	=NULL
+commentCN 	=MENU_RECORD_0
+commentEN 	=MENU_RECORD_0
+
+[res_13071]
+name	  	=RECORD_BAR_TOP_BMP
+file	  	=NULL
+commentCN 	=BAR_TOP
+commentEN 	=BAR_TOP
+
+[res_13072]
+name	  	=RECORD_PRE_1_BMP
+file	  	=NULL
+commentCN 	=PRE_1
+commentEN 	=PRE_1
+
+[res_13073]
+name	  	=RECORD_BATTERY_ADAPTER_BMP
+file	  	=NULL
+commentCN 	=BATTERY_ADAPTER
+commentEN 	=BATTERY_ADAPTER
+
+[res_13074]
+name	  	=RECORD_ANI_0_BMP
+file	  	=NULL
+commentCN 	=ANI_0
+commentEN 	=ANI_0
+
+[res_13075]
+name	  	=RECORD_MENU_BACK_1_BMP
+file	  	=NULL
+commentCN 	=MENU_BACK_1
+commentEN 	=MENU_BACK_1
+
+[res_13076]
+name	  	=RECORD_QUALITY_BK_BMP
+file	  	=NULL
+commentCN 	=QUALITY_BK
+commentEN 	=QUALITY_BK
+
+[res_13077]
+name	  	=RECORD_VOL_LEFT_BMP
+file	  	=NULL
+commentCN 	=VOL_LEFT
+commentEN 	=VOL_LEFT
+
+[res_13078]
+name	  	=RECORD_NEXT_0_BMP
+file	  	=NULL
+commentCN 	=NEXT_0
+commentEN 	=NEXT_0
+
+[res_13079]
+name	  	=RECORD_66_RIGHT_BMP
+file	  	=NULL
+commentCN 	=66_RIGHT
+commentEN 	=66_RIGHT
+
+[res_13080]
+name	  	=RECORD_PLAY_START_BMP
+file	  	=NULL
+commentCN 	=PLAY_START
+commentEN 	=PLAY_START
+
+[res_13081]
+name	  	=RECORD_MENU_LIST_0_BMP
+file	  	=NULL
+commentCN 	=MENU_LIST_0
+commentEN 	=MENU_LIST_0
+
+[res_13082]
+name	  	=RECORD_6_BMP
+file	  	=NULL
+commentCN 	=6
+commentEN 	=6
+
+[res_13083]
+name	  	=RECORD_7_BMP
+file	  	=NULL
+commentCN 	=7
+commentEN 	=7
+
+[res_13084]
+name	  	=RECORD_WKM_BMP
+file	  	=NULL
+commentCN 	=WKM
+commentEN 	=WKM
+
+[res_13085]
+name	  	=RECORD_MENU_QUALITY_0_BMP
+file	  	=NULL
+commentCN 	=MENU_QUALITY_0
+commentEN 	=MENU_QUALITY_0
+
+[res_13086]
+name	  	=RECORD_BATTERY_ADD1_BMP
+file	  	=NULL
+commentCN 	=BATTERY_ADD1
+commentEN 	=BATTERY_ADD1
+
+[res_13087]
+name	  	=RECORD_MENU_RECORD_01_BMP
+file	  	=NULL
+commentCN 	=MENU_RECORD_01
+commentEN 	=MENU_RECORD_01
+
+[res_13088]
+name	  	=RECORD_QUALITY_BK1_BMP
+file	  	=NULL
+commentCN 	=QUALITY_BK1
+commentEN 	=QUALITY_BK1
+
+[res_13089]
+name	  	=RECORD_BATTERY_ADD_BMP
+file	  	=NULL
+commentCN 	=BATTERY_ADD
+commentEN 	=BATTERY_ADD
+
+[res_13090]
+name	  	=RECORD_DEL_BOX_BMP
+file	  	=NULL
+commentCN 	=DEL_BOX
+commentEN 	=DEL_BOX
+
+[res_13091]
+name	  	=RECORD_BATTERY_ADD5_BMP
+file	  	=NULL
+commentCN 	=BATTERY_ADD5
+commentEN 	=BATTERY_ADD5
+
+[res_13092]
+name	  	=RECORD_2_BMP
+file	  	=NULL
+commentCN 	=2
+commentEN 	=2
+
+[res_13093]
+name	  	=RECORD_VOL_ON_BMP
+file	  	=NULL
+commentCN 	=VOL_ON
+commentEN 	=VOL_ON
+
+[res_13094]
+name	  	=RECORD_66_MID_BMP
+file	  	=NULL
+commentCN 	=66_MID
+commentEN 	=66_MID
+
+[res_13095]
+name	  	=RECORD_MENU_RECORD_2_BMP
+file	  	=NULL
+commentCN 	=MENU_RECORD_2
+commentEN 	=MENU_RECORD_2
+
+[res_13096]
+name	  	=RECORD_9_BMP
+file	  	=NULL
+commentCN 	=9
+commentEN 	=9
+
+[res_13097]
+name	  	=RECORD_FORMAT_BK_BMP
+file	  	=NULL
+commentCN 	=FORMAT_BK
+commentEN 	=FORMAT_BK
+
+[res_14001]
+name	  	=GAME_SELECT_BMP
+file	  	=NULL
+commentCN 	=SELECT
+commentEN 	=SELECT
+
+[res_14002]
+name	  	=GAME_SELECT_F_BMP
+file	  	=NULL
+commentCN 	=SELECT_F
+commentEN 	=SELECT_F
+
+[res_14003]
+name	  	=GAME_MSGBOXBG_BMP
+file	  	=NULL
+commentCN 	=MSGBOXBG
+commentEN 	=MSGBOXBG
+
+[res_15001]
+name	  	=DTV_ANTENNA_2_BMP
+file	  	=NULL
+commentCN 	=ANTENNA_2
+commentEN 	=ANTENNA_2
+
+[res_15002]
+name	  	=DTV_PRELIST_RADIO_BMP
+file	  	=NULL
+commentCN 	=PRELIST_RADIO
+commentEN 	=PRELIST_RADIO
+
+[res_15003]
+name	  	=DTV_SEL_NUM_9_BMP
+file	  	=NULL
+commentCN 	=SEL_NUM_9
+commentEN 	=SEL_NUM_9
+
+[res_15004]
+name	  	=DTV_SEL_NUM_NO_NUM_BMP
+file	  	=NULL
+commentCN 	=SEL_NUM_NO_NUM
+commentEN 	=SEL_NUM_NO_NUM
+
+[res_15005]
+name	  	=DTV_SEL_NUM_0_BMP
+file	  	=NULL
+commentCN 	=SEL_NUM_0
+commentEN 	=SEL_NUM_0
+
+[res_15006]
+name	  	=DTV_ANTENNA_1_BMP
+file	  	=NULL
+commentCN 	=ANTENNA_1
+commentEN 	=ANTENNA_1
+
+[res_15007]
+name	  	=DTV_SEL_NUM_6_BMP
+file	  	=NULL
+commentCN 	=SEL_NUM_6
+commentEN 	=SEL_NUM_6
+
+[res_15008]
+name	  	=DTV_CA_LEFT_BMP
+file	  	=NULL
+commentCN 	=CA_LEFT
+commentEN 	=CA_LEFT
+
+[res_15009]
+name	  	=DTV_SET_INFO_BMP
+file	  	=NULL
+commentCN 	=SET_INFO
+commentEN 	=SET_INFO
+
+[res_15010]
+name	  	=DTV_TIPS_BG_BMP
+file	  	=NULL
+commentCN 	=TIPS_BG
+commentEN 	=TIPS_BG
+
+[res_15011]
+name	  	=DTV_TIP_F_BMP
+file	  	=NULL
+commentCN 	=TIP_F
+commentEN 	=TIP_F
+
+[res_15012]
+name	  	=DTV_F_ICON_L_BMP
+file	  	=NULL
+commentCN 	=F_ICON_L
+commentEN 	=F_ICON_L
+
+[res_15013]
+name	  	=DTV_UF_ICON_L_BMP
+file	  	=NULL
+commentCN 	=UF_ICON_L
+commentEN 	=UF_ICON_L
+
+[res_15014]
+name	  	=DTV_TIP_UF_BMP
+file	  	=NULL
+commentCN 	=TIP_UF
+commentEN 	=TIP_UF
+
+[res_15015]
+name	  	=DTV_INFO_BG_BMP
+file	  	=NULL
+commentCN 	=INFO_BG
+commentEN 	=INFO_BG
+
+[res_15016]
+name	  	=DTV_CA_RIGHT_BMP
+file	  	=NULL
+commentCN 	=CA_RIGHT
+commentEN 	=CA_RIGHT
+
+[res_15017]
+name	  	=DTV_SEL_NUM_7_BMP
+file	  	=NULL
+commentCN 	=SEL_NUM_7
+commentEN 	=SEL_NUM_7
+
+[res_15018]
+name	  	=DTV_SETTING_TOP_BMP
+file	  	=NULL
+commentCN 	=SETTING_TOP
+commentEN 	=SETTING_TOP
+
+[res_15019]
+name	  	=DTV_F_ICON_R_BMP
+file	  	=NULL
+commentCN 	=F_ICON_R
+commentEN 	=F_ICON_R
+
+[res_15020]
+name	  	=DTV_ANTENNA_5_BMP
+file	  	=NULL
+commentCN 	=ANTENNA_5
+commentEN 	=ANTENNA_5
+
+[res_15021]
+name	  	=DTV_ANTENNA_4_BMP
+file	  	=NULL
+commentCN 	=ANTENNA_4
+commentEN 	=ANTENNA_4
+
+[res_15022]
+name	  	=DTV_SEL_NUM_1_BMP
+file	  	=NULL
+commentCN 	=SEL_NUM_1
+commentEN 	=SEL_NUM_1
+
+[res_15023]
+name	  	=DTV_SEL_NUM_4_BMP
+file	  	=NULL
+commentCN 	=SEL_NUM_4
+commentEN 	=SEL_NUM_4
+
+[res_15024]
+name	  	=DTV_PRELIST_RADIO_UN_BMP
+file	  	=NULL
+commentCN 	=PRELIST_RADIO_UN
+commentEN 	=PRELIST_RADIO_UN
+
+[res_15025]
+name	  	=DTV_ANTENNA_3_BMP
+file	  	=NULL
+commentCN 	=ANTENNA_3
+commentEN 	=ANTENNA_3
+
+[res_15026]
+name	  	=DTV_ANTENNA_0_BMP
+file	  	=NULL
+commentCN 	=ANTENNA_0
+commentEN 	=ANTENNA_0
+
+[res_15027]
+name	  	=DTV_UF_ICON_R_BMP
+file	  	=NULL
+commentCN 	=UF_ICON_R
+commentEN 	=UF_ICON_R
+
+[res_15028]
+name	  	=DTV_SEL_NUM_BG_BMP
+file	  	=NULL
+commentCN 	=SEL_NUM_BG
+commentEN 	=SEL_NUM_BG
+
+[res_15029]
+name	  	=DTV_BATTERY0_BMP
+file	  	=NULL
+commentCN 	=BATTERY0
+commentEN 	=BATTERY0
+
+[res_15030]
+name	  	=DTV_SEL_NUM_8_BMP
+file	  	=NULL
+commentCN 	=SEL_NUM_8
+commentEN 	=SEL_NUM_8
+
+[res_15031]
+name	  	=DTV_PRELIST_UF_BMP
+file	  	=NULL
+commentCN 	=PRELIST_UF
+commentEN 	=PRELIST_UF
+
+[res_15032]
+name	  	=DTV_PRELIST_LOCK_UN_BMP
+file	  	=NULL
+commentCN 	=PRELIST_LOCK_UN
+commentEN 	=PRELIST_LOCK_UN
+
+[res_15033]
+name	  	=DTV_SEL_NUM_2_BMP
+file	  	=NULL
+commentCN 	=SEL_NUM_2
+commentEN 	=SEL_NUM_2
+
+[res_15034]
+name	  	=DTV_SEL_NUM_5_BMP
+file	  	=NULL
+commentCN 	=SEL_NUM_5
+commentEN 	=SEL_NUM_5
+
+[res_15035]
+name	  	=DTV_PRELIST_LOCK_BMP
+file	  	=NULL
+commentCN 	=PRELIST_LOCK
+commentEN 	=PRELIST_LOCK
+
+[res_15036]
+name	  	=DTV_PRELIST_F_BMP
+file	  	=NULL
+commentCN 	=PRELIST_F
+commentEN 	=PRELIST_F
+
+[res_15037]
+name	  	=DTV_RADIO_BG_BMP
+file	  	=NULL
+commentCN 	=RADIO_BG
+commentEN 	=RADIO_BG
+
+[res_15038]
+name	  	=DTV_SCAN_PROC_BMP
+file	  	=NULL
+commentCN 	=SCAN_PROC
+commentEN 	=SCAN_PROC
+
+[res_15039]
+name	  	=DTV_SEL_NUM_3_BMP
+file	  	=NULL
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+se/livedesk/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+k/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+NUM_3
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+UM_3
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+UM_3
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+UM_3
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+L_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+M_3
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+M_3
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+UM_3
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+UM_3
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+SEL_NUM_3
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+L_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+L_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_NUM_3
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+EN 	=SEL_NUM_3
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+L_NUM_3
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+M_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+UM_3
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+M_3
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+M_3
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+	=SEL_NUM_3
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+UM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+M_3
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+M_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+UM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+UM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+NUM_3
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+ 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+M_3
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+M_3
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+UM_3
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+UM_3
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+beetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+M_3
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+eetles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+M_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+M_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+M_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+M_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+M_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+UM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+M_3
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+M_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+M_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+M_3
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+3
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tles/sun20iw1_app/res/theme/./dtv/sel_num_3.bmp
+commentCN 	=SEL_NUM_3
+commentEN 	=SEL_NUM_3
+
+
+
+
+
+
+

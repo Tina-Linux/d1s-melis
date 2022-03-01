@@ -1,0 +1,582 @@
+[res_13001]
+name	  	=RECORD_ANI_3_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/ani_3.bmp
+commentCN 	=ANI_3
+commentEN 	=ANI_3
+
+[res_13002]
+name	  	=RECORD_MENU_QUALITY_1_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/menu_quality_1.bmp
+commentCN 	=MENU_QUALITY_1
+commentEN 	=MENU_QUALITY_1
+
+[res_13003]
+name	  	=RECORD_MUSIC_PARTICLE_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/music_particle.bmp
+commentCN 	=MUSIC_PARTICLE
+commentEN 	=MUSIC_PARTICLE
+
+[res_13004]
+name	  	=RECORD_MUSICLIST_BG_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/musicList_bg.bmp
+commentCN 	=MUSICLIST_BG
+commentEN 	=MUSICLIST_BG
+
+[res_13005]
+name	  	=RECORD_BATTERY_ADD4_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/battery_add4.bmp
+commentCN 	=BATTERY_ADD4
+commentEN 	=BATTERY_ADD4
+
+[res_13006]
+name	  	=RECORD_8_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/8.bmp
+commentCN 	=8
+commentEN 	=8
+
+[res_13007]
+name	  	=RECORD_MENU_BACK_0_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/menu_back_0.bmp
+commentCN 	=MENU_BACK_0
+commentEN 	=MENU_BACK_0
+
+[res_13008]
+name	  	=RECORD_VOL_BAR_BG_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/vol_bar_bg.bmp
+commentCN 	=VOL_BAR_BG
+commentEN 	=VOL_BAR_BG
+
+[res_13009]
+name	  	=RECORD_ANI_4_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/ani_4.bmp
+commentCN 	=ANI_4
+commentEN 	=ANI_4
+
+[res_13010]
+name	  	=RECORD_PRE_0_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/pre_0.bmp
+commentCN 	=PRE_0
+commentEN 	=PRE_0
+
+[res_13011]
+name	  	=RECORD_4_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/4.bmp
+commentCN 	=4
+commentEN 	=4
+
+[res_13012]
+name	  	=RECORD_5_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/5.bmp
+commentCN 	=5
+commentEN 	=5
+
+[res_13013]
+name	  	=RECORD_VOL_MID_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/vol_mid.bmp
+commentCN 	=VOL_MID
+commentEN 	=VOL_MID
+
+[res_13014]
+name	  	=RECORD_66_FLAG_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/66_flag.bmp
+commentCN 	=66_FLAG
+commentEN 	=66_FLAG
+
+[res_13015]
+name	  	=RECORD_NEXT_1_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/next_1.bmp
+commentCN 	=NEXT_1
+commentEN 	=NEXT_1
+
+[res_13016]
+name	  	=RECORD_MENU_RECORD_1_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/menu_record_1.bmp
+commentCN 	=MENU_RECORD_1
+commentEN 	=MENU_RECORD_1
+
+[res_13017]
+name	  	=RECORD_66_LEFT_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/66_left.bmp
+commentCN 	=66_LEFT
+commentEN 	=66_LEFT
+
+[res_13018]
+name	  	=RECORD_BG_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/bg.bmp
+commentCN 	=BG
+commentEN 	=BG
+
+[res_13019]
+name	  	=RECORD_3_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/3.bmp
+commentCN 	=3
+commentEN 	=3
+
+[res_13020]
+name	  	=RECORD_PLAY_PAUSE1_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/play_pause1.bmp
+commentCN 	=PLAY_PAUSE1
+commentEN 	=PLAY_PAUSE1
+
+[res_13021]
+name	  	=RECORD_QUALITY_FLAG_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/quality_flag.bmp
+commentCN 	=QUALITY_FLAG
+commentEN 	=QUALITY_FLAG
+
+[res_13022]
+name	  	=RECORD_BATTERY_ADD2_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/battery_add2.bmp
+commentCN 	=BATTERY_ADD2
+commentEN 	=BATTERY_ADD2
+
+[res_13023]
+name	  	=RECORD_DEL_SEL_1_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/del_sel_1.bmp
+commentCN 	=DEL_SEL_1
+commentEN 	=DEL_SEL_1
+
+[res_13024]
+name	  	=RECORD_VOL_OFF_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/vol_off.bmp
+commentCN 	=VOL_OFF
+commentEN 	=VOL_OFF
+
+[res_13025]
+name	  	=RECORD_ANI_7_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/ani_7.bmp
+commentCN 	=ANI_7
+commentEN 	=ANI_7
+
+[res_13026]
+name	  	=RECORD_ANI_2_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/ani_2.bmp
+commentCN 	=ANI_2
+commentEN 	=ANI_2
+
+[res_13027]
+name	  	=RECORD_0_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/0.bmp
+commentCN 	=0
+commentEN 	=0
+
+[res_13028]
+name	  	=RECORD_ANI_BG_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/ani_bg.bmp
+commentCN 	=ANI_BG
+commentEN 	=ANI_BG
+
+[res_13029]
+name	  	=RECORD_MUSIC_PROGRESS_BG_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/music_progress_bg.bmp
+commentCN 	=MUSIC_PROGRESS_BG
+commentEN 	=MUSIC_PROGRESS_BG
+
+[res_13030]
+name	  	=RECORD_MUSIC_PROGRESS_UP_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/music_progress_up.bmp
+commentCN 	=MUSIC_PROGRESS_UP
+commentEN 	=MUSIC_PROGRESS_UP
+
+[res_13031]
+name	  	=RECORD_BATTERY_5_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/battery_5.bmp
+commentCN 	=BATTERY_5
+commentEN 	=BATTERY_5
+
+[res_13032]
+name	  	=RECORD_LIST_BG_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/list_bg.bmp
+commentCN 	=LIST_BG
+commentEN 	=LIST_BG
+
+[res_13033]
+name	  	=RECORD_PLAYBAR_BG_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/playbar_bg.bmp
+commentCN 	=PLAYBAR_BG
+commentEN 	=PLAYBAR_BG
+
+[res_13034]
+name	  	=RECORD_ANI_5_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/ani_5.bmp
+commentCN 	=ANI_5
+commentEN 	=ANI_5
+
+[res_13035]
+name	  	=RECORD_DEL_0_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/del_0.bmp
+commentCN 	=DEL_0
+commentEN 	=DEL_0
+
+[res_13036]
+name	  	=RECORD_MENU_LIST_1_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/menu_list_1.bmp
+commentCN 	=MENU_LIST_1
+commentEN 	=MENU_LIST_1
+
+[res_13037]
+name	  	=RECORD_VOL_SPEAKER_RIGHT_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/vol_speaker_right.bmp
+commentCN 	=VOL_SPEAKER_RIGHT
+commentEN 	=VOL_SPEAKER_RIGHT
+
+[res_13038]
+name	  	=RECORD_MUSIC_BOUY_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/music_bouy.bmp
+commentCN 	=MUSIC_BOUY
+commentEN 	=MUSIC_BOUY
+
+[res_13039]
+name	  	=RECORD_DEL_1_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/del_1.bmp
+commentCN 	=DEL_1
+commentEN 	=DEL_1
+
+[res_13040]
+name	  	=RECORD_BATTERY_4_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/battery_4.bmp
+commentCN 	=BATTERY_4
+commentEN 	=BATTERY_4
+
+[res_13041]
+name	  	=RECORD_LIST_WIN_BG_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/list_win_bg.bmp
+commentCN 	=LIST_WIN_BG
+commentEN 	=LIST_WIN_BG
+
+[res_13042]
+name	  	=RECORD_BATTERY_0_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/battery_0.bmp
+commentCN 	=BATTERY_0
+commentEN 	=BATTERY_0
+
+[res_13043]
+name	  	=RECORD_MUSICPLAY_BG_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/musicPlay_bg.bmp
+commentCN 	=MUSICPLAY_BG
+commentEN 	=MUSICPLAY_BG
+
+[res_13044]
+name	  	=RECORD_MUSIC_PROGRESS_FOCUS_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/music_progress_focus.bmp
+commentCN 	=MUSIC_PROGRESS_FOCUS
+commentEN 	=MUSIC_PROGRESS_FOCUS
+
+[res_13045]
+name	  	=RECORD_PLAY_START1_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/play_start1.bmp
+commentCN 	=PLAY_START1
+commentEN 	=PLAY_START1
+
+[res_13046]
+name	  	=RECORD_BAR_BOTTOM_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/bar_bottom.bmp
+commentCN 	=BAR_BOTTOM
+commentEN 	=BAR_BOTTOM
+
+[res_13047]
+name	  	=RECORD_DEL_SEL_0_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/del_sel_0.bmp
+commentCN 	=DEL_SEL_0
+commentEN 	=DEL_SEL_0
+
+[res_13048]
+name	  	=RECORD_SEL_LIST_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/sel_list.bmp
+commentCN 	=SEL_LIST
+commentEN 	=SEL_LIST
+
+[res_13049]
+name	  	=RECORD_BATTERY_2_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/battery_2.bmp
+commentCN 	=BATTERY_2
+commentEN 	=BATTERY_2
+
+[res_13050]
+name	  	=RECORD_MENU_SAVE_0_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/menu_save_0.bmp
+commentCN 	=MENU_SAVE_0
+commentEN 	=MENU_SAVE_0
+
+[res_13051]
+name	  	=RECORD_1_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/1.bmp
+commentCN 	=1
+commentEN 	=1
+
+[res_13052]
+name	  	=RECORD_BATTERY_NO_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/battery_no.bmp
+commentCN 	=BATTERY_NO
+commentEN 	=BATTERY_NO
+
+[res_13053]
+name	  	=RECORD_66_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/66.bmp
+commentCN 	=66
+commentEN 	=66
+
+[res_13054]
+name	  	=RECORD_BATTERY_1_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/battery_1.bmp
+commentCN 	=BATTERY_1
+commentEN 	=BATTERY_1
+
+[res_13055]
+name	  	=RECORD_BACK_0_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/back_0.bmp
+commentCN 	=BACK_0
+commentEN 	=BACK_0
+
+[res_13056]
+name	  	=RECORD_10_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/10.bmp
+commentCN 	=10
+commentEN 	=10
+
+[res_13057]
+name	  	=RECORD_VOL_BAR_BODY_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/vol_bar_body.bmp
+commentCN 	=VOL_BAR_BODY
+commentEN 	=VOL_BAR_BODY
+
+[res_13058]
+name	  	=RECORD_MUSIC_PROGRESS_FLAG_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/music_progress_flag.bmp
+commentCN 	=MUSIC_PROGRESS_FLAG
+commentEN 	=MUSIC_PROGRESS_FLAG
+
+[res_13059]
+name	  	=RECORD_BATTERY_ADD0_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/battery_add0.bmp
+commentCN 	=BATTERY_ADD0
+commentEN 	=BATTERY_ADD0
+
+[res_13060]
+name	  	=RECORD_PLAY_PAUSE_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/play_pause.bmp
+commentCN 	=PLAY_PAUSE
+commentEN 	=PLAY_PAUSE
+
+[res_13061]
+name	  	=RECORD_VOL_RIGHT_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/vol_right.bmp
+commentCN 	=VOL_RIGHT
+commentEN 	=VOL_RIGHT
+
+[res_13062]
+name	  	=RECORD_MUSIC_PROGRESS_DOWN_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/music_progress_down.bmp
+commentCN 	=MUSIC_PROGRESS_DOWN
+commentEN 	=MUSIC_PROGRESS_DOWN
+
+[res_13063]
+name	  	=RECORD_BATTERY_3_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/battery_3.bmp
+commentCN 	=BATTERY_3
+commentEN 	=BATTERY_3
+
+[res_13064]
+name	  	=RECORD_MENU_SAVE_1_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/menu_save_1.bmp
+commentCN 	=MENU_SAVE_1
+commentEN 	=MENU_SAVE_1
+
+[res_13065]
+name	  	=RECORD_ANI_6_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/ani_6.bmp
+commentCN 	=ANI_6
+commentEN 	=ANI_6
+
+[res_13066]
+name	  	=RECORD_ANI_1_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/ani_1.bmp
+commentCN 	=ANI_1
+commentEN 	=ANI_1
+
+[res_13067]
+name	  	=RECORD_BACK_1_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/back_1.bmp
+commentCN 	=BACK_1
+commentEN 	=BACK_1
+
+[res_13068]
+name	  	=RECORD_BATTERY_ADD3_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/battery_add3.bmp
+commentCN 	=BATTERY_ADD3
+commentEN 	=BATTERY_ADD3
+
+[res_13069]
+name	  	=RECORD_BG0_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/bg0.bmp
+commentCN 	=BG0
+commentEN 	=BG0
+
+[res_13070]
+name	  	=RECORD_MENU_RECORD_0_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/menu_record_0.bmp
+commentCN 	=MENU_RECORD_0
+commentEN 	=MENU_RECORD_0
+
+[res_13071]
+name	  	=RECORD_BAR_TOP_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/bar_top.bmp
+commentCN 	=BAR_TOP
+commentEN 	=BAR_TOP
+
+[res_13072]
+name	  	=RECORD_PRE_1_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/pre_1.bmp
+commentCN 	=PRE_1
+commentEN 	=PRE_1
+
+[res_13073]
+name	  	=RECORD_BATTERY_ADAPTER_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/battery_adapter.bmp
+commentCN 	=BATTERY_ADAPTER
+commentEN 	=BATTERY_ADAPTER
+
+[res_13074]
+name	  	=RECORD_ANI_0_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/ani_0.bmp
+commentCN 	=ANI_0
+commentEN 	=ANI_0
+
+[res_13075]
+name	  	=RECORD_MENU_BACK_1_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/menu_back_1.bmp
+commentCN 	=MENU_BACK_1
+commentEN 	=MENU_BACK_1
+
+[res_13076]
+name	  	=RECORD_QUALITY_BK_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/quality_bk.bmp
+commentCN 	=QUALITY_BK
+commentEN 	=QUALITY_BK
+
+[res_13077]
+name	  	=RECORD_VOL_LEFT_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/vol_left.bmp
+commentCN 	=VOL_LEFT
+commentEN 	=VOL_LEFT
+
+[res_13078]
+name	  	=RECORD_NEXT_0_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/next_0.bmp
+commentCN 	=NEXT_0
+commentEN 	=NEXT_0
+
+[res_13079]
+name	  	=RECORD_66_RIGHT_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/66_right.bmp
+commentCN 	=66_RIGHT
+commentEN 	=66_RIGHT
+
+[res_13080]
+name	  	=RECORD_PLAY_START_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/play_start.bmp
+commentCN 	=PLAY_START
+commentEN 	=PLAY_START
+
+[res_13081]
+name	  	=RECORD_MENU_LIST_0_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/menu_list_0.bmp
+commentCN 	=MENU_LIST_0
+commentEN 	=MENU_LIST_0
+
+[res_13082]
+name	  	=RECORD_6_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/6.bmp
+commentCN 	=6
+commentEN 	=6
+
+[res_13083]
+name	  	=RECORD_7_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/7.bmp
+commentCN 	=7
+commentEN 	=7
+
+[res_13084]
+name	  	=RECORD_WKM_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/wkm.bmp
+commentCN 	=WKM
+commentEN 	=WKM
+
+[res_13085]
+name	  	=RECORD_MENU_QUALITY_0_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/menu_quality_0.bmp
+commentCN 	=MENU_QUALITY_0
+commentEN 	=MENU_QUALITY_0
+
+[res_13086]
+name	  	=RECORD_BATTERY_ADD1_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/battery_add1.bmp
+commentCN 	=BATTERY_ADD1
+commentEN 	=BATTERY_ADD1
+
+[res_13087]
+name	  	=RECORD_MENU_RECORD_01_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/menu_record_01.bmp
+commentCN 	=MENU_RECORD_01
+commentEN 	=MENU_RECORD_01
+
+[res_13088]
+name	  	=RECORD_QUALITY_BK1_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/quality_bk1.bmp
+commentCN 	=QUALITY_BK1
+commentEN 	=QUALITY_BK1
+
+[res_13089]
+name	  	=RECORD_BATTERY_ADD_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/battery_add.bmp
+commentCN 	=BATTERY_ADD
+commentEN 	=BATTERY_ADD
+
+[res_13090]
+name	  	=RECORD_DEL_BOX_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/del_box.bmp
+commentCN 	=DEL_BOX
+commentEN 	=DEL_BOX
+
+[res_13091]
+name	  	=RECORD_BATTERY_ADD5_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/battery_add5.bmp
+commentCN 	=BATTERY_ADD5
+commentEN 	=BATTERY_ADD5
+
+[res_13092]
+name	  	=RECORD_2_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/2.bmp
+commentCN 	=2
+commentEN 	=2
+
+[res_13093]
+name	  	=RECORD_VOL_ON_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/vol_on.bmp
+commentCN 	=VOL_ON
+commentEN 	=VOL_ON
+
+[res_13094]
+name	  	=RECORD_66_MID_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/66_mid.bmp
+commentCN 	=66_MID
+commentEN 	=66_MID
+
+[res_13095]
+name	  	=RECORD_MENU_RECORD_2_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/menu_record_2.bmp
+commentCN 	=MENU_RECORD_2
+commentEN 	=MENU_RECORD_2
+
+[res_13096]
+name	  	=RECORD_9_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/9.bmp
+commentCN 	=9
+commentEN 	=9
+
+[res_13097]
+name	  	=RECORD_FORMAT_BK_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./record/format_bk.bmp
+commentCN 	=FORMAT_BK
+commentEN 	=FORMAT_BK
+

@@ -1,0 +1,384 @@
+[res_5001]
+name	  	=SETTING_RETURN_FCS_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/return_fcs.bmp
+commentCN 	=RETURN_FCS
+commentEN 	=RETURN_FCS
+
+[res_5002]
+name	  	=SETTING_NEW_ITEM_L_FCS_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/new_item_l_fcs.bmp
+commentCN 	=NEW_ITEM_L_FCS
+commentEN 	=NEW_ITEM_L_FCS
+
+[res_5003]
+name	  	=SETTING_8_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/8.bmp
+commentCN 	=8
+commentEN 	=8
+
+[res_5004]
+name	  	=SETTING_RETURN_UFCS_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/return_ufcs.bmp
+commentCN 	=RETURN_UFCS
+commentEN 	=RETURN_UFCS
+
+[res_5005]
+name	  	=SETTING_NEW_SET_BUTT_R_F_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/new_set_butt_r_f.bmp
+commentCN 	=NEW_SET_BUTT_R_F
+commentEN 	=NEW_SET_BUTT_R_F
+
+[res_5006]
+name	  	=SETTING_NEW_SET_BUTT_L_F_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/new_set_butt_l_f.bmp
+commentCN 	=NEW_SET_BUTT_L_F
+commentEN 	=NEW_SET_BUTT_L_F
+
+[res_5007]
+name	  	=SETTING_4_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/4.bmp
+commentCN 	=4
+commentEN 	=4
+
+[res_5008]
+name	  	=SETTING_SET_BSYSSE_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/set_bsysse.bmp
+commentCN 	=SET_BSYSSE
+commentEN 	=SET_BSYSSE
+
+[res_5009]
+name	  	=SETTING_5_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/5.bmp
+commentCN 	=5
+commentEN 	=5
+
+[res_5010]
+name	  	=SETTING_NEW_ITEM_R_FCS_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/new_item_r_fcs.bmp
+commentCN 	=NEW_ITEM_R_FCS
+commentEN 	=NEW_ITEM_R_FCS
+
+[res_5011]
+name	  	=SETTING_BG_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/bg.bmp
+commentCN 	=BG
+commentEN 	=BG
+
+[res_5012]
+name	  	=SETTING_3_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/3.bmp
+commentCN 	=3
+commentEN 	=3
+
+[res_5013]
+name	  	=SETTING_LONG_STR_BG_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/long_str_bg.bmp
+commentCN 	=LONG_STR_BG
+commentEN 	=LONG_STR_BG
+
+[res_5014]
+name	  	=SETTING_SET_INFO_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/set_info.bmp
+commentCN 	=SET_INFO
+commentEN 	=SET_INFO
+
+[res_5015]
+name	  	=SETTING_0_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/0.bmp
+commentCN 	=0
+commentEN 	=0
+
+[res_5016]
+name	  	=SETTING_OK_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/OK.bmp
+commentCN 	=OK
+commentEN 	=OK
+
+[res_5017]
+name	  	=SETTING_TIP_F_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/tip_f.bmp
+commentCN 	=TIP_F
+commentEN 	=TIP_F
+
+[res_5018]
+name	  	=SETTING_SET_TIPS_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/set_tips.bmp
+commentCN 	=SET_TIPS
+commentEN 	=SET_TIPS
+
+[res_5019]
+name	  	=SETTING_WINDOW_BG_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/window_bg.bmp
+commentCN 	=WINDOW_BG
+commentEN 	=WINDOW_BG
+
+[res_5020]
+name	  	=SETTING_NEW_POWER_FLAG_F_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/new_power_flag_f.bmp
+commentCN 	=NEW_POWER_FLAG_F
+commentEN 	=NEW_POWER_FLAG_F
+
+[res_5021]
+name	  	=SETTING_NEW_ALARM_FLAG_UF_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/new_alarm_flag_uf.bmp
+commentCN 	=NEW_ALARM_FLAG_UF
+commentEN 	=NEW_ALARM_FLAG_UF
+
+[res_5022]
+name	  	=SETTING_DOWN_F_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/down_f.bmp
+commentCN 	=DOWN_F
+commentEN 	=DOWN_F
+
+[res_5023]
+name	  	=SETTING_NEW_SCROLL_BLOCK_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/new_scroll_block.bmp
+commentCN 	=NEW_SCROLL_BLOCK
+commentEN 	=NEW_SCROLL_BLOCK
+
+[res_5024]
+name	  	=SETTING_NEW_POWER_FLAG_UF_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/new_power_flag_uf.bmp
+commentCN 	=NEW_POWER_FLAG_UF
+commentEN 	=NEW_POWER_FLAG_UF
+
+[res_5025]
+name	  	=SETTING_SET_BUTT_LF_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/set_butt_lf.bmp
+commentCN 	=SET_BUTT_LF
+commentEN 	=SET_BUTT_LF
+
+[res_5026]
+name	  	=SETTING_NEW_SCROLL_BG_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/new_scroll_bg.bmp
+commentCN 	=NEW_SCROLL_BG
+commentEN 	=NEW_SCROLL_BG
+
+[res_5027]
+name	  	=SETTING_CLOCK_BG_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/clock_bg.bmp
+commentCN 	=CLOCK_BG
+commentEN 	=CLOCK_BG
+
+[res_5028]
+name	  	=SETTING_SET_BUTT_RF_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/set_butt_rf.bmp
+commentCN 	=SET_BUTT_RF
+commentEN 	=SET_BUTT_RF
+
+[res_5029]
+name	  	=SETTING_GENERAL_ICON_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/general_icon.bmp
+commentCN 	=GENERAL_ICON
+commentEN 	=GENERAL_ICON
+
+[res_5030]
+name	  	=SETTING_NEW_SET_FLAG_UF_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/new_set_flag_uf.bmp
+commentCN 	=NEW_SET_FLAG_UF
+commentEN 	=NEW_SET_FLAG_UF
+
+[res_5031]
+name	  	=SETTING_NEW_ALARM_FLAG_F_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/new_alarm_flag_f.bmp
+commentCN 	=NEW_ALARM_FLAG_F
+commentEN 	=NEW_ALARM_FLAG_F
+
+[res_5032]
+name	  	=SETTING_NEW_ITEM_L_UFCS_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/new_item_l_ufcs.bmp
+commentCN 	=NEW_ITEM_L_UFCS
+commentEN 	=NEW_ITEM_L_UFCS
+
+[res_5033]
+name	  	=SETTING_PAGE_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/page.bmp
+commentCN 	=PAGE
+commentEN 	=PAGE
+
+[res_5034]
+name	  	=SETTING_NEW_WINDOW_BG_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/new_window_bg.bmp
+commentCN 	=NEW_WINDOW_BG
+commentEN 	=NEW_WINDOW_BG
+
+[res_5035]
+name	  	=SETTING_1_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/1.bmp
+commentCN 	=1
+commentEN 	=1
+
+[res_5036]
+name	  	=SETTING_POWER_MANAGEMENT_ICON_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/power_management_icon.bmp
+commentCN 	=POWER_MANAGEMENT_ICON
+commentEN 	=POWER_MANAGEMENT_ICON
+
+[res_5037]
+name	  	=SETTING_UP_F_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/up_f.bmp
+commentCN 	=UP_F
+commentEN 	=UP_F
+
+[res_5038]
+name	  	=SETTING_NEW_ITEM_R_UFCS_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/new_item_r_ufcs.bmp
+commentCN 	=NEW_ITEM_R_UFCS
+commentEN 	=NEW_ITEM_R_UFCS
+
+[res_5039]
+name	  	=SETTING_SET_SETICON00_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/set_seticon00.bmp
+commentCN 	=SET_SETICON00
+commentEN 	=SET_SETICON00
+
+[res_5040]
+name	  	=SETTING_BUTTON_UF_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/button_uf.bmp
+commentCN 	=BUTTON_UF
+commentEN 	=BUTTON_UF
+
+[res_5041]
+name	  	=SETTING_NEW_SET_BUTT_L_UF_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/new_set_butt_l_uf.bmp
+commentCN 	=NEW_SET_BUTT_L_UF
+commentEN 	=NEW_SET_BUTT_L_UF
+
+[res_5042]
+name	  	=SETTING_LIST_ITEM_FOCUS_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/list_item_focus.bmp
+commentCN 	=LIST_ITEM_FOCUS
+commentEN 	=LIST_ITEM_FOCUS
+
+[res_5043]
+name	  	=SETTING_DOWN_UNF_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/down_unf.bmp
+commentCN 	=DOWN_UNF
+commentEN 	=DOWN_UNF
+
+[res_5044]
+name	  	=SETTING_BUTTON_FC_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/button_fc.bmp
+commentCN 	=BUTTON_FC
+commentEN 	=BUTTON_FC
+
+[res_5045]
+name	  	=SETTING_SET_BUTT_R_F_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/set_butt_r_f.bmp
+commentCN 	=SET_BUTT_R_F
+commentEN 	=SET_BUTT_R_F
+
+[res_5046]
+name	  	=SETTING_LEFT_BG_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/LEFT_BG.bmp
+commentCN 	=LEFT_BG
+commentEN 	=LEFT_BG
+
+[res_5047]
+name	  	=SETTING_UP_UNF_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/up_unf.bmp
+commentCN 	=UP_UNF
+commentEN 	=UP_UNF
+
+[res_5048]
+name	  	=SETTING_SET_BUTT_L_UF_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/set_butt_l_uf.bmp
+commentCN 	=SET_BUTT_L_UF
+commentEN 	=SET_BUTT_L_UF
+
+[res_5049]
+name	  	=SETTING_SET_ITEM_F_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/set_item_f.bmp
+commentCN 	=SET_ITEM_F
+commentEN 	=SET_ITEM_F
+
+[res_5050]
+name	  	=SETTING_TIP_UF_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/tip_uf.bmp
+commentCN 	=TIP_UF
+commentEN 	=TIP_UF
+
+[res_5051]
+name	  	=SETTING_SET_BSYSSET_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/set_bsysset.bmp
+commentCN 	=SET_BSYSSET
+commentEN 	=SET_BSYSSET
+
+[res_5052]
+name	  	=SETTING_GAME_ITEM_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/game_item.bmp
+commentCN 	=GAME_ITEM
+commentEN 	=GAME_ITEM
+
+[res_5053]
+name	  	=SETTING_SET_BOTTOM_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/set_bottom.bmp
+commentCN 	=SET_BOTTOM
+commentEN 	=SET_BOTTOM
+
+[res_5054]
+name	  	=SETTING_NEW_SET_BUTT_R_UF_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/new_set_butt_r_uf.bmp
+commentCN 	=NEW_SET_BUTT_R_UF
+commentEN 	=NEW_SET_BUTT_R_UF
+
+[res_5055]
+name	  	=SETTING_SET_BUTT_R_UF_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/set_butt_r_uf.bmp
+commentCN 	=SET_BUTT_R_UF
+commentEN 	=SET_BUTT_R_UF
+
+[res_5056]
+name	  	=SETTING_SET_BUTT_L_F_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/set_butt_l_f.bmp
+commentCN 	=SET_BUTT_L_F
+commentEN 	=SET_BUTT_L_F
+
+[res_5057]
+name	  	=SETTING_6_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/6.bmp
+commentCN 	=6
+commentEN 	=6
+
+[res_5058]
+name	  	=SETTING_7_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/7.bmp
+commentCN 	=7
+commentEN 	=7
+
+[res_5059]
+name	  	=SETTING_WKM_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/wkm.bmp
+commentCN 	=WKM
+commentEN 	=WKM
+
+[res_5060]
+name	  	=SETTING_NEW_SET_FLAG_F_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/new_set_flag_f.bmp
+commentCN 	=NEW_SET_FLAG_F
+commentEN 	=NEW_SET_FLAG_F
+
+[res_5061]
+name	  	=SETTING_2_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/2.bmp
+commentCN 	=2
+commentEN 	=2
+
+[res_5062]
+name	  	=SETTING_SYS_INFO_TIPS_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/sys_info_tips.bmp
+commentCN 	=SYS_INFO_TIPS
+commentEN 	=SYS_INFO_TIPS
+
+[res_5063]
+name	  	=SETTING_SET_ITEM_UFCS_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/set_item_ufcs.bmp
+commentCN 	=SET_ITEM_UFCS
+commentEN 	=SET_ITEM_UFCS
+
+[res_5064]
+name	  	=SETTING_9_BMP
+file	  	=/home/yuzuki/WorkSpace/melis-v3.0/melis-4.x-release/livedesk/beetles/sun20iw1_app/res/theme/./setting/9.bmp
+commentCN 	=9
+commentEN 	=9
+
