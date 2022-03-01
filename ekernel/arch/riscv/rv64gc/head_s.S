@@ -3,12 +3,12 @@
  *
  *       Filename:  startup_gcc.S
  *
- *    Description:  bringup for f133.
+ *    Description:  bringup for D1s.
  *
  *        Version:  Melis3.0 
  *         Create:  2020-06-24 08:58:38
  *       Revision:  none
- *       Compiler:  GCC:version 7.2.1 20170904 (release),ARM/embedded-7-branch revision 255204
+ *       Compiler:  thead
  *
  *         Author:  caozilong@allwinnertech.com
  *   Organization:  BU1-PSW
