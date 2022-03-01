@@ -18,7 +18,7 @@
 #define AUDIO_MICIN_VOL		"MIC1 gain volume"          // set record volume
 #define AUDIO_LINEININ_VOL  "LINEIN gain volume"        // set record volume
 
-// for F133
+// for D1s
 // for play
 #define AUDIO_DACL_VOL      "DACL digital volume"       // set play volume
 #define AUDIO_DACR_VOL      "DACR digital volume"       // set play volume

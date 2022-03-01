@@ -1,180 +1,180 @@
 [res_1]
 name	  	=INIT_CHARGE_BMP1_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/CHARGE_BMP1.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/CHARGE_BMP1.bmp
 commentCN 	=CHARGE_BMP1
 commentEN 	=CHARGE_BMP1
 
 [res_2]
 name	  	=INIT_PROG_MID_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/PROG_MID.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/PROG_MID.bmp
 commentCN 	=PROG_MID
 commentEN 	=PROG_MID
 
 [res_3]
 name	  	=INIT_ENERGY_0_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/ENERGY_0.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/ENERGY_0.bmp
 commentCN 	=ENERGY_0
 commentEN 	=ENERGY_0
 
 [res_4]
 name	  	=INIT_LINEIN_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/linein.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/linein.bmp
 commentCN 	=LINEIN
 commentEN 	=LINEIN
 
 [res_5]
 name	  	=INIT_CHARGE_ENERGY_5_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/CHARGE_ENERGY_5.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/CHARGE_ENERGY_5.bmp
 commentCN 	=CHARGE_ENERGY_5
 commentEN 	=CHARGE_ENERGY_5
 
 [res_6]
 name	  	=INIT_PROG_CURSOR_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/PROG_CURSOR.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/PROG_CURSOR.bmp
 commentCN 	=PROG_CURSOR
 commentEN 	=PROG_CURSOR
 
 [res_7]
 name	  	=INIT_CHARGE_BMP2_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/CHARGE_BMP2.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/CHARGE_BMP2.bmp
 commentCN 	=CHARGE_BMP2
 commentEN 	=CHARGE_BMP2
 
 [res_8]
 name	  	=INIT_CHARGE_ENERGY_0_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/CHARGE_ENERGY_0.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/CHARGE_ENERGY_0.bmp
 commentCN 	=CHARGE_ENERGY_0
 commentEN 	=CHARGE_ENERGY_0
 
 [res_9]
 name	  	=INIT_HOME_FCS_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/home_fcs.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/home_fcs.bmp
 commentCN 	=HOME_FCS
 commentEN 	=HOME_FCS
 
 [res_10]
 name	  	=INIT_CHARGE_ENERGY_2_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/CHARGE_ENERGY_2.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/CHARGE_ENERGY_2.bmp
 commentCN 	=CHARGE_ENERGY_2
 commentEN 	=CHARGE_ENERGY_2
 
 [res_11]
 name	  	=INIT_ENERGY_2_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/ENERGY_2.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/ENERGY_2.bmp
 commentCN 	=ENERGY_2
 commentEN 	=ENERGY_2
 
 [res_12]
 name	  	=INIT_POINT_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/point.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/point.bmp
 commentCN 	=POINT
 commentEN 	=POINT
 
 [res_13]
 name	  	=INIT_HOME_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/HOME.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/HOME.bmp
 commentCN 	=HOME
 commentEN 	=HOME
 
 [res_14]
 name	  	=INIT_VOLUME_BG_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/VOLUME_BG.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/VOLUME_BG.bmp
 commentCN 	=VOLUME_BG
 commentEN 	=VOLUME_BG
 
 [res_15]
 name	  	=INIT_ENERGY_3_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/ENERGY_3.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/ENERGY_3.bmp
 commentCN 	=ENERGY_3
 commentEN 	=ENERGY_3
 
 [res_16]
 name	  	=INIT_ENERGY_5_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/ENERGY_5.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/ENERGY_5.bmp
 commentCN 	=ENERGY_5
 commentEN 	=ENERGY_5
 
 [res_17]
 name	  	=INIT_CHARGE_ENERGY_4_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/CHARGE_ENERGY_4.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/CHARGE_ENERGY_4.bmp
 commentCN 	=CHARGE_ENERGY_4
 commentEN 	=CHARGE_ENERGY_4
 
 [res_18]
 name	  	=INIT_VOLUME_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/VOLUME.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/VOLUME.bmp
 commentCN 	=VOLUME
 commentEN 	=VOLUME
 
 [res_19]
 name	  	=INIT_MUSIC_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/MUSIC.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/MUSIC.bmp
 commentCN 	=MUSIC
 commentEN 	=MUSIC
 
 [res_20]
 name	  	=INIT_BRIGHT_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/BRIGHT.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/BRIGHT.bmp
 commentCN 	=BRIGHT
 commentEN 	=BRIGHT
 
 [res_21]
 name	  	=INIT_PROG_BG_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/PROG_BG.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/PROG_BG.bmp
 commentCN 	=PROG_BG
 commentEN 	=PROG_BG
 
 [res_22]
 name	  	=INIT_CHARGE_BMP0_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/CHARGE_BMP0.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/CHARGE_BMP0.bmp
 commentCN 	=CHARGE_BMP0
 commentEN 	=CHARGE_BMP0
 
 [res_23]
 name	  	=INIT_CHARGE_ENERGY_3_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/CHARGE_ENERGY_3.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/CHARGE_ENERGY_3.bmp
 commentCN 	=CHARGE_ENERGY_3
 commentEN 	=CHARGE_ENERGY_3
 
 [res_24]
 name	  	=INIT_PAUSE_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/PAUSE.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/PAUSE.bmp
 commentCN 	=PAUSE
 commentEN 	=PAUSE
 
 [res_25]
 name	  	=INIT_ENERGY_4_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/ENERGY_4.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/ENERGY_4.bmp
 commentCN 	=ENERGY_4
 commentEN 	=ENERGY_4
 
 [res_26]
 name	  	=INIT_CHARGE_ENERGY_1_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/CHARGE_ENERGY_1.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/CHARGE_ENERGY_1.bmp
 commentCN 	=CHARGE_ENERGY_1
 commentEN 	=CHARGE_ENERGY_1
 
 [res_27]
 name	  	=INIT_PROG_LEFT_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/PROG_LEFT.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/PROG_LEFT.bmp
 commentCN 	=PROG_LEFT
 commentEN 	=PROG_LEFT
 
 [res_28]
 name	  	=INIT_HBAR_BG_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/HBAR_BG.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/HBAR_BG.bmp
 commentCN 	=HBAR_BG
 commentEN 	=HBAR_BG
 
 [res_29]
 name	  	=INIT_BRIGHT_BG_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/BRIGHT_BG.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/BRIGHT_BG.bmp
 commentCN 	=BRIGHT_BG
 commentEN 	=BRIGHT_BG
 
 [res_30]
 name	  	=INIT_ENERGY_1_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./init/ENERGY_1.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./init/ENERGY_1.bmp
 commentCN 	=ENERGY_1
 commentEN 	=ENERGY_1
 

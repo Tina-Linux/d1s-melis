@@ -1,18 +1,18 @@
 [res_14001]
 name	  	=GAME_MSGBOXBG_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./game/msgboxbg.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./game/msgboxbg.bmp
 commentCN 	=MSGBOXBG
 commentEN 	=MSGBOXBG
 
 [res_14002]
 name	  	=GAME_SELECT_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./game/select.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./game/select.bmp
 commentCN 	=SELECT
 commentEN 	=SELECT
 
 [res_14003]
 name	  	=GAME_SELECT_F_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./game/select_f.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./game/select_f.bmp
 commentCN 	=SELECT_F
 commentEN 	=SELECT_F
 

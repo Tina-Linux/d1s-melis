@@ -27,7 +27,7 @@ CONFIG_64BIT=y
 #
 # SBI Setup
 #
-CONFIG_SBI_PATH="projects/f133-evb-board/sbi-bin/sbi.bin"
+CONFIG_SBI_PATH="projects/d1s-evb-board/sbi-bin/sbi.bin"
 
 #
 # RTOS Kernel Setup
@@ -191,7 +191,7 @@ CONFIG_DISP2_SUNXI_SUPPORT_ENAHNCE=y
 # Board Select
 #
 # CONFIG_V459_PERF1 is not set
-CONFIG_F133_FPGA=y
+CONFIG_D1s_FPGA=y
 # CONFIG_VVX07H005A10_MIPI is not set
 # CONFIG_HE0801A068_MIPI is not set
 # CONFIG_DEFAULT_LVDS is not set

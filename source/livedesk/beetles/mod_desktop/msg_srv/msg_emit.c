@@ -33,11 +33,11 @@ typedef struct _msrv_msg_t
 
 typedef struct _memit_ctr_t
 {
-    __hdle              p_array_sem;                   // »º³åÇø»¥³â
+    __hdle              p_array_sem;                   // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     __hdle              p_hook_sem;
-    __hdle              psys_msg_queue;                // msg ÏûÏ¢¶ÓÁÐ
+    __hdle              psys_msg_queue;                // msg ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½
     __s32               sys_msg_counter;
-    __msrv_msg_t        sys_msg_array[SYS_MSGQ_SIZE];   // msg ÏûÏ¢¶ÓÁÐ»º³å
+    __msrv_msg_t        sys_msg_array[SYS_MSGQ_SIZE];   // msg ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½
     __u32               ksrv_th_id;
 
     cb_key_hook         key_hook;
@@ -62,7 +62,7 @@ static __s32 msg_srv_init_input_panel(__memit_ctr_t *emit);
 /**************************************************************************************************************/
 static __s32 msg_srv_init_input_panel(__memit_ctr_t *emit)
 {
-    /* ´´½¨ desktop_msg_queue */
+    /* ï¿½ï¿½ï¿½ï¿½ desktop_msg_queue */
     emit->sys_msg_counter = 0;
     emit->psys_msg_queue  = esKRNL_QCreate(SYS_MSGQ_SIZE);
 
@@ -72,7 +72,7 @@ static __s32 msg_srv_init_input_panel(__memit_ctr_t *emit)
         return EPDK_FAIL;
     }
 
-    /* ´´½¨ p_array_sem */
+    /* ï¿½ï¿½ï¿½ï¿½ p_array_sem */
     emit->p_array_sem = esKRNL_SemCreate(1);
 
     if (!emit->p_array_sem)
@@ -103,12 +103,12 @@ static __s32 msg_srv_init_input_panel(__memit_ctr_t *emit)
 
 }
 /**
- *  ³õÊ¼»¯ touch panel ÏûÏ¢´«ÊäÍ¨µÀ
+ *  ï¿½ï¿½Ê¼ï¿½ï¿½ touch panel ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½
  */
 __s32 msg_srv_init_tp_channel(__memit_ctr_t *emit)
 {
-    /* ×°ÔØ touchpanel Çý¶¯ */
-    /*  ×¢²á»Øµ÷º¯Êý tp_msg_cb */
+    /* ×°ï¿½ï¿½ touchpanel ï¿½ï¿½ï¿½ï¿½ */
+    /*  ×¢ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½ tp_msg_cb */
     /*{
         ES_FILE *p_tpfile;
         p_tpfile = eLIBs_fopen("b:\\HID\\TP", "r+");
@@ -160,7 +160,7 @@ __s32 msg_srv_init_key_channel(__memit_ctr_t *emit)
 
     __log("LdevID=%d", LdevID);
 
-    //ÉèÖÃÊ±¼ä¼ä¸ôµ¥Î»Îª1ms£¬
+    //ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»Îª1msï¿½ï¿½
     if (esINPUT_LdevCtl(LdevID, INPUT_SET_REP_PERIOD, 200 | (4 << 16), NULL) != EPDK_OK)
     {
         __log("logical device ioctl failed");
@@ -177,18 +177,18 @@ __s32 msg_srv_deinit_key_channel(__memit_ctr_t *emit)
 }
 
 /**
- *  ÊÍ·Å touch panel ÏûÏ¢´«ÊäÍ¨µÀ
+ *  ï¿½Í·ï¿½ touch panel ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½
  */
 __s32 msg_srv_deinit_tp_channel(__memit_ctr_t *emit)
 {
     __u8    err;
 
-    /* É¾³ý psys_msg_queue */
+    /* É¾ï¿½ï¿½ psys_msg_queue */
     esKRNL_QDel(emit->psys_msg_queue, 0, &err);
 
     emit->psys_msg_queue = NULL;
 
-    /* É¾³ý p_array_sem */
+    /* É¾ï¿½ï¿½ p_array_sem */
     esKRNL_SemDel(emit->p_array_sem, 0, &err);
     esKRNL_SemDel(emit->p_hook_sem, 0, &err);
     esKRNL_SemDel(emit->p_tvout_tp_hook_sem, 0, &err);
@@ -198,7 +198,7 @@ __s32 msg_srv_deinit_tp_channel(__memit_ctr_t *emit)
     emit->p_hook_sem            = NULL;
     emit->sys_msg_counter       = 0;
 
-    /* ×¢Ïú»Øµ÷º¯Êý */
+    /* ×¢ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½ */
     /*{
         ES_FILE  *p_tpfile;
         p_tpfile = eLIBs_fopen("b:\\HID\\TP", "r+");
@@ -216,7 +216,7 @@ __s32 msg_srv_deinit_tp_channel(__memit_ctr_t *emit)
 }
 
 /**
- * ³õÊ¼»¯ÏµÍ³ÏûÏ¢¶ÓÁÐÏûÏ¢´«ÊäÍ¨µÀ
+ * ï¿½ï¿½Ê¼ï¿½ï¿½ÏµÍ³ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½
  */
 __s32 msg_srv_init_ksrv_channel(__memit_ctr_t *emit)
 {
@@ -240,7 +240,7 @@ __s32 msg_srv_init_ksrv_channel(__memit_ctr_t *emit)
 }
 
 /**
- * ÊÍ·ÅÏµÍ³ÏûÏ¢¶ÓÁÐÏûÏ¢´«ÊäÍ¨µÀ
+ * ï¿½Í·ï¿½ÏµÍ³ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½
  */
 __s32 msg_srv_deinit_ksrv_channel(__memit_ctr_t *emit)
 {
@@ -261,7 +261,7 @@ static __msrv_msg_t  *get_msg_buf(__memit_ctr_t *emit)
 }
 
 /**
- * Í¨¹ý»Øµ÷º¯ÊýµÄ·½Ê½È¡´¥ÃþÆÁÏûÏ¢
+ * Í¨ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½Ê½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
  */
 static __s32 tp_msg_cb(void *msg)
 {
@@ -636,37 +636,37 @@ static void auto_test(void*arg)
 	__u16 spec_lock = 0;
 
     {
-		msg_sim(KPAD_VIDIO,6);//µçÓ°¿ì½Ý¼ü,6Sºó´Ëº¯Êý½áÊø£¬Ä¬ÈÏ²¥·Å£¬ÏÈ¹ÒÔØµÄ´æ´¢½éÖÊ
-		msg_sim(KPAD_DOWN,6);//ÏÂÒ»ÇúµçÓ°
-		msg_sim(KPAD_DOWN,6);//ÏÂÒ»Çú½øµçÓ°
+		msg_sim(KPAD_VIDIO,6);//ï¿½ï¿½Ó°ï¿½ï¿½Ý¼ï¿½,6Sï¿½ï¿½Ëºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½Ï²ï¿½ï¿½Å£ï¿½ï¿½È¹ï¿½ï¿½ØµÄ´æ´¢ï¿½ï¿½ï¿½ï¿½
+		msg_sim(KPAD_DOWN,6);//ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ó°
+		msg_sim(KPAD_DOWN,6);//ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó°
 	}
 	{
-    	msg_sim(KPAD_MUSIC,6);//ÒôÀÖ¿ì½Ý¼ü
+    	msg_sim(KPAD_MUSIC,6);//ï¿½ï¿½ï¿½Ö¿ï¿½Ý¼ï¿½
     }
 	msg_sim(KPAD_RETURN,2);
 	msg_sim(KPAD_RETURN,3);
 	//msg_sim(KPAD_RETURN,3);
-	msg_sim(KPAD_TF_USB,1);//ÇÐ»»´æ´¢½éÖÊ
+	msg_sim(KPAD_TF_USB,1);//ï¿½Ð»ï¿½ï¿½æ´¢ï¿½ï¿½ï¿½ï¿½
 
 	{
 
-        msg_sim(KPAD_PICTURE,4);//±£ÏÕ½øÏàÆ¬
-		msg_sim(KPAD_MENU,1);//±£ÏÕ½øÏàÆ¬
+        msg_sim(KPAD_PICTURE,4);//ï¿½ï¿½ï¿½Õ½ï¿½ï¿½ï¿½Æ¬
+		msg_sim(KPAD_MENU,1);//ï¿½ï¿½ï¿½Õ½ï¿½ï¿½ï¿½Æ¬
 		msg_sim(KPAD_DOWN,1);
 		msg_sim(KPAD_DOWN,1);
-		msg_sim(KPAD_ENTER,1);//½øÈëËõ·Å²Ëµ¥
+		msg_sim(KPAD_ENTER,1);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å²Ëµï¿½
 		msg_sim(KPAD_UP,1);
-		msg_sim(KPAD_ENTER,1);//·Å´ó
+		msg_sim(KPAD_ENTER,1);//ï¿½Å´ï¿½
 		msg_sim(KPAD_UP,1);
 		msg_sim(KPAD_UP,1);
 		msg_sim(KPAD_ENTER,1);
-		msg_sim(KPAD_ENTER,1);//ËõÐ¡
+		msg_sim(KPAD_ENTER,1);//ï¿½ï¿½Ð¡
 		msg_sim(KPAD_MENU,1);
     }
 	msg_sim(KPAD_RETURN,3);
 	msg_sim(KPAD_RETURN,1);
-	msg_sim(KPAD_RETURN,2);//¶àÍËÒ»´Î£¬±£ÕÏÍËµ½Ö÷½çÃæ
-	msg_sim(KPAD_TF_USB,1);//ÇÐ»»´æ´¢½éÖÊ
+	msg_sim(KPAD_RETURN,2);//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Î£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	msg_sim(KPAD_TF_USB,1);//ï¿½Ð»ï¿½ï¿½æ´¢ï¿½ï¿½ï¿½ï¿½
 	//msg_sim(KPAD_UP,1);
 	//msg_sim(KPAD_UP,1);
 	//msg_sim(KPAD_UP,1);
@@ -714,22 +714,22 @@ static void auto_test(void*arg)
 	    {
 	        case 0x5C00:
 	        {
-				__log("F133-A ");
-				eLIBs_strcpy(str,"chip type: F133-A 0x5C00");
+				__log("D1s-A ");
+				eLIBs_strcpy(str,"chip type: D1s-A 0x5C00");
 				break;
 	        }
 
 			case 0x7400:
 	        {
-				__log("F133-B ");
-				eLIBs_strcpy(str,"chip type: F133-B 0x7400");
+				__log("D1s-B ");
+				eLIBs_strcpy(str,"chip type: D1s-B 0x7400");
 				break;
 	        }
 
 			case 0x2C00:
 	        {
-				__log("F133-C ");
-				eLIBs_strcpy(str,"chip type: F133-C 0x2C00");
+				__log("D1s-C ");
+				eLIBs_strcpy(str,"chip type: D1s-C 0x2C00");
 				break;
 	        }
 
@@ -778,13 +778,13 @@ static void auto_test(void*arg)
 			{
 				case 0x16:
 		        {
-					eLIBs_strcpy(str,"F133-A:efuse spec_lock: 0x16");
+					eLIBs_strcpy(str,"D1s-A:efuse spec_lock: 0x16");
 					break;
 		        }
 
 				case 0x6:
 		        {
-					eLIBs_strcpy(str,"F133-B:efuse spec_lock: 0x6");
+					eLIBs_strcpy(str,"D1s-B:efuse spec_lock: 0x6");
 					break;
 		        }
 
@@ -1150,7 +1150,7 @@ static __s32 key_msg_cb(void *msg)
                 case KPAD_POWEROFF:
                 case IR_KPAD_POWEROFF:
                 {
-                    //½øÈëstandby
+                    //ï¿½ï¿½ï¿½ï¿½standby
                     __wrn("+++++++++++++++ ir GUI_MSG_KEY_POWEROFF");
                     pmsg->type  = GUI_MSG_KEY;
                     pmsg->id    = GUI_MSG_KEY_POWEROFF;
@@ -1325,7 +1325,7 @@ static __s32 key_msg_cb(void *msg)
                     __wrn("+++++++++++++++ir GUI_MSG_KEY_PLAY_PAUSE");
                     pmsg->type  = GUI_MSG_KEY;
                     pmsg->id    = GUI_MSG_KEY_PLAY_PAUSE;
-                    pmsg->reserved = 1;//Îª1´ú±í´Óir·¢¹ýÀ´µÄ°´¼üÏûÏ¢£¬ÒÔÇø·ÖÃæ°åµÄKPAD_PLAY_PAUSE
+                    pmsg->reserved = 1;//Îª1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½irï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä°ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½KPAD_PLAY_PAUSE
                     break;
                 }
 
@@ -1419,14 +1419,14 @@ static __s32 key_msg_cb(void *msg)
 }
 
 /**
- * ´ÓÏµÍ³ÏûÏ¢¶ÓÁÐÈ¡ÏûÏ¢
+ * ï¿½ï¿½ÏµÍ³ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½Ï¢
  */
 static void ksrv_msg_thread(void *arg)
 {
     __memit_ctr_t *emit = (__memit_ctr_t *)arg;
     __u8    error;
 
-    /* Çå¿Õ°´¼üÏûÏ¢¶ÓÁÐ */
+    /* ï¿½ï¿½Õ°ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ */
     while (1)
     {
         __u32           usrmsg;
@@ -1452,7 +1452,7 @@ static void ksrv_msg_thread(void *arg)
                 esKRNL_TDel(OS_PRIO_SELF);
             }
 
-            usrmsg = esKSRV_GetMsg();               // ÏµÍ³ÏûÏ¢¶ÓÁÐ
+            usrmsg = esKSRV_GetMsg();               // ÏµÍ³ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½
 
             if (usrmsg)
             {
@@ -1470,7 +1470,7 @@ static void ksrv_msg_thread(void *arg)
 
         esKRNL_SemPost(emit->p_array_sem);
 
-        if ((usrmsg & 0xffff0000) == KMSG_USR_CLS_KEY)  // key °´¼üÏûÏ¢
+        if ((usrmsg & 0xffff0000) == KMSG_USR_CLS_KEY)  // key ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
         {
             tmp = usrmsg & 0x0000ffff;
 
@@ -1482,15 +1482,15 @@ static void ksrv_msg_thread(void *arg)
                     pmsg->type  = DSK_MSG_STANDBY;
                     break;
 
-                case KMSG_USR_KEY_REPEATE:              /* ÇÐ»»µ½É«²îÊä³ö */
+                case KMSG_USR_KEY_REPEATE:              /* ï¿½Ð»ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ */
                     pmsg->type  = DSK_MSG_SWITCH_YPBPR;
                     break;
 
-                case KMSG_USR_KEY_CLEAR:                /* ÇÐ»»µ½cvbsÊä³ö */
+                case KMSG_USR_KEY_CLEAR:                /* ï¿½Ð»ï¿½ï¿½ï¿½cvbsï¿½ï¿½ï¿½ */
                     pmsg->type  = DSK_MSG_SWITCH_CVBS;
                     break;
 
-                case KMSG_USR_KEY_DISPLAY:              /* ÇÐ»»µ½hdmiÊä³ö */
+                case KMSG_USR_KEY_DISPLAY:              /* ï¿½Ð»ï¿½ï¿½ï¿½hdmiï¿½ï¿½ï¿½ */
                     pmsg->type  = DSK_MSG_SWITCH_HDMI;
                     break;
 
@@ -1519,20 +1519,20 @@ static void ksrv_msg_thread(void *arg)
                     pmsg->data  = AUDIO_DEV_IF_SPDIF;
                     break;
 
-                case KMSG_USR_KEY_NUM8:                 /* hold °´¼ü */
+                case KMSG_USR_KEY_NUM8:                 /* hold ï¿½ï¿½ï¿½ï¿½ */
                     pmsg->type  = DSK_MSG_HOLD;
                     break;
 
-                case KMSG_USR_KEY_NUM7:                 // ½ûÒô¹¦ÄÜ
+                case KMSG_USR_KEY_NUM7:                 // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                     pmsg->type  = DSK_MSG_BAN_VOLUME;
                     pmsg->data  = 0;
                     break;
 
                 case KMSG_USR_KEY_GOTO:
-                    pmsg->type  = DSK_MSG_APP_EXIT;      /* Ò»¼ü»ØÖ÷½çÃæ */
+                    pmsg->type  = DSK_MSG_APP_EXIT;      /* Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
                     break;
 
-                case KMSG_USR_KEY_POWEROFF:             // ¹Ø»úÏûÏ¢
+                case KMSG_USR_KEY_POWEROFF:             // ï¿½Ø»ï¿½ï¿½ï¿½Ï¢
                     pmsg->type  = DSK_MSG_POWER_OFF;
                     break;
 
@@ -1585,7 +1585,7 @@ static void ksrv_msg_thread(void *arg)
                     continue;
             }
         }
-        else    /* system ÏûÏ¢ */
+        else    /* system ï¿½ï¿½Ï¢ */
         {
             if ((usrmsg & 0x0000ffff) == KMSG_USR_SYSTEM_FS_PLUGIN)
             {
@@ -1617,7 +1617,7 @@ static void ksrv_msg_thread(void *arg)
                         pmsg->type  = DSK_MSG_APP_EXIT;
                         break;
 
-                    case KMSG_USR_SYSTEM_USBH_PLUGOUT:      // usb host Éè±¸°Î³ö
+                    case KMSG_USR_SYSTEM_USBH_PLUGOUT:      // usb host ï¿½è±¸ï¿½Î³ï¿½
                         pmsg->type  = DSK_MSG_HANDLE_PLUGOUT;//112350//DSK_MSG_APP_EXIT;
                         break;
 
@@ -1674,7 +1674,7 @@ __s32 msg_srv_get_message(__memit_ctr_t *emit, __msrv_msg_t *p_msg)
 }
 
 /**
- * ·¢ËÍÏûÏ¢µ½×ÀÃæÏµÍ³ÏûÏ¢¶ÓÁÐ
+ * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÏµÍ³ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½
  */
 __s32 msg_srv_dispatch_message(__memit_ctr_t *emit, __msrv_msg_t *p_msg)
 {
@@ -1739,7 +1739,7 @@ __s32 msg_srv_dispatch_message(__memit_ctr_t *emit, __msrv_msg_t *p_msg)
             return EPDK_OK;
         }
 
-        h_win = GUI_GetTouchFocusWin(x, y); /* Î»ÓÚ´°¿Ú·¶Î§ÄÚ, Ôò·¢ËÍµ½´°¿Ú */
+        h_win = GUI_GetTouchFocusWin(x, y); /* Î»ï¿½Ú´ï¿½ï¿½Ú·ï¿½Î§ï¿½ï¿½, ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½ï¿½ */
 
         if (h_win)
         {
@@ -1747,7 +1747,7 @@ __s32 msg_srv_dispatch_message(__memit_ctr_t *emit, __msrv_msg_t *p_msg)
             msg.h_srcwin    = NULL;
             msg.h_deswin    = h_win;
         }
-        else                                /* ²»ÔÚÈÎºÎ´°¿ÚÇøÓò, Ôò·¢ËÍµ½½¹µã´°¿Ú */
+        else                                /* ï¿½ï¿½ï¿½ï¿½ï¿½ÎºÎ´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½ã´°ï¿½ï¿½ */
         {
             h_win   = GUI_GetActiveManWin();
           //  __log("%d:h_win = %x", __LINE__, h_win);
@@ -1861,12 +1861,12 @@ void msg_srv_thread(void *arg)
 #endif
     msg_srv_init_ksrv_channel(&emit_ctr);
 	
-    /* ÏûÏ¢·Ö·¢ */
+    /* ï¿½ï¿½Ï¢ï¿½Ö·ï¿½ */
     while (1)
     {
         if (esKRNL_TDelReq(OS_PRIO_SELF) == OS_TASK_DEL_REQ)
         {
-            /* ÊÍ·ÅÏûÏ¢Í¨µÀ */
+            /* ï¿½Í·ï¿½ï¿½ï¿½Ï¢Í¨ï¿½ï¿½ */
             msg_srv_deinit_key_channel(&emit_ctr);
 #ifdef CONFIG_SUPPORT_TOUCHPANEL
             msg_srv_deinit_tp_channel(&emit_ctr);
@@ -1901,7 +1901,7 @@ void msg_srv_thread(void *arg)
 
 __s32 msg_emit_init(void)
 {
-    /* ´´½¨ÏûÏ¢ÊÕ¼¯Ïß³Ì */
+    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½Õ¼ï¿½ï¿½ß³ï¿½ */
 
     msg_srv_tid = esKRNL_TCreate(msg_srv_thread, NULL, 0x1000, KRNL_priolevel3);
     esKRNL_TaskNameSet(msg_srv_tid, "emitq2orange");
@@ -1917,7 +1917,7 @@ __s32 msg_emit_init(void)
 
 __s32 msg_emit_deinit(void)
 {
-    /* É¾³ýÏûÏ¢²É¼¯Ïß³Ì */
+    /* É¾ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½É¼ï¿½ï¿½ß³ï¿½ */
     while (esKRNL_TDelReq(msg_srv_tid) != OS_TASK_NOT_EXIST)
     {
         esKRNL_TimeDly(1);

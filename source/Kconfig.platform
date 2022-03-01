@@ -34,10 +34,10 @@ choice
 			Based on v459 Platform.
 
 	config SOC_SUN20IW1P1
-		bool "F133 SOC Platform"
+		bool "D1s SOC Platform"
 		select SOC_SUN20IW1
 		help
-			Based on F133 Platform.
+			Based on D1s Platform.
 endchoice
 
 config SOC_SUN3I

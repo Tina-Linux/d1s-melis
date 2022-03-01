@@ -8,11 +8,11 @@ config V459_PERF1
 	---help---
 	  board v459 perf1
 
-config F133_FPGA
-	bool "board fpga f133"
+config D1s_FPGA
+	bool "board fpga D1s"
 	default n
 	---help---
-	  board f133 fpga
+	  board D1s fpga
 
 config VVX07H005A10_MIPI
 	bool "board, disp with VVX07H005A10_mipi"

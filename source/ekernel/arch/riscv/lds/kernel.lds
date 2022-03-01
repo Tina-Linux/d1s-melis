@@ -28,7 +28,7 @@
 OUTPUT_ARCH("riscv")
 OUTPUT_FORMAT("elf64-littleriscv","elf64-littleriscv","elf64-littleriscv")
 
-/* F133: Memory Map. temporialy cant get over SBI for all pre-stage all ready for linux.*/
+/* D1s: Memory Map. temporialy cant get over SBI for all pre-stage all ready for linux.*/
 MEMORY
 {
    /*SRAM: 64K */

@@ -11,8 +11,8 @@
 * By      : kevin.z
 * Version : v2.0
 * Date    : 2010-12-13 14:38
-* Descript: vdec_libµÄ¶ÔÍâÍ·ÎÄ¼þ.ÒòÎªmaccµÄÒ»Ð©²Ù×÷Éæ¼°ÏµÍ³ÆäËüÄ£¿é£¬ËùÒÔ²»·ÅÔÚvdec_libÄÚ²¿£¬ÓÉ¸÷ÏµÍ³×Ô¼ºÈ¥ÊµÏÖ¶¨ÒåµÄ
-                º¯Êý½Ó¿Ú.
+* Descript: vdec_libï¿½Ä¶ï¿½ï¿½ï¿½Í·ï¿½Ä¼ï¿½.ï¿½ï¿½Îªmaccï¿½ï¿½Ò»Ð©ï¿½ï¿½ï¿½ï¿½ï¿½æ¼°ÏµÍ³ï¿½ï¿½ï¿½ï¿½Ä£ï¿½é£¬ï¿½ï¿½ï¿½Ô²ï¿½ï¿½ï¿½ï¿½ï¿½vdec_libï¿½Ú²ï¿½ï¿½ï¿½ï¿½É¸ï¿½ÏµÍ³ï¿½Ô¼ï¿½È¥Êµï¿½Ö¶ï¿½ï¿½ï¿½ï¿½
+                ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿ï¿½.
 * Update  : date                auther      ver     notes
 *           2010-12-13 14:38    kevin.z     2.0     build the file;
 *********************************************************************************************************
@@ -39,7 +39,7 @@ extern __u32    MACC_REGS_BASE;
 #include "macc_rmvb.h"
 #include "macc_vc1.h"
 
-#define VE_IRQ_NUM      82 //F133
+#define VE_IRQ_NUM      82 // D1s
 //define macc hardware information
 #define MACC_PHY_IO_BASE        (0x01c0e000)
 #define INTC_IRQNO_MACC         (VE_IRQ_NUM)

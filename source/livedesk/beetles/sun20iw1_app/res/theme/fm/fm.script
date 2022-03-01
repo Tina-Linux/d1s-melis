@@ -1,390 +1,390 @@
 [res_11001]
 name	  	=FM_BTN_RECORD_F_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_record_f.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_record_f.bmp
 commentCN 	=BTN_RECORD_F
 commentEN 	=BTN_RECORD_F
 
 [res_11002]
 name	  	=FM_M5_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/M5.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/M5.bmp
 commentCN 	=M5
 commentEN 	=M5
 
 [res_11003]
 name	  	=FM_SSET_MENU_BG_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/sset_menu_bg.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/sset_menu_bg.bmp
 commentCN 	=SSET_MENU_BG
 commentEN 	=SSET_MENU_BG
 
 [res_11004]
 name	  	=FM_B2_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/B2.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/B2.bmp
 commentCN 	=B2
 commentEN 	=B2
 
 [res_11005]
 name	  	=FM_M3_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/M3.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/M3.bmp
 commentCN 	=M3
 commentEN 	=M3
 
 [res_11006]
 name	  	=FM_B5_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/B5.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/B5.bmp
 commentCN 	=B5
 commentEN 	=B5
 
 [res_11007]
 name	  	=FM_M6_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/M6.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/M6.bmp
 commentCN 	=M6
 commentEN 	=M6
 
 [res_11008]
 name	  	=FM_CURSOR_CHANNEL_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/cursor_channel.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/cursor_channel.bmp
 commentCN 	=CURSOR_CHANNEL
 commentEN 	=CURSOR_CHANNEL
 
 [res_11009]
 name	  	=FM_87MHZ_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/87MHz.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/87MHz.bmp
 commentCN 	=87MHZ
 commentEN 	=87MHZ
 
 [res_11010]
 name	  	=FM_L8_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/L8.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/L8.bmp
 commentCN 	=L8
 commentEN 	=L8
 
 [res_11011]
 name	  	=FM_87_5MHZ_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/87_5MHz.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/87_5MHz.bmp
 commentCN 	=87_5MHZ
 commentEN 	=87_5MHZ
 
 [res_11012]
 name	  	=FM_B6_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/B6.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/B6.bmp
 commentCN 	=B6
 commentEN 	=B6
 
 [res_11013]
 name	  	=FM_CH_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/CH.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/CH.bmp
 commentCN 	=CH
 commentEN 	=CH
 
 [res_11014]
 name	  	=FM_M4_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/M4.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/M4.bmp
 commentCN 	=M4
 commentEN 	=M4
 
 [res_11015]
 name	  	=FM_B8_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/B8.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/B8.bmp
 commentCN 	=B8
 commentEN 	=B8
 
 [res_11016]
 name	  	=FM_87FREQSCALE_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/87FreqScale.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/87FreqScale.bmp
 commentCN 	=87FREQSCALE
 commentEN 	=87FREQSCALE
 
 [res_11017]
 name	  	=FM_L5_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/L5.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/L5.bmp
 commentCN 	=L5
 commentEN 	=L5
 
 [res_11018]
 name	  	=FM_BTN_CHANNEL_N_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_channel_n.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_channel_n.bmp
 commentCN 	=BTN_CHANNEL_N
 commentEN 	=BTN_CHANNEL_N
 
 [res_11019]
 name	  	=FM_BTN_SAVE_1_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_save_1.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_save_1.bmp
 commentCN 	=BTN_SAVE_1
 commentEN 	=BTN_SAVE_1
 
 [res_11020]
 name	  	=FM_BTN_EXIT_N_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_exit_n.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_exit_n.bmp
 commentCN 	=BTN_EXIT_N
 commentEN 	=BTN_EXIT_N
 
 [res_11021]
 name	  	=FM_ICON_LIST_SEL_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/icon_list_sel.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/icon_list_sel.bmp
 commentCN 	=ICON_LIST_SEL
 commentEN 	=ICON_LIST_SEL
 
 [res_11022]
 name	  	=FM_PRESET_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/preset.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/preset.bmp
 commentCN 	=PRESET
 commentEN 	=PRESET
 
 [res_11023]
 name	  	=FM_L4_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/L4.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/L4.bmp
 commentCN 	=L4
 commentEN 	=L4
 
 [res_11024]
 name	  	=FM_BTN_AUTOSEARCH_N_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_autosearch_n.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_autosearch_n.bmp
 commentCN 	=BTN_AUTOSEARCH_N
 commentEN 	=BTN_AUTOSEARCH_N
 
 [res_11025]
 name	  	=FM_L9_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/L9.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/L9.bmp
 commentCN 	=L9
 commentEN 	=L9
 
 [res_11026]
 name	  	=FM_BTN_AUDIO_N_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_audio_n.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_audio_n.bmp
 commentCN 	=BTN_AUDIO_N
 commentEN 	=BTN_AUDIO_N
 
 [res_11027]
 name	  	=FM_BTN_EXIT_F_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_exit_f.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_exit_f.bmp
 commentCN 	=BTN_EXIT_F
 commentEN 	=BTN_EXIT_F
 
 [res_11028]
 name	  	=FM_STEREO_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/Stereo.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/Stereo.bmp
 commentCN 	=STEREO
 commentEN 	=STEREO
 
 [res_11029]
 name	  	=FM_CURSOR_SEL_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/cursor_sel.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/cursor_sel.bmp
 commentCN 	=CURSOR_SEL
 commentEN 	=CURSOR_SEL
 
 [res_11030]
 name	  	=FM_B9_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/B9.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/B9.bmp
 commentCN 	=B9
 commentEN 	=B9
 
 [res_11031]
 name	  	=FM_POINT_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/point.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/point.bmp
 commentCN 	=POINT
 commentEN 	=POINT
 
 [res_11032]
 name	  	=FM_BTN_AUTOSEARCH_F_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_autosearch_f.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_autosearch_f.bmp
 commentCN 	=BTN_AUTOSEARCH_F
 commentEN 	=BTN_AUTOSEARCH_F
 
 [res_11033]
 name	  	=FM_L6_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/L6.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/L6.bmp
 commentCN 	=L6
 commentEN 	=L6
 
 [res_11034]
 name	  	=FM_BTN_SAVE_0_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_save_0.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_save_0.bmp
 commentCN 	=BTN_SAVE_0
 commentEN 	=BTN_SAVE_0
 
 [res_11035]
 name	  	=FM_BTN_MANUALSEARCH_F_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_manualsearch_f.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_manualsearch_f.bmp
 commentCN 	=BTN_MANUALSEARCH_F
 commentEN 	=BTN_MANUALSEARCH_F
 
 [res_11036]
 name	  	=FM_M7_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/M7.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/M7.bmp
 commentCN 	=M7
 commentEN 	=M7
 
 [res_11037]
 name	  	=FM_L2_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/L2.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/L2.bmp
 commentCN 	=L2
 commentEN 	=L2
 
 [res_11038]
 name	  	=FM_L1_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/L1.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/L1.bmp
 commentCN 	=L1
 commentEN 	=L1
 
 [res_11039]
 name	  	=FM_BTN_AUDIO_F_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_audio_f.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_audio_f.bmp
 commentCN 	=BTN_AUDIO_F
 commentEN 	=BTN_AUDIO_F
 
 [res_11040]
 name	  	=FM_UPDATE0_BG_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/update0_bg.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/update0_bg.bmp
 commentCN 	=UPDATE0_BG
 commentEN 	=UPDATE0_BG
 
 [res_11041]
 name	  	=FM_M2_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/M2.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/M2.bmp
 commentCN 	=M2
 commentEN 	=M2
 
 [res_11042]
 name	  	=FM_M1_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/M1.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/M1.bmp
 commentCN 	=M1
 commentEN 	=M1
 
 [res_11043]
 name	  	=FM_M0_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/M0.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/M0.bmp
 commentCN 	=M0
 commentEN 	=M0
 
 [res_11044]
 name	  	=FM_B0_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/B0.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/B0.bmp
 commentCN 	=B0
 commentEN 	=B0
 
 [res_11045]
 name	  	=FM_108MHZ_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/108MHz.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/108MHz.bmp
 commentCN 	=108MHZ
 commentEN 	=108MHZ
 
 [res_11046]
 name	  	=FM_M9_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/M9.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/M9.bmp
 commentCN 	=M9
 commentEN 	=M9
 
 [res_11047]
 name	  	=FM_L0_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/L0.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/L0.bmp
 commentCN 	=L0
 commentEN 	=L0
 
 [res_11048]
 name	  	=FM_COLOURTABLE_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/ColourTable.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/ColourTable.bmp
 commentCN 	=COLOURTABLE
 commentEN 	=COLOURTABLE
 
 [res_11049]
 name	  	=FM_UPDATE_BG_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/update_bg.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/update_bg.bmp
 commentCN 	=UPDATE_BG
 commentEN 	=UPDATE_BG
 
 [res_11050]
 name	  	=FM_BTN_CHANNEL_F_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_channel_f.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_channel_f.bmp
 commentCN 	=BTN_CHANNEL_F
 commentEN 	=BTN_CHANNEL_F
 
 [res_11051]
 name	  	=FM_L3_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/L3.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/L3.bmp
 commentCN 	=L3
 commentEN 	=L3
 
 [res_11052]
 name	  	=FM_B1_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/B1.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/B1.bmp
 commentCN 	=B1
 commentEN 	=B1
 
 [res_11053]
 name	  	=FM_L7_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/L7.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/L7.bmp
 commentCN 	=L7
 commentEN 	=L7
 
 [res_11054]
 name	  	=FM_B4_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/B4.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/B4.bmp
 commentCN 	=B4
 commentEN 	=B4
 
 [res_11055]
 name	  	=FM_M8_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/M8.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/M8.bmp
 commentCN 	=M8
 commentEN 	=M8
 
 [res_11056]
 name	  	=FM_BTN_MANUALSEARCH_N_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_manualsearch_n.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_manualsearch_n.bmp
 commentCN 	=BTN_MANUALSEARCH_N
 commentEN 	=BTN_MANUALSEARCH_N
 
 [res_11057]
 name	  	=FM_87_5FREQSCALE_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/87_5FreqScale.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/87_5FreqScale.bmp
 commentCN 	=87_5FREQSCALE
 commentEN 	=87_5FREQSCALE
 
 [res_11058]
 name	  	=FM_MHZ_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/MHz.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/MHz.bmp
 commentCN 	=MHZ
 commentEN 	=MHZ
 
 [res_11059]
 name	  	=FM_B7_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/B7.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/B7.bmp
 commentCN 	=B7
 commentEN 	=B7
 
 [res_11060]
 name	  	=FM_SCALE_THUMB_N_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/scale_thumb_n.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/scale_thumb_n.bmp
 commentCN 	=SCALE_THUMB_N
 commentEN 	=SCALE_THUMB_N
 
 [res_11061]
 name	  	=FM_SCALE_THUMB_F_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/scale_thumb_f.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/scale_thumb_f.bmp
 commentCN 	=SCALE_THUMB_F
 commentEN 	=SCALE_THUMB_F
 
 [res_11062]
 name	  	=FM_SLASH_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/slash.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/slash.bmp
 commentCN 	=SLASH
 commentEN 	=SLASH
 
 [res_11063]
 name	  	=FM_B3_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/B3.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/B3.bmp
 commentCN 	=B3
 commentEN 	=B3
 
 [res_11064]
 name	  	=FM_BTN_RECORD_N_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_record_n.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/btn_record_n.bmp
 commentCN 	=BTN_RECORD_N
 commentEN 	=BTN_RECORD_N
 
 [res_11065]
 name	  	=FM_MONO_BMP
-file	  	=/home/sunweibin/workspace/F133-release/melis-4.x-release_ready/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/Mono.bmp
+file	  	=/source/livedesk/beetles/sun20iw1_app/res/theme/./fm/Mono.bmp
 commentCN 	=MONO
 commentEN 	=MONO
 

@@ -14,28 +14,28 @@
 typedef struct _theme_t
 {
     __u32  id;
-    __u32  size;//Ô­Ê¼µÄ´óÐ¡
-    __u32  size_com;//´æ´¢µÄ´óÐ¡
+    __u32  size;//Ô­Ê¼ï¿½Ä´ï¿½Ð¡
+    __u32  size_com;//ï¿½æ´¢ï¿½Ä´ï¿½Ð¡
     void  *buf;
 } theme_t, *HTHEME_i;
 
 
 typedef struct tag_HLANGLIST
 {
-    __u16       LangID;         //LangIDºÅ Èç£ºOx400
-    __u32       StringTabOff;   //×Ö·û´®±í¶ÔÓ¦ÆðÊ¼µØÖ·£»
+    __u16       LangID;         //LangIDï¿½ï¿½ ï¿½ç£ºOx400
+    __u32       StringTabOff;   //ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½Ê¼ï¿½ï¿½Ö·ï¿½ï¿½
 } HLANGLIST;
 
 typedef struct tag_HLANHEAD
 {
     FILE        *fp;
-    HLANGLIST   *pHLangList;    //Ö¸ÏòÓïÑÔÐÅÏ¢±íÐÅÏ¢£»
-    __u32       LangTabOff;     //LANG±íÆðÊ¼µØÖ·Æ«ÒÆÁ¿
-    __u16       LangSize;       //LANG±íÖÐÃ¿¸öÌõÄ¿´óÐ¡
-    __u32       LangNum;        //LANG±íÌõÄ¿¸öÊý,¼ÈÓïÑÔÖÖÀà¸öÊý
-    __u16       StringSize;     //×Ö·û´®size
-    __u32       StringNum;      //×Ö·û´®¸öÊý£»
-    __u32       align;          //Êý¾Ý±ß½ç¶ÔÆëÄ£Ê½£»
+    HLANGLIST   *pHLangList;    //Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½
+    __u32       LangTabOff;     //LANGï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½Ö·Æ«ï¿½ï¿½ï¿½ï¿½
+    __u16       LangSize;       //LANGï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½Ð¡
+    __u32       LangNum;        //LANGï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    __u16       StringSize;     //ï¿½Ö·ï¿½ï¿½ï¿½size
+    __u32       StringNum;      //ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    __u32       align;          //ï¿½ï¿½ï¿½Ý±ß½ï¿½ï¿½ï¿½ï¿½Ä£Ê½ï¿½ï¿½
     __u16       *pIdTab;
 } HHEAD;
 typedef void *HRES;
@@ -470,7 +470,7 @@ static HTHEME dsk_theme_open(__u32 theme_id)
         __log("xx az100.....");
         htheme->size = AZ100_GetUncompressSize(pbuf, htheme->size_com);
     }
-    else//Î´Ñ¹Ëõ
+    else//Î´Ñ¹ï¿½ï¿½
     {
         htheme->size = htheme->size_com;
     }
@@ -588,7 +588,7 @@ void orangetest(int argc, char **argv)
 
    GUI_SetBkColor(0);
    GUI_SetColor(GUI_RED);
-   GUI_DispStringAt("Allwinner. F133 test",50,300);
+   GUI_DispStringAt("Allwinner. D1s test",50,300);
 
   //  GUI_CloseAlphaBlend();
   //  init_memdev_delete(); //ok
@@ -645,7 +645,7 @@ void orangetest2(int argc, char **argv)
 
    GUI_SetBkColor(0);
   // GUI_SetColor(GUI_RED);
-   //GUI_DispStringAt("Allwinner. F133 test 222",50,300);
+   //GUI_DispStringAt("Allwinner. D1s test 222",50,300);
    __log("ssoossoi");
     #if 1
 
