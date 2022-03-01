@@ -27,7 +27,7 @@ CONFIG_64BIT=y
 #
 # SBI Setup
 #
-CONFIG_SBI_PATH="projects/d1s-evb-board/sbi-bin/sbi.bin"
+CONFIG_SBI_PATH="projects/d1s-mq/sbi-bin/sbi.bin"
 
 #
 # RTOS Kernel Setup
