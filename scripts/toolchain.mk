@@ -18,7 +18,7 @@
 # check gcc tools chain installation.
 ifneq ("$(MELIS_BASE)", "")
 
-toolsrc=$(MELIS_BASE)/pretools/xcompiler/on_linux/compiler
+toolsrc=$(MELIS_BASE)/prebuilt
 
 ifneq ($(shell grep "^CONFIG_ARM=y" $(MELIS_BASE)/.config),)
     toolchain_archive=$(toolsrc)/gcc-arm-melis-eabi-9-2020-q2-update-x86_64-linux.tar.bz2
