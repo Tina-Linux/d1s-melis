@@ -5,7 +5,7 @@
 
 [product]
 version = "100"
-machine = "evb"
+machine = "mangopi-mq"
 
 [platform]
 eraseflag   = 0

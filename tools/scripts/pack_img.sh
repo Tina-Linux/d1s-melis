@@ -287,7 +287,8 @@ function make_data_image()
 
     for part in $(get_part_info ${1} ${2})
     do
-        echo "*******"
+        echo "*******
+"
         echo "=${part}="
         echo "*******"
         name="$(awk -F: '{print $1}' <<< "${part}")"
