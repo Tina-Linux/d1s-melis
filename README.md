@@ -84,7 +84,8 @@ make -j65535
 
 Pack the target image
 ```shell
-pack
+pack          # pack spi nor flash
+pack -a nand  # pack spi nand flash \ sd card
 ```
 
 ## How to download
