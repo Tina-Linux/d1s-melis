@@ -26,6 +26,8 @@ cscope.*
 *.
 
 out/
+include/config
+include/generated
 
 projects/d1s-fpga-board/data/UDISK/apps/app_root.axf
 projects/d1s-fpga-board/data/UDISK/apps/init.axf
