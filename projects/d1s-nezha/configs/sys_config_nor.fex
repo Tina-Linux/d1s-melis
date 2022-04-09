@@ -79,9 +79,9 @@ twi_scl         = port:PH14<2><default><default><default>
 twi_sda         = port:PH15<2><default><default><default>
 
 [uart_para]
-uart_debug_port = 3
-uart_debug_tx   = port:PB06<7><1><default><default>
-uart_debug_rx   = port:PB07<7><1><default><default>
+uart_debug_port = 0
+uart_debug_tx   = port:PE02<6><1><default><default>
+uart_debug_rx   = port:PE03<6><1><default><default>
 
 [jtag_para]
 jtag_enable     = 1
@@ -543,8 +543,8 @@ lcd_used            = 1
 lcd_driver_name     = "default_lcd"
 lcd_backlight       = 0
 lcd_if              = 0
-lcd_x               = 800
-lcd_y               = 480
+lcd_x               = 480
+lcd_y               = 272
 lcd_width           = 150
 lcd_height          = 94
 lcd_rb_swap         = 0
