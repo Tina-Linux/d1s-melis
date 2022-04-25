@@ -966,9 +966,9 @@ vinc3_sensor_list	= 0
 ;
 ;--------------------------------------------------------------------------------
 [tvout_para]
-tvout_used          =
-tvout_channel_num   =
-tv_en               =
+tvout_used          = 1
+tvout_channel_num   = 0
+tv_en               = 1
 
 [tvin_para]
 tvin_used           =
