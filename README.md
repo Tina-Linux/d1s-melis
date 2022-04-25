@@ -5,7 +5,7 @@ Allwinner melis RTOS for D1s
 
 Before compiling, please download the compilation toolchain and place it to `prebuilt` directory.
 
-Github: [YuzukiHD/d1s-melis/releases](https://github.com/YuzukiHD/d1s-melis/releases)
+Github: [Tina-Linux/d1s-melis/releases](https://github.com/Tina-Linux/d1s-melis/releases)
 
 ## Command
 ```
