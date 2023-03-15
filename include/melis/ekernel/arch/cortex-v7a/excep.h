@@ -21,7 +21,7 @@
 #define  __EXP926_INC__
 
 #include <stdint.h>
-#include <list.h>
+#include <aw_list.h>
 
 struct neon_vfp_regs
 {
@@ -48,6 +48,10 @@ typedef struct
     uint32_t orig_cpsr;                 // 0x14
     uint32_t lr;                        // 0x18
     uint32_t sp;                        // 0x1c
+#ifdef CONFIG_SUBSYS_KGDB
+    int    use_fpu;
+    struct neon_vfp_regs neon;
+#endif
     uint32_t r0;                        // 0x20
     uint32_t r1;                        // 0x24
     uint32_t r2;                        // 0x28

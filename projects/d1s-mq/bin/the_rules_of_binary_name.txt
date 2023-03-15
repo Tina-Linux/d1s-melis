@@ -1,6 +1,0 @@
-文件暂时按以下格式命名，其他命名格式在打包是不会被拷贝使用
-
-{mod}_{chip}_{storagetyp}.bin
-
-boot0_sun8iw19p1_nor.bin
-u-boot_sun8iw19p1_nor.bin

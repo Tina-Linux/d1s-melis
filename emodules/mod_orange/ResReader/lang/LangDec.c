@@ -1,22 +1,44 @@
 /*
-*********************************************************************************************************
-*File   :   Decord.cpp
-*version:   v1.0    2008-10-28
-*By     :   Andy.zhang
-*Brief  :   °´ÕÕ¹æ¶¨µÄ¸ñÊ½¶ÁÈ¡dataÎÄ¼şÖĞµÄÄÚÈİ
-*********************************************************************************************************
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "LangDec_private.h"
 #ifdef SIM_PC_WIN
 extern __declspec(dllimport) FILE *OpenLangue(const char *szAppFile);
 #pragma pack(1)
 #endif
 /**
-*@brief:  ´ò¿ªÖ¸¶¨Â·¾¶ÎÄ¼ş£¬·µ»ØÎÄ¼ş¾ä±ú£»
-*@param:  szAppFile [in]    ÎÄ¼şÂ·¾¶Ãû
-*@param:  mode      [in]    ´ò¿ªÄ£Ê½£¬Ä¿Ç°°æ±¾´Ë²ÎÊıÃ»ÓĞÒâÒå
-*@return: HLANG     HHEAD*  Êı¾İ½á¹¹
+*@brief:  æ‰“å¼€æŒ‡å®šè·¯å¾„æ–‡ä»¶ï¼Œè¿”å›æ–‡ä»¶å¥æŸ„ï¼›
+*@param:  szAppFile [in]    æ–‡ä»¶è·¯å¾„å
+*@param:  mode      [in]    æ‰“å¼€æ¨¡å¼ï¼Œç›®å‰ç‰ˆæœ¬æ­¤å‚æ•°æ²¡æœ‰æ„ä¹‰
+*@return: HLANG     HHEAD*  æ•°æ®ç»“æ„
 **/
 HLANG   Lang_Open(char *szAppFile, __u32 mode)
 {
@@ -36,7 +58,7 @@ HLANG   Lang_Open(char *szAppFile, __u32 mode)
     #endif
     */
     mode = mode;
-    //·ÖÅäÄÚ´æHHEAD *
+    //åˆ†é…å†…å­˜HHEAD *
     pHHead = (HHEAD *)malloc(sizeof(HHEAD));
 
     if (pHHead == NULL)
@@ -57,11 +79,11 @@ HLANG   Lang_Open(char *szAppFile, __u32 mode)
         return NULL;
     }
     pHHead->fp = fp;
-    //¶ÁÈ¡lang_head
+    //è¯»å–lang_head
     fseek1(fp, 0, SEEK_SET);
     fread1(&m_LangHead, sizeof(m_LangHead), 1, fp);
 
-    //ÅĞ¶ÏÎÄ¼şÍ·£¬ÊÇ·ñÖ¸¶¨ÀàĞÍ
+    //åˆ¤æ–­æ–‡ä»¶å¤´ï¼Œæ˜¯å¦æŒ‡å®šç±»å‹
     if (strcmp((char *)m_LangHead.SecName, SEC_NAME))
     {
 #if LANGDEC_CHECK_ARG_EN > 0
@@ -72,7 +94,7 @@ HLANG   Lang_Open(char *szAppFile, __u32 mode)
         return NULL;
     }
 
-    //¸ù¾İ¶ÁÈ¡ÎÄ¼şÍ·£¬³õÊ¼»¯HHEAD *Êı¾İ½á¹¹
+    //æ ¹æ®è¯»å–æ–‡ä»¶å¤´ï¼Œåˆå§‹åŒ–HHEAD *æ•°æ®ç»“æ„
     pHHead->LangTabOff  = m_LangHead.LangTabOff;
     pHHead->LangSize    = m_LangHead.LangSize;
     pHHead->LangNum     = m_LangHead.LangNum;
@@ -91,34 +113,34 @@ HLANG   Lang_Open(char *szAppFile, __u32 mode)
         fread1(pHHead->pIdTab, 1, m_LangHead.StringNum * sizeof(__u16), fp);
     }
 
-    //·ÖÅäÄÚ´æ£¬±£´ælang_list
+    //åˆ†é…å†…å­˜ï¼Œä¿å­˜lang_list
     m_langbuffer = (char *)malloc(m_LangHead.LangNum * m_LangHead.LangSize * sizeof(char));
-    //Ñ°ÕÒµ½lang_listÆğÊ¼µØÖ·
+    //å¯»æ‰¾åˆ°lang_listèµ·å§‹åœ°å€
     fseek1(fp, m_LangHead.LangTabOff, SEEK_SET);
-    //¶ÁÈ¡lang_list
+    //è¯»å–lang_list
     fread1(m_langbuffer, sizeof(char), m_LangHead.LangNum * m_LangHead.LangSize, fp);
     pHHead->pHLangList  = (HLANGLIST *)malloc(sizeof(HLANGLIST) * pHHead->LangNum);
 
     for (i = 0; i < pHHead->LangNum; i++)
     {
-        //4×Ö½Ú¶ÔÆë,×¢Òâ¿½±´³¤¶È
-        memcpy(&m_Lang, m_langbuffer + i * m_LangHead.LangSize, sizeof(m_Lang)); //4×Ö½Ú¶ÔÆë£»
+        //4å­—èŠ‚å¯¹é½,æ³¨æ„æ‹·è´é•¿åº¦
+        memcpy(&m_Lang, m_langbuffer + i * m_LangHead.LangSize, sizeof(m_Lang)); //4å­—èŠ‚å¯¹é½ï¼›
         pHHead->pHLangList[i].LangID        = m_Lang.LangID;
         pHHead->pHLangList[i].StringTabOff  = m_Lang.StringTabOff;
     }
 
-    //ÊÍ·ÅÄÚ´æ
+    //é‡Šæ”¾å†…å­˜
     free(m_langbuffer);
     return (void *)pHHead;
 }
 
 /**
-*@brief:  ¶ÁÈ¡ÎÄ¼şÖ¸¶¨µØÖ·´¦µÄÊı¾İ
-*@param:  hLang     [in]    ÎÄ¼ş¾ä±ú£»
-*@param:  address   [in]    Ïà¶ÔÎÄ¼şÆğµã´¦µÄÆ«ÒÆµØÖ·£»
-*@param:  length    [in]    ¶ÁÈ¡µÄÊı¾İ³¤¶È
-*@param:  length    [out]   Êä³ö¶ÁÈ¡µÄÊı¾İ
-*@return: Êµ¼Ê¶ÁÈ¡µÄ×Ö½ÚÊı
+*@brief:  è¯»å–æ–‡ä»¶æŒ‡å®šåœ°å€å¤„çš„æ•°æ®
+*@param:  hLang     [in]    æ–‡ä»¶å¥æŸ„ï¼›
+*@param:  address   [in]    ç›¸å¯¹æ–‡ä»¶èµ·ç‚¹å¤„çš„åç§»åœ°å€ï¼›
+*@param:  length    [in]    è¯»å–çš„æ•°æ®é•¿åº¦
+*@param:  length    [out]   è¾“å‡ºè¯»å–çš„æ•°æ®
+*@return: å®é™…è¯»å–çš„å­—èŠ‚æ•°
 **/
 int Lang_Read(HLANG hLang, int address, int length, char *buffer)
 {
@@ -136,19 +158,19 @@ int Lang_Read(HLANG hLang, int address, int length, char *buffer)
 #endif
     pHHead  = (HHEAD *)hLang;
     fp      = pHHead->fp;
-    //Ñ°ÕÒµ½Ö¸¶¨ÄÚ´æ
+    //å¯»æ‰¾åˆ°æŒ‡å®šå†…å­˜
     fseek1(fp, address, SEEK_SET);
-    //¶ÁÈ¡Êı¾İ
+    //è¯»å–æ•°æ®
     nr_read = fread1(buffer, sizeof(char), length, fp);
     return nr_read;
 }
 
 /**
-*@brief:  ²éÑ¯Êı¾İµØÖ·
-*@param:  hLang     [in]    ÎÄ¼ş¾ä±ú£»
-*@param:  LangID    [in]    ÓïÑÔID
-*@param:  StringID  [in]    SringID, ÔÚLang.batÉú³ÉµÄLang.hÎÄ¼şÖĞ¶¨Òå
-*@return: µØÖ·(Ïà¶ÔÎÄ¼şÆğÊ¼Æ«ÒÆÁ¿)
+*@brief:  æŸ¥è¯¢æ•°æ®åœ°å€
+*@param:  hLang     [in]    æ–‡ä»¶å¥æŸ„ï¼›
+*@param:  LangID    [in]    è¯­è¨€ID
+*@param:  StringID  [in]    SringID, åœ¨Lang.batç”Ÿæˆçš„Lang.hæ–‡ä»¶ä¸­å®šä¹‰
+*@return: åœ°å€(ç›¸å¯¹æ–‡ä»¶èµ·å§‹åç§»é‡)
 **/
 int Lang_GetStringAddress(HLANG hLang, short LangID, short StringID)
 {
@@ -171,18 +193,18 @@ int Lang_GetStringAddress(HLANG hLang, short LangID, short StringID)
     pHhead = (HHEAD *)hLang;
     fp     = pHhead->fp;
 
-    //²éÑ¯HHEADÊı¾İ½á¹¹£¬Ñ°ÕÒLangIDÏî
+    //æŸ¥è¯¢HHEADæ•°æ®ç»“æ„ï¼Œå¯»æ‰¾LangIDé¡¹
     for (i = 0; i < pHhead->LangNum; i++)
     {
         m_HLangList = pHhead->pHLangList[i];
 
-        //ÕÒµ½LangIDÏî
-        //×¢ÒâStringID´Ó1¿ªÊ¼£¬ÒÀ´ÎµİÔöµÄ´æÈ¡ÔÚbinÎÄ¼şÖĞ£¬¿ÉÒÔÖ±½ÓÑ°ÕÒµ½ÆğÊ¼µØÖ·
+        //æ‰¾åˆ°LangIDé¡¹
+        //æ³¨æ„StringIDä»1å¼€å§‹ï¼Œä¾æ¬¡é€’å¢çš„å­˜å–åœ¨binæ–‡ä»¶ä¸­ï¼Œå¯ä»¥ç›´æ¥å¯»æ‰¾åˆ°èµ·å§‹åœ°å€
         if (m_HLangList.LangID == LangID)
         {
-            //ÒÆ¶¯ÎÄ¼şÖ¸Õëµ½StringIDÏîÆğÊ¼µØÖ·
+            //ç§»åŠ¨æ–‡ä»¶æŒ‡é’ˆåˆ°StringIDé¡¹èµ·å§‹åœ°å€
             //////////////////////////////////////////////////////////////////////////
-            // ²éÕÒË÷Òı
+            // æŸ¥æ‰¾ç´¢å¼•
             int nIndex = StringID - 1;
             int n;
 
@@ -199,7 +221,7 @@ int Lang_GetStringAddress(HLANG hLang, short LangID, short StringID)
                     }
                 }
 
-                //·ÖÅä»º´æ£¬±£´æstringlistÊı¾İ
+                //åˆ†é…ç¼“å­˜ï¼Œä¿å­˜stringlistæ•°æ®
             }
 
             if (nIndex == -1)
@@ -211,7 +233,7 @@ int Lang_GetStringAddress(HLANG hLang, short LangID, short StringID)
             fseek1(fp, m_HLangList.StringTabOff + (nIndex) * (pHhead->StringSize), SEEK_SET);
             m_strbuffer = (char *)malloc(pHhead->StringSize);
             fread1(m_strbuffer, sizeof(char), pHhead->StringSize, fp);
-            //4×Ö½Ú¶ÔÆë£¬
+            //4å­—èŠ‚å¯¹é½ï¼Œ
             memcpy(&m_String, m_strbuffer, sizeof(m_String));
 
             if (m_String.StringID == StringID)
@@ -231,11 +253,11 @@ int Lang_GetStringAddress(HLANG hLang, short LangID, short StringID)
 }
 
 /**
-*@brief:  ²éÑ¯Êı¾İ³¤¶È
-*@param:  hLang     [in]    ÎÄ¼ş¾ä±ú£»
-*@param:  LangID    [in]    ÓïÑÔID
-*@param:  StringID  [in]    SringID, ÔÚLang.batÉú³ÉµÄLang.hÎÄ¼şÖĞ¶¨Òå
-*@return: ²éÑ¯Êı¾İ³¤¶È(byte)
+*@brief:  æŸ¥è¯¢æ•°æ®é•¿åº¦
+*@param:  hLang     [in]    æ–‡ä»¶å¥æŸ„ï¼›
+*@param:  LangID    [in]    è¯­è¨€ID
+*@param:  StringID  [in]    SringID, åœ¨Lang.batç”Ÿæˆçš„Lang.hæ–‡ä»¶ä¸­å®šä¹‰
+*@return: æŸ¥è¯¢æ•°æ®é•¿åº¦(byte)
 **/
 int Lang_GetStringSize(HLANG hLang, short LangID, short StringID)
 {
@@ -265,7 +287,7 @@ int Lang_GetStringSize(HLANG hLang, short LangID, short StringID)
         if (m_HLangList.LangID == LangID)
         {
             //////////////////////////////////////////////////////////////////////////
-            // ²éÕÒË÷Òı
+            // æŸ¥æ‰¾ç´¢å¼•
             int nIndex = StringID - 1;
             int n;
 
@@ -282,7 +304,7 @@ int Lang_GetStringSize(HLANG hLang, short LangID, short StringID)
                     }
                 }
 
-                //·ÖÅä»º´æ£¬±£´æstringlistÊı¾İ
+                //åˆ†é…ç¼“å­˜ï¼Œä¿å­˜stringlistæ•°æ®
             }
 
             if (nIndex == -1)
@@ -298,7 +320,7 @@ int Lang_GetStringSize(HLANG hLang, short LangID, short StringID)
 
             if (m_String.StringID == StringID)
             {
-                //·µ»ØÊı¾İ³¤¶È
+                //è¿”å›æ•°æ®é•¿åº¦
                 size = m_String.size;
             }
             else
@@ -314,13 +336,13 @@ int Lang_GetStringSize(HLANG hLang, short LangID, short StringID)
 }
 
 /**
-*@brief:  ²éÑ¯Êı¾İ
-*@param:  hLang     [in]    ÎÄ¼ş¾ä±ú£»
-*@param:  LangID    [in]    ÓïÑÔID
-*@param:  StringID  [in]    SringID, ÔÚLang.batÉú³ÉµÄLang.hÎÄ¼şÖĞ¶¨Òå
-*@param:  buffer    [out]   Êı¾İÊä³ö»º³åÇø
-*@param:  length    [in]    Êı¾İÊä³ö»º³åÇø³¤¶È
-*@return: Êı¾İÊµ¼Ê³¤¶È(byte)
+*@brief:  æŸ¥è¯¢æ•°æ®
+*@param:  hLang     [in]    æ–‡ä»¶å¥æŸ„ï¼›
+*@param:  LangID    [in]    è¯­è¨€ID
+*@param:  StringID  [in]    SringID, åœ¨Lang.batç”Ÿæˆçš„Lang.hæ–‡ä»¶ä¸­å®šä¹‰
+*@param:  buffer    [out]   æ•°æ®è¾“å‡ºç¼“å†²åŒº
+*@param:  length    [in]    æ•°æ®è¾“å‡ºç¼“å†²åŒºé•¿åº¦
+*@return: æ•°æ®å®é™…é•¿åº¦(byte)
 **/
 int Lang_GetString(HLANG hLang, short LangID, short StringID, char *buffer, int length)
 {
@@ -349,7 +371,7 @@ int Lang_GetString(HLANG hLang, short LangID, short StringID, char *buffer, int 
         if (m_HLangList.LangID == LangID)
         {
             //////////////////////////////////////////////////////////////////////////
-            // ²éÕÒË÷Òı
+            // æŸ¥æ‰¾ç´¢å¼•
             int nIndex = StringID - 1;
             int n;
 
@@ -366,7 +388,7 @@ int Lang_GetString(HLANG hLang, short LangID, short StringID, char *buffer, int 
                     }
                 }
 
-                //·ÖÅä»º´æ£¬±£´æstringlistÊı¾İ
+                //åˆ†é…ç¼“å­˜ï¼Œä¿å­˜stringlistæ•°æ®
             }
 
             if (nIndex == -1)
@@ -383,12 +405,12 @@ int Lang_GetString(HLANG hLang, short LangID, short StringID, char *buffer, int 
 
             if (m_String.StringID == StringID)
             {
-                //ÒÆ¶¯ÎÄ¼şÖ¸Õëµ½Êı¾İµÄÆğÊ¼µØÖ·
+                //ç§»åŠ¨æ–‡ä»¶æŒ‡é’ˆåˆ°æ•°æ®çš„èµ·å§‹åœ°å€
                 fseek1(fp, m_String.offset, SEEK_SET);
 
                 if (m_String.size <= (unsigned)length)
                 {
-                    //¶ÁÊı¾İµ½buffer
+                    //è¯»æ•°æ®åˆ°buffer
                     fread1(buffer, sizeof(char), m_String.size, fp);
                     free(m_strbuffer);
                     return m_String.size;
@@ -409,8 +431,8 @@ int Lang_GetString(HLANG hLang, short LangID, short StringID, char *buffer, int 
     return 0;
 }
 /**
-*@brief:  ¹Ø±Õ¾ä±ú£¬ÊÍ·ÅÄÚ´æ
-*@param:  hLang     [in]    ÎÄ¼ş¾ä±ú£»
+*@brief:  å…³é—­å¥æŸ„ï¼Œé‡Šæ”¾å†…å­˜
+*@param:  hLang     [in]    æ–‡ä»¶å¥æŸ„ï¼›
 **/
 
 int Lang_Close(HLANG hLang)
@@ -426,9 +448,9 @@ int Lang_Close(HLANG hLang)
 #endif
     pHhead = (HHEAD *)hLang;
     fp     = pHhead->fp;
-    //¹Ø±ÕÎÄ¼ş
+    //å…³é—­æ–‡ä»¶
     fclose1(fp);
-    //ÊÍ·ÅÄÚ´æ£»
+    //é‡Šæ”¾å†…å­˜ï¼›
     free(pHhead->pHLangList);
     free(pHhead);
     return OK;

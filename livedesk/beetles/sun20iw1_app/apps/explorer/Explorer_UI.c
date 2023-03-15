@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include "beetles_app.h"
 #include "Explorer.h"
 #include "Explorer_UI.h"
@@ -14,7 +45,7 @@
 #define C_DEL_FILE_PECENT_AREA_W    (130)
 #define C_DEL_FILE_PECENT_AREA_H    (60)
 
-// ×ó²àÎÄ¼şÀàĞÍÖĞ£¬ÏÔÊ¾Ã¿ÖÖÃ½Ìå¶ÔÓ¦µÄ×Ö·û£¬Èç"music","ebookµÈ"  ×ø±êÊÇÏà¶ÔÕâ¸öÃ½Ìå¶ÔÓ¦µÄÍ¼Æ¬¶øÑÔ
+// å·¦ä¾§æ–‡ä»¶ç±»å‹ä¸­ï¼Œæ˜¾ç¤ºæ¯ç§åª’ä½“å¯¹åº”çš„å­—ç¬¦ï¼Œå¦‚"music","ebookç­‰"  åæ ‡æ˜¯ç›¸å¯¹è¿™ä¸ªåª’ä½“å¯¹åº”çš„å›¾ç‰‡è€Œè¨€
 #define   C_FILE_TYPE_TXT_X 30
 #define   C_FILE_TYPE_TXT_Y     2
 #define   C_FILE_TYPE_TXT_W   80
@@ -57,7 +88,7 @@ static explorer_viewer_ui_t  explr_viewer_ui_480_640 =
         {20 + 42, 5, 300 - (4 + 42 + 20), 106 + 2 - 10 }, //text rect
     },
 
-    //list item attribute£¬ÒÔÏÂ×ø±êÎªµã¶ÔÓÚlistbar rectangleµÄÏà¶Ô×ø±ê
+    //list item attributeï¼Œä»¥ä¸‹åæ ‡ä¸ºç‚¹å¯¹äºlistbar rectangleçš„ç›¸å¯¹åæ ‡
     {
         { 800 - 490, 0, 490, 54 * 8},           //iListBar Area
         //{ 0, 0, 490, 106+2 },                 //item rect
@@ -68,14 +99,14 @@ static explorer_viewer_ui_t  explr_viewer_ui_480_640 =
 
         //  { 4, (106 + 2 - 42) / 2, 42, 42 },                    //icon rect
         { 4, (54 - 42) / 2, 42, 42},                    //icon rect
-        //{ 4, (106 + 2 - 42) / 2, 42, 42 },                    //miniature rect, ËõÂÔÍ¼ UI ²ÎÊı
-        { 4, (54 - 42) / 2, 42, 42 },                   //miniature rect, ËõÂÔÍ¼ UI ²ÎÊı
+        //{ 4, (106 + 2 - 42) / 2, 42, 42 },                    //miniature rect, ç¼©ç•¥å›¾ UI å‚æ•°
+        { 4, (54 - 42) / 2, 42, 42 },                   //miniature rect, ç¼©ç•¥å›¾ UI å‚æ•°
 
         { 42 + 20, 0, 490 - (4 + 42 + 20), 54}, //text rect
 
         //downside two not use ,now
         { 7, 2, 254, 30 },                  //focus icon rect(select picture)
-        { 2, 99, 65, 65},                   //Ã½ÌåÀàĞÍÍ¼±êÎ»ÖÃ(ÏÔÊ¾ÔÚ×ó±ßÇøÓòµÄ´óÍ¼±ê)
+        { 2, 99, 65, 65},                   //åª’ä½“ç±»å‹å›¾æ ‡ä½ç½®(æ˜¾ç¤ºåœ¨å·¦è¾¹åŒºåŸŸçš„å¤§å›¾æ ‡)
 
         //need to change
         {24, 5, 106 + 2, 20 },                  //title rect, only for file manager, not use any more
@@ -88,7 +119,7 @@ static explorer_viewer_ui_t  explr_viewer_ui_480_640 =
     },
 
     //do not use, now
-    //square item attribute£¬ÒÔÏÂ×ø±êÎªµã¶ÔÓÚmenduµÄÏà¶Ô×ø±ê
+    //square item attributeï¼Œä»¥ä¸‹åæ ‡ä¸ºç‚¹å¯¹äºmenduçš„ç›¸å¯¹åæ ‡
     {
         { 0, 1, 800, 243},                  //(the whole listbar rectangle)
         { 0, 0, 160, 81 },                  //item rect in listbar
@@ -108,7 +139,7 @@ static explorer_viewer_ui_t  explr_viewer_ui_480_640 =
     {
         //ID                                                            res handle,     res buffer
 
-        { NULL,           NULL,                  NULL },    //µ÷É«°å
+        { NULL,           NULL,                  NULL },    //è°ƒè‰²æ¿
 
         { ID_EXPLORER_SD_F_BMP,           NULL,                  NULL }, //SD F
         { ID_EXPLORER_SD_UF_BMP,           NULL,                 NULL }, //SD UF
@@ -118,7 +149,7 @@ static explorer_viewer_ui_t  explr_viewer_ui_480_640 =
         { ID_EXPLORER_CP_MOV_BMP,           NULL,                NULL },
         { ID_EXPLORER_CP_MOV_F_BMP,           NULL,                  NULL },
 
-        { ID_EXPLORER_BOTTOM_BMP,           NULL,                NULL },    //±³¾°Í¼
+        { ID_EXPLORER_BOTTOM_BMP,           NULL,                NULL },    //èƒŒæ™¯å›¾
 
         { ID_EXPLORER_USB_ICON_FOCUSED_BMP,             NULL,            NULL },    // USB
 
@@ -126,53 +157,53 @@ static explorer_viewer_ui_t  explr_viewer_ui_480_640 =
 
 
         { NULL,                                          NULL,           NULL },    //
-        { ID_EXPLORER_UNKNOWN_FILE_FOCUSED_BMP,  NULL,           NULL },    // Ã»·¨Ê¶±ğÎÄ¼ş
+        { ID_EXPLORER_UNKNOWN_FILE_FOCUSED_BMP,  NULL,           NULL },    // æ²¡æ³•è¯†åˆ«æ–‡ä»¶
         { ID_EXPLORER_UNKNOWN_FILE_FOCUSED_BMP,  NULL,           NULL },    //
 
-        //ÎÄ¼ş¹ÜÀí×ó²àÍ¼±ê
-        { ID_EXPLORER_VIDEO_FILE_BMP/*ID_EXPLORER_ALL_FILE_BMP*/,                   NULL,        NULL },    //  videoÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP/*ID_EXPLORER_ALL_ICON_FOCUSED_BMP*/,       NULL,        NULL },    // videoÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        //æ–‡ä»¶ç®¡ç†å·¦ä¾§å›¾æ ‡
+        { ID_EXPLORER_VIDEO_FILE_BMP/*ID_EXPLORER_ALL_FILE_BMP*/,                   NULL,        NULL },    //  videoæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP/*ID_EXPLORER_ALL_ICON_FOCUSED_BMP*/,       NULL,        NULL },    // videoæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
         { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP/*ID_EXPLORER_ALL_ICON_FOCUSED_BMP*/,       NULL,        NULL },    //
 
 
-        { ID_EXPLORER_VIDEO_FILE_BMP,                   NULL,        NULL },    //  videoÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP,       NULL,        NULL },    // videoÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        { ID_EXPLORER_VIDEO_FILE_BMP,                   NULL,        NULL },    //  videoæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP,       NULL,        NULL },    // videoæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
         { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP,       NULL,        NULL },    //
 
-        { ID_EXPLORER_MUSIC_FILE_BMP,                   NULL,        NULL },    // musicÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_MUSIC_ICON_FOCUSED_BMP,       NULL,        NULL },    // musicÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
-        { ID_EXPLORER_MUSIC_ICON_FOCUSED_BMP,       NULL,        NULL },    // musicÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        { ID_EXPLORER_MUSIC_FILE_BMP,                   NULL,        NULL },    // musicæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_MUSIC_ICON_FOCUSED_BMP,       NULL,        NULL },    // musicæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
+        { ID_EXPLORER_MUSIC_ICON_FOCUSED_BMP,       NULL,        NULL },    // musicæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
 
-        { ID_EXPLORER_PHOTO_FILE_BMP,               NULL,       NULL },     // pictureÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_PHOTO_ICON_FOCUSED_BMP,       NULL,       NULL },     // pictureÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
-        { ID_EXPLORER_PHOTO_ICON_FOCUSED_BMP,       NULL,       NULL },     // pictureÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        { ID_EXPLORER_PHOTO_FILE_BMP,               NULL,       NULL },     // pictureæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_PHOTO_ICON_FOCUSED_BMP,       NULL,       NULL },     // pictureæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
+        { ID_EXPLORER_PHOTO_ICON_FOCUSED_BMP,       NULL,       NULL },     // pictureæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
 
-        { ID_EXPLORER_EBOOK_FILE_BMP,               NULL,                NULL },    // EbookÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_EBOOK_ICON_FOCUSED_BMP,       NULL,                NULL },    // EbookÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
-        { ID_EXPLORER_EBOOK_ICON_FOCUSED_BMP,       NULL,                NULL },    // EbookÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        { ID_EXPLORER_EBOOK_FILE_BMP,               NULL,                NULL },    // Ebookæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_EBOOK_ICON_FOCUSED_BMP,       NULL,                NULL },    // Ebookæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
+        { ID_EXPLORER_EBOOK_ICON_FOCUSED_BMP,       NULL,                NULL },    // Ebookæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
 
-        { ID_EXPLORER_GAME_FILE_BMP,                NULL,                NULL },    // GameÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_GAME_ICON_FOCUSED_BMP,        NULL,                NULL },    // gameÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
-        { ID_EXPLORER_GAME_ICON_FOCUSED_BMP,        NULL,                NULL },    // gameÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        { ID_EXPLORER_GAME_FILE_BMP,                NULL,                NULL },    // Gameæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_GAME_ICON_FOCUSED_BMP,        NULL,                NULL },    // gameæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
+        { ID_EXPLORER_GAME_ICON_FOCUSED_BMP,        NULL,                NULL },    // gameæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
 
 
-        {ID_EXPLORER_LISTBAR_ITEM_F_BMP,                NULL,                NULL },    //listbar focus item ±³¾°Í¼
-        {ID_EXPLORER_LISTBAR_ITEM_UF_BMP,           NULL,                NULL },    //listbar unfocus item ±³¾°Í¼
-        {ID_EXPLORER_LISTBAR_ITEM_ROLL_BMP,         NULL,                NULL },    //listbar roll item ±³¾°Í¼
+        {ID_EXPLORER_LISTBAR_ITEM_F_BMP,                NULL,                NULL },    //listbar focus item èƒŒæ™¯å›¾
+        {ID_EXPLORER_LISTBAR_ITEM_UF_BMP,           NULL,                NULL },    //listbar unfocus item èƒŒæ™¯å›¾
+        {ID_EXPLORER_LISTBAR_ITEM_ROLL_BMP,         NULL,                NULL },    //listbar roll item èƒŒæ™¯å›¾
 
-        {ID_EXPLORER_LEFT_LIST_F_BMP/*ID_EXPLORER_MEDIATYPE_LISTBAR_ITEM_F_BMP*/,               NULL,                NULL },    //listbar focus item ±³¾°Í¼
-        {ID_EXPLORER_LEFT_LIST_UF_BMP/*ID_EXPLORER_MEDIATYPE_LISTBAR_ITEM_UF_BMP*/,         NULL,                NULL },    //listbar unfocus item ±³¾°Í¼
+        {ID_EXPLORER_LEFT_LIST_F_BMP/*ID_EXPLORER_MEDIATYPE_LISTBAR_ITEM_F_BMP*/,               NULL,                NULL },    //listbar focus item èƒŒæ™¯å›¾
+        {ID_EXPLORER_LEFT_LIST_UF_BMP/*ID_EXPLORER_MEDIATYPE_LISTBAR_ITEM_UF_BMP*/,         NULL,                NULL },    //listbar unfocus item èƒŒæ™¯å›¾
 
 
         {NULL,                                      NULL,                NULL },    //
 
-        { ID_EXPLORER_LIST_SCROLL_BG_BMP,                    NULL,                   NULL },    // scroll bar ±³¾°Í¼
-        { NULL,                  NULL,                   NULL },    // scroll bar Í·²¿icon
-        { ID_EXPLORER_LIST_SCROLL_BMP,                   NULL,                   NULL },    // scroll bar , »¬¿é£¬¸ß¶È±ØĞëÎª1
-        { NULL,                  NULL,                   NULL },    // scroll bar , »¬¿é£¬¸ß¶È±ØĞëÎª1
+        { ID_EXPLORER_LIST_SCROLL_BG_BMP,                    NULL,                   NULL },    // scroll bar èƒŒæ™¯å›¾
+        { NULL,                  NULL,                   NULL },    // scroll bar å¤´éƒ¨icon
+        { ID_EXPLORER_LIST_SCROLL_BMP,                   NULL,                   NULL },    // scroll bar , æ»‘å—ï¼Œé«˜åº¦å¿…é¡»ä¸º1
+        { NULL,                  NULL,                   NULL },    // scroll bar , æ»‘å—ï¼Œé«˜åº¦å¿…é¡»ä¸º1
 
-        {ID_EXPLORER_LEFT_LIST_MOVIE_F_BMP,         NULL,               NULL},      //´°¿ÚÖĞ×ó²àÏÔÊ¾µÄÎÄ¼şÀàĞÍÍ¼±ê
-        {ID_EXPLORER_LEFT_LIST_MOVIE_UF_BMP,            NULL,               NULL},      //´°¿ÚÖĞ×ó²àÏÔÊ¾µÄÎÄ¼şÀàĞÍÍ¼±ê
+        {ID_EXPLORER_LEFT_LIST_MOVIE_F_BMP,         NULL,               NULL},      //çª—å£ä¸­å·¦ä¾§æ˜¾ç¤ºçš„æ–‡ä»¶ç±»å‹å›¾æ ‡
+        {ID_EXPLORER_LEFT_LIST_MOVIE_UF_BMP,            NULL,               NULL},      //çª—å£ä¸­å·¦ä¾§æ˜¾ç¤ºçš„æ–‡ä»¶ç±»å‹å›¾æ ‡
         {ID_EXPLORER_LEFT_LIST_MUSIC_F_BMP,         NULL,               NULL},
         {ID_EXPLORER_LEFT_LIST_MUSIC_UF_BMP,            NULL,               NULL},
         {ID_EXPLORER_LEFT_LIST_PHOTO_F_BMP,         NULL,               NULL},
@@ -211,11 +242,11 @@ static explorer_viewer_ui_t  explr_viewer_ui_480_640 =
             {{2, 1, 126, 26}, {2, 28, 126, 26}, {2, 55, 126, 26}, {2, 82, 126, 26}, {2, 218, 126, 26}, {2, 82, 126, 135}, {22, 48, 65, 65}, {87, 31, 34, 30}},
             {{2, 1, 126, 26}, {2, 28, 126, 26}, {2, 55, 126, 26}, {2, 82, 126, 26}, {2, 109, 126, 26}, {2, 109, 126, 135}, {22, 48, 65, 65}, {87, 31, 34, 30}}
         },
-        {5, 5, 19, 19},         //ÎÄ¼ş¹ÜÀíÍ¼±ê
-        {30, 5, 80, 20},        //ÏÔÊ¾ÎÄ¼ş×Ö·û×ø±ê
-        {87, 100, 30, 30},      //É¾³ı°´Å¥×ø±êÎ»ÖÃ
-        {0, 0, 30, 30},         //¼ÇÂ¼·µÈ¥Í¼±ê×ø±êµÄ
-        {(126 - 120) / 2, 120, 120, 90}         //Í¼Æ¬¶ÔÓ¦µÄËõÂÔÍ¼×ø±ê
+        {5, 5, 19, 19},         //æ–‡ä»¶ç®¡ç†å›¾æ ‡
+        {30, 5, 80, 20},        //æ˜¾ç¤ºæ–‡ä»¶å­—ç¬¦åæ ‡
+        {87, 100, 30, 30},      //åˆ é™¤æŒ‰é’®åæ ‡ä½ç½®
+        {0, 0, 30, 30},         //è®°å½•è¿”å»å›¾æ ‡åæ ‡çš„
+        {(126 - 120) / 2, 120, 120, 90}         //å›¾ç‰‡å¯¹åº”çš„ç¼©ç•¥å›¾åæ ‡
 
     }
 }
@@ -255,7 +286,7 @@ static explorer_viewer_ui_t  explr_viewer_ui_480_640 =
         {20 + 42, 5, 300 - (4 + 42 + 20), 106 + 2 - 10 }, //text rect
     },
 
-    //list item attribute£¬ÒÔÏÂ×ø±êÎªµã¶ÔÓÚlistbar rectangleµÄÏà¶Ô×ø±ê
+    //list item attributeï¼Œä»¥ä¸‹åæ ‡ä¸ºç‚¹å¯¹äºlistbar rectangleçš„ç›¸å¯¹åæ ‡
     {
         { 640 - 330, 0, 330, 54 * 6},           //iListBar Area
         //{ 0, 0, 330, 106+2 },                 //item rect
@@ -266,14 +297,14 @@ static explorer_viewer_ui_t  explr_viewer_ui_480_640 =
 
         //  { 4, (106 + 2 - 42) / 2, 42, 42 },                    //icon rect
         { 4, (54 - 42) / 2, 42, 42},                    //icon rect
-        //{ 4, (106 + 2 - 42) / 2, 42, 42 },                    //miniature rect, ËõÂÔÍ¼ UI ²ÎÊı
-        { 4, (54 - 42) / 2, 42, 42 },                   //miniature rect, ËõÂÔÍ¼ UI ²ÎÊı
+        //{ 4, (106 + 2 - 42) / 2, 42, 42 },                    //miniature rect, ç¼©ç•¥å›¾ UI å‚æ•°
+        { 4, (54 - 42) / 2, 42, 42 },                   //miniature rect, ç¼©ç•¥å›¾ UI å‚æ•°
 
         { 42 + 20, 0, 490 - (4 + 42 + 20), 54}, //text rect
 
         //downside two not use ,now
         { 7, 2, 254, 30 },                  //focus icon rect(select picture)
-        { 2, 99, 65, 65},                   //Ã½ÌåÀàĞÍÍ¼±êÎ»ÖÃ(ÏÔÊ¾ÔÚ×ó±ßÇøÓòµÄ´óÍ¼±ê)
+        { 2, 99, 65, 65},                   //åª’ä½“ç±»å‹å›¾æ ‡ä½ç½®(æ˜¾ç¤ºåœ¨å·¦è¾¹åŒºåŸŸçš„å¤§å›¾æ ‡)
 
         //need to change
         {24, 5, 106 + 2, 20 },                  //title rect, only for file manager, not use any more
@@ -286,7 +317,7 @@ static explorer_viewer_ui_t  explr_viewer_ui_480_640 =
     },
 
     //do not use, now
-    //square item attribute£¬ÒÔÏÂ×ø±êÎªµã¶ÔÓÚmenduµÄÏà¶Ô×ø±ê
+    //square item attributeï¼Œä»¥ä¸‹åæ ‡ä¸ºç‚¹å¯¹äºmenduçš„ç›¸å¯¹åæ ‡
     {
         { 0, 1, 640, 243},                  //(the whole listbar rectangle)
         { 0, 0, 160, 81 },                  //item rect in listbar
@@ -306,7 +337,7 @@ static explorer_viewer_ui_t  explr_viewer_ui_480_640 =
     {
         //ID                                                            res handle,     res buffer
 
-        { NULL,           NULL,                  NULL },    //µ÷É«°å
+        { NULL,           NULL,                  NULL },    //è°ƒè‰²æ¿
 
         { ID_EXPLORER_SD_F_BMP,           NULL,                  NULL }, //SD F
         { ID_EXPLORER_SD_UF_BMP,           NULL,                 NULL }, //SD UF
@@ -316,7 +347,7 @@ static explorer_viewer_ui_t  explr_viewer_ui_480_640 =
         { ID_EXPLORER_CP_MOV_BMP,           NULL,                NULL },
         { ID_EXPLORER_CP_MOV_F_BMP,           NULL,                  NULL },
 
-        { ID_EXPLORER_BOTTOM_BMP,           NULL,                NULL },    //±³¾°Í¼
+        { ID_EXPLORER_BOTTOM_BMP,           NULL,                NULL },    //èƒŒæ™¯å›¾
 
         { ID_EXPLORER_USB_ICON_FOCUSED_BMP,             NULL,            NULL },    // USB
 
@@ -324,53 +355,53 @@ static explorer_viewer_ui_t  explr_viewer_ui_480_640 =
 
 
         { NULL,                                          NULL,           NULL },    //
-        { ID_EXPLORER_UNKNOWN_FILE_FOCUSED_BMP,  NULL,           NULL },    // Ã»·¨Ê¶±ğÎÄ¼ş
+        { ID_EXPLORER_UNKNOWN_FILE_FOCUSED_BMP,  NULL,           NULL },    // æ²¡æ³•è¯†åˆ«æ–‡ä»¶
         { ID_EXPLORER_UNKNOWN_FILE_FOCUSED_BMP,  NULL,           NULL },    //
 
-        //ÎÄ¼ş¹ÜÀí×ó²àÍ¼±ê
-        { ID_EXPLORER_VIDEO_FILE_BMP/*ID_EXPLORER_ALL_FILE_BMP*/,                   NULL,        NULL },    //  videoÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP/*ID_EXPLORER_ALL_ICON_FOCUSED_BMP*/,       NULL,        NULL },    // videoÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        //æ–‡ä»¶ç®¡ç†å·¦ä¾§å›¾æ ‡
+        { ID_EXPLORER_VIDEO_FILE_BMP/*ID_EXPLORER_ALL_FILE_BMP*/,                   NULL,        NULL },    //  videoæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP/*ID_EXPLORER_ALL_ICON_FOCUSED_BMP*/,       NULL,        NULL },    // videoæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
         { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP/*ID_EXPLORER_ALL_ICON_FOCUSED_BMP*/,       NULL,        NULL },    //
 
 
-        { ID_EXPLORER_VIDEO_FILE_BMP,                   NULL,        NULL },    //  videoÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP,       NULL,        NULL },    // videoÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        { ID_EXPLORER_VIDEO_FILE_BMP,                   NULL,        NULL },    //  videoæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP,       NULL,        NULL },    // videoæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
         { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP,       NULL,        NULL },    //
 
-        { ID_EXPLORER_MUSIC_FILE_BMP,                   NULL,        NULL },    // musicÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_MUSIC_ICON_FOCUSED_BMP,       NULL,        NULL },    // musicÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
-        { ID_EXPLORER_MUSIC_ICON_FOCUSED_BMP,       NULL,        NULL },    // musicÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        { ID_EXPLORER_MUSIC_FILE_BMP,                   NULL,        NULL },    // musicæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_MUSIC_ICON_FOCUSED_BMP,       NULL,        NULL },    // musicæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
+        { ID_EXPLORER_MUSIC_ICON_FOCUSED_BMP,       NULL,        NULL },    // musicæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
 
-        { ID_EXPLORER_PHOTO_FILE_BMP,               NULL,       NULL },     // pictureÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_PHOTO_ICON_FOCUSED_BMP,       NULL,       NULL },     // pictureÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
-        { ID_EXPLORER_PHOTO_ICON_FOCUSED_BMP,       NULL,       NULL },     // pictureÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        { ID_EXPLORER_PHOTO_FILE_BMP,               NULL,       NULL },     // pictureæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_PHOTO_ICON_FOCUSED_BMP,       NULL,       NULL },     // pictureæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
+        { ID_EXPLORER_PHOTO_ICON_FOCUSED_BMP,       NULL,       NULL },     // pictureæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
 
-        { ID_EXPLORER_EBOOK_FILE_BMP,               NULL,                NULL },    // EbookÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_EBOOK_ICON_FOCUSED_BMP,       NULL,                NULL },    // EbookÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
-        { ID_EXPLORER_EBOOK_ICON_FOCUSED_BMP,       NULL,                NULL },    // EbookÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        { ID_EXPLORER_EBOOK_FILE_BMP,               NULL,                NULL },    // Ebookæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_EBOOK_ICON_FOCUSED_BMP,       NULL,                NULL },    // Ebookæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
+        { ID_EXPLORER_EBOOK_ICON_FOCUSED_BMP,       NULL,                NULL },    // Ebookæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
 
-        { ID_EXPLORER_GAME_FILE_BMP,                NULL,                NULL },    // GameÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_GAME_ICON_FOCUSED_BMP,        NULL,                NULL },    // gameÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
-        { ID_EXPLORER_GAME_ICON_FOCUSED_BMP,        NULL,                NULL },    // gameÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        { ID_EXPLORER_GAME_FILE_BMP,                NULL,                NULL },    // Gameæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_GAME_ICON_FOCUSED_BMP,        NULL,                NULL },    // gameæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
+        { ID_EXPLORER_GAME_ICON_FOCUSED_BMP,        NULL,                NULL },    // gameæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
 
 
-        {ID_EXPLORER_LISTBAR_ITEM_F_BMP,                NULL,                NULL },    //listbar focus item ±³¾°Í¼
-        {ID_EXPLORER_LISTBAR_ITEM_UF_BMP,           NULL,                NULL },    //listbar unfocus item ±³¾°Í¼
-        {ID_EXPLORER_LISTBAR_ITEM_ROLL_BMP,         NULL,                NULL },    //listbar roll item ±³¾°Í¼
+        {ID_EXPLORER_LISTBAR_ITEM_F_BMP,                NULL,                NULL },    //listbar focus item èƒŒæ™¯å›¾
+        {ID_EXPLORER_LISTBAR_ITEM_UF_BMP,           NULL,                NULL },    //listbar unfocus item èƒŒæ™¯å›¾
+        {ID_EXPLORER_LISTBAR_ITEM_ROLL_BMP,         NULL,                NULL },    //listbar roll item èƒŒæ™¯å›¾
 
-        {ID_EXPLORER_LEFT_LIST_F_BMP/*ID_EXPLORER_MEDIATYPE_LISTBAR_ITEM_F_BMP*/,               NULL,                NULL },    //listbar focus item ±³¾°Í¼
-        {ID_EXPLORER_LEFT_LIST_UF_BMP/*ID_EXPLORER_MEDIATYPE_LISTBAR_ITEM_UF_BMP*/,         NULL,                NULL },    //listbar unfocus item ±³¾°Í¼
+        {ID_EXPLORER_LEFT_LIST_F_BMP/*ID_EXPLORER_MEDIATYPE_LISTBAR_ITEM_F_BMP*/,               NULL,                NULL },    //listbar focus item èƒŒæ™¯å›¾
+        {ID_EXPLORER_LEFT_LIST_UF_BMP/*ID_EXPLORER_MEDIATYPE_LISTBAR_ITEM_UF_BMP*/,         NULL,                NULL },    //listbar unfocus item èƒŒæ™¯å›¾
 
 
         {NULL,                                      NULL,                NULL },    //
 
-        { ID_EXPLORER_LIST_SCROLL_BG_BMP,                    NULL,                   NULL },    // scroll bar ±³¾°Í¼
-        { NULL,                  NULL,                   NULL },    // scroll bar Í·²¿icon
-        { ID_EXPLORER_LIST_SCROLL_BMP,                   NULL,                   NULL },    // scroll bar , »¬¿é£¬¸ß¶È±ØĞëÎª1
-        { NULL,                  NULL,                   NULL },    // scroll bar , »¬¿é£¬¸ß¶È±ØĞëÎª1
+        { ID_EXPLORER_LIST_SCROLL_BG_BMP,                    NULL,                   NULL },    // scroll bar èƒŒæ™¯å›¾
+        { NULL,                  NULL,                   NULL },    // scroll bar å¤´éƒ¨icon
+        { ID_EXPLORER_LIST_SCROLL_BMP,                   NULL,                   NULL },    // scroll bar , æ»‘å—ï¼Œé«˜åº¦å¿…é¡»ä¸º1
+        { NULL,                  NULL,                   NULL },    // scroll bar , æ»‘å—ï¼Œé«˜åº¦å¿…é¡»ä¸º1
 
-        {ID_EXPLORER_LEFT_LIST_MOVIE_F_BMP,         NULL,               NULL},      //´°¿ÚÖĞ×ó²àÏÔÊ¾µÄÎÄ¼şÀàĞÍÍ¼±ê
-        {ID_EXPLORER_LEFT_LIST_MOVIE_UF_BMP,            NULL,               NULL},      //´°¿ÚÖĞ×ó²àÏÔÊ¾µÄÎÄ¼şÀàĞÍÍ¼±ê
+        {ID_EXPLORER_LEFT_LIST_MOVIE_F_BMP,         NULL,               NULL},      //çª—å£ä¸­å·¦ä¾§æ˜¾ç¤ºçš„æ–‡ä»¶ç±»å‹å›¾æ ‡
+        {ID_EXPLORER_LEFT_LIST_MOVIE_UF_BMP,            NULL,               NULL},      //çª—å£ä¸­å·¦ä¾§æ˜¾ç¤ºçš„æ–‡ä»¶ç±»å‹å›¾æ ‡
         {ID_EXPLORER_LEFT_LIST_MUSIC_F_BMP,         NULL,               NULL},
         {ID_EXPLORER_LEFT_LIST_MUSIC_UF_BMP,            NULL,               NULL},
         {ID_EXPLORER_LEFT_LIST_PHOTO_F_BMP,         NULL,               NULL},
@@ -409,11 +440,11 @@ static explorer_viewer_ui_t  explr_viewer_ui_480_640 =
             {{2, 1, 126, 26}, {2, 28, 126, 26}, {2, 55, 126, 26}, {2, 82, 126, 26}, {2, 218, 126, 26}, {2, 82, 126, 135}, {22, 48, 65, 65}, {87, 31, 34, 30}},
             {{2, 1, 126, 26}, {2, 28, 126, 26}, {2, 55, 126, 26}, {2, 82, 126, 26}, {2, 109, 126, 26}, {2, 109, 126, 135}, {22, 48, 65, 65}, {87, 31, 34, 30}}
         },
-        {5, 5, 19, 19},         //ÎÄ¼ş¹ÜÀíÍ¼±ê
-        {30, 5, 80, 20},        //ÏÔÊ¾ÎÄ¼ş×Ö·û×ø±ê
-        {87, 100, 30, 30},      //É¾³ı°´Å¥×ø±êÎ»ÖÃ
-        {0, 0, 30, 30},         //¼ÇÂ¼·µÈ¥Í¼±ê×ø±êµÄ
-        {(126 - 120) / 2, 120, 120, 90}         //Í¼Æ¬¶ÔÓ¦µÄËõÂÔÍ¼×ø±ê
+        {5, 5, 19, 19},         //æ–‡ä»¶ç®¡ç†å›¾æ ‡
+        {30, 5, 80, 20},        //æ˜¾ç¤ºæ–‡ä»¶å­—ç¬¦åæ ‡
+        {87, 100, 30, 30},      //åˆ é™¤æŒ‰é’®åæ ‡ä½ç½®
+        {0, 0, 30, 30},         //è®°å½•è¿”å»å›¾æ ‡åæ ‡çš„
+        {(126 - 120) / 2, 120, 120, 90}         //å›¾ç‰‡å¯¹åº”çš„ç¼©ç•¥å›¾åæ ‡
 
     }
 }
@@ -457,7 +488,7 @@ static explorer_viewer_ui_t  explr_viewer_ui_800_480 =
         {20 + 42, 5, 300 - (4 + 42 + 20), 106 + 2 - 10 }, //text rect
     },
 
-    //list item attribute£¬ÒÔÏÂ×ø±êÎªµã¶ÔÓÚlistbar rectangleµÄÏà¶Ô×ø±ê
+    //list item attributeï¼Œä»¥ä¸‹åæ ‡ä¸ºç‚¹å¯¹äºlistbar rectangleçš„ç›¸å¯¹åæ ‡
     {
         { 800 - 490, 0, 490, 54 * 8},           //iListBar Area
         //{ 0, 0, 490, 106+2 },                 //item rect
@@ -468,14 +499,14 @@ static explorer_viewer_ui_t  explr_viewer_ui_800_480 =
 
         //  { 4, (106 + 2 - 42) / 2, 42, 42 },                    //icon rect
         { 4, (54 - 42) / 2, 42, 42},                    //icon rect
-        //{ 4, (106 + 2 - 42) / 2, 42, 42 },                    //miniature rect, ËõÂÔÍ¼ UI ²ÎÊı
-        { 4, (54 - 42) / 2, 42, 42 },                   //miniature rect, ËõÂÔÍ¼ UI ²ÎÊı
+        //{ 4, (106 + 2 - 42) / 2, 42, 42 },                    //miniature rect, ç¼©ç•¥å›¾ UI å‚æ•°
+        { 4, (54 - 42) / 2, 42, 42 },                   //miniature rect, ç¼©ç•¥å›¾ UI å‚æ•°
 
         { 42 + 20, 0, 490 - (4 + 42 + 20), 54}, //text rect
 
         //downside two not use ,now
         { 7, 2, 254, 30 },                  //focus icon rect(select picture)
-        { 2, 99, 65, 65},                   //Ã½ÌåÀàĞÍÍ¼±êÎ»ÖÃ(ÏÔÊ¾ÔÚ×ó±ßÇøÓòµÄ´óÍ¼±ê)
+        { 2, 99, 65, 65},                   //åª’ä½“ç±»å‹å›¾æ ‡ä½ç½®(æ˜¾ç¤ºåœ¨å·¦è¾¹åŒºåŸŸçš„å¤§å›¾æ ‡)
 
         //need to change
         {24, 5, 106 + 2, 20 },                  //title rect, only for file manager, not use any more
@@ -488,7 +519,7 @@ static explorer_viewer_ui_t  explr_viewer_ui_800_480 =
     },
 
     //do not use, now
-    //square item attribute£¬ÒÔÏÂ×ø±êÎªµã¶ÔÓÚmenduµÄÏà¶Ô×ø±ê
+    //square item attributeï¼Œä»¥ä¸‹åæ ‡ä¸ºç‚¹å¯¹äºmenduçš„ç›¸å¯¹åæ ‡
     {
         { 0, 1, 800, 243},                  //(the whole listbar rectangle)
         { 0, 0, 160, 81 },                  //item rect in listbar
@@ -508,7 +539,7 @@ static explorer_viewer_ui_t  explr_viewer_ui_800_480 =
     {
         //ID                                                            res handle,     res buffer
 
-        { NULL,           NULL,                  NULL },    //µ÷É«°å
+        { NULL,           NULL,                  NULL },    //è°ƒè‰²æ¿
 
         { ID_EXPLORER_SD_F_BMP,           NULL,                  NULL }, //SD F
         { ID_EXPLORER_SD_UF_BMP,           NULL,                 NULL }, //SD UF
@@ -518,7 +549,7 @@ static explorer_viewer_ui_t  explr_viewer_ui_800_480 =
         { ID_EXPLORER_CP_MOV_BMP,           NULL,                NULL },
         { ID_EXPLORER_CP_MOV_F_BMP,           NULL,                  NULL },
 
-        { ID_EXPLORER_BOTTOM_BMP,           NULL,                NULL },    //±³¾°Í¼
+        { ID_EXPLORER_BOTTOM_BMP,           NULL,                NULL },    //èƒŒæ™¯å›¾
 
         { ID_EXPLORER_USB_ICON_FOCUSED_BMP,             NULL,            NULL },    // USB
 
@@ -526,53 +557,53 @@ static explorer_viewer_ui_t  explr_viewer_ui_800_480 =
 
 
         { NULL,                                          NULL,           NULL },    //
-        { ID_EXPLORER_UNKNOWN_FILE_FOCUSED_BMP,  NULL,           NULL },    // Ã»·¨Ê¶±ğÎÄ¼ş
+        { ID_EXPLORER_UNKNOWN_FILE_FOCUSED_BMP,  NULL,           NULL },    // æ²¡æ³•è¯†åˆ«æ–‡ä»¶
         { ID_EXPLORER_UNKNOWN_FILE_FOCUSED_BMP,  NULL,           NULL },    //
 
-        //ÎÄ¼ş¹ÜÀí×ó²àÍ¼±ê
-        { ID_EXPLORER_VIDEO_FILE_BMP/*ID_EXPLORER_ALL_FILE_BMP*/,                   NULL,        NULL },    //  videoÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP/*ID_EXPLORER_ALL_ICON_FOCUSED_BMP*/,       NULL,        NULL },    // videoÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        //æ–‡ä»¶ç®¡ç†å·¦ä¾§å›¾æ ‡
+        { ID_EXPLORER_VIDEO_FILE_BMP/*ID_EXPLORER_ALL_FILE_BMP*/,                   NULL,        NULL },    //  videoæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP/*ID_EXPLORER_ALL_ICON_FOCUSED_BMP*/,       NULL,        NULL },    // videoæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
         { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP/*ID_EXPLORER_ALL_ICON_FOCUSED_BMP*/,       NULL,        NULL },    //
 
 
-        { ID_EXPLORER_VIDEO_FILE_BMP,                   NULL,        NULL },    //  videoÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP,       NULL,        NULL },    // videoÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        { ID_EXPLORER_VIDEO_FILE_BMP,                   NULL,        NULL },    //  videoæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP,       NULL,        NULL },    // videoæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
         { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP,       NULL,        NULL },    //
 
-        { ID_EXPLORER_MUSIC_FILE_BMP,                   NULL,        NULL },    // musicÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_MUSIC_ICON_FOCUSED_BMP,       NULL,        NULL },    // musicÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
-        { ID_EXPLORER_MUSIC_ICON_FOCUSED_BMP,       NULL,        NULL },    // musicÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        { ID_EXPLORER_MUSIC_FILE_BMP,                   NULL,        NULL },    // musicæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_MUSIC_ICON_FOCUSED_BMP,       NULL,        NULL },    // musicæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
+        { ID_EXPLORER_MUSIC_ICON_FOCUSED_BMP,       NULL,        NULL },    // musicæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
 
-        { ID_EXPLORER_PHOTO_FILE_BMP,               NULL,       NULL },     // pictureÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_PHOTO_ICON_FOCUSED_BMP,       NULL,       NULL },     // pictureÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
-        { ID_EXPLORER_PHOTO_ICON_FOCUSED_BMP,       NULL,       NULL },     // pictureÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        { ID_EXPLORER_PHOTO_FILE_BMP,               NULL,       NULL },     // pictureæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_PHOTO_ICON_FOCUSED_BMP,       NULL,       NULL },     // pictureæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
+        { ID_EXPLORER_PHOTO_ICON_FOCUSED_BMP,       NULL,       NULL },     // pictureæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
 
-        { ID_EXPLORER_EBOOK_FILE_BMP,               NULL,                NULL },    // EbookÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_EBOOK_ICON_FOCUSED_BMP,       NULL,                NULL },    // EbookÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
-        { ID_EXPLORER_EBOOK_ICON_FOCUSED_BMP,       NULL,                NULL },    // EbookÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        { ID_EXPLORER_EBOOK_FILE_BMP,               NULL,                NULL },    // Ebookæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_EBOOK_ICON_FOCUSED_BMP,       NULL,                NULL },    // Ebookæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
+        { ID_EXPLORER_EBOOK_ICON_FOCUSED_BMP,       NULL,                NULL },    // Ebookæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
 
-        { ID_EXPLORER_GAME_FILE_BMP,                NULL,                NULL },    // GameÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_GAME_ICON_FOCUSED_BMP,        NULL,                NULL },    // gameÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
-        { ID_EXPLORER_GAME_ICON_FOCUSED_BMP,        NULL,                NULL },    // gameÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        { ID_EXPLORER_GAME_FILE_BMP,                NULL,                NULL },    // Gameæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_GAME_ICON_FOCUSED_BMP,        NULL,                NULL },    // gameæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
+        { ID_EXPLORER_GAME_ICON_FOCUSED_BMP,        NULL,                NULL },    // gameæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
 
 
-        {ID_EXPLORER_LISTBAR_ITEM_F_BMP,                NULL,                NULL },    //listbar focus item ±³¾°Í¼
-        {ID_EXPLORER_LISTBAR_ITEM_UF_BMP,           NULL,                NULL },    //listbar unfocus item ±³¾°Í¼
-        {ID_EXPLORER_LISTBAR_ITEM_ROLL_BMP,         NULL,                NULL },    //listbar roll item ±³¾°Í¼
+        {ID_EXPLORER_LISTBAR_ITEM_F_BMP,                NULL,                NULL },    //listbar focus item èƒŒæ™¯å›¾
+        {ID_EXPLORER_LISTBAR_ITEM_UF_BMP,           NULL,                NULL },    //listbar unfocus item èƒŒæ™¯å›¾
+        {ID_EXPLORER_LISTBAR_ITEM_ROLL_BMP,         NULL,                NULL },    //listbar roll item èƒŒæ™¯å›¾
 
-        {ID_EXPLORER_LEFT_LIST_F_BMP/*ID_EXPLORER_MEDIATYPE_LISTBAR_ITEM_F_BMP*/,               NULL,                NULL },    //listbar focus item ±³¾°Í¼
-        {ID_EXPLORER_LEFT_LIST_UF_BMP/*ID_EXPLORER_MEDIATYPE_LISTBAR_ITEM_UF_BMP*/,         NULL,                NULL },    //listbar unfocus item ±³¾°Í¼
+        {ID_EXPLORER_LEFT_LIST_F_BMP/*ID_EXPLORER_MEDIATYPE_LISTBAR_ITEM_F_BMP*/,               NULL,                NULL },    //listbar focus item èƒŒæ™¯å›¾
+        {ID_EXPLORER_LEFT_LIST_UF_BMP/*ID_EXPLORER_MEDIATYPE_LISTBAR_ITEM_UF_BMP*/,         NULL,                NULL },    //listbar unfocus item èƒŒæ™¯å›¾
 
 
         {NULL,                                      NULL,                NULL },    //
 
-        { ID_EXPLORER_LIST_SCROLL_BG_BMP,                    NULL,                   NULL },    // scroll bar ±³¾°Í¼
-        { NULL,                  NULL,                   NULL },    // scroll bar Í·²¿icon
-        { ID_EXPLORER_LIST_SCROLL_BMP,                   NULL,                   NULL },    // scroll bar , »¬¿é£¬¸ß¶È±ØĞëÎª1
-        { NULL,                  NULL,                   NULL },    // scroll bar , »¬¿é£¬¸ß¶È±ØĞëÎª1
+        { ID_EXPLORER_LIST_SCROLL_BG_BMP,                    NULL,                   NULL },    // scroll bar èƒŒæ™¯å›¾
+        { NULL,                  NULL,                   NULL },    // scroll bar å¤´éƒ¨icon
+        { ID_EXPLORER_LIST_SCROLL_BMP,                   NULL,                   NULL },    // scroll bar , æ»‘å—ï¼Œé«˜åº¦å¿…é¡»ä¸º1
+        { NULL,                  NULL,                   NULL },    // scroll bar , æ»‘å—ï¼Œé«˜åº¦å¿…é¡»ä¸º1
 
-        {ID_EXPLORER_LEFT_LIST_MOVIE_F_BMP,         NULL,               NULL},      //´°¿ÚÖĞ×ó²àÏÔÊ¾µÄÎÄ¼şÀàĞÍÍ¼±ê
-        {ID_EXPLORER_LEFT_LIST_MOVIE_UF_BMP,            NULL,               NULL},      //´°¿ÚÖĞ×ó²àÏÔÊ¾µÄÎÄ¼şÀàĞÍÍ¼±ê
+        {ID_EXPLORER_LEFT_LIST_MOVIE_F_BMP,         NULL,               NULL},      //çª—å£ä¸­å·¦ä¾§æ˜¾ç¤ºçš„æ–‡ä»¶ç±»å‹å›¾æ ‡
+        {ID_EXPLORER_LEFT_LIST_MOVIE_UF_BMP,            NULL,               NULL},      //çª—å£ä¸­å·¦ä¾§æ˜¾ç¤ºçš„æ–‡ä»¶ç±»å‹å›¾æ ‡
         {ID_EXPLORER_LEFT_LIST_MUSIC_F_BMP,         NULL,               NULL},
         {ID_EXPLORER_LEFT_LIST_MUSIC_UF_BMP,            NULL,               NULL},
         {ID_EXPLORER_LEFT_LIST_PHOTO_F_BMP,         NULL,               NULL},
@@ -611,11 +642,11 @@ static explorer_viewer_ui_t  explr_viewer_ui_800_480 =
             {{2, 1, 126, 26}, {2, 28, 126, 26}, {2, 55, 126, 26}, {2, 82, 126, 26}, {2, 218, 126, 26}, {2, 82, 126, 135}, {22, 48, 65, 65}, {87, 31, 34, 30}},
             {{2, 1, 126, 26}, {2, 28, 126, 26}, {2, 55, 126, 26}, {2, 82, 126, 26}, {2, 109, 126, 26}, {2, 109, 126, 135}, {22, 48, 65, 65}, {87, 31, 34, 30}}
         },
-        {5, 5, 19, 19},         //ÎÄ¼ş¹ÜÀíÍ¼±ê
-        {30, 5, 80, 20},        //ÏÔÊ¾ÎÄ¼ş×Ö·û×ø±ê
-        {87, 100, 30, 30},      //É¾³ı°´Å¥×ø±êÎ»ÖÃ
-        {0, 0, 30, 30},         //¼ÇÂ¼·µÈ¥Í¼±ê×ø±êµÄ
-        {(126 - 120) / 2, 120, 120, 90}         //Í¼Æ¬¶ÔÓ¦µÄËõÂÔÍ¼×ø±ê
+        {5, 5, 19, 19},         //æ–‡ä»¶ç®¡ç†å›¾æ ‡
+        {30, 5, 80, 20},        //æ˜¾ç¤ºæ–‡ä»¶å­—ç¬¦åæ ‡
+        {87, 100, 30, 30},      //åˆ é™¤æŒ‰é’®åæ ‡ä½ç½®
+        {0, 0, 30, 30},         //è®°å½•è¿”å»å›¾æ ‡åæ ‡çš„
+        {(126 - 120) / 2, 120, 120, 90}         //å›¾ç‰‡å¯¹åº”çš„ç¼©ç•¥å›¾åæ ‡
 
     }
 };
@@ -659,7 +690,7 @@ static explorer_viewer_ui_t  explr_viewer_ui_720_480 =
         {20 + 42 + 40, 5, 300 - (4 + 42 + 20 + 40), 106 + 2 - 10 }, //text rect
     },
 
-    //list item attribute£¬ÒÔÏÂ×ø±êÎªµã¶ÔÓÚlistbar rectangleµÄÏà¶Ô×ø±ê
+    //list item attributeï¼Œä»¥ä¸‹åæ ‡ä¸ºç‚¹å¯¹äºlistbar rectangleçš„ç›¸å¯¹åæ ‡
     {
         { 720 - 410, 0, 410, 108 * 4},              //iListBar Area
         { 0, 0, 410, 106 + 2 },                 //item rect
@@ -668,13 +699,13 @@ static explorer_viewer_ui_t  explr_viewer_ui_720_480 =
         { 0, 2, 2, 38},                     //item_dividing_line;
 
         { 4, (106 + 2 - 42) / 2, 42, 42 },                  //icon rect
-        { 4, (106 + 2 - 42) / 2, 42, 42 },                  //miniature rect, ËõÂÔÍ¼ UI ²ÎÊı
+        { 4, (106 + 2 - 42) / 2, 42, 42 },                  //miniature rect, ç¼©ç•¥å›¾ UI å‚æ•°
 
         { 42 + 20, 5, 410 - (4 + 42 + 20) - 40, 106 + 2 - 10 }, //text rect
 
         //downside two not use ,now
         { 7, 2, 254, 30 },                  //focus icon rect(select picture)
-        { 2, 99, 65, 65},                   //Ã½ÌåÀàĞÍÍ¼±êÎ»ÖÃ(ÏÔÊ¾ÔÚ×ó±ßÇøÓòµÄ´óÍ¼±ê)
+        { 2, 99, 65, 65},                   //åª’ä½“ç±»å‹å›¾æ ‡ä½ç½®(æ˜¾ç¤ºåœ¨å·¦è¾¹åŒºåŸŸçš„å¤§å›¾æ ‡)
 
         //need to change
         {24, 5, 106 + 2, 20 },                  //title rect, only for file manager, not use any more
@@ -685,7 +716,7 @@ static explorer_viewer_ui_t  explr_viewer_ui_720_480 =
     },
 
     //do not use, now
-    //square item attribute£¬ÒÔÏÂ×ø±êÎªµã¶ÔÓÚmenduµÄÏà¶Ô×ø±ê
+    //square item attributeï¼Œä»¥ä¸‹åæ ‡ä¸ºç‚¹å¯¹äºmenduçš„ç›¸å¯¹åæ ‡
     {
         { 0, 1, 720, 243},                  //(the whole listbar rectangle)
         { 0, 0, 160, 81 },                  //item rect in listbar
@@ -705,7 +736,7 @@ static explorer_viewer_ui_t  explr_viewer_ui_720_480 =
     {
         //ID                                                            res handle,     res buffer
 
-        { NULL,           NULL,                  NULL },    //µ÷É«°å
+        { NULL,           NULL,                  NULL },    //è°ƒè‰²æ¿
 
         { ID_EXPLORER_SD_F_BMP,           NULL,                  NULL }, //SD F
         { ID_EXPLORER_SD_UF_BMP,           NULL,                 NULL }, //SD UF
@@ -715,7 +746,7 @@ static explorer_viewer_ui_t  explr_viewer_ui_720_480 =
         { ID_EXPLORER_CP_MOV_BMP,           NULL,                NULL },
         { ID_EXPLORER_CP_MOV_F_BMP,           NULL,                  NULL },
 
-        { ID_EXPLORER_BOTTOM_BMP,           NULL,                NULL },    //±³¾°Í¼
+        { ID_EXPLORER_BOTTOM_BMP,           NULL,                NULL },    //èƒŒæ™¯å›¾
 
         { ID_EXPLORER_USB_ICON_FOCUSED_BMP,             NULL,            NULL },    // USB
 
@@ -723,52 +754,52 @@ static explorer_viewer_ui_t  explr_viewer_ui_720_480 =
 
 
         { NULL,                                          NULL,           NULL },    //
-        { ID_EXPLORER_UNKNOWN_FILE_FOCUSED_BMP,  NULL,           NULL },    // Ã»·¨Ê¶±ğÎÄ¼ş
+        { ID_EXPLORER_UNKNOWN_FILE_FOCUSED_BMP,  NULL,           NULL },    // æ²¡æ³•è¯†åˆ«æ–‡ä»¶
         { ID_EXPLORER_UNKNOWN_FILE_FOCUSED_BMP,  NULL,           NULL },    //
 
-        //ÎÄ¼ş¹ÜÀí×ó²àÍ¼±ê
-        { ID_EXPLORER_VIDEO_FILE_BMP/*ID_EXPLORER_ALL_FILE_BMP*/,                   NULL,        NULL },    //  videoÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP/*ID_EXPLORER_ALL_ICON_FOCUSED_BMP*/,       NULL,        NULL },    // videoÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        //æ–‡ä»¶ç®¡ç†å·¦ä¾§å›¾æ ‡
+        { ID_EXPLORER_VIDEO_FILE_BMP/*ID_EXPLORER_ALL_FILE_BMP*/,                   NULL,        NULL },    //  videoæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP/*ID_EXPLORER_ALL_ICON_FOCUSED_BMP*/,       NULL,        NULL },    // videoæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
         { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP/*ID_EXPLORER_ALL_ICON_FOCUSED_BMP*/,       NULL,        NULL },    //
 
 
-        { ID_EXPLORER_VIDEO_FILE_BMP,                   NULL,        NULL },    //  videoÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP,       NULL,        NULL },    // videoÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        { ID_EXPLORER_VIDEO_FILE_BMP,                   NULL,        NULL },    //  videoæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP,       NULL,        NULL },    // videoæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
         { ID_EXPLORER_VIDEO_ICON_FOCUSED_BMP,       NULL,        NULL },    //
 
-        { ID_EXPLORER_MUSIC_FILE_BMP,                   NULL,        NULL },    // musicÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_MUSIC_ICON_FOCUSED_BMP,       NULL,        NULL },    // musicÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
-        { ID_EXPLORER_MUSIC_ICON_FOCUSED_BMP,       NULL,        NULL },    // musicÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        { ID_EXPLORER_MUSIC_FILE_BMP,                   NULL,        NULL },    // musicæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_MUSIC_ICON_FOCUSED_BMP,       NULL,        NULL },    // musicæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
+        { ID_EXPLORER_MUSIC_ICON_FOCUSED_BMP,       NULL,        NULL },    // musicæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
 
-        { ID_EXPLORER_PHOTO_FILE_BMP,               NULL,       NULL },     // pictureÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_PHOTO_ICON_FOCUSED_BMP,       NULL,       NULL },     // pictureÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
-        { ID_EXPLORER_PHOTO_ICON_FOCUSED_BMP,       NULL,       NULL },     // pictureÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        { ID_EXPLORER_PHOTO_FILE_BMP,               NULL,       NULL },     // pictureæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_PHOTO_ICON_FOCUSED_BMP,       NULL,       NULL },     // pictureæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
+        { ID_EXPLORER_PHOTO_ICON_FOCUSED_BMP,       NULL,       NULL },     // pictureæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
 
-        { ID_EXPLORER_EBOOK_FILE_BMP,               NULL,                NULL },    // EbookÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_EBOOK_ICON_FOCUSED_BMP,       NULL,                NULL },    // EbookÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
-        { ID_EXPLORER_EBOOK_ICON_FOCUSED_BMP,       NULL,                NULL },    // EbookÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        { ID_EXPLORER_EBOOK_FILE_BMP,               NULL,                NULL },    // Ebookæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_EBOOK_ICON_FOCUSED_BMP,       NULL,                NULL },    // Ebookæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
+        { ID_EXPLORER_EBOOK_ICON_FOCUSED_BMP,       NULL,                NULL },    // Ebookæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
 
-        { ID_EXPLORER_GAME_FILE_BMP,                NULL,                NULL },    // GameÎÄ¼ş±êÖ¾
-        { ID_EXPLORER_GAME_ICON_FOCUSED_BMP,        NULL,                NULL },    // gameÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
-        { ID_EXPLORER_GAME_ICON_FOCUSED_BMP,        NULL,                NULL },    // gameÎÄ¼şiconÍ¼±ê,ÓëÎÄ¼şÃûÒ»ÆğµÄ
+        { ID_EXPLORER_GAME_FILE_BMP,                NULL,                NULL },    // Gameæ–‡ä»¶æ ‡å¿—
+        { ID_EXPLORER_GAME_ICON_FOCUSED_BMP,        NULL,                NULL },    // gameæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
+        { ID_EXPLORER_GAME_ICON_FOCUSED_BMP,        NULL,                NULL },    // gameæ–‡ä»¶iconå›¾æ ‡,ä¸æ–‡ä»¶åä¸€èµ·çš„
 
 
-        {ID_EXPLORER_LISTBAR_ITEM_F_BMP,                NULL,                NULL },    //listbar focus item ±³¾°Í¼
-        {ID_EXPLORER_LISTBAR_ITEM_UF_BMP,           NULL,                NULL },    //listbar unfocus item ±³¾°Í¼
+        {ID_EXPLORER_LISTBAR_ITEM_F_BMP,                NULL,                NULL },    //listbar focus item èƒŒæ™¯å›¾
+        {ID_EXPLORER_LISTBAR_ITEM_UF_BMP,           NULL,                NULL },    //listbar unfocus item èƒŒæ™¯å›¾
 
-        {ID_EXPLORER_LEFT_LIST_F_BMP/*ID_EXPLORER_MEDIATYPE_LISTBAR_ITEM_F_BMP*/,               NULL,                NULL },    //listbar focus item ±³¾°Í¼
-        {ID_EXPLORER_LEFT_LIST_UF_BMP/*ID_EXPLORER_MEDIATYPE_LISTBAR_ITEM_UF_BMP*/,         NULL,                NULL },    //listbar unfocus item ±³¾°Í¼
+        {ID_EXPLORER_LEFT_LIST_F_BMP/*ID_EXPLORER_MEDIATYPE_LISTBAR_ITEM_F_BMP*/,               NULL,                NULL },    //listbar focus item èƒŒæ™¯å›¾
+        {ID_EXPLORER_LEFT_LIST_UF_BMP/*ID_EXPLORER_MEDIATYPE_LISTBAR_ITEM_UF_BMP*/,         NULL,                NULL },    //listbar unfocus item èƒŒæ™¯å›¾
 
 
         {NULL,                                      NULL,                NULL },    //
 
-        { ID_EXPLORER_LIST_SCROLL_BG_BMP,                    NULL,                   NULL },    // scroll bar ±³¾°Í¼
-        { NULL,                  NULL,                   NULL },    // scroll bar Í·²¿icon
-        { ID_EXPLORER_LIST_SCROLL_BMP,                   NULL,                   NULL },    // scroll bar , »¬¿é£¬¸ß¶È±ØĞëÎª1
-        { NULL,                  NULL,                   NULL },    // scroll bar , »¬¿é£¬¸ß¶È±ØĞëÎª1
+        { ID_EXPLORER_LIST_SCROLL_BG_BMP,                    NULL,                   NULL },    // scroll bar èƒŒæ™¯å›¾
+        { NULL,                  NULL,                   NULL },    // scroll bar å¤´éƒ¨icon
+        { ID_EXPLORER_LIST_SCROLL_BMP,                   NULL,                   NULL },    // scroll bar , æ»‘å—ï¼Œé«˜åº¦å¿…é¡»ä¸º1
+        { NULL,                  NULL,                   NULL },    // scroll bar , æ»‘å—ï¼Œé«˜åº¦å¿…é¡»ä¸º1
 
-        {ID_EXPLORER_LEFT_LIST_MOVIE_F_BMP,         NULL,               NULL},      //´°¿ÚÖĞ×ó²àÏÔÊ¾µÄÎÄ¼şÀàĞÍÍ¼±ê
-        {ID_EXPLORER_LEFT_LIST_MOVIE_UF_BMP,            NULL,               NULL},      //´°¿ÚÖĞ×ó²àÏÔÊ¾µÄÎÄ¼şÀàĞÍÍ¼±ê
+        {ID_EXPLORER_LEFT_LIST_MOVIE_F_BMP,         NULL,               NULL},      //çª—å£ä¸­å·¦ä¾§æ˜¾ç¤ºçš„æ–‡ä»¶ç±»å‹å›¾æ ‡
+        {ID_EXPLORER_LEFT_LIST_MOVIE_UF_BMP,            NULL,               NULL},      //çª—å£ä¸­å·¦ä¾§æ˜¾ç¤ºçš„æ–‡ä»¶ç±»å‹å›¾æ ‡
         {ID_EXPLORER_LEFT_LIST_MUSIC_F_BMP,         NULL,               NULL},
         {ID_EXPLORER_LEFT_LIST_MUSIC_UF_BMP,            NULL,               NULL},
         {ID_EXPLORER_LEFT_LIST_PHOTO_F_BMP,         NULL,               NULL},
@@ -807,11 +838,11 @@ static explorer_viewer_ui_t  explr_viewer_ui_720_480 =
             {{2, 1, 126, 26}, {2, 28, 126, 26}, {2, 55, 126, 26}, {2, 82, 126, 26}, {2, 218, 126, 26}, {2, 82, 126, 135}, {22, 48, 65, 65}, {87, 31, 34, 30}},
             {{2, 1, 126, 26}, {2, 28, 126, 26}, {2, 55, 126, 26}, {2, 82, 126, 26}, {2, 109, 126, 26}, {2, 109, 126, 135}, {22, 48, 65, 65}, {87, 31, 34, 30}}
         },
-        {5, 5, 19, 19},         //ÎÄ¼ş¹ÜÀíÍ¼±ê
-        {30, 5, 80, 20},        //ÏÔÊ¾ÎÄ¼ş×Ö·û×ø±ê
-        {87, 100, 30, 30},      //É¾³ı°´Å¥×ø±êÎ»ÖÃ
-        {0, 0, 30, 30},         //¼ÇÂ¼·µÈ¥Í¼±ê×ø±êµÄ
-        {(126 - 120) / 2, 120, 120, 90}         //Í¼Æ¬¶ÔÓ¦µÄËõÂÔÍ¼×ø±ê
+        {5, 5, 19, 19},         //æ–‡ä»¶ç®¡ç†å›¾æ ‡
+        {30, 5, 80, 20},        //æ˜¾ç¤ºæ–‡ä»¶å­—ç¬¦åæ ‡
+        {87, 100, 30, 30},      //åˆ é™¤æŒ‰é’®åæ ‡ä½ç½®
+        {0, 0, 30, 30},         //è®°å½•è¿”å»å›¾æ ‡åæ ‡çš„
+        {(126 - 120) / 2, 120, 120, 90}         //å›¾ç‰‡å¯¹åº”çš„ç¼©ç•¥å›¾åæ ‡
 
     }
 };
@@ -819,7 +850,7 @@ static explorer_viewer_ui_t  explr_viewer_ui_720_480 =
 
 
 
-//»ñµÃÕû¸öexplorer APÉè¼ÆµÄUI²ÎÊı
+//è·å¾—æ•´ä¸ªexplorer APè®¾è®¡çš„UIå‚æ•°
 explorer_viewer_ui_t *explorer_get_viewer_ui_param(void)
 {
     RECT screen_size;
@@ -855,7 +886,7 @@ RECT *explorer_get_listview_ui_param(void)
     }
 }
 
-//»ñµÃlist ÖĞ item Éè¼ÆµÄUI²ÎÊı
+//è·å¾—list ä¸­ item è®¾è®¡çš„UIå‚æ•°
 explorer_list_item_ui_param_t *explorer_get_list_item_ui_param(void)
 {
     RECT screen_size;
@@ -871,7 +902,7 @@ explorer_list_item_ui_param_t *explorer_get_list_item_ui_param(void)
     }
 }
 
-//»ñµÃlist ÖĞ square Éè¼ÆµÄUI²ÎÊı
+//è·å¾—list ä¸­ square è®¾è®¡çš„UIå‚æ•°
 explorer_square_item_ui_param_t *explorer_get_square_item_ui_param(void)
 {
     RECT screen_size;
@@ -892,11 +923,11 @@ __u32 explorer_get_listbar_pagenum(explr_list_para_t *list_para)
 {
     __u32 pagenum = 0, col, row;
     __u32 item_width, item_height, lbar_width, lbar_height;
-    explorer_viewer_ui_t *ui_param = explorer_get_viewer_ui_param();            //»ñµÃÕû¸öAPµÄUIÉè¼Æ²ÎÊı
+    explorer_viewer_ui_t *ui_param = explorer_get_viewer_ui_param();            //è·å¾—æ•´ä¸ªAPçš„UIè®¾è®¡å‚æ•°
 
     if (list_para->view_mode == EXPLR_LIST_MODE)
     {
-        item_width = ui_param->list_item_ui_param.item_rect.width;                      //¸ù¾İlist or squareÄ£Ê½²»Í¬
+        item_width = ui_param->list_item_ui_param.item_rect.width;                      //æ ¹æ®list or squareæ¨¡å¼ä¸åŒ
         item_height = ui_param->list_item_ui_param.item_rect.height;
         lbar_width = ui_param->list_item_ui_param.ListBarArea.width;
         lbar_height = ui_param->list_item_ui_param.ListBarArea.height;
@@ -966,8 +997,8 @@ void *explorer_get_listview_icon_res(__u32 index)
     else
     {
         //--------------------------------------------------------------------------
-        //¼ÓÕâ¸öÅĞ¶Ï½ö½öÊÇÎªÁË±Ü¿ªlistbar, 684ĞĞ£¬GUI_BitStringDrawEx()³åµô¸ÃÍ¼Æ¬buffer
-        //ºóĞøÓ¦³¹µ×¸ù³ı
+        //åŠ è¿™ä¸ªåˆ¤æ–­ä»…ä»…æ˜¯ä¸ºäº†é¿å¼€listbar, 684è¡Œï¼ŒGUI_BitStringDrawEx()å†²æ‰è¯¥å›¾ç‰‡buffer
+        //åç»­åº”å½»åº•æ ¹é™¤
         //if(index == ID_EXP_LONG_STR_SCROLL_BG)
         /*
         {
@@ -1030,7 +1061,7 @@ __s32 explorer_free_listview_icon_res(void)
     }
 }
 
-//»ñµÃExplorer ´°¿Úlayer size
+//è·å¾—Explorer çª—å£layer size
 __s32 explorer_get_screen_rect(RECT *screen_rect)
 {
     explorer_viewer_ui_t *ui_param;
@@ -1044,7 +1075,7 @@ __s32 explorer_get_screen_rect(RECT *screen_rect)
 
 
 #if (EXPLORER_SUPPORT_MINIATURE == 1)
-//»ñµÃËõÂÔÍ¼ÇøÓò(according to the view mode of list)
+//è·å¾—ç¼©ç•¥å›¾åŒºåŸŸ(according to the view mode of list)
 __s32 explorer_get_item_miniature_rect(explr_list_para_t *para, RECT *miniature_rect)
 {
     explorer_viewer_ui_t *ui_param;
@@ -1071,7 +1102,7 @@ __s32 explorer_get_item_miniature_rect(explr_list_para_t *para, RECT *miniature_
 }
 #endif
 
-//»ñµÃÏÔÊ¾ÎÄ±¾ÇøÓò
+//è·å¾—æ˜¾ç¤ºæ–‡æœ¬åŒºåŸŸ
 __s32 explorer_get_mediatype_item_text_rect(explr_list_para_t *para, RECT *text_rect)
 {
     explorer_viewer_ui_t *ui_param;
@@ -1085,7 +1116,7 @@ __s32 explorer_get_mediatype_item_text_rect(explr_list_para_t *para, RECT *text_
 
 
 
-//»ñµÃÏÔÊ¾ÎÄ±¾ÇøÓò
+//è·å¾—æ˜¾ç¤ºæ–‡æœ¬åŒºåŸŸ
 __s32 explorer_get_item_text_rect(explr_list_para_t *para, RECT *text_rect)
 {
     explorer_viewer_ui_t *ui_param;
@@ -1114,7 +1145,7 @@ __s32 explorer_get_item_text_rect(explr_list_para_t *para, RECT *text_rect)
     return EPDK_OK;
 }
 
-//»ñµÃmediatype ÌõÄ¿¿ªÊ¼µÄÍ¼±êÏÔÊ¾ÇøÓò
+//è·å¾—mediatype æ¡ç›®å¼€å§‹çš„å›¾æ ‡æ˜¾ç¤ºåŒºåŸŸ
 __s32 explorer_get_mediatype_item_icon_rect(explr_list_para_t *para, RECT *icon_rect)
 {
     explorer_viewer_ui_t *ui_param;
@@ -1130,7 +1161,7 @@ __s32 explorer_get_mediatype_item_icon_rect(explr_list_para_t *para, RECT *icon_
 
 
 
-//»ñµÃÌõÄ¿¿ªÊ¼µÄÍ¼±êÏÔÊ¾ÇøÓò
+//è·å¾—æ¡ç›®å¼€å§‹çš„å›¾æ ‡æ˜¾ç¤ºåŒºåŸŸ
 __s32 explorer_get_item_icon_rect(explr_list_para_t *para, RECT *icon_rect)
 {
     explorer_viewer_ui_t *ui_param;
@@ -1160,7 +1191,7 @@ __s32 explorer_get_item_icon_rect(explr_list_para_t *para, RECT *icon_rect)
 }
 
 
-//»ñµÃ½¹µãÌõÄ¿Í¼±ê
+//è·å¾—ç„¦ç‚¹æ¡ç›®å›¾æ ‡
 __s32 explorer_get_item_focus_icon_rect(explr_list_para_t *para, RECT *focus_icon_rect)
 {
     explorer_viewer_ui_t *ui_param;
@@ -1212,7 +1243,7 @@ __s32 explorer_file_type_res_init(explr_list_para_t *list_para)
 }
 
 #if (EXPLORER_SUPPORT_MINIATURE == 1)
-// ×ó²àÎÄ¼şÀàĞÍÖĞ£¬ÏÔÊ¾µ±Ç°Í¼Æ¬µÄ´óµÄËõÂÔÍ¼
+// å·¦ä¾§æ–‡ä»¶ç±»å‹ä¸­ï¼Œæ˜¾ç¤ºå½“å‰å›¾ç‰‡çš„å¤§çš„ç¼©ç•¥å›¾
 __s32 explorer_draw_pic_miniature_bmp(explr_list_para_t *list_para, __u32 item_index)
 {
     void *pic_buf = NULL;
@@ -1229,7 +1260,7 @@ __s32 explorer_draw_pic_miniature_bmp(explr_list_para_t *list_para, __u32 item_i
         return EPDK_FAIL ;
     }
 
-    if (list_para->enter_sd_usb_flag == 0)  //ÔÚsd/usbÑ¡Ôñ´°¿ÚÊ±£¬Ö±½Ó·µ»Ø
+    if (list_para->enter_sd_usb_flag == 0)  //åœ¨sd/usbé€‰æ‹©çª—å£æ—¶ï¼Œç›´æ¥è¿”å›
     {
         return EPDK_FAIL ;
     }
@@ -1246,7 +1277,7 @@ __s32 explorer_draw_pic_miniature_bmp(explr_list_para_t *list_para, __u32 item_i
     GUI_LyrWinSel(list_para->list_layer);
     draw_mem = GUI_MEMDEV_Create(gui_rect.x0, gui_rect.y0, gui_rect.x1, gui_rect.y1);
     GUI_MEMDEV_Select(draw_mem);
-    //»­±³¾°
+    //ç”»èƒŒæ™¯
     picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_bg_rect.x ;
     picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_bg_rect.y ;
     pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_BG);
@@ -1274,7 +1305,7 @@ __s32 explorer_draw_pic_miniature_bmp(explr_list_para_t *list_para, __u32 item_i
         in_para.format = PIXEL_COLOR_ARGB8888;
         in_para.width = miniature_rect.width;
         in_para.height = miniature_rect.height;
-        in_para.mode = 0;   // 1ÎªÀ­ÉìÄ£Ê½
+        in_para.mode = 0;   // 1ä¸ºæ‹‰ä¼¸æ¨¡å¼
         __here__ ;
 
         if (list_para->big_miniature_buf == NULL)
@@ -1311,17 +1342,17 @@ __s32 explorer_draw_pic_miniature_bmp(explr_list_para_t *list_para, __u32 item_i
         }
     }
     __here__ ;
-    //»­·µ»ØÍ¼±ê
+    //ç”»è¿”å›å›¾æ ‡
     picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].return_bmp_rect.x +
            ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_bg_rect.x ;
     picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].return_bmp_rect.y +
            ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_bg_rect.y;
     pic_buf =  explorer_get_listview_icon_res(ID_EXP_RETURN_UNFOCUS);
     GUI_BMP_Draw(pic_buf, picX, picY);
-    //¼ÇÂ¼·µÈ¥Í¼±ê×ø±ê
+    //è®°å½•è¿”å»å›¾æ ‡åæ ‡
     ui_param->file_type_uiparam.return_bmp_rect.x = picX ;
     ui_param->file_type_uiparam.return_bmp_rect.y = picY ;
-    //»­photo
+    //ç”»photo
     picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_photo_rect.x ;
     picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_photo_rect.y ;
     pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_FOCUS_ICON_PHOTO);
@@ -1392,7 +1423,7 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
     gui_rect.y1 = gui_rect.y0 + ui_param->file_type_uiparam.file_type_rect.height - 1 ;
     __msg("gui_rect.x0 = %d %d %d %d\n", gui_rect.x0, gui_rect.y0, gui_rect.x1, gui_rect.y1) ;
 
-    //  ret = APP_BMP_DrawEx( list_para->list_layer, pic_buf, gui_rect.x0, gui_rect.y0, gui_rect.x0, gui_rect.y0, gui_rect.x1, gui_rect.y1 );   //ÓÃ±³¾°É«È¥²Á³ı¸ÃÇøÓò
+    //  ret = APP_BMP_DrawEx( list_para->list_layer, pic_buf, gui_rect.x0, gui_rect.y0, gui_rect.x0, gui_rect.y0, gui_rect.x1, gui_rect.y1 );   //ç”¨èƒŒæ™¯è‰²å»æ“¦é™¤è¯¥åŒºåŸŸ
     //if( EPDK_FAIL == ret )
     //{
     //  __msg( "APP_BMP_DrawEx fail \n" );
@@ -1401,7 +1432,7 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
     {
         case RAT_MEDIA_TYPE_VIDEO:
         {
-            //»­music
+            //ç”»music
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MOVIE].file_type_music_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MOVIE].file_type_music_rect.y ;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_UNFOCUS_ICON_MUSIC);
@@ -1412,12 +1443,12 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
             gui_rect.x1 = gui_rect.x0 + C_FILE_TYPE_TXT_W ;
             gui_rect.y1 = gui_rect.y0 + C_FILE_TYPE_TXT_H ;
             GUI_DispStringInRect(str_music, &gui_rect, GUI_TA_VCENTER | GUI_TA_HCENTER);
-            //»­±³¾°
+            //ç”»èƒŒæ™¯
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MOVIE].file_type_bg_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MOVIE].file_type_bg_rect.y ;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_BG);
             GUI_BMP_Draw(pic_buf, picX, picY);
-            //»­movie
+            //ç”»movie
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MOVIE].file_type_movie_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MOVIE].file_type_movie_rect.y ;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_FOCUS_ICON_MOVIE);
@@ -1428,24 +1459,24 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
             gui_rect.x1 = gui_rect.x0 + C_FILE_TYPE_TXT_W ;
             gui_rect.y1 = gui_rect.y0 + C_FILE_TYPE_TXT_H ;
             GUI_DispStringInRect(str_movie, &gui_rect, GUI_TA_VCENTER | GUI_TA_HCENTER);
-            //¶ÔÓ¦Ã½ÌåµÄ´óÍ¼±ê
+            //å¯¹åº”åª’ä½“çš„å¤§å›¾æ ‡
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MOVIE].file_type_big_bmp_rect.x +
                    ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MOVIE].file_type_bg_rect.x;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MOVIE].file_type_big_bmp_rect.y +
                    ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MOVIE].file_type_bg_rect.y;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_VIDEO_FILE);
             GUI_BMP_Draw(pic_buf, picX, picY);
-            //»­·µ»ØÍ¼±ê
+            //ç”»è¿”å›å›¾æ ‡
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MOVIE].return_bmp_rect.x +
                    ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MOVIE].file_type_bg_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MOVIE].return_bmp_rect.y +
                    ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MOVIE].file_type_bg_rect.y;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_RETURN_UNFOCUS);
             GUI_BMP_Draw(pic_buf, picX, picY);
-            //¼ÇÂ¼·µÈ¥Í¼±ê×ø±ê
+            //è®°å½•è¿”å»å›¾æ ‡åæ ‡
             ui_param->file_type_uiparam.return_bmp_rect.x = picX ;
             ui_param->file_type_uiparam.return_bmp_rect.y = picY ;
-            //»­photo
+            //ç”»photo
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MOVIE].file_type_photo_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MOVIE].file_type_photo_rect.y ;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_UNFOCUS_ICON_PHOTO);
@@ -1456,7 +1487,7 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
             gui_rect.x1 = gui_rect.x0 + C_FILE_TYPE_TXT_W ;
             gui_rect.y1 = gui_rect.y0 + C_FILE_TYPE_TXT_H ;
             GUI_DispStringInRect(str_photo, &gui_rect, GUI_TA_VCENTER | GUI_TA_HCENTER);
-            //»­ebook
+            //ç”»ebook
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MOVIE].file_type_ebook_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MOVIE].file_type_ebook_rect.y ;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_UNFOCUS_ICON_EBOOK);
@@ -1468,7 +1499,7 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
             gui_rect.y1 = gui_rect.y0 + C_FILE_TYPE_TXT_H ;
             GUI_DispStringInRect(str_ebook, &gui_rect, GUI_TA_VCENTER | GUI_TA_HCENTER);
 
-            //»­game
+            //ç”»game
             if (EPDK_TRUE == game_card)
             {
                 picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MOVIE].file_type_game_rect.x ;
@@ -1497,7 +1528,7 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
 
         case RAT_MEDIA_TYPE_PIC:
         {
-            //»­music
+            //ç”»music
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_music_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_music_rect.y ;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_UNFOCUS_ICON_MUSIC);
@@ -1508,12 +1539,12 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
             gui_rect.x1 = gui_rect.x0 + C_FILE_TYPE_TXT_W ;
             gui_rect.y1 = gui_rect.y0 + C_FILE_TYPE_TXT_H ;
             GUI_DispStringInRect(str_music, &gui_rect, GUI_TA_VCENTER | GUI_TA_HCENTER);
-            //»­±³¾°
+            //ç”»èƒŒæ™¯
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_bg_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_bg_rect.y ;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_BG);
             GUI_BMP_Draw(pic_buf, picX, picY);
-            //»­movie
+            //ç”»movie
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_movie_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_movie_rect.y ;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_UNFOCUS_ICON_MOVIE);
@@ -1524,24 +1555,24 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
             gui_rect.x1 = gui_rect.x0 + C_FILE_TYPE_TXT_W ;
             gui_rect.y1 = gui_rect.y0 + C_FILE_TYPE_TXT_H ;
             GUI_DispStringInRect(str_movie, &gui_rect, GUI_TA_VCENTER | GUI_TA_HCENTER);
-            //¶ÔÓ¦Ã½ÌåµÄ´óÍ¼±ê
+            //å¯¹åº”åª’ä½“çš„å¤§å›¾æ ‡
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_big_bmp_rect.x +
                    ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_bg_rect.x;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_big_bmp_rect.y +
                    ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_bg_rect.y;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_PHOTO_FILE);
             GUI_BMP_Draw(pic_buf, picX, picY);
-            //»­·µ»ØÍ¼±ê
+            //ç”»è¿”å›å›¾æ ‡
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].return_bmp_rect.x +
                    ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_bg_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].return_bmp_rect.y +
                    ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_bg_rect.y;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_RETURN_UNFOCUS);
             GUI_BMP_Draw(pic_buf, picX, picY);
-            //¼ÇÂ¼·µÈ¥Í¼±ê×ø±ê
+            //è®°å½•è¿”å»å›¾æ ‡åæ ‡
             ui_param->file_type_uiparam.return_bmp_rect.x = picX ;
             ui_param->file_type_uiparam.return_bmp_rect.y = picY ;
-            //»­photo
+            //ç”»photo
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_photo_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_photo_rect.y ;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_FOCUS_ICON_PHOTO);
@@ -1552,7 +1583,7 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
             gui_rect.x1 = gui_rect.x0 + C_FILE_TYPE_TXT_W ;
             gui_rect.y1 = gui_rect.y0 + C_FILE_TYPE_TXT_H ;
             GUI_DispStringInRect(str_photo, &gui_rect, GUI_TA_VCENTER | GUI_TA_HCENTER);
-            //»­ebook
+            //ç”»ebook
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_ebook_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_ebook_rect.y ;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_UNFOCUS_ICON_EBOOK);
@@ -1564,7 +1595,7 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
             gui_rect.y1 = gui_rect.y0 + C_FILE_TYPE_TXT_H ;
             GUI_DispStringInRect(str_ebook, &gui_rect, GUI_TA_VCENTER | GUI_TA_HCENTER);
 
-            //»­game
+            //ç”»game
             if (EPDK_TRUE == game_card)
             {
                 picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_PHOTO].file_type_game_rect.x ;
@@ -1593,12 +1624,12 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
 
         case RAT_MEDIA_TYPE_AUDIO:
         {
-            //»­±³¾°
+            //ç”»èƒŒæ™¯
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_bg_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_bg_rect.y ;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_BG);
             GUI_BMP_Draw(pic_buf, picX, picY);
-            //»­music
+            //ç”»music
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_music_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_music_rect.y ;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_FOCUS_ICON_MUSIC);
@@ -1609,7 +1640,7 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
             gui_rect.x1 = gui_rect.x0 + C_FILE_TYPE_TXT_W ;
             gui_rect.y1 = gui_rect.y0 + C_FILE_TYPE_TXT_H ;
             GUI_DispStringInRect(str_music, &gui_rect, GUI_TA_VCENTER | GUI_TA_HCENTER);
-            //»­movie
+            //ç”»movie
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_movie_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_movie_rect.y ;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_UNFOCUS_ICON_MOVIE);
@@ -1620,24 +1651,24 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
             gui_rect.x1 = gui_rect.x0 + C_FILE_TYPE_TXT_W ;
             gui_rect.y1 = gui_rect.y0 + C_FILE_TYPE_TXT_H ;
             GUI_DispStringInRect(str_movie, &gui_rect, GUI_TA_VCENTER | GUI_TA_HCENTER);
-            //¶ÔÓ¦Ã½ÌåµÄ´óÍ¼±ê
+            //å¯¹åº”åª’ä½“çš„å¤§å›¾æ ‡
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_big_bmp_rect.x +
                    ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_bg_rect.x;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_big_bmp_rect.y +
                    ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_bg_rect.y;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_MUSIC_FILE);
             GUI_BMP_Draw(pic_buf, picX, picY);
-            //»­·µ»ØÍ¼±ê
+            //ç”»è¿”å›å›¾æ ‡
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].return_bmp_rect.x +
                    ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_bg_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].return_bmp_rect.y +
                    ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_bg_rect.y;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_RETURN_UNFOCUS);
             GUI_BMP_Draw(pic_buf, picX, picY);
-            //¼ÇÂ¼·µÈ¥Í¼±ê×ø±ê
+            //è®°å½•è¿”å»å›¾æ ‡åæ ‡
             ui_param->file_type_uiparam.return_bmp_rect.x = picX ;
             ui_param->file_type_uiparam.return_bmp_rect.y = picY ;
-            //»­photo
+            //ç”»photo
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_photo_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_photo_rect.y ;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_UNFOCUS_ICON_PHOTO);
@@ -1648,7 +1679,7 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
             gui_rect.x1 = gui_rect.x0 + C_FILE_TYPE_TXT_W ;
             gui_rect.y1 = gui_rect.y0 + C_FILE_TYPE_TXT_H ;
             GUI_DispStringInRect(str_photo, &gui_rect, GUI_TA_VCENTER | GUI_TA_HCENTER);
-            //»­ebook
+            //ç”»ebook
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_ebook_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_ebook_rect.y ;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_UNFOCUS_ICON_EBOOK);
@@ -1660,7 +1691,7 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
             gui_rect.y1 = gui_rect.y0 + C_FILE_TYPE_TXT_H ;
             GUI_DispStringInRect(str_ebook, &gui_rect, GUI_TA_VCENTER | GUI_TA_HCENTER);
 
-            //»­game
+            //ç”»game
             if (EPDK_TRUE == game_card)
             {
                 picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_game_rect.x ;
@@ -1689,7 +1720,7 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
 
         case RAT_MEDIA_TYPE_EBOOK:
         {
-            //»­music
+            //ç”»music
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_EBOOK].file_type_music_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_EBOOK].file_type_music_rect.y ;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_UNFOCUS_ICON_MUSIC);
@@ -1700,12 +1731,12 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
             gui_rect.x1 = gui_rect.x0 + C_FILE_TYPE_TXT_W ;
             gui_rect.y1 = gui_rect.y0 + C_FILE_TYPE_TXT_H ;
             GUI_DispStringInRect(str_music, &gui_rect, GUI_TA_VCENTER | GUI_TA_HCENTER);
-            //»­±³¾°
+            //ç”»èƒŒæ™¯
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_EBOOK].file_type_bg_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_EBOOK].file_type_bg_rect.y ;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_BG);
             GUI_BMP_Draw(pic_buf, picX, picY);
-            //»­movie
+            //ç”»movie
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_EBOOK].file_type_movie_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_EBOOK].file_type_movie_rect.y ;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_UNFOCUS_ICON_MOVIE);
@@ -1716,24 +1747,24 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
             gui_rect.x1 = gui_rect.x0 + C_FILE_TYPE_TXT_W ;
             gui_rect.y1 = gui_rect.y0 + C_FILE_TYPE_TXT_H ;
             GUI_DispStringInRect(str_movie, &gui_rect, GUI_TA_VCENTER | GUI_TA_HCENTER);
-            //¶ÔÓ¦Ã½ÌåµÄ´óÍ¼±ê
+            //å¯¹åº”åª’ä½“çš„å¤§å›¾æ ‡
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_EBOOK].file_type_big_bmp_rect.x +
                    ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_EBOOK].file_type_bg_rect.x;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_EBOOK].file_type_big_bmp_rect.y +
                    ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_EBOOK].file_type_bg_rect.y;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_EBOOK_FILE);
             GUI_BMP_Draw(pic_buf, picX, picY);
-            //»­·µ»ØÍ¼±ê
+            //ç”»è¿”å›å›¾æ ‡
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_EBOOK].return_bmp_rect.x +
                    ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_EBOOK].file_type_bg_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_EBOOK].return_bmp_rect.y +
                    ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_EBOOK].file_type_bg_rect.y;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_RETURN_UNFOCUS);
             GUI_BMP_Draw(pic_buf, picX, picY);
-            //¼ÇÂ¼·µÈ¥Í¼±ê×ø±ê
+            //è®°å½•è¿”å»å›¾æ ‡åæ ‡
             ui_param->file_type_uiparam.return_bmp_rect.x = picX ;
             ui_param->file_type_uiparam.return_bmp_rect.y = picY ;
-            //»­photo
+            //ç”»photo
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_EBOOK].file_type_photo_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_EBOOK].file_type_photo_rect.y ;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_UNFOCUS_ICON_PHOTO);
@@ -1744,7 +1775,7 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
             gui_rect.x1 = gui_rect.x0 + C_FILE_TYPE_TXT_W ;
             gui_rect.y1 = gui_rect.y0 + C_FILE_TYPE_TXT_H ;
             GUI_DispStringInRect(str_photo, &gui_rect, GUI_TA_VCENTER | GUI_TA_HCENTER);
-            //»­ebook
+            //ç”»ebook
             picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_EBOOK].file_type_ebook_rect.x ;
             picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_EBOOK].file_type_ebook_rect.y ;
             pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_FOCUS_ICON_EBOOK);
@@ -1756,7 +1787,7 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
             gui_rect.y1 = gui_rect.y0 + C_FILE_TYPE_TXT_H ;
             GUI_DispStringInRect(str_ebook, &gui_rect, GUI_TA_VCENTER | GUI_TA_HCENTER);
 
-            //»­game
+            //ç”»game
             if (EPDK_TRUE == game_card)
             {
                 picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_EBOOK].file_type_game_rect.x ;
@@ -1787,26 +1818,26 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
         {
             if (EPDK_TRUE == game_card)
             {
-                //»­±³¾°
+                //ç”»èƒŒæ™¯
                 picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_GAME].file_type_bg_rect.x ;
                 picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_GAME].file_type_bg_rect.y ;
                 pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_BG);
                 GUI_BMP_Draw(pic_buf, picX, picY);
-                //¶ÔÓ¦Ã½ÌåµÄ´óÍ¼±ê
+                //å¯¹åº”åª’ä½“çš„å¤§å›¾æ ‡
                 picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_GAME].file_type_big_bmp_rect.x +
                        ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_GAME].file_type_bg_rect.x;
                 picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_GAME].file_type_big_bmp_rect.y +
                        ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_GAME].file_type_bg_rect.y;
                 pic_buf =  explorer_get_listview_icon_res(ID_EXP_GAME_FILE);
                 GUI_BMP_Draw(pic_buf, picX, picY);
-                //»­·µ»ØÍ¼±ê
+                //ç”»è¿”å›å›¾æ ‡
                 picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_GAME].return_bmp_rect.x +
                        ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_GAME].file_type_bg_rect.x ;
                 picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_GAME].return_bmp_rect.y +
                        ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_GAME].file_type_bg_rect.y;
                 pic_buf =  explorer_get_listview_icon_res(ID_EXP_RETURN_UNFOCUS);
                 GUI_BMP_Draw(pic_buf, picX, picY);
-                //¼ÇÂ¼·µÈ¥Í¼±ê×ø±ê
+                //è®°å½•è¿”å»å›¾æ ‡åæ ‡
                 ui_param->file_type_uiparam.return_bmp_rect.x = picX ;
                 ui_param->file_type_uiparam.return_bmp_rect.y = picY ;
                 //music
@@ -1820,7 +1851,7 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
                 gui_rect.x1 = gui_rect.x0 + C_FILE_TYPE_TXT_W ;
                 gui_rect.y1 = gui_rect.y0 + C_FILE_TYPE_TXT_H ;
                 GUI_DispStringInRect(str_music, &gui_rect, GUI_TA_VCENTER | GUI_TA_HCENTER);
-                //»­movie
+                //ç”»movie
                 picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_GAME].file_type_movie_rect.x ;
                 picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_GAME].file_type_movie_rect.y ;
                 pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_UNFOCUS_ICON_MOVIE);
@@ -1831,7 +1862,7 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
                 gui_rect.x1 = gui_rect.x0 + C_FILE_TYPE_TXT_W ;
                 gui_rect.y1 = gui_rect.y0 + C_FILE_TYPE_TXT_H ;
                 GUI_DispStringInRect(str_movie, &gui_rect, GUI_TA_VCENTER | GUI_TA_HCENTER);
-                //»­photo
+                //ç”»photo
                 picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_GAME].file_type_photo_rect.x ;
                 picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_GAME].file_type_photo_rect.y ;
                 pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_UNFOCUS_ICON_PHOTO);
@@ -1842,7 +1873,7 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
                 gui_rect.x1 = gui_rect.x0 + C_FILE_TYPE_TXT_W ;
                 gui_rect.y1 = gui_rect.y0 + C_FILE_TYPE_TXT_H ;
                 GUI_DispStringInRect(str_photo, &gui_rect, GUI_TA_VCENTER | GUI_TA_HCENTER);
-                //»­ebook
+                //ç”»ebook
                 picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_GAME].file_type_ebook_rect.x ;
                 picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_GAME].file_type_ebook_rect.y ;
                 pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_UNFOCUS_ICON_EBOOK);
@@ -1853,7 +1884,7 @@ __s32 explorer_draw_file_type(explr_list_para_t *list_para, rat_media_type_t med
                 gui_rect.x1 = gui_rect.x0 + C_FILE_TYPE_TXT_W ;
                 gui_rect.y1 = gui_rect.y0 + C_FILE_TYPE_TXT_H ;
                 GUI_DispStringInRect(str_ebook, &gui_rect, GUI_TA_VCENTER | GUI_TA_HCENTER);
-                //»­game
+                //ç”»game
                 picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_GAME].file_type_game_rect.x ;
                 picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_GAME].file_type_game_rect.y ;
                 pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_FOCUS_ICON_GAME);
@@ -1956,8 +1987,8 @@ __s32 explorer_draw_FileTypeIcon(explr_list_para_t *list_para, rat_media_type_t 
             break;
     }
 
-    //picW =  GUI_BMP_GetXSize(pic_buf);                                        //»ñµÃÍ¼Æ¬¿í
-    //picH =  GUI_BMP_GetYSize(pic_buf);                                        //»ñµÃÍ¼Æ¬¸ß¶È
+    //picW =  GUI_BMP_GetXSize(pic_buf);                                        //è·å¾—å›¾ç‰‡å®½
+    //picH =  GUI_BMP_GetYSize(pic_buf);                                        //è·å¾—å›¾ç‰‡é«˜åº¦
     if (pic_buf != NULL)
     {
         GUI_BMP_Draw(pic_buf, picX, picY);
@@ -1980,37 +2011,37 @@ __s32 explorer_file_manager_draw(explr_list_para_t *list_para, rat_media_type_t 
         __msg("It's file manager  break ...........\n");
     }
 
-    //»­±³¾°
+    //ç”»èƒŒæ™¯
     picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_music_rect.x ;
     picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_music_rect.y ;
     pic_buf =  explorer_get_listview_icon_res(ID_EXP_FILE_TYPE_BG);
     GUI_BMP_Draw(pic_buf, picX, picY);
-    //»­ÎÄ¼ş¹ÜÀíÆ÷Í¼±ê
+    //ç”»æ–‡ä»¶ç®¡ç†å™¨å›¾æ ‡
     picX = ui_param->file_type_uiparam.file_manage_icon_rect.x ;
     picY = ui_param->file_type_uiparam.file_manage_icon_rect.y ;
     pic_buf =  explorer_get_listview_icon_res(ID_FILE_MAGAGER_LITTLE_ICON);
     GUI_BMP_Draw(pic_buf, picX, picY);
-    dsk_langres_get_menu_text(STRING_EXPLR_MANAGER_TITLE, str, sizeof(str)) ;   // »­ÎÄ¼ş¹ÜÀí×Ö·û
+    dsk_langres_get_menu_text(STRING_EXPLR_MANAGER_TITLE, str, sizeof(str)) ;   // ç”»æ–‡ä»¶ç®¡ç†å­—ç¬¦
     GUI_SetColor(GUI_BLUE);
     gui_rect.x0 = C_FILE_TYPE_TXT_X + picX ;
     gui_rect.y0 = C_FILE_TYPE_TXT_Y + picY ;
     gui_rect.x1 = gui_rect.x0 + C_FILE_TYPE_TXT_W ;
     gui_rect.y1 = gui_rect.y0 + C_FILE_TYPE_TXT_H ;
     GUI_DispStringInRect(str, &gui_rect, GUI_TA_VCENTER | GUI_TA_HCENTER);
-    //»­´óÍ¼±ê
+    //ç”»å¤§å›¾æ ‡
     picX = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_music_rect.x ;
     picY = ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_music_rect.y ;
     pic_buf =  explorer_get_listview_icon_res(ID_FILE_MAGAGER_BIG_ICON);
     GUI_BMP_Draw(pic_buf, picX + ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_big_bmp_rect.x, picY + ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].file_type_big_bmp_rect.y);
-    //»­·µ»ØÍ¼±ê
+    //ç”»è¿”å›å›¾æ ‡
     pic_buf =  explorer_get_listview_icon_res(ID_EXP_RETURN_UNFOCUS);
     GUI_BMP_Draw(pic_buf, picX + ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].return_bmp_rect.x, picY + ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].return_bmp_rect.y);
-    //¼ÇÂ¼·µÈ¥Í¼±ê×ø±ê
+    //è®°å½•è¿”å»å›¾æ ‡åæ ‡
     ui_param->file_type_uiparam.return_bmp_rect.x =  picX + ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].return_bmp_rect.x ;
     ui_param->file_type_uiparam.return_bmp_rect.y =  picY + ui_param->file_type_uiparam.file_type_pos[FILE_TYPE_MUSIC].return_bmp_rect.y ;
 
     //GUI_BMP_Draw(theme_hdl2buf(list_para->h_return_bmp),picX + ui_param->file_type_uiparam.return_bmp_rect.x,picY + ui_param->file_type_uiparam.return_bmp_rect.y);
-    //»­ÎÄ¼şÉ¾³ıÍ¼±ê
+    //ç”»æ–‡ä»¶åˆ é™¤å›¾æ ‡
     if (list_para->enter_sd_usb_flag == 1)
     {
         pic_buf =  explorer_get_listview_icon_res(ID_EXP_DELETE_FILE_UF_ICON);
@@ -2041,7 +2072,7 @@ __s32 explorer_clear_filesize_area(explr_list_para_t *list_para)
     GUI_MEMDEV_Select(NULL);
     GUI_MEMDEV_Delete(draw_mem);
     draw_mem = NULL;
-    //  APP_BMP_DrawEx( list_para->list_layer, p_buf, rect.x0, rect.y0, rect.x0, rect.y0, rect.x1, rect.y1 );   //ÓÃ±³¾°É«È¥²Á³ı¸ÃÇøÓò
+    //  APP_BMP_DrawEx( list_para->list_layer, p_buf, rect.x0, rect.y0, rect.x0, rect.y0, rect.x1, rect.y1 );   //ç”¨èƒŒæ™¯è‰²å»æ“¦é™¤è¯¥åŒºåŸŸ
     //GUI_ClearRect(rect.x0,rect.y0, rect.x1, rect.y1);
 #endif
     return EPDK_OK;
@@ -2068,7 +2099,7 @@ __s32 explorer_draw_FileSize(__lbar_draw_para_t *draw_param, __s32 file_size, ex
     return EPDK_OK;
 }
 
-//Ê±¼ä×ª»»Îª×Ö·û´®º¯Êı(ÄêÔÂÈÕ×Ö·û´®)
+//æ—¶é—´è½¬æ¢ä¸ºå­—ç¬¦ä¸²å‡½æ•°(å¹´æœˆæ—¥å­—ç¬¦ä¸²)
 __s32 mtime_to_date_string(ES_TIMESTAMP *m_time, char *string)
 {
     char temp_str[20] = { 0 };
@@ -2159,7 +2190,7 @@ __s32 mtime_to_time_string(ES_TIMESTAMP *m_time, char *string)
     return EPDK_OK;
 }
 
-//Çå³ıÎÄ¼ş´´½¨Ê±¼äÇøÓò
+//æ¸…é™¤æ–‡ä»¶åˆ›å»ºæ—¶é—´åŒºåŸŸ
 __s32 explorer_clear_file_create_time_area(explr_list_para_t *list_para)
 {
 #if 0
@@ -2221,7 +2252,7 @@ void explorer_delete_file_draw_process(file_op_info_t *op_info)
     GUI_DispStringInRect(str, &rect, GUI_TA_VCENTER | GUI_TA_HCENTER);
     return;
 }
-//Ö»ÏÔÊ¾×Ö·û´®µ½×ó±ß´°¿Ú
+//åªæ˜¾ç¤ºå­—ç¬¦ä¸²åˆ°å·¦è¾¹çª—å£
 void explorer_delete_file_draw_process_ext(explr_list_para_t *list_para)
 {
     char str[64];
@@ -2247,7 +2278,7 @@ void explorer_delete_file_draw_process_ext(explr_list_para_t *list_para)
 }
 
 
-//Çå³ıÉ¾³ıÎÄ¼ş×Ö·ûÌáÊ¾ÇøÓò
+//æ¸…é™¤åˆ é™¤æ–‡ä»¶å­—ç¬¦æç¤ºåŒºåŸŸ
 void explorer_clean_delete_file_hint_area(void)
 {
     GUI_RECT rect;
@@ -2257,7 +2288,7 @@ void explorer_clean_delete_file_hint_area(void)
     rect.y1 = C_DEL_FILE_PECENT_AREA_Y + C_DEL_FILE_PECENT_AREA_H;
     GUI_ClearRect(rect.x0, rect.y0, rect.x1, rect.y1);
 }
-//É¾³ıÎÄ¼şÊ§°ÜÌáÊ¾×Ö·û
+//åˆ é™¤æ–‡ä»¶å¤±è´¥æç¤ºå­—ç¬¦
 void explorer_draw_delete_file_failed(void)
 {
     char str[64];
@@ -2369,7 +2400,7 @@ void *explorer_get_file_item_icon(explorer_view_mode_e view_mode, rat_media_type
 
             break;
 
-        case RAT_MEDIA_TYPE_UNKNOWN:            //Î´ÖªÎÄ¼şÏÈÒÔebookÎª×¼
+        case RAT_MEDIA_TYPE_UNKNOWN:            //æœªçŸ¥æ–‡ä»¶å…ˆä»¥ebookä¸ºå‡†
         case RAT_MEDIA_TYPE_FIRMWARE:
             if (status == FOCUSED)
             {

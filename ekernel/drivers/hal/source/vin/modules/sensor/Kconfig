@@ -1,0 +1,15 @@
+config SENSOR_GC2053_MIPI
+	bool "use gc2053_mipi driver"
+	default n
+
+config SENSOR_GC4663_MIPI
+	bool "use gc4663_mipi driver"
+	default n
+
+config SENSOR_SC2355_MIPI
+	bool "use sc2355_mipi driver"
+	default n
+
+config SENSOR_SC5336_MIPI
+	bool "use sc5336_mipi driver"
+	default n

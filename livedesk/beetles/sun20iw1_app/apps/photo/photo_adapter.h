@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2011, CHIPHD, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : photo_adapter.h
-* By        : CQQ
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011/06/20 9:57  create this file, implements the fundamental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __PHOTO_ADAPTER_H__F8AD6949_0199_47E9_BB76_7202D21318BD__
 #define __PHOTO_ADAPTER_H__F8AD6949_0199_47E9_BB76_7202D21318BD__
@@ -23,7 +37,7 @@
 #define _PHOTO_USE_MEMDEV_       1
 
 //////////////////////////////////////////////////////////////////////////
-//ĞéÄâ¼ü
+//è™šæ‹Ÿé”®
 #define VK_PHOTO_MENU_POP                 VK_MENU
 #define VK_PHOTO_MMENU_ADD_ITEM           VK_RIGHT
 #define VK_PHOTO_MMENU_SUB_ITEM           VK_LEFT
@@ -52,7 +66,7 @@ typedef enum
     PHOTO_BGMUSIC_MAX,
 } photo_bgmusic_t;
 /************************************************************************/
-//È¡±£´æÖµ
+//å–ä¿å­˜å€¼
 /************************************************************************/
 #define get_photo_value(_d, _func)     (_d = _func())
 extern __u32 photo_get_ratio(void);
@@ -61,7 +75,7 @@ extern __u32 photo_get_effect(void);
 extern __u32 photo_get_bgmusic(void);
 
 /************************************************************************/
-//ÉèÖÃ±£´æÖµ
+//è®¾ç½®ä¿å­˜å€¼
 /************************************************************************/
 #define set_photo_value(_d, _func)     (_func(_d))
 extern __u32 photo_set_ratio(__u32 ratio);
@@ -69,21 +83,21 @@ extern __u32 photo_set_speedflag(__u32 speedflag);
 extern __u32 photo_set_effect(__u32 effect);
 extern __u32 photo_set_bgmusic(__u32 bgmusic);
 
-//±£´æ¶Ïµã
+//ä¿å­˜æ–­ç‚¹
 extern __s32 photo_save_play_info(rat_type_t root_type);
 //////////////////////////////////////////////////////////////////////////
-//¹ö¶¯³¤×Ö·û´®
+//æ»šåŠ¨é•¿å­—ç¬¦ä¸²
 extern __s32 PhotoLongStringShow(H_LYR hLayer, RECT *pRt, char *String, GUI_COLOR TxtClr);
-//Ïú»Ù¹ö¶¯³¤×Ö·û´®ÊµÀı
+//é”€æ¯æ»šåŠ¨é•¿å­—ç¬¦ä¸²å®ä¾‹
 extern void  PhotoLongStringDestroy(void);
 
 /************************************************************************/
-// »­BMPÄ³Ò»ÇøÓò
-// pFileData --- ×ÊÔ´º¯Êı»ñµÃµÄÊı¾İ(Ò²ÊÇbmpÎÄ¼şÊı¾İ)
-// x£¬y      --- Ä¿±ê×ø±ê
-// x0, y0, x1, y1 --- Ô´ÇøÓò(¼´bmpÍ¼Æ¬Ä³Ò»ÇøÓò)
-// return values  --- EPDK_OK : ³É¹¦; EPDK_FAIL : Ê§°Ü.
-// Remarks : ±¾º¯Êı¿½±´ÁËÈı´Î,Ğ§ÂÊ½ÏµÍ,TODO:¸Äµ½µ×²ãÊµÏÖÎªÒ»´Î¿½±´,Ìá¸ßĞ§ÂÊ.
+// ç”»BMPæŸä¸€åŒºåŸŸ
+// pFileData --- èµ„æºå‡½æ•°è·å¾—çš„æ•°æ®(ä¹Ÿæ˜¯bmpæ–‡ä»¶æ•°æ®)
+// xï¼Œy      --- ç›®æ ‡åæ ‡
+// x0, y0, x1, y1 --- æºåŒºåŸŸ(å³bmpå›¾ç‰‡æŸä¸€åŒºåŸŸ)
+// return values  --- EPDK_OK : æˆåŠŸ; EPDK_FAIL : å¤±è´¥.
+// Remarks : æœ¬å‡½æ•°æ‹·è´äº†ä¸‰æ¬¡,æ•ˆç‡è¾ƒä½,TODO:æ”¹åˆ°åº•å±‚å®ç°ä¸ºä¸€æ¬¡æ‹·è´,æé«˜æ•ˆç‡.
 /************************************************************************/
 __s32 APP_BMP_Draw(const void *pFileData, int x, int y, int x0, int y0, int x1, int y1);
 
@@ -95,21 +109,20 @@ typedef struct
 } RAM_RES_BMP_T;
 #define RAM_RES_BMP_DATA(_res)      ((_res)->data)
 /************************************************************************/
-// É¾³ı×éºÏÍ¼Æ¬
+// åˆ é™¤ç»„åˆå›¾ç‰‡
 /************************************************************************/
 void DestroyRamBmpData(RAM_RES_BMP_T *res);
 
 /************************************************************************/
-// ÓÉÒ»×éÍ¼Æ¬×ÊÔ´(À­Éì)×é³ÉÄÚ´æÍ¼Æ¬×ÊÔ´
-// res_id        --- Í¼Æ¬×ÊÔ´idÊı×é
-// id_count      --- Í¼Æ¬×ÊÔ´idÊı×é´óĞ¡
-// direction     --- À­Éì·½Ïò, 0 : x·½Ïò; ·Ç0 : y·½Ïò
-// len           --- À­Éì·½ÏòµÄ³¤¶È
-// return values --- ÄÚ´æÍ¼Æ¬Êı¾İÖ¸Õë
-// Remarks : Êı×éÖĞ¼äµÄidÍ¼Æ¬ÎªÀ­ÉìÍ¼Æ¬
+// ç”±ä¸€ç»„å›¾ç‰‡èµ„æº(æ‹‰ä¼¸)ç»„æˆå†…å­˜å›¾ç‰‡èµ„æº
+// res_id        --- å›¾ç‰‡èµ„æºidæ•°ç»„
+// id_count      --- å›¾ç‰‡èµ„æºidæ•°ç»„å¤§å°
+// direction     --- æ‹‰ä¼¸æ–¹å‘, 0 : xæ–¹å‘; é0 : yæ–¹å‘
+// len           --- æ‹‰ä¼¸æ–¹å‘çš„é•¿åº¦
+// return values --- å†…å­˜å›¾ç‰‡æ•°æ®æŒ‡é’ˆ
+// Remarks : æ•°ç»„ä¸­é—´çš„idå›¾ç‰‡ä¸ºæ‹‰ä¼¸å›¾ç‰‡
 /************************************************************************/
 RAM_RES_BMP_T *CreateRamBmpData(__s32 res_id[], __s32 id_count, __s32 direction, __s32 len);
 
 #endif //__PHOTO_ADAPTER_H__F8AD6949_0199_47E9_BB76_7202D21318BD__
 //End of this file
-

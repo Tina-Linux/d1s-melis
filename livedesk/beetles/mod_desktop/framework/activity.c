@@ -1,21 +1,34 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : activity.c
-* By        : Andy.zhang
-* Func      : activity
-* Version   : v1.0
-* ============================================================================================================
-* 2010-9-6 19:43:50  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "mod_desktop_i.h"
 #include "applet_plugin_module.h"
 #include <kconfig.h>
@@ -27,14 +40,14 @@
 #define MAX_PARA_BUFF       1024
 
 
-/* “ª∏ˆActivity¥˙±Ì“ª∏ˆ”¶”√≥Ã–Ú */
+/* ‰∏Ä‰∏™Activity‰ª£Ë°®‰∏Ä‰∏™Â∫îÁî®Á®ãÂ∫è */
 struct _Activity
 {
-    ActivityState   state;          // Activity◊¥Ã¨
-    AppletPlugin    *plugin;        // ≤Âº˛Ω”ø⁄
-    AppletInfo      *info;          // desktopŒƒº˛◊¢≤·–≈œ¢
+    ActivityState   state;          // ActivityÁä∂ÊÄÅ
+    AppletPlugin    *plugin;        // Êèí‰ª∂Êé•Âè£
+    AppletInfo      *info;          // desktopÊñá‰ª∂Ê≥®ÂÜå‰ø°ÊÅØ
     void            *attr;
-    H_WIN            win;           // ¥∞ø⁄£¨“Ï≤Ωµ˜”√°£
+    H_WIN            win;           // Á™óÂè£ÔºåÂºÇÊ≠•Ë∞ÉÁî®„ÄÇ
 };
 
 typedef struct tag_load_para
@@ -49,14 +62,14 @@ typedef struct tag_load_para
 //root->game
 //4byte : root_type
 //4byte : cur game index
-//768byte:”Œœ∑Œƒº˛»´¬∑æ∂
+//768byte:Ê∏∏ÊàèÊñá‰ª∂ÂÖ®Ë∑ØÂæÑ
 
 //game->root
-//4byte :0¥˙±ÌÕÀ≥ˆµΩ‰Ø¿¿∆˜£¨1¥˙±ÌÕÀ≥ˆµΩ÷˜ΩÁ√Ê, 2¥˙±Ìø™ª˙µ⁄“ª¥Œº”‘ÿ÷˜ΩÁ√Ê, 3¥˙±ÌÕÀ≥ˆµΩrootΩ¯––øÏΩ›≤•∑≈
-//4byte:»Áπ˚ÕÀ≥ˆµΩ‰Ø¿¿∆˜£¨‘Ú∏√◊÷∂Œ±Ì æ≈Ã∑˚¿‡–Õroot_type, ∑Ò‘ÚŒﬁ–ß
-//4byte: »Áπ˚ÕÀ≥ˆµΩøÏΩ›≤•∑≈£¨‘Ú∏√◊÷∂Œ¥˙±Ìintent
-//4byte: »Áπ˚ÕÀ≥ˆµΩøÏΩ›≤•∑≈£¨‘Ú∏√◊÷∂Œ¥˙±Ìreg_media_type
-//4byte: »Áπ˚ÕÀ≥ˆµΩøÏΩ›≤•∑≈£¨‘Ú∏√◊÷∂Œ¥˙±Ìreg_storage_type
+//4byte :0‰ª£Ë°®ÈÄÄÂá∫Âà∞ÊµèËßàÂô®Ôºå1‰ª£Ë°®ÈÄÄÂá∫Âà∞‰∏ªÁïåÈù¢, 2‰ª£Ë°®ÂºÄÊú∫Á¨¨‰∏ÄÊ¨°Âä†ËΩΩ‰∏ªÁïåÈù¢, 3‰ª£Ë°®ÈÄÄÂá∫Âà∞rootËøõË°åÂø´Êç∑Êí≠Êîæ
+//4byte:Â¶ÇÊûúÈÄÄÂá∫Âà∞ÊµèËßàÂô®ÔºåÂàôËØ•Â≠óÊÆµË°®Á§∫ÁõòÁ¨¶Á±ªÂûãroot_type, Âê¶ÂàôÊó†Êïà
+//4byte: Â¶ÇÊûúÈÄÄÂá∫Âà∞Âø´Êç∑Êí≠ÊîæÔºåÂàôËØ•Â≠óÊÆµ‰ª£Ë°®intent
+//4byte: Â¶ÇÊûúÈÄÄÂá∫Âà∞Âø´Êç∑Êí≠ÊîæÔºåÂàôËØ•Â≠óÊÆµ‰ª£Ë°®reg_media_type
+//4byte: Â¶ÇÊûúÈÄÄÂá∫Âà∞Âø´Êç∑Êí≠ÊîæÔºåÂàôËØ•Â≠óÊÆµ‰ª£Ë°®reg_storage_type
 
 static load_para_t load_para = {0};
 static __krnl_event_t   *load_sem;
@@ -72,7 +85,7 @@ static __s32 __activity_main_win_cb(__gui_msg_t *msg)
     switch (msg->id)
     {
         case ACTIVITY_FINISH:
-            __activity_do_finish((Activity *)(msg->dwAddData1));    // “Ï≤Ω–∂‘ÿƒ£øÈ
+            __activity_do_finish((Activity *)(msg->dwAddData1));    // ÂºÇÊ≠•Âç∏ËΩΩÊ®°Âùó
             return EPDK_OK;
 
         default:
@@ -107,7 +120,7 @@ static H_WIN __activity_mainwin_create(char *name)
     return hManWin;
 }
 
-/* activity ¥¥Ω® */
+/* activity ÂàõÂª∫ */
 static Activity *__activity_create(AppletInfo *info)
 {
     Activity *thiz  = NULL;
@@ -127,7 +140,7 @@ static Activity *__activity_create(AppletInfo *info)
     return thiz;
 }
 
-/*  …æ≥˝ activity */
+/*  Âà†Èô§ activity */
 static void __activity_delete(Activity *thiz)
 {
     if (thiz != NULL)
@@ -142,22 +155,22 @@ static void __activity_do_finish(Activity *thiz)
 {
     Activity *top = activity_manager_top(activity_manager_get_default());
 
-    if (thiz != top)    /* ∫ÛÃ®◊¥Ã¨ */
+    if (thiz != top)    /* ÂêéÂè∞Áä∂ÊÄÅ */
     {
-        /* …æ≥˝µ±«∞ activity */
+        /* Âà†Èô§ÂΩìÂâç activity */
         activity_manager_delete_backgrd(activity_manager_get_default(), thiz);
         __activity_delete(thiz);
     }
     else
     {
-        /* ∏¸–¬activity_manager –≈œ¢ */
+        /* Êõ¥Êñ∞activity_manager ‰ø°ÊÅØ */
         activity_manager_pop(activity_manager_get_default());
-        /* …æ≥˝µ±«∞ activity */
+        /* Âà†Èô§ÂΩìÂâç activity */
         __activity_delete(thiz);
-        /* ≤È—Øtop-level activity */
+        /* Êü•ËØ¢top-level activity */
         top = activity_manager_top(activity_manager_get_default());
 
-        /* ª÷∏¥ top ◊¥Ã¨ */
+        /* ÊÅ¢Â§ç top Áä∂ÊÄÅ */
         if (top != NULL)
         {
             __msg("top name = %s", top->info->name);
@@ -341,11 +354,11 @@ static __s32 __activity_load_common(AppletInfo *info)
 
     if (top)
     {
-        if (!g_strcmp(top->info->name, info->name)) //¥˝º”‘ÿ”¶”√≥Ã–Ú“—Œ™toplevel£¨∑µªÿ
+        if (!g_strcmp(top->info->name, info->name)) //ÂæÖÂä†ËΩΩÂ∫îÁî®Á®ãÂ∫èÂ∑≤‰∏∫toplevelÔºåËøîÂõû
         {
             return EPDK_OK;
         }
-        /* µ±«∞”¶”√≥Ã–Úsuspend */
+        /* ÂΩìÂâçÂ∫îÁî®Á®ãÂ∫èsuspend */
         else
         {
             top->state = ACTIVITY_ST_SUSPEND;
@@ -361,15 +374,15 @@ static __s32 __activity_load_common(AppletInfo *info)
         }
     }
 
-    /* ≤È—Ø¥˝º”‘ÿ”¶”√≥Ã–Ú «∑Ò‘À–– */
+    /* Êü•ËØ¢ÂæÖÂä†ËΩΩÂ∫îÁî®Á®ãÂ∫èÊòØÂê¶ËøêË°å */
     activity_manager_foreach(activity_manager_get_default(), __get_activity_from_name, info->name, &load);
 
     if (!load)
     {
-        /* ≤È—Ø «∑Ò”–»®œﬁª•≥‚µƒ”¶”√≥Ã–Ú‘À–– */
+        /* Êü•ËØ¢ÊòØÂê¶ÊúâÊùÉÈôê‰∫íÊñ•ÁöÑÂ∫îÁî®Á®ãÂ∫èËøêË°å */
         if (info->permission != PERMISSON_)
         {
-            /* …±µÙª•≥‚”¶”√≥Ã–Ú */
+            /* ÊùÄÊéâ‰∫íÊñ•Â∫îÁî®Á®ãÂ∫è */
             activity_manager_foreach(activity_manager_get_default(), __applet_permission_mutex, (void *)info->permission, &mutex);
 
             if (mutex != NULL)
@@ -383,7 +396,7 @@ static __s32 __activity_load_common(AppletInfo *info)
         {
             if (eLIBs_strcmp(info->name, "application://music") && dsk_wkm_is_open())
             {
-                dsk_wkm_close();//πÿ±’Walkman
+                dsk_wkm_close();//ÂÖ≥Èó≠Walkman
             }
 
             if (eLIBs_strcmp(info->name, "application://fm") && dsk_radio_rcv_is_open())
@@ -393,7 +406,7 @@ static __s32 __activity_load_common(AppletInfo *info)
         }
 
         __log("load application %s.", info->name);
-        /* º”‘ÿ”¶”√≥Ã–Ú */
+        /* Âä†ËΩΩÂ∫îÁî®Á®ãÂ∫è */
         load = __activity_create(info);
         if (load)
         {
@@ -449,12 +462,12 @@ __s32 activity_deinit(void)
     return EPDK_OK;
 }
 
-/* ‘À––“ª∏ˆŒƒº˛ */
+/* ËøêË°å‰∏Ä‰∏™Êñá‰ª∂ */
 __s32 activity_load_file(char *filename)
 {
     AppletInfo *info = NULL;
     char       *filetype = NULL;
-    /* ≤È—Øƒ‹πªº”‘ÿ∏√Œƒº˛µƒ”¶”√≥Ã–Ú*/
+    /* Êü•ËØ¢ËÉΩÂ§üÂä†ËΩΩËØ•Êñá‰ª∂ÁöÑÂ∫îÁî®Á®ãÂ∫è*/
     filetype = eLIBs_strchrlast(filename, '.');
     filetype++;
     applet_info_manager_foreach(applet_info_manager_get_default(), __get_applet_info_from_suffix, &info, filetype);
@@ -469,12 +482,12 @@ __s32 activity_load_file(char *filename)
     return EPDK_OK;
 }
 
-/* ‘À––“ª∏ˆ”¶”√≥Ã–Ú */
+/* ËøêË°å‰∏Ä‰∏™Â∫îÁî®Á®ãÂ∫è */
 int32_t activity_load_app(char *appname)
 {
     AppletInfo  *info = NULL;
 
-    /* ≤È—Ø”¶”√≥Ã–Ú÷¥––Œƒº˛¬∑æ∂ */
+    /* Êü•ËØ¢Â∫îÁî®Á®ãÂ∫èÊâßË°åÊñá‰ª∂Ë∑ØÂæÑ */
     applet_info_manager_foreach(applet_info_manager_get_default(), __get_applet_info_from_name, &info, appname);
 
     if (info == NULL)
@@ -487,7 +500,7 @@ int32_t activity_load_app(char *appname)
     return EPDK_OK;
 }
 
-/*  π≥Ã–ÚΩ¯»Î∫ÛÃ®◊¥Ã¨*/
+/* ‰ΩøÁ®ãÂ∫èËøõÂÖ•ÂêéÂè∞Áä∂ÊÄÅ*/
 int32_t activity_background_top(void)
 {
     Activity *top = NULL;
@@ -500,12 +513,12 @@ int32_t activity_background_top(void)
         return EPDK_FAIL;
     }
 
-    /* µ±«∞≥Ã–ÚΩ¯»Î∫ÛÃ®*/
+    /* ÂΩìÂâçÁ®ãÂ∫èËøõÂÖ•ÂêéÂè∞*/
     top->state = ACTIVITY_ST_BACKGROUND;
     (*top->plugin->background)(top);
-    /* ∏¸–¬activity_manager –≈œ¢*/
+    /* Êõ¥Êñ∞activity_manager ‰ø°ÊÅØ*/
     activity_manager_top_to_backgrd(activity_manager_get_default());
-    /* ≤È—Øµ±«∞ top_level activity*/
+    /* Êü•ËØ¢ÂΩìÂâç top_level activity*/
     top = activity_manager_top(activity_manager_get_default());
 
     if (!top)
@@ -513,13 +526,13 @@ int32_t activity_background_top(void)
         return EPDK_FAIL;
     }
 
-    /* ª÷∏¥ top_level activity ◊¥Ã¨*/
+    /* ÊÅ¢Â§ç top_level activity Áä∂ÊÄÅ*/
     top->state = ACTIVITY_ST_TOPLEVEL;
     (*top->plugin->resume)(top);
     return EPDK_OK;
 }
 
-/* ∑µªÿ÷˜ΩÁ√Ê   */
+/* ËøîÂõû‰∏ªÁïåÈù¢   */
 int32_t activity_return_home(Activity *thiz)
 {
     Activity    *top = NULL;
@@ -528,7 +541,7 @@ int32_t activity_return_home(Activity *thiz)
 
     while (1)
     {
-        /* ≤È—Ø top_level Activity*/
+        /* Êü•ËØ¢ top_level Activity*/
         top = activity_manager_top(activity_manager_get_default());
 
         if (top == NULL)
@@ -536,7 +549,7 @@ int32_t activity_return_home(Activity *thiz)
             return EPDK_FAIL;
         }
 
-        /* ≈–∂œ «∑Ò÷˜ΩÁ√Ê activity */
+        /* Âà§Êñ≠ÊòØÂê¶‰∏ªÁïåÈù¢ activity */
         if (!strcmp(top->info->name, "application://app_root"))
         {
             home = top;
@@ -544,9 +557,9 @@ int32_t activity_return_home(Activity *thiz)
         }
         else
         {
-            /* ∫ÛÃ® */
+            /* ÂêéÂè∞ */
             top->state = ACTIVITY_ST_BACKGROUND;
-            /* ∏¸–¬activity_manager –≈œ¢ */
+            /* Êõ¥Êñ∞activity_manager ‰ø°ÊÅØ */
             activity_manager_top_to_backgrd(activity_manager_get_default());
             (*top->plugin->background)(top);
             ++home_depth;
@@ -555,7 +568,7 @@ int32_t activity_return_home(Activity *thiz)
 
     if (home_depth > 0)
     {
-        /* ª÷∏¥÷˜ΩÁ√Ê◊¥Ã¨ */
+        /* ÊÅ¢Â§ç‰∏ªÁïåÈù¢Áä∂ÊÄÅ */
         home->state = ACTIVITY_ST_TOPLEVEL;
         (*home->plugin->resume)(home);
     }
@@ -563,7 +576,7 @@ int32_t activity_return_home(Activity *thiz)
     return EPDK_OK;
 }
 
-/* ÕÀ≥ˆµ±«∞ Activity */
+/* ÈÄÄÂá∫ÂΩìÂâç Activity */
 void activity_finish(Activity *thiz)
 {
     __gui_msg_t msg;
@@ -592,13 +605,13 @@ void activity_finish_all(void)
     Activity *top = NULL;
     Activity *home = NULL;
     ActivityManager *activity_manager = activity_manager_get_default();
-    //…±µÙbackgroundµƒactivity
+    //ÊùÄÊéâbackgroundÁöÑactivity
     activity_manager_foreach_backgrd(activity_manager, __applet_kill_backgrd, NULL, NULL);
 
-    //…±µÙ’ª¿Ôµƒactivity
+    //ÊùÄÊéâÊ†àÈáåÁöÑactivity
     while (1)
     {
-        /* ≤È—Ø top_level Activity*/
+        /* Êü•ËØ¢ top_level Activity*/
         top = activity_manager_top(activity_manager);
 
         if (top == NULL)
@@ -606,7 +619,7 @@ void activity_finish_all(void)
             return ;
         }
 
-        /* ≈–∂œ «∑Ò÷˜ΩÁ√Ê activity */
+        /* Âà§Êñ≠ÊòØÂê¶‰∏ªÁïåÈù¢ activity */
         if (!strcmp(top->info->name, "application://home"))
         {
             home = top;
@@ -620,21 +633,21 @@ void activity_finish_all(void)
         }
     }
 
-    //…±µÙhome
+    //ÊùÄÊéâhome
 //    __msg("kill %s", home->info->name);
     activity_manager_pop(activity_manager);
     __activity_delete(home);
     return;
 }
 
-__s32 activity_set_attr(Activity *thiz, void *attr)         // …Ë÷√priv Ù–‘
+__s32 activity_set_attr(Activity *thiz, void *attr)         // ËÆæÁΩÆprivÂ±ûÊÄß
 {
     return_val_if_fail(thiz != NULL, -1);
     thiz->attr = attr;
     return EPDK_OK;
 }
 
-void *activity_get_attr(Activity *thiz)                     // ªÒ»°priv Ù–‘
+void *activity_get_attr(Activity *thiz)                     // Ëé∑ÂèñprivÂ±ûÊÄß
 {
     if (thiz == NULL)
     {
@@ -646,7 +659,7 @@ void *activity_get_attr(Activity *thiz)                     // ªÒ»°priv Ù–‘
     }
 }
 
-int32_t activity_set_load_para(char *app_name, char *src_name, void *p_arg, uint32_t size)           // …Ë÷√
+int32_t activity_set_load_para(char *app_name, char *src_name, void *p_arg, uint32_t size)           // ËÆæÁΩÆ
 {
     uint8_t     err;
 
@@ -726,7 +739,7 @@ int32_t activity_get_load_para(char *app_name, char *src_name, void *p_arg, uint
     }
 }
 
-/* ∑µªÿÀ˘”– Activity µƒ∏∏¥∞ø⁄ */
+/* ËøîÂõûÊâÄÊúâ Activity ÁöÑÁà∂Á™óÂè£ */
 H_WIN activity_get_root_win(Activity *thiz)
 {
     return thiz->win;
@@ -781,7 +794,7 @@ int32_t activity_notify_top(__gui_msg_t *pmsg)
     return EPDK_OK;
 }
 
-/*≤È—Ø «∑ÒÀ˘”–activityæ˘‘ –Ìstandby*/
+/*Êü•ËØ¢ÊòØÂê¶ÊâÄÊúâactivityÂùáÂÖÅËÆ∏standby*/
 int32_t activity_all_able_standby(void)
 {
     Activity    *not_able_standby = NULL;

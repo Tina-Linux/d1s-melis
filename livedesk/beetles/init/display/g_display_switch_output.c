@@ -1,30 +1,33 @@
 /*
-************************************************************************************************************************
-*                                                     close screen
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                  Copyright(C), 2006-2010, AllWinner Technology Co., Ltd.
-*                                                  All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File Name   : g_display_switch_output.c
-*
-* Author      : Jackie.Chen
-*
-* Version     : 1.0
-*
-* Date        : 2010.10.28
-*
-* Description :
-*
-* Others      : None at present.
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY鈥橲 TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS鈥橲DK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY鈥橲 TECHNOLOGY.
 *
 *
-* History     :
-*
-*  <Author>        <time>       <version>      <description>
-*
-* Jackie.Chen      2010.10.28        1.0         build the file
-*
-************************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <emodules/mod_display.h>
 #include <log.h>
@@ -111,7 +114,7 @@ static __s32 __app_pullup_tv_en(void)
 
     if (!pc11_hdl)
     {
-        /* 申请tv_en */
+        /* 鐢宠tv_en */
         eLIBs_memset(gpio_set, 0, sizeof(user_gpio_set_t));
 
         ret = esCFG_GetKeyValue("tvout_para", "tv_en", (__s32 *)gpio_set, sizeof(user_gpio_set_t) / 4);
@@ -147,7 +150,7 @@ static __s32 __app_pullup_tv_en(void)
     }
 
     return EPDK_OK;
-    //esPINS_PinGrpRel(pc11_hdl, 0);//不要释放，否则会变成输入
+    //esPINS_PinGrpRel(pc11_hdl, 0);//涓嶈閲婃斁锛屽惁鍒欎細鍙樻垚杈撳叆
 }
 
 static __s32 __app_pulldown_tv_en(void)
@@ -157,7 +160,7 @@ static __s32 __app_pulldown_tv_en(void)
 
     if (!pc11_hdl)
     {
-        /* 申请tv_en */
+        /* 鐢宠tv_en */
         eLIBs_memset(gpio_set, 0, sizeof(user_gpio_set_t));
 
         ret = esCFG_GetKeyValue("tvout_para", "tv_en", (__s32 *)gpio_set, sizeof(user_gpio_set_t) / 4);
@@ -193,7 +196,7 @@ static __s32 __app_pulldown_tv_en(void)
     }
 
     return EPDK_OK;
-    //esPINS_PinGrpRel(pc11_hdl, 0);//不要释放，否则会变成输入
+    //esPINS_PinGrpRel(pc11_hdl, 0);//涓嶈閲婃斁锛屽惁鍒欎細鍙樻垚杈撳叆
 }
 
 /*********************************************************************
@@ -233,7 +236,6 @@ static __s32 __switch_output(__lion_disp_format_e mode)
     //__u32                 result;
 
     epdkmode    = dsk_display_dskfmt2epdkfmt(mode, &output);
-
     /*open display driver handle*/
     //p_disp      = eLIBs_fopen("b:\\DISP\\DISPLAY", "r+");
 	p_disp = esKSRV_Get_Display_Hld();
@@ -243,58 +245,56 @@ static __s32 __switch_output(__lion_disp_format_e mode)
     }
 
     //dsk_volume_off();
-    if (output == DISP_OUTPUT_TYPE_LCD)
+    if (output == MOD_DISP_OUTPUT_TYPE_LCD)
     {
         __app_pulldown_tv_en();
 
         set_hpCom_driver_mode(1);
 
         //dsk_set_audio_if(AUDIO_DEV_IF_CODEC);//112358
-        arg[0]  = 0 ;
-        arg[1]  = output;
-        arg[2]  = epdkmode;
+        arg[0]  = output;
+        arg[1]  = epdkmode;
 
-        esMODS_MIoctrl(p_disp, DISP_DEVICE_SWITCH, 0, (void *)arg);
+        esMODS_MIoctrl(p_disp, MOD_DISP_DEVICE_SWITCH, 0, (void *)arg);
     }
-    else if (output == DISP_OUTPUT_TYPE_TV)
+    else if (output == MOD_DISP_OUTPUT_TYPE_TV)
     {
         __app_pullup_tv_en();
 
         set_hpCom_driver_mode(0);
 
         //__board_config(p_disp, epdkmode);
-        arg[0]  = 0 ;
-        arg[1]  = DISP_OUTPUT_TYPE_TV;
-        arg[2]  = epdkmode;
+        arg[0]  = MOD_DISP_OUTPUT_TYPE_TV;
+        arg[1]  = epdkmode;
 
-        esMODS_MIoctrl(p_disp, DISP_DEVICE_SWITCH, 0, (void *)arg);
+        esMODS_MIoctrl(p_disp, MOD_DISP_DEVICE_SWITCH, 0, (void *)arg);
         //dsk_set_audio_if(AUDIO_DEV_IF_CODEC);//112358
     }
 
-    else if (output == DISP_OUTPUT_TYPE_VGA)
-    {
-        arg[0]  = 0 ;
-        arg[1]  = output;
-        arg[2]  = epdkmode;
+    // else if (output == DISP_OUTPUT_TYPE_VGA)
+    // {
+    //     arg[0]  = 0 ;
+    //     arg[1]  = output;
+    //     arg[2]  = epdkmode;
 
-        esMODS_MIoctrl(p_disp, DISP_DEVICE_SWITCH, 0, (void *)arg);
+    //     esMODS_MIoctrl(p_disp, MOD_DISP_DEVICE_SWITCH, 0, (void *)arg);
 
-        dsk_set_audio_if(AUDIO_DEV_IF_CODEC);
-    }
-    else if (output == DISP_OUTPUT_TYPE_HDMI)
-    {
-        arg[0]  = 0 ;
-        arg[1]  = output;
-        arg[2]  = epdkmode;
+    //     dsk_set_audio_if(AUDIO_DEV_IF_CODEC);
+    // }
+    // else if (output == DISP_OUTPUT_TYPE_HDMI)
+    // {
+    //     arg[0]  = 0 ;
+    //     arg[1]  = output;
+    //     arg[2]  = epdkmode;
 
-        esMODS_MIoctrl(p_disp, DISP_DEVICE_SWITCH, 0, (void *)arg);
+    //     esMODS_MIoctrl(p_disp, MOD_DISP_DEVICE_SWITCH, 0, (void *)arg);
 
-        dsk_set_audio_if(AUDIO_DEV_IF_IIS);
-    }
+    //     dsk_set_audio_if(AUDIO_DEV_IF_IIS);
+    // }
 
     //eLIBs_fclose(p_disp);
 
-    //打开声音
+    //鎵撳紑澹伴煶
     dsk_volume_on();
     return  EPDK_OK;
 }
@@ -334,19 +334,19 @@ __s32 g_display_switch_output(__lion_disp_format_e mode)
         dsk_wkm_pause();
     }
 
-    //关闭当前显示
+    //鍏抽棴褰撳墠鏄剧ず
     dsk_display_off();
 
-    //切屏
+    //鍒囧睆
     __switch_output(mode);
 
-    //通知init  切屏
+    //閫氱煡init  鍒囧睆
     SEND_MSG(DSK_MSG_SCREEN_SWITCH, 0, GUI_WinGetHandFromName("init"), mode, 0);
 
-    //toplevel  的activity  重新创建UI 界面
+    //toplevel  鐨刟ctivity  閲嶆柊鍒涘缓UI 鐣岄潰
     //activity_suspend_top();
     //activity_resume_top();
-    //打开显示
+    //鎵撳紑鏄剧ず
     dsk_display_on(output);
 
     esKRNL_TimeDly(100);  // 200

@@ -1,17 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-* File      :   FileList
-*                 ≤…”√¡¥±ÌΩ·ππ «Œ™¡ÀÃ·∏ﬂ“ªø™ ºÀ—À˜Œƒº˛µƒÀŸ∂».
-* By        :   Libaiao
-* Func  :
-* Version   :   v1.0
-* ============================================================================================================
-* 2010-6-5  15:24:52  Libaiao  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "beetles_app.h"
@@ -28,7 +44,7 @@
 #define esMEMS_Bfree(x, s) esMEMS_Mfree(0, x)
 #endif
 */
-//µ›πÈ∫Ø ˝÷–µ˜”√£¨∑≈‘⁄∫Ø ˝÷–µƒª∞£¨ª·“˝∆∂—’ª“Á≥ˆ
+//ÈÄíÂΩíÂáΩÊï∞‰∏≠Ë∞ÉÁî®ÔºåÊîæÂú®ÂáΩÊï∞‰∏≠ÁöÑËØùÔºå‰ºöÂºïËµ∑Â†ÜÊ†àÊ∫¢Âá∫
 //char            fullpath[RAT_MAX_FULL_PATH_LEN];
 
 
@@ -44,7 +60,7 @@
 *
 ************************************************************************************************************************
 */
-//Ω´–°–¥◊÷ƒ∏◊™ªª≥…¥Û–°◊÷ƒ∏
+//Â∞ÜÂ∞èÂÜôÂ≠óÊØçËΩ¨Êç¢ÊàêÂ§ßÂ∞èÂ≠óÊØç
 static __s32  LowerCase_2_UpperCase(char *str)
 {
     char *p_str = NULL ;
@@ -70,7 +86,7 @@ static __s32  LowerCase_2_UpperCase(char *str)
     return EPDK_OK ;
 }
 
-// Œƒº˛¡–±Ì≈≈–Ú∫Ø ˝£¨“‘Œƒº˛√˚¿¥Ω¯––≈≈–Ú
+// Êñá‰ª∂ÂàóË°®ÊéíÂ∫èÂáΩÊï∞Ôºå‰ª•Êñá‰ª∂ÂêçÊù•ËøõË°åÊéíÂ∫è
 static file_item_t  *file_list_sort(file_item_t  *p_file_item_list, __s32 file_item_total_num)
 {
     __u32   i,  j ;
@@ -100,11 +116,11 @@ static file_item_t  *file_list_sort(file_item_t  *p_file_item_list, __s32 file_i
         {
             char temp_str1[RAT_MAX_FULL_PATH_LEN] = {0}, temp_str2[RAT_MAX_FULL_PATH_LEN] = {0} ;
             p_next_item = p_cur_item->next ;
-            eLIBs_strcpy(temp_str1, p_cur_item->name);  //œ»±£¥Ê∫√Œƒº˛√˚
+            eLIBs_strcpy(temp_str1, p_cur_item->name);  //ÂÖà‰øùÂ≠òÂ•ΩÊñá‰ª∂Âêç
             eLIBs_strcpy(temp_str2, p_next_item->name);
-            LowerCase_2_UpperCase(p_cur_item->name);    //Ω´Œƒº˛√˚÷–µƒ–°–¥◊÷ƒ∏≤ø∑÷Õ≥“ª◊™ªª≥…¥Û–¥
+            LowerCase_2_UpperCase(p_cur_item->name);    //Â∞ÜÊñá‰ª∂Âêç‰∏≠ÁöÑÂ∞èÂÜôÂ≠óÊØçÈÉ®ÂàÜÁªü‰∏ÄËΩ¨Êç¢ÊàêÂ§ßÂÜô
             LowerCase_2_UpperCase(p_next_item->name);
-            ret = eLIBs_strcmp((const char *)(p_cur_item->name), (const char *)(p_next_item->name)) ;    //±»ΩœŒƒº˛√˚
+            ret = eLIBs_strcmp((const char *)(p_cur_item->name), (const char *)(p_next_item->name)) ;    //ÊØîËæÉÊñá‰ª∂Âêç
             //__msg(" ret = %d\n " , ret );
             eLIBs_strcpy(p_cur_item->name, temp_str1);
             eLIBs_strcpy(p_next_item->name, temp_str2);
@@ -112,29 +128,33 @@ static file_item_t  *file_list_sort(file_item_t  *p_file_item_list, __s32 file_i
             if (ret < 0)
             {
                 //__msg( " not need to change file pointer \n " ) ;
-                p_cur_item = p_cur_item->next ; //√ª”–Ωªªª÷∏’Î£¨µ±«∞Ω·µ„÷∏œÚœ¬“ª∏ˆ
+                p_cur_item = p_cur_item->next ; //Ê≤°Êúâ‰∫§Êç¢ÊåáÈíàÔºåÂΩìÂâçÁªìÁÇπÊåáÂêë‰∏ã‰∏Ä‰∏™
             }
             else if (ret > 0)
             {
                 file_item_t *nod1, *nod4 ;
 
                 // __msg( " start to swap file pointer \n" );
-                if (p_cur_item == p_head_item)   //µ±«∞÷∏’ÎŒ™Õ∑÷∏’Î
+                if (p_cur_item == p_head_item)   //ÂΩìÂâçÊåáÈíà‰∏∫Â§¥ÊåáÈíà
                 {
                     p_head_item = p_next_item ;
                     p_file_item_list = p_head_item ;
                 }
 
-                // µ˜’˚÷∏’Î
-                nod1 = p_cur_item->previous ;
-                nod4 = p_next_item->next ;
-                nod1->next = p_next_item ;
-                nod4->previous = p_cur_item ;
-                p_cur_item->next = nod4 ;
-                p_cur_item->previous = p_next_item ;
-                p_next_item->previous = nod1 ;
-                p_next_item->next = p_cur_item ;
-                is_swap =  EPDK_TRUE ;      //÷√±Í÷æŒª£¨±Ì æ”–Ωªªªπ˝Œª÷√
+                // Ë∞ÉÊï¥ÊåáÈíà
+                if(file_item_total_num > 2)//Â¶ÇÊûúÂæ™ÁéØÈìæË°®Âè™Êúâ2‰∏™ÂÖÉÁ¥†ÔºåÂè™ÈúÄË¶ÅÊääÈìæË°®Â§¥ÂæÄÂêéÊé®‰∏Ä‰∏™‰ΩçÁΩÆÂ∞±Â∑≤Áªè‰∫§Êç¢‰ΩçÁΩÆ
+                {
+                    nod1 = p_cur_item->previous ;
+                    nod4 = p_next_item->next ;
+                    nod1->next = p_next_item ;
+                    nod4->previous = p_cur_item ;
+                    p_cur_item->next = nod4 ;
+                    p_cur_item->previous = p_next_item ;
+                    p_next_item->previous = nod1 ;
+                    p_next_item->next = p_cur_item ;
+                }
+
+                is_swap =  EPDK_TRUE ;      //ÁΩÆÊ†áÂøó‰ΩçÔºåË°®Á§∫Êúâ‰∫§Êç¢Ëøá‰ΩçÁΩÆ
             }
             else
             {
@@ -171,7 +191,7 @@ static __s32 FileList(void)
     return EPDK_OK;
 }
 
-//∏˘æ›À—À˜µΩµƒŒƒº˛–≈œ¢, –¬Ω®“ª∏ˆŒƒº˛Ãıƒø,¥Ê¥¢Œƒº˛ªÚŒƒº˛º–œ‡πÿµƒ–≈œ¢
+//Ê†πÊçÆÊêúÁ¥¢Âà∞ÁöÑÊñá‰ª∂‰ø°ÊÅØ, Êñ∞Âª∫‰∏Ä‰∏™Êñá‰ª∂Êù°ÁõÆ,Â≠òÂÇ®Êñá‰ª∂ÊàñÊñá‰ª∂Â§πÁõ∏ÂÖ≥ÁöÑ‰ø°ÊÅØ
 file_item_t *new_file_item(ES_DIRENT   *pDirent)
 {
     file_item_t *file_item = NULL;
@@ -199,12 +219,13 @@ file_item_t *new_file_item(ES_DIRENT   *pDirent)
 
     if (file_item->name_len != 0)
     {
-        file_item->name_len += 5;       //–Ë∂‡…Í«Î“ª∏ˆbyte
+        file_item->name_len += 5;       //ÈúÄÂ§öÁî≥ËØ∑‰∏Ä‰∏™byte
         __wrn("new_file_item 4\n");
         file_item->name = (char *)eLIBs_malloc(file_item->name_len);
 
         if (file_item->name == NULL)
         {
+            eLIBs_free(file_item);
             return NULL;
         }
 
@@ -218,7 +239,7 @@ file_item_t *new_file_item(ES_DIRENT   *pDirent)
     return file_item;
 }
 
-//…æ≥˝“ª∏ˆŒƒº˛Ãıƒø, Õ∑≈œ‡πÿµƒƒ⁄¥Ê
+//Âà†Èô§‰∏Ä‰∏™Êñá‰ª∂Êù°ÁõÆ,ÈáäÊîæÁõ∏ÂÖ≥ÁöÑÂÜÖÂ≠ò
 __s32 delete_file_item(file_item_t *file_item)
 {
     if (file_item == NULL)
@@ -243,13 +264,13 @@ __s32 delete_file_item(file_item_t *file_item)
 
 //-------------------------------------------------------------------------------
 //function      :
-//descriptions      : ¥¥Ω®“ª∏ˆ–¬µƒŒƒº˛¡–±Ì£¨∏√∫Ø ˝À—À˜÷∏∂®ƒø¬ºœ¬À˘”–Œƒº˛º–∫ÕŒƒº˛
-//               ∏√∫Ø ˝÷¥–– ±º‰”…Œƒº˛∏ˆ ˝æˆ∂®
-//               Œƒº˛º–µ•∂¿–Œ≥…“ª∏ˆ¡¥±Ì
-//              Œƒº˛µ•∂¿–Œ≥…“ª∏ˆ¡¥±Ì
-//              ◊Ó∫Û∞—¡Ω∏ˆ¡¥±Ì∫œ≤¢£¨Œƒº˛º–‘⁄«∞√Ê
-//arguments     :   ext_para, Œ™¿©’π≤Œ ˝
-//return            : ∑µªÿÀ—À˜µΩŒƒº˛µƒ∏ˆ ˝,
+//descriptions      : ÂàõÂª∫‰∏Ä‰∏™Êñ∞ÁöÑÊñá‰ª∂ÂàóË°®ÔºåËØ•ÂáΩÊï∞ÊêúÁ¥¢ÊåáÂÆöÁõÆÂΩï‰∏ãÊâÄÊúâÊñá‰ª∂Â§πÂíåÊñá‰ª∂
+//               ËØ•ÂáΩÊï∞ÊâßË°åÊó∂Èó¥Áî±Êñá‰ª∂‰∏™Êï∞ÂÜ≥ÂÆö
+//               Êñá‰ª∂Â§πÂçïÁã¨ÂΩ¢Êàê‰∏Ä‰∏™ÈìæË°®
+//              Êñá‰ª∂ÂçïÁã¨ÂΩ¢Êàê‰∏Ä‰∏™ÈìæË°®
+//              ÊúÄÂêéÊää‰∏§‰∏™ÈìæË°®ÂêàÂπ∂ÔºåÊñá‰ª∂Â§πÂú®ÂâçÈù¢
+//arguments     :   ext_para, ‰∏∫Êâ©Â±ïÂèÇÊï∞
+//return            : ËøîÂõûÊêúÁ¥¢Âà∞Êñá‰ª∂ÁöÑ‰∏™Êï∞,
 //-------------------------------------------------------------------------------
 __s32  new_file_list(const char *path, file_item_t **pp_item_list, void *ext_para)
 {
@@ -258,7 +279,7 @@ __s32  new_file_list(const char *path, file_item_t **pp_item_list, void *ext_par
     file_item_t *list = NULL;
     file_item_t *first = NULL;
     file_item_t *next = NULL;
-    file_item_t *folder_first = NULL;           //Œƒº˛º–¡–±Ì
+    file_item_t *folder_first = NULL;           //Êñá‰ª∂Â§πÂàóË°®
     file_item_t *folder_list = NULL;
     file_item_t *folder_next = NULL;
     __bool  no_folder = 0, no_file = 0 ;
@@ -274,7 +295,7 @@ __s32  new_file_list(const char *path, file_item_t **pp_item_list, void *ext_par
     eLIBs_rewinddir(pDir);
 
     /*
-        pDirent = eLIBs_readdir(pDir);              //ªÒµ√µ⁄“ª∏ˆŒƒº˛ªÚŒƒº˛º–
+        pDirent = eLIBs_readdir(pDir);              //Ëé∑ÂæóÁ¨¨‰∏Ä‰∏™Êñá‰ª∂ÊàñÊñá‰ª∂Â§π
         if(pDirent == NULL)
         {
             return 0;
@@ -297,7 +318,7 @@ __s32  new_file_list(const char *path, file_item_t **pp_item_list, void *ext_par
                 return 0;
             }
             list = first;
-            //pp_item_list = first;                     //¡–±Ì ◊µÿ÷∑∑µªÿ∏¯µ˜”√’ﬂ
+            //pp_item_list = first;                     //ÂàóË°®È¶ñÂú∞ÂùÄËøîÂõûÁªôË∞ÉÁî®ËÄÖ
             count++;
         }
     */
@@ -329,7 +350,7 @@ __s32  new_file_list(const char *path, file_item_t **pp_item_list, void *ext_par
             continue;
         }
         */
-        if (pDirent->fatdirattr & FSYS_ATTR_DIRECTORY)      //Œƒº˛º–µ•∂¿–Œ≥…“ª∏ˆ¡¥±Ì
+        if (pDirent->fatdirattr & FSYS_ATTR_DIRECTORY)      //Êñá‰ª∂Â§πÂçïÁã¨ÂΩ¢Êàê‰∏Ä‰∏™ÈìæË°®
         {
             if (folder_first == NULL)
             {
@@ -354,7 +375,7 @@ __s32  new_file_list(const char *path, file_item_t **pp_item_list, void *ext_par
                 {
                     folder_list->next = folder_next;
                     folder_next->previous = folder_list;
-                    folder_list = folder_next;                  //folder_list Œ™¡¥±Ìµƒ◊Ó∫Û“ª∏ˆµ„
+                    folder_list = folder_next;                  //folder_list ‰∏∫ÈìæË°®ÁöÑÊúÄÂêé‰∏Ä‰∏™ÁÇπ
                     folder_count++;
                 }
                 else
@@ -363,7 +384,7 @@ __s32  new_file_list(const char *path, file_item_t **pp_item_list, void *ext_par
                 }
             }
         }
-        else                                        //Œƒº˛µ•∂¿–Œ≥…“ª∏ˆ¡¥±Ì
+        else                                        //Êñá‰ª∂ÂçïÁã¨ÂΩ¢Êàê‰∏Ä‰∏™ÈìæË°®
         {
             if (first == NULL)
             {
@@ -385,7 +406,7 @@ __s32  new_file_list(const char *path, file_item_t **pp_item_list, void *ext_par
                 {
                     list->next = next;
                     next->previous = list;
-                    list = next;                                //list Œ™¡¥±Ìµƒ◊Ó∫Û“ª∏ˆµ„
+                    list = next;                                //list ‰∏∫ÈìæË°®ÁöÑÊúÄÂêé‰∏Ä‰∏™ÁÇπ
                     count++;
                 }
                 else
@@ -398,7 +419,7 @@ __s32  new_file_list(const char *path, file_item_t **pp_item_list, void *ext_par
 
     __msg("get %d folders & %d files totally\n", folder_count, count);
 
-    if (folder_first == NULL)       //Œƒº˛º–¡¥±ÌŒ™ø’£¨±Ì æ√ª”–Œƒº˛£¨Ω´no_folder÷√1£¨±Ì æ√ª”–Œƒº˛º–
+    if (folder_first == NULL)       //Êñá‰ª∂Â§πÈìæË°®‰∏∫Á©∫ÔºåË°®Á§∫Ê≤°ÊúâÊñá‰ª∂ÔºåÂ∞Üno_folderÁΩÆ1ÔºåË°®Á§∫Ê≤°ÊúâÊñá‰ª∂Â§π
     {
         no_folder = 1 ;
     }
@@ -408,40 +429,40 @@ __s32  new_file_list(const char *path, file_item_t **pp_item_list, void *ext_par
         no_file = 1 ;
     }
 
-    if (!no_file)    //Ω´Œƒº˛–Œ≥…“ª∏ˆÀ´œÚ—≠ª∑¡¥±Ì
+    if (!no_file)    //Â∞ÜÊñá‰ª∂ÂΩ¢Êàê‰∏Ä‰∏™ÂèåÂêëÂæ™ÁéØÈìæË°®
     {
         list->next = first;
-        first->previous = list;     //–Œ≥…À´œÚ¡¥±Ì
-        first = file_list_sort(first, count) ;       //Ω´Œƒº˛∞¥Œƒº˛√˚Ω¯––≈≈–Ú, ∑µªÿ≈≈∫√–Úµƒ¡¥±Ì ◊µÿ÷∑
-        list = first->previous ;         //Ω´≈≈–Ú∫ÛµƒŒƒº˛¡¥±ÌΩ¯––µ˜’˚£¨ πlist ÷ÿ–¬÷∏œÚŒƒº˛¡¥±ÌµƒΩ·Œ≤
+        first->previous = list;     //ÂΩ¢ÊàêÂèåÂêëÈìæË°®
+        first = file_list_sort(first, count) ;       //Â∞ÜÊñá‰ª∂ÊåâÊñá‰ª∂ÂêçËøõË°åÊéíÂ∫è, ËøîÂõûÊéíÂ•ΩÂ∫èÁöÑÈìæË°®È¶ñÂú∞ÂùÄ
+        list = first->previous ;         //Â∞ÜÊéíÂ∫èÂêéÁöÑÊñá‰ª∂ÈìæË°®ËøõË°åË∞ÉÊï¥Ôºå‰Ωølist ÈáçÊñ∞ÊåáÂêëÊñá‰ª∂ÈìæË°®ÁöÑÁªìÂ∞æ
     }
 
-    if (!no_folder)  //Ω´Œƒº˛º––Œ≥…“ª∏ˆÀ´œÚ—≠ª∑¡¥±Ì
+    if (!no_folder)  //Â∞ÜÊñá‰ª∂Â§πÂΩ¢Êàê‰∏Ä‰∏™ÂèåÂêëÂæ™ÁéØÈìæË°®
     {
         folder_list->next = folder_first;
         folder_first->previous = folder_list;
         folder_first = file_list_sort(folder_first, folder_count) ;
-        folder_list = folder_first->previous ;   //Ω´≈≈–Ú∫ÛµƒŒƒº˛¡¥±ÌΩ¯––µ˜’˚£¨ πfolder_list  ÷ÿ–¬÷∏œÚ¡¥±ÌµƒΩ·Œ≤
+        folder_list = folder_first->previous ;   //Â∞ÜÊéíÂ∫èÂêéÁöÑÊñá‰ª∂ÈìæË°®ËøõË°åË∞ÉÊï¥Ôºå‰Ωøfolder_list  ÈáçÊñ∞ÊåáÂêëÈìæË°®ÁöÑÁªìÂ∞æ
     }
 
-    //Ω´¡Ω∏ˆ¡¥±Ì∫œ≤¢∆¿¥,Œƒº˛º–¡¥±Ì‘⁄«∞
+    //Â∞Ü‰∏§‰∏™ÈìæË°®ÂêàÂπ∂Ëµ∑Êù•,Êñá‰ª∂Â§πÈìæË°®Âú®Ââç
     if (!no_folder)
     {
         if (!no_file)
         {
-            folder_list->next = first;                      //Œƒº˛º–”ÎŒƒº˛¡¥Ω”∆¿¥
-            first->previous = folder_list;                  //¡¨Ω”Œƒº˛º–
-            list->next = folder_first;                      //Œƒº˛¡–±ÌµƒΩ·Œ≤÷∏œÚŒƒº˛º–¡–±Ìø™ ºµƒµÿ∑Ω
+            folder_list->next = first;                      //Êñá‰ª∂Â§π‰∏éÊñá‰ª∂ÈìæÊé•Ëµ∑Êù•
+            first->previous = folder_list;                  //ËøûÊé•Êñá‰ª∂Â§π
+            list->next = folder_first;                      //Êñá‰ª∂ÂàóË°®ÁöÑÁªìÂ∞æÊåáÂêëÊñá‰ª∂Â§πÂàóË°®ÂºÄÂßãÁöÑÂú∞Êñπ
             folder_first->previous = list;
         }
 
-        *pp_item_list = folder_first;                       //¡–±Ì ◊µÿ÷∑∑µªÿ∏¯µ˜”√’ﬂ
+        *pp_item_list = folder_first;                       //ÂàóË°®È¶ñÂú∞ÂùÄËøîÂõûÁªôË∞ÉÁî®ËÄÖ
     }
     else
     {
-        if (!no_file)                                     //÷ª”–Œƒº˛
+        if (!no_file)                                     //Âè™ÊúâÊñá‰ª∂
         {
-            *pp_item_list = first;                      //¡–±Ì ◊µÿ÷∑∑µªÿ∏¯µ˜”√’ﬂ
+            *pp_item_list = first;                      //ÂàóË°®È¶ñÂú∞ÂùÄËøîÂõûÁªôË∞ÉÁî®ËÄÖ
         }
         else
         {
@@ -452,9 +473,9 @@ __s32  new_file_list(const char *path, file_item_t **pp_item_list, void *ext_par
     eLIBs_closedir(pDir);
     return count + folder_count;
 }
-//…æ≥˝“ª∏ˆŒƒº˛¡–±Ì( π”√¡¥±Ì…æ≥˝)
-//item_list = ¡–±Ì ◊µÿ÷∑
-//total = ◊‹¿‡±Ì∏ˆ ˝
+//Âà†Èô§‰∏Ä‰∏™Êñá‰ª∂ÂàóË°®(‰ΩøÁî®ÈìæË°®Âà†Èô§)
+//item_list = ÂàóË°®È¶ñÂú∞ÂùÄ
+//total = ÊÄªÁ±ªË°®‰∏™Êï∞
 __s32 delete_file_list(file_item_t  *item_list, __u32 total)
 {
     __u32 i = 0;
@@ -480,7 +501,7 @@ __s32 delete_file_list(file_item_t  *item_list, __u32 total)
             break;
         }
 
-        temp = list->next;              //œ»±£¥Êœ¬“ª∏ˆÃıƒøµÿ÷∑
+        temp = list->next;              //ÂÖà‰øùÂ≠ò‰∏ã‰∏Ä‰∏™Êù°ÁõÆÂú∞ÂùÄ
 
         if (temp != NULL)
         {
@@ -496,7 +517,7 @@ __s32 delete_file_list(file_item_t  *item_list, __u32 total)
     return EPDK_OK;
 }
 
-//¥”¡–±Ì÷–…æ≥˝“ª∏ˆΩ⁄µ„
+//‰ªéÂàóË°®‰∏≠Âà†Èô§‰∏Ä‰∏™ËäÇÁÇπ
 __s32 delete_file_item_from_list(file_item_t *item, file_list_t *list)
 {
     file_item_t *previous = NULL;
@@ -515,10 +536,10 @@ __s32 delete_file_item_from_list(file_item_t *item, file_list_t *list)
 
     if (list->item_list == item)
     {
-        list->item_list = item->next;       //…æ≥˝µƒ «µ⁄“ª∏ˆÕ∑Ω⁄µ„,–Ë“™∏ƒ±‰item_listµƒ÷µ
+        list->item_list = item->next;       //Âà†Èô§ÁöÑÊòØÁ¨¨‰∏Ä‰∏™Â§¥ËäÇÁÇπ,ÈúÄË¶ÅÊîπÂèòitem_listÁöÑÂÄº
     }
 
-    if (item->next == item)                 //¡¥±Ì÷–÷ª”–“ª∏ˆΩ⁄µ„
+    if (item->next == item)                 //ÈìæË°®‰∏≠Âè™Êúâ‰∏Ä‰∏™ËäÇÁÇπ
     {
         __msg("=========================only one item\n");
         ret = delete_file_item(item);
@@ -540,13 +561,13 @@ __s32 delete_file_item_from_list(file_item_t *item, file_list_t *list)
 
         if (previous == next)
         {
-            //œ‡µ»±Ì æ÷ª”–¡Ω∏ˆÃıƒø
+            //Áõ∏Á≠âË°®Á§∫Âè™Êúâ‰∏§‰∏™Êù°ÁõÆ
             __msg("=========================there are two items \n");
             next->next = next;
             next->previous = next;
             ret = delete_file_item(item);
         }
-        else                        //≥¨π˝¡Ω∏ˆ
+        else                        //Ë∂ÖËøá‰∏§‰∏™
         {
             __msg("=========================more than two items \n");
             previous->next = next;
@@ -558,8 +579,8 @@ __s32 delete_file_item_from_list(file_item_t *item, file_list_t *list)
     return ret;
 }
 
-//cur_itemŒ™µ±«∞Ãıƒø
-//itemŒ™“™≤Â»ÎµƒÃıƒø,≤Â»ÎµΩcur_itemµƒ∫Û√Ê
+//cur_item‰∏∫ÂΩìÂâçÊù°ÁõÆ
+//item‰∏∫Ë¶ÅÊèíÂÖ•ÁöÑÊù°ÁõÆ,ÊèíÂÖ•Âà∞cur_itemÁöÑÂêéÈù¢
 __s32 insert_file_item_to_list(file_item_t *cur_item, file_item_t *item)
 {
     file_item_t *previous = NULL;
@@ -583,7 +604,7 @@ __s32 insert_file_item_to_list(file_item_t *cur_item, file_item_t *item)
     return EPDK_OK;
 }
 
-//Œ™filelist ¡¥±Ì…Í«Î“ª∏ˆΩ⁄µ„
+//‰∏∫filelist ÈìæË°®Áî≥ËØ∑‰∏Ä‰∏™ËäÇÁÇπ
 file_list_t *new_file_list_nod(const char *path, void *ext_para)
 {
     file_list_t *nod = NULL;
@@ -606,7 +627,7 @@ file_list_t *new_file_list_nod(const char *path, void *ext_para)
     return nod;
 }
 
-//…æ≥˝“ª∏ˆΩ⁄µ„,«“…æ≥˝Ω⁄µ„œ¬µƒitemlist
+//Âà†Èô§‰∏Ä‰∏™ËäÇÁÇπ,‰∏îÂà†Èô§ËäÇÁÇπ‰∏ãÁöÑitemlist
 __s32 delete_file_list_nod(file_list_t *nod)
 {
     __s32 ret = 0;
@@ -625,7 +646,7 @@ __s32 delete_file_list_nod(file_list_t *nod)
     return ret;
 }
 
-//ºÏ≤‚¥Ê¥¢…Ë±∏ «∑Òready
+//Ê£ÄÊµãÂ≠òÂÇ®ËÆæÂ§áÊòØÂê¶ready
 //
 file_list_t *new_file_root_list_nod(void *ext_para)
 {
@@ -652,7 +673,7 @@ file_list_t *new_file_root_list_nod(void *ext_para)
         eLIBs_memset(&dirent, 0, sizeof(ES_DIRENT));
         dirent.d_size = 0;
         dirent.fatdirattr = RAT_MEDIA_TYPE_USB_DEVICE;
-        //eLIBs_strcpy(root_nod->USB_path, disk_name[0]);       //±£¥Ê≈Ã∑˚
+        //eLIBs_strcpy(root_nod->USB_path, disk_name[0]);       //‰øùÂ≠òÁõòÁ¨¶
         eLIBs_strcpy(dirent.d_name, disk_name[0]);
         // __wrn("new_file_root_list_nod 2\n");
         item = new_file_item(&dirent);
@@ -681,7 +702,7 @@ file_list_t *new_file_root_list_nod(void *ext_para)
         dirent.fatdirattr = RAT_MEDIA_TYPE_SD_DEVICE;
 #if  TF_ENCRYPTION_EX
 
-        if (rat_is_encryption_partition_Insert(disk_name_t, 1)) //¥Ê‘⁄º”√‹∑÷«¯//chengf  add
+        if (rat_is_encryption_partition_Insert(disk_name_t, 1)) //Â≠òÂú®Âä†ÂØÜÂàÜÂå∫//chengf  add
         {
             eLIBs_strcpy(dirent.d_name, disk_name[1]);          //chengf  add
         }
@@ -694,7 +715,7 @@ file_list_t *new_file_root_list_nod(void *ext_para)
         eLIBs_strcpy(dirent.d_name, disk_name[0]);
 #endif
 
-        if (item == NULL)                               //÷ª”–“ª∏ˆ≈Ã∑˚
+        if (item == NULL)                               //Âè™Êúâ‰∏Ä‰∏™ÁõòÁ¨¶
         {
             // __wrn("new_file_root_list_nod 4\n");
             item = new_file_item(&dirent);
@@ -714,14 +735,14 @@ file_list_t *new_file_root_list_nod(void *ext_para)
 
             if (item->next != NULL)
             {
-                item->next->previous = item;            //”–¡Ω∏ˆ≈Ã∑˚
+                item->next->previous = item;            //Êúâ‰∏§‰∏™ÁõòÁ¨¶
                 item->next->next = item;
                 item->previous  = item->next;
                 count++;
             }
             else
             {
-                item->next = item;                  //÷ª”–“ª∏ˆ≈Ã∑˚
+                item->next = item;                  //Âè™Êúâ‰∏Ä‰∏™ÁõòÁ¨¶
                 item->previous = item;
             }
         }
@@ -737,7 +758,7 @@ file_list_t *new_file_root_list_nod(void *ext_para)
     {
         //__wrn("new_file_root_list_nod 7\n");
         __msg(" item is null ,get new_file_root_list_nod fail \n");
-        eLIBs_free(root_nod) ;   //“ª∏ˆ≈Ã∑˚∂º√ª”–
+        eLIBs_free(root_nod) ;   //‰∏Ä‰∏™ÁõòÁ¨¶ÈÉΩÊ≤°Êúâ
         root_nod = NULL ;
     }
 
@@ -790,7 +811,7 @@ __s32 update_file_root_list_nod(void *ext_para)
 {
     return EPDK_OK;
 }
-//∏˘æ›À˜“˝∫≈¥”nod÷–À—À˜
+//Ê†πÊçÆÁ¥¢ÂºïÂè∑‰ªénod‰∏≠ÊêúÁ¥¢
 file_item_t *get_file_list_item(file_list_t *nod, __u32 index)
 {
     __u32 i = 0, count = 0;
@@ -841,7 +862,7 @@ char *get_file_list_item_name(file_list_t *nod, __u32 index)
     return temp->name;
 }
 
-//ªÒµ√Œƒº˛ÃıƒøŒƒº˛¿‡–Õ
+//Ëé∑ÂæóÊñá‰ª∂Êù°ÁõÆÊñá‰ª∂Á±ªÂûã
 rat_media_type_t  get_file_list_item_file_type(file_item_t *item)
 {
     rat_media_type_t media_type = RAT_MEDIA_TYPE_UNKNOWN;
@@ -870,8 +891,8 @@ rat_media_type_t  get_file_list_item_file_type(file_item_t *item)
     return media_type;
 }
 
-//∏˘æ›∏¯≥ˆµƒ∂•≤øΩ⁄µ„£¨…æ≥˝’˚∏ˆfilelist ¡¥±Ì
-//◊¢“‚÷ªœÚœ¬…æ≥˝¡¥±Ì
+//Ê†πÊçÆÁªôÂá∫ÁöÑÈ°∂ÈÉ®ËäÇÁÇπÔºåÂà†Èô§Êï¥‰∏™filelist ÈìæË°®
+//Ê≥®ÊÑèÂè™Âêë‰∏ãÂà†Èô§ÈìæË°®
 __s32 delete_file_list_chain(file_list_t *top_nod)
 {
     file_list_t *parent_nod = NULL;
@@ -883,26 +904,26 @@ __s32 delete_file_list_chain(file_list_t *top_nod)
     }
 
     parent_nod = top_nod;
-    child_nod = parent_nod->child;              //±£¥Ê◊”Ω⁄µ„µÿ÷∑
+    child_nod = parent_nod->child;              //‰øùÂ≠òÂ≠êËäÇÁÇπÂú∞ÂùÄ
 
     if (child_nod == NULL)
     {
-        delete_file_list_nod(parent_nod);       //…æ≥˝∏∏Ω⁄µ„
+        delete_file_list_nod(parent_nod);       //Âà†Èô§Áà∂ËäÇÁÇπ
         return EPDK_OK;
     }
 
     while (child_nod != NULL)
     {
-        delete_file_list_nod(parent_nod);       //…æ≥˝∏∏Ω⁄µ„
-        parent_nod = child_nod;                 //÷∏œÚœ¬“ª∏ˆΩ⁄µ„
-        child_nod = parent_nod->child;          //±£¥Ê◊”Ω⁄µ„µÿ÷∑
+        delete_file_list_nod(parent_nod);       //Âà†Èô§Áà∂ËäÇÁÇπ
+        parent_nod = child_nod;                 //ÊåáÂêë‰∏ã‰∏Ä‰∏™ËäÇÁÇπ
+        child_nod = parent_nod->child;          //‰øùÂ≠òÂ≠êËäÇÁÇπÂú∞ÂùÄ
     }
 
     return EPDK_OK;
 }
 
-//char            sub_dir[RAT_MAX_FULL_PATH_LEN];               //∑≈‘⁄∫Ø ˝÷–£¨ª·“˝∆∂—’ª“Á≥ˆ
-//ªÒµ√“ª∏ˆŒƒº˛º–ƒø¬ºœ¬Œƒº˛Ãıƒø◊‹ ˝£¨∞¸¿®Œƒº˛º–
+//char            sub_dir[RAT_MAX_FULL_PATH_LEN];               //ÊîæÂú®ÂáΩÊï∞‰∏≠Ôºå‰ºöÂºïËµ∑Â†ÜÊ†àÊ∫¢Âá∫
+//Ëé∑Âæó‰∏Ä‰∏™Êñá‰ª∂Â§πÁõÆÂΩï‰∏ãÊñá‰ª∂Êù°ÁõÆÊÄªÊï∞ÔºåÂåÖÊã¨Êñá‰ª∂Â§π
 __s32 get_item_num_in_dir(const char *dirpath, __u32 *total)
 {
     ES_DIR          *dirp;
@@ -1017,7 +1038,7 @@ __s32 get_item_num_in_dir(const char *dirpath, __u32 *total)
 }
 
 
-//…æ≥˝“ª∏ˆŒƒº˛º–
+//Âà†Èô§‰∏Ä‰∏™Êñá‰ª∂Â§π
 __s32 delete_dir(char *dir_name, file_op_info_t *op_info)
 {
     ES_DIR          *dir = NULL;
@@ -1163,7 +1184,7 @@ __s32 delete_dir(char *dir_name, file_op_info_t *op_info)
 
 
 
-//∏¥÷∆“ª∏ˆŒƒº˛º–
+//Â§çÂà∂‰∏Ä‰∏™Êñá‰ª∂Â§π
 __s32 copy_dir(char *dst_dir, char *src_dir, file_op_info_t *op_info)
 {
     ES_DIR          *dir = NULL;
@@ -1337,5 +1358,3 @@ __s32 copy_dir(char *dst_dir, char *src_dir, file_op_info_t *op_info)
     eLIBs_closedir(dir);
     return ret;
 }
-
-

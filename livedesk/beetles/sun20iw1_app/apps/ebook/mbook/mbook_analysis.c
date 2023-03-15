@@ -1,16 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              record app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2006-2009, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : mbook_analysis.c
-* By      : lyn
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "mbook_private.h"
@@ -19,20 +36,20 @@
 
 typedef struct tag_MBOOK_ANALYSIS
 {
-    ES_FILE            *file_hdle;      // ÎÄ¼ş¾ä±ú
-    __u32               block_size;     // Ò»¸öblockµÄ´óĞ¡ 4 byte
-    __u32               block_len;      // Ò»¸öblockµÄ´óĞ¡ 4 byte
+    ES_FILE            *file_hdle;      // æ–‡ä»¶å¥æŸ„
+    __u32               block_size;     // ä¸€ä¸ªblockçš„å¤§å° 4 byte
+    __u32               block_len;      // ä¸€ä¸ªblockçš„å¤§å° 4 byte
 
-    __u8               *block_buf;      // blockµÄÄÚ´æµØÖ·
-    __one_page_t       *page_info;      // page infoµÄÄÚ´æµØÖ·
-    __one_page_t       *p_operate;      // Ö¸Ïòµ±Ç°²Ù×÷µÄinfo
+    __u8               *block_buf;      // blockçš„å†…å­˜åœ°å€
+    __one_page_t       *page_info;      // page infoçš„å†…å­˜åœ°å€
+    __one_page_t       *p_operate;      // æŒ‡å‘å½“å‰æ“ä½œçš„info
 
-    __u32               total_page;     // ×ÜÒ³Âë
-    __u32               last_row;       // ÉÏ´ÎÍË³öÊ±£¬½áÎ²ËùÔÚµÄĞĞºÅ
-    __u32               last_start;     // ÉÏ´ÎÍË³öÊ±£¬½áÎ²ËùÔÚĞĞµÄÆ«ÒÆÁ¿
-    __u32               last_end;       // ÉÏ´ÎÍË³öÊ±£¬ÎÄ¼şµÄÆ«ÒÆÁ¿
+    __u32               total_page;     // æ€»é¡µç 
+    __u32               last_row;       // ä¸Šæ¬¡é€€å‡ºæ—¶ï¼Œç»“å°¾æ‰€åœ¨çš„è¡Œå·
+    __u32               last_start;     // ä¸Šæ¬¡é€€å‡ºæ—¶ï¼Œç»“å°¾æ‰€åœ¨è¡Œçš„åç§»é‡
+    __u32               last_end;       // ä¸Šæ¬¡é€€å‡ºæ—¶ï¼Œæ–‡ä»¶çš„åç§»é‡
 
-    __analysis_config_t     config;         // infoµÄÅäÖÃĞÅÏ¢
+    __analysis_config_t     config;         // infoçš„é…ç½®ä¿¡æ¯
 } __mbook_analysis_t;
 
 
@@ -40,13 +57,13 @@ typedef struct tag_MBOOK_ANALYSIS
 ************************************************************************************************************************
 *                                       __analysis_page_utf8
 *
-*Description: ¶ÔÒ³ÀïµÄÊı¾İ£¬½øĞĞ·ÖÎö£¬µÃµ½µ¥¸öÒ³ÃæĞÅÏ¢¡£
+*Description: å¯¹é¡µé‡Œçš„æ•°æ®ï¼Œè¿›è¡Œåˆ†æï¼Œå¾—åˆ°å•ä¸ªé¡µé¢ä¿¡æ¯ã€‚
 *
-*Arguments  : hdle: Ò³½á¹¹µÄË½ÓĞÊı¾İ.
+*Arguments  : hdle: é¡µç»“æ„çš„ç§æœ‰æ•°æ®.
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -74,7 +91,7 @@ static  __s32 __analysis_page_utf8(__mbook_analysis_t *hdle, __u32 len)
 
         if ((tmp == 0x0a) || (tmp == 0x0d))
         {
-            tmp_row++;      // ĞĞÊı¼Ó1
+            tmp_row++;      // è¡Œæ•°åŠ 1
             tmp_x = 0;
 
             if (*(p_data + tmp_ofs + 1) == 0x0a)
@@ -102,24 +119,24 @@ static  __s32 __analysis_page_utf8(__mbook_analysis_t *hdle, __u32 len)
         {
             if ((tmp & 0xf0) == 0xe0)
             {
-                tmp_w = p_config->col_width;               // ĞĞÆ«ÒÆÏà¶ÔÆğÊ¼Î»ÖÃ1¸öºº×ÖÆ«ÒÆÁ¿
+                tmp_w = p_config->col_width;               // è¡Œåç§»ç›¸å¯¹èµ·å§‹ä½ç½®1ä¸ªæ±‰å­—åç§»é‡
                 tmp_ofs = tmp_ofs + 3;
                 byte_num_of_per_char = 3 ;
             }
             else if ((tmp & 0xe0) == 0xc0)
             {
-                tmp_w = p_config->col_width;               // ĞĞÆ«ÒÆÏà¶ÔÆğÊ¼Î»ÖÃ1¸öºº×ÖÆ«ÒÆÁ¿
+                tmp_w = p_config->col_width;               // è¡Œåç§»ç›¸å¯¹èµ·å§‹ä½ç½®1ä¸ªæ±‰å­—åç§»é‡
                 tmp_ofs = tmp_ofs + 2;
                 byte_num_of_per_char = 2 ;
             }
             else
             {
-                tmp_w = *(p_config->char_table + tmp);      // ĞĞÆ«ÒÆÏà¶ÔÆğÊ¼Î»ÖÃ1¸ö×Ö·ûÆ«ÒÆÁ¿
+                tmp_w = *(p_config->char_table + tmp);      // è¡Œåç§»ç›¸å¯¹èµ·å§‹ä½ç½®1ä¸ªå­—ç¬¦åç§»é‡
                 tmp_ofs = tmp_ofs + 1;
                 byte_num_of_per_char = 1 ;
             }
 
-            if ((tmp_x + tmp_w) > p_config->show_width) //ÂúÒ»ĞĞ
+            if ((tmp_x + tmp_w) > p_config->show_width) //æ»¡ä¸€è¡Œ
             {
                 tmp_row++;
                 tmp_x = 0;
@@ -167,13 +184,13 @@ static  __s32 __analysis_page_utf8(__mbook_analysis_t *hdle, __u32 len)
 ************************************************************************************************************************
 *                                       __analysis_page_utf16_be
 *
-*Description: ¶ÔÒ³ÀïµÄÊı¾İ£¬½øĞĞ·ÖÎö£¬µÃµ½µ¥¸öÒ³ÃæĞÅÏ¢¡£
+*Description: å¯¹é¡µé‡Œçš„æ•°æ®ï¼Œè¿›è¡Œåˆ†æï¼Œå¾—åˆ°å•ä¸ªé¡µé¢ä¿¡æ¯ã€‚
 *
-*Arguments  : hdle: Ò³½á¹¹µÄË½ÓĞÊı¾İ.
+*Arguments  : hdle: é¡µç»“æ„çš„ç§æœ‰æ•°æ®.
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -229,13 +246,13 @@ static  __s32 __analysis_page_utf16_be(__mbook_analysis_t *hdle, __u32 len)
         {
             if (tmp < 0x80)
             {
-                tmp_w   = *(p_config->char_table + tmp);    // ĞĞÆ«ÒÆÏà¶ÔÆğÊ¼Î»ÖÃ1¸ö×Ö·ûÆ«ÒÆÁ¿
+                tmp_w   = *(p_config->char_table + tmp);    // è¡Œåç§»ç›¸å¯¹èµ·å§‹ä½ç½®1ä¸ªå­—ç¬¦åç§»é‡
                 tmp_ofs = tmp_ofs + 2;
                 byte_num_of_per_char = 2 ;
             }
             else
             {
-                tmp_w   = p_config->col_width;             // ĞĞÆ«ÒÆÏà¶ÔÆğÊ¼Î»ÖÃ1¸öºº×ÖÆ«ÒÆÁ¿
+                tmp_w   = p_config->col_width;             // è¡Œåç§»ç›¸å¯¹èµ·å§‹ä½ç½®1ä¸ªæ±‰å­—åç§»é‡
                 tmp_ofs = tmp_ofs + 2;
                 byte_num_of_per_char = 2 ;
             }
@@ -288,13 +305,13 @@ static  __s32 __analysis_page_utf16_be(__mbook_analysis_t *hdle, __u32 len)
 ************************************************************************************************************************
 *                                       __analysis_page_utf16_le
 *
-*Description: ¶ÔÒ³ÀïµÄÊı¾İ£¬½øĞĞ·ÖÎö£¬µÃµ½µ¥¸öÒ³ÃæĞÅÏ¢¡£
+*Description: å¯¹é¡µé‡Œçš„æ•°æ®ï¼Œè¿›è¡Œåˆ†æï¼Œå¾—åˆ°å•ä¸ªé¡µé¢ä¿¡æ¯ã€‚
 *
-*Arguments  : hdle: Ò³½á¹¹µÄË½ÓĞÊı¾İ.
+*Arguments  : hdle: é¡µç»“æ„çš„ç§æœ‰æ•°æ®.
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -350,13 +367,13 @@ static  __s32 __analysis_page_utf16_le(__mbook_analysis_t *hdle, __u32 len)
         {
             if (tmp < 0x80)
             {
-                tmp_w   = *(p_config->char_table + tmp);        // ĞĞÆ«ÒÆÏà¶ÔÆğÊ¼Î»ÖÃ1¸ö×Ö·ûÆ«ÒÆÁ¿
+                tmp_w   = *(p_config->char_table + tmp);        // è¡Œåç§»ç›¸å¯¹èµ·å§‹ä½ç½®1ä¸ªå­—ç¬¦åç§»é‡
                 tmp_ofs = tmp_ofs + 2;
                 byte_num_of_per_char = 2 ;
             }
             else
             {
-                tmp_w   = p_config->col_width;                 // ĞĞÆ«ÒÆÏà¶ÔÆğÊ¼Î»ÖÃ1¸öºº×ÖÆ«ÒÆÁ¿
+                tmp_w   = p_config->col_width;                 // è¡Œåç§»ç›¸å¯¹èµ·å§‹ä½ç½®1ä¸ªæ±‰å­—åç§»é‡
                 tmp_ofs = tmp_ofs + 2;
                 byte_num_of_per_char = 2;
             }
@@ -409,13 +426,13 @@ static  __s32 __analysis_page_utf16_le(__mbook_analysis_t *hdle, __u32 len)
 ************************************************************************************************************************
 *                                       __analysis_page_gbk
 *
-*Description: ¶ÔÒ³ÀïµÄÊı¾İ£¬½øĞĞ·ÖÎö£¬µÃµ½µ¥¸öÒ³ÃæĞÅÏ¢¡£
+*Description: å¯¹é¡µé‡Œçš„æ•°æ®ï¼Œè¿›è¡Œåˆ†æï¼Œå¾—åˆ°å•ä¸ªé¡µé¢ä¿¡æ¯ã€‚
 *
-*Arguments  : hdle: Ò³½á¹¹µÄË½ÓĞÊı¾İ.
+*Arguments  : hdle: é¡µç»“æ„çš„ç§æœ‰æ•°æ®.
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -471,29 +488,29 @@ static  __s32 __analysis_page_gbk(__mbook_analysis_t *hdle, __u32 len)
         {
             if (tmp > 0x7f)
             {
-                tmp_w   = p_config->col_width;                 // ĞĞÆ«ÒÆÏà¶ÔÆğÊ¼Î»ÖÃ1¸öºº×ÖÆ«ÒÆÁ¿
+                tmp_w   = p_config->col_width;                 // è¡Œåç§»ç›¸å¯¹èµ·å§‹ä½ç½®1ä¸ªæ±‰å­—åç§»é‡
                 tmp_ofs = tmp_ofs + 2;
                 byte_num_of_per_char = 2 ;
             }
             else
             {
-                tmp_w   = *(p_config->char_table + tmp);        // ĞĞÆ«ÒÆÏà¶ÔÆğÊ¼Î»ÖÃ1¸ö×Ö·ûÆ«ÒÆÁ¿
+                tmp_w   = *(p_config->char_table + tmp);        // è¡Œåç§»ç›¸å¯¹èµ·å§‹ä½ç½®1ä¸ªå­—ç¬¦åç§»é‡
                 tmp_ofs = tmp_ofs + 1;
                 byte_num_of_per_char = 1 ;
             }
 
-            if ((tmp_x + tmp_w) > p_config->show_width)         // ÂúÒ»ĞĞ
+            if ((tmp_x + tmp_w) > p_config->show_width)         // æ»¡ä¸€è¡Œ
             {
                 tmp_row++;
                 tmp_x = 0;
                 tmp_ofs = tmp_ofs - byte_num_of_per_char;
 
-                if (tmp_row >= p_config->page_row)          //ÂúÒ»Ò³
+                if (tmp_row >= p_config->page_row)          //æ»¡ä¸€é¡µ
                 {
                     hdle->total_page++;
                     p_one->page_end = hdle->last_end + tmp_ofs;
                     p_one->page_no  = hdle->total_page;
-                    (p_one + 1)->page_start = p_one->page_end;  // p_one+1,Ö¸ÏòÏòÏÂÒ»Ò³
+                    (p_one + 1)->page_start = p_one->page_end;  // p_one+1,æŒ‡å‘å‘ä¸‹ä¸€é¡µ
                     p_one++;
                     tmp_row = 0;
                 }
@@ -530,13 +547,13 @@ static  __s32 __analysis_page_gbk(__mbook_analysis_t *hdle, __u32 len)
 ************************************************************************************************************************
 *                                       __analysis_page_big5
 *
-*Description: ¶ÔÒ³ÀïµÄÊı¾İ£¬½øĞĞ·ÖÎö£¬µÃµ½µ¥¸öÒ³ÃæĞÅÏ¢¡£
+*Description: å¯¹é¡µé‡Œçš„æ•°æ®ï¼Œè¿›è¡Œåˆ†æï¼Œå¾—åˆ°å•ä¸ªé¡µé¢ä¿¡æ¯ã€‚
 *
-*Arguments  : hdle: Ò³½á¹¹µÄË½ÓĞÊı¾İ.
+*Arguments  : hdle: é¡µç»“æ„çš„ç§æœ‰æ•°æ®.
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -592,13 +609,13 @@ static  __s32 __analysis_page_big5(__mbook_analysis_t *hdle, __u32 len)
         {
             if (tmp > 0x7f)
             {
-                tmp_w   = p_config->col_width;                 // ĞĞÆ«ÒÆÏà¶ÔÆğÊ¼Î»ÖÃ1¸öºº×ÖÆ«ÒÆÁ¿
+                tmp_w   = p_config->col_width;                 // è¡Œåç§»ç›¸å¯¹èµ·å§‹ä½ç½®1ä¸ªæ±‰å­—åç§»é‡
                 tmp_ofs = tmp_ofs + 2;
                 byte_num_of_per_char = 2;
             }
             else
             {
-                tmp_w   = *(p_config->char_table + tmp);        // ĞĞÆ«ÒÆÏà¶ÔÆğÊ¼Î»ÖÃ1¸ö×Ö·ûÆ«ÒÆÁ¿
+                tmp_w   = *(p_config->char_table + tmp);        // è¡Œåç§»ç›¸å¯¹èµ·å§‹ä½ç½®1ä¸ªå­—ç¬¦åç§»é‡
                 tmp_ofs = tmp_ofs + 1;
                 byte_num_of_per_char = 1;
             }
@@ -651,13 +668,13 @@ static  __s32 __analysis_page_big5(__mbook_analysis_t *hdle, __u32 len)
 ************************************************************************************************************************
 *                                       __analysis_page_info_utf8
 *
-*Description: ¶ÔÒ³ÀïµÄÊı¾İ£¬½øĞĞ·ÖÎö£¬µÃµ½µ¥¸öÒ³ÃæĞÅÏ¢¡£
+*Description: å¯¹é¡µé‡Œçš„æ•°æ®ï¼Œè¿›è¡Œåˆ†æï¼Œå¾—åˆ°å•ä¸ªé¡µé¢ä¿¡æ¯ã€‚
 *
-*Arguments  : hdle: Ò³½á¹¹µÄË½ÓĞÊı¾İ.
+*Arguments  : hdle: é¡µç»“æ„çš„ç§æœ‰æ•°æ®.
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -670,9 +687,9 @@ static __s32 __analysis_page_info_utf8(__mbook_analysis_t *hdle)
 
     while (1)
     {
-        // ¶¨Î»ÎÄ¼şÖ¸Õë
+        // å®šä½æ–‡ä»¶æŒ‡é’ˆ
         eLIBs_fseek(p_analysis->file_hdle, p_analysis->last_end, SEEK_SET);
-        // ¶ÁÒ»¶ÎÊı¾İ
+        // è¯»ä¸€æ®µæ•°æ®
         len = eLIBs_fread(p_analysis->block_buf, 1, p_analysis->block_len, p_analysis->file_hdle);
         ret = __analysis_page_utf8(hdle, len);
 
@@ -699,13 +716,13 @@ static __s32 __analysis_page_info_utf8(__mbook_analysis_t *hdle)
 ************************************************************************************************************************
 *                                       __analysis_page_info_utf16_be
 *
-*Description: ¶ÔÒ³ÀïµÄÊı¾İ£¬½øĞĞ·ÖÎö£¬µÃµ½µ¥¸öÒ³ÃæĞÅÏ¢¡£
+*Description: å¯¹é¡µé‡Œçš„æ•°æ®ï¼Œè¿›è¡Œåˆ†æï¼Œå¾—åˆ°å•ä¸ªé¡µé¢ä¿¡æ¯ã€‚
 *
-*Arguments  : hdle: Ò³½á¹¹µÄË½ÓĞÊı¾İ.
+*Arguments  : hdle: é¡µç»“æ„çš„ç§æœ‰æ•°æ®.
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -718,9 +735,9 @@ static __s32 __analysis_page_info_utf16_be(__mbook_analysis_t *hdle)
 
     while (1)
     {
-        // ¶¨Î»ÎÄ¼şÖ¸Õë
+        // å®šä½æ–‡ä»¶æŒ‡é’ˆ
         eLIBs_fseek(p_analysis->file_hdle, p_analysis->last_end, SEEK_SET);
-        // ¶ÁÒ»¶ÎÊı¾İ
+        // è¯»ä¸€æ®µæ•°æ®
         len = eLIBs_fread(p_analysis->block_buf, 1, p_analysis->block_len, p_analysis->file_hdle);
         ret = __analysis_page_utf16_be(hdle, len);
 
@@ -747,13 +764,13 @@ static __s32 __analysis_page_info_utf16_be(__mbook_analysis_t *hdle)
 ************************************************************************************************************************
 *                                       __analysis_page_info_utf16_le
 *
-*Description: ¶ÔÒ³ÀïµÄÊı¾İ£¬½øĞĞ·ÖÎö£¬µÃµ½µ¥¸öÒ³ÃæĞÅÏ¢¡£
+*Description: å¯¹é¡µé‡Œçš„æ•°æ®ï¼Œè¿›è¡Œåˆ†æï¼Œå¾—åˆ°å•ä¸ªé¡µé¢ä¿¡æ¯ã€‚
 *
-*Arguments  : hdle: Ò³½á¹¹µÄË½ÓĞÊı¾İ.
+*Arguments  : hdle: é¡µç»“æ„çš„ç§æœ‰æ•°æ®.
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -766,9 +783,9 @@ static __s32 __analysis_page_info_utf16_le(__mbook_analysis_t *hdle)
 
     while (1)
     {
-        // ¶¨Î»ÎÄ¼şÖ¸Õë
+        // å®šä½æ–‡ä»¶æŒ‡é’ˆ
         eLIBs_fseek(p_analysis->file_hdle, p_analysis->last_end, SEEK_SET);
-        // ¶ÁÒ»¶ÎÊı¾İ
+        // è¯»ä¸€æ®µæ•°æ®
         len = eLIBs_fread(p_analysis->block_buf, 1, p_analysis->block_len, p_analysis->file_hdle);
         ret = __analysis_page_utf16_le(hdle, len);
 
@@ -795,13 +812,13 @@ static __s32 __analysis_page_info_utf16_le(__mbook_analysis_t *hdle)
 ************************************************************************************************************************
 *                                       __analysis_page_info_gbk
 *
-*Description: ¶ÔÒ³ÀïµÄÊı¾İ£¬½øĞĞ·ÖÎö£¬µÃµ½µ¥¸öÒ³ÃæĞÅÏ¢¡£
+*Description: å¯¹é¡µé‡Œçš„æ•°æ®ï¼Œè¿›è¡Œåˆ†æï¼Œå¾—åˆ°å•ä¸ªé¡µé¢ä¿¡æ¯ã€‚
 *
-*Arguments  : hdle: Ò³½á¹¹µÄË½ÓĞÊı¾İ.
+*Arguments  : hdle: é¡µç»“æ„çš„ç§æœ‰æ•°æ®.
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -814,9 +831,9 @@ static __s32 __analysis_page_info_gbk(__mbook_analysis_t *hdle)
 
     while (1)
     {
-        // ¶¨Î»ÎÄ¼şÖ¸Õë
+        // å®šä½æ–‡ä»¶æŒ‡é’ˆ
         eLIBs_fseek(p_analysis->file_hdle, p_analysis->last_end, SEEK_SET);
-        // ¶ÁÒ»¶ÎÊı¾İ
+        // è¯»ä¸€æ®µæ•°æ®
         len = eLIBs_fread(p_analysis->block_buf, 1, p_analysis->block_len, p_analysis->file_hdle);
         ret = __analysis_page_gbk(hdle, len);
 
@@ -843,13 +860,13 @@ static __s32 __analysis_page_info_gbk(__mbook_analysis_t *hdle)
 ************************************************************************************************************************
 *                                       __analysis_page_info_big5
 *
-*Description: ¶ÔÒ³ÀïµÄÊı¾İ£¬½øĞĞ·ÖÎö£¬µÃµ½µ¥¸öÒ³ÃæĞÅÏ¢¡£
+*Description: å¯¹é¡µé‡Œçš„æ•°æ®ï¼Œè¿›è¡Œåˆ†æï¼Œå¾—åˆ°å•ä¸ªé¡µé¢ä¿¡æ¯ã€‚
 *
-*Arguments  : hdle: Ò³½á¹¹µÄË½ÓĞÊı¾İ.
+*Arguments  : hdle: é¡µç»“æ„çš„ç§æœ‰æ•°æ®.
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -862,9 +879,9 @@ static __s32 __analysis_page_info_big5(__mbook_analysis_t *hdle)
 
     while (1)
     {
-        // ¶¨Î»ÎÄ¼şÖ¸Õë
+        // å®šä½æ–‡ä»¶æŒ‡é’ˆ
         eLIBs_fseek(p_analysis->file_hdle, p_analysis->last_end, SEEK_SET);
-        // ¶ÁÒ»¶ÎÊı¾İ
+        // è¯»ä¸€æ®µæ•°æ®
         len = eLIBs_fread(p_analysis->block_buf, 1, p_analysis->block_len, p_analysis->file_hdle);
         ret = __analysis_page_big5(hdle, len);
 
@@ -891,12 +908,12 @@ static __s32 __analysis_page_info_big5(__mbook_analysis_t *hdle)
 ************************************************************************************************************************
 *                                       MBOOK_Analysis_Init
 *
-*Description: ³õÊ¼»¯Ò³Ãæ·ÖÎöÄ£¿é
+*Description: åˆå§‹åŒ–é¡µé¢åˆ†ææ¨¡å—
 *
-*Arguments  : fd: ÎÄ¼ş²Ù×÷¾ä±ú.
-*             len: ÎÄ¼ş×Ü³¤¶È
+*Arguments  : fd: æ–‡ä»¶æ“ä½œå¥æŸ„.
+*             len: æ–‡ä»¶æ€»é•¿åº¦
 *
-*Return     : H_ANALYSIS: ·µ»ØPAGE²Ù×÷¾ä±ú
+*Return     : H_ANALYSIS: è¿”å›PAGEæ“ä½œå¥æŸ„
 *
 ************************************************************************************************************************
 */
@@ -904,7 +921,7 @@ H_ANALYSIS   MBOOK_Analysis_Init(ES_FILE *fd)
 {
     __mbook_analysis_t     *p_analysis;
     __msg("MBOOK_Analysis_Init start \n");
-    p_analysis = (__mbook_analysis_t *)My_Malloc(0, sizeof(__mbook_analysis_t));    // ÉêÇëÄÚ´æ
+    p_analysis = (__mbook_analysis_t *)My_Malloc(0, sizeof(__mbook_analysis_t));    // ç”³è¯·å†…å­˜
 
     if (p_analysis == 0)
     {
@@ -916,7 +933,7 @@ H_ANALYSIS   MBOOK_Analysis_Init(ES_FILE *fd)
     p_analysis->file_hdle = fd;
     p_analysis->block_size = 1 * 1024;
     p_analysis->block_len  = 1 * 1024 * 1024;
-    p_analysis->block_buf = (void *)My_Palloc(p_analysis->block_size, 0);       // ÉêÇëÄÚ´æ
+    p_analysis->block_buf = (void *)My_Palloc(p_analysis->block_size, 0);       // ç”³è¯·å†…å­˜
 
     if (p_analysis->block_buf == 0)
     {
@@ -924,7 +941,7 @@ H_ANALYSIS   MBOOK_Analysis_Init(ES_FILE *fd)
         goto ERROR_1;
     }
 
-    p_analysis->page_info = (void *)My_Palloc((sizeof(__one_page_t) * MAX_SHOW_PAGE + 1023) / 1024, 0);     // ÉêÇëÄÚ´æ 2 M
+    p_analysis->page_info = (void *)My_Palloc((sizeof(__one_page_t) * MAX_SHOW_PAGE + 1023) / 1024, 0);     // ç”³è¯·å†…å­˜ 2 M
 
     if (p_analysis->page_info == 0)
     {
@@ -962,13 +979,13 @@ ERROR_1:
 ************************************************************************************************************************
 *                                       MBOOK_Analysis_Config
 *
-*Description: ÅäÖÃÒ³Ãæ·ÖÎöÄ£¿éÏà¹Ø²ÎÊı
+*Description: é…ç½®é¡µé¢åˆ†ææ¨¡å—ç›¸å…³å‚æ•°
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú
-*             config: ²ÎÊıÅäÖÃĞÅÏ¢Ö¸Õë
+*Arguments  : hdle: æ“ä½œå¥æŸ„
+*             config: å‚æ•°é…ç½®ä¿¡æ¯æŒ‡é’ˆ
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -985,7 +1002,7 @@ __s32   MBOOK_Analysis_Config(H_ANALYSIS hdle, __analysis_config_t *config)
     p_analysis = (__mbook_analysis_t *)hdle;
     eLIBs_memcpy(&(p_analysis->config), config, sizeof(__analysis_config_t));
     p_analysis->last_row    = 0;
-    //p_analysis->last_start  = 2 * p_analysis->config.col_width;       // modify by linyaoshu 2012.02.02 14:27. txtÎÄ±¾±¾Éí¿ªÍ·¿ÕÁ½¸ñ£¬·ñÔò²»¿Õ
+    //p_analysis->last_start  = 2 * p_analysis->config.col_width;       // modify by linyaoshu 2012.02.02 14:27. txtæ–‡æœ¬æœ¬èº«å¼€å¤´ç©ºä¸¤æ ¼ï¼Œå¦åˆ™ä¸ç©º
     p_analysis->last_start  = 0;
 
     switch (p_analysis->config.charset)
@@ -1020,12 +1037,12 @@ __s32   MBOOK_Analysis_Config(H_ANALYSIS hdle, __analysis_config_t *config)
 ************************************************************************************************************************
 *                                       MBOOK_Analysis_Work
 *
-*Description: ·ÖÎöµ±Ç°ÎÄ¼şµÄÒ³ÃæĞÅÏ¢
+*Description: åˆ†æå½“å‰æ–‡ä»¶çš„é¡µé¢ä¿¡æ¯
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú
+*Arguments  : hdle: æ“ä½œå¥æŸ„
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -1089,14 +1106,14 @@ __s32   MBOOK_Analysis_Work(H_ANALYSIS hdle)
 ************************************************************************************************************************
 *                                       MBOOK_Analysis_GetInfo
 *
-*Description: »ñÈ¡Ò»Ò³µÄÒ³ÃæĞÅÏ¢¡£
+*Description: è·å–ä¸€é¡µçš„é¡µé¢ä¿¡æ¯ã€‚
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú.
-*             page_no: Òª»ñÈ¡µÄÒ³ÃæºÅ
-*             page_info: Ò³ÃæĞÅÏ¢´æ·ÅµÄµØÖ·
+*Arguments  : hdle: æ“ä½œå¥æŸ„.
+*             page_no: è¦è·å–çš„é¡µé¢å·
+*             page_info: é¡µé¢ä¿¡æ¯å­˜æ”¾çš„åœ°å€
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -1126,13 +1143,13 @@ __s32   MBOOK_Analysis_GetInfo(H_ANALYSIS hdle, __u32 page_no, __one_page_t *pag
 ************************************************************************************************************************
 *                                       MBOOK_Analysis_GetPage
 *
-*Description: »ñÈ¡Ö¸¶¨Æ«ÒÆÁ¿¶ÔÓ¦µÄÒ³ÃæºÅ¡£
+*Description: è·å–æŒ‡å®šåç§»é‡å¯¹åº”çš„é¡µé¢å·ã€‚
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú.
-*             offset: ÎÄ¼şÆ«ÒÆÁ¿
+*Arguments  : hdle: æ“ä½œå¥æŸ„.
+*             offset: æ–‡ä»¶åç§»é‡
 *
-*Return     : total_page: ³É¹¦£¬·µ»Øµ±Ç°ÎÄ¼şÒ³Âë
-*             EPDK_FAIL: Ê§°Ü
+*Return     : total_page: æˆåŠŸï¼Œè¿”å›å½“å‰æ–‡ä»¶é¡µç 
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -1176,12 +1193,12 @@ __s32   MBOOK_Analysis_GetPage(H_ANALYSIS hdle, __u32 offset)
 ************************************************************************************************************************
 *                                       MBOOK_Analysis_GetTotalPage
 *
-*Description: É¾³ıÒ³Ãæ·ÖÎöÄ£¿é
+*Description: åˆ é™¤é¡µé¢åˆ†ææ¨¡å—
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú.
+*Arguments  : hdle: æ“ä½œå¥æŸ„.
 *
-*Return     : total_page: ³É¹¦£¬·µ»Øµ±Ç°ÎÄ¼ş×ÜÒ³Âë
-*             EPDK_FAIL: Ê§°Ü
+*Return     : total_page: æˆåŠŸï¼Œè¿”å›å½“å‰æ–‡ä»¶æ€»é¡µç 
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -1203,12 +1220,12 @@ __s32   MBOOK_Analysis_GetTotalPage(H_ANALYSIS hdle)
 ************************************************************************************************************************
 *                                       MBOOK_Analysis_Uninit
 *
-*Description: É¾³ıÒ³Ãæ·ÖÎöÄ£¿é
+*Description: åˆ é™¤é¡µé¢åˆ†ææ¨¡å—
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú.
+*Arguments  : hdle: æ“ä½œå¥æŸ„.
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -1239,6 +1256,3 @@ __s32   MBOOK_Analysis_Uninit(H_ANALYSIS hdle)
     My_Mfree(0, p_analysis);
     return EPDK_OK;
 }
-
-
-

@@ -198,6 +198,7 @@ typedef enum __CEDAR_CMD_SET            /* 媒体播放中间件命令列表(IOCtrol)      
    	CEDAR_CMD_SET_FILE_ENCRYPT_MODE,//aux设置播放音视频文件加密状态，0只播放非加密文件，1只播放加密文件，2加密非加密均可播放
 	CEDAR_CMD_USER_SET_SCALEDOWN,
 	CEDAR_CMD_USER_SET_LBC_MODE, //1:1.5x; 2:2x; 3:2.5x;
+	CEDAR_CMD_SET_AUDIO_DEV_INTERFACE,   //0:AUDIOCODEC  1:IIS
     CEDAR_CMD_
 } __cedar_cmd_set_t;
 
@@ -278,8 +279,6 @@ typedef enum __CEDAR_AUDIO_FMT
     CEDAR_ABS_TYPE_MPEG12_LAYER2,
     CEDAR_ABS_TYPE_MPEG12_LAYER3,
     CEDAR_ABS_TYPE_MPEG_AAC_LC,
-    CEDAR_ABS_TYPE_AC3,                 // AC-3
-    CEDAR_ABS_TYPE_DTS,                 // DTS audio for DVD-Video
     CEDAR_ABS_TYPE_LPCM_V,
     CEDAR_ABS_TYPE_LPCM_A,
     CEDAR_ABS_TYPE_ADPCM,
@@ -297,6 +296,8 @@ typedef enum __CEDAR_AUDIO_FMT
     CEDAR_ABS_TYPE_MID,
     CEDAR_ABS_TYPE_ALAC,
     CEDAR_ABS_TYPE_DRA,
+    CEDAR_ABS_TYPE_AC3      = CEDAR_ABS_TYPE_UNKNOWN,
+    CEDAR_ABS_TYPE_DTS      = CEDAR_ABS_TYPE_UNKNOWN,
     CEDAR_ABS_TYPE_
 } __cedar_audio_fmt_t;
 

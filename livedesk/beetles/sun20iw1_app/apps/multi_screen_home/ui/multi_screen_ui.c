@@ -1,10 +1,41 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY鈥橲 TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS鈥橲DK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY鈥橲 TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <log.h>
 #include "multi_screen_ui.h"
 
 
 static const __s32  multi_screen_uf_icon[HOME_UNFOCUS_ICON_NUM] =
 {
-    //固定应用
+    //鍥哄畾搴旂敤
     ID_HOME_NEW_EXPLORER_UF_BMP,
     ID_HOME_NEW_MOVIE_UF_BMP,
     ID_HOME_NEW_MUSIC_UF_BMP,
@@ -16,7 +47,7 @@ static const __s32  multi_screen_uf_icon[HOME_UNFOCUS_ICON_NUM] =
 };
 static const __s32  multi_screen_f_icon[HOME_FOCUS_ICON_NUM] =
 {
-    //固定应用选中
+    //鍥哄畾搴旂敤閫変腑
     ID_HOME_NEW_EXPLORER_FC_BMP,
     ID_HOME_NEW_MOVIE_FC_BMP,
     ID_HOME_NEW_MUSIC_FC_BMP,
@@ -45,7 +76,7 @@ int32_t init_multi_screen_res(pmulti_screen_ui_t pui, __s16 current_focus)
 
     __inf("enter %s\r\n", __FUNCTION__);
 
-    //初始化unfocus ICON 资源
+    //鍒濆鍖杣nfocus ICON 璧勬簮
     for (i = HOME_UNFOCUS_ICON_START; i < HOME_UNFOCUS_ICON_NUM; i++)
     {
         if (multi_screen_uf_icon[i])
@@ -71,7 +102,7 @@ int32_t init_multi_screen_res(pmulti_screen_ui_t pui, __s16 current_focus)
         __wrn("init_multi_screen_res() index:%d open fail\n", i);
     }
 */
-    //初始化String 资源
+    //鍒濆鍖朣tring 璧勬簮
     for (i = 0; i < MULTI_SCREEN_STRING_MAX; i++)
     {
         dsk_langres_get_menu_text(multi_screen_string[i], pui->lang[i], GUI_NAME_MAX);
@@ -83,7 +114,7 @@ __s32 uninit_multi_screen_res(pmulti_screen_ui_t pui)
 {
     __u32   i;
 
-    //释放ICON 资源
+    //閲婃斁ICON 璧勬簮
     for (i = HOME_UNFOCUS_ICON_START; i < HOME_UNFOCUS_ICON_NUM; i++)
     {
         if (pui->bmp_uf[i])
@@ -104,7 +135,7 @@ __s32 uninit_multi_screen_res(pmulti_screen_ui_t pui)
         }
     }
 
-    //释放string 资源
+    //閲婃斁string 璧勬簮
     for (i = 0; i < MULTI_SCREEN_STRING_MAX; i++)
     {
         pui->lang[i][0] = '\0';

@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : main_menu.c
-* By        : Andy.zhang
-* Func      : desk main thread
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-20 8:51:52  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "music.h"
@@ -45,7 +59,7 @@ static music_menu_AB_mode_e ab_mode_status = MUSIC_MENU_AB;
 #endif
 music_menu_ctrl_t       *g_music_menu_ctrl = NULL;
 
-static __u32 muisc_auto_delete_menu_id = 0x11;  // 10 s  ƒ⁄Œﬁ∂Ø◊˜◊‘∂Øπÿ±’µØ≥ˆµƒ≤Àµ•
+static __u32 muisc_auto_delete_menu_id = 0x11;  // 10 s  ÂÜÖÊó†Âä®‰ΩúËá™Âä®ÂÖ≥Èó≠ÂºπÂá∫ÁöÑËèúÂçï
 
 
 
@@ -143,7 +157,7 @@ void  music_menu_cmd2parent(H_WIN hwin, __s32 id, __s32 data1, __s32 data2)
     msg.dwReserved = NULL;
     GUI_SendNotifyMessage(&msg);
 }
-//∑¢ÀÕ“ª∏ˆ√¸¡Ó≤Œ ˝∏¯÷˜ΩÁ√Ê
+//ÂèëÈÄÅ‰∏Ä‰∏™ÂëΩ‰ª§ÂèÇÊï∞Áªô‰∏ªÁïåÈù¢
 __s32 music_menu_send_command(H_WIN hwin, __s32 id, __s32 data1, __s32 data2)
 {
     __gui_msg_t msg;
@@ -420,7 +434,7 @@ void draw_music_sub_menu_string(music_menu_ctrl_t  *self, __s32 main_index, __s3
     GUI_DispStringInRect(TextBuf, &text_rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
 }
 
-//“——°∂‘π¥
+//Â∑≤ÈÄâÂØπÂãæ
 static void draw_music_sub_menu_select(music_menu_ctrl_t  *self, __s32 index, __s32 foused)
 {
     void  *pbmp = NULL;
@@ -447,12 +461,12 @@ static void draw_music_sub_menu_select(music_menu_ctrl_t  *self, __s32 index, __
 ************************************************************************************************************************
 *Function   :          static H_LYR music_32bpp_layer_create(__u8 pipe)
 *
-*Description    :       «∞æ∞Õº≤„£¨÷˜“™”√¿¥œ‘ æ«∞æ∞Õº∆¨£¨ListBar◊Èº˛item, Àı¬‘Õº
-*                   ◊¢“‚”Î±≥æ∞Õº”¶¥¶”⁄≤ªÕ¨µƒpipe
+*Description    :       ÂâçÊôØÂõæÂ±ÇÔºå‰∏ªË¶ÅÁî®Êù•ÊòæÁ§∫ÂâçÊôØÂõæÁâáÔºåListBarÁªÑ‰ª∂item, Áº©Áï•Âõæ
+*                   Ê≥®ÊÑè‰∏éËÉåÊôØÂõæÂ∫îÂ§Ñ‰∫é‰∏çÂêåÁöÑpipe
 *
 *Arguments      :
 *
-*Return         :        Õº≤„æ‰±˙
+*Return         :        ÂõæÂ±ÇÂè•ÊüÑ
 *
 ************************************************************************************************************************
 */
@@ -1260,7 +1274,7 @@ static __s32  music_menu_frm_on_key(__gui_msg_t *msg)
             {
                 __wrn("GUI_MSG_KEY_PLAY_PAUSE,msg->dwReserved=%d", msg->dwReserved);
 
-                if (0 == msg->dwReserved) //√Ê∞Âplay_pause ◊ˆenterº¸
+                if (0 == msg->dwReserved) //Èù¢Êùøplay_pause ÂÅöenterÈîÆ
                 {
                     if (GUI_IsTimerInstalled(msg->h_deswin, muisc_auto_delete_menu_id))
                     {
@@ -1483,7 +1497,7 @@ static __s32 music_menu_frm_manager_proc(__gui_msg_t *msg)
                     music_menu_ctrl->main_menu_index = MUSIC_MAIN_MENU_REPEAT;
                 }
 
-                music_menu_frm_key_mainmenu(music_menu_ctrl);//◊ˆøÏΩ›¥¶¿Ì
+                music_menu_frm_key_mainmenu(music_menu_ctrl);//ÂÅöÂø´Êç∑Â§ÑÁêÜ
             }
 
             GUI_LyrWinSetTop(music_menu_ctrl->layer);
@@ -1557,7 +1571,7 @@ static __s32 music_menu_frm_manager_proc(__gui_msg_t *msg)
         {
             __wrn("++++++++ timer ");
 
-            if (muisc_auto_delete_menu_id == msg->dwAddData1) // 10 s ∫Ûπÿ±’≤Àµ•
+            if (muisc_auto_delete_menu_id == msg->dwAddData1) // 10 s ÂêéÂÖ≥Èó≠ËèúÂçï
             {
                 music_menu_ctrl_t       *music_menu_ctrl;
                 music_menu_ctrl = (music_menu_ctrl_t *)GUI_WinGetAttr(msg->h_deswin);
@@ -1610,7 +1624,7 @@ signed long music_menu_create(H_WIN h_parent, __s32 root_type, __s32 menu_level,
     FB fb;
     __msg("++++++++++++++music_menu_create++++++++++++++++++++++++");
 
-    //∑÷≈‰ø’º‰
+    //ÂàÜÈÖçÁ©∫Èó¥
     //esKSRV_SysInfo();
     if (NULL == g_music_menu_ctrl)
     {
@@ -1682,5 +1696,3 @@ __s32 music_menu_destory(H_WIN h_parent)
     hyr = GUI_WinGetLyrWin(h_parent);
     return GUI_LyrWinDelete(hyr);
 }
-
-

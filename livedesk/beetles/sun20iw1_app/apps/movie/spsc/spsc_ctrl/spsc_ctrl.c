@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : spsc_ctrl.c
-* By        :
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011-05-05  Bayden.chen  create this file
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "spsc_ctrl.h"
@@ -21,16 +35,16 @@
 #include "common/common.h"
 typedef struct
 {
-    //  ‰»Î≤Œ ˝
+    // ËæìÂÖ•ÂèÇÊï∞
     H_LYR hlyr;
     H_WIN hparent;
     __s32 scene_id;
     __s32 sub_state;
 
-    //ƒ⁄≤ø≤Œ ˝
+    //ÂÜÖÈÉ®ÂèÇÊï∞
     H_WIN hfrm;
     __hdle long_str_handle;
-    __s32 prog_timmer_id;//Ω¯∂»∫Õ ±º‰÷ÿªÊ∂® ±∆˜∑÷ø™£¨Ω¯∂»≤ª–Ë“™’‚√¥ µ ±
+    __s32 prog_timmer_id;//ËøõÂ∫¶ÂíåÊó∂Èó¥ÈáçÁªòÂÆöÊó∂Âô®ÂàÜÂºÄÔºåËøõÂ∫¶‰∏çÈúÄË¶ÅËøô‰πàÂÆûÊó∂
     char long_string[RAT_MAX_FULL_PATH_LEN];
     __s32 time_timmer_id;
     __s32 hide_timmer_id;
@@ -38,13 +52,13 @@ typedef struct
 
 } movie_spsc_ctrl_scene_t;
 
-//∂®“Âprog◊”≥°æ∞µƒui¿‡–Õ
+//ÂÆö‰πâprogÂ≠êÂú∫ÊôØÁöÑuiÁ±ªÂûã
 #define MOVIE_SPSC_PROG_UI_TYPE_PROG            0x01
 #define MOVIE_SPSC_PROG_UI_TYPE_CUR_TIME        0x02
 #define MOVIE_SPSC_PROG_UI_TYPE_TOTAL_TIME  0x04
 #define MOVIE_SPSC_PROG_UI_TYPE_BG          0x08
 
-//progµƒÀ˘”–ui¿‡–Õ
+//progÁöÑÊâÄÊúâuiÁ±ªÂûã
 #define MOVIE_SPSC_PROG_UI_TYPE_ALL (MOVIE_SPSC_PROG_UI_TYPE_PROG\
                                      |MOVIE_SPSC_PROG_UI_TYPE_CUR_TIME\
                                      |MOVIE_SPSC_PROG_UI_TYPE_TOTAL_TIME\
@@ -63,7 +77,7 @@ typedef union
 } spsc_prog_cuckoo_time_t;
 
 
-//≥˝±≥æ∞Õ‚µƒ∆‰À˚ui¿‡–Õ
+//Èô§ËÉåÊôØÂ§ñÁöÑÂÖ∂‰ªñuiÁ±ªÂûã
 #define MOVIE_SPSC_PROG_UI_TYPE_OTHER    (MOVIE_SPSC_PROG_UI_TYPE_ALL&(~MOVIE_SPSC_PROG_UI_TYPE_BG))
 
 static __s32 __movie_spsc_ctrl_icon_draw_item(movie_spsc_ctrl_scene_t *scene_para, __s32 index, __s32 focus);
@@ -103,7 +117,7 @@ static __s32 __movie_spsc_ctrl_init_ui(void)
                 {
                     __msg("dsk_theme_open fail...");
                 }
-                else//œ»’º◊°ƒ⁄¥Ê
+                else//ÂÖàÂç†‰ΩèÂÜÖÂ≠ò
                 {
                     //  dsk_theme_hdl2buf(ui_para->uipara_bg.res_hdl[j]);
                 }
@@ -127,7 +141,7 @@ static __s32 __movie_spsc_ctrl_init_ui(void)
                     {
                         __msg("dsk_theme_open fail...");
                     }
-                    else//œ»’º◊°ƒ⁄¥Ê
+                    else//ÂÖàÂç†‰ΩèÂÜÖÂ≠ò
                     {
                         //  dsk_theme_hdl2buf(ui_para->uipara_icon[i].res_hdl[j]);
                     }
@@ -153,7 +167,7 @@ static __s32 __movie_spsc_ctrl_init_ui(void)
                     {
                         __msg("dsk_theme_open fail...");
                     }
-                    else//œ»’º◊°ƒ⁄¥Ê
+                    else//ÂÖàÂç†‰ΩèÂÜÖÂ≠ò
                     {
                         //  dsk_theme_hdl2buf(ui_para->uipara_static_icon[i].res_hdl[j]);
                     }
@@ -174,7 +188,7 @@ static __s32 __movie_spsc_ctrl_init_ui(void)
                 {
                     __msg("dsk_theme_open fail...");
                 }
-                else//œ»’º◊°ƒ⁄¥Ê
+                else//ÂÖàÂç†‰ΩèÂÜÖÂ≠ò
                 {
                     // dsk_theme_hdl2buf(ui_para->uipara_playmode_res[i].res_hdl);
                 }
@@ -194,7 +208,7 @@ static __s32 __movie_spsc_ctrl_init_ui(void)
                 {
                     __msg("dsk_theme_open fail...");
                 }
-                else//œ»’º◊°ƒ⁄¥Ê
+                else//ÂÖàÂç†‰ΩèÂÜÖÂ≠ò
                 {
                     //  dsk_theme_hdl2buf(ui_para->uipara_screenmode_res[i].res_hdl);
                 }
@@ -363,7 +377,7 @@ static __s32 __spsc_ctrl_install_prog_timmer(movie_spsc_ctrl_scene_t *scene_para
     if (!GUI_IsTimerInstalled(scene_para->hfrm, scene_para->prog_timmer_id))
     {
         GUI_SetTimer(scene_para->hfrm, scene_para->prog_timmer_id
-                     , 400 * 1, NULL); //4√Î
+                     , 400 * 1, NULL); //4Áßí
     }
     else
     {
@@ -374,7 +388,7 @@ static __s32 __spsc_ctrl_install_prog_timmer(movie_spsc_ctrl_scene_t *scene_para
     if (!GUI_IsTimerInstalled(scene_para->hfrm, scene_para->time_timmer_id))
     {
         GUI_SetTimer(scene_para->hfrm, scene_para->time_timmer_id
-                     , 400 * 0.25, NULL); //1√Î
+                     , 400 * 0.25, NULL); //1Áßí
     }
     else
     {
@@ -419,7 +433,7 @@ static __s32 __movie_spsc_ctrl_install_hide_timmer(movie_spsc_ctrl_scene_t *scen
     if (!GUI_IsTimerInstalled(scene_para->hfrm, scene_para->hide_timmer_id))
     {
         GUI_SetTimer(scene_para->hfrm, scene_para->hide_timmer_id
-                     , 400 * 3, NULL); //12√Î
+                     , 400 * 3, NULL); //12Áßí
     }
     else
     {
@@ -441,7 +455,7 @@ static __s32 __movie_spsc_ctrl_reset_hide_timmer(movie_spsc_ctrl_scene_t *scene_
     if (GUI_IsTimerInstalled(scene_para->hfrm, scene_para->hide_timmer_id))
     {
         GUI_ResetTimer(scene_para->hfrm, scene_para->hide_timmer_id
-                       , 400 * 3, NULL); //5√Î
+                       , 400 * 3, NULL); //5Áßí
     }
     else
     {
@@ -473,7 +487,7 @@ static __s32 __movie_spsc_prog_draw_progress(movie_spsc_ctrl_rect_t *prog_bg, mo
         __s32 min, __s32 max, __s32 cur)
 {
     __msg("++++++++__movie_spsc_prog_draw_progress++++++++");
-    //ª≠Ω¯∂»Ãı±≥æ∞
+    //ÁîªËøõÂ∫¶Êù°ËÉåÊôØ
     {
         void *pbmp;
 
@@ -493,7 +507,7 @@ static __s32 __movie_spsc_prog_draw_progress(movie_spsc_ctrl_rect_t *prog_bg, mo
 
         GUI_BMP_Draw(pbmp, prog_bg->x, prog_bg->y);
     }
-    //ª≠Ω¯∂»Ãı◊Û±ﬂµƒÕº±Í
+    //ÁîªËøõÂ∫¶Êù°Â∑¶ËæπÁöÑÂõæÊ†á
     {
         void *pbmp;
         __s32 focus;
@@ -516,13 +530,13 @@ static __s32 __movie_spsc_prog_draw_progress(movie_spsc_ctrl_rect_t *prog_bg, mo
         GUI_BMP_Draw(pbmp, prog_left->x, prog_left->y);
     }
 
-    //ª≠Ω¯∂»Ãı∫Õcursor
-    if (cur > max) //±£ª§“ªœ¬
+    //ÁîªËøõÂ∫¶Êù°Âíåcursor
+    if (cur > max) //‰øùÊä§‰∏Ä‰∏ã
     {
         cur = max;
     }
 
-    if (cur < min) //±£ª§“ªœ¬
+    if (cur < min) //‰øùÊä§‰∏Ä‰∏ã
     {
         cur = min;
     }
@@ -572,7 +586,7 @@ static __s32 __movie_spsc_prog_draw_progress(movie_spsc_ctrl_rect_t *prog_bg, mo
             bg_pos = prog_bg->x;
             bg_w = prog_bg->w;
 
-            //∑¿÷π∑«’˚ ˝±∂ ±ª≠≤ª¬˙
+            //Èò≤Ê≠¢ÈùûÊï¥Êï∞ÂÄçÊó∂Áîª‰∏çÊª°
             if (max_mid_w - n * mid_w < mid_w)
             {
                 n++;
@@ -589,7 +603,7 @@ static __s32 __movie_spsc_prog_draw_progress(movie_spsc_ctrl_rect_t *prog_bg, mo
                              , prog_mid->y);
             }
 
-            //ª≠cursor
+            //Áîªcursor
             if (!prog_cursor->res_hdl[0])
             {
                 __msg("prog_cursor->res_hdl[0] is null...");
@@ -646,13 +660,13 @@ static __s32 __movie_spsc_prog_update_prog_ui(movie_spsc_ctrl_scene_t *scene_par
     //GUI_LyrWinSetSta(scene_para->hlyr, GUI_LYRWIN_STA_SLEEP);
     com_memdev_create(scene_para->hlyr);
 
-    //±≥æ∞
+    //ËÉåÊôØ
     if (ui_type & MOVIE_SPSC_PROG_UI_TYPE_BG)
     {
         GUI_BMP_Draw(dsk_theme_hdl2buf(ui_para->uipara_bg.res_hdl[0]), ui_para->uipara_bg.x, ui_para->uipara_bg.y);
     }
 
-    //µ±«∞ ±º‰
+    //ÂΩìÂâçÊó∂Èó¥
     //  //__here__;
     if (ui_type & MOVIE_SPSC_PROG_UI_TYPE_CUR_TIME)
     {
@@ -687,7 +701,7 @@ static __s32 __movie_spsc_prog_update_prog_ui(movie_spsc_ctrl_scene_t *scene_par
             //the snippet below will cause total time display error
             //maybe it's obsolete changes, so discard it now.
             #if 0
-            if (format_time.data2[0] > 0) //»Áπ˚–° ±¥Û”⁄0£¨‘Ú∑÷÷”œ‘ æ99
+            if (format_time.data2[0] > 0) //Â¶ÇÊûúÂ∞èÊó∂Â§ß‰∫é0ÔºåÂàôÂàÜÈíüÊòæÁ§∫99
             {
                 format_time.data2[1] = 99;
             }
@@ -1328,7 +1342,7 @@ static __s32 __movie_spsc_ctrl_static_icon_draw(movie_spsc_ctrl_scene_t *scene_p
              movie_spsc_ctrl_uipara_t* ui_para;
              GUI_RECT gui_rect;
 
-             //return EPDK_OK;//≥§◊÷∑˚¥Æπˆ∂Ø“—æ≠ª≠¡À°£
+             //return EPDK_OK;//ÈïøÂ≠óÁ¨¶‰∏≤ÊªöÂä®Â∑≤ÁªèÁîª‰∫Ü„ÄÇ
 
              index = robin_npl_get_cur();
              if (-1 == index)
@@ -1658,7 +1672,7 @@ static __s32 __movie_spsc_ctrl_notify_parent(movie_spsc_ctrl_scene_t *scene_para
 
         case movie_spsc_ctrl_icon_playpause:
         {
-            if (0 == dwAddData2) //»Áπ˚ «∂Ã∞¥œ˚œ¢
+            if (0 == dwAddData2) //Â¶ÇÊûúÊòØÁü≠ÊåâÊ∂àÊÅØ
             {
                 __cedar_status_t fsm_sta;
                 fsm_sta = robin_get_fsm_status();
@@ -1870,7 +1884,7 @@ static __s32 __movie_spsc_ctrl_proc(__gui_msg_t *msg)
                 return EPDK_FAIL;
             }
 
-            scene_para->hfrm = msg->h_deswin;//±ÿ–Î‘⁄¥À≥ı ºªØ£¨“ÚŒ™¥∞ø⁄¥¥Ω®Œ¥∑µªÿ£¨∑Ò‘Ú∏√÷µ»‘»ª «ø’
+            scene_para->hfrm = msg->h_deswin;//ÂøÖÈ°ªÂú®Ê≠§ÂàùÂßãÂåñÔºåÂõ†‰∏∫Á™óÂè£ÂàõÂª∫Êú™ËøîÂõûÔºåÂê¶ÂàôËØ•ÂÄº‰ªçÁÑ∂ÊòØÁ©∫
             __movie_spsc_ctrl_init_ui();
             __spsc_ctrl_install_prog_timmer(scene_para);
             __movie_spsc_ctrl_install_hide_timmer(scene_para);
@@ -1951,7 +1965,7 @@ static __s32 __movie_spsc_ctrl_proc(__gui_msg_t *msg)
                 {
                     case GUI_MSG_KEY_LEFT:
                     case GUI_MSG_KEY_LONGLEFT:
-                    case GUI_MSG_KEY_UP://∏¥”√
+                    case GUI_MSG_KEY_UP://Â§çÁî®
                     {
                         __msg("GUI_MSG_KEY_LEFT");
 
@@ -1978,7 +1992,7 @@ static __s32 __movie_spsc_ctrl_proc(__gui_msg_t *msg)
 
                     case GUI_MSG_KEY_RIGHT:
                     case GUI_MSG_KEY_LONGRIGHT:
-                    case GUI_MSG_KEY_DOWN://∏¥”√
+                    case GUI_MSG_KEY_DOWN://Â§çÁî®
                     {
                         __msg("GUI_MSG_KEY_RIGHT");
 
@@ -2034,7 +2048,7 @@ end:
                 last_key = msg->dwAddData1;
             }
 
-            //∞¥º¸÷ª¥¶¿Ì‘›Õ£≤•∑≈
+            //ÊåâÈîÆÂè™Â§ÑÁêÜÊöÇÂÅúÊí≠Êîæ
             /*if (KEY_UP_ACTION == msg->dwAddData2)
             {
                 if (0)//(GUI_MSG_KEY_LEFT == last_key)
@@ -2170,10 +2184,10 @@ end:
 
         case GUI_MSG_TOUCH:
         {
-            static __s32 last_touch_icon_index = -1;//…œ¥Œdown∞¥œ¬µƒÕº±ÍÀ˜“˝
-            static __s32 slidebar_touch_down = 0; //Ω¯∂»Ãı «∑Ò±ªµ„ª˜
-            static __s32 touch_long_down = 0;//long down «∑ÒµΩ¥Ô
-            static __s32 touch_long_down_cnt = 0;//long downº∆ ˝
+            static __s32 last_touch_icon_index = -1;//‰∏äÊ¨°downÊåâ‰∏ãÁöÑÂõæÊ†áÁ¥¢Âºï
+            static __s32 slidebar_touch_down = 0; //ËøõÂ∫¶Êù°ÊòØÂê¶Ë¢´ÁÇπÂáª
+            static __s32 touch_long_down = 0;//long downÊòØÂê¶Âà∞Ëææ
+            static __s32 touch_long_down_cnt = 0;//long downËÆ°Êï∞
             __s32 x, y;
             __s32 ret;
             movie_spsc_ctrl_uipara_t *ui_para;
@@ -2256,7 +2270,7 @@ end:
                 {
                     touch_long_down_cnt++;
 
-                    if (touch_long_down_cnt > 10) //5¥Œlongdown≤≈À„longdown
+                    if (touch_long_down_cnt > 10) //5Ê¨°longdownÊâçÁÆólongdown
                     {
                         touch_long_down = 1;
                     }
@@ -2275,7 +2289,7 @@ end:
                         {
                             if (touch_down_index == last_touch_icon_index)
                             {
-                                __movie_spsc_ctrl_notify_parent(sence_para, msg, touch_down_index, 1);//≥§∞¥œ˚œ¢
+                                __movie_spsc_ctrl_notify_parent(sence_para, msg, touch_down_index, 1);//ÈïøÊåâÊ∂àÊÅØ
                             }
                             else
                             {
@@ -2310,14 +2324,14 @@ end:
                             if (touch_down_index == last_touch_icon_index
                                 && 0 == touch_long_down)
                             {
-                                __movie_spsc_ctrl_notify_parent(sence_para, msg, touch_down_index, 0);//µ„ª˜œ˚œ¢
+                                __movie_spsc_ctrl_notify_parent(sence_para, msg, touch_down_index, 0);//ÁÇπÂáªÊ∂àÊÅØ
                             }
                             else
                             {
                             }
                         }
 
-                        if (1 == touch_long_down) //≥§∞¥Ãß∆∫Ûª÷∏¥’˝≥£≤•∑≈
+                        if (1 == touch_long_down) //ÈïøÊåâÊä¨Ëµ∑ÂêéÊÅ¢Â§çÊ≠£Â∏∏Êí≠Êîæ
                         {
                             __cedar_status_t cedar_sta;
                             cedar_sta = robin_get_fsm_status();
@@ -2349,7 +2363,7 @@ end:
                                 __msg("ratio=%d", ratio);
                                 robin_set_cmd_jump((__s32)(ratio * total_time));
                             }
-                            else//»Áπ˚¥¶”⁄∑«≤•∑≈◊¥Ã¨ª¨∂Ø¡ÀΩ¯∂»Ãı£¨‘Ú∞—÷ÿ–¬ª÷∏¥µΩ‘≠¿¥µƒŒª÷√
+                            else//Â¶ÇÊûúÂ§Ñ‰∫éÈùûÊí≠ÊîæÁä∂ÊÄÅÊªëÂä®‰∫ÜËøõÂ∫¶Êù°ÔºåÂàôÊääÈáçÊñ∞ÊÅ¢Â§çÂà∞ÂéüÊù•ÁöÑ‰ΩçÁΩÆ
                             {
                                 __movie_spsc_prog_update_prog_ui(sence_para, MOVIE_SPSC_PROG_UI_TYPE_PROG);
                             }
@@ -2409,12 +2423,12 @@ end:
 
             //__msg("__spsc_ctrl_proc GUI_MSG_TIMER end");
 
-            if (-1 == ret)//Œ¥¥¶¿Ì£¨Ωª∏¯◊”≥°æ∞¥¶¿Ì
+            if (-1 == ret)//Êú™Â§ÑÁêÜÔºå‰∫§ÁªôÂ≠êÂú∫ÊôØÂ§ÑÁêÜ
             {
                 //__here__;
                 break;
             }
-            else//“—¥¶¿Ì
+            else//Â∑≤Â§ÑÁêÜ
             {
                 ////__here__;
                 return EPDK_OK;
@@ -2486,7 +2500,7 @@ end:
             __msg("after __movie_spsc_prog_update_prog_ui");
 #if 0
             {
-                //∏¸–¬≤•∑≈∞¥≈•
+                //Êõ¥Êñ∞Êí≠ÊîæÊåâÈíÆ
                 __s32 sta;
                 __cedar_status_t cedar_sta;
                 cedar_sta = robin_get_fsm_status();
@@ -2601,7 +2615,7 @@ void *movie_spsc_ctrl_scene_create(movie_spsc_ctrl_create_para_t *create_para)
     }
 
     eLIBs_memset(sence_para, 0, sizeof(movie_spsc_ctrl_scene_t));
-    //…Ë÷√ ‰»Î≤Œ ˝
+    //ËÆæÁΩÆËæìÂÖ•ÂèÇÊï∞
     sence_para->hparent = create_para->hparent;
     sence_para->scene_id = create_para->scene_id;
     sence_para->hlyr = create_para->hlyr;
@@ -2615,7 +2629,7 @@ void *movie_spsc_ctrl_scene_create(movie_spsc_ctrl_create_para_t *create_para)
         return NULL;
     }
 
-    //ªÒµ√UI◊¯±Í
+    //Ëé∑ÂæóUIÂùêÊ†á
     ui_para = movie_spsc_ctrl_get_uipara(GUI_GetScnDir());
 
     if (NULL == ui_para)

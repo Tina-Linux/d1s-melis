@@ -1,18 +1,34 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              willow app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2006-2007, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : bmktable.c
-* By      : Andy.zhang
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "bmktable.h"
 
 #define MAX_BMK_TABLE           100
@@ -42,7 +58,7 @@ void file_2_bmk_name(char *filename, char *bmkname)
     int len;
     int i;
     ES_DIR *dir;
-    /* ²éÑ¯bmk±£´æÄ¿Â¼ÊÇ·ñ´æÔÚ */
+    /* æŸ¥è¯¢bmkä¿å­˜ç›®å½•æ˜¯å¦å­˜åœ¨ */
     dir = eLIBs_opendir("z:\\txt");
 
     if (dir == NULL)
@@ -70,13 +86,13 @@ void file_2_bmk_name(char *filename, char *bmkname)
     table_list->max_item = MAX_BMK_TABLE;
     table_list->fd       = eLIBs_fopen(BMK_TABLE_DATA_BASE, "r");
 
-    //Èç¹ûÓ³ÉäÊı¾İ¿âÎÄ¼şÃ»ÓĞ£¬¾Í½¨Á¢Êı¾İ¿âÎÄ¼ş
+    //å¦‚æœæ˜ å°„æ•°æ®åº“æ–‡ä»¶æ²¡æœ‰ï¼Œå°±å»ºç«‹æ•°æ®åº“æ–‡ä»¶
     if (table_list->fd == NULL)
     {
         table_list->fd = eLIBs_fopen(BMK_TABLE_DATA_BASE, "wb");
         table_list->cur_index = 0;
         eLIBs_strncpy(table_list->table[0].filename, filename, eLIBs_strlen(filename));
-        //½¨Á¢bmkÎÄ¼şÃû
+        //å»ºç«‹bmkæ–‡ä»¶å
         eLIBs_strcpy(table_list->table[0].bmkname, BMK_PATH);
         eLIBs_memset(tmp, 0, 4);
         eLIBs_int2str_dec(table_list->cur_index,   tmp);
@@ -99,10 +115,10 @@ void file_2_bmk_name(char *filename, char *bmkname)
     eLIBs_fseek(table_list->fd, 0, ELIBS_SEEK_SET);
     eLIBs_fread(table_list->table, len, sizeof(char), table_list->fd);
 
-    //²éÑ¯Êı¾İ¿â£¬¿´ÊÇ·ñÒÑ¾­´æÔÚbmkÎÄ¼ş
+    //æŸ¥è¯¢æ•°æ®åº“ï¼Œçœ‹æ˜¯å¦å·²ç»å­˜åœ¨bmkæ–‡ä»¶
     for (i = 0; i <= table_list->cur_index; i++)
     {
-        if (0 == eLIBs_strcmp((table_list->table)[i].filename, filename))    //ÕÒµ½Êı¾İ¿âÎÄ¼ş
+        if (0 == eLIBs_strcmp((table_list->table)[i].filename, filename))    //æ‰¾åˆ°æ•°æ®åº“æ–‡ä»¶
         {
             eLIBs_strcpy(bmkname, table_list->table[i].bmkname);
             eLIBs_fclose(table_list->fd);
@@ -111,13 +127,13 @@ void file_2_bmk_name(char *filename, char *bmkname)
         }
     }
 
-    //½¨Á¢bmkÎÄ¼şÃû
-    if (i >= table_list->max_item)           //Ñ­»·¹ÜÀí
+    //å»ºç«‹bmkæ–‡ä»¶å
+    if (i >= table_list->max_item)           //å¾ªç¯ç®¡ç†
     {
         i = i % (table_list->max_item);
         eLIBs_strcpy(bmkname, table_list->table[i].bmkname);
         eLIBs_fclose(table_list->fd);
-        eLIBs_remove(table_list->table[i].bmkname); //É¾³ıÎÄ¼ş
+        eLIBs_remove(table_list->table[i].bmkname); //åˆ é™¤æ–‡ä»¶
         esMEMS_Pfree(table_list, 1 + sizeof(bmk_table) / 1024);
         return;
     }
@@ -135,22 +151,3 @@ void file_2_bmk_name(char *filename, char *bmkname)
     esMEMS_Pfree(table_list, 1 + sizeof(bmk_table) / 1024);
     return;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

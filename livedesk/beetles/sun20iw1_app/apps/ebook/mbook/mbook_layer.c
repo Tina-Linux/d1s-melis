@@ -1,16 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              record app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2006-2009, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : mbook_layer.c
-* By      : lyn
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "mbook_private.h"
@@ -186,12 +203,12 @@ __s32   MBOOK_Layer_IsOnShow(H_WIN h_lyr)
 **********************************************************************************************************************
 *                                               MBOOK_Layer_GetSrcY
 *
-* Description: �ƶ�ͼ�����ʾ����
+* Description: 移动图层的显示区域
 *
-* Arguments  : h_lyr: ������ͼ��
+* Arguments  : h_lyr: 操作的图层
 *
 *
-* Returns    : ���ص�ǰͼ�����ʼ����
+* Returns    : 返回当前图层的起始区域。
 
 * Notes      :
 *
@@ -208,12 +225,12 @@ __s32   MBOOK_Layer_GetSrcY(H_WIN h_lyr)
 **********************************************************************************************************************
 *                                               MBOOK_Layer_GetScnY
 *
-* Description: �ƶ�ͼ�����ʾ����
+* Description: 移动图层的显示区域
 *
-* Arguments  : h_lyr: ������ͼ��
+* Arguments  : h_lyr: 操作的图层
 *
 *
-* Returns    : ���ص�ǰͼ�����ʼ����
+* Returns    : 返回当前图层的起始区域。
 
 * Notes      :
 *
@@ -230,12 +247,12 @@ __s32   MBOOK_Layer_GetScnY(H_WIN h_lyr)
 **********************************************************************************************************************
 *                                               MBOOK_Layer_GetSrcH
 *
-* Description: �ƶ�ͼ�����ʾ����
+* Description: 移动图层的显示区域
 *
-* Arguments  : h_lyr: ������ͼ��
+* Arguments  : h_lyr: 操作的图层
 *
 *
-* Returns    : ���ص�ǰͼ�����ʼ����
+* Returns    : 返回当前图层的起始区域。
 
 * Notes      :
 *
@@ -252,12 +269,12 @@ __s32   MBOOK_Layer_GetSrcH(H_WIN h_lyr)
 **********************************************************************************************************************
 *                                               MBOOK_Layer_MoveSrc
 *
-* Description: �ƶ�ͼ�����ʾ����
+* Description: 移动图层的显示区域
 *
-* Arguments  : h_lyr: ������ͼ��
-*              step��Ҫ�ƶ��Ĳ���
+* Arguments  : h_lyr: 操作的图层
+*              step：要移动的步长
 *
-* Returns    : < 0����ʾ�����Ƶ�����Ļ���Ϸ���> 0����ʾ�����Ƶ�����Ļ���·���= 0���պø�����Ļ��
+* Returns    : < 0：显示区域移到了屏幕的上方，> 0：显示区域移到了屏幕的下方，= 0：刚好覆盖屏幕。
 
 * Notes      :
 *
@@ -279,12 +296,12 @@ void    MBOOK_Layer_MoveSrc(H_WIN h_lyr, __s32 step)
 **********************************************************************************************************************
 *                                               MBOOK_Layer_SetScn
 *
-* Description: �ƶ�ͼ�����ʾ����
+* Description: 移动图层的显示区域
 *
-* Arguments  : h_lyr: ������ͼ��
-*              step��Ҫ�ƶ��Ĳ���
+* Arguments  : h_lyr: 操作的图层
+*              step：要移动的步长
 *
-* Returns    : < 0����ʾ�����Ƶ�����Ļ���Ϸ���> 0����ʾ�����Ƶ�����Ļ���·���= 0���պø�����Ļ��
+* Returns    : < 0：显示区域移到了屏幕的上方，> 0：显示区域移到了屏幕的下方，= 0：刚好覆盖屏幕。
 
 * Notes      :
 *
@@ -305,12 +322,12 @@ void    MBOOK_Layer_SetScn(H_WIN h_lyr, __s32 y)
 **********************************************************************************************************************
 *                                               MBOOK_Layer_SetSrc
 *
-* Description: �ƶ�ͼ�����ʾ����
+* Description: 移动图层的显示区域
 *
-* Arguments  : h_lyr: ������ͼ��
-*              flag��Ҫ���õ�ģʽ��0Ϊ��Ļԭʼ����1Ϊ��һ��Ļ����-1Ϊ��һ��Ļ����
+* Arguments  : h_lyr: 操作的图层
+*              flag：要设置的模式：0为屏幕原始区域，1为下一屏幕区域，-1为上一屏幕区域。
 *
-* Returns    : -1����ʾ�����Ƶ�����Ļ���Ϸ���1����ʾ�����Ƶ�����Ļ���·���0���պø�����Ļ��
+* Returns    : -1：显示区域移到了屏幕的上方，1：显示区域移到了屏幕的下方，0：刚好覆盖屏幕。
 
 * Notes      :
 *
@@ -333,12 +350,12 @@ void    MBOOK_Layer_SetSrc(H_WIN h_lyr, __s32 y)
 **********************************************************************************************************************
 *                                               MBOOK_Layer_SetSrc
 *
-* Description: �ƶ�ͼ�����ʾ����
+* Description: 移动图层的显示区域
 *
-* Arguments  : h_lyr: ������ͼ��
-*              flag��Ҫ���õ�ģʽ��0Ϊ��Ļԭʼ����1Ϊ��һ��Ļ����-1Ϊ��һ��Ļ����
+* Arguments  : h_lyr: 操作的图层
+*              flag：要设置的模式：0为屏幕原始区域，1为下一屏幕区域，-1为上一屏幕区域。
 *
-* Returns    : -1����ʾ�����Ƶ�����Ļ���Ϸ���1����ʾ�����Ƶ�����Ļ���·���0���պø�����Ļ��
+* Returns    : -1：显示区域移到了屏幕的上方，1：显示区域移到了屏幕的下方，0：刚好覆盖屏幕。
 
 * Notes      :
 *
@@ -358,12 +375,12 @@ void    MBOOK_Layer_ResetWin(H_WIN h_lyr)
 **********************************************************************************************************************
 *                                               MBOOK_Layer_SetSrc
 *
-* Description: �ƶ�ͼ�����ʾ����
+* Description: 移动图层的显示区域
 *
-* Arguments  : h_lyr: ������ͼ��
-*              flag��Ҫ���õ�ģʽ��0Ϊ��Ļԭʼ����1Ϊ��һ��Ļ����-1Ϊ��һ��Ļ����
+* Arguments  : h_lyr: 操作的图层
+*              flag：要设置的模式：0为屏幕原始区域，1为下一屏幕区域，-1为上一屏幕区域。
 *
-* Returns    : -1����ʾ�����Ƶ�����Ļ���Ϸ���1����ʾ�����Ƶ�����Ļ���·���0���պø�����Ļ��
+* Returns    : -1：显示区域移到了屏幕的上方，1：显示区域移到了屏幕的下方，0：刚好覆盖屏幕。
 
 * Notes      :
 *
@@ -397,6 +414,3 @@ void    MBOOK_Layer_Rotate(H_WIN h_lyr, __u32 w, __u32 h, __u32 rotate)
         GUI_SetClipRect(&rect);
     }
 }
-
-
-

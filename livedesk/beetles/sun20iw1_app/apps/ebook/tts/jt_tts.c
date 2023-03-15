@@ -1,21 +1,34 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : npl.c
-* By        : Andy.zhang
-* Func      : now play list
-* Version   : v1.0
-* ============================================================================================================
-* 2009-11-3 9:39:42  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #define TTS_DATA_COMPRESS_FLAG 1
 
 #include "app_ebook_i.h"
@@ -36,27 +49,27 @@
 #define BEETLES_APP_ROOT "d:\\"
 
 int f_audiodev;
-/*×ÊÔ´¼ÓÔØ·½Ê½£¬¶şÕßÑ¡ÔñÆäÒ» */
-#define DATA_MODE_SMALL_FILE        1    // ÎÄ¼ş·½Ê½¼ÓÔØ×ÊÔ´
-//#define DATA_MODE_FIX_CONST       1 // ÄÚ´æ·½Ê½¼ÓÔØ×ÊÔ´
+/*èµ„æºåŠ è½½æ–¹å¼ï¼ŒäºŒè€…é€‰æ‹©å…¶ä¸€ */
+#define DATA_MODE_SMALL_FILE        1    // æ–‡ä»¶æ–¹å¼åŠ è½½èµ„æº
+//#define DATA_MODE_FIX_CONST       1 // å†…å­˜æ–¹å¼åŠ è½½èµ„æº
 
 #ifdef DATA_MODE_FIX_CONST
-ES_FILE             *fpVoiceDat;        // ×ÊÔ´¿âÎÄ¼ş
-ES_FILE                        *fpENVoiceDta;     //Ó¢ÎÄ¿âÎÄ¼ş
-__u32                iDicLen;           // ×ÊÔ´¿â³¤¶È
+ES_FILE             *fpVoiceDat;        // èµ„æºåº“æ–‡ä»¶
+ES_FILE                        *fpENVoiceDta;     //è‹±æ–‡åº“æ–‡ä»¶
+__u32                iDicLen;           // èµ„æºåº“é•¿åº¦
 __u32                           iDicLen_En;
-void                    *pDicData = NULL;   // ConstÄÚ´æ¼ÓÔØ×ÊÔ´Êı¾İÊ×µØÖ·
+void                    *pDicData = NULL;   // Constå†…å­˜åŠ è½½èµ„æºæ•°æ®é¦–åœ°å€
 void                              *pDicData_En = NULL; //
 #endif
 
 
 
 
-ES_FILE         *fpOutPCM;                  //ÒôÆµÊı¾İÊä³ö¾ä±ú
-//ES_FILE       *fpinPCM;                   //ÒôÆµÊäÈëÎÄ¼ş¾ä±ú
-unsigned char   *pHeap;             // ¶Ñ¿Õ¼äµØÖ·
-long                nSize;              // ¶Ñ¿Õ¼ä´óĞ¡
-/*TTS ×ÊÔ´¿âÎÄ¼şÂ·¾¶ÉèÖÃ*/
+ES_FILE         *fpOutPCM;                  //éŸ³é¢‘æ•°æ®è¾“å‡ºå¥æŸ„
+//ES_FILE       *fpinPCM;                   //éŸ³é¢‘è¾“å…¥æ–‡ä»¶å¥æŸ„
+unsigned char   *pHeap;             // å †ç©ºé—´åœ°å€
+long                nSize;              // å †ç©ºé—´å¤§å°
+/*TTS èµ„æºåº“æ–‡ä»¶è·¯å¾„è®¾ç½®*/
 #if 1 == TTS_DATA_COMPRESS_FLAG
 const signed char                   strCNFileName6[] = BEETLES_APP_ROOT"res\\tts\\data\\CNPackage_e.dat";
 const signed char                          strENFileName6[] = BEETLES_APP_ROOT"res\\tts\\data\\ENPackage_e.dat";
@@ -106,7 +119,7 @@ __s32  get_cur_audio_totalbuffer(void);
 
 __s32   TTS_ANALYSYS_Page(__epdk_charset_enm_e  charset,  void *data, __u32  size, __u32 *output_size);
 
-/*Ò»Ğ©ÓëÒôÆµ¿âÓĞ¹Øº¯ÊıÉùÃ÷×ªÒå*/
+/*ä¸€äº›ä¸éŸ³é¢‘åº“æœ‰å…³å‡½æ•°å£°æ˜è½¬ä¹‰*/
 ES_FILE *jt_Fopen(const char *ES_FILEname, const char *mode)
 {
 #if 1 == TTS_DATA_COMPRESS_FLAG
@@ -154,19 +167,19 @@ void jt_Printf(const char *format, ...)
 {
     //  eLIBs_printf( format,NULL);
 }
-/*---------------------TTSÒıÇæ½Ó¿Ú²¿·Ö--------------------------------------*/
+/*---------------------TTSå¼•æ“æ¥å£éƒ¨åˆ†--------------------------------------*/
 
 //long size_sum=0;
-// ºÏ³ÉÓïÒôÊı¾İÊä³ö»Øµ÷º¯Êı
-// µ±ºÏ³ÉÒ»¶ÎÓïÒôÊ±,´Ëº¯Êı»á±»¶à´Îµ÷ÓÃ,Ã¿´ÎÊä³öÒ»¶¨Á¿µÄÓïÒôÊı¾İ
-// ÓÃ»§¿ÉÔÚ´Ëº¯ÊıÄÚ½«ÓïÒôÊı¾İËÍÈëÒôÆµ²¥·Å½Ó¿Ú
+// åˆæˆè¯­éŸ³æ•°æ®è¾“å‡ºå›è°ƒå‡½æ•°
+// å½“åˆæˆä¸€æ®µè¯­éŸ³æ—¶,æ­¤å‡½æ•°ä¼šè¢«å¤šæ¬¡è°ƒç”¨,æ¯æ¬¡è¾“å‡ºä¸€å®šé‡çš„è¯­éŸ³æ•°æ®
+// ç”¨æˆ·å¯åœ¨æ­¤å‡½æ•°å†…å°†è¯­éŸ³æ•°æ®é€å…¥éŸ³é¢‘æ’­æ”¾æ¥å£
 jtErrCode jtExam_OutputVoiceProc(void *pParameter,
                                  long iOutputFormat, void *pData, long iSize)
 {
     static long size_sum = 0;
     jtUserData  *pUserData;
 
-    // ×¢£ºÈç¹ûÎ´ÉèÖÃÓÃ»§Êı¾İ£¬²»ÒªÊ¹ÓÃ´ËÅĞ¶Ï
+    // æ³¨ï¼šå¦‚æœæœªè®¾ç½®ç”¨æˆ·æ•°æ®ï¼Œä¸è¦ä½¿ç”¨æ­¤åˆ¤æ–­
     if (pParameter == NULL)
     {
         //__here__
@@ -175,17 +188,17 @@ jtErrCode jtExam_OutputVoiceProc(void *pParameter,
 
     pUserData = (jtUserData *)pParameter;
 
-    // Èç¹ûiSizeÎª-1£¬ÔòÊÇµ±Ç°ÎÄ±¾µÄ
-    // ËùÓĞºÏ³ÉÊı¾İ¾ùÒÑÊä³ö£¬Èç¹ûĞèÒªÍ£Ö¹ÒıÇæ£¬
-    // Ôò¿ÉÒÔÔÚÕâÀï½øĞĞ
+    // å¦‚æœiSizeä¸º-1ï¼Œåˆ™æ˜¯å½“å‰æ–‡æœ¬çš„
+    // æ‰€æœ‰åˆæˆæ•°æ®å‡å·²è¾“å‡ºï¼Œå¦‚æœéœ€è¦åœæ­¢å¼•æ“ï¼Œ
+    // åˆ™å¯ä»¥åœ¨è¿™é‡Œè¿›è¡Œ
     if (iSize == -1)
     {
         //__here__
-        // jtTTS_SynthesizeTextºÍjtTTS_Synthesize
-        // ½«ÊäÈëµÄÎÄ±¾ºÏ³ÉÍê±Ïºó£¬»á×Ô¶¯ÍË³ö£¬
-        // ¿ÉÒÔ²»µ÷ÓÃjtTTS_SynthStop,¶ø
-        // jtTTS_SynthStartºÏ³ÉÍê±Ïºó£¬²¢²»Ö÷¶¯ÍË³ö£¬
-        // Ğèµ÷ÓÃjtTTS_SynthStopÊ¹Ö®ÍË³ö
+        // jtTTS_SynthesizeTextå’ŒjtTTS_Synthesize
+        // å°†è¾“å…¥çš„æ–‡æœ¬åˆæˆå®Œæ¯•åï¼Œä¼šè‡ªåŠ¨é€€å‡ºï¼Œ
+        // å¯ä»¥ä¸è°ƒç”¨jtTTS_SynthStop,è€Œ
+        // jtTTS_SynthStartåˆæˆå®Œæ¯•åï¼Œå¹¶ä¸ä¸»åŠ¨é€€å‡ºï¼Œ
+        // éœ€è°ƒç”¨jtTTS_SynthStopä½¿ä¹‹é€€å‡º
 #if defined Have_eJTTS_lib
         jtTTS_SynthStop(pUserData->hTTS);
 #endif
@@ -211,9 +224,9 @@ jtErrCode jtExam_OutputVoiceProc(void *pParameter,
         }
 
         //char sz_empty[4];
-        //eLIBs_fwrite(pData, 1, iSize, f_audiodev);//½«Éú³ÉµÄÒôÆµÊı¾İ¶ª¸øÒôÆµ½Ó¿Ú½âÂë
+        //eLIBs_fwrite(pData, 1, iSize, f_audiodev);//å°†ç”Ÿæˆçš„éŸ³é¢‘æ•°æ®ä¸¢ç»™éŸ³é¢‘æ¥å£è§£ç 
         write(f_audiodev,pData,iSize);
-        //eLIBs_fwrite(sz_empty, 1, sizeof(sz_empty), f_audiodev);//½«Éú³ÉµÄÒôÆµÊı¾İ¶ª¸øÒôÆµ½Ó¿Ú½âÂë
+        //eLIBs_fwrite(sz_empty, 1, sizeof(sz_empty), f_audiodev);//å°†ç”Ÿæˆçš„éŸ³é¢‘æ•°æ®ä¸¢ç»™éŸ³é¢‘æ¥å£è§£ç 
     }
 
 #else
@@ -225,29 +238,29 @@ jtErrCode jtExam_OutputVoiceProc(void *pParameter,
     return jtTTS_ERR_NONE;
 }
 
-// ÊäÈëÎÄ±¾»Øµ÷
+// è¾“å…¥æ–‡æœ¬å›è°ƒ
 jtErrCode jtExam_InputTextProc(void *pParameter,
                                void *pText, long *piSize)
 {
     jtUserData *pUserData = (jtUserData *)pParameter;
-    // Èç¹û¶ÁÈ¡µÄÊı¾İ³¤¶ÈÎª0£¬²¢½«0·µ»Ø¸øÒıÇæ£¬
-    // ÒıÇæ½«ÈÏÎªÃ»ÓĞÎÄ±¾ĞèÒªºÏ³ÉÁË£¬¶ÔÓÚ¶ÎÊ½»Øµ÷
-    // ºÏ³É·½Ê½£¬ºÏ³É¹ı³Ì½«»á½áÊø£¬Èç¹ûÊÇÆªÕÂÄ£Ê½£¬
-    // ÒıÇæ½«»á²»¶ÏµØÂÖÑ¯¸Ã»Øµ÷º¯Êı£¬ÒÔ»ñµÃÎÄ±¾
-    __msg("-----³¤¶ÈÊÇpiSize = %d\n", *piSize);
+    // å¦‚æœè¯»å–çš„æ•°æ®é•¿åº¦ä¸º0ï¼Œå¹¶å°†0è¿”å›ç»™å¼•æ“ï¼Œ
+    // å¼•æ“å°†è®¤ä¸ºæ²¡æœ‰æ–‡æœ¬éœ€è¦åˆæˆäº†ï¼Œå¯¹äºæ®µå¼å›è°ƒ
+    // åˆæˆæ–¹å¼ï¼Œåˆæˆè¿‡ç¨‹å°†ä¼šç»“æŸï¼Œå¦‚æœæ˜¯ç¯‡ç« æ¨¡å¼ï¼Œ
+    // å¼•æ“å°†ä¼šä¸æ–­åœ°è½®è¯¢è¯¥å›è°ƒå‡½æ•°ï¼Œä»¥è·å¾—æ–‡æœ¬
+    __msg("-----é•¿åº¦æ˜¯piSize = %d\n", *piSize);
     *piSize = eLIBs_fread(pText, 1, *piSize, pUserData->pInputFile);
     return jtTTS_ERR_NONE;
 }
 
 
 
-/*---------------------TTSÒıÇæ½Ó¿Ú²¿·Ö--------------------------------------*/
+/*---------------------TTSå¼•æ“æ¥å£éƒ¨åˆ†--------------------------------------*/
 
 
-/*ÒôÆµ½Ó¿ÚÇı¶¯³õÊ¼»¯*/
+/*éŸ³é¢‘æ¥å£é©±åŠ¨åˆå§‹åŒ–*/
 void tts_tone_init(void)
 {
-    /*³õÊ¼»¯µ×²ã½âÂëĞÅÏ¢£¬×¼±¸Ó²¼ş     */
+    /*åˆå§‹åŒ–åº•å±‚è§£ç ä¿¡æ¯ï¼Œå‡†å¤‡ç¡¬ä»¶     */
     __audio_dev_para_t      pbuf2;
     unsigned long arg[4] = {0};
     //set audio sample parameter
@@ -269,7 +282,7 @@ void tts_tone_init(void)
     ioctl(f_audiodev, AUDIO_DEV_CMD_START, 0);
     ioctl(f_audiodev, AUDIO_DEV_CMD_FLUSH_BUF, 0);
 }
-/*ÔÚÍË³öTTSµÄÊ±ºòĞèÒª½«µ±Ç°µÄÒôÆµ½Ó¿Ú·´³õÊ¼»¯Îª°´¼üÒôÄ£Ê½*/
+/*åœ¨é€€å‡ºTTSçš„æ—¶å€™éœ€è¦å°†å½“å‰çš„éŸ³é¢‘æ¥å£ååˆå§‹åŒ–ä¸ºæŒ‰é”®éŸ³æ¨¡å¼*/
 __s32  tts_tone_deinit(void)
 {
     __audio_dev_para_t    pbuf2;
@@ -298,7 +311,7 @@ __s32  tts_tone_deinit(void)
     ioctl(f_audiodev, AUDIO_DEV_CMD_START, 0);
     return EPDK_OK;
 }
-/*ÍË³öÊ±ĞèÒª½«µ±Ç°µÄÒôÆµ½Ó¿ÚÊÍ·Å*/
+/*é€€å‡ºæ—¶éœ€è¦å°†å½“å‰çš„éŸ³é¢‘æ¥å£é‡Šæ”¾*/
 static  void  tts_tone_exit(void)
 {
     unsigned long arg[4] = {0};
@@ -314,20 +327,20 @@ static  void  tts_tone_exit(void)
 }
 
 
-/*TTS  ÒıÇæ³õÊ¼»¯*/
+/*TTS  å¼•æ“åˆå§‹åŒ–*/
 static jtErrCode tts_res_init(void)
 {
-    jtErrCode           dwError = jtTTS_ERR_NONE;            // ´íÎóÂë
-    unsigned char       byMajor;            // Ö÷°æ±¾ºÅ
-    unsigned char       byMinor;            // ´Î°æ±¾ºÅ
-    unsigned long     iRevision;            // ĞŞ¶©°æ±¾ºÅ
-    unsigned int    tts_speaker_index;   // ÓïÒô²¥±¨µÄÈË
+    jtErrCode           dwError = jtTTS_ERR_NONE;            // é”™è¯¯ç 
+    unsigned char       byMajor;            // ä¸»ç‰ˆæœ¬å·
+    unsigned char       byMinor;            // æ¬¡ç‰ˆæœ¬å·
+    unsigned long     iRevision;            // ä¿®è®¢ç‰ˆæœ¬å·
+    unsigned int    tts_speaker_index;   // è¯­éŸ³æ’­æŠ¥çš„äºº
     tts_tone_init();
     _tts_play_struct->tts_sem  = esKRNL_SemCreate(1);
-    // »ñÈ¡µ±Ç°±£´æµÄ²¥·ÅÈËË÷Òı
+    // è·å–å½“å‰ä¿å­˜çš„æ’­æ”¾äººç´¢å¼•
     tts_speaker_index = tts_get_voice_speaker();//0
 #if defined Have_eJTTS_lib
-    dwError = jtTTS_GetVersion(&byMajor, &byMinor, &iRevision);     /* »ñÈ¡TTS°æ±¾ĞÅÏ¢ */
+    dwError = jtTTS_GetVersion(&byMajor, &byMinor, &iRevision);     /* è·å–TTSç‰ˆæœ¬ä¿¡æ¯ */
 #endif
     if (dwError != jtTTS_ERR_NONE)
     {
@@ -336,11 +349,11 @@ static jtErrCode tts_res_init(void)
 
     //  fpinPCM = eLIBs_fopen(inputfilename, "rb");
     fpOutPCM = NULL;//eLIBs_fopen(BEETLES_APP_ROOT"res\\tts\\Output.pcm", "wb");
-    // ×¼±¸×ÊÔ´Êı¾İ
+    // å‡†å¤‡èµ„æºæ•°æ®
 #ifdef DATA_MODE_SMALL_FILE
-    // ÎÄ¼ş·½Ê½²»ĞèÒª²Ù×÷
+    // æ–‡ä»¶æ–¹å¼ä¸éœ€è¦æ“ä½œ
 #elif DATA_MODE_FIX_CONST
-    // Ö±½Ó¶ÁÈ¡£¨ÄÚ´æ£©·½Ê½Ğè½«×ÊÔ´Êı¾İ·ÅÈëÄÚ´æ
+    // ç›´æ¥è¯»å–ï¼ˆå†…å­˜ï¼‰æ–¹å¼éœ€å°†èµ„æºæ•°æ®æ”¾å…¥å†…å­˜
     fpVoiceDat = eLIBs_fopen(strTTSCNFileName[tts_speaker_index], "rb");
     eLIBs_fseek(fpVoiceDat, 0, SEEK_END);
     iDicLen = eLIBs_ftell(fpVoiceDat);
@@ -356,7 +369,7 @@ static jtErrCode tts_res_init(void)
     eLIBs_fread(pDicData_En, 1, iDicLen_En, fpENVoiceDta);
     eLIBs_fclose(fpENVoiceDta);
 #endif
-    /* »ñµÃHEAP´óĞ¡ */
+    /* è·å¾—HEAPå¤§å° */
 #ifdef DATA_MODE_SMALL_FILE
     __msg("-----------tts_speaker_index = %d\n", tts_speaker_index);
     dwError = jtTTS_GetExtBufSize(strTTSCNFileName[tts_speaker_index], strTTSENFileName[tts_speaker_index], NULL, &nSize);
@@ -370,16 +383,16 @@ static jtErrCode tts_res_init(void)
         return jtTTS_ERR_INPUT_PARAM;
     }
 
-    /* ·ÖÅä¶Ñ */
+    /* åˆ†é…å † */
     pHeap = (unsigned char *)esMEMS_Balloc(nSize);
     //pHeap = (unsigned char *)esMEMS_Malloc(0,nSize);
     eLIBs_memset(pHeap, 0, nSize);
-    /* ³õÊ¼»¯ÒıÇæ */
+    /* åˆå§‹åŒ–å¼•æ“ */
 #ifdef DATA_MODE_SMALL_FILE
-    // ÎÄ¼ş¶ÁÈ¡·½Ê½
+    // æ–‡ä»¶è¯»å–æ–¹å¼
     dwError = jtTTS_Init(strTTSCNFileName[tts_speaker_index], strTTSENFileName[tts_speaker_index], NULL, &_tts_play_struct->jt_hTTS, pHeap);
 #elif DATA_MODE_FIX_CONST
-    // Ö±½Ó¶ÁÈ¡·½Ê½
+    // ç›´æ¥è¯»å–æ–¹å¼
     dwError = jtTTS_Init(pDicData, pDicData_En, NULL, &_tts_play_struct->jt_hTTS, pHeap);
 #endif
 
@@ -389,25 +402,25 @@ static jtErrCode tts_res_init(void)
         return jtTTS_ERR_NOT_INIT;
     }
 
-    /*½«TTSÒıÇæ¾ä±ú±£´æÏÂÀ´*/
-    //  ÉèÖÃÖ±½ÓÎÄ±¾ÊäÈë
+    /*å°†TTSå¼•æ“å¥æŸ„ä¿å­˜ä¸‹æ¥*/
+    //  è®¾ç½®ç›´æ¥æ–‡æœ¬è¾“å…¥
     //   dwError = jtTTS_SetParam(_tts_play_struct->jt_hTTS, jtTTS_PARAM_INPUTTXT_MODE, jtTTS_INPUT_TEXT_DIRECT);
     //  dwError = jtTTS_SetParam(_tts_play_struct->jt_hTTS, jtTTS_PARAM_INPUTTXT_MODE, jtTTS_INPUT_TEXT_CALLBACK);
-    /* ÉèÖÃ»Øµ÷ÎÄ±¾ÊäÈë */
+    /* è®¾ç½®å›è°ƒæ–‡æœ¬è¾“å…¥ */
     //  dwError = jtTTS_SetParam(_tts_play_struct->jt_hTTS, jtTTS_PARAM_INPUTTXT_MODE, jtTTS_INPUT_TEXT_CALLBACK);
     return jtTTS_ERR_NONE;
 }
 
-/*TTSÒıÇæÔÚÇĞ»»ÓïÒô²¥±¨Ô±µÄÊ±ºòĞèÒª¶ÔTTSÒıÇæ½øĞĞ·´³õÊ¼»¯*/
+/*TTSå¼•æ“åœ¨åˆ‡æ¢è¯­éŸ³æ’­æŠ¥å‘˜çš„æ—¶å€™éœ€è¦å¯¹TTSå¼•æ“è¿›è¡Œååˆå§‹åŒ–*/
 jtErrCode tts_speaker_deint(void)
 {
 #if defined Have_eJTTS_lib
-    jtErrCode           dwError;            // ´íÎóÂë
+    jtErrCode           dwError;            // é”™è¯¯ç 
     __s32                     tts_speaker_index;
     jtUserData             myUserData;
-    /* Äæ³õÊ¼»¯ */
+    /* é€†åˆå§‹åŒ– */
     jtTTS_End(_tts_play_struct->jt_hTTS);
-    /* ÊÍ·ÅÓÃ»§¿Õ¼ä×ÊÔ´ */
+    /* é‡Šæ”¾ç”¨æˆ·ç©ºé—´èµ„æº */
 #ifdef DATA_MODE_FIX_CONST
 
     if (pDicData != NULL)
@@ -430,9 +443,9 @@ jtErrCode tts_speaker_deint(void)
     tts_speaker_index = tts_get_voice_speaker();
     __msg("tts_speaker_index=%d\n", tts_speaker_index);
 #ifdef DATA_MODE_SMALL_FILE
-    // ÎÄ¼ş·½Ê½²»ĞèÒª²Ù×÷
+    // æ–‡ä»¶æ–¹å¼ä¸éœ€è¦æ“ä½œ
 #elif DATA_MODE_FIX_CONST
-    // Ö±½Ó¶ÁÈ¡£¨ÄÚ´æ£©·½Ê½Ğè½«×ÊÔ´Êı¾İ·ÅÈëÄÚ´æ
+    // ç›´æ¥è¯»å–ï¼ˆå†…å­˜ï¼‰æ–¹å¼éœ€å°†èµ„æºæ•°æ®æ”¾å…¥å†…å­˜
     fpVoiceDat = eLIBs_fopen(strTTSCNFileName[tts_speaker_index], "rb");
     eLIBs_fseek(fpVoiceDat, 0, SEEK_END);
     iDicLen = eLIBs_ftell(fpVoiceDat);
@@ -448,7 +461,7 @@ jtErrCode tts_speaker_deint(void)
     eLIBs_fread(pDicData_En, 1, iDicLen_En, fpENVoiceDta);
     eLIBs_fclose(fpENVoiceDta);
 #endif
-    /* »ñµÃHEAP´óĞ¡ */
+    /* è·å¾—HEAPå¤§å° */
 #ifdef DATA_MODE_SMALL_FILE
     dwError = jtTTS_GetExtBufSize(strTTSCNFileName[tts_speaker_index], strTTSENFileName[tts_speaker_index], NULL, &nSize);
 #elif DATA_MODE_FIX_CONST
@@ -460,15 +473,15 @@ jtErrCode tts_speaker_deint(void)
         return jtTTS_ERR_INPUT_PARAM;
     }
 
-    /* ·ÖÅä¶Ñ */
+    /* åˆ†é…å † */
     pHeap = (unsigned char *)esMEMS_Balloc(nSize);
     eLIBs_memset(pHeap, 0, nSize);
-    /* ³õÊ¼»¯ÒıÇæ */
+    /* åˆå§‹åŒ–å¼•æ“ */
 #ifdef DATA_MODE_SMALL_FILE
-    // ÎÄ¼ş¶ÁÈ¡·½Ê½
+    // æ–‡ä»¶è¯»å–æ–¹å¼
     dwError = jtTTS_Init(strTTSCNFileName[tts_speaker_index], strTTSENFileName[tts_speaker_index], NULL, &_tts_play_struct->jt_hTTS, pHeap);
 #elif DATA_MODE_FIX_CONST
-    // Ö±½Ó¶ÁÈ¡·½Ê½
+    // ç›´æ¥è¯»å–æ–¹å¼
     dwError = jtTTS_Init(pDicData, pDicData_En, NULL, &_tts_play_struct->jt_hTTS, pHeap);
 #endif
 
@@ -477,13 +490,13 @@ jtErrCode tts_speaker_deint(void)
         return jtTTS_ERR_NOT_INIT;
     }
 
-    //  ÉèÖÃÖ±½ÓÎÄ±¾ÊäÈë
+    //  è®¾ç½®ç›´æ¥æ–‡æœ¬è¾“å…¥
     dwError = jtTTS_SetParam(_tts_play_struct->jt_hTTS, jtTTS_PARAM_INPUTTXT_MODE, jtTTS_INPUT_TEXT_DIRECT);
-    //  ÉèÖÃºÏ³ÉÎÄ±¾ÊäÈë»Øµ÷
+    //  è®¾ç½®åˆæˆæ–‡æœ¬è¾“å…¥å›è°ƒ
     dwError = jtTTS_SetParam(_tts_play_struct->jt_hTTS, jtTTS_PARAM_INPUT_CALLBACK, (long)jtExam_InputTextProc);
-    //  ÉèÖÃÒôÆµÊä³ö»Øµ÷
+    //  è®¾ç½®éŸ³é¢‘è¾“å‡ºå›è°ƒ
     dwError = jtTTS_SetParam(_tts_play_struct->jt_hTTS, jtTTS_PARAM_OUTPUT_CALLBACK, (long)jtExam_OutputVoiceProc);
-    //  ÉèÖÃ»Øµ÷ÓÃ»§Êı¾İ
+    //  è®¾ç½®å›è°ƒç”¨æˆ·æ•°æ®
     myUserData.pInputFile = NULL;
     myUserData.pOutputFile = fpOutPCM;
     myUserData.hTTS = _tts_play_struct->jt_hTTS;
@@ -496,20 +509,20 @@ void   TTS_init_all_res(void)
 #if defined Have_eJTTS_lib
 
     jtUserData             myUserData;
-    jtErrCode           dwError;            // ´íÎóÂë
-    tts_char_parser_init();//  ³õÊ¼»¯TXT½âÎö×ÊÔ´
-    //  ³õÊ¼»¯TTS ÏµÍ³×ÊÔ´
+    jtErrCode           dwError;            // é”™è¯¯ç 
+    tts_char_parser_init();//  åˆå§‹åŒ–TXTè§£æèµ„æº
+    //  åˆå§‹åŒ–TTS ç³»ç»Ÿèµ„æº
     tts_res_init();
     //__here__;
-    //  ÉèÖÃÖ±½ÓÎÄ±¾ÊäÈë
+    //  è®¾ç½®ç›´æ¥æ–‡æœ¬è¾“å…¥
     dwError = jtTTS_SetParam(_tts_play_struct->jt_hTTS, jtTTS_PARAM_INPUTTXT_MODE, jtTTS_INPUT_TEXT_DIRECT);
     //__here__;
     //   dwError = jtTTS_SetParam(_tts_play_struct->jt_hTTS, jtTTS_PARAM_INPUTTXT_MODE, jtTTS_INPUT_TEXT_CALLBACK);
-    /* ÉèÖÃÒôÆµÊä³ö»Øµ÷ */
+    /* è®¾ç½®éŸ³é¢‘è¾“å‡ºå›è°ƒ */
     //  dwError = jtTTS_SetParam(_tts_play_struct->jt_hTTS, jtTTS_PARAM_INPUT_CALLBACK, (long)jtExam_InputTextProc);
-    //  ÉèÖÃÒôÆµÊä³ö»Øµ÷
+    //  è®¾ç½®éŸ³é¢‘è¾“å‡ºå›è°ƒ
     dwError =  jtTTS_SetParam(_tts_play_struct->jt_hTTS, jtTTS_PARAM_OUTPUT_CALLBACK, (long)jtExam_OutputVoiceProc);
-    //  ÉèÖÃ»Øµ÷ÓÃ»§Êı¾İ
+    //  è®¾ç½®å›è°ƒç”¨æˆ·æ•°æ®
     //   myUserData.pInputFile = fpinPCM;
     myUserData.pInputFile = NULL;
     myUserData.pOutputFile = fpOutPCM;
@@ -523,9 +536,9 @@ __s32 TTS_res_release(void)
 #if defined Have_eJTTS_lib
     __u8 err;
     tts_tone_exit();
-    /* Äæ³õÊ¼»¯ */
+    /* é€†åˆå§‹åŒ– */
     jtTTS_End(_tts_play_struct->jt_hTTS);
-    /* ÊÍ·ÅÓÃ»§¿Õ¼ä×ÊÔ´ */
+    /* é‡Šæ”¾ç”¨æˆ·ç©ºé—´èµ„æº */
 
     if (fpOutPCM)
     {
@@ -560,7 +573,7 @@ __s32 TTS_res_release(void)
 return EPDK_FAIL;
 }
 
-/*»ñÈ¡µ±Ç°ÒôÆµÇı¶¯ÀïµÄÊı¾İ¿Õ¼äbufferÓĞ¶àÉÙ*/
+/*è·å–å½“å‰éŸ³é¢‘é©±åŠ¨é‡Œçš„æ•°æ®ç©ºé—´bufferæœ‰å¤šå°‘*/
 __s32  get_cur_audio_buffer(void)
 {
     __s32    buffer_size = 0;
@@ -621,7 +634,7 @@ __s32  get_cur_audio_freedbuffer(void)
 }
 
 
-/*ÅĞ¶ÏÊÇ·ñ¶Ô»º³åÇøµÄÇøÓò¶ÁÍê*/
+/*åˆ¤æ–­æ˜¯å¦å¯¹ç¼“å†²åŒºçš„åŒºåŸŸè¯»å®Œ*/
 __bool  cur_audio_speark_over(void)
 {
     __s32    buffer_size = 0;
@@ -674,9 +687,9 @@ void  delete_cuckoo(void)
 static void tts_play_thread_start(void *arg)
 {
     __u8         err;
-    __u32  output_size = 0; /*³ıÁË¸Õ¸Õ¿ªÊ¼·ÖÎöÖ®Íâ£¬ÆäËûµÄÖµÊÇÓÃº¯Êı·µ»ØµÄ*/
-    __bool  b_analysys_first_line = EPDK_TRUE;      /*ÊÇ·ñÊÇ·ÖÎöµÚÒ»¾äÇé¿ö*/
-    jtErrCode           dwError;            // ´íÎóÂë
+    __u32  output_size = 0; /*é™¤äº†åˆšåˆšå¼€å§‹åˆ†æä¹‹å¤–ï¼Œå…¶ä»–çš„å€¼æ˜¯ç”¨å‡½æ•°è¿”å›çš„*/
+    __bool  b_analysys_first_line = EPDK_TRUE;      /*æ˜¯å¦æ˜¯åˆ†æç¬¬ä¸€å¥æƒ…å†µ*/
+    jtErrCode           dwError;            // é”™è¯¯ç 
     __tts_thread_argmen_t *pthread_argment = (__tts_thread_argmen_t *)arg;
 
     while (1)
@@ -690,10 +703,10 @@ static void tts_play_thread_start(void *arg)
 
         if (b_analysys_first_line == EPDK_TRUE)
         {
-            __msg("---Êı¾İ³¤¶È=%d      = %s \n", pthread_argment->char_num, pthread_argment->data_add);
+            __msg("---æ•°æ®é•¿åº¦=%d      = %s \n", pthread_argment->char_num, pthread_argment->data_add);
             _tts_play_struct->tts_text_line_add = (char *)pthread_argment->data_add;
             _tts_play_struct->tts_page_leave_char = pthread_argment->char_num;
-            _tts_play_struct->tts_text_curt_statr = (char *)pthread_argment->data_add;  /*¼ÇÂ¼µ±Ç°Ò³ÆğÊ¼Î»ÖÃ*/
+            _tts_play_struct->tts_text_curt_statr = (char *)pthread_argment->data_add;  /*è®°å½•å½“å‰é¡µèµ·å§‹ä½ç½®*/
             TTS_ANALYSYS_Page(_tts_play_struct->encode_type, pthread_argment->data_add, _tts_play_struct->tts_page_leave_char, &output_size);
             b_analysys_first_line = EPDK_FALSE;
             continue;
@@ -710,7 +723,7 @@ static void tts_play_thread_start(void *arg)
         }
         else
         {
-            /*Ò»Ò³µÄÊı¾İÒÑ¾­·ÖÎöÍê±Ï*/
+            /*ä¸€é¡µçš„æ•°æ®å·²ç»åˆ†æå®Œæ¯•*/
             __gui_msg_t my_msg;
             my_msg.h_deswin = (H_WIN)pthread_argment->woner_win;
             my_msg.id = GUI_MSG_COMMAND;
@@ -719,7 +732,7 @@ static void tts_play_thread_start(void *arg)
             if (b_analysys_first_line == EPDK_FALSE)
             {
                 GUI_SendMessage(&my_msg);
-                __msg("------------------·¢ÏûÏ¢½øĞĞÏÂÒ»Ò³µÄÔÄ¶Á\n");
+                __msg("------------------å‘æ¶ˆæ¯è¿›è¡Œä¸‹ä¸€é¡µçš„é˜…è¯»\n");
                 b_analysys_first_line = EPDK_TRUE;
             }
         }
@@ -731,11 +744,11 @@ static void tts_play_thread_start(void *arg)
 ************************************************************************************************************************
 *                                       tts_play_from_page_start
 *
-*Description: »ñÈ¡ÊÇ·ñÖØÒ²¿ªÍ·¶Á£¬
+*Description: è·å–æ˜¯å¦é‡ä¹Ÿå¼€å¤´è¯»ï¼Œ
 *
 *Arguments  :
-*Return     : true µÄ»°¾ÍÊÇÖØĞÂ´ÓÍ·¿ªÊ¼¶Á
-*           flase ¾ÍÊÇÖØµ±Ç°¾ä¿ªÊ¼¶Á
+*Return     : true çš„è¯å°±æ˜¯é‡æ–°ä»å¤´å¼€å§‹è¯»
+*           flase å°±æ˜¯é‡å½“å‰å¥å¼€å§‹è¯»
 *
 ************************************************************************************************************************
 */
@@ -756,9 +769,9 @@ __s32  tts_play_thread_end(void)
 {
     jtErrCode jt_errcode;
 #if defined Have_eJTTS_lib
-    jt_errcode =  jtTTS_SynthStop(_tts_play_struct->jt_hTTS);       /*½áÊøºÏ³É*/
+    jt_errcode =  jtTTS_SynthStop(_tts_play_struct->jt_hTTS);       /*ç»“æŸåˆæˆ*/
     __msg("%s-------------jt_errcode = %d\n", __FUNCTION__, jt_errcode);
-    esMODS_MIoctrl(f_audiodev, AUDIO_DEV_CMD_FLUSH_BUF, 0, 0);   /*Çå³ş»º´æÊı¾İ*/
+    esMODS_MIoctrl(f_audiodev, AUDIO_DEV_CMD_FLUSH_BUF, 0, 0);   /*æ¸…æ¥šç¼“å­˜æ•°æ®*/
 
     /* delete autoplay thread */
     if (_tts_play_struct->tts_thread != 0)
@@ -780,12 +793,12 @@ __s32  tts_play_thread_end(void)
 ************************************************************************************************************************
 *                                       TTS_play_server_init
 *
-*Description: ÔÚ´ò¿ªtts Ê±ºò³õÊ¼»¯TTS ·şÎñµÄÄÚ²¿¹¤×÷
+*Description: åœ¨æ‰“å¼€tts æ—¶å€™åˆå§‹åŒ–TTS æœåŠ¡çš„å†…éƒ¨å·¥ä½œ
 *
-*Arguments  : arg: µç×ÓÊé¶ÔÓ¦µÄÎÄ¼ş²Ù×÷¾ä±ú
-*             arg1: µç×ÓÊé´«½øÀ´µÄBUF
+*Arguments  : arg: ç”µå­ä¹¦å¯¹åº”çš„æ–‡ä»¶æ“ä½œå¥æŸ„
+*             arg1: ç”µå­ä¹¦ä¼ è¿›æ¥çš„BUF
 *
-*Return     : ·µ»Ø´íÎóÂë
+*Return     : è¿”å›é”™è¯¯ç 
 *
 ************************************************************************************************************************
 */
@@ -793,7 +806,7 @@ __s32  tts_play_thread_end(void)
 jtErrCode   TTS_play_server_init(void *arg, void *arg1)
 {
     __u8         err;
-    jtErrCode           dwError = 0;            // ´íÎóÂë
+    jtErrCode           dwError = 0;            // é”™è¯¯ç 
     int  encode;
     int tts_encode_type;
     __s32 buffsize;
@@ -819,17 +832,17 @@ jtErrCode   TTS_play_server_init(void *arg, void *arg1)
 
         if (EPDK_CHARSET_ENM_BIG5 == charset)
         {
-            /*¶ÁÊ²Ã´TTS*/
+            /*è¯»ä»€ä¹ˆTTS*/
             dwError = jtTTS_SetParam(_tts_play_struct->jt_hTTS, jtTTS_PARAM_CODEPAGE, jtTTS_CODEPAGE_BIG5);
         }
         else if (EPDK_CHARSET_ENM_GBK == charset)
         {
-            /*¶ÁÊ²Ã´TTS*/
+            /*è¯»ä»€ä¹ˆTTS*/
             dwError = jtTTS_SetParam(_tts_play_struct->jt_hTTS, jtTTS_PARAM_CODEPAGE, jtTTS_CODEPAGE_GBK);
         }
         else
         {
-            /*¶ÁÊ²Ã´TTS*/
+            /*è¯»ä»€ä¹ˆTTS*/
             dwError = jtTTS_SetParam(_tts_play_struct->jt_hTTS, jtTTS_PARAM_CODEPAGE, jtTTS_CODEPAGE_GBK);
         }
 
@@ -858,7 +871,7 @@ void TTS_play_server_start(void *arg, void *arg1, __s32 char_num, H_WIN  woner_w
     if (_tts_play_struct == NULL)
     {
         __u8         err;
-        jtErrCode           dwError;            // ´íÎóÂë
+        jtErrCode           dwError;            // é”™è¯¯ç 
         int  encode;
         int tts_encode_type;
         __s32 buffsize;
@@ -881,7 +894,7 @@ void TTS_play_server_start(void *arg, void *arg1, __s32 char_num, H_WIN  woner_w
         //  __msg("arg1[0] is %d,arg1[1] is %d",arg1[0],arg1[1]);
     }
 
-    _tts_play_struct->tts_from_page_stat = EPDK_TRUE;       //±êÖ¾ÏÂ´Î¶Á´Ó·ÖÎöµ½µÄÓï¾ä¿ªÊ¼¶Á
+    _tts_play_struct->tts_from_page_stat = EPDK_TRUE;       //æ ‡å¿—ä¸‹æ¬¡è¯»ä»åˆ†æåˆ°çš„è¯­å¥å¼€å§‹è¯»
     _tts_play_struct->tts_thread = esKRNL_TCreate(tts_play_thread_start, thread_argment, 0x1000, KRNL_priolevel5);
     //  esKRNL_SemPend(_tts_play_struct->tts_sem, 0, &err);
     //  jtTTS_Synthesize(_tts_play_struct->jt_hTTS);
@@ -894,7 +907,7 @@ void TTS_play_server_start(void *arg, void *arg1, __s32 char_num, H_WIN  woner_w
 
 void TTS_stop_server(void)
 {
-    //Èç¹ûÃ»ÓĞºóÌ¨ÒôÆµ£¬ÔòÔÊĞí×Ô¶¯¹Ø»ú
+    //å¦‚æœæ²¡æœ‰åå°éŸ³é¢‘ï¼Œåˆ™å…è®¸è‡ªåŠ¨å…³æœº
     if (EPDK_FALSE == is_app_exist(APP_MUSIC)
 #if 0// shiql set 0 for D100
         && EPDK_FALSE == is_app_exist(APP_LINEIN)
@@ -916,6 +929,6 @@ void TTS_stop_server(void)
         tts_play_thread_end();
     }
 
-    _tts_play_struct->tts_from_page_stat = EPDK_FALSE;      /*±êÖ¾ÖØĞÂ´ÓÒ³Í·Êı¾İ¿ªÊ¼¶Á*/
+    _tts_play_struct->tts_from_page_stat = EPDK_FALSE;      /*æ ‡å¿—é‡æ–°ä»é¡µå¤´æ•°æ®å¼€å§‹è¯»*/
     TTS_res_release();
 }

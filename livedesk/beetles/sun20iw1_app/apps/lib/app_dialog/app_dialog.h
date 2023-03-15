@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2011, CHIPHD, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : app_dialog.h
-* By        : CQQ
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011/06/02 20:56  create this file, implements the fundamental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __APP_DIALOG_H__2C160E70_63CA_4019_A468_4515BA77B392__
 #define __APP_DIALOG_H__2C160E70_63CA_4019_A468_4515BA77B392__
@@ -22,30 +36,30 @@
 
 #define ADLG_BIT_(_i)                     (1 << (_i))
 
-//œ˚œ¢øÚ∑Á∏Ò
+//Ê∂àÊÅØÊ°ÜÈ£éÊ†º
 typedef enum tag_APP_DIALOG_E
 {
-    ADLG_OK                           = 0, //œ˚œ¢øÚ∞¸∫¨“ª∏ˆ∞¥≈•£∫OK
-    ADLG_OKCANCEL                     = 1, //œ˚œ¢øÚ∞¸∫¨¡Ω∏ˆ∞¥≈•£∫OK∫ÕCancel
-    ADLG_YESNO                        = 2, //œ˚œ¢øÚ∞¸∫¨¡Ω∏ˆ∞¥≈•£∫Yes∫ÕNo
-    ADLG_RETRYCANCEL                  = 3, //œ˚œ¢øÚ∞¸∫¨¡Ω∏ˆ∞¥≈•£∫Retry∫ÕCancel
-    ADLG_ABORTRETRYIGNORE             = 4, //œ˚œ¢øÚ∞¸∫¨»˝∏ˆ∞¥≈•£∫Abort£¨Retry∫ÕIgnore
-    ADLG_YESNOCANCEL                  = 5,  //œ˚œ¢øÚ∞¸∫¨»˝∏ˆ∞¥≈•£∫Yes£¨No∫ÕCancel
-    ADLG_NOTHING                        = 6//÷ª «◊ˆ“ª∏ˆÃ· æ£¨Œﬁ∞¥≈•
+    ADLG_OK                           = 0, //Ê∂àÊÅØÊ°ÜÂåÖÂê´‰∏Ä‰∏™ÊåâÈíÆÔºöOK
+    ADLG_OKCANCEL                     = 1, //Ê∂àÊÅØÊ°ÜÂåÖÂê´‰∏§‰∏™ÊåâÈíÆÔºöOKÂíåCancel
+    ADLG_YESNO                        = 2, //Ê∂àÊÅØÊ°ÜÂåÖÂê´‰∏§‰∏™ÊåâÈíÆÔºöYesÂíåNo
+    ADLG_RETRYCANCEL                  = 3, //Ê∂àÊÅØÊ°ÜÂåÖÂê´‰∏§‰∏™ÊåâÈíÆÔºöRetryÂíåCancel
+    ADLG_ABORTRETRYIGNORE             = 4, //Ê∂àÊÅØÊ°ÜÂåÖÂê´‰∏â‰∏™ÊåâÈíÆÔºöAbortÔºåRetryÂíåIgnore
+    ADLG_YESNOCANCEL                  = 5,  //Ê∂àÊÅØÊ°ÜÂåÖÂê´‰∏â‰∏™ÊåâÈíÆÔºöYesÔºåNoÂíåCancel
+    ADLG_NOTHING                        = 6//Âè™ÊòØÂÅö‰∏Ä‰∏™ÊèêÁ§∫ÔºåÊó†ÊåâÈíÆ
 } APP_DIALOG_E;
 #define ADLG_BTN_STYLE_BIT            0x0000000fL
 
 //TODO:to be continue
-#define ADLG_ICONHAND                 0x00000010L       //‘⁄œ˚œ¢øÚ÷–œ‘ æÕ£÷π±Í÷æÕº±Í
-#define ADLG_ICONQUESTION             0x00000020L       //‘⁄œ˚œ¢øÚ÷–œ‘ æŒ ∫≈Õº±Í
-#define ADLG_ICONEXCLAMATION          0x00000030L       //‘⁄œ˚œ¢øÚ÷–œ‘ æ∏–Ãæ∫≈Õº±Í
-#define ADLG_ICONASTERISK             0x00000040L       //‘⁄œ˚œ¢øÚ÷–œ‘ æ“ª∏ˆ‘≤∞¸Œß◊≈◊÷ƒ∏°∞i°±µƒÕº±Í
-#define ADLG_ICONSTOP                 ADLG_ICONHAND     //‘⁄œ˚œ¢øÚ÷–œ‘ æÕ£÷π±Í÷æÕº±Í
-#define ADLG_ICONINFORMATION          ADLG_ICONASTERISK //‘⁄œ˚œ¢øÚ÷–œ‘ æ“ª∏ˆ‘≤∞¸Œß◊≈◊÷ƒ∏°∞i°±µƒÕº±Í
+#define ADLG_ICONHAND                 0x00000010L       //Âú®Ê∂àÊÅØÊ°Ü‰∏≠ÊòæÁ§∫ÂÅúÊ≠¢Ê†áÂøóÂõæÊ†á
+#define ADLG_ICONQUESTION             0x00000020L       //Âú®Ê∂àÊÅØÊ°Ü‰∏≠ÊòæÁ§∫ÈóÆÂè∑ÂõæÊ†á
+#define ADLG_ICONEXCLAMATION          0x00000030L       //Âú®Ê∂àÊÅØÊ°Ü‰∏≠ÊòæÁ§∫ÊÑüÂèπÂè∑ÂõæÊ†á
+#define ADLG_ICONASTERISK             0x00000040L       //Âú®Ê∂àÊÅØÊ°Ü‰∏≠ÊòæÁ§∫‰∏Ä‰∏™ÂúÜÂåÖÂõ¥ÁùÄÂ≠óÊØç‚Äúi‚ÄùÁöÑÂõæÊ†á
+#define ADLG_ICONSTOP                 ADLG_ICONHAND     //Âú®Ê∂àÊÅØÊ°Ü‰∏≠ÊòæÁ§∫ÂÅúÊ≠¢Ê†áÂøóÂõæÊ†á
+#define ADLG_ICONINFORMATION          ADLG_ICONASTERISK //Âú®Ê∂àÊÅØÊ°Ü‰∏≠ÊòæÁ§∫‰∏Ä‰∏™ÂúÜÂåÖÂõ¥ÁùÄÂ≠óÊØç‚Äúi‚ÄùÁöÑÂõæÊ†á
 
 #define ADLG_ICON_STYLE_BIT           0x000000f0L
 
-//∂‘ª∞øÚΩ·π˚ºØ
+//ÂØπËØùÊ°ÜÁªìÊûúÈõÜ
 enum
 {
     ADLG_IDOK                         = 1,
@@ -87,22 +101,22 @@ enum
 //for example : ADLG_STYLE_(ADLG_TA_CENTER, ADLG_YESNO)
 
 
-//¥´»ÎÕº∆¨◊ ‘¥idÀ≥–Ú
+//‰º†ÂÖ•ÂõæÁâáËµÑÊ∫êidÈ°∫Â∫è
 enum
 {
-    ADLG_BMP_SZID_BG = 0, //±≥æ∞
-    ADLG_BMP_SZID_BTN_F,  //∞¥≈•Ωπµ„
-    ADLG_BMP_SZID_BTN_N,  //∞¥≈•∆’Õ®
-    ADLG_BMP_SZID_ICON,   //Õº±Í
-    ADLG_BMP_MAX_SZID     //id∏ˆ ˝
+    ADLG_BMP_SZID_BG = 0, //ËÉåÊôØ
+    ADLG_BMP_SZID_BTN_F,  //ÊåâÈíÆÁÑ¶ÁÇπ
+    ADLG_BMP_SZID_BTN_N,  //ÊåâÈíÆÊôÆÈÄö
+    ADLG_BMP_SZID_ICON,   //ÂõæÊ†á
+    ADLG_BMP_MAX_SZID     //id‰∏™Êï∞
 };
 
-//¥´»Î◊÷∑˚¥Æ◊ ‘¥idÀ≥–Ú
+//‰º†ÂÖ•Â≠óÁ¨¶‰∏≤ËµÑÊ∫êidÈ°∫Â∫è
 enum
 {
-    ADLG_STR_SZID_TITLE = 0,   //œ˚œ¢øÚ±ÍÃ‚
-    ADLG_STR_SZID_CONTENT,     //Ã· æƒ⁄»›
-    ADLG_STR_MAX_SZID,         //id∏ˆ ˝
+    ADLG_STR_SZID_TITLE = 0,   //Ê∂àÊÅØÊ°ÜÊ†áÈ¢ò
+    ADLG_STR_SZID_CONTENT,     //ÊèêÁ§∫ÂÜÖÂÆπ
+    ADLG_STR_MAX_SZID,         //id‰∏™Êï∞
 };
 
 #define ADLG_STR_TITLE_MEM_SIZE        (16 * 3)
@@ -115,7 +129,7 @@ enum
     ADLG_END_CMD,
 };
 
-//¥¥Ω®∂‘ª∞øÚ
+//ÂàõÂª∫ÂØπËØùÊ°Ü
 /************************************************************************/
 // h_parent --- dialog parent window handle (must be main window)
 // win_id   --- dialog window id of dialog parent win (size: __u16)
@@ -153,7 +167,7 @@ H_WIN app_dialog_create(H_WIN h_parent, __s32 win_id, __u32 style,
         _dialog = app_dialog_create(_parent, _id, (ADLG_TA_CENTER | ADLG_DS_VISIBLE | ADLG_MAKE_WND_STYLE(ADLG_ICONINFORMATION, _btn_s)), _bmp, _str, 0, str_ex); \
     }while (0)
 
-//¥¥Ω®∂‘ª∞øÚ
+//ÂàõÂª∫ÂØπËØùÊ°Ü
 /************************************************************************/
 // h_parent  --- dialog parent handle (must be main window)
 // win_id    --- dialog window id of dialog parent window (size: __u16)
@@ -168,7 +182,7 @@ H_WIN app_dialog_create(H_WIN h_parent, __s32 win_id, __u32 style,
 H_WIN app_dialog_create_ex(H_WIN h_parent, __s32 win_id, __u32 btn_style,
                            __s32 bmp_id[], __s32 str_id[], __u32 timeout, GUI_RECT *dialog_rt);
 
-//œ˙ªŸ∂‘ª∞øÚ
+//ÈîÄÊØÅÂØπËØùÊ°Ü
 /************************************************************************/
 // msg --- message of dialog parent window callback function received
 // msg->h_deswin   --- dialog parent window
@@ -185,7 +199,7 @@ H_WIN app_dialog_create_ex(H_WIN h_parent, __s32 win_id, __u32 btn_style,
 /************************************************************************/
 __s32 app_dialog_destroy(H_WIN h_dialog);
 
-// ÷ÿ÷√∂‘ª∞øÚui≤Œ ˝
+// ÈáçÁΩÆÂØπËØùÊ°ÜuiÂèÇÊï∞
 enum
 {
     // coordinate base on dialog window
@@ -242,4 +256,3 @@ __s32 xxx_win_cb(__gui_msg_t *msg)
 
 #endif //__APP_DIALOG_H__2C160E70_63CA_4019_A468_4515BA77B392__
 //End of this file
-

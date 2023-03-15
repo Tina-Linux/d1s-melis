@@ -1,20 +1,34 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : page_wrap.h
-* By        : Andy.zhang
-* Version   : v1.0
-* ============================================================================================================
-* 2009-11-3 9:39:42  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef __PAGE_WRAP_H__
 #define __PAGE_WRAP_H__
 
@@ -22,57 +36,56 @@
 struct  tag_PageContent;
 typedef struct tag_PageContent PageContent;
 
-/* ·ÖÒ³¿ÉÅäÖÃ²ÎÊı */
+/* åˆ†é¡µå¯é…ç½®å‚æ•° */
 typedef struct
 {
-    ES_FILE     *fd;                /* ÎÄ¼ş¾ä±ú     */
-    int          len;               /* ÎÄ¼ş³¤¶È     */
-    H_LYR       hlyr;               /* Í¼²ã²ÎÊı     */
-    GUI_FONT    *pFont;             /* Í¼²ã×ÖÌå¾ä±ú */
-    __s32       lineWidth;          /* ĞĞ¿í         */
-    __s32       lineNum;            /* Ò³ĞĞÊı       */
-    MkEncode    defEncodeStyle;     /* Ä¬ÈÏ±àÂë·½Ê½ */
-    __s32       startOffset;        /* ³õÊ¼Æ«ÒÆÁ¿   */
+    ES_FILE     *fd;                /* æ–‡ä»¶å¥æŸ„     */
+    int          len;               /* æ–‡ä»¶é•¿åº¦     */
+    H_LYR       hlyr;               /* å›¾å±‚å‚æ•°     */
+    GUI_FONT    *pFont;             /* å›¾å±‚å­—ä½“å¥æŸ„ */
+    __s32       lineWidth;          /* è¡Œå®½         */
+    __s32       lineNum;            /* é¡µè¡Œæ•°       */
+    MkEncode    defEncodeStyle;     /* é»˜è®¤ç¼–ç æ–¹å¼ */
+    __s32       startOffset;        /* åˆå§‹åç§»é‡   */
 } PageConfig;
 
-/* page wrap ´´½¨ */
+/* page wrap åˆ›å»º */
 PageContent *pagewrap_create(PageConfig *para);
 
-/* page wrap ÉèÖÃ */
+/* page wrap è®¾ç½® */
 __s32   pagewrap_setting(PageContent *content, PageConfig *para);
 
-/* ¶Á³õÊ¼Ò³ÄÚÈİ */
+/* è¯»åˆå§‹é¡µå†…å®¹ */
 __s32   pagewrap_start(PageContent *content);
 
-/* ¶ÁÈ¡ÏÂÒ»Ò³ÄÚÈİ */
+/* è¯»å–ä¸‹ä¸€é¡µå†…å®¹ */
 __s32   pagewrap_next(PageContent *content);
 
-/* ¶ÁÈ¡ÉÏÒ»Ò³ÄÚÈİ */
+/* è¯»å–ä¸Šä¸€é¡µå†…å®¹ */
 __s32   pagewrap_prev(PageContent *content);
 
-/* Ìø×ªµ½offset´¦ */
+/* è·³è½¬åˆ°offsetå¤„ */
 __s32   pagewrap_fseek(PageContent *content,  int offset);
 
-/* ²éÑ¯ĞĞĞÅÏ¢±í */
+/* æŸ¥è¯¢è¡Œä¿¡æ¯è¡¨ */
 MkLine *pagewrap_getLine(PageContent *content);
 
-/* ÏÔÊ¾Ò»ĞĞ×Ö·û*/
+/* æ˜¾ç¤ºä¸€è¡Œå­—ç¬¦*/
 void    pagewrap_displayStr(PageContent *content, char *s, int len, int x, int y);
 
-/* ²éÑ¯Ò³Í·Æ«ÒÆÁ¿ */
+/* æŸ¥è¯¢é¡µå¤´åç§»é‡ */
 __s32   pagewrap_getStartOffset(PageContent *content);
 
-/* ²éÑ¯Ò³Î²Æ«ÒÆÁ¿ */
+/* æŸ¥è¯¢é¡µå°¾åç§»é‡ */
 __s32   pagewrap_getEndOffset(PageContent *content);
 
-/* ²éÑ¯ÊÇ·ñµ½ÎÄÕÂ×î¿ªÊ¼´¦*/
+/* æŸ¥è¯¢æ˜¯å¦åˆ°æ–‡ç« æœ€å¼€å§‹å¤„*/
 __bool  pagewrap_isHead(PageContent *content);
 
-/* ²éÑ¯ÊÇ·ñµ½ÎÄÕÂ½áÎ²´¦ */
+/* æŸ¥è¯¢æ˜¯å¦åˆ°æ–‡ç« ç»“å°¾å¤„ */
 __bool  pagewrap_isTail(PageContent *content);
 
-/* É¾³ı page wrap ¾ä±ú */
+/* åˆ é™¤ page wrap å¥æŸ„ */
 __s32   pagewrap_delete(PageContent *content);
 
 #endif /* __PAGE_WRAP_H__ */
-

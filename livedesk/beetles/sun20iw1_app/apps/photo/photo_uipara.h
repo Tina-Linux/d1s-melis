@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2011, CHIPHD, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : photo_uipara.h
-* By        : CQQ
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011/06/07 15:39  create this file, implements the fundamental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY鈥橲 TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS鈥橲DK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY鈥橲 TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __PHOTO_UIPARA_H__6E2A6309_5D59_44E8_8741_E78774A3EB7C__
 #define __PHOTO_UIPARA_H__6E2A6309_5D59_44E8_8741_E78774A3EB7C__
@@ -53,9 +67,9 @@ enum
 //file info ui para
 typedef struct
 {
-    TOUCH_UI_RECT        rt;           // 位置/大小
-    TOUCH_UI_POS         icon;         // icon 位置
-    TOUCH_UI_POS         txt;          // text 位置
+    TOUCH_UI_RECT        rt;           // 浣嶇疆/澶у皬
+    TOUCH_UI_POS         icon;         // icon 浣嶇疆
+    TOUCH_UI_POS         txt;          // text 浣嶇疆
     TOUCH_UI_INT         filename_sp;  // text file name space
     TOUCH_UI_INT         txt_sp;       // text line space
     TOUCH_UI_INT         txt_line_w;   // text line width
@@ -64,10 +78,10 @@ typedef struct
 //play state icon ui para
 typedef struct
 {
-    TOUCH_UI_RECT        rt;           // 位置/大小
+    TOUCH_UI_RECT        rt;           // 浣嶇疆/澶у皬
 } PHOTO_STATE_UI_T;
 
-//背景ui参数
+//鑳屾櫙ui鍙傛暟
 typedef struct
 {
     PHOTO_INFO_UI_T      file_info;
@@ -81,7 +95,7 @@ typedef struct
 #define COLOUR_8BPP_INDEX_0             0xF0
 #define COLOUR_8BPP_INDEX_(_i)          (COLOUR_8BPP_INDEX_0 + (_i))
 
-//ui颜色参数
+//ui棰滆壊鍙傛暟
 typedef struct
 {
     __s32 txt_n;
@@ -89,7 +103,7 @@ typedef struct
 } PHOTO_UI_COLOUR_T;
 
 //////////////////////////////////////////
-//ui参数
+//ui鍙傛暟
 typedef struct
 {
     RECT                    rt;
@@ -103,4 +117,3 @@ extern PHOTO_UI_PARA_T *get_photo_uipara(void);
 
 #endif //__PHOTO_UIPARA_H__6E2A6309_5D59_44E8_8741_E78774A3EB7C__
 //End of this file
-

@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #ifndef __MUSIC_PLAYER_H__
 #define __MUSIC_PLAYER_H__
 
@@ -62,11 +93,11 @@ typedef enum music_menu_touch_ID_s
 
 typedef enum music_play_mode_s
 {
-    MUSIC_PALY_ALL = 0x0,               //²¥·ÅËùÓĞÎÄ¼ş£¬µ«²»ÖØ¸´
+    MUSIC_PALY_ALL = 0x0,               //æ’­æ”¾æ‰€æœ‰æ–‡ä»¶ï¼Œä½†ä¸é‡å¤
     MUSIC_PLAY_ONE,
     MUSIC_PLAY_RANDOM,
     MUSIC_REPEAT_ALL,
-    MUSIC_REPEAT_ONE,                   //ÖØ¸´²¥·ÅÒ»Ê×
+    MUSIC_REPEAT_ONE,                   //é‡å¤æ’­æ”¾ä¸€é¦–
 } music_play_mode_e;
 
 //EQ mode
@@ -135,71 +166,71 @@ typedef struct audio_file_info_s
 
 typedef struct music_player_ctrl_s
 {
-    H_WIN                       h_framewin;                     //´°¿Ú¾ä±ú
+    H_WIN                       h_framewin;                     //çª—å£å¥æŸ„
     GUI_FONT                        *font;
-    H_LYR                           music_layer;                    //Ç°¾°Í¼²ã
-    //H_LYR                             background_layer;               //±³¾°Í¼²ã
+    H_LYR                           music_layer;                    //å‰æ™¯å›¾å±‚
+    //H_LYR                             background_layer;               //èƒŒæ™¯å›¾å±‚
     //void                              *core;
-    __bool              visiable;                   //ÊÇ·ñÏÔÊ¾Ö÷½çÃæ£¬²»ÏÔÊ¾±íÊ¾±³¾°²¥·Å×´Ì¬
+    __bool              visiable;                   //æ˜¯å¦æ˜¾ç¤ºä¸»ç•Œé¢ï¼Œä¸æ˜¾ç¤ºè¡¨ç¤ºèƒŒæ™¯æ’­æ”¾çŠ¶æ€
 
     __s32               root_type;                  //USB or SDCard
 
-    rat_media_type_t    media_type;                 //ËÑË÷ÎÄ¼şµÄÀàĞÍ
+    rat_media_type_t    media_type;                 //æœç´¢æ–‡ä»¶çš„ç±»å‹
     H_LBAR              listbar_handle;
-    music_list_ctrl_t   *list_ctrl;                 //ÎÄ¼şä¯ÀÀÆ÷
-    __s32               menu_index;                 // ²Ëµ¥ºÍshow_mode_menu
+    music_list_ctrl_t   *list_ctrl;                 //æ–‡ä»¶æµè§ˆå™¨
+    __s32               menu_index;                 // èœå•å’Œshow_mode_menu
 
-    music_menu_mode_e   menu_mode;                  //²Ëµ¥Ä£Ê½, Explorer mode ,or setting player mode
+    music_menu_mode_e   menu_mode;                  //èœå•æ¨¡å¼, Explorer mode ,or setting player mode
     music_menu_ID_e     menu_id;                    //menu id in  setting mode ,
     music_menu_touch_ID_e       menu_touch_id;                  //menu id in  setting mode ,
-    __cedar_status_t    setting_status;             //FF,ÕıÔÚÉèÖÃ¿ì½ø
-    //music_play_mode_e   play_mode;                    //²¥·ÅÄ£Ê½
-    rat_play_mode_e     play_mode;                  //²¥·ÅÄ£Ê½
-    music_EQ_mode_e     EQ_mode;                    //ÉùĞ§Ä£Ê½
+    __cedar_status_t    setting_status;             //FF,æ­£åœ¨è®¾ç½®å¿«è¿›
+    //music_play_mode_e   play_mode;                    //æ’­æ”¾æ¨¡å¼
+    rat_play_mode_e     play_mode;                  //æ’­æ”¾æ¨¡å¼
+    music_EQ_mode_e     EQ_mode;                    //å£°æ•ˆæ¨¡å¼
     music_AB_mode_e     AB_mode;
-    music_BL_time_e     BL_time;                    //±³¹â³ÖĞøÊ±¼ä
-    //__s32             volume;                     //ÒôÁ¿
-    //power_level_e     battery_status;             //µç³Ø×´Ì¬
+    music_BL_time_e     BL_time;                    //èƒŒå…‰æŒç»­æ—¶é—´
+    //__s32             volume;                     //éŸ³é‡
+    //power_level_e     battery_status;             //ç”µæ± çŠ¶æ€
 
-    //__u32                 cur_file_total_time;        //µ±Ç°²¥·ÅÎÄ¼ş×ÜÊ±¼ä
-    __u32               play_index;                 //µ±Ç°²¥·ÅÎÄ¼şË÷ÒıºÅ
-    audio_file_info_t   play_file_info;             //²¥·ÅÎÄ¼şĞÅÏ¢
+    //__u32                 cur_file_total_time;        //å½“å‰æ’­æ”¾æ–‡ä»¶æ€»æ—¶é—´
+    __u32               play_index;                 //å½“å‰æ’­æ”¾æ–‡ä»¶ç´¢å¼•å·
+    audio_file_info_t   play_file_info;             //æ’­æ”¾æ–‡ä»¶ä¿¡æ¯
 
-    H_LYRIC             h_lyrics;                   //¸è´Ê¾ä±ú
-    music_LYRICS_e      showMode;                   //0 ÆµÆ×, 1 ¸è´Ê
-    //spectrum_para_t       spectrum_para;              //ÆµÆ×¿ØÖÆ
-    //H_WIN              h_spectrum;                    //spectrum¿Ø¼ş¾ä±ú
+    H_LYRIC             h_lyrics;                   //æ­Œè¯å¥æŸ„
+    music_LYRICS_e      showMode;                   //0 é¢‘è°±, 1 æ­Œè¯
+    //spectrum_para_t       spectrum_para;              //é¢‘è°±æ§åˆ¶
+    //H_WIN              h_spectrum;                    //spectrumæ§ä»¶å¥æŸ„
 
-    __u32               AutoExitMenuCnt;            //×Ô¶¯ÍË³ö¶¨Ê±Æ÷
-    __u32               CheckFocusItemCnt;          //¼ì²â½¹µãÌõÄ¿ÊÇ·ñÓëµ±Ç°²¥·ÅÌõÄ¿Ò»ÖÂ
-    __u32               RefreshPlayTimeCnt;         //Ë¢ĞÂ²¥·ÅÊ±¼ätimercount
-    __u32               RefreshSystimeCnt;          //Ë¢ĞÂÏµÍ³Ê±¼ätimercount
-    __u32               RefreshLyricsTimerCnt;      //Ë¢ĞÂ¸è´ÊÊ±¼ätimercount
+    __u32               AutoExitMenuCnt;            //è‡ªåŠ¨é€€å‡ºå®šæ—¶å™¨
+    __u32               CheckFocusItemCnt;          //æ£€æµ‹ç„¦ç‚¹æ¡ç›®æ˜¯å¦ä¸å½“å‰æ’­æ”¾æ¡ç›®ä¸€è‡´
+    __u32               RefreshPlayTimeCnt;         //åˆ·æ–°æ’­æ”¾æ—¶é—´timercount
+    __u32               RefreshSystimeCnt;          //åˆ·æ–°ç³»ç»Ÿæ—¶é—´timercount
+    __u32               RefreshLyricsTimerCnt;      //åˆ·æ–°æ­Œè¯æ—¶é—´timercount
     //VolumeBar_t       *hVolumeBar;
 
     __bool              isTouchPlayingBar;
     __bool              isTouchMusicList;
     __bool              isTouchMusicListMove;
     __u32               curTouchPlayingBarTime;
-    //music_rat_ctrl_t      rat;                        //ÎÄ¼şËÑË÷Êı¾İ½á¹¹
-    //explorer_view_mode_e view_mode;                   //ÏÔÊ¾Ä£Ê½,List or square
-    __s32   explorer_play_music;                        //ÎÄ¼ş¹ÜÀí²¥·ÅÒôÀÖ
+    //music_rat_ctrl_t      rat;                        //æ–‡ä»¶æœç´¢æ•°æ®ç»“æ„
+    //explorer_view_mode_e view_mode;                   //æ˜¾ç¤ºæ¨¡å¼,List or square
+    __s32   explorer_play_music;                        //æ–‡ä»¶ç®¡ç†æ’­æ”¾éŸ³ä¹
     char   *music_file_name;
     __bool  alarmComing;
 
-    //Êı×Öµã¸è===================================
-    __s32  ndigit_song_num; //Êı×Öµã¸èĞòºÅ
-    __u8   digit_timmer_id; //Êı×Öµã¸ètimmer idºÅ
-    H_LYR  hdigit_layer;    //ÏÔÊ¾µ±Ç°Êı×Öµã¸èÊı×ÖµÄÍ¼²ã
+    //æ•°å­—ç‚¹æ­Œ===================================
+    __s32  ndigit_song_num; //æ•°å­—ç‚¹æ­Œåºå·
+    __u8   digit_timmer_id; //æ•°å­—ç‚¹æ­Œtimmer idå·
+    H_LYR  hdigit_layer;    //æ˜¾ç¤ºå½“å‰æ•°å­—ç‚¹æ­Œæ•°å­—çš„å›¾å±‚
     //=============================================
 
 } music_player_ctrl_t; //NOTE: size <= 1024 bytes
 
 #define     MUSIC_LIST_WIN_ID       (APP_MUSIC_ID+1)
 
-//1´ú±í10ms
-#define     MUSIC_SYSTIMER_INTERVAL (100)                           // 1 ÃëÖÓÀ´Ò»´ÎÖĞ¶Ï
-#define     MUSIC_REFRESH_SYSTIME_CNT   (60)                            //Ã¿·ÖÖÓµ÷ÓÃÏÔÊ¾Ê±¼äÒ»´Î
+//1ä»£è¡¨10ms
+#define     MUSIC_SYSTIMER_INTERVAL (100)                           // 1 ç§’é’Ÿæ¥ä¸€æ¬¡ä¸­æ–­
+#define     MUSIC_REFRESH_SYSTIME_CNT   (60)                            //æ¯åˆ†é’Ÿè°ƒç”¨æ˜¾ç¤ºæ—¶é—´ä¸€æ¬¡
 
 
 #define     MUSIC_TIMER_INTERVAL            (22)
@@ -208,12 +239,12 @@ typedef struct music_player_ctrl_s
 
 #define     MUSIC_SPECTRUM_TIMER_INTERVAL   (15)
 
-#define     MUSIC_CHECK_FOCUS_TIMER_INTERVAL (100*30)           //30ÃëÖÓÃ»ÓĞ²Ù×÷£¬Ôò·µ»Øµ½Êµ¼Ê²¥·ÅµÄÌõÄ¿
+#define     MUSIC_CHECK_FOCUS_TIMER_INTERVAL (100*30)           //30ç§’é’Ÿæ²¡æœ‰æ“ä½œï¼Œåˆ™è¿”å›åˆ°å®é™…æ’­æ”¾çš„æ¡ç›®
 #define     MUSIC_CHECK_FOCUS_TIMER_CNT       (20)              //
 
-#define     MUSIC_FF_RR_TIMER_INTERVAL       (300)                  //Õâ¸öÊ±¼ä¿ÉÒÔÉÔÎ¢¶¨Òå´óÒ»Ğ©
+#define     MUSIC_FF_RR_TIMER_INTERVAL       (300)                  //è¿™ä¸ªæ—¶é—´å¯ä»¥ç¨å¾®å®šä¹‰å¤§ä¸€äº›
 
-//2Ãë×Ô¶¯ÍË³ö²Ëµ¥
+//2ç§’è‡ªåŠ¨é€€å‡ºèœå•
 #define     C_AUTO_EXIT_MENU_TIME   (35)
 
 

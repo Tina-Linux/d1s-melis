@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File          : init.c
-* By            : Andy.zhang
-* Func      : init thread
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-20 8:51:52  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include <emodules/mod_display.h>
@@ -40,9 +54,9 @@ typedef struct
 
 struct _AppletInfoManager
 {
-    int32_t         nr;           // Êµ¼Ê½ÚµãÊıÄ¿
-    int32_t         alloc_nr;     // ·ÖÅäÄÚ´æÊıÄ¿
-    AppletInfo *info;   // ¶¯Ì¬Êı×é
+    int32_t         nr;           // å®é™…èŠ‚ç‚¹æ•°ç›®
+    int32_t         alloc_nr;     // åˆ†é…å†…å­˜æ•°ç›®
+    AppletInfo *info;   // åŠ¨æ€æ•°ç»„
 };
 
 static H_WIN                init_mainwin;
@@ -251,13 +265,13 @@ int32_t key_hook_cb(__gui_msg_t *msg)
 
         init_lock(msg);
 
-        if (!init_ctr->key_msg_enble)               // ½ûÖ¹°´¼ü
+        if (!init_ctr->key_msg_enble)               // ç¦æ­¢æŒ‰é”®
         {
             init_unlock(msg);
             return -1;
         }
 
-        if (init_ctr->screen_close_done)            // ÒÑ¾­¹ØÆÁ
+        if (init_ctr->screen_close_done)            // å·²ç»å…³å±
         {
             init_unlock(msg);
 
@@ -281,7 +295,7 @@ int32_t key_hook_cb(__gui_msg_t *msg)
 
 #if  0
     {
-        //°´¼üenter¼üdownºÍup¼üÍ¬Ê±µ½´ï£¬µ¼ÖÂÏûÏ¢¶ªÊ§£¬Ö®¼ä¼ÓÒ»¸öÑÓÊ±
+        //æŒ‰é”®enteré”®downå’Œupé”®åŒæ—¶åˆ°è¾¾ï¼Œå¯¼è‡´æ¶ˆæ¯ä¸¢å¤±ï¼Œä¹‹é—´åŠ ä¸€ä¸ªå»¶æ—¶
         if (GUI_MSG_KEY_ENTER == msg->dwAddData1 && KEY_DOWN_ACTION == msg->dwAddData2)
         {
             esKRNL_TimeDly(10);
@@ -298,7 +312,7 @@ int32_t tp_hook_cb(__gui_msg_t *msg)
         __init_ctl_t *init_ctr = (__init_ctl_t *)GUI_WinGetAttr(init_mainwin);
         init_lock(msg);
 
-        if (!init_ctr->tp_msg_enble)            // ½ûÖ¹ touch
+        if (!init_ctr->tp_msg_enble)            // ç¦æ­¢ touch
         {
             init_unlock(msg);
             return -1;
@@ -365,7 +379,7 @@ static void _framework_init(void)
     __inf("info_manager->info->permission = %d",info_manager->info->permission);
     __inf("info_manager->info->standby = %d",info_manager->info->standby);
     #endif
-    //applet_info_manager_printf(info_manager);     // ´òÓ¡applet info ĞÅÏ¢
+    //applet_info_manager_printf(info_manager);     // æ‰“å°applet info ä¿¡æ¯
     applet_info_manager_set_defualt(info_manager);
 
     activity_manager    = activity_manager_create();
@@ -391,9 +405,15 @@ static void _process_init(void)
 
     _framework_init();
 
-    #if CONFIG_SUPPORT_TOUCHPANEL
+#if CONFIG_SUPPORT_TOUCHPANEL
+#if CONFIG_RTP_SECLET
     open("/dev/tpadc_rtp", O_WRONLY);
-    #endif
+#elif CONFIG_CTP_SECLET
+    open("/dev/ctp", O_WRONLY);
+#else
+    __err("no select rtp or ctp");
+#endif
+#endif
     
     eLIBs_memcpy(load_para, &flag, 4);
     __msg("********_process_init***********");
@@ -542,12 +562,12 @@ static int32_t charge_paint(__gui_msg_t *msg)
 
     index++;
 
-    if (index >= CHARGE_BMP_NUM) //Ñ­»·ÇĞ»»
+    if (index >= CHARGE_BMP_NUM) //å¾ªç¯åˆ‡æ¢
     {
         index = 0;
     }
 
-    if (EPDK_TRUE == dsk_power_is_full()) //Èç¹û³äÂúÁË£¬¾ÍÍ£ÁôÔÚ×îºóÒ»ÕÅ
+    if (EPDK_TRUE == dsk_power_is_full()) //å¦‚æœå……æ»¡äº†ï¼Œå°±åœç•™åœ¨æœ€åä¸€å¼ 
     {
         index = CHARGE_BMP_NUM - 1;
     }
@@ -801,7 +821,7 @@ int32_t show_charge_scene(void)
     /* set message loop win */
     message_loop_win_set_default(hManWin);
 
-    while (GUI_GetMessageEx(&msg, hManWin))     // ÏûÏ¢Ñ­»·
+    while (GUI_GetMessageEx(&msg, hManWin))     // æ¶ˆæ¯å¾ªç¯
     {
 #ifdef __MSG
 
@@ -812,9 +832,9 @@ int32_t show_charge_scene(void)
         }
 
 #endif
-        ret = GUI_DispatchMessage(&msg);        // ·Ö·¢ÏûÏ¢µ½»Øµ÷
+        ret = GUI_DispatchMessage(&msg);        // åˆ†å‘æ¶ˆæ¯åˆ°å›è°ƒ
 
-        if (msg.p_arg)                          // Í¬²½ÏûÏ¢»ØÓ¦
+        if (msg.p_arg)                          // åŒæ­¥æ¶ˆæ¯å›åº”
         {
             GUI_SetSyncMsgRetVal(&msg, ret);
             GUI_PostSyncSem(&msg);
@@ -823,7 +843,7 @@ int32_t show_charge_scene(void)
 
     GUI_WinThreadCleanup(hManWin);
     message_loop_win_set_default(NULL);
-    GUI_SetActiveManWin(NULL);//ÖÃ¿Õ£¬·ÀÖ¹ÏûÏ¢¶ÓÁĞÎŞ¶ÔÓ¦´°¿Ú
+    GUI_SetActiveManWin(NULL);//ç½®ç©ºï¼Œé˜²æ­¢æ¶ˆæ¯é˜Ÿåˆ—æ— å¯¹åº”çª—å£
     return EPDK_OK;
 }
 
@@ -917,7 +937,7 @@ void application_init_process(void *arg)
 #endif	
     __log("%s %d before GUI_GetMessageEx", __FUNCTION__, __LINE__);
     /* message loop*/
-    while (GUI_GetMessageEx(&msg, init_mainwin))    // ÏûÏ¢Ñ­»·
+    while (GUI_GetMessageEx(&msg, init_mainwin))    // æ¶ˆæ¯å¾ªç¯
     {
 #ifdef __MSG
         if (msg.id != GUI_MSG_TIMER)
@@ -925,9 +945,9 @@ void application_init_process(void *arg)
             __msg("msg.h_deswin=%x, msg.id=%d, msg.dwAddData1=%d,msg.dwAddData2=%d", msg.h_deswin, msg.id, msg.dwAddData1, msg.dwAddData2);
         }
 #endif
-        ret = GUI_DispatchMessage(&msg);        // ·Ö·¢ÏûÏ¢µ½»Øµ÷
+        ret = GUI_DispatchMessage(&msg);        // åˆ†å‘æ¶ˆæ¯åˆ°å›è°ƒ
 
-        if (msg.p_arg)                          // Í¬²½ÏûÏ¢»ØÓ¦
+        if (msg.p_arg)                          // åŒæ­¥æ¶ˆæ¯å›åº”
         {
             GUI_SetSyncMsgRetVal(&msg, ret);
             GUI_PostSyncSem(&msg);

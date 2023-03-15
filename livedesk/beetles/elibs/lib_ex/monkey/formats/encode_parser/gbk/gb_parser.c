@@ -1,20 +1,34 @@
 /*
-**************************************************************************************************************
-*                                                   ePOS
-*                                  the Easy Portable/Player Operation System
-*                                             update sub-system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2008, Andy.zhang China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : gb_parser.h
-* Version   : V1.0
-* Data      : 2009-5-02
-* By        : Andy.zhang
-* Biref     : gbk ±àÂë½âÎö
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "monkey_i.h"
 #include "..\parser_plugin_i.h"
 #include "gb_parser.h"
@@ -46,7 +60,7 @@ txtEncodeParser *gb_parserNew(void)
     gb_parser->analysis     = gb_analysis;
     gb_parser->dispstr      = gb_dispstr;
     gb_parser->destroy      = gb_destroy;
-    gb_parser->bufferTxt    = esMEMS_Palloc(2 * BufferLenght / 1024, 0); //·ÖÅä2*8¸öÒ³Ãæ£¬Ã¿¸öÒ³Ãæ´óÐ¡1kbytes
+    gb_parser->bufferTxt    = esMEMS_Palloc(2 * BufferLenght / 1024, 0); //åˆ†é…2*8ä¸ªé¡µé¢ï¼Œæ¯ä¸ªé¡µé¢å¤§å°1kbytes
     return gb_parser;
 }
 
@@ -85,7 +99,7 @@ static void gb_start(txtEncodeParser *thiz, int startoffset)
 {
     __u8    *buff;
     int     len, i;
-    buff  = thiz->bufferTxt + BufferLenght;                         //»º³åÇøÖ¸Õë
+    buff  = thiz->bufferTxt + BufferLenght;                         //ç¼“å†²åŒºæŒ‡é’ˆ
 
     if (startoffset == 0)
     {
@@ -113,7 +127,7 @@ static void gb_start(txtEncodeParser *thiz, int startoffset)
 
     while (i < len)
     {
-        if ((buff[i] & 0xff) <= 0x80)                                     // ansi ×Ö·û
+        if ((buff[i] & 0xff) <= 0x80)                                     // ansi å­—ç¬¦
         {
             break;
         }
@@ -154,19 +168,19 @@ static void gb_next(txtEncodeParser *thiz, int current_start)
     int len, end;
     thiz->start          = current_start;
     thiz->bof            = (current_start == 0) ? EPDK_TRUE : EPDK_FALSE;
-    thiz->bufferTxtlen   = 0;                                   //ÎÄ¼þÊý¾Ý»º³åÇå0
+    thiz->bufferTxtlen   = 0;                                   //æ–‡ä»¶æ•°æ®ç¼“å†²æ¸…0
     eLIBs_fseek(thiz->fd, thiz->start, ELIBS_SEEK_SET);
     len = eLIBs_fread(thiz->bufferTxt, sizeof(char), BufferLenght, thiz->fd);
 
-    if (len != BufferLenght)                                    //ÒÑ¶Áµ½ÁËÎÄÕÂµÄÎ²²¿
+    if (len != BufferLenght)                                    //å·²è¯»åˆ°äº†æ–‡ç« çš„å°¾éƒ¨
     {
-        thiz->eof = EPDK_TRUE;                                  //ÖÃÎÄ¼þÎ²²¿±êÖ¾Î»
+        thiz->eof = EPDK_TRUE;                                  //ç½®æ–‡ä»¶å°¾éƒ¨æ ‡å¿—ä½
         thiz->bufferTxtlen = len;
         //thiz->cur_offset = 0;
         return;
     }
 
-    thiz->eof = EPDK_FALSE;                                     //É¾³ý»º³åÇøÖÐ×îºóÒ»¸ö»Ø³µÒÔºóµÄ×Ö·û
+    thiz->eof = EPDK_FALSE;                                     //åˆ é™¤ç¼“å†²åŒºä¸­æœ€åŽä¸€ä¸ªå›žè½¦ä»¥åŽçš„å­—ç¬¦
     end = len;
 
     while (end > 0)
@@ -175,7 +189,7 @@ static void gb_next(txtEncodeParser *thiz, int current_start)
 
         if (v <= 0x80)
         {
-            break;                                                  // \n »»ÐÐ
+            break;                                                  // \n æ¢è¡Œ
         }
 
         if (end > 1)
@@ -196,7 +210,7 @@ static void gb_next(txtEncodeParser *thiz, int current_start)
         end--;
     }
 
-    if (0 == end)                                                    // Ã»ÕÒµ½\n »»ÐÐ
+    if (0 == end)                                                    // æ²¡æ‰¾åˆ°\n æ¢è¡Œ
     {
         thiz->bufferTxtlen = len;
         return;
@@ -231,9 +245,9 @@ static void gb_prev(txtEncodeParser *thiz, int current_start)
     eLIBs_fseek(thiz->fd, start, ELIBS_SEEK_SET);
     len = eLIBs_fread(b, sizeof(char), BufferLenght, thiz->fd);
 
-    if (len != BufferLenght)                                    //ÒÑ¶Áµ½ÁËÎÄÕÂµÄÎ²²¿
+    if (len != BufferLenght)                                    //å·²è¯»åˆ°äº†æ–‡ç« çš„å°¾éƒ¨
     {
-        thiz->eof = EPDK_TRUE;                                  //ÖÃÎÄ¼þÎ²²¿±êÖ¾Î»
+        thiz->eof = EPDK_TRUE;                                  //ç½®æ–‡ä»¶å°¾éƒ¨æ ‡å¿—ä½
         thiz->bufferTxtlen = len;
     }
 
@@ -243,7 +257,7 @@ static void gb_prev(txtEncodeParser *thiz, int current_start)
     {
         int v = b[tmp] & 0xff;
 
-        if (v <= 0x80)          //\n »»ÐÐ
+        if (v <= 0x80)          //\n æ¢è¡Œ
         {
             break;
         }
@@ -286,9 +300,9 @@ static void gb_prev(txtEncodeParser *thiz, int current_start)
 static __s32 gb_analysis(txtEncodeParser *thiz, MkLine *line)
 {
     __u16 CharDist, CharWidth;
-    int c = thiz->cur_offset;       //bufferË÷Òý
-    int w = 0;                      //Ã¿ÐÐµÄ×Ö·û×Ü¿í¶È
-    int l = 0;                      //Ã¿ÐÐ°üº¬µÄ×Ö·ûÊýs
+    int c = thiz->cur_offset;       //bufferç´¢å¼•
+    int w = 0;                      //æ¯è¡Œçš„å­—ç¬¦æ€»å®½åº¦
+    int l = 0;                      //æ¯è¡ŒåŒ…å«çš„å­—ç¬¦æ•°s
     GUI_LyrWinSel(thiz->hlyr);
     GUI_SetTextMode(GUI_TM_TRANS);
     GUI_SetFont(thiz->pFont);
@@ -298,7 +312,7 @@ static __s32 gb_analysis(txtEncodeParser *thiz, MkLine *line)
     {
         __u16 b = thiz->bufferTxt[c] & 0xff;
 
-        if ((b == 13) || (b == 10))  //\r »»ÐÐ\r\n
+        if ((b == 13) || (b == 10))  //\r æ¢è¡Œ\r\n
         {
             __u16 tmp = thiz->bufferTxt[c + 1] & 0xff;
 
@@ -321,8 +335,8 @@ static __s32 gb_analysis(txtEncodeParser *thiz, MkLine *line)
             return 0;
         }
 
-        //×Ö·û´¦Àí
-        if (b > 0x7f)   //ºº×Ö
+        //å­—ç¬¦å¤„ç†
+        if (b > 0x7f)   //æ±‰å­—
         {
             CharDist  = thiz->bufferTxt[c + 1] & 0xff;
             CharDist += b << 8;
@@ -331,7 +345,7 @@ static __s32 gb_analysis(txtEncodeParser *thiz, MkLine *line)
 
             if (w + CharWidth > thiz->viewWidth)
             {
-                //µ±Ç°ÐÐÎÞ·¨ÏÔÊ¾ÍêÕû
+                //å½“å‰è¡Œæ— æ³•æ˜¾ç¤ºå®Œæ•´
                 line->start     = thiz->start + c - l;
                 line->len       = l;
                 thiz->cur_offset = c;
@@ -346,11 +360,11 @@ static __s32 gb_analysis(txtEncodeParser *thiz, MkLine *line)
                 w += CharWidth;
             }
         }
-        else            //Ó¢ÎÄ
+        else            //è‹±æ–‡
         {
             if (b == 9)
             {
-                b = 0x20;    //tab->¿Õ¸ñ
+                b = 0x20;    //tab->ç©ºæ ¼
             }
 
             CharDist    = b;
@@ -359,7 +373,7 @@ static __s32 gb_analysis(txtEncodeParser *thiz, MkLine *line)
 
             if (w + CharWidth > thiz->viewWidth)
             {
-                //µ±Ç°ÐÐÎÞ·¨ÏÔÊ¾ÍêÕû
+                //å½“å‰è¡Œæ— æ³•æ˜¾ç¤ºå®Œæ•´
                 line->start = thiz->start + c - l;
                 line->len = l;
                 thiz->cur_offset = c;
@@ -400,7 +414,7 @@ static void  gb_dispstr(char *s, int len, int x, int y)
     {
         b = s[i] & 0xff;
 
-        if ((b == 13) || (b == 10))  // »»ÐÐ\r\n
+        if ((b == 13) || (b == 10))  // æ¢è¡Œ\r\n
         {
             tmp = s[i + 1] & 0xff;
 
@@ -413,7 +427,7 @@ static void  gb_dispstr(char *s, int len, int x, int y)
                 i++;
             }
         }
-        else if (b > 0x7f)  //ºº×Ö
+        else if (b > 0x7f)  //æ±‰å­—
         {
             tmp  = s[i + 1] & 0xff;
             tmp += b << 8;
@@ -422,7 +436,7 @@ static void  gb_dispstr(char *s, int len, int x, int y)
             xdist += GUI_GetCharDistX(unicode);
             i += 2;
         }
-        else                //Ó¢ÎÄ
+        else                //è‹±æ–‡
         {
             if (b == 9)
             {
@@ -441,6 +455,3 @@ static void gb_destroy(txtEncodeParser *thiz)
     esMEMS_Pfree(thiz->bufferTxt, 2 * BufferLenght / 1024);
     g_free(thiz);
 }
-
-
-

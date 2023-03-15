@@ -1,25 +1,39 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : setting_power.c
-* By        : Andy.zhang
-* Func      : desk main thread
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-20 8:51:52  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "setting_power.h"
 #include "setting_uipara.h"
 
-#define   ITEM_NUM_PER_SCREEN   4   //Ã¿ÆÁÄÜÏÔÊ¾itemµÄ¸öÊý
+#define   ITEM_NUM_PER_SCREEN   4   //æ¯å±èƒ½æ˜¾ç¤ºitemçš„ä¸ªæ•°
 extern __s32 key_focous_left_right;
 
 typedef enum
@@ -69,7 +83,7 @@ typedef struct tag_power_item_res
     __s32 content_num;
     __s32 content_nr;
 
-    //char  string_detail_prompt[128];      //ÏêÏ¸ÐÅÏ¢
+    //char  string_detail_prompt[128];      //è¯¦ç»†ä¿¡æ¯
     //char string_detail_prompt_ex[128];
 
 } power_item_res_t ;
@@ -108,7 +122,7 @@ extern void  main_cmd2parent(H_WIN hwin, __s32 id, unsigned long data1, unsigned
 
 static reg_system_para_t *setting_reg_para;
 
-static __s32 content_backlight_level_id[] = //ITEM1 (±³¹âÁÁ¶È)
+static __s32 content_backlight_level_id[] = //ITEM1 (èƒŒå…‰äº®åº¦)
 {
     STRING_SET_POWER_BGT_LEVEL1_CON,
     STRING_SET_POWER_BGT_LEVEL2_CON,
@@ -128,7 +142,7 @@ static __s32 content_backlight_level_id[] = //ITEM1 (±³¹âÁÁ¶È)
     STRING_SET_POWER_BGT_LEVEL16_CON
 };
 
-static __s32 content_backlight_off_id[] = //ITEM2 (¹Ø±Õ±³¹â)
+static __s32 content_backlight_off_id[] = //ITEM2 (å…³é—­èƒŒå…‰)
 {
     STRING_SET_POWER_BGT_NEVER_CON,
     STRING_SET_POWER_BGT_LAST10S_CON,
@@ -137,13 +151,13 @@ static __s32 content_backlight_off_id[] = //ITEM2 (¹Ø±Õ±³¹â)
     STRING_SET_POWER_BGT_LAST90S_CON
 };
 
-static __s32 content_power_off_id[] = //ITEM3 (¹Ø±ÕµçÔ´)
+static __s32 content_power_off_id[] = //ITEM3 (å…³é—­ç”µæº)
 {
     STRING_SET_POWER_OFF_NEVER_CON,
-    STRING_SET_POWER_OFF_LAST10M_CON,       //10 ·Ö
-    STRING_SET_POWER_OFF_LAST20M_CON,       // 20 ·Ö
-    STRING_SET_POWER_OFF_LAST30M_CON,       // 30 ·Ö
-    STRING_SET_POWER_OFF_LAST1H_CON         // 1 Ð¡Ê±
+    STRING_SET_POWER_OFF_LAST10M_CON,       //10 åˆ†
+    STRING_SET_POWER_OFF_LAST20M_CON,       // 20 åˆ†
+    STRING_SET_POWER_OFF_LAST30M_CON,       // 30 åˆ†
+    STRING_SET_POWER_OFF_LAST1H_CON         // 1 å°æ—¶
 };
 #if 0
 static power_focus_item_id_t power_focus_item_res_id[] =
@@ -168,7 +182,7 @@ static power_item_id_t setting_power_res_id[] =
     {STRING_SET_POWER_OFF_TITLE, STRING_SET_POWER_OFF_NEVER_CON, ID_SETTING_NEW_SET_BUTT_L_UF_BMP, ID_SETTING_NEW_SET_BUTT_R_UF_BMP, ID_SETTING_NEW_SET_BUTT_L_F_BMP, ID_SETTING_NEW_SET_BUTT_R_F_BMP}, // 2
 };
 
-/*ÓÉ´¥ÃþµÄÎ»ÖÃ»ñµÃµ±Ç°itemµÄÏÂ±ê*/
+/*ç”±è§¦æ‘¸çš„ä½ç½®èŽ·å¾—å½“å‰itemçš„ä¸‹æ ‡*/
 
 static __bool position_in_rect(RECT *rect, __s32 x, __s32 y)
 {
@@ -203,12 +217,12 @@ static __s32 power_TouchPos_2_ItemIndex(__gui_msg_t *msg)
     else
     {
         //__here__;
-        return EPDK_FAIL;   //ÎÞÐ§ÇøÓò
+        return EPDK_FAIL;   //æ— æ•ˆåŒºåŸŸ
     }
 }
 
 /*
-    ÉêÇë×ÊÔ´
+    ç”³è¯·èµ„æº
 */
 static void _setting_power_res_init(setting_power_attr_t *power_attr)
 {
@@ -734,7 +748,7 @@ static __s32 setting_power_paint(__gui_msg_t *msg, __s32 index)
     }
 
     //GUI_SetColor(0);
-    //GUI_DispStringAt(power_attr->string_prompt, uipara->txt_pos.x,uipara->txt_pos.y); // ÏÔÊ¾µçÔ´¹ÜÀíÍ¼±ê
+    //GUI_DispStringAt(power_attr->string_prompt, uipara->txt_pos.x,uipara->txt_pos.y); // æ˜¾ç¤ºç”µæºç®¡ç†å›¾æ ‡
     //GUI_SetColor(power_attr->focus_txt_color);
 #if 0
     gui_rect.x0 = uipara->string_detail_pos_ex.x;
@@ -839,7 +853,7 @@ static __s32  setting_power_key_proc(__gui_msg_t *msg)
     {
         switch (msg->dwAddData1)
         {
-            case GUI_MSG_KEY_LEFT:  //×÷up¼üÊ¹ÓÃ
+            case GUI_MSG_KEY_LEFT:  //ä½œupé”®ä½¿ç”¨
                 //case GUI_MSG_KEY_LONGLEFT:
             {
                 __log("======POWER_SETTING=======GUI_MSG_KEY_LEFT=%d\n");
@@ -861,7 +875,7 @@ static __s32  setting_power_key_proc(__gui_msg_t *msg)
             }
             break;
 
-            case GUI_MSG_KEY_RIGHT: //×÷down¼üÊ¹ÓÃ
+            case GUI_MSG_KEY_RIGHT: //ä½œdowné”®ä½¿ç”¨
                 //case GUI_MSG_KEY_LONGRIGHT:
             {
                 __log("======POWER_SETTING=======GUI_MSG_KEY_RIGHT=%d\n");
@@ -888,7 +902,7 @@ static __s32  setting_power_key_proc(__gui_msg_t *msg)
                 else
                 {
                     setting_power_paint(msg, ID_PAINTING_F_GENERAL);
-                    main_cmd2parent(msg->h_deswin, ID_SWITCH_GENERAL_SETTING, 0, 0);  //·¢ËÍÏûÏ¢¸ø¸¸´°¿Ú£¬½øÈëµçÔ´¹ÜÀí
+                    main_cmd2parent(msg->h_deswin, ID_SWITCH_GENERAL_SETTING, 0, 0);  //å‘é€æ¶ˆæ¯ç»™çˆ¶çª—å£ï¼Œè¿›å…¥ç”µæºç®¡ç†
                     GUI_FrmWinDelete(msg->h_deswin);
                 }
 
@@ -908,7 +922,7 @@ static __s32  setting_power_key_proc(__gui_msg_t *msg)
                 else
                 {
                     setting_power_paint(msg, ID_PAINTING_F_GENERAL);
-                    main_cmd2parent(msg->h_deswin, ID_SWITCH_GENERAL_SETTING, 0, 0);  //·¢ËÍÏûÏ¢¸ø¸¸´°¿Ú£¬½øÈëµçÔ´¹ÜÀí
+                    main_cmd2parent(msg->h_deswin, ID_SWITCH_GENERAL_SETTING, 0, 0);  //å‘é€æ¶ˆæ¯ç»™çˆ¶çª—å£ï¼Œè¿›å…¥ç”µæºç®¡ç†
                     GUI_FrmWinDelete(msg->h_deswin);
                 }
             }
@@ -926,7 +940,7 @@ static __s32  setting_power_key_proc(__gui_msg_t *msg)
                 else
                 {
                     setting_power_paint(msg, ID_PAINTING_F_GENERAL);
-                    main_cmd2parent(msg->h_deswin, ID_SWITCH_GENERAL_SETTING, 0, 0);  //·¢ËÍÏûÏ¢¸ø¸¸´°¿Ú£¬½øÈëµçÔ´¹ÜÀí
+                    main_cmd2parent(msg->h_deswin, ID_SWITCH_GENERAL_SETTING, 0, 0);  //å‘é€æ¶ˆæ¯ç»™çˆ¶çª—å£ï¼Œè¿›å…¥ç”µæºç®¡ç†
                     GUI_FrmWinDelete(msg->h_deswin);
                 }
             }
@@ -1340,7 +1354,7 @@ static __s32  setting_power_touch_proc(__gui_msg_t *msg)
     if (GUI_MSG_TOUCH_UP == msg->dwAddData1)
     {
         __s32 tmp_index;
-        //´¥ÃþÇøÓòÔÚ·µ»Ø°´Å¥·¶Î§ÄÚ
+        //è§¦æ‘¸åŒºåŸŸåœ¨è¿”å›žæŒ‰é’®èŒƒå›´å†…
 #if 0
 
         if ((pos_x > uipara->return_bmp.x) && (pos_x < uipara->return_bmp.x + uipara->return_bmp.w)
@@ -1353,7 +1367,7 @@ static __s32  setting_power_touch_proc(__gui_msg_t *msg)
         else
 #endif
         {
-            tmp_index = power_TouchPos_2_ItemIndex(msg);    //»ñÈ¡´¥ÃþµÄÎ»ÖÃÇøÓò
+            tmp_index = power_TouchPos_2_ItemIndex(msg);    //èŽ·å–è§¦æ‘¸çš„ä½ç½®åŒºåŸŸ
 
             //__here__ ;
             if ((tmp_index >= 0) && (tmp_index < power_attr->item_nr))
@@ -1399,14 +1413,14 @@ static __s32  setting_power_touch_proc(__gui_msg_t *msg)
             setting_power_paint(msg, ID_PAINTING_F_GENERAL);
             dsk_keytone_on();
             __log("======ID_SWITCH_GENERAL_SETTING=======GUI_MSG_TOUCH_DOWN=%d\n");
-            main_cmd2parent(msg->h_deswin, ID_SWITCH_GENERAL_SETTING, 0, 0);  //·¢ËÍÏûÏ¢¸ø¸¸´°¿Ú£¬½øÈëµçÔ´¹ÜÀí
+            main_cmd2parent(msg->h_deswin, ID_SWITCH_GENERAL_SETTING, 0, 0);  //å‘é€æ¶ˆæ¯ç»™çˆ¶çª—å£ï¼Œè¿›å…¥ç”µæºç®¡ç†
             GUI_FrmWinDelete(msg->h_deswin);
             // GUI_LyrWinSetSta(power_attr->layer,GUI_LYR_STA_OFF);
         }
         else
         {
             __s32 tmp_index;
-            tmp_index = power_TouchPos_2_ItemIndex(msg);    //»ñÈ¡´¥ÃþµÄÎ»ÖÃÇøÓò
+            tmp_index = power_TouchPos_2_ItemIndex(msg);    //èŽ·å–è§¦æ‘¸çš„ä½ç½®åŒºåŸŸ
 
             //__here__ ;
             if ((tmp_index >= 0) && (tmp_index < power_attr->item_nr))
@@ -1458,7 +1472,7 @@ void setting_power_on_set_content_num(setting_power_attr_t *power_attr)
     power_attr->power_item_res[0].content_num = setting_reg_para->backlight;
 }
 /*
-    »Øµ÷
+    å›žè°ƒ
 */
 static __s32 _setting_power_Proc(__gui_msg_t *msg)
 {
@@ -1853,4 +1867,3 @@ __s32 setting_power_win_delete(H_WIN list_win)
     GUI_FrmWinDelete(list_win);
     return EPDK_OK;
 }
-

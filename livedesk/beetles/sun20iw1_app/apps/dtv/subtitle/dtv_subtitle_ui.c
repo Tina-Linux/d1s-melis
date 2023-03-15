@@ -1,19 +1,33 @@
 /*
-**********************************************************************************************************************
-*                                                    ePDK
-*                                    the Easy Portable/Player Develop Kits
-*                                              LiveTouch Sub-System
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2007-2009, Steven.ZGJ.China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* Moudle  :
-* File    :
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
 *
-* By      : hot.lee
-* Version :
-* Date    :
-**********************************************************************************************************************
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "dtv_subtitle_ui.h"
@@ -112,7 +126,7 @@ static __s32 _subtitle_paint(CSubtitleDrawItem *pSub)
 
     for (i = 0; i < sub->subNum; i++)
     {
-        //¥À¥¶y◊¯±Í±‰≥…¡Àœ‡∂‘Õº≤„µƒ◊¯±Í£¨‘› ±≤ª√˜‘≠“Ú
+        //Ê≠§Â§ÑyÂùêÊ†áÂèòÊàê‰∫ÜÁõ∏ÂØπÂõæÂ±ÇÁöÑÂùêÊ†áÔºåÊöÇÊó∂‰∏çÊòéÂéüÂõ†
         rect.x0 = uipara->subtitle.x;
         rect.y0 = uipara->subtitle.y + i * uipara->subtitle.height / sub->subNum - uipara->subtitle.y;
         rect.x1 = rect.x0 + uipara->subtitle.width;
@@ -165,9 +179,9 @@ static __s32 _subtitle_clean(CSubtitleDrawItem *pSub)
     return EPDK_OK;
 }
 
-static __bool g_show_subtitle = EPDK_FALSE;//◊÷ƒªœ‘ æø™πÿ
+static __bool g_show_subtitle = EPDK_FALSE;//Â≠óÂπïÊòæÁ§∫ÂºÄÂÖ≥
 
-//◊÷ƒª«–ªª,on ->off  ªÚoff->on
+//Â≠óÂπïÂàáÊç¢,on ->off  Êàñoff->on
 __s32 dtv_subtitle_switch_onoff(void)
 {
     g_show_subtitle = !g_show_subtitle;
@@ -257,7 +271,7 @@ static __s32 _dtv_subtitle_frmwin_proc(__gui_msg_t *msg)
 }
 
 /*
-    Ω®¡¢¥∞ø⁄
+    Âª∫Á´ãÁ™óÂè£
 */
 static H_WIN dtv_subtitle_frmwin_create(H_WIN h_parent, H_LYR layer)
 {
@@ -381,9 +395,9 @@ static __s32 subtitle_main_proc(__gui_msg_t *msg)
 }
 
 
-//◊÷ƒª“™◊ˆµƒ÷˜“™¡Ωº˛ ¬
-//1°¢¥¥Ω®◊÷ƒªªÊ÷∆Õº≤„
-//2°¢µ˜”√maple_set_subtitle_cb()…Ë÷√ªÊ÷∆◊÷ƒªªÿµ˜∫Ø ˝∏¯÷–º‰º˛
+//Â≠óÂπïË¶ÅÂÅöÁöÑ‰∏ªË¶Å‰∏§‰ª∂‰∫ã
+//1„ÄÅÂàõÂª∫Â≠óÂπïÁªòÂà∂ÂõæÂ±Ç
+//2„ÄÅË∞ÉÁî®maple_set_subtitle_cb()ËÆæÁΩÆÁªòÂà∂Â≠óÂπïÂõûË∞ÉÂáΩÊï∞Áªô‰∏≠Èó¥‰ª∂
 signed long dtv_subtitle_create(H_WIN parent)
 {
     __gui_manwincreate_para_t create_info;

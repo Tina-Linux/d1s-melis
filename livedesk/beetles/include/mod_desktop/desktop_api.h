@@ -1,19 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                               Desktop Module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2006-2010, kevin.z China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : desktop_api.h
-* By      : kevin.z
-* Version : v1.0
-* Date    : 2010-9-14 19:13
-* Descript:
-* Update  : date                auther      ver     notes
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __MOD_DESKTOP_API_H__
 #define __MOD_DESKTOP_API_H__
@@ -127,7 +141,7 @@ typedef struct DESKTOP_API_ENTRY
     int32_t(*ptr_dsk_volume_set)(int32_t volume);
     int32_t(*ptr_dsk_volume_get)(void);
     int32_t(*ptr_dsk_volume_inc)(void);
-    int32_t(*ptr_dsk_volume_dec)(void);                                               // ºı–°“Ù¡ø
+    int32_t(*ptr_dsk_volume_dec)(void);                                               // ÂáèÂ∞èÈü≥Èáè
     int32_t(*ptr_dsk_volume_off)(void);
     int32_t(*ptr_dsk_volume_on)(void);
     __bool(*ptr_dsk_volume_is_on)(void);
@@ -181,9 +195,9 @@ typedef struct DESKTOP_API_ENTRY
     //dsk_power.h
     int32_t(*ptr_dsk_power_dev_init)(void); 
     int32_t(*ptr_dsk_power_dev_uninit)(void);
-    int32_t(*ptr_dsk_power_get_battery_level)(power_level_e *level);                                      //  £”‡µÁ¡ølevel
-    int32_t(*ptr_dsk_power_get_voltage_level)(power_level_e *level);                                      // π§◊˜µÁ—πlevel
-    int32_t(*ptr_dsk_power_get_battary_state)(power_state_e *state);                                      // ≤È—Ø battary ◊¥Ã¨
+    int32_t(*ptr_dsk_power_get_battery_level)(power_level_e *level);                                      // Ââ©‰ΩôÁîµÈáèlevel
+    int32_t(*ptr_dsk_power_get_voltage_level)(power_level_e *level);                                      // Â∑•‰ΩúÁîµÂéãlevel
+    int32_t(*ptr_dsk_power_get_battary_state)(power_state_e *state);                                      // Êü•ËØ¢ battary Áä∂ÊÄÅ
     int32_t(*ptr_dsk_power_set_off_time)(__u32 time);
     __bool(*ptr_dsk_power_is_low)(void);
     void (*ptr_dsk_speaker_turnoff)(void);
@@ -207,17 +221,17 @@ typedef struct DESKTOP_API_ENTRY
     //========                                          framework                                           ============//
     //================================================================================//
     //framework/activity.h
-    //Activity*                     (*ptr_activity_create)                      (AppletInfo *info);                     /* ¥¥Ω®“ª∏ˆ Activity */
-    int32_t(*ptr_activity_set_attr)(Activity *thiz, void *attr);                                                      /* …Ë÷√priv Ù–‘      */
-    void                       *(*ptr_activity_get_attr)(Activity *thiz);                                           /* ªÒ»°priv Ù–‘      */
+    //Activity*                     (*ptr_activity_create)                      (AppletInfo *info);                     /* ÂàõÂª∫‰∏Ä‰∏™ Activity */
+    int32_t(*ptr_activity_set_attr)(Activity *thiz, void *attr);                                                      /* ËÆæÁΩÆprivÂ±ûÊÄß      */
+    void                       *(*ptr_activity_get_attr)(Activity *thiz);                                           /* Ëé∑ÂèñprivÂ±ûÊÄß      */
     int32_t(*ptr_activity_set_load_para)(char *app_name, char *src_name, void *p_arg, __u32 size);
     int32_t(*ptr_activity_get_load_para)(char *app_name, char *src_name, void *p_arg, __u32 size);
-    int32_t(*ptr_activity_load_file)(char *filename);                                                 /* ‘À––“ª∏ˆŒƒº˛      */
-    int32_t(*ptr_activity_load_app)(char *appname);                                                   /* ‘À––“ª∏ˆ”¶”√≥Ã–Ú  */
-    H_WIN(*ptr_activity_get_root_win)(Activity *thiz);                                                              /* ¡¥Ω”¥∞ø⁄          */
-    int32_t(*ptr_activity_background_top)(void);                                                          /*  π≥Ã–ÚΩ¯»Î∫ÛÃ®◊¥Ã¨*/
-    int32_t(*ptr_activity_return_home)(Activity *thiz);                                                               /* ∑µªÿ÷˜ΩÁ√Ê        */
-    void (*ptr_activity_finish)(Activity *thiz);                                                                    /* …±µÙActivity      */
+    int32_t(*ptr_activity_load_file)(char *filename);                                                 /* ËøêË°å‰∏Ä‰∏™Êñá‰ª∂      */
+    int32_t(*ptr_activity_load_app)(char *appname);                                                   /* ËøêË°å‰∏Ä‰∏™Â∫îÁî®Á®ãÂ∫è  */
+    H_WIN(*ptr_activity_get_root_win)(Activity *thiz);                                                              /* ÈìæÊé•Á™óÂè£          */
+    int32_t(*ptr_activity_background_top)(void);                                                          /* ‰ΩøÁ®ãÂ∫èËøõÂÖ•ÂêéÂè∞Áä∂ÊÄÅ*/
+    int32_t(*ptr_activity_return_home)(Activity *thiz);                                                               /* ËøîÂõû‰∏ªÁïåÈù¢        */
+    void (*ptr_activity_finish)(Activity *thiz);                                                                    /* ÊùÄÊéâActivity      */
     //void                      (*ptr_activity_kill_backgrd_except_home)        (void);
     //void                      (*ptr_activity_kill_all_backgrd)            (void);
     void (*ptr_activity_finish_all)(void);
@@ -225,7 +239,7 @@ typedef struct DESKTOP_API_ENTRY
     int32_t(*ptr_activity_resume_top)(void);
     int32_t(*ptr_activity_notify_top)(__gui_msg_t *pmsg);
     int32_t(*ptr_activity_all_able_standby)(void);
-    void (*ptr_activity_reserved[6])(void);                                                                         /* ‘§¡Ù */
+    void (*ptr_activity_reserved[6])(void);                                                                         /* È¢ÑÁïô */
 
     //framework/applet_info_manager.h
     AppletInfoManager          *(*ptr_applet_info_manager_create)(void);
@@ -239,14 +253,14 @@ typedef struct DESKTOP_API_ENTRY
 
     //framework/activity_manager.h
     ActivityManager            *(*ptr_activity_manager_create)(void);                                                                   /* create activity manager */
-    Activity                   *(*ptr_activity_manager_top)(ActivityManager *thiz);                                                     /* ≤È—Ø toplevel Activity */
+    Activity                   *(*ptr_activity_manager_top)(ActivityManager *thiz);                                                     /* Êü•ËØ¢ toplevel Activity */
     int32_t(*ptr_activity_manager_push)(ActivityManager *thiz, Activity *activity);                                                       /* push activity to manager */
     int32_t(*ptr_activity_manager_pop)(ActivityManager *thiz);                                                                            /* pop activity from manager */
-    int32_t(*ptr_activity_manager_top_to_backgrd)(ActivityManager *thiz);                                                                     /* toplevel activity ◊™Œ™∫ÛÃ®activity */
-    int32_t(*ptr_activity_manager_add_backgrd)(ActivityManager *thiz, Activity *activity);                                                        /* ÃÌº”background activity to ActivityManager*/
-    int32_t(*ptr_activity_manager_delete_backgrd)(ActivityManager *thiz, Activity *activity);                                                     /* …æ≥˝background activity */
-    int32_t(*ptr_activity_manager_backgrd_to_top)(ActivityManager *thiz, Activity *activity);                                                     /* ∫ÛÃ®activity ◊™Œ™toplevel activity*/
-    int32_t(*ptr_activity_manager_foreach)(ActivityManager *thiz, ActivityInterator iter, void *ctx1, void *ctx2);                                        /* ±È¿˙À˘”–background activity */
+    int32_t(*ptr_activity_manager_top_to_backgrd)(ActivityManager *thiz);                                                                     /* toplevel activity ËΩ¨‰∏∫ÂêéÂè∞activity */
+    int32_t(*ptr_activity_manager_add_backgrd)(ActivityManager *thiz, Activity *activity);                                                        /* Ê∑ªÂä†background activity to ActivityManager*/
+    int32_t(*ptr_activity_manager_delete_backgrd)(ActivityManager *thiz, Activity *activity);                                                     /* Âà†Èô§background activity */
+    int32_t(*ptr_activity_manager_backgrd_to_top)(ActivityManager *thiz, Activity *activity);                                                     /* ÂêéÂè∞activity ËΩ¨‰∏∫toplevel activity*/
+    int32_t(*ptr_activity_manager_foreach)(ActivityManager *thiz, ActivityInterator iter, void *ctx1, void *ctx2);                                        /* ÈÅçÂéÜÊâÄÊúâbackground activity */
     int32_t(*ptr_activity_manager_foreach_suspend)(ActivityManager *thiz, ActivityInterator iter, void *ctx1, void *ctx2);
     int32_t(*ptr_activity_manager_foreach_backgrd)(ActivityManager *thiz, ActivityInterator iter, void *ctx1, void *ctx2);
     void (*ptr_activity_manager_destroy)(ActivityManager *thiz);

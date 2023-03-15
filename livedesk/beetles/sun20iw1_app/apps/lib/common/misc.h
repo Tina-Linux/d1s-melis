@@ -1,31 +1,33 @@
 /*
-************************************************************************************************************************
-*                                                        CUCKOO
-*                                                   the Audio Player
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                             Copyright(C), 2006-2009, SoftWinners Microelectronic Co., Ltd.
-*                                                  All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File Name   : misc.h
-*
-* Author      : Gary.Wang
-*
-* Version     : 1.1.0
-*
-* Date        : 2008.11.08
-*
-* Description :
-*
-* Others      : None at present.
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
 *
-* History     :
-*
-*  <Author>        <time>       <version>      <description>
-*
-* Gary.Wang      2008.11.08       1.1.0        build the file
-*
-************************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef  __COMMON_MISC_H__
 #define  __COMMON_MISC_H__
@@ -33,7 +35,7 @@
 #include "beetles_app.h"
 #include "APP_Mem.h"
 #include "touch_adapter.h"
-#include "APP_Debug.h" //Õâ¸öÒª·ÅÔÚ×îºó
+#include "APP_Debug.h" //è¿™ä¸ªè¦æ”¾åœ¨æœ€å
 
 
 #define DE_INFO do{__msg("DE_INFO:L%d(%s):\n", __LINE__, __FILE__);pt_de_info();}while(0)
@@ -41,7 +43,7 @@
 #define Symbol2Str(str)                     _Symbol2Str(str)
 #define PT_MEMINF                           (eLIBs_printf("MSG:L%d(%s):", __LINE__, __FILE__),esMEMS_Info())
 
-//ĞéÄâ¼ü
+//è™šæ‹Ÿé”®
 #define VK_NULL                             0x0fffffff
 #define VK_ESCAPE                           GUI_MSG_KEY_MENU
 #define VK_MENU                             GUI_MSG_KEY_LONGMENU
@@ -89,7 +91,7 @@ void *My_Malloc(void *heap, uint32_t size);
 
 #define DATA_OF_ADRR(t, p, x, y, w)         (*( (t*)(p)+(y)*(w)+(x) ))
 
-//ÏûÏ¢
+//æ¶ˆæ¯
 #ifndef NOTIFY_MSG
 #define NOTIFY_MSG(mid, src, des, d1, d2)   \
     do{                                     \
@@ -129,10 +131,10 @@ void *My_Malloc(void *heap, uint32_t size);
     }while(0)
 #endif
 
-// ÄÚ´æÉè±¸ÌØÊâ´¦Àí
+// å†…å­˜è®¾å¤‡ç‰¹æ®Šå¤„ç†
 #define GUI_MEMDEV_CopyToLCD_Ex(_h)        {GUI_SetDrawMode(LCD_DRAWMODE_NORMAL); GUI_MEMDEV_CopyToLCD(_h);}
 //////////////////////////////////////////////////////////////////////////
-//Í¼²ã
+//å›¾å±‚
 #define _app_show_layer(_layer)             do {GUI_LyrWinSetSta(_layer, GUI_LYRWIN_STA_ON); GUI_LyrWinSetTop(_layer);} while (0);
 
 #define _app_hide_layer(_layer)             GUI_LyrWinSetSta(_layer, GUI_LYRWIN_STA_SUSPEND)
@@ -144,7 +146,7 @@ void *My_Malloc(void *heap, uint32_t size);
 #define app_show_focus_wnd(_wnd)            _app_show_focus_wnd(_wnd, GUI_WinGetLyrWin(_wnd))
 #define app_hide_wnd(_wnd)                  app_hide_layer(GUI_WinGetLyrWin(_wnd))
 
-//×¢²á±í
+//æ³¨å†Œè¡¨
 #define _get_reg_pointer(_p, _t, _e)        (_p = (_t *)dsk_reg_get_para_by_app(_e))
 #define get_reg_pointer(_p, _t, _e)         _get_reg_pointer(_p, _t, _e) //{_get_reg_pointer(_p, _t, _e); __msg("!!! reg(%d) = %x\n", _e, _p);}
 #define update_to_reg()                     dsk_reg_flush()
@@ -153,7 +155,7 @@ void *My_Malloc(void *heap, uint32_t size);
 #define _get_lang_res(_id, _pbuf)           dsk_langres_get_menu_text(_id, _pbuf, get_menu_len(_id) + 1)
 #define get_lang_res(_id, _pbuf)            {_get_lang_res(_id, _pbuf);/* __msg("load str ( %s )\n", _pbuf);*/}
 
-//gui bmp res Ïà¹Ø
+//gui bmp res ç›¸å…³
 #define GUI_BMPRES_Draw(_hTheme, _x, _y)    GUI_BMP_Draw(dsk_theme_hdl2buf(_hTheme), _x, _y)
 
 //load bmp res
@@ -201,8 +203,8 @@ typedef struct _cuckoo_time_t
 
 
 //add by libaiao, 2011.5.8;
-//TIME_S,±íÊ¾Ö»ÏÔÊ¾Ãë; TIME_MS, ±íÊ¾ÏÔÊ¾·ÖÃë; TIME_HMS,±íÊ¾ÏÔÊ¾Ê±£¬·Ö,Ãë
-//AUTO_HMS,¸ù¾İÊ±¼ä×Ô¶¯×ª»»£¬×îÉÙM,S
+//TIME_S,è¡¨ç¤ºåªæ˜¾ç¤ºç§’; TIME_MS, è¡¨ç¤ºæ˜¾ç¤ºåˆ†ç§’; TIME_HMS,è¡¨ç¤ºæ˜¾ç¤ºæ—¶ï¼Œåˆ†,ç§’
+//AUTO_HMS,æ ¹æ®æ—¶é—´è‡ªåŠ¨è½¬æ¢ï¼Œæœ€å°‘M,S
 typedef enum time_format_s
 {
     TIME_S          ,
@@ -211,7 +213,7 @@ typedef enum time_format_s
     TIME_AUTO_HMS   ,
 } time_format_e;
 
-extern void     uint2str(uint32_t input, char *str);   //×¢Òâ¸Ãº¯ÊıÖ»ÄÜ×ª»»ÎªÁ½Î»Êä³ö.
+extern void     uint2str(uint32_t input, char *str);   //æ³¨æ„è¯¥å‡½æ•°åªèƒ½è½¬æ¢ä¸ºä¸¤ä½è¾“å‡º.
 
 extern void     time2time(uint32_t second_time, cuckoo_time_t *format_time);  ////declaraed by libaiao,2011.5.8
 //extern void  uint2str( uint32_t input, char * str);  //declaraed by libaiao,2011.5.8
@@ -235,26 +237,26 @@ extern uint32_t get_memory_info(char *title, void *pExtPara);          //add by 
 #define __memory_usage(title, pExtPara)     app_print_memory_usage(title, pExtPara)
 
 
-//´«Èë24Ê±ÖÆĞ¡Ê±Öµ£¬´«³ö12Ê±ÖÆĞ¡Ê±Öµ£¬·µ»Ø0Îªam£¬·Ç0Îªpm
+//ä¼ å…¥24æ—¶åˆ¶å°æ—¶å€¼ï¼Œä¼ å‡º12æ—¶åˆ¶å°æ—¶å€¼ï¼Œè¿”å›0ä¸ºamï¼Œé0ä¸ºpm
 extern int32_t  hour24_to_hour12(int32_t *hour);
 
-//²éÑ¯app_nameÃû³ÆµÄÓ¦ÓÃÊÇ·ñ´æÔÚ
-//²éÑ¯±³¾°ÒôÀÖÊÇ·ñ´æÔÚ¿ÉÒÔÓÃis_app_exist(APP_MUSIC)
+//æŸ¥è¯¢app_nameåç§°çš„åº”ç”¨æ˜¯å¦å­˜åœ¨
+//æŸ¥è¯¢èƒŒæ™¯éŸ³ä¹æ˜¯å¦å­˜åœ¨å¯ä»¥ç”¨is_app_exist(APP_MUSIC)
 extern int32_t  is_app_exist(char *app_name);
 
 int32_t     APP_BMP_DrawEx(H_LYR hlyr, const void *pFileData, int x, int y, int x0, int y0, int x1, int y1);
 
 int32_t     test_flush_nor(int32_t i);
 
-//ÉèÖÃ±êÌâ
+//è®¾ç½®æ ‡é¢˜
 int32_t     app_set_title(int32_t res_id);
 
-//ÉèÖÃÄ¬ÈÏ±³¾°ÑÕÉ«
+//è®¾ç½®é»˜è®¤èƒŒæ™¯é¢œè‰²
 int32_t     com_set_backcolor(uint32_t hlay, uint32_t color);
 
 //libaiao, 2011.5.15
-//¸ù¾İÖ¸¶¨³¤¶È´ÓsrcÖĞ½ØÈ¡×Ö·û´®
-//·µ»ØÖµÎªÇÔÈ¡×Ö·û´®µÄ³¤¶È(byteÎªµ¥Î»)
+//æ ¹æ®æŒ‡å®šé•¿åº¦ä»srcä¸­æˆªå–å­—ç¬¦ä¸²
+//è¿”å›å€¼ä¸ºçªƒå–å­—ç¬¦ä¸²çš„é•¿åº¦(byteä¸ºå•ä½)
 int32_t     GUI_GetStringByWidth(char *dst, const char GUI_UNI_PTR *src, uint32_t width);
 
 void        pull_down_gpio(uint32_t port, uint32_t port_num);

@@ -1,0 +1,12 @@
+menu "SYSCTL Devices"
+
+config DRIVERS_SYSCTL
+    bool "enable sysctl driver"
+        default n
+
+config HAL_TEST_SYSCTL
+    bool "enable sysctl hal APIs test command"
+    depends on DRIVERS_SYSCTL
+        default n
+
+endmenu

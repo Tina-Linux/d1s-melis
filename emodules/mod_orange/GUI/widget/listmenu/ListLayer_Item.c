@@ -1,30 +1,33 @@
 /*
-*******************************************************************************************************************
-*                                                           display driver
-*                                                   the display dirver support module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2008, SoftWinners Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name£º    ListLayer_Item.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
-*Author£º       William Wang
 *
-*Version :      1.1.0
-*
-*Date:          2008-8-25
-*
-*Description :  listlayer interface implement function
-*
-*Others :       None at present.
-*
-* History :
-*
-* <Author>          <time>          <version>     <description>
-*
-* William Wang     2008-8-25          1.1.0        Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __LIST_LAYER_ITEM_C____
 #define __LIST_LAYER_ITEM_C____
@@ -41,7 +44,7 @@ extern ES_FILE *gdispfile;
 *
 * date:             2009-1-30
 *
-* Description:      listlayer update head  É¾³ýitemºó¸üÐÂµ±Ç°ItemµÄÉÏ°ë²¿
+* Description:      listlayer update head  åˆ é™¤itemåŽæ›´æ–°å½“å‰Itemçš„ä¸ŠåŠéƒ¨
 *
 * parameters:
 *
@@ -57,17 +60,17 @@ static  __u32  ListLayer_DelUpdateHead(LIST_LAYER_MAN_t    *listlayer)
     __u32                i;
     __pos_t              cur_pos;
     MENUITEM_t          *tmpItem;
-    /*´Ó½¹µãÎ»ÖÃ¿ªÊ¼»æÖÆ*/
+    /*ä»Žç„¦ç‚¹ä½ç½®å¼€å§‹ç»˜åˆ¶*/
     cur_pos.x           = listlayer->foucs_pos.x;
     cur_pos.y           = listlayer->foucs_pos.y;
-    /*»æÖÆÊýÁ¿*/
+    /*ç»˜åˆ¶æ•°é‡*/
     count               = listlayer->upcount + 1 + listlayer->scnnum * (listlayer->fb_depth / 2 - 1);
     tmpItem             = listlayer->menulist->CurItem;
     listlayer->fillup   = 0;
 
     for (i = 0; i < count; i++)
     {
-        /*ÐèÒª»æÖÆµÄitem,²»ÊÇ×îºóÒ»¸öitem*/
+        /*éœ€è¦ç»˜åˆ¶çš„item,ä¸æ˜¯æœ€åŽä¸€ä¸ªitem*/
         if (tmpItem != NULL && tmpItem != listlayer->menulist->tail)
         {
             ListLayer_FastLoadMenuItem(listlayer, tmpItem, 0, cur_pos.x, cur_pos.y);
@@ -87,7 +90,7 @@ static  __u32  ListLayer_DelUpdateHead(LIST_LAYER_MAN_t    *listlayer)
         }
         else
         {
-            /*ËùÓÐµÄitem¶¼ÒÑ¾­É¾³ýÍê³É£¬Çå³ýframebuffer*/
+            /*æ‰€æœ‰çš„iteméƒ½å·²ç»åˆ é™¤å®Œæˆï¼Œæ¸…é™¤framebuffer*/
             if (tmpItem == NULL)
             {
 #if 0
@@ -101,7 +104,7 @@ static  __u32  ListLayer_DelUpdateHead(LIST_LAYER_MAN_t    *listlayer)
 
                 if (listlayer->plistmenu->lyrsts != LISTMENU_SLEEP)
                 {
-                    /*Çå³ýframebuffer*/
+                    /*æ¸…é™¤framebuffer*/
                     eLIBs_memset(base, 0x00, size);
                 }
 
@@ -169,7 +172,7 @@ static  __u32  ListLayer_DelUpdateHead(LIST_LAYER_MAN_t    *listlayer)
 *
 * date:             2009-1-30
 *
-* Description:      listlayer update draw (load item to tail)É¾³ýitemºó¸üÐÂµ±Ç°ItemµÄÏÂ°ë²¿
+* Description:      listlayer update draw (load item to tail)åˆ é™¤itemåŽæ›´æ–°å½“å‰Itemçš„ä¸‹åŠéƒ¨
 *
 * parameters:
 *
@@ -225,7 +228,7 @@ static __u32 ListLayer_DelUpdateTail(LIST_LAYER_MAN_t    *listlayer)
 
                 if (listlayer->plistmenu->lyrsts != LISTMENU_SLEEP)
                 {
-                    /*Çå³ýframebuffer*/
+                    /*æ¸…é™¤framebuffer*/
                     eLIBs_memset(base, 0x00, size);
                 }
 
@@ -293,7 +296,7 @@ static __u32 ListLayer_DelUpdateTail(LIST_LAYER_MAN_t    *listlayer)
 *
 * date:             2009-1-30
 *
-* Description:      listlayer update draw (load item to tail)É¾³ýitemºó¸üÐÂµ±Ç°ItemµÄÏÂ°ë²¿
+* Description:      listlayer update draw (load item to tail)åˆ é™¤itemåŽæ›´æ–°å½“å‰Itemçš„ä¸‹åŠéƒ¨
 *
 * parameters:
 *
@@ -310,7 +313,7 @@ static __u32 ListLayer_AddUpdateTail(LIST_LAYER_MAN_t    *listlayer)
     __pos_t              cur_pos;
     MENUITEM_t          *tmpItem;
 
-    /*Ö»ÓÐÒ»¸öItemµÄÇé¿ö£¬´ËÊ±Ìí¼ÓÇ°Îª¿Õlistmenu*/
+    /*åªæœ‰ä¸€ä¸ªItemçš„æƒ…å†µï¼Œæ­¤æ—¶æ·»åŠ å‰ä¸ºç©ºlistmenu*/
     if (listlayer->menulist->ItemCount == 1)
     {
         ListLayer_OnDraw(listlayer);
@@ -424,7 +427,7 @@ __u32  ListLayer_DelCurItem(LIST_LAYER_MAN_t    *listlayer)
         return OK;
     }
 
-    /*update head information,ÐèÒªÉ¾³ýµÄitemÊÇÎ²item£¬´ËÊ±ÐèÒª¸üÐÂÉÏ°ë²¿*/
+    /*update head information,éœ€è¦åˆ é™¤çš„itemæ˜¯å°¾itemï¼Œæ­¤æ—¶éœ€è¦æ›´æ–°ä¸ŠåŠéƒ¨*/
     if (listlayer->menulist->CurItem == listlayer->menulist->tail)
     {
         NewCurItem = listlayer->menulist->CurItem->Prev;
@@ -472,18 +475,18 @@ __u32  ListLayer_DelCurItem(LIST_LAYER_MAN_t    *listlayer)
             return OK;
         }
     }
-    else  /*update tail information£¬ÐèÒª¸üÐÂ²»ÊÇ×îºóÒ»¸öitem£¬´ËÊ±ÐèÒª¸üÐÂÏÂ°ë²¿*/
+    else  /*update tail informationï¼Œéœ€è¦æ›´æ–°ä¸æ˜¯æœ€åŽä¸€ä¸ªitemï¼Œæ­¤æ—¶éœ€è¦æ›´æ–°ä¸‹åŠéƒ¨*/
     {
-        /*»ñÈ¡ÐÂitemµÄ´°¿Ú¾ä±ú*/
+        /*èŽ·å–æ–°itemçš„çª—å£å¥æŸ„*/
         NewCurItem = listlayer->menulist->CurItem->Next;
 
-        /*Ö»ÓÐÒ»¸öitemµÄÇé¿ö*/
+        /*åªæœ‰ä¸€ä¸ªitemçš„æƒ…å†µ*/
         if (NewCurItem == listlayer->menulist->CurItem)
         {
             NewCurItem = NULL;
         }
 
-        /*ÔÚmenulistÖÐÉ¾³ýµ±Ç°item*/
+        /*åœ¨menulistä¸­åˆ é™¤å½“å‰item*/
         ret = MenuList_DelItem(listlayer->menulist, listlayer->menulist->CurItem);
 
         if (ret != OK)
@@ -494,7 +497,7 @@ __u32  ListLayer_DelCurItem(LIST_LAYER_MAN_t    *listlayer)
         if (NewCurItem != NULL)
         {
             listlayer->menulist->CurItem = NewCurItem;
-            /*¸üÐÂÏÂ°ë²¿*/
+            /*æ›´æ–°ä¸‹åŠéƒ¨*/
             ListLayer_DelUpdateTail(listlayer);
             //LISTMENU_PRINTF("foucs x = %d,foucs y = %d\n",listlayer->foucs_pos.x,listlayer->foucs_pos.y);
             ret = ListLayer_DrawFastFoucsMenuItem(listlayer, listlayer->menulist->CurItem,
@@ -516,7 +519,7 @@ __u32  ListLayer_DelCurItem(LIST_LAYER_MAN_t    *listlayer)
 
             listlayer->setfoucs = REAL_FOUCS;
         }
-        else/*Ö»ÓÐÒ»¸öitemµÄÇé¿ö*/
+        else/*åªæœ‰ä¸€ä¸ªitemçš„æƒ…å†µ*/
         {
             listlayer->menulist->CurItem = NewCurItem;
             ListLayer_DelUpdateTail(listlayer);
@@ -580,4 +583,3 @@ __u32  ListLayer_AddItemTail(LIST_LAYER_MAN_t *listlayer, __lstm_item_attr_t *Ne
 }
 
 #endif
-

@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <typedef.h>
 #include <log.h>
 #include <libc.h>
@@ -22,9 +53,9 @@ static rat_willow_t *rat_willow_hdl = NULL;
 *
 * date:             2009-11-15
 *
-* Description:       Êý¾ÝÓÉbgra¸ñÊ½×ª»¯Îªargb
+* Description:       æ•°æ®ç”±bgraæ ¼å¼è½¬åŒ–ä¸ºargb
 *
-* parameters:       data£ºÊý¾Ý  len£ºÊý¾Ý³¤¶È
+* parameters:       dataï¼šæ•°æ®  lenï¼šæ•°æ®é•¿åº¦
 *
 * return:           void
 * modify history:
@@ -54,7 +85,7 @@ static void _convert_2_argb(__u32 *data, __u32 len)
 *
 * date:             2009-11-15
 *
-* Description:       È·ÈÏrat_willow_hdlÖÐ¼ä¼þ´¦ÓÚ·ÇWILLOW_STATUS_BUSY×´Ì¬
+* Description:       ç¡®è®¤rat_willow_hdlä¸­é—´ä»¶å¤„äºŽéžWILLOW_STATUS_BUSYçŠ¶æ€
 *
 * parameters:
 *
@@ -93,7 +124,7 @@ void wait_willow_ready(__mp *willow_handle)
 *
 * date:             2009-11-15
 *
-* Description:       È·ÈÏrat_willow_hdlÖÐ¼ä¼þ´¦ÓÚWILLOW_STATUS_FINISH×´Ì¬
+* Description:       ç¡®è®¤rat_willow_hdlä¸­é—´ä»¶å¤„äºŽWILLOW_STATUS_FINISHçŠ¶æ€
 *
 * parameters:
 *
@@ -133,7 +164,7 @@ void wait_willow_finish(__mp *willow_handle)
 *
 * date:             2010-10-11
 *
-* Description:      ´ò¿ªÍ¼Æ¬½âÂëÒýÇæ
+* Description:      æ‰“å¼€å›¾ç‰‡è§£ç å¼•æ“Ž
 *
 * parameters:
 *
@@ -173,7 +204,7 @@ rat_willow_t *AWILLOW_Open(void)
     }
 
     __wrn("AWILLOW_Open 5");
-    rat_willow_hdl->willow_handle = esMODS_MOpen(rat_willow_hdl->willow_libs, 1);// 1´ò¿ªËõÂÔÍ¼
+    rat_willow_hdl->willow_handle = esMODS_MOpen(rat_willow_hdl->willow_libs, 1);// 1æ‰“å¼€ç¼©ç•¥å›¾
 
     if (rat_willow_hdl->willow_handle == NULL)
     {
@@ -198,7 +229,7 @@ rat_willow_t *AWILLOW_Open(void)
 *
 * date:             2010-10-11
 *
-* Description:       ¹Ø±Õrat_willow_hdlÖÐ¼ä¼þ
+* Description:       å…³é—­rat_willow_hdlä¸­é—´ä»¶
 *
 * parameters:
 *
@@ -247,7 +278,7 @@ __s32 AWILLOW_Close(rat_willow_t *handle)
 *
 * date:             2009-11-15
 *
-* Description:       ÏòÖÐ¼ä¼þ»ñÈ¡ËõÂÔÍ¼
+* Description:       å‘ä¸­é—´ä»¶èŽ·å–ç¼©ç•¥å›¾
 *
 * parameters:
 *
@@ -265,6 +296,21 @@ __s32 AWILLOW_GetThumbs(__mp *willow_handle, __willow_get_thumbs_param_t *param,
     }
 
     wait_willow_finish(willow_handle);
+
+    if(param->inputType)
+    {
+        __willow_buf_info_t in_para;
+        in_para.buffer = param->inputBuf;
+        in_para.buffersize = param->inputSize;
+        __log("buffer input!");
+        result = esMODS_MIoctrl(willow_handle, WILLOW_CMD_CFG_INPUT, WILLOW_INPUT_BUFFER, &in_para);
+        if (result == -1)
+        {
+            __log("WILLOW_CMD_CFG_INPUT err!");
+            return EPDK_FAIL;
+        }
+    }
+
     result = esMODS_MIoctrl(willow_handle, WILLOW_CMD_GET_THUMBS, 0, param);
 
     if (result == -1)
@@ -274,7 +320,7 @@ __s32 AWILLOW_GetThumbs(__mp *willow_handle, __willow_get_thumbs_param_t *param,
 
     wait_willow_finish(willow_handle);
 
-    if (param->filename)
+    if (1)//param->filename)
     {
         if (esMODS_MIoctrl(willow_handle, WILLOW_CMD_CHECK_IMG, 0, param) == EPDK_FAIL)
         {
@@ -321,7 +367,7 @@ __s32 AWILLOW_GetThumbs(__mp *willow_handle, __willow_get_thumbs_param_t *param,
 *
 * date:             2009-11-15
 *
-* Description:       ÏòÖÐ¼ä¼þ»ñÈ¡ËõÂÔÍ¼
+* Description:       å‘ä¸­é—´ä»¶èŽ·å–ç¼©ç•¥å›¾
 *
 * parameters:
 *
@@ -339,6 +385,20 @@ __s32 AWILLOW_GetAlbumPic(__mp *willow_handle, __willow_get_albumart_param_t *pa
         return EPDK_FAIL;
     }
 
+    if(para->thumbs.inputType)
+    {
+        __willow_buf_info_t in_para;
+        in_para.buffer = para->thumbs.inputBuf;
+        in_para.buffersize = para->thumbs.inputSize;
+
+        result = esMODS_MIoctrl(willow_handle, WILLOW_CMD_CFG_INPUT, WILLOW_INPUT_BUFFER, &in_para);
+        if (result == -1)
+        {
+            __log("WILLOW_CMD_CFG_INPUT err!");
+            return EPDK_FAIL;
+        }
+    }
+
     eLIBs_memset(&check_para, 0, sizeof(__willow_show_file_param_t));
     wait_willow_finish(willow_handle);
     result = esMODS_MIoctrl(willow_handle, WILLOW_CMD_SET_ALBUM_ART, 0, para);
@@ -350,7 +410,9 @@ __s32 AWILLOW_GetAlbumPic(__mp *willow_handle, __willow_get_albumart_param_t *pa
 
     wait_willow_finish(willow_handle);
 
-    if (para->thumbs.filename)
+
+
+    if (1)//para->thumbs.filename)
     {
         check_para.filename = para->thumbs.filename;
         check_para.img_no = 0;
@@ -404,7 +466,7 @@ __s32 rat_wait_willow_finish(void)
 *
 * date:
 *
-* Description:       Æô¶¯ËõÂÔÍ¼½âÂë£¨°²×°rat_willow_hdl.mod£¬²»ÓÃÃ¿´Î¶¼°²×°£¬²»ÓÃ³£×¤ÄÚ´æ£©
+* Description:       å¯åŠ¨ç¼©ç•¥å›¾è§£ç ï¼ˆå®‰è£…rat_willow_hdl.modï¼Œä¸ç”¨æ¯æ¬¡éƒ½å®‰è£…ï¼Œä¸ç”¨å¸¸é©»å†…å­˜ï¼‰
 *
 * parameters:
 *
@@ -442,7 +504,7 @@ __s32 rat_start_miniature_decode(void)
 *
 * date:
 *
-* Description:       Í£Ö¹ËõÂÔÍ¼½âÂë£¨Ð¶ÔØrat_willow_hdl.mod£©
+* Description:       åœæ­¢ç¼©ç•¥å›¾è§£ç ï¼ˆå¸è½½rat_willow_hdl.modï¼‰
 *
 * parameters:
 *
@@ -469,7 +531,7 @@ __s32 rat_stop_miniature_decode(void)
 *
 * date:
 *
-* Description:       »ñÈ¡Í¼Æ¬ËõÂÔÍ¼µÈÐÅÏ¢
+* Description:       èŽ·å–å›¾ç‰‡ç¼©ç•¥å›¾ç­‰ä¿¡æ¯
 *
 * parameters:
 *
@@ -490,6 +552,15 @@ __s32 rat_get_pic_info(rat_miniature_para_t *para, rat_pic_info_t *pic_info)
 
     eLIBs_memset(&thumbs, 0, sizeof(__willow_get_thumbs_param_t));
     eLIBs_memset(&img_info, 0, sizeof(__willow_img_info_t));
+
+    if((para->input_type == 0 && para->file == NULL) || \
+       (para->input_type == 1 && para->input_buf == NULL && para->input_size == 0))
+    {
+        return EPDK_FAIL;
+    }
+    thumbs.inputType = para->input_type;
+    thumbs.inputBuf = para->input_buf;
+    thumbs.inputSize = para->input_size;
     thumbs.filename = para->file;
     thumbs.format = para->format;
     thumbs.size.width = para->width;
@@ -505,8 +576,9 @@ __s32 rat_get_pic_info(rat_miniature_para_t *para, rat_pic_info_t *pic_info)
 
     pic_info->miniature.len = para->width * para->height * 4;
 #ifdef CONFIG_SOC_SUN3IW1
-    _convert_2_argb((__u32 *)pic_info->miniature.buf, para->width * para->height);
+    // _convert_2_argb((__u32 *)pic_info->miniature.buf, para->width * para->height);
 #endif
+    eLIBs_CleanFlushDCacheRegion((void *)pic_info->miniature.buf, pic_info->miniature.len);
     //__msg("width=%d, height=%d",img_info.size.width, img_info.size.height);
     pic_info->width = img_info.size.width;
     pic_info->height = img_info.size.height;
@@ -522,7 +594,7 @@ __s32 rat_get_pic_info(rat_miniature_para_t *para, rat_pic_info_t *pic_info)
 *
 * date:
 *
-* Description:       »ñÈ¡ÒôÀÖÏà²áµÈÐÅÏ¢
+* Description:       èŽ·å–éŸ³ä¹ç›¸å†Œç­‰ä¿¡æ¯
 *
 * parameters:
 *
@@ -603,6 +675,10 @@ __s32 rat_get_album_info(rat_miniature_para_t *para, rat_audio_info_t *audio_inf
 
     album_para.album_art_info.offset = file_info.ulAPic->FileLocation;
     album_para.album_art_info.length = file_info.ulAPic->length;
+
+    album_para.thumbs.inputType = para->input_type;
+    album_para.thumbs.inputBuf = para->input_buf;
+    album_para.thumbs.inputSize = para->input_size;
     album_para.thumbs.format = para->format;
     album_para.thumbs.filename = para->file;
     album_para.thumbs.size.width = para->width;
@@ -616,7 +692,8 @@ __s32 rat_get_album_info(rat_miniature_para_t *para, rat_audio_info_t *audio_inf
     }
 
     audio_info->album.len = para->width * para->height * 4;
-    _convert_2_argb((__u32 *)audio_info->album.buf, para->width * para->height);
+    // _convert_2_argb((__u32 *)audio_info->album.buf, para->width * para->height);
+    eLIBs_CleanFlushDCacheRegion((void *)audio_info->album.buf, audio_info->album.len);
     return EPDK_OK;
 }
 

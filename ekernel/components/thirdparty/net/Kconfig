@@ -1,0 +1,9 @@
+menuconfig NETWORK
+    bool "Enable Network Support"
+    default y
+
+if NETWORK
+source "ekernel/components/thirdparty/net/rt-thread/Kconfig"
+endif
+
+

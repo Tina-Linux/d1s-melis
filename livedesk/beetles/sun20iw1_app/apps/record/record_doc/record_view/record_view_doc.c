@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include "record_view_doc.h"
 #include "record_comm.h"
 #include <log.h>
@@ -167,14 +198,14 @@ __s32 record_init(precord_doc_t precord_doc)
     reg_record_para_t  *recPara;
     ES_DIR      *tmp_dir;
 
-    //µÃµ½µ±Ç°Â·¾¶
+    //å¾—åˆ°å½“å‰è·¯å¾„
     if (record_GetSearchPath(precord_doc) == EPDK_FAIL)
     {
         __wrn("\n\ncan't fined this disk %d!\n\n", precord_doc->curRootType);
         return EPDK_FAIL;
     }
 
-    //»ñµÃÊ£Óà¿ÉÂ¼Ê±¼ä
+    //èŽ·å¾—å‰©ä½™å¯å½•æ—¶é—´
     record_set_quality(precord_doc);
     precord_doc->diskFreeSize   = eLIBs_GetVolFSpace(precord_doc->curSearchDisk);//1024*1024*1024;
 
@@ -304,7 +335,7 @@ __s32 record_start(precord_doc_t precord_doc)
         return EPDK_FAIL;
     }
 
-    // ÉèÖÃÂ¼ÒôÎÄ¼þ
+    // è®¾ç½®å½•éŸ³æ–‡ä»¶
     record_set_quality(precord_doc);
     record_set_recSource(precord_doc);
     record_set_path(precord_doc);
@@ -323,7 +354,7 @@ __s32 record_start(precord_doc_t precord_doc)
 
     //..com_audio_echo_close();
     //..com_audio_echo_open(AUDIO_REC_USR_MIC, 0);
-    // Æô¶¯Â¼ÖÆ
+    // å¯åŠ¨å½•åˆ¶
     ret = esMODS_MIoctrl(precord_doc->mod_ginkgo, GINKGO_CMD_START, 0, 0);
 
     if (ret < 0)
@@ -337,7 +368,7 @@ __s32 record_start(precord_doc_t precord_doc)
         __msg("\n\nSend start command to ginkgo OK!!!\n\n");
     }
 
-    // ¿ªÆôÆµÆ×
+    // å¼€å¯é¢‘è°±
     ret = esMODS_MIoctrl(precord_doc->mod_ginkgo, GINKGO_CMD_SET_SPECTRUM, 1, 0);
 
     if (ret < 0)

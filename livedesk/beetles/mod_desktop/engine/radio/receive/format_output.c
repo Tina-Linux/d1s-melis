@@ -1,19 +1,34 @@
 /*
-**************************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              lark sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2006-2007, TERRY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : format_output.c
-* By      : terry
-* Version : V1.00
-* time    : 2009-12-01
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 //#include "dsk_radio_receive_i.h"
 #include "dsk_radio_i.h"
 #include <stdarg.h>
@@ -37,11 +52,11 @@
 **********************************************************************************************************************
 *                                               my_isdigit
 *
-* Description: ÅĞ¶Ï¸Ã×Ö·ûÊÇ·ñÎªÊı×Ö
+* Description: åˆ¤æ–­è¯¥å­—ç¬¦æ˜¯å¦ä¸ºæ•°å­—
 *
-* Arguments  : s£º´ıÅĞ¶ÏµÄ×Ö·û
+* Arguments  : sï¼šå¾…åˆ¤æ–­çš„å­—ç¬¦
 *
-* Returns    : ÕıÈ··µ»Ø1£¬´íÎó·µ»Ø0
+* Returns    : æ­£ç¡®è¿”å›1ï¼Œé”™è¯¯è¿”å›0
 *
 * Notes      :
 *
@@ -62,11 +77,11 @@ __s32 my_isdigit(char s)
 **********************************************************************************************************************
 *                                               myitoa
 *
-* Description: °ÑÊı×Ö×ª»¯Îª×Ö·û´®
+* Description: æŠŠæ•°å­—è½¬åŒ–ä¸ºå­—ç¬¦ä¸²
 *
-* Arguments  : num£º´ı×ª»¯µÄÊıÖµ£»buf_len£ºbuf³¤¶È£»buf×ª»¯ºóµÄÊä³öbuf
+* Arguments  : numï¼šå¾…è½¬åŒ–çš„æ•°å€¼ï¼›buf_lenï¼šbufé•¿åº¦ï¼›bufè½¬åŒ–åçš„è¾“å‡ºbuf
 *
-* Returns    : ÕıÈ··µ»Ø0£¬´íÎó·µ»Ø-1
+* Returns    : æ­£ç¡®è¿”å›0ï¼Œé”™è¯¯è¿”å›-1
 *
 * Notes      :
 *
@@ -87,11 +102,11 @@ __s32 myitoa(__s32 num, __s32 buf_len, char *buf)
 **********************************************************************************************************************
 *                                               skip_atoi
 *
-* Description: °Ñ×Ö·û´®sÀïµÄÊı×Ö×Ö·û×ª»¯ÎªÊı×Ö£¬²¢Ê¹×Ö·û´®Ö¸ÕëÌøµ½Êı×Ö×Ö·ûºóÃæ
+* Description: æŠŠå­—ç¬¦ä¸²sé‡Œçš„æ•°å­—å­—ç¬¦è½¬åŒ–ä¸ºæ•°å­—ï¼Œå¹¶ä½¿å­—ç¬¦ä¸²æŒ‡é’ˆè·³åˆ°æ•°å­—å­—ç¬¦åé¢
 *
-* Arguments  : s£º×Ö·û´®Ö¸Õë
+* Arguments  : sï¼šå­—ç¬¦ä¸²æŒ‡é’ˆ
 *
-* Returns    : ÕıÈ··µ»Ø×ª»¯ºóµÄÊıÖµ£¬´íÎó·µ»Ø-1
+* Returns    : æ­£ç¡®è¿”å›è½¬åŒ–åçš„æ•°å€¼ï¼Œé”™è¯¯è¿”å›-1
 *
 * Notes      :
 *
@@ -113,11 +128,11 @@ static __s32 skip_atoi(const char **s)
 **********************************************************************************************************************
 *                                               number
 *
-* Description: ¸ñÊ½»¯ÊıÖµnumÎª×Ö·û´®
+* Description: æ ¼å¼åŒ–æ•°å€¼numä¸ºå­—ç¬¦ä¸²
 *
-* Arguments  : str£º×Ö·û´®Ö¸Õë£»num£º´ı×ª»¯µÄÊıÖµ£»precision£º´ı×ª»¯µÄÊıÖµ¸öÊı
+* Arguments  : strï¼šå­—ç¬¦ä¸²æŒ‡é’ˆï¼›numï¼šå¾…è½¬åŒ–çš„æ•°å€¼ï¼›precisionï¼šå¾…è½¬åŒ–çš„æ•°å€¼ä¸ªæ•°
 *
-* Returns    : ÕıÈ··µ»Ø×ª»¯ºóµÄ×Ö·û´®Ö¸Õë£¬´íÎó·µ»Ø-1
+* Returns    : æ­£ç¡®è¿”å›è½¬åŒ–åçš„å­—ç¬¦ä¸²æŒ‡é’ˆï¼Œé”™è¯¯è¿”å›-1
 *
 * Notes      :
 *
@@ -168,11 +183,11 @@ static char *number(char *str, __u32 num, __s32 precision)
 **********************************************************************************************************************
 *                                               my_output_format
 *
-* Description: ¸ñÊ½»¯Êä³öµ½buf£¬¸Ãº¯ÊıÀàËÆÓësprintf
+* Description: æ ¼å¼åŒ–è¾“å‡ºåˆ°bufï¼Œè¯¥å‡½æ•°ç±»ä¼¼ä¸sprintf
 *
-* Arguments  : buf£ºÊä³öbuf£¬fmt£º¸ñÊ½»¯
+* Arguments  : bufï¼šè¾“å‡ºbufï¼Œfmtï¼šæ ¼å¼åŒ–
 *
-* Returns    : ÕıÈ··µ»ØÊµ¼Ê×ª»¯µÄ¸öÊı£¬´íÎó·µ»Ø-1
+* Returns    : æ­£ç¡®è¿”å›å®é™…è½¬åŒ–çš„ä¸ªæ•°ï¼Œé”™è¯¯è¿”å›-1
 *
 * Notes      :
 *
@@ -256,4 +271,3 @@ __s32 my_output_format(char *buf, const char *fmt, ...)
     va_end(args);
     return str - buf;
 }
-

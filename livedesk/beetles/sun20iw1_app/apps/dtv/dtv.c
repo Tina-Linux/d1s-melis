@@ -1,21 +1,37 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              willow app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                               (c) Copyright 2006-2007, SoftWinners Microelectronic Co., Ltd.
-*                                           All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : dtv.c
-* By      : lihaoyi
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 /*
 ******************************************************************************************************
-*                                       app_dtv_create  ���������
+*                                       app_dtv_create  播放器入口
 *
 *Description: dtv entry functoin.
 *
@@ -27,39 +43,39 @@
 */
 
 /*
-//����,���ź�״̬�⣬�䴴������GUI_MSG_KEY�д���
-*1��Ƶ��Ԥ��
-*2����ĿԤ��
-*3�����ò˵�
-*4����������
-*5���ź�״̬
+//界面,除信号状态外，其创建都在GUI_MSG_KEY中处理
+*1、频道预览
+*2、节目预告
+*3、设置菜单
+*4、搜索进度
+*5、信号状态
 
-* 1~4������ͬһͼ����й��������������֮����л�
+* 1~4界面由同一图层进行管理，方便各界面之间的切换
 
-//ʹ�ô˲���������Ҫ����������Ϣ:
-*1��MAPLE_TV_STANDAR = MAPLE_TV_DTMB or MAPLE_TV_ISDB_T ..... //����CMMB��ISDBT
-*2��IS_CA_EXIST  = 1 or 0 �Ƿ���ڼ���CAģ��,��������������ʱ������1
-*3��G_DTV_current_area �� 0 or 1 ?  0:ֻ��������Ƶ��1:ȫ��Ƶ������,0ֻ��Ϊ������Ա������
-*4��ISDBT��Ļ��������g_type, ��Ĭ�ϰ���
+//使用此播放器，需要配置如下信息:
+*1、MAPLE_TV_STANDAR = MAPLE_TV_DTMB or MAPLE_TV_ISDB_T ..... //播放CMMB或ISDBT
+*2、IS_CA_EXIST  = 1 or 0 是否存在加密CA模块,测试天线灵敏度时必须是1
+*3、G_DTV_current_area ＝ 0 or 1 ?  0:只搜索深圳频点1:全国频点搜索,0只做为开发人员测试用
+*4、ISDBT字幕必须配置g_type, 现默认巴西
 */
 
-//ע��:�Ƚ��ϵ�SDK���ڴ��豸��������,�����������������ڴ��豸
+//注意:比较老的SDK用内存设备会有问题,导致重启，请屏蔽内存设备
 //eg:com_memdev_create \ GUI_MEMDEV_Create ......
-//���CA����ģ�鲻���ڣ�������CA�����к����Ϊ������Ϣ
+//如果CA加密模块不存在，设置中CA的序列号请改为其它信息
 
-//��ĿԤ����Ϣ��Ƶ����ʼ���ŵ����ͳ�ESG��Ϣ��Ҫ3���ӣ��ټ���
-//��ʱ����1�룬���Ҫ4�����Ҳų���ʾ���������������������
-//���԰ѽ�ĿԤ��ŵ������У������Ӳ��ųɹ����������ã���ѡ��鿴��ĿԤ��
-//�����Ͼ�4����(�û����Լ��޸ģ����治���˸Ķ�����Ϥ֪!!!)
-
-
-//�����Ӱ�����жϵ���䣬�ڱ���ǰ����Ҫ��CMMB��̨���ļ��������±���
-//��Ϊע����ڱ���ʱ���NOR FLASH�������
+//节目预告信息从频道开始播放到解释出ESG信息需要3秒钟，再加上
+//定时器的1秒，大概要4秒左右才出显示出来，所以如果觉得慢，
+//可以把节目预告放到设置中，这样从播放成功到进到设置，到选择查看节目预告
+//基本上就4秒了(用户可自己修改，公版不做此改动，请悉知!!!)
 
 
-//��Ҫ: ����CMMB/ISDBT֮ǰ����ذ�������ɾ�����ͷ��ڴ�
-//��ΪCMMB/ISDBT������Ҫ�õ���������ڴ棬����ڴ治��
-//���ܻ�Ī������!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//如果电影音乐有断点记忆，在保存前，需要把CMMB存台的文件读出重新保存
+//因为注册表在保存时会把NOR FLASH扇区清除
+
+
+//重要: 进入CMMB/ISDBT之前请务必把主界面删除，释放内存
+//因为CMMB/ISDBT解码需要用到大块连续内存，如果内存不足
+//可能会莫名死机!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 #include <log.h>
@@ -97,10 +113,10 @@ extern __mp *maple;
 
 __s32 dsk_radio_open_i(void)
 {
-    /*����FM����*/
+    /*加载FM驱动*/
     esDEV_Plugin("\\drv\\fm.drv", 0, 0, 1);
     //__here__;
-    /*��FM����*/
+    /*打开FM驱动*/
 #if 0/*langaojie temp test*/
     fm_drv = eLIBs_fopen("b:\\USER\\FM", "r+");
 #else
@@ -127,15 +143,15 @@ __s32 dsk_radio_close_i(void)
     {
         esMODS_MIoctrl(fm_drv, DRV_FM_CMD_SEND_EXIT, 0, 0);
         esMODS_MIoctrl(fm_drv, DRV_FM_CMD_RECVE_EXIT, 0, 0);
-        /*�˳�FM����*/
+        /*退出FM驱动*/
         esMODS_MIoctrl(fm_drv, DRV_FM_CMD_EXIT, 0, 0);
-        /*�ر�FM����*/
+        /*关闭FM驱动*/
 #if 0/*langaojie temp test*/
         //eLIBs_fclose(fm_drv);
 #endif
     }
 
-    /*ж��FM����*/
+    /*卸载FM驱动*/
     esDEV_Plugout("\\drv\\fm.drv", 0);
     return result;
 }
@@ -260,7 +276,7 @@ static void dtv_show_cardId_dialog_destroy(void)
 
 #endif  // #if (MAPLE_CA_STANDAR == MEDIAGATE_CAS)
 ////dtv_key_proc
-//�����ǰ�����������棬�����ؼ��ⲻ��Ӧ�κ���������
+//如果当前处于搜索界面，除返回键外不响应任何其它按键
 static __s32 dtv_key_proc(__gui_msg_t *msg)
 {
     static __s8 last_key = -1;
@@ -271,7 +287,7 @@ static __s32 dtv_key_proc(__gui_msg_t *msg)
     {
         last_key = msg->dwAddData1;
 
-        //ֻ�ڲ��ŵ�ʱ����Ӧ���ּ�
+        //只在播放的时候响应数字键
         if (((((!dtv_ctr.h_scan)    && (!dtv_has_sub_scene())) || dtv_ctr.sel_sta))
             && (msg->dwAddData1 >= GUI_MSG_KEY_NUM0)
             && (msg->dwAddData1 <= GUI_MSG_KEY_NUM9) && 0 < maple_get_cur_service_list_num())
@@ -306,11 +322,11 @@ static __s32 dtv_key_proc(__gui_msg_t *msg)
                 dtv_loading_hide();
             }
 
-            //����ѡ̨ʱ�����ö�ʱ��
+            //数字选台时，重置定时器
             {
                 __msg("input number => %d", (msg->dwAddData1 - GUI_MSG_KEY_NUM0));
                 dtv_ctr.sel_num = dtv_ctr.sel_num % 1000;
-                dtv_ctr.sel_num = dtv_ctr.sel_num * 10 + (msg->dwAddData1 - GUI_MSG_KEY_NUM0); //̨��
+                dtv_ctr.sel_num = dtv_ctr.sel_num * 10 + (msg->dwAddData1 - GUI_MSG_KEY_NUM0); //台号
 
                 if ((++dtv_ctr.sel_cnt) > 3)
                 {
@@ -336,7 +352,7 @@ static __s32 dtv_key_proc(__gui_msg_t *msg)
 
         switch (msg->dwAddData1)
         {
-            case GUI_MSG_KEY_SCAN://��̨
+            case GUI_MSG_KEY_SCAN://搜台
                 //case GUI_MSG_KEY_UP:
             {
                 if (!dtv_ctr.h_scan)
@@ -346,7 +362,7 @@ static __s32 dtv_key_proc(__gui_msg_t *msg)
 ||(MAPLE_TV_STANDAR == MAPLE_TV_DTMB)\
 || (MAPLE_TV_STANDAR == MAPLE_TV_DVB_T)\
 || (MAPLE_TV_STANDAR == MAPLE_TV_ATSC))
-                    //dtv_set_cur_user_index(0);//isdbtĬ�ϲ��ŵ�һ��Ƶ��ĵ�һ��̨
+                    //dtv_set_cur_user_index(0);//isdbt默认播放第一个频点的第一个台
                     dtv_subtitle_proc();
 #endif
                     dtv_delete_all_menu(0);
@@ -354,7 +370,7 @@ static __s32 dtv_key_proc(__gui_msg_t *msg)
                     maple_search_stop();
                     maple_stop_program();
 #ifdef DTV_AUTO_SEARCH_ENABLE
-                    dtv_search_program_start(msg, AUTO_SERACH_TYPE, 0);// �Զ�����
+                    dtv_search_program_start(msg, AUTO_SERACH_TYPE, 0);// 自动搜索
 #else
                     dtv_search_program_start(msg, ALL_FREQ_SERACH_TYPE, 0);
 #endif
@@ -370,14 +386,14 @@ static __s32 dtv_key_proc(__gui_msg_t *msg)
 
             case GUI_MSG_KEY_EPG:
                 /*********************************************************************************
-                                //epg����Ϣ��ȡ�����Ҫ4�룬���˵�������ݼ�
-                                //��÷ŵ����ò˵��У���Ϊ���ò˵���һ��ѡ��
-                                //���������Ǻ��ڲŷ��ֲ�̫���ʣ�
-                                //��Ϊ��Ŀ���ź�������ϰ�EPG�鿴��ĿԤ�棬
-                                //������������ʾ���Ӹо��ϸ����˸о�����
+                                //epg的信息获取大概需要4秒，不宜单独做快捷键
+                                //最好放到设置菜单中，做为设置菜单的一个选项
+                                //放在这里是后期才发现不太合适，
+                                //因为节目播放后如果马上按EPG查看节目预告，
+                                //将不会马上显示，从感觉上给的人感觉慢了
                 *********************************************************************************/
             {
-                //��̨ʱû����ʾEPG���Ѿ���ʾEPGʱû��Ҫ��������ʾ
+                //搜台时没法显示EPG，已经显示EPG时没必要再重新显示
                 if ((!dtv_ctr.h_scan) /* && service_list->servNum > 0 */
                     && !dtv_ctr.h_epg && 0 < maple_get_cur_service_list_num())
                 {
@@ -401,7 +417,7 @@ static __s32 dtv_key_proc(__gui_msg_t *msg)
             {
                 g_is_programme_list_selected = 1;
 
-                if ((!dtv_ctr.h_scan) && !dtv_has_sub_scene() && 0 < maple_get_cur_service_list_num()) //�����ڲ���Ӧ���»�̨��
+                if ((!dtv_ctr.h_scan) && !dtv_has_sub_scene() && 0 < maple_get_cur_service_list_num()) //不存在才响应上下换台键
                 {
                     __s32 index ;
                     clear_dtv_select_number(msg);
@@ -465,9 +481,9 @@ static __s32 dtv_key_proc(__gui_msg_t *msg)
             {
                 g_is_programme_list_selected = 1;
 
-                if ((!dtv_ctr.h_scan) && !dtv_has_sub_scene() && 0 < maple_get_cur_service_list_num()) //�����ڲ���Ӧ���»�̨��
+                if ((!dtv_ctr.h_scan) && !dtv_has_sub_scene() && 0 < maple_get_cur_service_list_num()) //不存在才响应上下换台键
                 {
-                    //��̨ʱ���л�̨�����ֳ���ʱ��Ϣ���ӳ����������ֳ�������
+                    //搜台时不切换台，有字场景时消息往子场景传，由字场景处理
                     __s32 index ;
                     index = dtv_get_cur_user_index();
                     index++;
@@ -562,11 +578,11 @@ static __s32 dtv_key_proc(__gui_msg_t *msg)
                 return EPDK_OK;
             }
 
-#if 0////��Ļ����
+#if 0////字幕开关
 #if((MAPLE_TV_STANDAR == MAPLE_TV_ISDB_T)||(MAPLE_TV_STANDAR == MAPLE_TV_DTMB)\
 || (MAPLE_TV_STANDAR == MAPLE_TV_DVB_T)|| (MAPLE_TV_STANDAR == MAPLE_TV_ATSC))
-                //case GUI_MSG_KEY_SUBTITLE: //��Ļ����
-                //������������������ô����
+                //case GUI_MSG_KEY_SUBTITLE: //字幕开关
+                //按键不够，公版先这么处理
             {
                 /*if(NULL == dtv_ctr.h_subtitle)
                 {
@@ -574,8 +590,8 @@ static __s32 dtv_key_proc(__gui_msg_t *msg)
                 }*/
                 if (!dtv_ctr.h_scan)
                 {
-                    //������ӽ�����ڣ�ֻ��¼������ʾ��Ļ
-                    //���ӽ����˳�ʱ�������dtv_ctr.b_has_subtitleͳһ����
+                    //如果有子界面存在，只记录，不显示字幕
+                    //从子界面退出时，会根据dtv_ctr.b_has_subtitle统一处理
                     if (dtv_ctr.h_lyr)
                     {
                         dtv_ctr.b_has_subtitle = !dtv_ctr.b_has_subtitle;
@@ -630,9 +646,9 @@ static __s32 dtv_key_proc(__gui_msg_t *msg)
                     app_misc_audio_mute(0); // mute
                     maple_stop_program();
 #ifdef DTV_AUTO_SEARCH_ENABLE
-                    dtv_search_program_start(msg, AUTO_SERACH_TYPE, 0);// �Զ�����
+                    dtv_search_program_start(msg, AUTO_SERACH_TYPE, 0);// 自动搜索
 #else
-                    dtv_search_program_start(msg, ALL_FREQ_SERACH_TYPE, 0);// ȫƵ������
+                    dtv_search_program_start(msg, ALL_FREQ_SERACH_TYPE, 0);// 全频点搜索
 #endif
                     //_AutoCheckThreadCreate();
                 }
@@ -649,7 +665,7 @@ static __s32 dtv_key_proc(__gui_msg_t *msg)
                         maple_break_search_task();
                     }
 
-                    //�����˳�Ӧ��
+                    //长按退出应用
                     {
                         __gui_msg_t dmsg;
                         //__here__;
@@ -671,8 +687,8 @@ static __s32 dtv_key_proc(__gui_msg_t *msg)
 
         switch (msg->dwAddData1)
         {
-            case GUI_MSG_KEY_MENU:  //����
-                //case GUI_MSG_KEY_LONGMENU:    //����
+            case GUI_MSG_KEY_MENU:  //设置
+                //case GUI_MSG_KEY_LONGMENU:    //设置
                 __wrn("dtv_ctr.h_setting    : 0x%08x", dtv_ctr.h_setting);
 
                 /* add for test
@@ -727,7 +743,7 @@ static __s32 dtv_key_proc(__gui_msg_t *msg)
                 break;
 
             case GUI_MSG_KEY_ENTER:
-            case GUI_MSG_KEY_LIST://����Ԥ��
+            case GUI_MSG_KEY_LIST://播放预览
             {
                 //  __log("%s %d", __FILE__, __LINE__);
                 if (dtv_ca_msg_is_exist())
@@ -747,14 +763,14 @@ static __s32 dtv_key_proc(__gui_msg_t *msg)
 ||(MAPLE_TV_STANDAR == MAPLE_TV_DTMB)\
 || (MAPLE_TV_STANDAR == MAPLE_TV_DVB_T)\
 || (MAPLE_TV_STANDAR == MAPLE_TV_ATSC))
-                            //dtv_set_cur_user_index(0);//isdbtĬ�ϲ��ŵ�һ��Ƶ��ĵ�һ��̨
+                            //dtv_set_cur_user_index(0);//isdbt默认播放第一个频点的第一个台
                             dtv_subtitle_proc();
 #endif
                             dtv_delete_all_menu(0);
                             maple_epg_search_stop();
                             maple_search_stop();
                             maple_stop_program();
-                            dtv_search_program_start(msg, MANUAL_SERACH_TYPE, 0);// �ֶ�����
+                            dtv_search_program_start(msg, MANUAL_SERACH_TYPE, 0);// 手动搜索
                         }
                         else
                         {
@@ -796,7 +812,7 @@ static __s32 dtv_key_proc(__gui_msg_t *msg)
                     }
                     else
                     {
-                        // ��ʾ
+                        // 提示
                         dtv_ctr.sel_sta = 2;
                         dtv_show_select_number(msg);
 #if 0
@@ -815,7 +831,7 @@ static __s32 dtv_key_proc(__gui_msg_t *msg)
                         clear_dtv_select_number(msg);
                     }
                 }
-                else if (dtv_ctr.sel_sta == 2)  // ��ʾ���������
+                else if (dtv_ctr.sel_sta == 2)  // 提示或其它情况
                 {
                     clear_dtv_select_number(msg);
                 }
@@ -839,7 +855,7 @@ static __s32 dtv_key_proc(__gui_msg_t *msg)
                 }
                 else
                 {
-                    //��Ƶ��ʱ�����ӿͻ�Ҫ���ڴ�������ʾ�����Ԥ������
+                    //无频道时，可视客户要求在此添加提示或进入预览界面
                 }
 
                 return EPDK_FAIL;
@@ -859,7 +875,7 @@ static __s32 dtv_key_proc(__gui_msg_t *msg)
                         maple_break_search_task();
                     }
 
-                    //�����˳�Ӧ��
+                    //长按退出应用
                     if (dtv_has_sub_scene() == EPDK_FALSE/* || dtv_ctr.h_scan*/)
                     {
                         __gui_msg_t dmsg;
@@ -872,7 +888,7 @@ static __s32 dtv_key_proc(__gui_msg_t *msg)
                     }
                     else
                     {
-                        return EPDK_FAIL;//��Ӧ�ó��������´�
+                        return EPDK_FAIL;//有应用场景，往下传
                     }
 
                     //return EPDK_OK;
@@ -897,7 +913,7 @@ static __s32 dtv_command_proc(__gui_msg_t *msg)
     /*common notify msg*/
     switch (msg->dwAddData1)
     {
-        //�����ò˵������������Ҫ������Ļ��Ϣ
+        //从设置菜单发来的命令不需要处理字幕信息
         case DTV_CA_MSG_DISPLAY:
         {
             dtv_ca_msg_display(msg->dwAddData2);
@@ -940,7 +956,7 @@ static __s32 dtv_command_proc(__gui_msg_t *msg)
 
 #endif
 
-        case DTV_MENU_RESEARCH://�ֶ���̨
+        case DTV_MENU_RESEARCH://手动搜台
         {
             dtv_delete_all_menu(0);
             {
@@ -964,9 +980,9 @@ static __s32 dtv_command_proc(__gui_msg_t *msg)
             return EPDK_OK;
         }
 
-        //�Ӹ��ӽ����˻ص���������ģʽʱ�����Ǿ�������
-        //�������ӽ��涨ʱ��ʧ�����
-        //������ISDBT���ڴ˻ָ���Ļ����
+        //从各子界面退回到正常播放模式时，都是经过这里
+        //包括各子界面定时消失的情况
+        //所以在ISDBT中在此恢复字幕场景
         case DTV_BACK2PLAY_PROGRAM:
         {
             clear_dtv_select_number(msg);
@@ -1027,7 +1043,7 @@ static __s32 dtv_command_proc(__gui_msg_t *msg)
 #if((MAPLE_TV_STANDAR == MAPLE_TV_ISDB_T)||(MAPLE_TV_STANDAR == MAPLE_TV_DTMB)\
 || (MAPLE_TV_STANDAR == MAPLE_TV_DVB_T)|| (MAPLE_TV_STANDAR == MAPLE_TV_ATSC))
             //dtv_subtitle_resume();
-            //��������֮�����ע�������Ϣ�����Ƿ����Ļ
+            //搜索结束之后根据注册表的信息决定是否打开字幕
 #endif
             return EPDK_OK;
         }
@@ -1060,7 +1076,7 @@ static __s32 dtv_command_proc(__gui_msg_t *msg)
     if ((LOSWORD(msg->dwAddData1) == DVB_PROT_DIALOG_ID)
         && (HIWORD(msg->dwAddData1) == ADLG_CMD_EXIT))
     {
-        //����dialog����ʱ���˳�����
+        //处理dialog存在时，退出问题
         //__log("%s %d dtv_ctr.h_lyr:0x%x", __FILE__, __LINE__, dtv_ctr.h_lyr);
 #if 0
         if (dtv_ctr.h_lyr)
@@ -1309,7 +1325,7 @@ static __s32 __dtv_main_destroy(__gui_msg_t *msg)
     dtv_uninit();
     uninit_select_dtv_bmp();
 
-    // ����ͼƬ��Դ
+    // 电量图片资源
     for (i = 0; i < MAX_CHARGE_LEVEL; i++)
     {
         if (dtv_ctr.h_battery_bmp[i] != NULL)
@@ -1336,7 +1352,7 @@ static __s32 __dtv_main_destroy(__gui_msg_t *msg)
         __msg("h_radio_program_bmp[%d] <= 0x%08x", i, dtv_ctr.h_switch_program_bmp);
     }
 
-    //esKRNL_TimeDly(80);//��ʱһ��ʱ�䣬����ģ����磬��Ӱ�쵽nor�Ķ���
+    //esKRNL_TimeDly(80);//延时一段时间，怀疑模块掉电，会影响到nor的读。
 #endif
 
     //__here__;
@@ -1365,20 +1381,20 @@ static __s32 __dtv_main_destroy(__gui_msg_t *msg)
 #endif  // #if (MAPLE_CA_STANDAR == MEDIAGATE_CAS)
     dtv_exit_tips_dialog_destroy();
     g_dtv_mainwin = NULL;
-    //��Ϊ tunner mxl603��ַ��fm rda5807 ��ַ��ͻ
-    // �����˳�DTMB���Ӻ󣬿���һ��fm����֤�͹���   by wanggang for aihua
+    //因为 tunner mxl603地址和fm rda5807 地址冲突
+    // 添加退出DTMB电视后，开关一下fm，保证低功耗   by wanggang for aihua
     dsk_radio_open_i();
     dsk_radio_close_i();
     __msg("esPWM_UnlockCpuFreq().");
     esPWRMAN_UnlockCpuFreq();
-    GUI_Memdev_FrameBuffer_Release(1);//����
+    GUI_Memdev_FrameBuffer_Release(1);//必须
     return EPDK_OK;
 }
 
 static __s32 __dtv_timer_proc(__gui_msg_t *msg)
 {
     __msg("timer comming..., msg->dwAddData1:%d", msg->dwAddData1);
-    //if(msg->dwAddData1 == DVB_SPIC_CHANNEL_ID)//����û���������ּ�
+    //if(msg->dwAddData1 == DVB_SPIC_CHANNEL_ID)//检测用户输入的数字键
 
     if (1 == g_is_searching || NULL != dtv_ctr.h_scan)
     {
@@ -1398,9 +1414,9 @@ static __s32 __dtv_timer_proc(__gui_msg_t *msg)
         };
 
 #endif
-        case DVB_SPIC_CHANNEL_ID://�����ּ�ѡƵ��
+        case DVB_SPIC_CHANNEL_ID://按数字键选频道
         {
-#if 1    //Ƶ������     
+#if 1    //频点搜索     
             __msg("--- DVB_SPIC_CHANNEL_ID ---");
 
             //  GUI_KillTimer(msg->h_deswin,DVB_SPIC_CHANNEL_ID);
@@ -1415,7 +1431,7 @@ static __s32 __dtv_timer_proc(__gui_msg_t *msg)
 ||(MAPLE_TV_STANDAR == MAPLE_TV_DTMB)\
 || (MAPLE_TV_STANDAR == MAPLE_TV_DVB_T)\
 || (MAPLE_TV_STANDAR == MAPLE_TV_ATSC))
-                        //dtv_set_cur_user_index(0);//isdbtĬ�ϲ��ŵ�һ��Ƶ��ĵ�һ��̨
+                        //dtv_set_cur_user_index(0);//isdbt默认播放第一个频点的第一个台
                         dtv_subtitle_proc();
 #endif
                         dtv_delete_all_menu(0);
@@ -1462,14 +1478,14 @@ static __s32 __dtv_timer_proc(__gui_msg_t *msg)
                 }
                 else
                 {
-                    // ��ʾ
+                    // 提示
                     dtv_ctr.sel_sta = 2;
                     dtv_show_select_number(msg);
                     //GUI_ResetTimer(msg->h_deswin,DVB_SPIC_CHANNEL_ID,KEY_NUM_DELAY,NULL);
                 }
             }
             else
-                //if(dtv_ctr.sel_sta == 2)  // ��ʾ���������
+                //if(dtv_ctr.sel_sta == 2)  // 提示或其它情况
             {
                 if (dtv_ctr.lyr_sel_num != NULL)
                 {
@@ -1489,12 +1505,12 @@ static __s32 __dtv_timer_proc(__gui_msg_t *msg)
             return EPDK_OK;
         }
 
-        case DVB_SINGAL_TIMER_ID://�ź�״̬
+        case DVB_SINGAL_TIMER_ID://信号状态
         {
             HBarState state = 0;
             dtv_singal_strength_detect(msg->h_deswin);
 
-            //��ʾ��Ƶ������ʾ��̨
+            //提示无频道，提示搜台
             if (maple_get_cur_service_list_num() == 0
                 && dtv_has_sub_scene() == EPDK_FALSE
                 && dtv_ctr.lyr_sel_num == NULL
@@ -1506,7 +1522,7 @@ static __s32 __dtv_timer_proc(__gui_msg_t *msg)
                 //app_dialog_destroy(dlg);
             }
 
-            /*��ʾ���ź�*/
+            /*提示无信号*/
             {
                 maple_demod_ss_t ss;
                 eLIBs_memset(&ss, 0x00, sizeof(ss));
@@ -1517,7 +1533,7 @@ static __s32 __dtv_timer_proc(__gui_msg_t *msg)
                     && dtv_ctr.h_no_signal == NULL
                     && dtv_has_sub_scene() == EPDK_FALSE
                     && dtv_ctr.lyr_sel_num == NULL
-                    && !GUI_IsTimerInstalled(g_dtv_mainwin, DVB_LOADING_TIMER_ID))//����ʵloadingʱ����ʾ�źŲ�
+                    && !GUI_IsTimerInstalled(g_dtv_mainwin, DVB_LOADING_TIMER_ID))//当现实loading时不显示信号差
                 {
                     __s32 lang_id[] = {STRING_MOVIE_TIPS, STRING_DTV_NO_SINGALS};
 
@@ -1558,7 +1574,7 @@ static __s32 __dtv_timer_proc(__gui_msg_t *msg)
                 {
                     num = 0;
 
-                    if ((!dtv_ctr.h_scan) && !dtv_has_sub_scene()) //�����ڲ���Ӧ���»�̨��
+                    if ((!dtv_ctr.h_scan) && !dtv_has_sub_scene()) //不存在才响应上下换台键
                     {
                         __s32 index = eLIBs_ramdom(maple_get_cur_service_list_num());
                         __log("%s %d ramdom switch:%d", __FILE__, __LINE__, index);
@@ -1605,7 +1621,7 @@ static __s32 __dtv_timer_proc(__gui_msg_t *msg)
 
         case DVB_AUTH_TIMER_ID:
         {
-            //��ʾδ��Ȩ
+            //提示未授权
             __u8 First_Picture_out = EPDK_FALSE;
             First_Picture_out = maple_get_first_picture_status();
 
@@ -1644,9 +1660,9 @@ static __s32 __dtv_timer_proc(__gui_msg_t *msg)
         }
         break;
 
-        case DVB_VOL_TIMER_ID://����
+        case DVB_VOL_TIMER_ID://音量
         {
-            //�����ź�ʱ������
+            //非弱信号时才隐藏
             dtv_show_signal_status(EPDK_TRUE);
             return EPDK_OK;
         }
@@ -1656,7 +1672,7 @@ static __s32 __dtv_timer_proc(__gui_msg_t *msg)
 
         case DVB_FLUSH_ID:
         {
-#if 1//30���Ƿ�Ҫ����
+#if 1//30秒是否要保存
             static  __s32 count = 0;
             count++;
 
@@ -1748,7 +1764,7 @@ __s32 search_list_finish_callback(void *arg)
     maple_program_add_srvlist();
 #if((MAPLE_TV_STANDAR == MAPLE_TV_ISDB_T)||(MAPLE_TV_STANDAR == MAPLE_TV_DTMB)\
         || (MAPLE_TV_STANDAR == MAPLE_TV_DVB_T)|| (MAPLE_TV_STANDAR == MAPLE_TV_ATSC))
-    //ISDBT������ĳ��Ƶ�ʽ���ʱ��֪��̨��
+    //ISDBT在搜索某个频率结束时才知道台数
     esMODS_MIoctrl(maple, MAPLE_CMD_SL_GET, 0, (void *)search_service_list);
 
     for (i = 0; i < search_service_list->servNum; i++)
@@ -1791,7 +1807,7 @@ __s32 search_list_finish_callback(void *arg)
 
     return EPDK_OK;
 }
-//���ڸ��µ�ǰ��̨����ÿ�ѵ�һ��̨�ᴥ��һ��
+//用于更新当前搜台数，每搜到一个台会触发一次
 __s32 search_list_event_callback(void *arg)
 {
     maple_sl_cb_param_t *p;
@@ -1904,7 +1920,7 @@ static __s32 _dtv_main_create(__gui_msg_t *msg)
     g_is_programme_list_selected = 0;
     dtv_mute_status = 0;
     app_misc_audio_mute(0);     // mute on
-    // ����CPU
+    // 唤醒CPU
     esPWRMAN_UsrEventNotify();
     esKRNL_TimeDly(5);          // delay...
     __msg("esPWRMAN_LockCpuFreq().");
@@ -1917,7 +1933,7 @@ static __s32 _dtv_main_create(__gui_msg_t *msg)
     //gscene_hbar_set_state(HBAR_ST_SHOW) ;
     //gscene_bgd_set_state(BGD_STATUS_HIDE);
     //////////////////////////////
-    //�������ض���//
+    //启动加载动画//
     /////////////////////////////
     __wrn("DVB_LOADING_ID:%d", DVB_LOADING_ID);
 #ifdef  DTV_LOADING_ENABLE
@@ -1927,7 +1943,7 @@ static __s32 _dtv_main_create(__gui_msg_t *msg)
     dtv_init();
     init_select_dtv_bmp();
 
-    // ����ͼƬ��Դ
+    // 电量图片资源
     for (i = 0; i < MAX_CHARGE_LEVEL; i++)
     {
         dtv_ctr.h_battery_bmp[i] = dsk_theme_open(id_battery_bmp[i]);
@@ -1938,18 +1954,18 @@ static __s32 _dtv_main_create(__gui_msg_t *msg)
     dtv_ctr.h_radio_program_bmp = dsk_theme_open(ID_DTV_RADIO_BG_BMP);
     dtv_ctr.h_switch_program_bmp = dsk_theme_open(ID_HOME_NEW_EBOOK_UF_BMP);
 #endif
-    dtv_ctr.battery_wink = 0;/* һֱ��ʾ��� */
+    dtv_ctr.battery_wink = 0;/* 一直显示电池 */
     dtv_ctr.low_battery_cnt = 0;
     dtv_ctr.battery_warning = 0;
     dtv_ctr.battery_icon_on = 0;
-#if (AW_SDK_PMU == 0)    //����PMU
+#if (AW_SDK_PMU == 0)    //不带PMU
     dsk_power_get_voltage_level(&dtv_ctr.battery_level);
-#else //��PMU
+#else //带PMU
     dsk_power_get_battery_level(&dtv_ctr.battery_level);
 #endif
     //__here__;
     ////////////////////////
-    //�����ڴ�������ʾ���ڼ��صĶ���
+    //可以在此添加提示正在加载的动画
     ret = maple_open();
 
     if (EPDK_FAIL == ret)
@@ -1959,7 +1975,7 @@ static __s32 _dtv_main_create(__gui_msg_t *msg)
     }
 
     __wrn("maple open ok...");
-    //����mapleģ��ɹ�����Ҫ�ڴ��ͷŶ���
+    //加载maple模块成功后，需要在此释放动画
 #ifdef  DTV_LOADING_ENABLE
 
     if (dtv_ctr.h_loading)
@@ -2013,7 +2029,7 @@ static __s32 _dtv_main_create(__gui_msg_t *msg)
         dtv_set_cur_user_index(maple_get_cur_program_preview_index());
         maple_search_stop();
         maple_stop_program();
-        maple_play_program();//������ڴ˵�������������˳�Ӧ���ٽ���ʱȻ����̨���ܻ��Ѳ���̨
+        maple_play_program();//如果不在此调用这个函数，退出应用再进来时然后搜台可能会搜不到台
         check_dtv_or_radio();
 
         if (maple_get_cur_service_list_num() >= 1)
@@ -2034,7 +2050,7 @@ static __s32 _dtv_main_create(__gui_msg_t *msg)
         GUI_SetTimer(msg->h_deswin, DVB_SINGAL_TIMER_ID, 500, NULL);
     }
 
-    //����״̬��
+    //隐藏状态栏
     //gscene_hbar_get_state(&state);
     //if(state == HBAR_ST_SHOW)
     {
@@ -2071,7 +2087,7 @@ err0:
 
     uninit_select_dtv_bmp();
 
-    // ����ͼƬ��Դ
+    // 电量图片资源
     for (i = 0; i < MAX_CHARGE_LEVEL; i++)
     {
         if (dtv_ctr.h_battery_bmp[i] != NULL)
@@ -2221,7 +2237,7 @@ static H_WIN dtv_mainwin_create(root_para_t  *para)
 
 /*
 ******************************************************************************************************
-*                                       app_dtv_create ���������
+*                                       app_dtv_create 播放器入口
 *
 *Description: dtv entry functoin.
 *
@@ -2233,46 +2249,46 @@ static H_WIN dtv_mainwin_create(root_para_t  *para)
 */
 
 /*
-//����������,���ź�״̬�⣬�䴴������GUI_MSG_KEY�д���
-*����1��Ƶ��Ԥ��
-*����2����ĿԤ��
-*����3�����ò˵�
-*����4����������
-*����5���ź�״̬
+//播放器所有,除信号状态外，其创建都在GUI_MSG_KEY中处理
+*界面1、频道预览
+*界面2、节目预告
+*界面3、设置菜单
+*界面4、搜索进度
+*界面5、信号状态
 
-* 1~4������ͬһͼ����й��������������֮����л�
+* 1~4界面由同一图层进行管理，方便各界面之间的切换
 
-//ʹ�ô˲���������Ҫ����������Ϣ:
-*1��MAPLE_TV_STANDAR = MAPLE_TV_DTMB or MAPLE_TV_ISDB_T ..... //����CMMB��ISDBT
-*2��IS_CA_EXIST  = 1 or 0 �Ƿ���ڼ���CAģ��,��������������ʱ������1
-*3��G_DTV_current_area �� 0 or 1 ?  0:ֻ��������Ƶ��1:ȫ��Ƶ������,0ֻ��Ϊ������Ա������
-*4��ISDBT��Ļ��������g_type, ��Ĭ�ϰ���
+//使用此播放器，需要配置如下信息:
+*1、MAPLE_TV_STANDAR = MAPLE_TV_DTMB or MAPLE_TV_ISDB_T ..... //播放CMMB或ISDBT
+*2、IS_CA_EXIST  = 1 or 0 是否存在加密CA模块,测试天线灵敏度时必须是1
+*3、G_DTV_current_area ＝ 0 or 1 ?  0:只搜索深圳频点1:全国频点搜索,0只做为开发人员测试用
+*4、ISDBT字幕必须配置g_type, 现默认巴西
 */
 
-//ע��:�Ƚ��ϵ�SDK���ڴ��豸��������,�����������������ڴ��豸
+//注意:比较老的SDK用内存设备会有问题,导致重启，请屏蔽内存设备
 //eg:com_memdev_create \ GUI_MEMDEV_Create ......
-//���CA����ģ�鲻���ڣ�������CA�����к����Ϊ������Ϣ
+//如果CA加密模块不存在，设置中CA的序列号请改为其它信息
 
-//��ĿԤ����Ϣ��Ƶ����ʼ���ŵ����ͳ�ESG��Ϣ��Ҫ3���ӣ��ټ���
-//��ʱ����1�룬���Ҫ4�����Ҳų���ʾ���������������������
-//���԰ѽ�ĿԤ��ŵ������У������Ӳ��ųɹ����������ã���ѡ��鿴��ĿԤ��
-//�����Ͼ�4����(�û����Լ��޸ģ����治���˸Ķ�����Ϥ֪!!!)
-
-
-//�����Ӱ�����жϵ���䣬�ڱ���ǰ����Ҫ��CMMB��̨���ļ��������±���
-//��Ϊע����ڱ���ʱ���NOR FLASH�������
+//节目预告信息从频道开始播放到解释出ESG信息需要3秒钟，再加上
+//定时器的1秒，大概要4秒左右才出显示出来，所以如果觉得慢，
+//可以把节目预告放到设置中，这样从播放成功到进到设置，到选择查看节目预告
+//基本上就4秒了(用户可自己修改，公版不做此改动，请悉知!!!)
 
 
-//��Ҫ: ����CMMB/ISDBT֮ǰ����ذ�������ɾ�����ͷ��ڴ�
-//��ΪCMMB/ISDBT������Ҫ�õ���������ڴ棬����ڴ治��
-//���ܻ�Ī������!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//如果电影音乐有断点记忆，在保存前，需要把CMMB存台的文件读出重新保存
+//因为注册表在保存时会把NOR FLASH扇区清除
+
+
+//重要: 进入CMMB/ISDBT之前请务必把主界面删除，释放内存
+//因为CMMB/ISDBT解码需要用到大块连续内存，如果内存不足
+//可能会莫名死机!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 signed long  app_dtv_create(root_para_t  *para)
 {
     H_WIN dtv_mainwin;
     gscene_hbar_set_state(HBAR_ST_HIDE);
     gscene_bgd_set_state(BGD_STATUS_HIDE);
     //esMEMS_Info();
-    GUI_Memdev_FrameBuffer_Release(0);//����
+    GUI_Memdev_FrameBuffer_Release(0);//必须
     //esMEMS_Info();
     //__log("128*sizeof(maple_serv_item_t) = [%d]",128*sizeof(maple_serv_item_t));
     eLIBs_memset(&dtv_ctr, 0, sizeof(dtv_ctr_t));
@@ -2296,6 +2312,3 @@ signed long  app_dtv_create(root_para_t  *para)
     }
     return (signed long)dtv_mainwin;
 }
-
-
-

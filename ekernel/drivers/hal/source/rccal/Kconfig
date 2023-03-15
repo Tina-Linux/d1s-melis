@@ -1,0 +1,13 @@
+menu "RCCAL Devices"
+
+config DRIVERS_RCCAL
+    bool "enable rccal driver"
+    depends on ARCH_SUN20IW2P1
+        default n
+
+config HAL_TEST_RCCAL
+    bool "enable rccal test command"
+    depends on DRIVERS_RCCAL
+        default n
+
+endmenu

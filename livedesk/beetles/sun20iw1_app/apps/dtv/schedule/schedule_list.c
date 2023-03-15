@@ -1,21 +1,34 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : schedule_list_general.c
-* By        : Andy.zhang
-* Func      : desk main thread
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-20 8:51:52  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY鈥橲 TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS鈥橲DK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY鈥橲 TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include <log.h>
 #include "schedule_uipara.h"
 #include "schedule_list.h"
@@ -112,7 +125,7 @@ static __s32 schedule_list_item_paint_ex(__lbar_draw_para_t *draw_param)
     GUI_LyrWinCacheOn();
     //GUI_MEMDEV_Select(draw_mem);
     //gattr->new_focus = draw_param->index;
-    //获取节目安排信息
+    //鑾峰彇鑺傜洰瀹夋帓淇℃伅
     shdl_event = maple_epg_get_schdl_event(0, draw_param->index);
 
     //03/11  12:00
@@ -273,7 +286,7 @@ static void schedule_list_listbar_init(__gui_msg_t *msg)
 
 
 /*
-    申请资源
+    鐢宠璧勬簮
 */
 static void _schedule_list_res_init(schedule_list_attr_t *attr)
 {
@@ -494,7 +507,7 @@ static __s32 create_flag = 0;
 
 
 /*
-    回调
+    鍥炶皟
 */
 static __s32 _schedule_list_Proc(__gui_msg_t *msg)
 {
@@ -530,7 +543,7 @@ static __s32 _schedule_list_Proc(__gui_msg_t *msg)
             GUI_WinSetAddData(msg->h_deswin, (unsigned long)attr);
             GUI_LyrWinSetSta(attr->layer, GUI_LYRWIN_STA_SLEEP);
             GUI_LyrWinSel(attr->layer);
-            attr->total = maple_epg_get_eventnum(0);//只获取当天的
+            attr->total = maple_epg_get_eventnum(0);//鍙幏鍙栧綋澶╃殑
 
             if (attr->total <= 0)
             {
@@ -540,7 +553,7 @@ static __s32 _schedule_list_Proc(__gui_msg_t *msg)
             __msg("attr->total=====%d \n", attr->total);
             schedule_update_top_view(attr);
 
-            if (attr->total > 0) //无节目列表时不创建listbar
+            if (attr->total > 0) //鏃犺妭鐩垪琛ㄦ椂涓嶅垱寤簂istbar
             {
                 schedule_list_listbar_init(msg);
             }
@@ -631,7 +644,7 @@ static __s32 _schedule_list_Proc(__gui_msg_t *msg)
 
             attr->h_listbar = NULL;
             _schedule_list_res_uninit(attr);
-            //dsk_reg_flush();  //写进文件里面
+            //dsk_reg_flush();  //鍐欒繘鏂囦欢閲岄潰
             para = attr->para;
 
             if (para)
@@ -688,7 +701,7 @@ static __s32 _schedule_list_Proc(__gui_msg_t *msg)
                     LISTBAR_Delete(attr->h_listbar);
                     attr->h_listbar = NULL;
 
-                    if (attr->total > 0) //无节目列表时不创建listbar
+                    if (attr->total > 0) //鏃犺妭鐩垪琛ㄦ椂涓嶅垱寤簂istbar
                     {
                         schedule_update_top_view(attr);
                         schedule_list_listbar_init(msg);
@@ -780,4 +793,3 @@ __s32 schedule_list_win_delete(H_WIN list_win)
     GUI_FrmWinDelete(list_win);
     return EPDK_OK;
 }
-

@@ -1,24 +1,37 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2011, CHIPHD, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : photo_uipara.c
-* By        : CQQ
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011/06/07 15:40  create this file, implements the fundamental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "photo_uipara.h"
 
-//º∆À„µ•∏ˆ≥§∂» = (◊‹≥§ - (Õ∑ + Œ≤) - ◊‹º‰∏Ù) / ∏ˆ ˝; ∆‰÷–:(Õ∑ + Œ≤) = (_margin) * 2, ◊‹º‰∏Ù = µ•∏ˆº‰∏Ù * (∏ˆ ˝ - 1)
+//ËÆ°ÁÆóÂçï‰∏™ÈïøÂ∫¶ = (ÊÄªÈïø - (Â§¥ + Â∞æ) - ÊÄªÈó¥Èöî) / ‰∏™Êï∞; ÂÖ∂‰∏≠:(Â§¥ + Â∞æ) = (_margin) * 2, ÊÄªÈó¥Èöî = Âçï‰∏™Èó¥Èöî * (‰∏™Êï∞ - 1)
 #define CALC_UNIT_LEN_(_total, _sp, _count, _margin)  (((_total) - (_sp) * ((_count) - 1) - (_margin) * 2) / (_count))
 //
 #define CALC_UNIT_OFFSET_(_total, _sp, _count, _margin, _fs) (((_total) + (_sp) - ((_sp) + (_fs)) * (_count) - (_margin) * 2) / ((_count) * 2))
@@ -72,7 +85,7 @@ static PHOTO_UI_PARA_T photo_ui_480x272 =
     },
     {
         //PHOTO_UI_COLOUR_T
-        APP_COLOR_WHITE, APP_COLOR_YELLOW                   // Œƒ◊÷’˝≥£º∞Ωπµ„ ±µƒ—’…´
+        APP_COLOR_WHITE, APP_COLOR_YELLOW                   // ÊñáÂ≠óÊ≠£Â∏∏ÂèäÁÑ¶ÁÇπÊó∂ÁöÑÈ¢úËâ≤
     },
     {
         //PHOTO_BG_UI_T
@@ -82,8 +95,8 @@ static PHOTO_UI_PARA_T photo_ui_480x272 =
                 //rt
                 40, 40, (PHOTO_LCD_W - 40 * 2), (PHOTO_LCD_H - 40)
             },
-            {0, 0},                                         // icon Œª÷√(œ‡∂‘”⁄INFO rect)
-            {12, 4},                                        // text ø™ ºµƒŒª÷√(œ‡∂‘”⁄INFO rect)
+            {0, 0},                                         // icon ‰ΩçÁΩÆ(Áõ∏ÂØπ‰∫éINFO rect)
+            {12, 4},                                        // text ÂºÄÂßãÁöÑ‰ΩçÁΩÆ(Áõ∏ÂØπ‰∫éINFO rect)
             44,                                             // text file name space
             20,                                             // text line space
             284,                                            // text line width
@@ -106,7 +119,7 @@ static PHOTO_UI_PARA_T photo_ui_800x480 =
     },
     {
         //PHOTO_UI_COLOUR_T
-        APP_COLOR_WHITE, APP_COLOR_YELLOW                   // Œƒ◊÷’˝≥£º∞Ωπµ„ ±µƒ—’…´
+        APP_COLOR_WHITE, APP_COLOR_YELLOW                   // ÊñáÂ≠óÊ≠£Â∏∏ÂèäÁÑ¶ÁÇπÊó∂ÁöÑÈ¢úËâ≤
     },
     {
         //PHOTO_BG_UI_T
@@ -116,8 +129,8 @@ static PHOTO_UI_PARA_T photo_ui_800x480 =
                 //rt
                 0, 0, 397, 224
             },
-            {0, 0},                                         // icon Œª÷√(œ‡∂‘”⁄INFO rect)
-            {12, 4},                                        // text ø™ ºµƒŒª÷√(œ‡∂‘”⁄INFO rect)
+            {0, 0},                                         // icon ‰ΩçÁΩÆ(Áõ∏ÂØπ‰∫éINFO rect)
+            {12, 4},                                        // text ÂºÄÂßãÁöÑ‰ΩçÁΩÆ(Áõ∏ÂØπ‰∫éINFO rect)
             44,                                             // text file name space
             20,                                             // text line space
             284,                                            // text line width
@@ -155,5 +168,3 @@ __log("get_photo_uipara");
 
     return &photo_ui_480x272;
 }
-
-

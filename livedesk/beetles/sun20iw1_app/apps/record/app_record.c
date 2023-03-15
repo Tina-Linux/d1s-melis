@@ -1,17 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
 *
 *
-* File      : record.c
-* By        : Kingvan
-* Func      : record main thread
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-20 8:51:52  Kingvan  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "app_record.h"
@@ -426,7 +442,7 @@ static __s32 app_record_on_create(__gui_msg_t *msg)
     auto_close_scn_time = get_auto_close_scn_time_fm();
     __wrn("auto_close_scn_time=%d\n", auto_close_scn_time);
 
-    if (auto_close_scn_time > 0) //…Ë÷√FMµƒ◊‘∂Øπÿ∆¡ ±º‰
+    if (auto_close_scn_time > 0) //ËÆæÁΩÆFMÁöÑËá™Âä®ÂÖ≥Â±èÊó∂Èó¥
     {
         g_set_close_scn_time(auto_close_scn_time);
     }
@@ -469,7 +485,7 @@ static __s32 app_record_on_destory(__gui_msg_t *msg)
     esMEMS_Mfree(0, precord_para);
     rat_set_modify_flag(RAT_MEDIA_TYPE_AUDIO, 1);
     {
-        //ª÷∏¥œµÕ≥◊‘∂Øπÿ∆¡ ±º‰
+        //ÊÅ¢Â§çÁ≥ªÁªüËá™Âä®ÂÖ≥Â±èÊó∂Èó¥
         reg_system_para_t *para;
         para = (reg_system_para_t *)dsk_reg_get_para_by_app(REG_APP_SYSTEM);
 
@@ -596,7 +612,7 @@ static __s32 _record_manager_win_proc(__gui_msg_t *msg)
     switch (msg->id)
     {
         case GUI_MSG_CREATE:
-            dsk_amplifier_onoff(1);//¥Úø™π¶∑≈
+            dsk_amplifier_onoff(1);//ÊâìÂºÄÂäüÊîæ
             dsk_set_auto_off_time(0);
             return app_record_on_create(msg);
 
@@ -605,7 +621,7 @@ static __s32 _record_manager_win_proc(__gui_msg_t *msg)
             return app_record_on_close(msg);
 
         case GUI_MSG_DESTROY:
-            dsk_amplifier_onoff(0);//πÿ±’π¶∑≈
+            dsk_amplifier_onoff(0);//ÂÖ≥Èó≠ÂäüÊîæ
             {
                 reg_system_para_t *para = NULL;
                 para = (reg_system_para_t *)dsk_reg_get_para_by_app(REG_APP_SYSTEM);
@@ -621,7 +637,7 @@ static __s32 _record_manager_win_proc(__gui_msg_t *msg)
 
         case GUI_MSG_KEY:
             app_record_on_key(msg);
-            break;//◊¢“‚!!!
+            break;//Ê≥®ÊÑè!!!
 
         case DSK_APP_RESTORE:
             return app_record_on_restore(msg);
@@ -909,4 +925,3 @@ __s32 app_record_notify_delete_sub_scene(H_WIN hmanwin)
 
     return EPDK_OK;
 }
-

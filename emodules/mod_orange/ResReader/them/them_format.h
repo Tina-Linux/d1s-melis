@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 //------------------------------------------------------------------------------------------------------------
 //2008-05-12 19:08:55
 //scott
@@ -12,16 +43,16 @@
 #include "os_related.h"
 
 //------------------------------------------------------------------------------------------------------------
-//×ÊÔ´Êı¾İ½ÚÃû
+//èµ„æºæ•°æ®èŠ‚å
 //------------------------------------------------------------------------------------------------------------
 #define RES_SEC_NAME_SIZE   8           //
-#define RES_SEC_NAME        ".lionres"  //8×Ö½Ú³¤¶È
-#define RES_VERSION         0x0100      //×ÊÔ´Êı¾İ½Ú¸ñÊ½°æ±¾
+#define RES_SEC_NAME        ".lionres"  //8å­—èŠ‚é•¿åº¦
+#define RES_VERSION         0x0100      //èµ„æºæ•°æ®èŠ‚æ ¼å¼ç‰ˆæœ¬
 #define RES_ALIGN           32
 
 
 //------------------------------------------------------------------------------------------------------------
-//×ÊÔ´ÎÄ¼şÀàĞÍ
+//èµ„æºæ–‡ä»¶ç±»å‹
 //------------------------------------------------------------------------------------------------------------
 #define SYSRES              0
 #define LIBRES              1
@@ -30,34 +61,34 @@
 
 
 //------------------------------------------------------------------------------------------------------------
-//×ÊÔ´Êı¾İÍ·¶¨Òå
+//èµ„æºæ•°æ®å¤´å®šä¹‰
 //------------------------------------------------------------------------------------------------------------
 #ifdef WIN32_DATA_PACK
 #pragma pack(push, 1)
 #endif
 typedef struct tag_RESHEAD
 {
-    int8        SecName[8];         //½ÚÃû
-    uint16      version;            //°æ±¾0x0100
-    uint16      size;               //Í·Êı¾İ½á¹¹´óĞ¡
-    uint32      StyleOffset;        //·ç¸ñÊı¾İ½á¹¹Æ«ÒÆÁ¿
-    uint32      StyleNum;           //·ç¸ñ¸öÊı
-    uint32      ResNum;             //×ÊÔ´¸öÊı
-    uint32      align;              //Êı¾İ±ß½ç¶ÔÆëÄ£Ê½
-    uint32      flags;              //±êÖ¾£¬SYSRES LIBRES  APPRES
+    int8        SecName[8];         //èŠ‚å
+    uint16      version;            //ç‰ˆæœ¬0x0100
+    uint16      size;               //å¤´æ•°æ®ç»“æ„å¤§å°
+    uint32      StyleOffset;        //é£æ ¼æ•°æ®ç»“æ„åç§»é‡
+    uint32      StyleNum;           //é£æ ¼ä¸ªæ•°
+    uint32      ResNum;             //èµ„æºä¸ªæ•°
+    uint32      align;              //æ•°æ®è¾¹ç•Œå¯¹é½æ¨¡å¼
+    uint32      flags;              //æ ‡å¿—ï¼ŒSYSRES LIBRES  APPRES
 } __attribute__((__packed__)) RESHEAD;
 #ifdef WIN32_DATA_PACK
 #pragma pack(pop)
 #endif
 
-//±¾½á¹¹µÄ´óĞ¡
+//æœ¬ç»“æ„çš„å¤§å°
 #define RESHEAD_SIZE    sizeof(RESHEAD) //32 byte
 
 
 
 
 //------------------------------------------------------------------------------------------------------------
-//Ö÷ÌâÃèÊö±í¶¨Òå
+//ä¸»é¢˜æè¿°è¡¨å®šä¹‰
 //------------------------------------------------------------------------------------------------------------
 #define STYLE_NAME_SIZE 18
 
@@ -66,24 +97,24 @@ typedef struct tag_RESHEAD
 #endif
 typedef struct tag_STYLE
 {
-    uint16      ID;                 //·ç¸ñID£¬ Î¨Ò»
-    int8        Name[STYLE_NAME_SIZE];//·ç¸ñÃû³Æ£¬ASCIIÂë
-    uint32      ResTableOffset;     //×ÊÔ´±íÆğÊ¼µØÖ·Æ«ÒÆÁ¿
-    uint32      ResOffset;          //×ÊÔ´Êı¾İÆğÊ¼µØÖ·Æ«ÒÆÁ¿
-    uint32      ResSize;            //×ÊÔ´Êı¾İ³¤¶È
+    uint16      ID;                 //é£æ ¼IDï¼Œ å”¯ä¸€
+    int8        Name[STYLE_NAME_SIZE];//é£æ ¼åç§°ï¼ŒASCIIç 
+    uint32      ResTableOffset;     //èµ„æºè¡¨èµ·å§‹åœ°å€åç§»é‡
+    uint32      ResOffset;          //èµ„æºæ•°æ®èµ·å§‹åœ°å€åç§»é‡
+    uint32      ResSize;            //èµ„æºæ•°æ®é•¿åº¦
 } __attribute__((__packed__)) STYLE;
 #ifdef WIN32_DATA_PACK
 #pragma pack(pop)
 #endif
 
-//±¾½á¹¹µÄ´óĞ¡
+//æœ¬ç»“æ„çš„å¤§å°
 #define STYLE_SIZE  sizeof(STYLE)   //32 byte
 
 
 
 
 //------------------------------------------------------------------------------------------------------------
-//×ÊÔ´ÃèÊö±í¶¨Òå
+//èµ„æºæè¿°è¡¨å®šä¹‰
 //------------------------------------------------------------------------------------------------------------
 #define RES_NAME_SIZE    52
 
@@ -92,17 +123,17 @@ typedef struct tag_STYLE
 #endif
 typedef struct tag_RESITEM
 {
-    uint16      type;               //×ÊÔ´ÀàĞÍ
-    uint16      ID;                 //×ÊÔ´ID,²»Í¬·ç¸ñµÄÏàÍ¬×ÊÔ´IDÏàÍ¬
-    int8        Name[RES_NAME_SIZE];//×ÊÔ´Ãû³Æ£¬Ãû³Æ¿ÉÒÔÖØ¸´
-    uint32      offset;             //×ÊÔ´ÆğÊ¼µØÖ·ÔÚres½ÚµÄÆ«ÒÆ
-    uint32      size;               //×ÊÔ´µÄsize
+    uint16      type;               //èµ„æºç±»å‹
+    uint16      ID;                 //èµ„æºID,ä¸åŒé£æ ¼çš„ç›¸åŒèµ„æºIDç›¸åŒ
+    int8        Name[RES_NAME_SIZE];//èµ„æºåç§°ï¼Œåç§°å¯ä»¥é‡å¤
+    uint32      offset;             //èµ„æºèµ·å§‹åœ°å€åœ¨resèŠ‚çš„åç§»
+    uint32      size;               //èµ„æºçš„size
 } __attribute__((__packed__)) RESITEM;
 #ifdef WIN32_DATA_PACK
 #pragma pack(pop)
 #endif
 
-//±¾½á¹¹µÄ´óĞ¡
+//æœ¬ç»“æ„çš„å¤§å°
 #define RESITEM_SIZE    sizeof(RESITEM) //32
 
 

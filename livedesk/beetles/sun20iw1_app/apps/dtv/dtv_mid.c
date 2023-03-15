@@ -1,16 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              calendar app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2006-2009, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : power.c
-* By      :
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "dtv_i.h"
@@ -19,9 +36,9 @@
 
 
 
-//ÔÚ´Ë¶¨ÒåµÄÈ«¾Ö±äÁ¿×îºÃ·Åµ½½á¹¹ĞİÖĞ£¬
-//½öÉùÃ÷¸Ã½á¹¹ĞİµÄÒ»¸öÈ«¾ÖÖ¸Õë£¬Ö¸ÏòÔÚ¶ÑÖĞÉêÇëµÄÄÚ´æ
-//¼õĞ¡Õ»µÄÊ¹ÓÃ
+//åœ¨æ­¤å®šä¹‰çš„å…¨å±€å˜é‡æœ€å¥½æ”¾åˆ°ç»“æ„ä¼‘ä¸­ï¼Œ
+//ä»…å£°æ˜è¯¥ç»“æ„ä¼‘çš„ä¸€ä¸ªå…¨å±€æŒ‡é’ˆï¼ŒæŒ‡å‘åœ¨å †ä¸­ç”³è¯·çš„å†…å­˜
+//å‡å°æ ˆçš„ä½¿ç”¨
 __u32 maple_mid;
 __mp *maple = NULL;
 maple_demod_info_t *demodParam = NULL;
@@ -47,13 +64,13 @@ maple_cas_param_t *ca_sn = NULL; //modify by hot.lee
 static unsigned long               video_layer_hdl = NULL;
 __mp *mp_display = NULL;
 
-//·şÎñÁĞ±í(ÆµµÀÁĞ±í)
+//æœåŠ¡åˆ—è¡¨(é¢‘é“åˆ—è¡¨)
 maple_sl_cb_param_t *sl_event_cbp = NULL;
 __u32               sl_task_id;
 maple_serv_list_t  *service_list = NULL;
-maple_serv_list_t *search_service_list = NULL;//½öÓÃÓÚËÑË÷Ê±ÓÃ
+maple_serv_list_t *search_service_list = NULL;//ä»…ç”¨äºæœç´¢æ—¶ç”¨
 
-//µ±Ç°ÆµµÀµÄ½ÚÄ¿Ô¤¸æ
+//å½“å‰é¢‘é“çš„èŠ‚ç›®é¢„å‘Š
 maple_schdl_cb_param_t  *schdl_event_cbp = NULL;
 maple_schdl_list_t      *schdl_list = NULL;
 maple_schdl_list_day   *schdl_list_day = NULL;
@@ -61,7 +78,7 @@ __u32               schedule_task_id = 0;
 dtvmid_time_t *tv_time = NULL;
 
 
-//µ±Ç°ÆµµÀµÄµ±Ç°ÕıÔÚ²¥·ÅºÍÏÂÒ»¸ö½«Òª²¥·ÅµÄ½ÚÄ¿Ô¤¸æ
+//å½“å‰é¢‘é“çš„å½“å‰æ­£åœ¨æ’­æ”¾å’Œä¸‹ä¸€ä¸ªå°†è¦æ’­æ”¾çš„èŠ‚ç›®é¢„å‘Š
 maple_sepg_t            *sepg = NULL;
 maple_sepg_cb_param_t   *sepg_finish_cbp = NULL;
 __u32               sepg_task_id = 0;
@@ -77,14 +94,14 @@ reg_cmmb_para_t *cmmb_para_bak = NULL;
 
 
 
-__s32 maple_cur_search_freq = 0;//µ±Ç°ËÑË÷µÄÆµµã
+__s32 maple_cur_search_freq = 0;//å½“å‰æœç´¢çš„é¢‘ç‚¹
 
 #if((MAPLE_TV_STANDAR == MAPLE_TV_ISDB_T)||(MAPLE_TV_STANDAR == MAPLE_TV_DTMB)\
         || (MAPLE_TV_STANDAR == MAPLE_TV_DVB_T)|| (MAPLE_TV_STANDAR == MAPLE_TV_ATSC))
-static __epdk_charset_enm_e g_type = EPDK_CHARSET_ENM_GB2312; //Ä¬ÈÏÖĞ¹ú,ĞèÒª¸ù¾İ³öÍùÄÄ¸ö¹ú¼Ò½øĞĞÉèÖÃ
+static __epdk_charset_enm_e g_type = EPDK_CHARSET_ENM_GB2312; //é»˜è®¤ä¸­å›½,éœ€è¦æ ¹æ®å‡ºå¾€å“ªä¸ªå›½å®¶è¿›è¡Œè®¾ç½®
 #endif
 
-static __u32 G_DTV_current_area = 1;//1;   //0:Ö»ÓÃÓÚÉîÛÚÆµÂÊ£¬1:È«Æµ¶ÎËÑË÷
+static __u32 G_DTV_current_area = 1;//1;   //0:åªç”¨äºæ·±åœ³é¢‘ç‡ï¼Œ1:å…¨é¢‘æ®µæœç´¢
 
 
 
@@ -98,7 +115,7 @@ __krnl_event_t  *maple_pFedBakQ = NULL;
 static int mode = MAPLE_VID_WINDOW_BESTSHOW;
 
 //static H_WIN  h_play_dialog = NULL;
-__bool b_full_screen = EPDK_TRUE;  //·ÇËõÂÔÍ¼²¥·Å
+__bool b_full_screen = EPDK_TRUE;  //éç¼©ç•¥å›¾æ’­æ”¾
 
 
 const Region_TPSects_t TPRegion_England[] =
@@ -365,7 +382,7 @@ static __s32 maple_antenna_switch_ctrl_uninit(void)
 
     return EPDK_OK;
 }
-//0:ÍâÖÃ 1:ÄÚÖÃ
+//0:å¤–ç½® 1:å†…ç½®
 __s32 maple_get_antenna_mode(void)
 {
     __msg("cmmb_para->default_antenna=%d \n", cmmb_para->default_antenna);
@@ -378,11 +395,11 @@ __s32 maple_set_antenna_mode(__u8 mode)
 
     if (mode == DTV_ANTENNA_LA)
     {
-        esPINS_WritePinData(g_antenna_switch_hdl, 1, NULL); //pg0 ¿ØÖÆÌìÏßÇĞ»»µÄGPIO¿Ú,ÄÚÖÃ
+        esPINS_WritePinData(g_antenna_switch_hdl, 1, NULL); //pg0 æ§åˆ¶å¤©çº¿åˆ‡æ¢çš„GPIOå£,å†…ç½®
     }
     else
     {
-        esPINS_WritePinData(g_antenna_switch_hdl, 0, NULL); //pg0 ¿ØÖÆÌìÏßÇĞ»»µÄGPIO¿Ú,Íâ
+        esPINS_WritePinData(g_antenna_switch_hdl, 0, NULL); //pg0 æ§åˆ¶å¤©çº¿åˆ‡æ¢çš„GPIOå£,å¤–
     }
 
     return 0;
@@ -675,7 +692,7 @@ __s32 maple_connect_signal(maple_demod_info_t *tp)
 }
 
 
-//¸ù¾İµ±Ç°ËÑË÷µÚ¼¸¸öÆµµã£¬»ñÈ¡¸ÃÆµµã,add by hot.lee
+//æ ¹æ®å½“å‰æœç´¢ç¬¬å‡ ä¸ªé¢‘ç‚¹ï¼Œè·å–è¯¥é¢‘ç‚¹,add by hot.lee
 __s32 maple_get_cur_search_freq(__s32 index)
 {
     DVBT_AreaTable_t *area_p;
@@ -683,7 +700,7 @@ __s32 maple_get_cur_search_freq(__s32 index)
     return area_p->pTPRegion_Area[index].StartFreq;
 }
 
-//µ±Ç°ĞèÒªËÑË÷µÄ×ÜÆµµãÊı,add by hot.lee
+//å½“å‰éœ€è¦æœç´¢çš„æ€»é¢‘ç‚¹æ•°,add by hot.lee
 __s32 maple_get_cur_search_freq_tatol(void)
 {
     DVBT_AreaTable_t *area_p;
@@ -727,7 +744,7 @@ __s32 maple_get_search_bandwidth(__u32 index)
 }
 
 //add by hot.lee
-//ÉèÖÃµ±Ç°ÕıÔÚËÑË÷µÄÆµµã£¬ÓÃÓÚ¸üĞÂËÑË÷½çÃæµÄÆµÂÊÏÔÊ¾
+//è®¾ç½®å½“å‰æ­£åœ¨æœç´¢çš„é¢‘ç‚¹ï¼Œç”¨äºæ›´æ–°æœç´¢ç•Œé¢çš„é¢‘ç‡æ˜¾ç¤º
 static void maple_set_cur_search_freq(__s32 freq, __u16 index, __u32 total)
 {
     maple_cur_search_freq = freq;
@@ -770,13 +787,13 @@ static __s32 __get_valid_channel(void)
     }
 
     service_list->servNum = j;
-    //¸üĞÂÖĞ¼ä¼ş,ÒòÎªÖĞ¼äÔÚÍË³öÊ±±£´æÊ±°üÀ¨ÊÕ·ÑÆµµÀ
-    //²»È»ÍË³öÔÙ½øÈëÊ±ÆµµÀºÅÊÇ´íÎóµÄ
+    //æ›´æ–°ä¸­é—´ä»¶,å› ä¸ºä¸­é—´åœ¨é€€å‡ºæ—¶ä¿å­˜æ—¶åŒ…æ‹¬æ”¶è´¹é¢‘é“
+    //ä¸ç„¶é€€å‡ºå†è¿›å…¥æ—¶é¢‘é“å·æ˜¯é”™è¯¯çš„
     {
         esMODS_MIoctrl(maple, MAPLE_CMD_SL_DELETE, 0, NULL);
         //if(cmmb_para->flag == EPDK_TRUE)
         {
-            //¾­¹ıMAPLE_CMD_SL_ADDºó£¬channelId»á·¢Éú±ä»¯£¬ËùÒÔĞèÒªÖØĞÂµ÷ÓÃMAPLE_CMD_SL_GET
+            //ç»è¿‡MAPLE_CMD_SL_ADDåï¼ŒchannelIdä¼šå‘ç”Ÿå˜åŒ–ï¼Œæ‰€ä»¥éœ€è¦é‡æ–°è°ƒç”¨MAPLE_CMD_SL_GET
             esMODS_MIoctrl(maple, MAPLE_CMD_SL_ADD, 0, (void *)service_list);
             service_list->servNum    = 0;
             service_list->curServIdx = 0;
@@ -791,25 +808,25 @@ static __s32 __get_valid_channel(void)
 
 static void Bubble_1(maple_serv_item_t r[], int n)
 {
-    int i = n - 1; //³õÊ¼Ê±,×îºóÎ»ÖÃ±£³Ö²»±ä
+    int i = n - 1; //åˆå§‹æ—¶,æœ€åä½ç½®ä¿æŒä¸å˜
 
     while (i > 0)
     {
-        int pos = 0; //Ã¿ÌË¿ªÊ¼Ê±,ÎŞ¼ÇÂ¼½»»»
+        int pos = 0; //æ¯è¶Ÿå¼€å§‹æ—¶,æ— è®°å½•äº¤æ¢
         int j = 0;
 
         for (; j < i; j++)
             if (r[j].servId > r[j + 1].servId)
             {
                 maple_serv_item_t tmp;
-                pos = j; //¼ÇÂ¼½»»»µÄÎ»ÖÃ
+                pos = j; //è®°å½•äº¤æ¢çš„ä½ç½®
                 //tmp = r[j]; r[j]=r[j+1];r[j+1]=tmp;
                 eLIBs_memcpy(&tmp, (void *)&r[j], sizeof(maple_serv_item_t));
                 eLIBs_memcpy((void *)&r[j], (void *)&r[j + 1], sizeof(maple_serv_item_t));
                 eLIBs_memcpy((void *)&r[j + 1], &tmp, sizeof(maple_serv_item_t));
             }
 
-        i = pos; //ÎªÏÂÒ»ÌËÅÅĞò×÷×¼±¸
+        i = pos; //ä¸ºä¸‹ä¸€è¶Ÿæ’åºä½œå‡†å¤‡
     }
 }
 
@@ -877,13 +894,13 @@ static __s32 __get_valid_channel(void)
     service_list->servNum = j;
     //__sort_by_service_id();
     __sort_free_channel_first();
-    //¸üĞÂÖĞ¼ä¼ş,ÒòÎªÖĞ¼äÔÚÍË³öÊ±±£´æÊ±°üÀ¨ÊÕ·ÑÆµµÀ
-    //²»È»ÍË³öÔÙ½øÈëÊ±ÆµµÀºÅÊÇ´íÎóµÄ
+    //æ›´æ–°ä¸­é—´ä»¶,å› ä¸ºä¸­é—´åœ¨é€€å‡ºæ—¶ä¿å­˜æ—¶åŒ…æ‹¬æ”¶è´¹é¢‘é“
+    //ä¸ç„¶é€€å‡ºå†è¿›å…¥æ—¶é¢‘é“å·æ˜¯é”™è¯¯çš„
     {
         esMODS_MIoctrl(maple, MAPLE_CMD_SL_DELETE, 0, NULL);
         //if(cmmb_para->flag == EPDK_TRUE)
         {
-            //¾­¹ıMAPLE_CMD_SL_ADDºó£¬channelId»á·¢Éú±ä»¯£¬ËùÒÔĞèÒªÖØĞÂµ÷ÓÃMAPLE_CMD_SL_GET
+            //ç»è¿‡MAPLE_CMD_SL_ADDåï¼ŒchannelIdä¼šå‘ç”Ÿå˜åŒ–ï¼Œæ‰€ä»¥éœ€è¦é‡æ–°è°ƒç”¨MAPLE_CMD_SL_GET
             esMODS_MIoctrl(maple, MAPLE_CMD_SL_ADD, 0, (void *)service_list);
             service_list->servNum    = 0;
             service_list->curServIdx = 0;
@@ -916,7 +933,7 @@ __s32 maple_service_list_get(maple_serv_group_type_e type)
 #endif
     return service_list->servNum;
 }
-Region_TPSects_t auto_serach_xuchang[1] = {{634 * 1000 * 1000, 8000}}; //Ğí²ı
+Region_TPSects_t auto_serach_xuchang[1] = {{634 * 1000 * 1000, 8000}}; //è®¸æ˜Œ
 void maple_all_freq_table(scan_para_t *scan_para)
 {
     if (scan_para == NULL)
@@ -952,7 +969,7 @@ void maple_auto_search_major(scan_para_t *scan_para)
         eLIBs_memset(demodParam, 0x00, sizeof(maple_demod_info_t));
         demodParam->bandwidth = major_table[i].BandWidth;
         demodParam->frequency = major_table[i].StartFreq / 1000;
-        //Èç¹ûÉÏ´ÎµÈ´ı³¬Ê±£¬ÔòmapleÈÎÎñ»á±»É±µô£¬maple¶à·¢Ò»¸öfinish£¬callback£¬ĞÅºÅÁ¿Ôö¼Ó1£¬µ¼ÖÂÏÂÒ»¸öÆµµãËÑË÷Ê§°Ü
+        //å¦‚æœä¸Šæ¬¡ç­‰å¾…è¶…æ—¶ï¼Œåˆ™mapleä»»åŠ¡ä¼šè¢«æ€æ‰ï¼Œmapleå¤šå‘ä¸€ä¸ªfinishï¼Œcallbackï¼Œä¿¡å·é‡å¢åŠ 1ï¼Œå¯¼è‡´ä¸‹ä¸€ä¸ªé¢‘ç‚¹æœç´¢å¤±è´¥
         esKRNL_SemAccept(sl_event_cbp->pOpaque);
 
         if (esMODS_MIoctrl(maple, MAPLE_CMD_TUNE, 0, demodParam) != 0)
@@ -1016,7 +1033,7 @@ _sl_search_exit:
         scan_para->scan_major = EPDK_TRUE;
     }
 }
-static __bool search_task_break = EPDK_FALSE; //ÈËÎªÖĞ¶ÏËÑÌ¨Ïß³Ì,add by hot.lee
+static __bool search_task_break = EPDK_FALSE; //äººä¸ºä¸­æ–­æœå°çº¿ç¨‹,add by hot.lee
 __s32 g_is_searching = 0;
 void maple_break_search_task(void)
 {
@@ -1026,7 +1043,7 @@ void maple_break_search_task(void)
 
 //* task for searching service
 //modify by hot.lee for
-//__u32 freq=*(__u32 *)(arg); != 0 //µ¥ÆµµãËÑË÷
+//__u32 freq=*(__u32 *)(arg); != 0 //å•é¢‘ç‚¹æœç´¢
 void sl_area_search_task(void *arg)
 {
     __u32 i = 0;
@@ -1073,10 +1090,10 @@ void sl_area_search_task(void *arg)
         eLIBs_memset(demodParam, 0x00, sizeof(maple_demod_info_t));
         demodParam->bandwidth = scan_para->pTPRegion_Area[i].BandWidth;
         demodParam->frequency = scan_para->pTPRegion_Area[i].StartFreq / 1000;
-        //Èç¹ûÉÏ´ÎµÈ´ı³¬Ê±£¬ÔòmapleÈÎÎñ»á±»É±µô£¬maple¶à·¢Ò»¸öfinish£¬callback£¬ĞÅºÅÁ¿Ôö¼Ó1£¬µ¼ÖÂÏÂÒ»¸öÆµµãËÑË÷Ê§°Ü
+        //å¦‚æœä¸Šæ¬¡ç­‰å¾…è¶…æ—¶ï¼Œåˆ™mapleä»»åŠ¡ä¼šè¢«æ€æ‰ï¼Œmapleå¤šå‘ä¸€ä¸ªfinishï¼Œcallbackï¼Œä¿¡å·é‡å¢åŠ 1ï¼Œå¯¼è‡´ä¸‹ä¸€ä¸ªé¢‘ç‚¹æœç´¢å¤±è´¥
         esKRNL_SemAccept(sl_event_cbp->pOpaque);
 
-        if (MANUAL_SERACH_TYPE == scan_para->scan_type) //ÊÖ¶¯ËÑË÷
+        if (MANUAL_SERACH_TYPE == scan_para->scan_type) //æ‰‹åŠ¨æœç´¢
         {
             search_service_list->nit_freq_num = -1;// will del ;add for auto search
             maple_set_cur_search_freq(demodParam->frequency, i + 1, 1);
@@ -1103,7 +1120,7 @@ void sl_area_search_task(void *arg)
         {
             __wrn(" tune maple fail.\n");
 
-            if (MANUAL_SERACH_TYPE == scan_para->scan_type) //ÊÖ¶¯ËÑË÷
+            if (MANUAL_SERACH_TYPE == scan_para->scan_type) //æ‰‹åŠ¨æœç´¢
             {
                 break;
             }
@@ -1136,7 +1153,7 @@ void sl_area_search_task(void *arg)
             goto  _sl_search_exit;
         }
 
-        if (MANUAL_SERACH_TYPE == scan_para->scan_type) //ÊÖ¶¯ËÑË÷
+        if (MANUAL_SERACH_TYPE == scan_para->scan_type) //æ‰‹åŠ¨æœç´¢
         {
             break;
         }
@@ -1148,7 +1165,7 @@ void sl_area_search_task(void *arg)
     maple_service_list_get(MAPLE_SERV_GROUP_TYPE_ALL);
     __msg("service_list->servNum=%d \n", service_list->servNum);
 
-    if (service_list->servNum > 0) //ËÑÌ¨½áÊøÖ®ºó×öÒ»´Î±£´æ
+    if (service_list->servNum > 0) //æœå°ç»“æŸä¹‹ååšä¸€æ¬¡ä¿å­˜
     {
         //maple_save_reg_current_program();
         //maple_program_save(DTV_DATABASE_NAME);
@@ -1164,7 +1181,7 @@ void sl_area_search_task(void *arg)
     }
     else
     {
-        //ÊÇ·ñ²»ÔÙ±£´æÉÏÒ»´ÎËÑÌ¨½á¹û ?
+        //æ˜¯å¦ä¸å†ä¿å­˜ä¸Šä¸€æ¬¡æœå°ç»“æœ ?
         //eLIBs_format("z:\\","fat",0);
         maple_program_load(DTV_DATABASE_NAME, EPDK_FALSE);
     }
@@ -1199,7 +1216,7 @@ _sl_search_exit:
     scan_para = NULL;
     __msg("sl_area_search_task()... exit...\n");
     search_task_break = EPDK_FALSE;
-    //////esKRNL_SemPost(dtv_ctr.sem);//Ğ¡ĞÄ£¬»áÒı·¢Ïß³Ìµ÷¶È
+    //////esKRNL_SemPost(dtv_ctr.sem);//å°å¿ƒï¼Œä¼šå¼•å‘çº¿ç¨‹è°ƒåº¦
 
     if (sl_event_cbp->pOpaque)
     {
@@ -1217,7 +1234,7 @@ _sl_search_exit:
 
     maple_play_program();
     check_dtv_or_radio();
-    /*ÒÆ¶¯ ·ÀÖ¹µÚÒ»´ÎÊÕµ½½ÚÄ¿ºó²»ÄÜ²¥·ÅÎÊÌâ*/
+    /*ç§»åŠ¨ é˜²æ­¢ç¬¬ä¸€æ¬¡æ”¶åˆ°èŠ‚ç›®åä¸èƒ½æ’­æ”¾é—®é¢˜*/
     g_is_searching = 0;
     sl_task_id = NULL;
     esKRNL_TDel(EXEC_prioself);
@@ -1316,7 +1333,7 @@ __s32 maple_search_stop(void)
 
 
 /****************************************************************************************************************************
-*save / load program ,²éÑ¯ÊÇ·ñÓĞ±¸·İµÄ²¥·ÅÁĞ±í,modify by hot.lee
+*save / load program ,æŸ¥è¯¢æ˜¯å¦æœ‰å¤‡ä»½çš„æ’­æ”¾åˆ—è¡¨,modify by hot.lee
 ******************************************************************************************************************************/
 __s32 maple_program_load(char *database_file_name, __u8 first_load)
 {
@@ -1329,11 +1346,11 @@ __s32 maple_program_load(char *database_file_name, __u8 first_load)
 
     if (NULL == pf)
     {
-        //´æÌ¨ÎÄ¼ş²»´æÔÚ£¬Ä¬ÈÏËÑÌ¨
+        //å­˜å°æ–‡ä»¶ä¸å­˜åœ¨ï¼Œé»˜è®¤æœå°
         __msg("file [%s] not exist , search\n", str_filename);
 #if((MAPLE_TV_STANDAR == MAPLE_TV_ISDB_T)||(MAPLE_TV_STANDAR == MAPLE_TV_DTMB)\
         || (MAPLE_TV_STANDAR == MAPLE_TV_DVB_T)|| (MAPLE_TV_STANDAR == MAPLE_TV_ATSC))
-        cmmb_para->b_show_subtitle = EPDK_TRUE;   //Ä¬ÈÏ×ÖÄ»´æÔÚ
+        cmmb_para->b_show_subtitle = EPDK_TRUE;   //é»˜è®¤å­—å¹•å­˜åœ¨
         //dtv_subtitle_set_subtitle_flag(EPDK_TRUE);
 #endif
         //return EPDK_FAIL;
@@ -1346,7 +1363,7 @@ __s32 maple_program_load(char *database_file_name, __u8 first_load)
         ret = EPDK_TRUE;
     }
 
-    //Ì¨¿ÉÄÜÃ»ÓĞ£¬ÉèÖÃ¿ÉÄÜ¸Ä±ä
+    //å°å¯èƒ½æ²¡æœ‰ï¼Œè®¾ç½®å¯èƒ½æ”¹å˜
     eLIBs_strcpy(baseinf_filename, DTV_BASEINFO_NAME);
     pf = eLIBs_fopen(baseinf_filename, "rb");
 
@@ -1373,7 +1390,7 @@ __s32 maple_program_load(char *database_file_name, __u8 first_load)
 
     if (first_load == EPDK_TRUE)
     {
-        maple_antenna_switch_ctrl_init();//ÌìÏßÉèÖÃ
+        maple_antenna_switch_ctrl_init();//å¤©çº¿è®¾ç½®
         maple_set_antenna_mode(cmmb_para->default_antenna);
     }
 
@@ -1390,12 +1407,12 @@ __s32 maple_program_load(char *database_file_name, __u8 first_load)
         return EPDK_FAIL;
     }
 
-#if 0 //Ô­À´²»ĞŞ¸ÄESG
+#if 0 //åŸæ¥ä¸ä¿®æ”¹ESG
     service_list->servNum    = 0;
     service_list->curServIdx = 0;
     eLIBs_memset((void *)service_list->pServItems, 0, sizeof(maple_serv_item_t)*MAPLE_MAX_SERV_NUM);
 
-    //ÔÚ´Ë»ñÈ¡µÄÊÇÉÏÒ»´Î±£´æµÄ
+    //åœ¨æ­¤è·å–çš„æ˜¯ä¸Šä¸€æ¬¡ä¿å­˜çš„
     if (g_programtype == SSET_NC_PROGRAMTYPE_TV)
     {
         esMODS_MIoctrl(maple, MAPLE_CMD_SL_GET, MAPLE_SERV_GROUP_TYPE_TV, (void *)service_list);
@@ -1412,7 +1429,7 @@ __s32 maple_program_load(char *database_file_name, __u8 first_load)
     esMODS_MIoctrl(maple, MAPLE_CMD_SL_DELETE, 0, NULL);
     //if(cmmb_para->flag == EPDK_TRUE)
     {
-        //¾­¹ıMAPLE_CMD_SL_ADDºó£¬channelId»á·¢Éú±ä»¯£¬ËùÒÔĞèÒªÖØĞÂµ÷ÓÃMAPLE_CMD_SL_GET
+        //ç»è¿‡MAPLE_CMD_SL_ADDåï¼ŒchannelIdä¼šå‘ç”Ÿå˜åŒ–ï¼Œæ‰€ä»¥éœ€è¦é‡æ–°è°ƒç”¨MAPLE_CMD_SL_GET
         esMODS_MIoctrl(maple, MAPLE_CMD_SL_ADD, 0, (void *)service_list);
         __msg("service_list->servNum = %d  cmmb_para->index = %d\n", service_list->servNum, cmmb_para->index);
 #if((MAPLE_TV_STANDAR == MAPLE_TV_ISDB_T)||(MAPLE_TV_STANDAR == MAPLE_TV_DTMB)\
@@ -1430,13 +1447,13 @@ __s32 maple_program_load(char *database_file_name, __u8 first_load)
             service_list->curServIdx = service_list->pServItems[cmmb_para->index].channelId;
             __msg("service_list->curServIdx = %d name = %s servId=%d...\n", service_list->curServIdx, service_list->pServItems[cmmb_para->index].servName, service_list->pServItems[cmmb_para->index].servId);
         }
-#else //ĞŞ¸ÄESGºó
+#else //ä¿®æ”¹ESGå
 #if 0
     service_list->servNum    = 0;
     service_list->curServIdx = 0;
     eLIBs_memset((void *)service_list->pServItems, 0, sizeof(maple_serv_item_t)*MAPLE_MAX_SERV_NUM);
 
-    //ÔÚ´Ë»ñÈ¡µÄÊÇÉÏÒ»´Î±£´æµÄ
+    //åœ¨æ­¤è·å–çš„æ˜¯ä¸Šä¸€æ¬¡ä¿å­˜çš„
     if (g_programtype == SSET_NC_PROGRAMTYPE_TV)
     {
         esMODS_MIoctrl(maple, MAPLE_CMD_SL_GET, MAPLE_SERV_GROUP_TYPE_TV, (void *)service_list);
@@ -1460,7 +1477,7 @@ __s32 maple_program_load(char *database_file_name, __u8 first_load)
 #endif
     //if(cmmb_para->flag == EPDK_TRUE)
     {
-        //¾­¹ıMAPLE_CMD_SL_ADDºó£¬channelId»á·¢Éú±ä»¯£¬ËùÒÔĞèÒªÖØĞÂµ÷ÓÃMAPLE_CMD_SL_GET
+        //ç»è¿‡MAPLE_CMD_SL_ADDåï¼ŒchannelIdä¼šå‘ç”Ÿå˜åŒ–ï¼Œæ‰€ä»¥éœ€è¦é‡æ–°è°ƒç”¨MAPLE_CMD_SL_GET
         //////  esMODS_MIoctrl(maple, MAPLE_CMD_SL_ADD, 0, (void*)service_list);
         ///////  __wrn("service_list->servNum = %d  cmmb_para->index = %d\n",service_list->servNum,cmmb_para->index);
 #if((MAPLE_TV_STANDAR == MAPLE_TV_ISDB_T)||(MAPLE_TV_STANDAR == MAPLE_TV_DTMB)\
@@ -1498,7 +1515,7 @@ __s32 maple_program_load(char *database_file_name, __u8 first_load)
         }
 
         {
-            //²¥·Å×îºóÒ»´Î²¥·ÅµÄ½ÚÄ¿
+            //æ’­æ”¾æœ€åä¸€æ¬¡æ’­æ”¾çš„èŠ‚ç›®
             service_list->curServIdx = service_list->pServItems[cmmb_para->index].channelId;
             __msg("service_list->curServIdx = %d name = %s servId=%d...\n", service_list->curServIdx, service_list->pServItems[cmmb_para->index].servName, service_list->pServItems[cmmb_para->index].servId);
         }
@@ -1605,7 +1622,7 @@ __s32 maple_set_cur_flash_save_program_index(__s32 index)
     cmmb_para->index = index;
     return EPDK_OK;
 }
-//ÓĞ±ä¸üÊ±²ÅÖØË¢flash
+//æœ‰å˜æ›´æ—¶æ‰é‡åˆ·flash
 __s32 maple_reg_flush(void)
 {
     __s32 ret = EPDK_FAIL;
@@ -1622,7 +1639,7 @@ __s32 maple_reg_flush(void)
         fp = eLIBs_fopen(baseinf_filename, "wb");
 
         //__here__;
-        if (fp == NULL) //Ğ´²»³É¹¦Ê±²Å¸ñÊ½»¯ZÅÌ
+        if (fp == NULL) //å†™ä¸æˆåŠŸæ—¶æ‰æ ¼å¼åŒ–Zç›˜
         {
             //__here__;
             eLIBs_format("z:\\", "fat", 0);
@@ -1650,9 +1667,9 @@ __s32 maple_reg_flush(void)
         //__here__;
     }
 
-    //ÆäÊµ¿ÉÒÔ²»·ÅÔÚÕâÀï£¬ÎÒÃÇ¿ÉÒÔÔÚĞèÒªµÄÊ±ºò²Å±£´æ
-    //ÕâÑùÎÒÃÇÖ»ĞèÒª±£´æµ±Ç°²¥·ÅµÄĞÅÏ¢µ½¶ÀÁ¢·ÖÇø
-    //¶ø²»ĞèÒªºÍÌ¨µÄĞÅÏ¢·ÅÔÚÍ¬Ò»ÅÌ·û
+    //å…¶å®å¯ä»¥ä¸æ”¾åœ¨è¿™é‡Œï¼Œæˆ‘ä»¬å¯ä»¥åœ¨éœ€è¦çš„æ—¶å€™æ‰ä¿å­˜
+    //è¿™æ ·æˆ‘ä»¬åªéœ€è¦ä¿å­˜å½“å‰æ’­æ”¾çš„ä¿¡æ¯åˆ°ç‹¬ç«‹åˆ†åŒº
+    //è€Œä¸éœ€è¦å’Œå°çš„ä¿¡æ¯æ”¾åœ¨åŒä¸€ç›˜ç¬¦
 
     if (b_write_flash == EPDK_TRUE)
     {
@@ -1678,7 +1695,7 @@ __s32 maple_reg_flush(void)
 
     return EPDK_OK;
 }
-//ÎÄ¼şÃû×Ô¶¨Òå£¬ÖĞ¼ä¼ş»áÈ¥´´½¨
+//æ–‡ä»¶åè‡ªå®šä¹‰ï¼Œä¸­é—´ä»¶ä¼šå»åˆ›å»º
 __s32 maple_program_save(char *database_file_name)
 {
     if (service_list->servNum > 0)
@@ -1782,7 +1799,7 @@ __s32 maple_get_play_status(void)
 }
 __s32 app_misc_audio_mute(__s32 flag)
 {
-    //¿ª¹Ø¹Ø¹¦·Å²Ù×÷
+    //å¼€å…³å…³åŠŸæ”¾æ“ä½œ
     return EPDK_OK;
 }
 __s32 maple_play_program(void)
@@ -1803,7 +1820,7 @@ __s32 maple_play_program(void)
     video_window.x      = 0;
     video_window.y      = 0;
     video_window.width  = esMODS_MIoctrl(mp_display, MOD_DISP_GET_SCN_WIDTH, 0, 0);
-    //Ô¤Áô×ÖÄ»ÏÔÊ¾ÇøÓò£¬±ÜÃâÓ°Ïì¹Û¿´Ğ§¹û
+    //é¢„ç•™å­—å¹•æ˜¾ç¤ºåŒºåŸŸï¼Œé¿å…å½±å“è§‚çœ‹æ•ˆæœ
     video_window.height = esMODS_MIoctrl(mp_display, MOD_DISP_GET_SCN_HEIGHT, 0, 0);
     __wrn("w = %d  h = %d \n", video_window.width, video_window.height);
 
@@ -1826,7 +1843,7 @@ __s32 maple_play_program(void)
             //  __s32 lang_id[]={ STRING_DTV_TIPS , STRING_DTV_CUR_PROGRAM_OPEN_FAIL };
             //  default_dialog(h_play_dialog,GUI_WinGetHandFromName(APP_DTV),DVB_PROT_DIALOG_ID,ADLG_OK,lang_id);
         }
-        app_misc_audio_mute(0);//²¥·ÅÊ§°Ü¹Ø±Õ¹¦·Å
+        app_misc_audio_mute(0);//æ’­æ”¾å¤±è´¥å…³é—­åŠŸæ”¾
         return EPDK_FAIL;
     }
     else
@@ -1843,9 +1860,9 @@ __s32 maple_play_program(void)
             esMODS_MIoctrl(mp_display, MOD_DISP_CMD_LAYER_BOTTOM, 0, (void *)arg);
         }
 
-        //esMODS_MIoctrl(mp_display, DISP_CMD_LCD_ON, 0, 0); //²»ĞèÒª£¬Èç¹ûÓÃµÄ»°TVOUTÊ±»áÓĞÎÊÌâ
+        //esMODS_MIoctrl(mp_display, DISP_CMD_LCD_ON, 0, 0); //ä¸éœ€è¦ï¼Œå¦‚æœç”¨çš„è¯TVOUTæ—¶ä¼šæœ‰é—®é¢˜
         //eLIBs_fclose(display);
-        app_misc_audio_mute(1);//²¥·Å³É¹¦ÔÙ´ò¿ª¹¦·Å
+        app_misc_audio_mute(1);//æ’­æ”¾æˆåŠŸå†æ‰“å¼€åŠŸæ”¾
         dtv_ctr.play_cnt = 1;
         cur_playing_index = service_list->curServIdx;
     }
@@ -1906,7 +1923,7 @@ void dtv_loading_destory_timer(void)
 #endif
     return ;
 }
-/*Ä¬ÈÏÖ»Òª´øca¾ÍÊÇÎŞÊÚÈ¨*/
+/*é»˜è®¤åªè¦å¸¦caå°±æ˜¯æ— æˆæƒ*/
 void check_auth_timer(void)
 {
 #if (MAPLE_CA_STANDAR == DTV_CA_NONE)
@@ -2014,8 +2031,8 @@ __s32 maple_get_current_program_freq(void)
 }
 //add by hot.lee
 //video_window = NULL , means  full screen
-//video_window:²¥·ÅÇøÓò£¬ÓÃÓÚ½ÚÄ¿Ô¤ÀÀ
-//index: Âß¼­ÆµµÀºÅ
+//video_window:æ’­æ”¾åŒºåŸŸï¼Œç”¨äºèŠ‚ç›®é¢„è§ˆ
+//index: é€»è¾‘é¢‘é“å·
 __s32 maple_play_program_ex(RECT * video_window, __s32 index)
 {
     __s32 channel;
@@ -2103,7 +2120,7 @@ __s32 maple_play_program_ex(RECT * video_window, __s32 index)
         arg[2] = 0;
         esMODS_MIoctrl(mp_display, MOD_DISP_CMD_LAYER_OPEN, 0, (void *)arg);
 
-        ////esMODS_MIoctrl(mp_display, DISP_CMD_LCD_ON, 0, 0); //²»ĞèÒª£¬Èç¹ûÓÃµÄ»°TVOUTÊ±»áÓĞÎÊÌâ
+        ////esMODS_MIoctrl(mp_display, DISP_CMD_LCD_ON, 0, 0); //ä¸éœ€è¦ï¼Œå¦‚æœç”¨çš„è¯TVOUTæ—¶ä¼šæœ‰é—®é¢˜
 
         if (video_window)
         {
@@ -2202,7 +2219,7 @@ __s32 maple_stop_program(void)
 *
 ***********************************************************************************************************/
 //* task for searching schedule
-//ÒÑ¾­·ÏÆú
+//å·²ç»åºŸå¼ƒ
 static void schedule_search_task(void *arg)
 {
     __u8                    err;
@@ -2265,7 +2282,7 @@ void maple_epg_reset_schdl_list_day(__u32 serviceid)
 
     for (i = 0; i < 7; i++)
 #else
-    for (i = 0; i < 1; i++) //Ö»ÁÔÈ¡µ±ÌìµÄ½ÚÄ¿ÁĞ±í
+    for (i = 0; i < 1; i++) //åªçŒå–å½“å¤©çš„èŠ‚ç›®åˆ—è¡¨
 #endif
     {
         schdl_list_day[i].eventNum = 0;
@@ -2281,7 +2298,7 @@ __s32 maple_epg_add_event_to_schdl(maple_schdl_event_t *event)
 
     for (i = 0; i < 7; i++)
 #else
-    for (i = 0; i < 1; i++) //Ö»»ñÈ¡µ±ÌìµÄ¾ÍOK
+    for (i = 0; i < 1; i++) //åªè·å–å½“å¤©çš„å°±OK
 #endif
     {
         //__msg("schdl_list_day[i].MJD = %d   event->startTime.MJD=%d\n",schdl_list_day[i].MJD,event->startTime.MJD);
@@ -2314,8 +2331,8 @@ __s32 maple_register_epg_callback(__pCBK_t cb_search_schedule_event_callback, __
     __wrn("maple_register_epg_callback exit.\n");
     return EPDK_OK;
 }
-//maple_epg_search()Ö®ºó²¢²»»áÂíÉÏµÃµ½epgÊı¾İ
-//ËùÒÔÂíÉÏ½øÈëschedule½çÃæÓĞ¿ÉÄÜÊı¾İ»¹ÊÇ¿ÕµÄ
+//maple_epg_search()ä¹‹åå¹¶ä¸ä¼šé©¬ä¸Šå¾—åˆ°epgæ•°æ®
+//æ‰€ä»¥é©¬ä¸Šè¿›å…¥scheduleç•Œé¢æœ‰å¯èƒ½æ•°æ®è¿˜æ˜¯ç©ºçš„
 __s32 maple_epg_getdata(void)
 {
     int i = 0;
@@ -2331,7 +2348,7 @@ __s32 maple_epg_getdata(void)
 
     return EPDK_OK;
 }
-//»ñÈ¡µ±Ç°ÕıÔÚ²¥·ÅµÄ½ÚÄ¿ÊÇÒ»ÌìÖĞµÄµÚ¼¸¸ö½ÚÄ¿£¬add by hot.lee
+//è·å–å½“å‰æ­£åœ¨æ’­æ”¾çš„èŠ‚ç›®æ˜¯ä¸€å¤©ä¸­çš„ç¬¬å‡ ä¸ªèŠ‚ç›®ï¼Œadd by hot.lee
 __s32 maple_get_cur_schedule_index(__s32 day_index)
 {
     __s32 i;
@@ -2339,7 +2356,7 @@ __s32 maple_get_cur_schedule_index(__s32 day_index)
 
     for (i = 0; i < schdl_list_day[day_index].eventNum; i++)
     {
-#if 1   //endTime ¶¼ ÊÇ0£¬ËùÒÔ  //È¡ÆğÊ¼Ê±¼äÏàµÈ¾ÍOK
+#if 1   //endTime éƒ½ æ˜¯0ï¼Œæ‰€ä»¥  //å–èµ·å§‹æ—¶é—´ç›¸ç­‰å°±OK
         eLIBs_sprintf(tmp, "  %d:%d:%d - %d:%d:%d : ",
                       schdl_list_day[day_index].pSchdlEvents[i].startTime.hour,
                       schdl_list_day[day_index].pSchdlEvents[i].startTime.min,
@@ -2349,7 +2366,7 @@ __s32 maple_get_cur_schedule_index(__s32 day_index)
                       schdl_list_day[day_index].pSchdlEvents[i].endTime.sec);
         __msg("tmp = %s  sepg_string_c = %s\n", tmp, sepg_string_c);
 
-        if (eLIBs_strncmp(tmp, sepg_string_c, 10) == 0) //È¡ÆğÊ¼Ê±¼äÏàµÈ¾ÍOK
+        if (eLIBs_strncmp(tmp, sepg_string_c, 10) == 0) //å–èµ·å§‹æ—¶é—´ç›¸ç­‰å°±OK
 #else
         if (sepg->curEventstartTime.hour == schdl_list_day[day_index].pSchdlEvents[i].startTime.hour
             || sepg->curEventstartTime.min == schdl_list_day[day_index].pSchdlEvents[i].startTime.min
@@ -2363,13 +2380,13 @@ __s32 maple_get_cur_schedule_index(__s32 day_index)
 
     return 0;
 }
-//»ñÈ¡Ä³Ò»ÌìµÄevent num
+//è·å–æŸä¸€å¤©çš„event num
 __s32 maple_epg_get_eventnum(__s32 day_index)
 {
     __msg("schdl_list_day[%d].eventNum = %d\n", day_index, schdl_list_day[day_index].eventNum);
     return schdl_list_day[day_index].eventNum;
 }
-//»ñÈ¡Ä³Ò»ÌìÖ¸¶¨event indexµÄschdl events
+//è·å–æŸä¸€å¤©æŒ‡å®ševent indexçš„schdl events
 maple_schdl_event_t *maple_epg_get_schdl_event(__s32 day_index, __s32 event_index)
 {
     return &schdl_list_day[day_index].pSchdlEvents[event_index];
@@ -2407,13 +2424,13 @@ __s32 maple_time_monitor_get(maple_time_t *tv_time)
     return esMODS_MIoctrl(maple, MAPLE_CMD_TIME_GET, 0, tv_time);
 }
 //add by hot.lee
-//»ñÈ¡µ±Ç°Ì¨Êı
+//è·å–å½“å‰å°æ•°
 __s32 maple_get_cur_service_list_num(void)
 {
     return service_list->servNum;
 }
 //add by hot.lee
-//»ñÈ¡µ±Ç°²¥·Å½ÚÄ¿µÄÂß¼­ÆµµÀºÅ
+//è·å–å½“å‰æ’­æ”¾èŠ‚ç›®çš„é€»è¾‘é¢‘é“å·
 __s32 maple_get_cur_program_preview_index(void)
 {
     __s32 i;
@@ -2428,8 +2445,8 @@ __s32 maple_get_cur_program_preview_index(void)
 
     return 0;
 }
-//¸ù¾İ0 1 2 3 µÈÉèÖÃcurServIdx
-//¸ù¾İÂß¼­ÆµµÀºÅÈ¥²¥·Å½ÚÄ¿£¬¸ü·ûºÏÊ¹ÓÃÏ°¹ß,add by hot.lee
+//æ ¹æ®0 1 2 3 ç­‰è®¾ç½®curServIdx
+//æ ¹æ®é€»è¾‘é¢‘é“å·å»æ’­æ”¾èŠ‚ç›®ï¼Œæ›´ç¬¦åˆä½¿ç”¨ä¹ æƒ¯,add by hot.lee
 __s32  maple_set_cur_channel(__s32 index)
 {
     if (index < 0)
@@ -2457,8 +2474,8 @@ __s32  maple_get_cur_channel(__s32 index)
     service_list->curServIdx = service_list->pServItems[index].channelId;
     return service_list->curServIdx;
 }
-// »ñÈ¡ÆµµÀÃû³Æ
-//¸ù¾İÂß¼­ÆµµÀºÅ£¬»ñÈ¡ÆµµÀÃû³Æ,add by hot.lee
+// è·å–é¢‘é“åç§°
+//æ ¹æ®é€»è¾‘é¢‘é“å·ï¼Œè·å–é¢‘é“åç§°,add by hot.lee
 char  *maple_get_name_of_channel(__s32 index)
 {
     if (index >= service_list->servNum  || index < 0)
@@ -2470,8 +2487,8 @@ char  *maple_get_name_of_channel(__s32 index)
     //    __wrn("NUM:%d NAME:%s \n",index,service_list->pServItems[index].servName);
     return service_list->pServItems[index].servName;
 }
-// »ñÈ¡ÆµµÀÊÇ·ñ¼ÓËø
-//¸ù¾İÂß¼­ÆµµÀºÅ£¬»ñÈ¡ÆµµÀÊÇ·ñ¼ÓËø±êÖ¾ //add by shiql
+// è·å–é¢‘é“æ˜¯å¦åŠ é”
+//æ ¹æ®é€»è¾‘é¢‘é“å·ï¼Œè·å–é¢‘é“æ˜¯å¦åŠ é”æ ‡å¿— //add by shiql
 __u8 maple_get_server_type_of_channel(__s32 index)
 {
     if (index >= service_list->servNum  || index < 0)
@@ -2482,8 +2499,8 @@ __u8 maple_get_server_type_of_channel(__s32 index)
     // eLIBs_printf("NUM:%d servType:%d \n",index,service_list->pServItems[index].servType);
     return service_list->pServItems[index].servType;
 }
-// »ñÈ¡ÆµµÀÊÇ·ñ¼ÓËø
-//¸ù¾İÂß¼­ÆµµÀºÅ£¬»ñÈ¡ÆµµÀÊÇ·ñ¼ÓËø±êÖ¾ //add by shiql
+// è·å–é¢‘é“æ˜¯å¦åŠ é”
+//æ ¹æ®é€»è¾‘é¢‘é“å·ï¼Œè·å–é¢‘é“æ˜¯å¦åŠ é”æ ‡å¿— //add by shiql
 __u8 maple_get_cafree_status_of_channel(__s32 index)
 {
     if (index >= service_list->servNum  || index < 0)
@@ -2666,10 +2683,10 @@ __s32 maple_get_ss_status(__s32 * strength, __s32 * quality)
     return 0;
 }
 #endif
-//¶ÔÓÚCMMB´Ëº¯ÊıÖ»ÄÜÔÚĞÅºÅ¼ì²â¶¨Ê±Æ÷Àïµ÷ÓÃ
-//ÆäËüÒª»ñÈ¡ĞÅºÅ×´Ì¬µÄµØ·½£¬ÇëÓÃÈ«¾Ö±äÁ¿»ñÈ¡
-//ÒòÎªMAPLE_CMD_GET_SSÃ¿´Î¶¼»á´ÓÍ¨µÀÀï»ñÈ¡Êı¾İ
-//ĞèÒª·ÀÖ¹Ïß³Ì·ÃÎÊ³åÍ»Ôì³ÉµÄËÀËø
+//å¯¹äºCMMBæ­¤å‡½æ•°åªèƒ½åœ¨ä¿¡å·æ£€æµ‹å®šæ—¶å™¨é‡Œè°ƒç”¨
+//å…¶å®ƒè¦è·å–ä¿¡å·çŠ¶æ€çš„åœ°æ–¹ï¼Œè¯·ç”¨å…¨å±€å˜é‡è·å–
+//å› ä¸ºMAPLE_CMD_GET_SSæ¯æ¬¡éƒ½ä¼šä»é€šé“é‡Œè·å–æ•°æ®
+//éœ€è¦é˜²æ­¢çº¿ç¨‹è®¿é—®å†²çªé€ æˆçš„æ­»é”
 __s32   maple_get_ss(maple_demod_ss_t *ss)
 {
     if (esMODS_MIoctrl(maple, MAPLE_CMD_GET_SS, 0, (void *)ss) != 0)
@@ -2699,8 +2716,8 @@ __u8  maple_control_get_lock_status(void)
 
     return ret;
 }
-//¼ì²â½âÂë×´Ì¬£¬add by hot.lee
-//Ö»ÓÃÔÚ¶¨Ê±Æ÷¼ì²âÏß³ÌÖĞ
+//æ£€æµ‹è§£ç çŠ¶æ€ï¼Œadd by hot.lee
+//åªç”¨åœ¨å®šæ—¶å™¨æ£€æµ‹çº¿ç¨‹ä¸­
 maple_ve_status_e *maple_get_decode_status(void)
 {
     signed long result;
@@ -2709,7 +2726,7 @@ maple_ve_status_e *maple_get_decode_status(void)
     maple_ve_status = (maple_ve_status_e *)result;
     return maple_ve_status;
 }
-//ÏÖÔÚcedarÓëmapleºÏ²¢£¬ĞèÒªÉèÖÃTVÄ£Ê½
+//ç°åœ¨cedarä¸mapleåˆå¹¶ï¼Œéœ€è¦è®¾ç½®TVæ¨¡å¼
 __s32 maple_set_tv_mode(__u8 flag)
 {
     return esMODS_MIoctrl(maple, MAPLE_CMD_SET_TV_MODE, flag, NULL);
@@ -2740,7 +2757,7 @@ __s32 maple_save_reg_current_program(void)
     //  reg_cmmb_para_t *cmmb_para;
     //  cmmb_para = dsk_reg_get_para_by_app(REG_APP_CMMB);
 
-    //ËÑË÷µ½ÆµµÀºó£¬Ö»Òª´óÓÚ0£¬¾Í¸²¸ÇÖ®Ç°µÄ
+    //æœç´¢åˆ°é¢‘é“åï¼Œåªè¦å¤§äº0ï¼Œå°±è¦†ç›–ä¹‹å‰çš„
     if (service_list->servNum > 0)
     {
         //__s32 i;
@@ -3168,7 +3185,7 @@ void getweekday(__u32 year, __u32 month, __u32 day, __u32 * pWeekDay)
 
     *pWeekDay = w;
 }
-//ÉèÖÃÆÁÄ»Ğı×ª½Ç¶È
+//è®¾ç½®å±å¹•æ—‹è½¬è§’åº¦
 __s32 maple_set_rotate(__s32  ratate)
 {
     return esMODS_MIoctrl(maple, MAPLE_CMD_SET_ROTATE, ratate, NULL);
@@ -3194,14 +3211,14 @@ maple_cas_param_t *maple_ca_get_sn(void)
 #endif
 #if((MAPLE_TV_STANDAR == MAPLE_TV_ISDB_T)||(MAPLE_TV_STANDAR == MAPLE_TV_DTMB)\
         || (MAPLE_TV_STANDAR == MAPLE_TV_DVB_T)|| (MAPLE_TV_STANDAR == MAPLE_TV_ATSC))
-//Ö»ÓĞisdbtÓĞ×ÖÄ»£¬CMMBÃ»ÓĞ,add by hot.lee
+//åªæœ‰isdbtæœ‰å­—å¹•ï¼ŒCMMBæ²¡æœ‰,add by hot.lee
 __s32 maple_set_subtitle_cb(__pCBK_t isdbt_cb)
 {
     __pCBK_t            callback;
     callback = esKRNL_GetCallBack(isdbt_cb);
     return esMODS_MIoctrl(maple, MAPLE_CMD_SET_SPLY_DRAW_CB, NULL, (void *)callback);
 }
-//×ÖÄ»½âÂëÀàĞÍ
+//å­—å¹•è§£ç ç±»å‹
 __s32 maple_set_default_char_coding_type(void)
 {
     return esMODS_MIoctrl(maple, MAPLE_CMD_SET_DEFAULT_CHAR_CODING_TYPE, g_type, NULL);

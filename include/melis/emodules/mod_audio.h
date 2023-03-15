@@ -112,6 +112,9 @@ typedef enum __AUDIO_DEV_CMD_SET
                                         aux: 0xff:用户模式，1:变女声 2:变男声 3:变童声
                                         pbuffer:如果aux=0xff,那么pbuffer为变调等级-8<=pbuffer<=8, 如果aux!=0xff，那么pbuffer无效*/
 
+    AUDIO_DEV_CMD_SET_CAP_RX_SYNC_MODE, /*设置录音RX同步，aux,0:不同步 1:同步*/
+    AUDIO_DEV_CMD_ENABLE_HUB_MOD,      /*ahub模式使能，aux,0:关闭 1:打开*/
+    AUDIO_DEV_CMD_ENABLE_LOOPLACK,     /*loopback使能，aux,0:关闭 1:打开*/
     AUDIO_DEV_CMD_ENABLE_ECHO_CANCEL,  /*回音消除使能，aux,0:关闭 1:打开*/
     AUDIO_DEV_CMD_ENABLE_ECHO_OUTPUT,  /*使能混响输出，aux，0:关闭混响输出，1:打开混响输出*/
     AUDIO_DEV_CMD_ENABLE_RECORD_ECHO,  /*录音录下来的数据是否带混响，aux，0:不带混响，1:带混响，默认为0*/

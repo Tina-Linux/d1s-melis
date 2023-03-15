@@ -1,16 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              record app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2006-2009, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : mbook_show.c
-* By      : lyn
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "common/misc.h"
@@ -18,15 +35,15 @@
 
 typedef struct tag_MBOOK_SHOW
 {
-    __mp            *mp_display;      // ÏÔÊ¾Çı¶¯²Ù×÷¾ä±ú
-    __show_config_t     config;         // ÅäÖÃĞÅÏ¢
+    __mp            *mp_display;      // æ˜¾ç¤ºé©±åŠ¨æ“ä½œå¥æŸ„
+    __show_config_t     config;         // é…ç½®ä¿¡æ¯
 } __mbook_show_t;
 
 /*
 **********************************************************************************************************************
 *                                               __show_page_utf8
 *
-* Description: Ğ´Ò»Ò³µ½ÈíÍ¼²ãÉÏ£¨UTF8±àÂë¸ñÊ½£©
+* Description: å†™ä¸€é¡µåˆ°è½¯å›¾å±‚ä¸Šï¼ˆUTF8ç¼–ç æ ¼å¼ï¼‰
 *
 * Arguments  :
 *
@@ -63,7 +80,7 @@ static void __show_page_utf8(__mbook_show_t *hdle, __hdle lyr, void *data)
     {
         if ((*p_data == 0x0a) || (*p_data == 0x0d))
         {
-            //»»ĞĞ·û¼ì²é
+            //æ¢è¡Œç¬¦æ£€æŸ¥
             row++;
             x = p_config->show_start;
             y = y + p_config->row_height;
@@ -85,21 +102,21 @@ static void __show_page_utf8(__mbook_show_t *hdle, __hdle lyr, void *data)
         }
         else if ((*p_data & 0xf0) == 0xe0)
         {
-            // Èı×Ö½ÚÁ÷Êı¾İ
+            // ä¸‰å­—èŠ‚æµæ•°æ®
             tmp = ((*p_data & 0x0f) << 12) | ((*(p_data + 1) & 0x3f) << 6) | (*(p_data + 2) & 0x3f);
             tmp_w = p_config->col_width;
             p_data = p_data + 3;
         }
         else if ((*p_data & 0xe0) == 0xc0)
         {
-            // Ë«×Ö½ÚÁ÷Êı¾İ
+            // åŒå­—èŠ‚æµæ•°æ®
             tmp = ((*p_data & 0x3f) << 6) | (*(p_data + 1) & 0x3f);
             tmp_w = p_config->col_width;
             p_data = p_data + 2;
         }
         else
         {
-            // µ¥×Ö½ÚÁ÷Êı¾İ
+            // å•å­—èŠ‚æµæ•°æ®
             tmp = *p_data & 0xff;
             tmp_w = *(p_config->char_table + tmp);
             p_data = p_data + 1;
@@ -131,7 +148,7 @@ static void __show_page_utf8(__mbook_show_t *hdle, __hdle lyr, void *data)
 **********************************************************************************************************************
 *                                               __show_page_utf16_be
 *
-* Description: Ğ´Ò»Ò³µ½ÈíÍ¼²ãÉÏ£¨UTF16_BE±àÂë¸ñÊ½£©
+* Description: å†™ä¸€é¡µåˆ°è½¯å›¾å±‚ä¸Šï¼ˆUTF16_BEç¼–ç æ ¼å¼ï¼‰
 *
 * Arguments  :
 *
@@ -226,7 +243,7 @@ static void __show_page_utf16_be(__mbook_show_t *hdle, __hdle lyr, void *data)
 **********************************************************************************************************************
 *                                               __show_page_utf16_le
 *
-* Description: Ğ´Ò»Ò³µ½ÈíÍ¼²ãÉÏ£¨UTF16_LE±àÂë¸ñÊ½£©
+* Description: å†™ä¸€é¡µåˆ°è½¯å›¾å±‚ä¸Šï¼ˆUTF16_LEç¼–ç æ ¼å¼ï¼‰
 *
 * Arguments  :
 *
@@ -321,7 +338,7 @@ static void __show_page_utf16_le(__mbook_show_t *hdle, __hdle lyr, void *data)
 **********************************************************************************************************************
 *                                               __show_page_gbk
 *
-* Description: Ğ´Ò»Ò³µ½ÈíÍ¼²ãÉÏ£¨GBK±àÂë¸ñÊ½£©
+* Description: å†™ä¸€é¡µåˆ°è½¯å›¾å±‚ä¸Šï¼ˆGBKç¼–ç æ ¼å¼ï¼‰
 *
 * Arguments  :
 *
@@ -437,7 +454,7 @@ static void __show_page_gbk(__mbook_show_t *hdle, __hdle lyr, void *data)
 **********************************************************************************************************************
 *                                               __show_page_big5
 *
-* Description: Ğ´Ò»Ò³µ½ÈíÍ¼²ãÉÏ£¨GBK±àÂë¸ñÊ½£©
+* Description: å†™ä¸€é¡µåˆ°è½¯å›¾å±‚ä¸Šï¼ˆGBKç¼–ç æ ¼å¼ï¼‰
 *
 * Arguments  :
 *
@@ -543,19 +560,19 @@ static void __show_page_big5(__mbook_show_t *hdle, __hdle lyr, void *data)
 ************************************************************************************************************************
 *                                       MBOOK_Show_Init
 *
-*Description: Ò³ÃæÏÔÊ¾Ä£¿éµÄ³õÊ¼»¯
+*Description: é¡µé¢æ˜¾ç¤ºæ¨¡å—çš„åˆå§‹åŒ–
 *
 *Arguments  :
 *
 *
-*Return     : H_SHOW: ·µ»ØÒ³ÃæÏÔÊ¾Ä£¿é²Ù×÷¾ä±ú
+*Return     : H_SHOW: è¿”å›é¡µé¢æ˜¾ç¤ºæ¨¡å—æ“ä½œå¥æŸ„
 *
 ************************************************************************************************************************
 */
 H_SHOW  MBOOK_Show_Init(void)
 {
     __mbook_show_t          *p_show;
-    p_show = (__mbook_show_t *)My_Malloc(0, sizeof(__mbook_show_t));    // ÉêÇëÄÚ´æ
+    p_show = (__mbook_show_t *)My_Malloc(0, sizeof(__mbook_show_t));    // ç”³è¯·å†…å­˜
 
     if (p_show == 0)
     {
@@ -586,13 +603,13 @@ SHOW_ERROR_1:
 ************************************************************************************************************************
 *                                       MBOOK_Show_Config
 *
-*Description: Ò³ÃæÏÔÊ¾Ä£¿éµÄ²ÎÊıÅäÖÃ
+*Description: é¡µé¢æ˜¾ç¤ºæ¨¡å—çš„å‚æ•°é…ç½®
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú
-*             config: ÅäÖÃĞÅÏ¢²ÎÊıÖ¸Õë
+*Arguments  : hdle: æ“ä½œå¥æŸ„
+*             config: é…ç½®ä¿¡æ¯å‚æ•°æŒ‡é’ˆ
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -615,13 +632,13 @@ __s32   MBOOK_Show_Config(H_SHOW hdle, __show_config_t *config)
 ************************************************************************************************************************
 *                                       MBOOK_Show_Page
 *
-*Description: Ğ´Ò»Ò³Êı¾İµ½Ö¸¶¨µÄÈíÍ¼²ãÉÏ
+*Description: å†™ä¸€é¡µæ•°æ®åˆ°æŒ‡å®šçš„è½¯å›¾å±‚ä¸Š
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú
-*             lyr: Í¼²ã¾ä±ú
+*Arguments  : hdle: æ“ä½œå¥æŸ„
+*             lyr: å›¾å±‚å¥æŸ„
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -681,13 +698,13 @@ __s32   MBOOK_Show_Page(H_SHOW hdle, __hdle lyr, void *data)
 ************************************************************************************************************************
 *                                       MBOOK_Show_Uninit
 *
-*Description: É¾³ıÒ³ÃæÏÔÊ¾Ä£¿é
+*Description: åˆ é™¤é¡µé¢æ˜¾ç¤ºæ¨¡å—
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú
+*Arguments  : hdle: æ“ä½œå¥æŸ„
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -711,4 +728,3 @@ __s32   MBOOK_Show_Uninit(H_SHOW hdle)
     My_Mfree(0, p_show);
     return EPDK_OK;
 }
-

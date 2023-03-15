@@ -42,7 +42,7 @@ extern void     set_log_level(int level);
 
 #define SYS_LOG_LEVEL   CONFIG_LOG_DEFAULT_LEVEL
 
-/*#define KERN_EMERG "<1>"
+#define KERN_EMERG "<1>"
 #define KERN_ALERT "<2>"
 #define KERN_CRIT "<2>"
 #define KERN_ERR "<2>"
@@ -50,16 +50,14 @@ extern void     set_log_level(int level);
 #define KERN_NOTICE "<3>"
 #define KERN_INFO "<4>"
 #define KERN_DEBUG "<4>"
-*/
+
 #if defined(CONFIG_LOG_RELEASE)
 #define LOG_LAYOUT      "%s"
 #ifdef CONFIG_DYNAMIC_LOG_LEVEL_SUPPORT
 #define LOG_BACKEND_CALL(log_level, log_prefix, log_color, log_format, color_off, ...) \
     do{                                                                 \
-        if (get_log_level() >= log_level) {                             \
-            printk("<%d>" LOG_LAYOUT log_format "%s""\n\r",             \
-            log_level, log_color, ##__VA_ARGS__, color_off);            \
-        }                                                               \
+       printk("<%d>" LOG_LAYOUT log_format "%s""\n\r",             \
+       log_level, log_color, ##__VA_ARGS__, color_off);            \
     } while(0);
 #else
 #define LOG_BACKEND_CALL(log_level, log_prefix, log_color, log_format, color_off, ...) \
@@ -71,11 +69,9 @@ extern void     set_log_level(int level);
 #ifdef CONFIG_DYNAMIC_LOG_LEVEL_SUPPORT
 #define LOG_BACKEND_CALL(log_level, log_prefix, log_color, log_format, color_off, ...) \
     do{                                                                 \
-        if (get_log_level() >= log_level) {                             \
-           printk("<%d>" LOG_LAYOUT log_format "%s""\n\r",              \
-           log_level, log_color, log_prefix, color_off, __func__, __LINE__, XPOSTO(60),\
-           log_color, ##__VA_ARGS__, color_off);                        \
-        }                                                               \
+       printk("<%d>" LOG_LAYOUT log_format "%s""\n\r",              \
+       log_level, log_color, log_prefix, color_off, __func__, __LINE__, XPOSTO(60),\
+       log_color, ##__VA_ARGS__, color_off);                        \
     } while(0);
 #else
 #define LOG_BACKEND_CALL(log_level, log_prefix, log_color, log_format, color_off, ...) \

@@ -1,30 +1,33 @@
 /*
-*******************************************************************************************************************
-*                                                           Module Orange
-*                                                   the embedded Graphical module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2008, Softwinner Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name£º    sicons_i.h
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
-*Author£º       William Wang
 *
-*Version :      1.1.0
-*
-*Date:          2010-5-20
-*
-*Description :  sicons internal head definition
-*
-*Others :       None at present.
-*
-* History :
-*
-* <Author>          <time>         <version>     <description>
-*
-* William Wang     2010-5-20         1.1.0          Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __SICONS_I_H__
 #define __SICONS_I_H__
@@ -46,14 +49,14 @@ typedef __hdle  h_iconssitem;
 
 #define LISTITEMST_FOCUS               (1<<2)
 
-/*È«¾ÖÁ´±í±£ÁôÓÃ»§iconitemÊý¾Ý*/
+/*å…¨å±€é“¾è¡¨ä¿ç•™ç”¨æˆ·iconitemæ•°æ®*/
 typedef struct tag_ICONS_MEMUITEM
 {
     struct tag_ICONS_MEMUITEM          *Prev;
     struct tag_ICONS_MEMUITEM          *Next;
     __u32                               itemno;
-    IconsItem_DrawCB                    cb;                         /* item draw»Øµ÷º¯Êý                                          */
-    H_WIN                               handle;                     /*iconitemËùÔÚlisticonµÄ¾ä±ú*/
+    IconsItem_DrawCB                    cb;                         /* item drawå›žè°ƒå‡½æ•°                                          */
+    H_WIN                               handle;                     /*iconitemæ‰€åœ¨listiconçš„å¥æŸ„*/
     void                               *attr;
     __u32                               item_w;
     __bool                              enable;
@@ -62,7 +65,7 @@ typedef struct tag_ICONS_MEMUITEM
 #define   SICONS_ItemH2P(h_item)       ((__icons_iconitem_t *)h_item)
 #define   SICONS_ItemP2H(pitem)        ((h_iconssitem)pitem)
 
-/*¶¨ÒåÐèÒª»æÖÆµÄItemÇøÓòºÍ»æÖÆ²ÎÊý*/
+/*å®šä¹‰éœ€è¦ç»˜åˆ¶çš„ItemåŒºåŸŸå’Œç»˜åˆ¶å‚æ•°*/
 typedef struct tag_ICONS_SITEM
 {
     RECT                                rect;
@@ -87,19 +90,19 @@ typedef struct tag_ICONS_ICONLIST
 
 typedef struct tag_SLITBOX_DATA
 {
-    __u8                                scnnum;         /*Êµ¼ÊÊýÁ¿*/
+    __u8                                scnnum;         /*å®žé™…æ•°é‡*/
     __u32                               bk_color;
     __u32                               status;
     __u32                               draw_sts;
     __icons_iconlist_t               *iconlist;
-    H_WIN                               handle;        /*listiconËùÔÚ´°¿ÚµÄ¾ä±ú*/
+    H_WIN                               handle;        /*listiconæ‰€åœ¨çª—å£çš„å¥æŸ„*/
     __u32                               lastmsg;
     void                               *bk_bmp;
     __u32                               bmp_pos;
     __bool                              bk_draw;
     h_iconssitem                      *sitem_array;
 
-    /*µ±Ç°ÕýÔÚiconsÖÐÏÔÊ¾ÓÐÐ§ÌõÄ¿Êý*/
+    /*å½“å‰æ­£åœ¨iconsä¸­æ˜¾ç¤ºæœ‰æ•ˆæ¡ç›®æ•°*/
     __u32                               valid_num;
     __u32                               cur_index;
     __u32                               last_index;
@@ -144,4 +147,3 @@ __icons_iconitem_t   *SIconList_FindPrevEnable(__icons_iconlist_t *iconlist, __i
 __s32                   SIconList_SetHeadItemFromItem(__icons_iconlist_t *iconlist, __icons_iconitem_t *cur_item);
 __s32                   SIconList_GetCurPageNum(__icons_iconlist_t *iconlist);
 #endif
-

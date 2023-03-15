@@ -1,22 +1,39 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              calendar app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2006-2009, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : sset_info.c
-* By      :lyn
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "sset_i.h"
 
 //////////////////////////////////////////////////////////////////////////
-#if 1 //(Œ™¡À¥Ú”°ºÚµ•, ø…∞—œ¬√Ê÷ÿ∂®“ÂµƒGUI∫Í¡Ÿ ±øΩµΩ”––Ë“™µƒCŒƒº˛÷– π”√)
+#if 1 //(‰∏∫‰∫ÜÊâìÂç∞ÁÆÄÂçï, ÂèØÊää‰∏ãÈù¢ÈáçÂÆö‰πâÁöÑGUIÂÆè‰∏¥Êó∂Êã∑Âà∞ÊúâÈúÄË¶ÅÁöÑCÊñá‰ª∂‰∏≠‰ΩøÁî®)
 //re define GUI_BMP_Draw
 #ifdef GUI_BMP_Draw
 #define MY_GUI_BMP_DRAW                      (ORANGEMOD_FUNC_ENTRY->ptr_GUI_BMP_Draw            )
@@ -53,10 +70,10 @@
 #endif
 //////////////////////////////////////////////////////////////////////////
 
-#define     ID_LISTITEM     1                   /* LISTITEM Ãıƒø…œøÿº˛µƒID ∫≈       */
+#define     ID_LISTITEM     1                   /* LISTITEM Êù°ÁõÆ‰∏äÊéß‰ª∂ÁöÑID Âè∑       */
 
-#define     COLOR_INFO_BACK     0xffababab          /* Ωπµ„—’…´                         */
-#define     COLOR_INFO_RIM      0xffdddddd          /* ±ﬂøÚ—’…´                         */
+#define     COLOR_INFO_BACK     0xffababab          /* ÁÑ¶ÁÇπÈ¢úËâ≤                         */
+#define     COLOR_INFO_RIM      0xffdddddd          /* ËæπÊ°ÜÈ¢úËâ≤                         */
 
 /********** sset  info  position ***********/
 typedef struct  taginfopos
@@ -64,8 +81,8 @@ typedef struct  taginfopos
     __s32               lcd_width;
     __s32               lcd_height;
 
-    RECT                lyr_win;                /* LAYER µƒRECT             */
-    RECT                frm_win;                /* FRAME µƒRECT             */
+    RECT                lyr_win;                /* LAYER ÁöÑRECT             */
+    RECT                frm_win;                /* FRAME ÁöÑRECT             */
 
     RECT                bmp_pos;
 
@@ -77,7 +94,7 @@ static  info_pos_t      info_pos;
 ************************************************************************************************************************
 *                                       calendar_main
 *
-*Description: …Ë÷√¥∞ø⁄ƒ⁄œ‡πÿ◊¯±Í
+*Description: ËÆæÁΩÆÁ™óÂè£ÂÜÖÁõ∏ÂÖ≥ÂùêÊ†á
 *
 *Arguments  :
 *
@@ -110,7 +127,7 @@ static void  _info_pos_init(void)
 ************************************************************************************************************************
 *                                       _draw_back
 *
-*Description: listmenu µƒªÊ÷∆∫Ø ˝
+*Description: listmenu ÁöÑÁªòÂà∂ÂáΩÊï∞
 *
 *Arguments  :
 *
@@ -141,7 +158,7 @@ static __s32 _draw_back(H_WIN h_win)
 ************************************************************************************************************************
 *                                       _draw_back
 *
-*Description: listmenu µƒªÊ÷∆∫Ø ˝
+*Description: listmenu ÁöÑÁªòÂà∂ÂáΩÊï∞
 *
 *Arguments  :
 *
@@ -181,7 +198,7 @@ static __s32 _draw_info(H_WIN h_win, __u32 res_id)
 ************************************************************************************************************************
 *                                       _cb_info_win
 *
-*Description: info winªÿµ˜
+*Description: info winÂõûË∞É
 *
 *Arguments  :
 *
@@ -239,8 +256,8 @@ static int _cb_info_win(__gui_msg_t *msg)
 *
 *Description:
 *
-*Arguments  : hparent ∏∏¥∞ø⁄
-*             pitem   ±æº∂≤Àµ•À˘∂‘”¶µƒ≤Œ ˝Ω⁄µ„
+*Arguments  : hparent Áà∂Á™óÂè£
+*             pitem   Êú¨Á∫ßËèúÂçïÊâÄÂØπÂ∫îÁöÑÂèÇÊï∞ËäÇÁÇπ
 *
 *Return     :
 *
@@ -283,9 +300,9 @@ H_WIN SSET_InfoCreate(H_WIN hparent)
 ************************************************************************************************************************
 *                                       SSET_InfoDestroy
 *
-*Description: œ˙ªŸ“ªº∂◊”≤Àµ•info
+*Description: ÈîÄÊØÅ‰∏ÄÁ∫ßÂ≠êËèúÂçïinfo
 *
-*Arguments  : cnt ≤Àµ•º∂ ˝
+*Arguments  : cnt ËèúÂçïÁ∫ßÊï∞
 *
 *Return     :
 *
@@ -301,8 +318,3 @@ __s32 SSET_InfoDestroy(H_WIN h_win)
 
     return EPDK_OK;
 }
-
-
-
-
-

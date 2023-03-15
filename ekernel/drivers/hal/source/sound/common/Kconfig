@@ -1,0 +1,11 @@
+config SND_COMMON_SUNXI_COMMON
+	bool
+	default n
+
+config SND_SOC_SUNXI_RXSYNC
+	bool "Allwinner RX SYNC Support"
+	default n
+
+config SND_COMMON_SUNXI_ALG_CFG
+	bool
+	default n

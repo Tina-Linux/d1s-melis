@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <emodules/mod_defs.h>
 #include <emodules/mod_touchpanel.h>
 #include "GlideCurve.h"
@@ -8,10 +39,10 @@ static int      start_pos;
 
 int glidecuv_init(__gcuv_para_t *para)
 {
-    gcuv_global.fb_len      = para->fb_len;         // bufferøÌ∂»
-    gcuv_global.frame       = para->frame;          // µ•‘™∏ÒøÌ∂»
-    gcuv_global.screen      = para->screen;         // ∆¡ƒªøÌ∂»
-    gcuv_global.fb_start    = para->fb_start;       // fb∆ ºŒª÷√µƒ◊¯±Í
+    gcuv_global.fb_len      = para->fb_len;         // bufferÂÆΩÂ∫¶
+    gcuv_global.frame       = para->frame;          // ÂçïÂÖÉÊ†ºÂÆΩÂ∫¶
+    gcuv_global.screen      = para->screen;         // Â±èÂπïÂÆΩÂ∫¶
+    gcuv_global.fb_start    = para->fb_start;       // fbËµ∑Âßã‰ΩçÁΩÆÁöÑÂùêÊ†á
     return 1;
 }
 
@@ -38,9 +69,9 @@ int glidecuv_move(int dest, int src, int *array, int max_array_num)
         return 0;
     }
 
-    if (delta_x > 0)                //œÚ”““∆∂Ø
+    if (delta_x > 0)                //ÂêëÂè≥ÁßªÂä®
     {
-        //◊Û∂ÀµΩ±ﬂΩÁµƒ«Èøˆ
+        //Â∑¶Á´ØÂà∞ËæπÁïåÁöÑÊÉÖÂÜµ
         if (gcuv_global.fb_start +   src - start_pos == 2 * gcuv_global.frame)
         {
             return 0;
@@ -60,9 +91,9 @@ int glidecuv_move(int dest, int src, int *array, int max_array_num)
         return 4;
     }
 
-    if (delta_x < 0)                //œÚ◊Û“∆∂Ø
+    if (delta_x < 0)                //ÂêëÂ∑¶ÁßªÂä®
     {
-        //”“∂ÀµΩ±ﬂΩÁµƒ«Èøˆ
+        //Âè≥Á´ØÂà∞ËæπÁïåÁöÑÊÉÖÂÜµ
         if (gcuv_global.fb_start + gcuv_global.fb_len +  src - start_pos == gcuv_global.screen - 2 * gcuv_global.frame)
         {
             return 0;
@@ -99,11 +130,11 @@ int glidecuv_up(int dest, int src, int speed, int speed_direct, int *array, int 
         return 0;
     }
 
-    if ((speed == 0) || (speed_direct == EV_TP_ACTION_UP) || (speed_direct == EV_TP_ACTION_DOWN))        //÷¥––∂‘∆Î≤Ÿ◊˜
+    if ((speed == 0) || (speed_direct == EV_TP_ACTION_UP) || (speed_direct == EV_TP_ACTION_DOWN))        //ÊâßË°åÂØπÈΩêÊìç‰Ωú
     {
         temp_pos    = gcuv_global.fb_start + src - start_pos ;
 
-        if (temp_pos > 0)                   //◊Û∂À¡Ω∏ˆ–°∏Ò÷Æƒ⁄µƒªÿµØ
+        if (temp_pos > 0)                   //Â∑¶Á´Ø‰∏§‰∏™Â∞èÊ†º‰πãÂÜÖÁöÑÂõûÂºπ
         {
             i       = temp_pos / 10;
             delta   = 0 - temp_pos;
@@ -117,7 +148,7 @@ int glidecuv_up(int dest, int src, int speed, int speed_direct, int *array, int 
             return (j + 1);
         }
 
-        if (temp_pos + gcuv_global.fb_len <  gcuv_global.screen)                //”“∂À¡Ω∏ˆ–°∏Ò÷Æƒ⁄µƒªÿµØ
+        if (temp_pos + gcuv_global.fb_len <  gcuv_global.screen)                //Âè≥Á´Ø‰∏§‰∏™Â∞èÊ†º‰πãÂÜÖÁöÑÂõûÂºπ
         {
             delta   = gcuv_global.screen - (temp_pos + gcuv_global.fb_len);
             i       = delta / 10;
@@ -131,7 +162,7 @@ int glidecuv_up(int dest, int src, int speed, int speed_direct, int *array, int 
             return (j + 1);
         }
 
-        temp_pos    = temp_pos + gcuv_global.fb_len;                            //fbŒ≤≤øµƒŒª÷√
+        temp_pos    = temp_pos + gcuv_global.fb_len;                            //fbÂ∞æÈÉ®ÁöÑ‰ΩçÁΩÆ
         i           = temp_pos % gcuv_global.frame ;
 
         if (2 * i >  gcuv_global.frame)
@@ -162,7 +193,7 @@ int glidecuv_up(int dest, int src, int speed, int speed_direct, int *array, int 
         }
     }
 
-    if (speed_direct == EV_TP_ACTION_RIGHT)                 //œÚ”““∆∂Ø
+    if (speed_direct == EV_TP_ACTION_RIGHT)                 //ÂêëÂè≥ÁßªÂä®
     {
         if ((gcuv_global.fb_start + src - start_pos) == 2 * gcuv_global.frame)
         {
@@ -240,7 +271,7 @@ int glidecuv_up(int dest, int src, int speed, int speed_direct, int *array, int 
 
             array[step_count + j] = gcuv_global.fb_start + src - start_pos + delta;
             step_count = step_count + j + 1;
-            //ªÿµØµΩ◊Ó◊Û∂À
+            //ÂõûÂºπÂà∞ÊúÄÂ∑¶Á´Ø
             i       = array[step_count - 1] / 5;
 
             for (j = 0; j < i; j++)
@@ -294,7 +325,7 @@ int glidecuv_up(int dest, int src, int speed, int speed_direct, int *array, int 
             return (step_count);
         }
     }
-    else                                //œÚ◊Û“∆∂Ø
+    else                                //ÂêëÂ∑¶ÁßªÂä®
     {
         if (gcuv_global.fb_start + gcuv_global.fb_len + src - start_pos == gcuv_global.screen - 2 * gcuv_global.frame)
         {
@@ -372,7 +403,7 @@ int glidecuv_up(int dest, int src, int speed, int speed_direct, int *array, int 
 
             array[step_count + j] = gcuv_global.fb_start + src - start_pos - delta;
             step_count = step_count + j + 1;
-            //ªÿµØµΩ◊Ó”“∂À
+            //ÂõûÂºπÂà∞ÊúÄÂè≥Á´Ø
             i       = (gcuv_global.screen - (array[step_count - 1] + gcuv_global.fb_len)) / 5;
 
             for (j = 0; j < i; j++)
@@ -438,7 +469,7 @@ int glidecuv_stop(int dest, int src, int *array, int max_array_num)
     int j;
     temp_pos    = gcuv_global.fb_start + src - start_pos ;
 
-    if (temp_pos > 0)                   //◊Û∂À¡Ω∏ˆ–°∏Ò÷Æƒ⁄µƒªÿµØ
+    if (temp_pos > 0)                   //Â∑¶Á´Ø‰∏§‰∏™Â∞èÊ†º‰πãÂÜÖÁöÑÂõûÂºπ
     {
         i       = temp_pos / 10;
         delta   = 0 - temp_pos;
@@ -452,7 +483,7 @@ int glidecuv_stop(int dest, int src, int *array, int max_array_num)
         return (j + 1);
     }
 
-    if (temp_pos + gcuv_global.fb_len <  gcuv_global.screen)                //”“∂À¡Ω∏ˆ–°∏Ò÷Æƒ⁄µƒªÿµØ
+    if (temp_pos + gcuv_global.fb_len <  gcuv_global.screen)                //Âè≥Á´Ø‰∏§‰∏™Â∞èÊ†º‰πãÂÜÖÁöÑÂõûÂºπ
     {
         delta   = gcuv_global.screen - (temp_pos + gcuv_global.fb_len);
         i       = delta / 10;
@@ -466,7 +497,7 @@ int glidecuv_stop(int dest, int src, int *array, int max_array_num)
         return (j + 1);
     }
 
-    temp_pos    = temp_pos + gcuv_global.fb_len;                            //fbŒ≤≤øµƒŒª÷√
+    temp_pos    = temp_pos + gcuv_global.fb_len;                            //fbÂ∞æÈÉ®ÁöÑ‰ΩçÁΩÆ
     i           = temp_pos % gcuv_global.frame ;
 
     if (2 * i >  gcuv_global.frame)

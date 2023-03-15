@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <log.h>
 #include "record_list_view_frame.h"
 
@@ -112,7 +143,7 @@ static __s32 _rec_list_view_frm_on_create(__gui_msg_t *msg)
     record_list_view_musicList_init(plistviewFrm_ctl->plistView, msg->h_deswin);
     plistviewFrm_ctl->plistDoc->musicTimeID = 0xff;
     GUI_SetTimer(msg->h_deswin, plistviewFrm_ctl->plistDoc->musicTimeID, REC_LIST_TIMER_TIMES, NULL);
-    //record_list_play(plistviewFrm_ctl->plistDoc);  //Ä¬ÈÏ²»²¥·Å
+    //record_list_play(plistviewFrm_ctl->plistDoc);  //é»˜è®¤ä¸æ’­æ”¾
     plistviewFrm_ctl->plistDoc->playSt = CEDAR_STAT_STOP;
     return EPDK_OK;
 }
@@ -662,7 +693,7 @@ static __s32 _rec_list_view_menu_touch(__gui_msg_t *msg, __u32 keyState, __u16 x
 
     plistviewFrm_ctl->plistView->curMenuSt = FOCUSE_NORMAL;
 
-    if (record_is_touch_icon(RECORD_LIST_VIEW_BACK_TOUCH, x, y)) //·µ»Ø
+    if (record_is_touch_icon(RECORD_LIST_VIEW_BACK_TOUCH, x, y)) //è¿”å›ž
     {
         if (keyState == GUI_MSG_TOUCH_LONGDOWN || keyState == GUI_MSG_TOUCH_DOWN)
         {
@@ -678,7 +709,7 @@ static __s32 _rec_list_view_menu_touch(__gui_msg_t *msg, __u32 keyState, __u16 x
         record_list_icon_view_show(plistviewFrm_ctl->plistView, plistviewFrm_ctl->layer);//..
         ret = EPDK_OK;
     }
-    else if (record_is_touch_icon(RECORD_LIST_VIEW_PREV_TOUCH, x, y)) //¿ìÍË
+    else if (record_is_touch_icon(RECORD_LIST_VIEW_PREV_TOUCH, x, y)) //å¿«é€€
     {
         if (keyState == GUI_MSG_TOUCH_DOWN)
         {
@@ -708,7 +739,7 @@ static __s32 _rec_list_view_menu_touch(__gui_msg_t *msg, __u32 keyState, __u16 x
 
         ret = EPDK_OK;
     }
-    else if (record_is_touch_icon(RECORD_LIST_VIEW_PLAY_PAUSE_TOUCH, x, y)) //²¥·ÅÔÝÍ£
+    else if (record_is_touch_icon(RECORD_LIST_VIEW_PLAY_PAUSE_TOUCH, x, y)) //æ’­æ”¾æš‚åœ
     {
         if (keyState == GUI_MSG_TOUCH_LONGDOWN || keyState == GUI_MSG_TOUCH_DOWN)
         {
@@ -746,7 +777,7 @@ static __s32 _rec_list_view_menu_touch(__gui_msg_t *msg, __u32 keyState, __u16 x
 
         ret = EPDK_OK;
     }
-    else if (record_is_touch_icon(RECORD_LIST_VIEW_PLAY_NEXT_TOUCH, x, y)) //¿ì½ø
+    else if (record_is_touch_icon(RECORD_LIST_VIEW_PLAY_NEXT_TOUCH, x, y)) //å¿«è¿›
     {
         if (keyState == GUI_MSG_TOUCH_DOWN)
         {
@@ -777,7 +808,7 @@ static __s32 _rec_list_view_menu_touch(__gui_msg_t *msg, __u32 keyState, __u16 x
 
         ret = EPDK_OK;
     }
-    else if (record_is_touch_icon(RECORD_LIST_VIEW_DELE_TOUCH, x, y)) //É¾³ý
+    else if (record_is_touch_icon(RECORD_LIST_VIEW_DELE_TOUCH, x, y)) //åˆ é™¤
     {
         if (keyState == GUI_MSG_TOUCH_LONGDOWN || keyState == GUI_MSG_TOUCH_DOWN)
         {
@@ -1194,7 +1225,7 @@ H_WIN rec_list_view_frm_create(H_WIN h_parent, precord_ctrl_t para)
     plistviewFrm_ctl->isTouchMusicListMove = EPDK_FALSE;
     plistviewFrm_ctl->plistDoc->curRootType = para->root_type;          //get from app_record
 
-    if (record_list_MusicInit(plistviewFrm_ctl->plistDoc) == EPDK_FAIL)   //´íÎó·µ»Ø
+    if (record_list_MusicInit(plistviewFrm_ctl->plistDoc) == EPDK_FAIL)   //é”™è¯¯è¿”å›ž
     {
         esMEMS_Mfree(0, plistviewFrm_ctl);
         __wrn("record_list_MusicInit fail!\r\n");

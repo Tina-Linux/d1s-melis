@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : app_settings.c
-* By        : Andy.zhang
-* Func      : desk main thread
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-20 8:51:52  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "app_setting.h"
@@ -35,7 +49,7 @@ Setting_focus_t SETTING_DISPLAY_FOCUS = SETTING_DISPLAY_FOCUS_NONE; //0 :LEFT   
 __s32 key_focous_left_right = 1; //0 :LEFT    1:RIGHT
 
 /***********************************************************************************************************
-    ½¨Á¢Í¼²ã
+    å»ºç«‹å›¾å±‚
 ************************************************************************************************************/
 static H_LYR setting_layer_32bpp_create(void)
 {
@@ -110,9 +124,9 @@ static void setting_get_volume_size(__gui_msg_t *msg)
     get_menu_text(STRING_SET_TIPS_TSIZE, temp_str, sizeof(temp_str));
     eLIBs_strcat(str, temp_str);
     size = eLIBs_GetVolTSpace(UDISK_NAME);
-    gnum = (size * 100) >> 30;//ÏÈ³Ë100£¬ÓÃÓÚÈ¡.GB ºóÃæÁ½Î»Ð¡Êý
-    snum = (gnum % 100);        //È¥Ð¡ÊýµãºóÃæµÄÊýÖµ
-    gnum = (gnum / 100);        //È¡Ð¡ÊýµãÇ°ÃæµÄÊýÖµ
+    gnum = (size * 100) >> 30;//å…ˆä¹˜100ï¼Œç”¨äºŽå–.GB åŽé¢ä¸¤ä½å°æ•°
+    snum = (gnum % 100);        //åŽ»å°æ•°ç‚¹åŽé¢çš„æ•°å€¼
+    gnum = (gnum / 100);        //å–å°æ•°ç‚¹å‰é¢çš„æ•°å€¼
     eLIBs_uint2str_dec(gnum, numstr);
     eLIBs_strcat(str, numstr);
     eLIBs_strcat(str, ".");
@@ -236,7 +250,7 @@ static __s32 _app_setting_Proc(__gui_msg_t *msg)
             }
             else
             {
-                setting_general_para_t general_para;//ÔÚÍ¨ÓÃÉèÖÃÖÐ±» µ÷ÓÃ
+                setting_general_para_t general_para;//åœ¨é€šç”¨è®¾ç½®ä¸­è¢« è°ƒç”¨
                 setting_ctrl->lyr_setting = setting_layer_32bpp_create();
                 eLIBs_memset(&general_para, 0x00, sizeof(general_para));
                 general_para.focus_id = 0;
@@ -289,7 +303,7 @@ static __s32 _app_setting_Proc(__gui_msg_t *msg)
                 return EPDK_FAIL;
             }
 
-            /* Îª·ÀÖ¹Í¼²ã²»¹»*/
+            /* ä¸ºé˜²æ­¢å›¾å±‚ä¸å¤Ÿ*/
             if (setting_ctrl->h_frm_product_info_win)
             {
                 H_LYR tips_win_layer ;
@@ -338,7 +352,7 @@ static __s32 _app_setting_Proc(__gui_msg_t *msg)
                 return EPDK_FAIL;
             }
 
-            if (setting_ctrl->h_frm_alarm_coming)   // ÄÖÁåÓ¦ÓÃ±¾ÉíÒÔÉ¾³ý¸Ã´°Ìå£¬Ö»Ðè½«¾ä±úÖÃ¿Õ¼´¿É
+            if (setting_ctrl->h_frm_alarm_coming)   // é—¹é“ƒåº”ç”¨æœ¬èº«ä»¥åˆ é™¤è¯¥çª—ä½“ï¼Œåªéœ€å°†å¥æŸ„ç½®ç©ºå³å¯
             {
                 setting_ctrl->h_frm_alarm_coming = NULL ;
             }
@@ -380,7 +394,7 @@ static __s32 _app_setting_Proc(__gui_msg_t *msg)
 
             //__here__ ;
 
-            if (setting_ctrl->h_frm_dafault_dialog_win) //É¾³ýÄ¬ÈÏ³ö³§¶Ô»°¿ò
+            if (setting_ctrl->h_frm_dafault_dialog_win) //åˆ é™¤é»˜è®¤å‡ºåŽ‚å¯¹è¯æ¡†
             {
                 app_dialog_destroy(setting_ctrl->h_frm_dafault_dialog_win);
                 setting_ctrl->h_frm_dafault_dialog_win = NULL;
@@ -439,7 +453,7 @@ static __s32 _app_setting_Proc(__gui_msg_t *msg)
 
                 case GUI_MSG_KEY_MENU:
                 {
-                    if (setting_ctrl->h_frm_dafault_dialog_win) //É¾³ýÄ¬ÈÏ³ö³§¶Ô»°¿ò
+                    if (setting_ctrl->h_frm_dafault_dialog_win) //åˆ é™¤é»˜è®¤å‡ºåŽ‚å¯¹è¯æ¡†
                     {
                         __log("======switch=======h_frm_dafault_dialog_win");
                         app_dialog_destroy(setting_ctrl->h_frm_dafault_dialog_win);
@@ -517,7 +531,7 @@ static __s32 _app_setting_Proc(__gui_msg_t *msg)
             }
             else if (setting_ctrl->h_frm_handle)
             {
-                break;//ÈÃÏÂhandle frm win×Ô¼º´¦Àí
+                break;//è®©ä¸‹handle frm winè‡ªå·±å¤„ç†
             }
 
             return EPDK_OK;
@@ -728,7 +742,7 @@ static __s32 _app_setting_Proc(__gui_msg_t *msg)
                                 return EPDK_FAIL;
                             }
 
-                            if (SETTING_ALARM == setting_ctrl->setting_type) //Èç¹ûÊÇ¶ÀÁ¢µÄalarmÓ¦ÓÃ£¬ÔòÖ±½ÓÍË»Øµ½Ö÷½çÃæ
+                            if (SETTING_ALARM == setting_ctrl->setting_type) //å¦‚æžœæ˜¯ç‹¬ç«‹çš„alarmåº”ç”¨ï¼Œåˆ™ç›´æŽ¥é€€å›žåˆ°ä¸»ç•Œé¢
                             {
                                 __gui_msg_t my_msg;
                                 my_msg.id = GUI_MSG_CLOSE;
@@ -1046,7 +1060,7 @@ static __s32 _app_setting_Proc(__gui_msg_t *msg)
                     {
                         case ADLG_CMD_EXIT:
                         {
-                            if (ADLG_IDYES == msg->dwAddData2)  //»Ö¸´³ö³§ÉèÖÃ
+                            if (ADLG_IDYES == msg->dwAddData2)  //æ¢å¤å‡ºåŽ‚è®¾ç½®
                             {
                                 __gui_msg_t mymsg;
                                 __msg("***********restore factory setting*******");
@@ -1055,7 +1069,7 @@ static __s32 _app_setting_Proc(__gui_msg_t *msg)
                                 GUI_SendMessage(&mymsg);
                                 GUI_WinSetFocusChild(setting_ctrl->h_frm_general);
                             }
-                            else if (ADLG_IDNO == msg->dwAddData2)  // Ã»ÓÐÑ¡Ôñ»Ö¸´³ö³§ÉèÖÃ
+                            else if (ADLG_IDNO == msg->dwAddData2)  // æ²¡æœ‰é€‰æ‹©æ¢å¤å‡ºåŽ‚è®¾ç½®
                             {
                                 GUI_WinSetFocusChild(setting_ctrl->h_frm_general);
                             }
@@ -1232,7 +1246,7 @@ H_WIN app_setting_create(root_para_t *para)
     __inf("********  enter setting app  **************");
     __inf("****************************************************************************************");
     __inf("----------setting create----------");
-    SETTING_DISPLAY_FOCUS = SETTING_DISPLAY_FOCUS_RIGHT;//½¹µãÔÚÓÒ±ß
+    SETTING_DISPLAY_FOCUS = SETTING_DISPLAY_FOCUS_RIGHT;//ç„¦ç‚¹åœ¨å³è¾¹
     setting_ctrl = (setting_ctrl_t *)My_Malloc(0, sizeof(setting_ctrl_t));
 
     if (NULL == setting_ctrl)
@@ -1244,7 +1258,7 @@ H_WIN app_setting_create(root_para_t *para)
     eLIBs_memset(setting_ctrl, 0, sizeof(setting_ctrl_t));
     GUI_Memdev_FrameBuffer_Release(1);
     setting_ctrl->setting_font = para->font;
-    setting_ctrl->setting_type = para->setting_opt;//__u32 setting_opt;//Îª0´ú±íÍ¨ÓÃÉèÖÃ£¬Îª1´ú±íµçÔ´¹ÜÀí
+    setting_ctrl->setting_type = para->setting_opt;//__u32 setting_opt;//ä¸º0ä»£è¡¨é€šç”¨è®¾ç½®ï¼Œä¸º1ä»£è¡¨ç”µæºç®¡ç†
     eLIBs_memset(&create_info, 0, sizeof(__gui_manwincreate_para_t));
     create_info.id          = APP_SETTING_ID;
     create_info.name            = APP_SETTING;
@@ -1268,7 +1282,7 @@ __s32 app_setting_notify_delete_sub_dlg_scene(H_WIN hmanwin)
         return EPDK_FAIL;
     }
 
-    /* Îª·ÀÖ¹Í¼²ã²»¹»*/
+    /* ä¸ºé˜²æ­¢å›¾å±‚ä¸å¤Ÿ*/
     if (setting_ctrl->h_frm_product_info_win)
     {
         H_LYR tips_win_layer ;

@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2011, CHIPHD, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : app_dialog.c
-* By        : CQQ
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011/06/02 21:10  create this file, implements the fundamental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "app_dialog_i.h"
@@ -83,13 +97,13 @@
 #define IsDialogTimerValid(_v)    ((_v) > 0)
 #define ID_TIMER_DIALOG_TIMEOUT   100
 
-//∞¥º¸º‰µƒº‰∏Ù
+//ÊåâÈîÆÈó¥ÁöÑÈó¥Èöî
 #define calc_btn_sp_w(_rt_w, _offset, _btn_w, _count)   (((_count) > 1) ? (((_rt_w) - (_offset) * 2 - (_btn_w) * (_count)) / (_count - 1)) : 0)
 
-//»°¥∞ø⁄ÀΩ”– ˝æ›
+//ÂèñÁ™óÂè£ÁßÅÊúâÊï∞ÊçÆ
 #define app_dialog_GetWndPara(_p, _t, _hwnd)  {(_p = (_t *)GUI_WinGetAttr(_hwnd)); __msg("app_dialog para ====== %x", _p);}
 
-//»•Õº∆¨◊ ‘¥øÌ∏ﬂ
+//ÂéªÂõæÁâáËµÑÊ∫êÂÆΩÈ´ò
 #define GET_RES_BMP_W_H_(_hbmp, _res, _w, _h) do \
     {\
         _hbmp = bmp_open(ResHandle2Data(_res)); \
@@ -107,7 +121,7 @@
         } \
     }while(0)
 //////////////////////////////////////////////////////////////////////////
-//¥¥Ω®◊ ‘¥
+//ÂàõÂª∫ËµÑÊ∫ê
 static __s32 app_dialog_res_create(APP_DIALOG_RES_T *res, __u32 style, __s32 bmp_id[], __s32 str_id[], const char *str)
 {
     create_bmp_res(bmp_id[ADLG_BMP_SZID_BG], res->bmp_bg);
@@ -228,7 +242,7 @@ static __s32 app_dialog_res_create(APP_DIALOG_RES_T *res, __u32 style, __s32 bmp
     return EPDK_OK;
 }
 
-// Õ∑≈◊ ‘¥
+//ÈáäÊîæËµÑÊ∫ê
 static __s32 app_dialog_res_destroy(APP_DIALOG_RES_T *res)
 {
     destroy_bmp_res(res->bmp_bg);
@@ -464,7 +478,7 @@ static __s32 dialog_key_proc(__gui_msg_t *msg)
 
     if (lastkey != VK_ESCAPE && lastkey != GUI_MSG_KEY_ESCAPE)
     {
-        //”–∞¥º¸£¨÷ÿ–¬º∆ ±
+        //ÊúâÊåâÈîÆÔºåÈáçÊñ∞ËÆ°Êó∂
         dialog_wnd_t *wnd_para;
         app_dialog_GetWndPara(wnd_para, dialog_wnd_t, msg->h_deswin);
 
@@ -477,7 +491,7 @@ static __s32 dialog_key_proc(__gui_msg_t *msg)
     return EPDK_OK;
 }
 
-//≤‚ ‘ «∑Òµ„ª˜µΩ∞¥º¸, ∑µªÿ-1£¨√ªµ„µΩ∞¥º¸£¨∑Ò‘Ú∑µªÿµ„µΩµƒ∞¥º¸id
+//ÊµãËØïÊòØÂê¶ÁÇπÂáªÂà∞ÊåâÈîÆ, ËøîÂõû-1ÔºåÊ≤°ÁÇπÂà∞ÊåâÈîÆÔºåÂê¶ÂàôËøîÂõûÁÇπÂà∞ÁöÑÊåâÈîÆid
 static __s32 test_dialog_touch(H_WIN hwnd, __s32 x, __s32 y, dialog_wnd_t *wnd_para)
 {
     __s32 i;
@@ -597,7 +611,7 @@ static void draw_dialog(APP_DIALOG_RES_T *res, APP_DIALOG_UI_T *ui, __s32   ID)
     GUI_RECT          rect;
     GUI_SetColor(ui->colour.txt_n);
     GUI_SetDrawMode(GUI_DRAWMODE_NORMAL);
-    //±≥æ∞
+    //ËÉåÊôØ
     GUI_BMP_RES_Draw(res->bmp_bg, 0, 0);
 
     if (res->icon_enable)
@@ -606,11 +620,11 @@ static void draw_dialog(APP_DIALOG_RES_T *res, APP_DIALOG_UI_T *ui, __s32   ID)
     }
 
     //GUI_OpenAlphaBlend();
-    //±ÍÃ‚
+    //Ê†áÈ¢ò
     GUI_CharSetToEncode(EPDK_CHARSET_ENM_UTF8);
     GUI_DispStringAt(res->str_title, ui->pos.title.x, ui->pos.title.y);
 
-    //ƒ⁄»›
+    //ÂÜÖÂÆπ
     /*rect.x0 = ui->pos.content.x;
     rect.y0 = ui->pos.content.y;
     rect.x1 = rect.x0 + ui->size.content.width;
@@ -618,10 +632,10 @@ static void draw_dialog(APP_DIALOG_RES_T *res, APP_DIALOG_UI_T *ui, __s32   ID)
     //GUI_DispStringInRect(res->str_content, &rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
     GUI_DispStringInRectWrap(res->str_content, &rect, GUI_TA_HCENTER | GUI_TA_VCENTER, GUI_WRAPMODE_WORD);*/
 
-    //∞¥≈•
+    //ÊåâÈíÆ
     if (ID == MUSIC_MENU_ARTIST_INFO)
     {
-        //ƒ⁄»›
+        //ÂÜÖÂÆπ
         rect.x0 = ui->pos.content.x;
         rect.y0 = ui->pos.content.y;
         rect.x1 = rect.x0 + ui->size.content.width;
@@ -631,7 +645,7 @@ static void draw_dialog(APP_DIALOG_RES_T *res, APP_DIALOG_UI_T *ui, __s32   ID)
     }
     else
     {
-        //ƒ⁄»›
+        //ÂÜÖÂÆπ
         if (ID_FM_IS_AUTO_SEARCH_DLG == ID)
         {
             rect.x0 = ui->pos.content.x;
@@ -797,7 +811,7 @@ static __s32 app_on_dialog_create_ex(__gui_msg_t *msg)
 {
     dialog_wnd_t *wnd_para;
     app_dialog_GetWndPara(wnd_para, dialog_wnd_t, msg->h_deswin);
-    GUI_LyrWinSetSta(wnd_para->hlyr, GUI_LYRWIN_STA_SLEEP); //œ»…Ë÷√Œ™sleep  ◊¥Ã¨‘Ÿª≠
+    GUI_LyrWinSetSta(wnd_para->hlyr, GUI_LYRWIN_STA_SLEEP); //ÂÖàËÆæÁΩÆ‰∏∫sleep  Áä∂ÊÄÅÂÜçÁîª
     //
     //GUI_LyrWinSetTop(wnd_para->hlyr);
     app_dialog_paint_ex(msg);
@@ -874,7 +888,7 @@ static __s32 on_dialog_destroy(__gui_msg_t *msg)
     return EPDK_OK;
 }
 
-//∂‘ª∞øÚªÿµ˜
+//ÂØπËØùÊ°ÜÂõûË∞É
 static __s32 app_dialog_proc(__gui_msg_t *msg)
 {
     DEBUG_CBMSGEx(app_dialog_proc);
@@ -954,7 +968,7 @@ static H_WIN app_dialog_create_frmwin(dialog_wnd_t *wnd_para)
 }
 
 /************************************************************************/
-// Ω®¡¢Õº≤„
+// Âª∫Á´ãÂõæÂ±Ç
 /************************************************************************/
 #define app_dialog_layer_create(_layer, _prt)        \
     app_com_layer_create(_layer, _prt, 1, PIXEL_COLOR_ARGB8888, GUI_LYRWIN_STA_SUSPEND, "dialog layer")

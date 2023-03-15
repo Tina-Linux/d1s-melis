@@ -1,20 +1,34 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : settings_uipara.h
-* By        : lantian.lin
-* Func  : ui parameter
-* Version   : v1.0
-* ============================================================================================================
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef __SETTING_UIPARA_H_
 #define  __SETTING_UIPARA_H_
 #include "apps.h"
@@ -30,35 +44,35 @@ typedef struct res_pos_s
 typedef struct tips_uipara
 {
     res_pos_t   tips_lyr ;
-    res_pos_t       sys_info_bmp_pos ;  //ÏµÍ³ĞÅÏ¢Í¼Æ¬Î»ÖÃ
-    res_pos_t       ok_bmp_pos;         // OK Í¼Æ¬Î»ÖÃ
-    res_pos_t   tip_tsize_pos;      // ×ÜÈİÁ¿×Ö·ûÎ»ÖÃ
-    res_pos_t       tip_fsize_pos;      //Ê£ÓàÈİÁ¿×Ö·ûÎ»ÖÃ
+    res_pos_t       sys_info_bmp_pos ;  //ç³»ç»Ÿä¿¡æ¯å›¾ç‰‡ä½ç½®
+    res_pos_t       ok_bmp_pos;         // OK å›¾ç‰‡ä½ç½®
+    res_pos_t   tip_tsize_pos;      // æ€»å®¹é‡å­—ç¬¦ä½ç½®
+    res_pos_t       tip_fsize_pos;      //å‰©ä½™å®¹é‡å­—ç¬¦ä½ç½®
 
 } tips_uipara_t;
 
 typedef struct setting_uipara_s
 {
-    res_pos_t   item_general_setting;       //Í¨ÓÃÉèÖÃ
-    res_pos_t   item_power_manager;     //µçÔ´¹ÜÀí
+    res_pos_t   item_general_setting;       //é€šç”¨è®¾ç½®
+    res_pos_t   item_power_manager;     //ç”µæºç®¡ç†
 
-    res_pos_t   item_alarm1_setting;        //Í¨ÓÃÉèÖÃ
-    res_pos_t   item_alarm2_setting;        //µçÔ´¹ÜÀí
-    res_pos_t   item_alarm3_setting;        //µçÔ´¹ÜÀí
+    res_pos_t   item_alarm1_setting;        //é€šç”¨è®¾ç½®
+    res_pos_t   item_alarm2_setting;        //ç”µæºç®¡ç†
+    res_pos_t   item_alarm3_setting;        //ç”µæºç®¡ç†
 
     res_pos_t   lyr_win;
     res_pos_t   lyr_scn;
-    res_pos_t   item;       //Ã¿¸öitemµÄÎ»ÖÃ×ø±êºÍ´óĞ¡
-    res_pos_t   left_button;    //Ïò×ó·½ÏòµÄÈı½ÇĞÎµÄ°´Å¥
-    res_pos_t   right_button;   //ÏòÓÒ·½ÏòµÄÈı½ÇĞÎ°´Å¥
-    OFFSET txt_pos;     //Í¨ÓÃÉèÖÃ    £¬µçÔ´¹ÜÀí×Ö·û×ø±ê
-    res_pos_t   string_detail_pos_de;   //Ã¿¸öÑ¡Ïî¶ÔÓ¦µÄÏêÏ¸ĞÅÏ¢ËµÃ÷ÎÄ×ÖËùÔÚ×ø±ê
-    res_pos_t   string_detail_pos_ex;   //Ã¿¸öÑ¡Ïî¶ÔÓ¦µÄÏêÏ¸ĞÅÏ¢ËµÃ÷ÎÄ×ÖËùÔÚ×ø±ê
+    res_pos_t   item;       //æ¯ä¸ªitemçš„ä½ç½®åæ ‡å’Œå¤§å°
+    res_pos_t   left_button;    //å‘å·¦æ–¹å‘çš„ä¸‰è§’å½¢çš„æŒ‰é’®
+    res_pos_t   right_button;   //å‘å³æ–¹å‘çš„ä¸‰è§’å½¢æŒ‰é’®
+    OFFSET txt_pos;     //é€šç”¨è®¾ç½®    ï¼Œç”µæºç®¡ç†å­—ç¬¦åæ ‡
+    res_pos_t   string_detail_pos_de;   //æ¯ä¸ªé€‰é¡¹å¯¹åº”çš„è¯¦ç»†ä¿¡æ¯è¯´æ˜æ–‡å­—æ‰€åœ¨åæ ‡
+    res_pos_t   string_detail_pos_ex;   //æ¯ä¸ªé€‰é¡¹å¯¹åº”çš„è¯¦ç»†ä¿¡æ¯è¯´æ˜æ–‡å­—æ‰€åœ¨åæ ‡
     res_pos_t   item_title_pos;
     res_pos_t   item_content_pos;
-    res_pos_t   return_bmp;         //·µ»ØÍ¼Æ¬×ø±êÎ»ÖÃ
+    res_pos_t   return_bmp;         //è¿”å›å›¾ç‰‡åæ ‡ä½ç½®
     res_pos_t   long_string_area ;  // long string scroll area
-    tips_uipara_t  setting_tips_uipara; //ÌáÊ¾¿ò×ø±êÎ»ÖÃ
+    tips_uipara_t  setting_tips_uipara; //æç¤ºæ¡†åæ ‡ä½ç½®
 
     /*scroll bar param*/
     RECT scroll_bg_rect;
@@ -72,7 +86,7 @@ typedef struct setting_uipara_s
 /*
 typedef struct adjust_uipara
 {
-    RECT    adjust_finish;//Ğ£×¼Íê³ÉÌáÊ¾Óï
+    RECT    adjust_finish;//æ ¡å‡†å®Œæˆæç¤ºè¯­
     OFFSET  cross_pos_1;
     OFFSET  cross_pos_2;
     OFFSET  cross_pos_3;
@@ -82,4 +96,3 @@ typedef struct adjust_uipara
 setting_uipara_t *setting_get_uipara(void);
 //tips_uipara_t* setting_get_tips_uipara(void);
 #endif      /*__SETTING_UIPARA_H_*/
-

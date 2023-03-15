@@ -1,17 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
 *
 *
-* File      : record_ui.h
-* By        : Kingvan
-* Func      : record view function
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-20 8:51:52  Kingvan  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __RECORD_UI_H__
 #define __RECORD_UI_H__
@@ -57,72 +73,72 @@ typedef enum recod_view_touch_icon
 
 enum
 {
-    //����ͼƬ
+    //数字图片
     RECORD_0_BMP, RECORD_1_BMP, RECORD_2_BMP, RECORD_3_BMP, RECORD_4_BMP,
     RECORD_5_BMP, RECORD_6_BMP, RECORD_7_BMP, RECORD_8_BMP, RECORD_9_BMP, RECORD_10_BMP,
-    //���ֲ��Ž���
+    //音乐播放进度
     RECORD_66_BMP, RECORD_66_LEFT_BMP, RECORD_66_RIGHT_BMP, RECORD_66_MID_BMP, RECORD_66_FLAG_BMP,
-    //¼������
+    //录音动画
     RECORD_ANI_BG_BMP, RECORD_ANI_0_BMP, RECORD_ANI_1_BMP, RECORD_ANI_2_BMP, RECORD_ANI_3_BMP, RECORD_ANI_4_BMP,
     RECORD_ANI_5_BMP, RECORD_ANI_6_BMP, RECORD_ANI_7_BMP,
-    //�ײ��Ͷ���bar
+    //底部和顶部bar
     RECORD_BAR_BOTTOM_BMP, RECORD_BAR_TOP_BMP,
-    //���״̬
+    //电池状态
     RECORD_BATTERY_0_BMP, RECORD_BATTERY_1_BMP, RECORD_BATTERY_2_BMP, RECORD_BATTERY_3_BMP, RECORD_BATTERY_4_BMP, RECORD_BATTERY_5_BMP,
     RECORD_BATTERY_ADAPTER_BMP, RECORD_BATTERY_ADD_BMP, RECORD_BATTERY_NO_BMP,
-    //�������
+    //音量标记
     RECORD_VOL_OFF_BMP, RECORD_VOL_ON_BMP,
-    //ɾ���Ի���
+    //删除对话框
     RECORD_DEL_BOX_BMP, RECORD_DEL_SEL0_0_BMP, RECORD_DEL_SEL0_1_BMP,
-    //�����Ի���
+    //质量对话框
     RECORD_QUALITY_BK_BMP, RECORD_QUALITY_FLAG_BMP, RECORD_QUALITY_BK1_BMP, //..
-    //¼����ʽ
+    //录音格式
     RECORD_FORMAT_BK_BMP,
-    //�����б�����
+    //音乐列表卷轴
     RECORD_MUSIC_PROGRESS_BG_BMP, RECORD_MUSIC_PROGRESS_DOWN_BMP,
     RECORD_MUSIC_PROGRESS_FLAG_BMP, RECORD_MUSIC_PROGRESS_UP_BMP, RECORD_MUSIC_PROGRESS_FOCUS_BMP,
-    //����
+    //乐谱
     RECORD_MUSIC_PARTICLE, RECORD_MUSIC_BOUY,
-    //¼��ֹͣ, ¼����ʼ, ¼����ͣ
+    //录音停止, 录音开始, 录音暂停
     RECORD_MENU_RECORD_STOP, RECORD_MENU_RECORD_START, RECORD_MENU_RECORD_PAUSE,
-    //��������
+    //音量调节
     RECORD_VOL_BAR_BG, RECORD_VOL_BAR_BODY, RECORD_VOL_LEFT,
     RECORD_VOL_MID, RECORD_VOL_RIGHT, RECORD_VOL_SPEAKER_RIGHT,
-    //¼�����ű���
+    //录音播放背景
     RECORD_MUSICLIST_BG, RECORD_MUSICPLAY_BG,
-    //¼���б�����
+    //录音列表背景
     RECORD_LIST_WIN_BG, RECORD_LIST_BG,
-    //¼������
+    //录音背景
     RECORD_BG, RECORD_BG0,
-    //�߽�
+    //边界
     RECORD_RESOUCE_MAX
 };
 enum
 {
-    //����
+    //质量
     STRING_POOR_QUALITY,
     STRING_NORMAL_QUALITY,
     STRING_GOOD_QUALITY,
-    //¼����,���Ż�
+    //录音机,播放机
     STRING_RECORDER,
     STRING_RECORD_PLAY,
-    //��¼��ʱ��
+    //可录音时间
     STRING_RECORD_TIME,
-    //��ͣ,������..
+    //暂停,播放中..
     STRING_PAUSE,
     STRING_PLAYING,
-    //ֹͣ
+    //停止
     STRING_STOP,
-    //ɾ���Ի���
+    //删除对话框
     STRING_DELETE,
     STRING_MSG4,
     STRING_YES,
     STRING_NO,
-    //¼��ֹͣ, ¼����ʼ, ¼����ͣ
+    //录音停止, 录音开始, 录音暂停
     STRING_MENU_STOP, STRING_MENU_RECORD, STRING_MENU_PAUSE,
-    //��¼���ļ�
+    //无录音文件
     STRING_MSG3,
-    //�߽�
+    //边界
     STRING_RECORD_MAX
 };
 

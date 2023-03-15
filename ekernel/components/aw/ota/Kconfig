@@ -1,0 +1,27 @@
+menu "AW OTA Compenents"
+
+config OTA_SUPPORT
+    bool "ota support"
+    default y
+    help
+        The is the ota suppot switch helper.
+
+if OTA_SUPPORT
+
+config COMPONENTS_AW_UPGRADE
+    bool "Melis OTA AW_UPGRADE"
+    default n
+    help
+        Tina RTOS OTA aw_upgrade support.
+        If unsure, say N.
+
+config AW_OTA_DEMO
+    bool "aw ota demo"
+    default n
+    help
+	melis awota demo support.
+	If unsure, say N.
+
+endif
+
+endmenu

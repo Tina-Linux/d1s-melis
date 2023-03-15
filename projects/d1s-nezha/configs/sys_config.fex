@@ -785,27 +785,19 @@ vind0_used		= 1
 vind0_clk		= 336000000
 vind0_isp		= 322000000
 
-[vind0/csi1]
-csi1_used               = 1
-csi1_pck                = port:PE00<2><default><default><default>
-csi1_hsync              = port:PE02<2><default><default><default>
-csi1_vsync              = port:PE03<2><default><default><default>
-csi1_d0                 = port:PE04<2><default><default><default>
-csi1_d1                 = port:PE05<2><default><default><default>
-csi1_d2                 = port:PE06<2><default><default><default>
-csi1_d3                 = port:PE07<2><default><default><default>
-csi1_d4                 = port:PE08<2><default><default><default>
-csi1_d5                 = port:PE09<2><default><default><default>
-csi1_d6                 = port:PE10<2><default><default><default>
-csi1_d7                 = port:PE11<2><default><default><default>
-csi1_d8                 = port:PE12<2><default><default><default>
-csi1_d9                 = port:PE13<2><default><default><default>
-csi1_d10                = port:PE14<2><default><default><default>
-csi1_d11                = port:PE15<2><default><default><default>
-csi1_d12                = port:PE18<2><default><default><default>
-csi1_d13                = port:PE19<2><default><default><default>
-csi1_d14                = port:PE20<2><default><default><default>
-csi1_d15                = port:PE21<2><default><default><default>
+[vind0/csi0]
+csi0_used               = 1
+csi0_pck                = port:PE02<2><default><default><default>
+csi0_hsync              = port:PE00<2><default><default><default>
+csi0_vsync              = port:PE01<2><default><default><default>
+csi0_d0                 = port:PE04<2><default><default><default>
+csi0_d1                 = port:PE05<2><default><default><default>
+csi0_d2                 = port:PE06<2><default><default><default>
+csi0_d3                 = port:PE07<2><default><default><default>
+csi0_d4                 = port:PE08<2><default><default><default>
+csi0_d5                 = port:PE09<2><default><default><default>
+csi0_d6                 = port:PE10<2><default><default><default>
+csi0_d7                 = port:PE11<2><default><default><default>
 
 [vind0/flash0]
 flash0_used		= 0
@@ -826,7 +818,7 @@ actuator0_afvdd_vol     = 2800000
 [vind0/sensor0]
 sensor0_used          = 1
 sensor0_mname         = "ov5640"
-sensor0_twi_cci_id    = 0
+sensor0_twi_cci_id    = 2
 sensor0_twi_addr      = 0x78
 sensor0_mclk_id       = 0
 sensor0_pos           = "rear"
@@ -842,66 +834,72 @@ sensor0_avdd_vol      = 2800000
 sensor0_dvdd          = "dvdd-csi-18"
 sensor0_dvdd_vol      = 1800000
 sensor0_power_en      =
-sensor0_reset         = port:PE14<0><0><1><0>
-sensor0_pwdn          = port:PE16<0><0><1><0>
+sensor0_reset         = port:PG00<0><0><1><0>
+sensor0_pwdn          = port:PG01<0><0><1><0>
 
-[vind0/sensor1]
-sensor1_used          = 1
-sensor1_mname         = "ov5647"
-sensor1_twi_cci_id    = 1
-sensor1_twi_addr      = 0x6c
-sensor1_mclk_id       = 1
-sensor1_pos           = "front"
-sensor1_isp_used      = 0
-sensor1_fmt           = 0
-sensor1_stby_mode     = 1
-sensor1_vflip         = 0
-sensor1_hflip         = 0
-sensor1_iovdd         = "iovdd-csi"
-sensor1_iovdd_vol     = 2800000
-sensor1_avdd          = "avdd-csi"
-sensor1_avdd_vol      = 2800000
-sensor1_dvdd          = "dvdd-csi-18"
-sensor1_dvdd_vol      = 1800000
-sensor1_power_en      =
-sensor1_reset         = port:PE14<0><0><1><0>
-sensor1_pwdn          = port:PE15<0><0><1><0>
+;[vind0/sensor0]
+;sensor0_used          = 0
+;sensor0_mname         = "ov5647"
+;sensor0_twi_cci_id    = 1
+;sensor0_twi_addr      = 0x6c
+;sensor0_mclk_id       = 1
+;sensor0_pos           = "front"
+;sensor0_isp_used      = 0
+;sensor0_fmt           = 0
+;sensor0_stby_mode     = 1
+;sensor0_vflip         = 0
+;sensor0_hflip         = 0
+;sensor0_iovdd         = "iovdd-csi"
+;sensor0_iovdd_vol     = 2800000
+;sensor0_avdd          = "avdd-csi"
+;sensor0_avdd_vol      = 2800000
+;sensor0_dvdd          = "dvdd-csi-18"
+;sensor0_dvdd_vol      = 1800000
+;sensor0_power_en      =
+;sensor0_reset         = port:PE14<0><0><1><0>
+;sensor0_pwdn          = port:PE15<0><0><1><0>
+
+;[vind0/sensor0]
+;sensor0_used          = 1
+;sensor0_mname         = "tp9950"
+;sensor0_twi_cci_id    = 2
+;sensor0_twi_addr      = 0x88
+;sensor0_mclk_id       = 0
+;sensor0_pos           = "rear"
+;sensor0_isp_used      = 0
+;sensor0_fmt           = 0
+;sensor0_stby_mode     = 1
+;sensor0_vflip         = 0
+;sensor0_hflip         = 0
+;sensor0_iovdd         = "iovdd-csi"
+;sensor0_iovdd_vol     = 2800000
+;sensor0_avdd          = "avdd-csi"
+;sensor0_avdd_vol      = 2800000
+;sensor0_dvdd          = "dvdd-csi-18"
+;sensor0_dvdd_vol      = 1800000
+;sensor0_power_en      =
+;sensor0_reset         = port:PG00<0><0><1><0>
+;sensor0_pwdn          = port:PG01<0><0><1><0>
 
 [vind0/vinc0]
 vinc0_used		= 1
 vinc0_csi_sel		= 0
 vinc0_mipi_sel		= 0xff
 vinc0_isp_sel		= 0
+vinc0_isp_tx_ch		= 0
 vinc0_rear_sensor_sel	= 0
 vinc0_front_sensor_sel	= 0
 vinc0_sensor_list	= 0
 
 [vind0/vinc1]
-vinc1_used		= 0
-vinc1_csi_sel		= 1
+vinc1_used		= 1
+vinc1_csi_sel		= 0
 vinc1_mipi_sel		= 0xff
 vinc1_isp_sel		= 0
+vinc1_isp_tx_ch		= 1
 vinc1_rear_sensor_sel	= 0
 vinc1_front_sensor_sel	= 0
 vinc1_sensor_list	= 0
-
-[vind0/vinc2]
-vinc2_used		= 0
-vinc2_csi_sel		= 0
-vinc2_mipi_sel		= 0
-vinc2_isp_sel		= 0
-vinc2_rear_sensor_sel	= 0
-vinc2_front_sensor_sel	= 0
-vinc2_sensor_list	= 0
-
-[vind0/vinc3]
-vinc3_used		= 0
-vinc3_csi_sel		= 0
-vinc3_mipi_sel		= 0
-vinc3_isp_sel		= 0
-vinc3_rear_sensor_sel	= 0
-vinc3_front_sensor_sel	= 0
-vinc3_sensor_list	= 0
 
 ;--------------------------------------------------------------------------------
 ;tv configuration
@@ -1681,7 +1679,7 @@ shutdown_ani_inter_time          = 100
 
 carback_en              = 0
 ;----------------------------------------------------------------------------------
-;adc power   (no pmu) 
+;adc power   (no pmu)
 ;----------------------------------------------------------------------------------
 [adc_power]
 power_det_io        = port:PB02<0><0><default><default>

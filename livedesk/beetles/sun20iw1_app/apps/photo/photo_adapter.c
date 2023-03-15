@@ -1,28 +1,42 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2011, CHIPHD, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : photo_adapter.c
-* By        : CQQ
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011/06/20 9:58  create this file, implements the fundamental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "photo_adapter.h"
 //////////////////////////////////////////////////////////////////////////
-//ÊÇ·ñÁ¢¼´±£´æ×¢²á±íÊı¾İ
+//æ˜¯å¦ç«‹å³ä¿å­˜æ³¨å†Œè¡¨æ•°æ®
 #define SAVE_REG_IMMEDIATELY 0
 //////////////////////////////////////////////////////////////////////////
 /************************************************************************/
-//È¡ËÙ¶È
+//å–é€Ÿåº¦
 /************************************************************************/
 __u32 photo_get_ratio(void)
 {
@@ -41,7 +55,7 @@ __u32 photo_get_ratio(void)
 }
 
 /************************************************************************/
-//ÉèÖÃËÙ¶È
+//è®¾ç½®é€Ÿåº¦
 /************************************************************************/
 __u32 photo_set_ratio(__u32 ratio)
 {
@@ -56,7 +70,7 @@ __u32 photo_set_ratio(__u32 ratio)
 }
 
 /************************************************************************/
-//È¡ËÙ¶È±êÖ¾(ÊÇ·ñ×Ô¶¨ÒåËÙ¶È)
+//å–é€Ÿåº¦æ ‡å¿—(æ˜¯å¦è‡ªå®šä¹‰é€Ÿåº¦)
 /************************************************************************/
 __u32 photo_get_speedflag(void)
 {
@@ -75,7 +89,7 @@ __u32 photo_get_speedflag(void)
 }
 
 /************************************************************************/
-//ÉèÖÃËÙ¶È±êÖ¾(ÊÇ·ñ×Ô¶¨ÒåËÙ¶È)
+//è®¾ç½®é€Ÿåº¦æ ‡å¿—(æ˜¯å¦è‡ªå®šä¹‰é€Ÿåº¦)
 /************************************************************************/
 __u32 photo_set_speedflag(__u32 speedflag)
 {
@@ -90,7 +104,7 @@ __u32 photo_set_speedflag(__u32 speedflag)
 }
 
 /************************************************************************/
-//È¡ÌØĞ§
+//å–ç‰¹æ•ˆ
 /************************************************************************/
 __u32 photo_get_effect(void)
 {
@@ -109,7 +123,7 @@ __u32 photo_get_effect(void)
 }
 
 /************************************************************************/
-//±£´æÌØĞ§
+//ä¿å­˜ç‰¹æ•ˆ
 /************************************************************************/
 __u32 photo_set_effect(__u32 effect)
 {
@@ -124,7 +138,7 @@ __u32 photo_set_effect(__u32 effect)
 }
 
 /************************************************************************/
-//»ñÈ¡±³¾°ÒôÀÖ¿ª¹Ø
+//è·å–èƒŒæ™¯éŸ³ä¹å¼€å…³
 /************************************************************************/
 __u32 photo_get_bgmusic(void)
 {
@@ -132,7 +146,7 @@ __u32 photo_get_bgmusic(void)
 }
 
 /************************************************************************/
-//±£´æ±³¾°ÒôÀÖ¿ª¹Ø
+//ä¿å­˜èƒŒæ™¯éŸ³ä¹å¼€å…³
 /************************************************************************/
 __u32 photo_set_bgmusic(__u32 bgmusic)
 {
@@ -147,7 +161,7 @@ __u32 photo_set_bgmusic(__u32 bgmusic)
 }
 
 /************************************************************************/
-//±£´æ¶Ïµã
+//ä¿å­˜æ–­ç‚¹
 /************************************************************************/
 __s32 photo_save_play_info(rat_type_t root_type)
 {
@@ -163,7 +177,7 @@ __s32 photo_save_play_info(rat_type_t root_type)
 //////////////////////////////////////////////////////////////////////////
 static __hdle g_hMoveStr = NULL;
 #define APP_COLOR_CLEAR                        0x0f
-//¹ö¶¯³¤×Ö·û´®
+//æ»šåŠ¨é•¿å­—ç¬¦ä¸²
 __s32 PhotoLongStringShow(H_LYR hLayer, RECT *pRt, char *String, GUI_COLOR TxtClr)
 {
     __show_info_move_t  str_move;
@@ -214,10 +228,10 @@ void PhotoLongStringDestroy(void)
 //////////////////////////////////////////////////////////////////////////
 
 /************************************************************************/
-// »­BMP²¿·Ö(¿½±´ÁËÈı´Î£¬Ğ§ÂÊ½ÏµÍ£¬TODO:¸Äµ½µ×²ãÊµÏÖÎªÒ»´Î¿½±´£¬Ìá¸ßĞ§ÂÊ)
-// pFileData --- ×ÊÔ´º¯Êı»ñµÃµÄÊı¾İ(Ò²ÊÇbmpÎÄ¼şÊı¾İ)
-// x£¬y      --- Ä¿±ê×ø±ê
-// x0, y0, x1, y1 --- Ô´ÇøÓò(¼´bmpÍ¼Æ¬Ä³Ò»ÇøÓò)
+// ç”»BMPéƒ¨åˆ†(æ‹·è´äº†ä¸‰æ¬¡ï¼Œæ•ˆç‡è¾ƒä½ï¼ŒTODO:æ”¹åˆ°åº•å±‚å®ç°ä¸ºä¸€æ¬¡æ‹·è´ï¼Œæé«˜æ•ˆç‡)
+// pFileData --- èµ„æºå‡½æ•°è·å¾—çš„æ•°æ®(ä¹Ÿæ˜¯bmpæ–‡ä»¶æ•°æ®)
+// xï¼Œy      --- ç›®æ ‡åæ ‡
+// x0, y0, x1, y1 --- æºåŒºåŸŸ(å³bmpå›¾ç‰‡æŸä¸€åŒºåŸŸ)
 /************************************************************************/
 __s32 APP_BMP_Draw(const void *pFileData, int x, int y, int x0, int y0, int x1, int y1)
 {
@@ -225,7 +239,7 @@ __s32 APP_BMP_Draw(const void *pFileData, int x, int y, int x0, int y0, int x1, 
     void *pBuffer;
     int bmp_w, bmp_h;
     int w, h;
-    //¼ì²éÇøÓò·¶Î§
+    //æ£€æŸ¥åŒºåŸŸèŒƒå›´
     bmp_w = GUI_BMP_GetXSize(pFileData);
 
     if (! ValueBetweenRangeEx(0, x0, x1, bmp_w))
@@ -244,13 +258,13 @@ __s32 APP_BMP_Draw(const void *pFileData, int x, int y, int x0, int y0, int x1, 
 
     w = x1 - x0;
     h = y1 - y0;
-    //ÉêÇë»º³å
+    //ç”³è¯·ç¼“å†²
     APP_NewMem_B(pBuffer, w * h * 4);
 
     if (pBuffer != NULL)
     {
         GUI_MEMDEV_Handle draw_mem;
-        //Ê¹ÓÃÄÚ´æÉè±¸
+        //ä½¿ç”¨å†…å­˜è®¾å¤‡
         draw_mem = GUI_MEMDEV_Create(0, 0, bmp_w, bmp_h);
 
         if (draw_mem != NULL)
@@ -264,10 +278,10 @@ __s32 APP_BMP_Draw(const void *pFileData, int x, int y, int x0, int y0, int x1, 
             rt.y0 = y0;
             rt.y1 = y1;
             GUI_GetRectMem(&rt, pBuffer, w, h, 0, 0);
-            //É¾³ıÄÚ´æÉè±¸
+            //åˆ é™¤å†…å­˜è®¾å¤‡
             GUI_MEMDEV_Select(old_mem);
             GUI_MEMDEV_Delete(draw_mem);
-            //¿½±´µ½Ä¿±êÎ»ÖÃ
+            //æ‹·è´åˆ°ç›®æ ‡ä½ç½®
             rt.x0 = x;
             rt.y0 = y;
             rt.x1 = rt.x0 + w;
@@ -290,13 +304,13 @@ __s32 APP_BMP_Draw(const void *pFileData, int x, int y, int x0, int y0, int x1, 
 }
 
 /************************************************************************/
-// ÓÉÒ»×éÍ¼Æ¬×ÊÔ´(À­Éì)×é³ÉÄÚ´æÍ¼Æ¬×ÊÔ´
-// res_id        --- Í¼Æ¬×ÊÔ´idÊı×é
-// id_count      --- Í¼Æ¬×ÊÔ´idÊı×é´óĞ¡
-// direction     --- À­Éì·½Ïò, 0 : x·½Ïò; ·Ç0 : y·½Ïò
-// len           --- À­Éì·½ÏòµÄ³¤¶È
-// return values --- ÄÚ´æÍ¼Æ¬Êı¾İÖ¸Õë
-// Remarks : Êı×éÖĞ¼äµÄidÍ¼Æ¬ÎªÀ­ÉìÍ¼Æ¬
+// ç”±ä¸€ç»„å›¾ç‰‡èµ„æº(æ‹‰ä¼¸)ç»„æˆå†…å­˜å›¾ç‰‡èµ„æº
+// res_id        --- å›¾ç‰‡èµ„æºidæ•°ç»„
+// id_count      --- å›¾ç‰‡èµ„æºidæ•°ç»„å¤§å°
+// direction     --- æ‹‰ä¼¸æ–¹å‘, 0 : xæ–¹å‘; é0 : yæ–¹å‘
+// len           --- æ‹‰ä¼¸æ–¹å‘çš„é•¿åº¦
+// return values --- å†…å­˜å›¾ç‰‡æ•°æ®æŒ‡é’ˆ
+// Remarks : æ•°ç»„ä¸­é—´çš„idå›¾ç‰‡ä¸ºæ‹‰ä¼¸å›¾ç‰‡
 /************************************************************************/
 RAM_RES_BMP_T *CreateRamBmpData(__s32 res_id[], __s32 id_count, __s32 direction, __s32 len)
 {
@@ -327,7 +341,7 @@ RAM_RES_BMP_T *CreateRamBmpData(__s32 res_id[], __s32 id_count, __s32 direction,
         bmp_h = GUI_BMP_RES_GetYSize(res_bmp_mid);
     }
 
-    //Ê¹ÓÃÄÚ´æÉè±¸
+    //ä½¿ç”¨å†…å­˜è®¾å¤‡
     draw_mem = GUI_MEMDEV_Create(0, 0, bmp_w, bmp_h);
 
     if (draw_mem != NULL)
@@ -406,7 +420,7 @@ RAM_RES_BMP_T *CreateRamBmpData(__s32 res_id[], __s32 id_count, __s32 direction,
             BFreeType(res, RAM_RES_BMP_T);
         }
 
-        //É¾³ıÄÚ´æÉè±¸
+        //åˆ é™¤å†…å­˜è®¾å¤‡
         GUI_MEMDEV_Select(old_mem);
         GUI_MEMDEV_Delete(draw_mem);
     }
@@ -416,7 +430,7 @@ RAM_RES_BMP_T *CreateRamBmpData(__s32 res_id[], __s32 id_count, __s32 direction,
 }
 
 /************************************************************************/
-// É¾³ı×éºÏÍ¼Æ¬
+// åˆ é™¤ç»„åˆå›¾ç‰‡
 /************************************************************************/
 void DestroyRamBmpData(RAM_RES_BMP_T *res)
 {
@@ -427,4 +441,3 @@ void DestroyRamBmpData(RAM_RES_BMP_T *res)
 
 //////////////////////////////////////////////////////////////////////////
 //end of file
-

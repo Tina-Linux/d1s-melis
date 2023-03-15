@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2011, CHIPHD, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : App_photo_i.h
-* By        : CQQ
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011/06/07 15:43  create this file, implements the fundamental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __APP_PHOTO_I_H__9C37A19E_F096_4F25_A49B_C6D2BA82BB2A__
 #define __APP_PHOTO_I_H__9C37A19E_F096_4F25_A49B_C6D2BA82BB2A__
@@ -32,16 +46,16 @@ extern H_WIN    g_PhotoMainWnd;
 #define GetPhotoManWnd()                    (g_PhotoMainWnd)
 #define PHOTO_GetWndPara(_p, _t, _hwnd)     (_p = (_t *)GUI_WinGetAttr(_hwnd))
 
-#define SSET_TBAR_WIN_SRC_width             (800)           /*sset tbar �Ĵ�����ʾ�������*/
-#define SSET_TBAR_WIN_SRC_HEIGHT            (40)             /*sset tbar �Ĵ�����ʾ����߶�*/
+#define SSET_TBAR_WIN_SRC_width             (800)           /*sset tbar 的窗口显示区域宽度*/
+#define SSET_TBAR_WIN_SRC_HEIGHT            (40)             /*sset tbar 的窗口显示区域高度*/
 
-#undef   NEED_SHOW_ANOLE_SATUT              /*��Ҫshow ״̬*/
+#undef   NEED_SHOW_ANOLE_SATUT              /*需要show 状态*/
 
 //////////////////////////////////////////////////////////////////////////
 //
 #define SHOW_UI                             1
 #define HIDE_UI                             0
-//�Զ�����Ϣ
+//自定义消息
 enum
 {
     MSG_PHOTO_COMMAND           = (GUI_MSG_USER_DEF + 1),
@@ -64,9 +78,9 @@ enum // for MSG_PHOTO_COMMAND
     ID_PHOTO_CMD_INTERVAL       ,
     ID_PHOTO_CMD_SCALE          ,
     ID_PHOTO_CMD_TOUCH_UP       , // para = MAKELONG(x, y)
-    ID_PHOTO_CMD_KILL_PHOTO_FRMWIN  ,     /*ɱ��photo ��ʵ�崰�� �ͷ���Դ*/
+    ID_PHOTO_CMD_KILL_PHOTO_FRMWIN  ,     /*杀死photo 的实体窗口 释放资源*/
 
-    /*UI �������ʾ����*/
+    /*UI 方面的显示命令*/
     ID_PHOTO_CMD_PAUSE          ,
     ID_PHOTO_CMD_AUTOPLAY       ,
     ID_PHOTO_CMD_PLAYPREV       ,
@@ -89,7 +103,7 @@ enum // for MSG_PHOTO_COMMAND
 };
 
 
-//����״̬
+//播放状态
 typedef struct
 {
     load_bmp_res_t  bmp_pause;
@@ -115,17 +129,17 @@ typedef  enum
     PHOTO_SCALE_ITEM_ZOOMINC,
 
 } __photo_scale_item_draw_e;
-//�����ڿ�������
+//主窗口控制数据
 typedef struct
 {
     int32_t                     last_action;
     __pos_t                     last_pos;
     int32_t                     show_para; //
-    __photo_scale_item_draw_e   scale_new_item;       /*��ǰ��scale �����item ���*/
-    __photo_scale_item_draw_e   scale_old_item;       /*�ɽ���item ��*/
+    __photo_scale_item_draw_e   scale_new_item;       /*当前画scale 里面的item 项焦点*/
+    __photo_scale_item_draw_e   scale_old_item;       /*旧焦点item 项*/
 } PHOTO_MAIN_FRW_CTRL_PARA_T;
 
-//��������Դ
+//主窗口资源
 typedef struct
 {
     PHOTO_FILE_INFO_RES_T       file_info;
@@ -143,7 +157,7 @@ typedef struct
 #define     PHOTO_PLAY_SPEED_ID         0x301
 
 
-//����ID
+//窗口ID
 #define PHOTO_SAVE_BG_DIALOG_ID         0xfedc
 #define PHOTO_BG_OK_DIALOG_ID           (PHOTO_SAVE_BG_DIALOG_ID - 1)
 //////////////////////////////////////////////////////////////////////////
@@ -172,15 +186,15 @@ typedef struct
         NOTIFY_MSG(MSG_PHOTO_COMMAND, _hwnd, GetPhotoManWnd(), _cmd, _d); \
     } while(0)
 //////////////////////////////////////////////////////////////////////////
-//���������ݲ���
+//主窗口数据参数
 typedef struct
 {
     H_WIN                   h_main_frw;
     H_LYR                   h_main_lyr;
 
     H_WIN                   h_dialog;
-    H_WIN                   h_frm_alarm_coming ; //���Ӷ�ʱʱ�䵽��ʱ�򵯳��ĶԻ���Ĵ��ھ��
-    __bool                  need_to_open_music ; // 1 ��ʾ��Ҫ���´򿪱�Ӱ���֣���Ҫ����������֮�󣬻�ر�����
+    H_WIN                   h_frm_alarm_coming ; //闹钟定时时间到的时候弹出的对话框的窗口句柄
+    __bool                  need_to_open_music ; // 1 表示需要重新打开背影音乐，主要是闹铃来了之后，会关背景音
 
     H_WIN                   h_sset;
     __sset_create_para_t    *sset_create_para;
@@ -188,10 +202,9 @@ typedef struct
     GUI_FONT                *font;
     H_WIN                   root_type;
 
-    PHOTO_MAIN_FRW_T        *photo_frm_para;               /*photo frm win ��˽������*/
+    PHOTO_MAIN_FRW_T        *photo_frm_para;               /*photo frm win 的私有属性*/
 
 } PHOTO_WND_T;
 
 #endif //__APP_PHOTO_I_H__9C37A19E_F096_4F25_A49B_C6D2BA82BB2A__
 //End of this file
-

@@ -1,0 +1,1 @@
+export TARGET_CHIP_NAME=f133-b

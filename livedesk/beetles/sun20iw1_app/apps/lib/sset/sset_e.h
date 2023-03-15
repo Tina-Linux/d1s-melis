@@ -1,16 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              calendar app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2006-2009, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : sset_e.h
-* By      :lyn
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __SSET_E_H__
 #define __SSET_E_H__
@@ -82,17 +99,17 @@ typedef enum tag_SSET_NODELIST_STA
 /************ item para define  ***********/
 typedef struct tag_SSET_ITEM_PARA
 {
-    char                        name[SSET_NAME_MAX];    /* ITEMµÄÌõÄ¿Ãû³Æ       */
-    __u32                       item_sta;               /* ITEMµÄÌõÄ¿ÊÇ·ñÓĞĞ§   */
+    char                        name[SSET_NAME_MAX];    /* ITEMçš„æ¡ç›®åç§°       */
+    __u32                       item_sta;               /* ITEMçš„æ¡ç›®æ˜¯å¦æœ‰æ•ˆ   */
 
-    __sset_item_type_t          item_type;              /* ITEMµÄ·ç¸ñ           */
+    __sset_item_type_t          item_type;              /* ITEMçš„é£æ ¼           */
 
-    __sset_item_attr_t          item_attr;              /* ITEMµÄÌõÄ¿Ë½ÓĞÊı¾İ   */
+    __sset_item_attr_t          item_attr;              /* ITEMçš„æ¡ç›®ç§æœ‰æ•°æ®   */
 
-    __sset_item_ncmsg_t         item_msg;               /* ITEMµÄÏûÏ¢Âë         */
+    __sset_item_ncmsg_t         item_msg;               /* ITEMçš„æ¶ˆæ¯ç          */
 
-    __u32                       n;                      /* ITEM×Ó²Ëµ¥ÖĞµÄÌõÄ¿Êı */
-    struct tag_SSET_ITEM_PARA   *childarray;            /* ITEM×Ó²Ëµ¥µØÖ·       */
+    __u32                       n;                      /* ITEMå­èœå•ä¸­çš„æ¡ç›®æ•° */
+    struct tag_SSET_ITEM_PARA   *childarray;            /* ITEMå­èœå•åœ°å€       */
 
 } __sset_item_para_t;
 
@@ -100,20 +117,20 @@ typedef struct tag_SSET_ITEM_PARA
 /********** create para define  ***********/
 typedef struct tag_SSET_CREATE
 {
-    char                        *name;                  /* ³¡¾°Ãû³Æ           */
-    __u16                       sid;                    /* ³¡¾°ID             */
-    H_WIN                       pwin;                   /* ³¡¾°µÄ¸¸´°¿Ú       */
-    H_WIN                       powner;                 /* ³¡¾°µÄÒÀ¸½´°¿Ú     */
-    __sset_item_para_t          *attr;                  /* ³¡¾°µÄË½ÓĞÊı¾İ     */
+    char                        *name;                  /* åœºæ™¯åç§°           */
+    __u16                       sid;                    /* åœºæ™¯ID             */
+    H_WIN                       pwin;                   /* åœºæ™¯çš„çˆ¶çª—å£       */
+    H_WIN                       powner;                 /* åœºæ™¯çš„ä¾é™„çª—å£     */
+    __sset_item_para_t          *attr;                  /* åœºæ™¯çš„ç§æœ‰æ•°æ®     */
 
-    GUI_FONT                    *bfont;                 /* ³¡¾°µÄ´ó×ÖÌå       */
-    GUI_FONT                    *sfont;                 /* ³¡¾°µÄĞ¡×ÖÌå       */
+    GUI_FONT                    *bfont;                 /* åœºæ™¯çš„å¤§å­—ä½“       */
+    GUI_FONT                    *sfont;                 /* åœºæ™¯çš„å°å­—ä½“       */
 
-    HRES                        icon_res;               /* ³¡¾°µÄÍ¼±ê×ÊÔ´¾ä±ú */
-    HLANG                       lang_res;               /* ³¡¾°µÄÓïÑÔ×ÊÔ´¾ä±ú */
-    __u32                       icon_style;             /* ³¡¾°µÄÍ¼±ê×ÊÔ´·ç¸ñ */
-    __u32                       lang_style;             /* ³¡¾°µÄÓïÑÔ×ÊÔ´·ç¸ñ */
-    __epdk_charset_enm_e        draw_code;              /* ³¡¾°µÄ×ÖÌå±àÂë·½Ê½ */
+    HRES                        icon_res;               /* åœºæ™¯çš„å›¾æ ‡èµ„æºå¥æŸ„ */
+    HLANG                       lang_res;               /* åœºæ™¯çš„è¯­è¨€èµ„æºå¥æŸ„ */
+    __u32                       icon_style;             /* åœºæ™¯çš„å›¾æ ‡èµ„æºé£æ ¼ */
+    __u32                       lang_style;             /* åœºæ™¯çš„è¯­è¨€èµ„æºé£æ ¼ */
+    __epdk_charset_enm_e        draw_code;              /* åœºæ™¯çš„å­—ä½“ç¼–ç æ–¹å¼ */
 
     __u32                       time_speed;
 } __sset_create_para_t;
@@ -124,11 +141,11 @@ typedef struct tag_SSET_CREATE
 *************************************************************************************
 *                                       SSET_Create
 *
-*Description: SSET³¡¾°´´½¨
+*Description: SSETåœºæ™¯åˆ›å»º
 *
-*Arguments  : para  ³¡¾°´´½¨²ÎÊıÖ¸Õë
+*Arguments  : para  åœºæ™¯åˆ›å»ºå‚æ•°æŒ‡é’ˆ
 *
-*Return     : SSET³¡¾°µÄ¹ÜÀí´°¿Ú
+*Return     : SSETåœºæ™¯çš„ç®¡ç†çª—å£
 *
 *************************************************************************************
 */
@@ -137,7 +154,7 @@ H_WIN SSET_Create(__sset_create_para_t *para);
 *************************************************************************************
 *                                       _menu_task
 *
-*Description: SSET³¡¾°Ïú»Ù
+*Description: SSETåœºæ™¯é”€æ¯
 *
 *Arguments  :
 *
@@ -150,11 +167,11 @@ __s32 SSET_Destroy(H_WIN h_win);
 *************************************************************************************
 *                                       SSET_UserPara_Insert
 *
-*Description: ²åÈëÒ»×éÌõÄ¿
+*Description: æ’å…¥ä¸€ç»„æ¡ç›®
 *
-*Arguments  : pitem Òª²åÈëÌõÄ¿µÄ²åÈë½ÚµãÖ¸Õë
-*             para  ²åÈëÌõÄ¿µÄÍ·Ö¸Õë
-*             num   ²åÈëµÄÌõÄ¿Êı
+*Arguments  : pitem è¦æ’å…¥æ¡ç›®çš„æ’å…¥èŠ‚ç‚¹æŒ‡é’ˆ
+*             para  æ’å…¥æ¡ç›®çš„å¤´æŒ‡é’ˆ
+*             num   æ’å…¥çš„æ¡ç›®æ•°
 *
 *Return     : NULL
 *
@@ -165,9 +182,9 @@ __s32 SSET_Insert(char *name, __sset_item_para_t *para, __u32 num, __sset_item_i
 ************************************************************************************
 *                                       SSET_UserPara_Delete
 *
-*Description: É¾³ıÒ»×éÌõÄ¿
+*Description: åˆ é™¤ä¸€ç»„æ¡ç›®
 *
-*Arguments  : pitem É¾³ıÌõÄ¿Ëù¹ÒÔØµÄ½ÚµãÖ¸Õë
+*Arguments  : pitem åˆ é™¤æ¡ç›®æ‰€æŒ‚è½½çš„èŠ‚ç‚¹æŒ‡é’ˆ
 *
 *Return     : NULL
 *
@@ -178,10 +195,10 @@ __s32 SSET_Delete(char *name, __sset_item_delete_mode_e mode);
 ************************************************************************************
 *                                       SSET_EnnableNode
 *
-*Description: ¸üĞÂÒ»¸ö½ÚµãÌõÄ¿ĞÅÏ¢
+*Description: æ›´æ–°ä¸€ä¸ªèŠ‚ç‚¹æ¡ç›®ä¿¡æ¯
 *
-*Arguments  : pitem Òª¸üĞÂµÄ½Úµã
-*             para  ²ÎÊıÖ¸Õë
+*Arguments  : pitem è¦æ›´æ–°çš„èŠ‚ç‚¹
+*             para  å‚æ•°æŒ‡é’ˆ
 *Return     :
 *
 ************************************************************************************
@@ -191,10 +208,10 @@ __s32 SSET_EnnableNode(char *name);
 ************************************************************************************
 *                                       SSET_DisableNode
 *
-*Description: ¸üĞÂÒ»¸ö½ÚµãÌõÄ¿ĞÅÏ¢
+*Description: æ›´æ–°ä¸€ä¸ªèŠ‚ç‚¹æ¡ç›®ä¿¡æ¯
 *
-*Arguments  : pitem Òª¸üĞÂµÄ½Úµã
-*             para  ²ÎÊıÖ¸Õë
+*Arguments  : pitem è¦æ›´æ–°çš„èŠ‚ç‚¹
+*             para  å‚æ•°æŒ‡é’ˆ
 *Return     :
 *
 ************************************************************************************
@@ -204,10 +221,10 @@ __s32 SSET_DisableNode(char *name);
 ************************************************************************************
 *                                       SSET_SetAttr
 *
-*Description: ¸üĞÂÒ»¸ö½ÚµãÌõÄ¿ĞÅÏ¢
+*Description: æ›´æ–°ä¸€ä¸ªèŠ‚ç‚¹æ¡ç›®ä¿¡æ¯
 *
-*Arguments  : pitem Òª¸üĞÂµÄ½Úµã
-*             para  ²ÎÊıÖ¸Õë
+*Arguments  : pitem è¦æ›´æ–°çš„èŠ‚ç‚¹
+*             para  å‚æ•°æŒ‡é’ˆ
 *Return     :
 *
 ************************************************************************************
@@ -217,10 +234,10 @@ __s32 SSET_SetAttr(char *name, __sset_item_attr_t *attr);
 ************************************************************************************
 *                                       SSET_GetAttr
 *
-*Description: ¸üĞÂÒ»¸ö½ÚµãÌõÄ¿ĞÅÏ¢
+*Description: æ›´æ–°ä¸€ä¸ªèŠ‚ç‚¹æ¡ç›®ä¿¡æ¯
 *
-*Arguments  : pitem Òª¸üĞÂµÄ½Úµã
-*             para  ²ÎÊıÖ¸Õë
+*Arguments  : pitem è¦æ›´æ–°çš„èŠ‚ç‚¹
+*             para  å‚æ•°æŒ‡é’ˆ
 *Return     :
 *
 ************************************************************************************

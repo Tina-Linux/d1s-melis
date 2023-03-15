@@ -1,32 +1,34 @@
 /*
-*******************************************************************************************************************
-*                                                           Graphic Library
-*                                                   the graphic library support module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2008, SoftWinners Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name:       ListBox_Process.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
 *
-*Author:          William Wang
 *
-*Version :        1.1.0
-*
-*Date:            2008-10-20
-*
-*Description :    ListLayer Process implement
-*
-*Others :         None at present.
-*
-* History :
-*
-* <Author>          <time>              <version>     <description>
-*
-* William Wang     2008-10-20    1.1.0          Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef __LIST_LAYER_PROCESS_C____
 #define __LIST_LAYER_PROCESS_C____
 
@@ -49,9 +51,9 @@
 *
 * date:             2008-10-8
 *
-* Description:      ªÒ»°º”‘ÿµƒ◊¥Ã¨–≈œ¢
+* Description:      Ëé∑ÂèñÂä†ËΩΩÁöÑÁä∂ÊÄÅ‰ø°ÊÅØ
 *
-* parameters:       listlayer µ±«∞ π”√µƒlistlayer–≈œ¢
+* parameters:       listlayer ÂΩìÂâç‰ΩøÁî®ÁöÑlistlayer‰ø°ÊÅØ
 *
 * return:           if success return ERDK_OK
 *                   if fail return the number of fail
@@ -69,14 +71,14 @@ __u32  ListBox_GetBufferStatus(LIST_LAYER_MAN_t    *listlayer)
     __u8                       err;
     __u32                      status = 0;
 
-    /*µ±«∞listmenuµƒƒ£ ΩŒ™πÃ∂® ˝¡øµƒƒ£ Ω*/
+    /*ÂΩìÂâçlistmenuÁöÑÊ®°Âºè‰∏∫Âõ∫ÂÆöÊï∞ÈáèÁöÑÊ®°Âºè*/
     if (listlayer->mode == FIXED_MODE || listlayer->menulist->ItemCount == 0)
     {
         status = 0;
         return status;
     }
 
-    /*µ±«∞listmenuµƒƒ£ ΩŒ™ø…±‰ ˝¡øµƒƒ£ Ω*/
+    /*ÂΩìÂâçlistmenuÁöÑÊ®°Âºè‰∏∫ÂèØÂèòÊï∞ÈáèÁöÑÊ®°Âºè*/
     esKRNL_SemPend(listlayer->pos_sem, 0, &err); /*pend pos semphore*/
 
     if (err == OS_NO_ERR)
@@ -85,41 +87,41 @@ __u32  ListBox_GetBufferStatus(LIST_LAYER_MAN_t    *listlayer)
 
         if (listlayer->viewrect.y > listlayer->tail_pos.y)
         {
-            /*…Ë÷√¬ﬂº≠Œ≤*/
+            /*ËÆæÁΩÆÈÄªËæëÂ∞æ*/
             logic_tail = listlayer->tail_pos.y + listlayer->listbuffer->vrect.height;
         }
         else
         {
-            /*…Ë÷√¬ﬂº≠Œ≤*/
+            /*ËÆæÁΩÆÈÄªËæëÂ∞æ*/
             logic_tail = listlayer->tail_pos.y;
         }
 
         if (listlayer->viewrect.y < listlayer->head_pos.y)
         {
-            /*…Ë÷√¬ﬂº≠Õ∑*/
+            /*ËÆæÁΩÆÈÄªËæëÂ§¥*/
             logic_head = listlayer->head_pos.y - listlayer->listbuffer->vrect.height;
         }
         else
         {
-            /*…Ë÷√¬ﬂº≠Õ∑*/
+            /*ËÆæÁΩÆÈÄªËæëÂ§¥*/
             logic_head = listlayer->head_pos.y;
         }
 
         logic_pos = listlayer->viewrect.y;
-        /*ªÒ»°Õ∑Œª“∆*/
+        /*Ëé∑ÂèñÂ§¥‰ΩçÁßª*/
         head_dist = (logic_pos - logic_head) -
                     (logic_pos - logic_head) % (listlayer->menulist->head->rect.height);
 
-        /*∑«∂‘∆Îµƒ«Èøˆ*/
+        /*ÈùûÂØπÈΩêÁöÑÊÉÖÂÜµ*/
         if ((logic_tail - logic_pos) % (listlayer->menulist->head->rect.height))
         {
-            /*ªÒ»°Œ≤Œª“∆*/
+            /*Ëé∑ÂèñÂ∞æ‰ΩçÁßª*/
             tail_dist = (logic_tail - logic_pos) -
                         (logic_tail - logic_pos) % (listlayer->menulist->head->rect.height) + listlayer->menulist->head->rect.height;
         }
         else
         {
-            /*ªÒ»°Œ≤Œª“∆*/
+            /*Ëé∑ÂèñÂ∞æ‰ΩçÁßª*/
             tail_dist = (logic_tail - logic_pos) -
                         (logic_tail - logic_pos) % (listlayer->menulist->head->rect.height);
         }
@@ -224,7 +226,7 @@ __u32  ListBox_GetBufferStatus(LIST_LAYER_MAN_t    *listlayer)
             }
         }
 
-        /*–Ë“™‘§»°Õ∑item*/
+        /*ÈúÄË¶ÅÈ¢ÑÂèñÂ§¥item*/
         if (head_dist < (listlayer->fb_depth / 2 - 1) * (listlayer->viewrect.height))
         {
             if (status & UPOVER)
@@ -339,7 +341,7 @@ void ListBox_LoadItemThread(void *p_arg)
         }
         else
         {
-            /*ƒ√µΩÀ¯µƒ±Í÷æŒª*/
+            /*ÊãøÂà∞ÈîÅÁöÑÊ†áÂøó‰Ωç*/
             lock_flags = EPDK_TRUE;
 
             while (GUI_LockAccept() == EPDK_FAIL)
@@ -403,17 +405,17 @@ void ListBox_LoadItemThread(void *p_arg)
                                                     listlayer->menulist->load_head->rect.height;
                         }
 
-                        /*–Ë“™º”‘ÿµƒitemŒ™…œ“ª∏ˆitem*/
+                        /*ÈúÄË¶ÅÂä†ËΩΩÁöÑitem‰∏∫‰∏ä‰∏Ä‰∏™item*/
                         listlayer->menulist->load_head = listlayer->menulist->load_head->Prev;
 
-                        /*»Áπ˚–Ë“™º”‘ÿµƒ∆ ºŒª÷√–°”⁄Ω· ¯Œª÷√(¥À ±”…”⁄º”‘ÿÕ∑item∂¯∏ƒ–¥Œ™itemº”‘ÿ–Ú¡–)*/
+                        /*Â¶ÇÊûúÈúÄË¶ÅÂä†ËΩΩÁöÑËµ∑Âßã‰ΩçÁΩÆÂ∞è‰∫éÁªìÊùü‰ΩçÁΩÆ(Ê≠§Êó∂Áî±‰∫éÂä†ËΩΩÂ§¥itemËÄåÊîπÂÜô‰∏∫itemÂä†ËΩΩÂ∫èÂàó)*/
                         if (listlayer->head_pos.y < listlayer->tail_pos.y)
                         {
-                            /*»Áπ˚º”‘ÿŒª÷√‘⁄∆ º∆¡Œª÷√÷ÆÕ‚,‘Ú÷±Ω”∏¸–¬Ω· ¯∆¡Œª÷√*/
+                            /*Â¶ÇÊûúÂä†ËΩΩ‰ΩçÁΩÆÂú®Ëµ∑ÂßãÂ±è‰ΩçÁΩÆ‰πãÂ§ñ,ÂàôÁõ¥Êé•Êõ¥Êñ∞ÁªìÊùüÂ±è‰ΩçÁΩÆ*/
                             if (listlayer->head_pos.y >= listlayer->viewrect.height)
                             {
                                 listlayer->tail_pos.y = listlayer->head_pos.y;
-                            }/*º”‘ÿø™ ºŒª÷√‘⁄∆ º∆¡÷Æƒ⁄£¨º”‘ÿŒ≤Œ™Ω· ¯∆¡œ‡”¶Œª÷√*/
+                            }/*Âä†ËΩΩÂºÄÂßã‰ΩçÁΩÆÂú®Ëµ∑ÂßãÂ±è‰πãÂÜÖÔºåÂä†ËΩΩÂ∞æ‰∏∫ÁªìÊùüÂ±èÁõ∏Â∫î‰ΩçÁΩÆ*/
                             else if (listlayer->head_pos.y == listlayer->viewrect.height -
                                      listlayer->menulist->head->rect.height)
                             {
@@ -423,12 +425,12 @@ void ListBox_LoadItemThread(void *p_arg)
                             else if ((listlayer->head_pos.y < listlayer->viewrect.height) &&
                                      (listlayer->tail_pos.y > listlayer->listbuffer->vrect.height))
                             {
-                                /*∏¸–¬œ‡”¶µƒ±‰ªØ÷µ*/
+                                /*Êõ¥Êñ∞Áõ∏Â∫îÁöÑÂèòÂåñÂÄº*/
                                 listlayer->tail_pos.y = listlayer->tail_pos.y -
                                                         listlayer->menulist->load_tail->rect.height;
                             }
 
-                            /*∏¸–¬º”‘ÿŒ™÷∏’Î*/
+                            /*Êõ¥Êñ∞Âä†ËΩΩ‰∏∫ÊåáÈíà*/
                             listlayer->menulist->load_tail = listlayer->menulist->load_tail->Prev;
                         }
 
@@ -779,7 +781,7 @@ void ListBox_FoucsItemThread(void *p_arg)
         }
         if (flags & LISTLAYER_DRAW_ITEM_FLAG)
         {
-            /*¿©…¢º”‘ÿ¥¶¿Ì*/
+            /*Êâ©Êï£Âä†ËΩΩÂ§ÑÁêÜ*/
             if (listlayer->mode != FIXED_MODE)
             {
                 err = esKRNL_SemQuery(listlayer->plistmenu->load_sem, &sem_data);
@@ -875,7 +877,7 @@ __u32 ListBox_VarKeyUpMsg(LIST_LAYER_MAN_t *listlayer, __u32 dist, __u32  step)
 
         for (i = 0; i < listlayer->cursteps; i++)
         {
-            /*–Ë“™…œ“∆«¯”Ú*/
+            /*ÈúÄË¶Å‰∏äÁßªÂå∫Âüü*/
             if (listlayer->viewrect.y > listlayer->foucs_pos.y)
             {
                 if (i == 0)
@@ -961,11 +963,11 @@ __u32 ListBox_VarKeyUpMsg(LIST_LAYER_MAN_t *listlayer, __u32 dist, __u32  step)
             esKRNL_TimeDly(2);
         }
 
-        /*≈–∂œ «∑Ò”–Õ£÷πœ˚œ¢π˝¿¥*/
+        /*Âà§Êñ≠ÊòØÂê¶ÊúâÂÅúÊ≠¢Ê∂àÊÅØËøáÊù•*/
         if (listlayer->msgcount != 0 &&
             listlayer->plistmenu->lastmsg == GUI_MSG_KEY_LONGUP)
         {
-            /*ŒﬁÕ£÷πœ˚œ¢π˝¿¥£¨ºÃ–¯‘À––*/
+            /*Êó†ÂÅúÊ≠¢Ê∂àÊÅØËøáÊù•ÔºåÁªßÁª≠ËøêË°å*/
             GUI_LstmPostRunMsg(listlayer->plistmenu, LSTMM_RUNUP);
         }
     }
@@ -1133,11 +1135,11 @@ __u32 ListBox_VarKeyDownMsg(LIST_LAYER_MAN_t    *listlayer, __u32 dist, __u32 st
             esKRNL_TimeDly(2);
         }
 
-        /*≈–∂œ «∑Ò”–Õ£÷πœ˚œ¢π˝¿¥*/
+        /*Âà§Êñ≠ÊòØÂê¶ÊúâÂÅúÊ≠¢Ê∂àÊÅØËøáÊù•*/
         if (listlayer->msgcount != 0 &&
             listlayer->plistmenu->lastmsg == GUI_MSG_KEY_LONGDOWN)
         {
-            /*ŒﬁÕ£÷πœ˚œ¢π˝¿¥£¨ºÃ–¯‘À––*/
+            /*Êó†ÂÅúÊ≠¢Ê∂àÊÅØËøáÊù•ÔºåÁªßÁª≠ËøêË°å*/
             GUI_LstmPostRunMsg(listlayer->plistmenu, LSTMM_RUNDOWN);
         }
     }
@@ -1230,11 +1232,11 @@ __u32 ListBox_FixedKeyUpMsg(LIST_LAYER_MAN_t *listlayer, __u32 dist, __u32  step
         listlayer->foucs_flags->OSFlagFlags &= (~LISTLAYER_FOUCS_FINISH_FLAG);
         esKRNL_TimeDly(2);
 
-        /*≈–∂œ «∑Ò”–Õ£÷πœ˚œ¢π˝¿¥*/
+        /*Âà§Êñ≠ÊòØÂê¶ÊúâÂÅúÊ≠¢Ê∂àÊÅØËøáÊù•*/
         if (listlayer->msgcount != 0 &&
             listlayer->plistmenu->lastmsg == GUI_MSG_KEY_LONGUP)
         {
-            /*ŒﬁÕ£÷πœ˚œ¢π˝¿¥£¨ºÃ–¯‘À––*/
+            /*Êó†ÂÅúÊ≠¢Ê∂àÊÅØËøáÊù•ÔºåÁªßÁª≠ËøêË°å*/
             GUI_LstmPostRunMsg(listlayer->plistmenu, LSTMM_RUNUP);
         }
     }
@@ -1329,11 +1331,11 @@ __u32 ListBox_FixedKeyDownMsg(LIST_LAYER_MAN_t    *listlayer, __u32 dist, __u32 
         listlayer->foucs_flags->OSFlagFlags &= (~LISTLAYER_FOUCS_FINISH_FLAG);
         esKRNL_TimeDly(2);
 
-        /*≈–∂œ «∑Ò”–Õ£÷πœ˚œ¢π˝¿¥*/
+        /*Âà§Êñ≠ÊòØÂê¶ÊúâÂÅúÊ≠¢Ê∂àÊÅØËøáÊù•*/
         if (listlayer->msgcount != 0 &&
             listlayer->plistmenu->lastmsg == GUI_MSG_KEY_LONGDOWN)
         {
-            /*ŒﬁÕ£÷πœ˚œ¢π˝¿¥£¨ºÃ–¯‘À––*/
+            /*Êó†ÂÅúÊ≠¢Ê∂àÊÅØËøáÊù•ÔºåÁªßÁª≠ËøêË°å*/
             GUI_LstmPostRunMsg(listlayer->plistmenu, LSTMM_RUNDOWN);
         }
     }
@@ -1403,7 +1405,7 @@ __u32 ListBox_FlatVarMoveDownMsg(LIST_LAYER_MAN_t *listlayer, __u32 dist)
     if (listlayer->menulist->SelItem == NULL)
     {
         return __LINE__;
-    }/*ø™ ºŒª÷√£¨¥À ±≤ªƒ‹Õ˘œ¬“∆∂Ø*/
+    }/*ÂºÄÂßã‰ΩçÁΩÆÔºåÊ≠§Êó∂‰∏çËÉΩÂæÄ‰∏ãÁßªÂä®*/
     else if (listlayer->menulist->dist == 0)
     {
         downlyr_dist  = dist;
@@ -2018,7 +2020,7 @@ __u32 ListBox_FlatFixedMoveDownMsg(LIST_LAYER_MAN_t    *listlayer, __u32 dist)
     if (listlayer->menulist->SelItem == NULL)
     {
         return __LINE__;
-    }/*ø™ ºŒª÷√£¨¥À ±≤ªƒ‹Õ˘œ¬“∆∂Ø*/
+    }/*ÂºÄÂßã‰ΩçÁΩÆÔºåÊ≠§Êó∂‰∏çËÉΩÂæÄ‰∏ãÁßªÂä®*/
     else if (listlayer->menulist->dist == 0)
     {
         downlyr_dist  = dist;
@@ -2198,7 +2200,7 @@ __u32  ListBox_FlatMoveToDist(LIST_LAYER_MAN_t    *listlayer, __s32 dist)
 
         move_dist = dist - lstm_dist;
 
-        /*∏∫÷µ*/
+        /*Ë¥üÂÄº*/
         if (move_dist < 0)
         {
             move_dist = -move_dist;
@@ -2307,4 +2309,3 @@ __s32  ListBox_GetMoveStatus(LIST_LAYER_MAN_t *listlayer)
 
 
 #endif //__LIST_LAYER__C____
-

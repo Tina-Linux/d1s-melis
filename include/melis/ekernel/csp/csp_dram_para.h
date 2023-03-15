@@ -58,7 +58,7 @@ typedef enum __BANDWIDTH_DEV
     BW_DEVICE_TOTAL
 } __bw_dev_e;
 
-#if defined CONFIG_SOC_SUN3IW2 || defined CONFIG_SOC_SUN8I || defined CONFIG_SOC_SUN20IW1
+#if defined(CONFIG_SOC_SUN3IW2) || defined(CONFIG_SOC_SUN8I) || defined(CONFIG_SOC_SUN20IW1) || defined(CONFIG_SOC_SUN20IW3)
 typedef struct __DRAM_MASTER
 {
     uint32_t    bandwidth_limit0;

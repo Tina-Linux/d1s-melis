@@ -1,16 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                   eMOD
-*                                  the Easy Portable/Player Operation System
-*                                              mod_willow sub-system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                               (c) Copyright 2006-2009, ALLWINNERME, China
-*                                           All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File   : fb_file.c
-* Version: V1.0
-* By     : xiechuanrong
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "mod_init_i.h"
 #include "fb_file.h"
@@ -19,17 +36,18 @@
 #include <libc/eLIBs_az100.h>
 #include <emodules/mod_display.h>
 #include <kconfig.h>
+#include "init/init.h"
 
 /************************************************************************
 * Function: backlayer_create_fb_file
-* Description: ±£¥ÊfbµΩŒƒº˛
+* Description: ‰øùÂ≠òfbÂà∞Êñá‰ª∂
 * Input:
-*    FB *fb£∫¥˝±£¥Êµƒfb
-*    uint8_t * filename£∫±£¥ÊfbµƒŒƒº˛√˚
+*    FB *fbÔºöÂæÖ‰øùÂ≠òÁöÑfb
+*    uint8_t * filenameÔºö‰øùÂ≠òfbÁöÑÊñá‰ª∂Âêç
 * Output:
 * Return:
-*     EPDK_OK: ≥…π¶
-*     EPDK_FAIL:  ß∞‹
+*     EPDK_OK: ÊàêÂäü
+*     EPDK_FAIL: Â§±Ë¥•
 *************************************************************************/
 typedef struct
 {
@@ -173,18 +191,18 @@ int32_t create_fb_file(FB *framebuffer, uint8_t *filename)
 
 /************************************************************************
 * Function: convert_fb_yuv420
-* Description: Ω´framebuffer◊™ªªŒ™yuv420∏Ò Ω
+* Description: Â∞ÜframebufferËΩ¨Êç¢‰∏∫yuv420Ê†ºÂºè
 * Input:
-*    FB *in_frame£∫‘¥frame buffer
-*    FB *out_frame£∫ƒø±Íframe buffer
-*    SIZE *screen_size: ∆¡ƒª≥ﬂ¥Á
-*    uint8_t mod: ƒ£ Ω∞¸¿®:
-*       BACKLAYER_MOD_RATIO----  ∫œ∆¡ƒª≥ﬂ¥Á(Õº∆¨≥§øÌ±»¿˝≤ª±‰)
-*       BACKLAYER_MOD_STRETCH----¿≠…Ïƒ£ Ω,Àı∑≈µΩ∆¡ƒª≥ﬂ¥Á
+*    FB *in_frameÔºöÊ∫êframe buffer
+*    FB *out_frameÔºöÁõÆÊ†áframe buffer
+*    SIZE *screen_size: Â±èÂπïÂ∞∫ÂØ∏
+*    uint8_t mod: Ê®°ÂºèÂåÖÊã¨:
+*       BACKLAYER_MOD_RATIO----ÈÄÇÂêàÂ±èÂπïÂ∞∫ÂØ∏(ÂõæÁâáÈïøÂÆΩÊØî‰æã‰∏çÂèò)
+*       BACKLAYER_MOD_STRETCH----Êãâ‰º∏Ê®°Âºè,Áº©ÊîæÂà∞Â±èÂπïÂ∞∫ÂØ∏
 * Output:
 * Return:
-*     EPDK_OK: ≥…π¶
-*     EPDK_FAIL:  ß∞‹
+*     EPDK_OK: ÊàêÂäü
+*     EPDK_FAIL: Â§±Ë¥•
 *************************************************************************/
 int32_t convert_fb(FB *in_frame, FB *out_frame, SIZE *screen_size, uint8_t mod)
 {
@@ -227,7 +245,7 @@ int32_t convert_fb(FB *in_frame, FB *out_frame, SIZE *screen_size, uint8_t mod)
     //  {
     //      out_frame->size = *screen_size;
     //  }
-    /*”…”⁄¥¯øÌŒ Ã‚£¨◊Ó¥Û≥ﬂ¥ÁŒ™1280*720£¨¥Û”⁄’‚∏ˆ≥ﬂ¥Á”…scaler mode∑≈¥Ûµ√µΩ*/
+    /*Áî±‰∫éÂ∏¶ÂÆΩÈóÆÈ¢òÔºåÊúÄÂ§ßÂ∞∫ÂØ∏‰∏∫1280*720ÔºåÂ§ß‰∫éËøô‰∏™Â∞∫ÂØ∏Áî±scaler modeÊîæÂ§ßÂæóÂà∞*/
     if (out_frame->size.width > 1280)
     {
         out_frame->size.width = 1280;
@@ -268,14 +286,6 @@ int32_t convert_fb(FB *in_frame, FB *out_frame, SIZE *screen_size, uint8_t mod)
 
     if (out_frame->fmt.type == FB_TYPE_YUV)
     {
-        uint32_t tmplen;
-        out_frame->fmt.fmt.yuv.mod = YUV_MOD_NON_MB_PLANAR;
-        out_frame->fmt.fmt.yuv.pixelfmt = PIXEL_YUV422;
-        out_frame->fmt.fmt.yuv.yuvseq = YUV_SEQ_OTHRS;
-        tmplen = out_frame->size.height * out_frame->size.width;
-        tmplen = ((tmplen >> 6) + 1) << 6;
-        out_frame->addr[1] = (uint8_t *)out_frame->addr[0] + tmplen;
-        out_frame->addr[2] = (uint8_t *)out_frame->addr[1] + tmplen / 2;
 #if 0
         {
             ES_FILE *pfile ;
@@ -291,42 +301,68 @@ int32_t convert_fb(FB *in_frame, FB *out_frame, SIZE *screen_size, uint8_t mod)
             eLIBs_fclose(pfile);
         }
 #endif
-        memcpy(out_frame->addr[0], in_frame->addr[0], tmplen);
-       // __log("yuv444 to yuv22 start tick:%d", esKRNL_TimeGet());
+		uint32_t tmplen;
+        if(gscene_bgd_get_flag() == EPDK_TRUE)  //ÈªòËÆ§ËÉåÊôØ -- yuv444Êï∞ÊçÆËΩ¨Êç¢Êàêyuv422
         {
-            // UV444->UV422
-            uint32_t   i, j ;
-            char *pdst, *psrc ;
-            psrc = in_frame->addr[1] ;
-            pdst = out_frame->addr[1] ;
+            out_frame->fmt.fmt.yuv.mod = YUV_MOD_NON_MB_PLANAR;
+            out_frame->fmt.fmt.yuv.pixelfmt = PIXEL_YUV422;
+            out_frame->fmt.fmt.yuv.yuvseq = YUV_SEQ_OTHRS;
+            tmplen = out_frame->size.height * out_frame->size.width;
+            tmplen = ((tmplen >> 6) + 1) << 6; //64‰ΩçÂØπÈΩê
+            out_frame->addr[1] = (uint8_t *)out_frame->addr[0] + tmplen;
+            out_frame->addr[2] = (uint8_t *)out_frame->addr[1] + tmplen / 2;
 
-            for (i = 0; i < in_frame->size.height ; i++)
+            memcpy(out_frame->addr[0], in_frame->addr[0], tmplen);
+            // __log("yuv444 to yuv22 start tick:%d", esKRNL_TimeGet());
             {
-                for (j = 0; j < in_frame->size.width ; j += 2)
+				// UV444->UV422
+                uint32_t   i, j ;
+                char *pdst, *psrc ;
+                psrc = in_frame->addr[1] ;
+                pdst = out_frame->addr[1] ;
+
+                for (i = 0; i < in_frame->size.height ; i++)
                 {
-                    *pdst++ = *psrc++ ;
-                    psrc++ ;
+                    for (j = 0; j < in_frame->size.width ; j += 2)
+                    {
+                        *pdst++ = *psrc++ ;
+                        psrc++ ;
+                    }
                 }
             }
-        }
-        //memcpy(out_frame->addr[1],in_frame->addr[1],tmplen/2);
-        {
-            uint32_t   i, j ;
-            char *pdst, *psrc ;
-            psrc = in_frame->addr[2] ;
-            pdst = out_frame->addr[2] ;
-
-            for (i = 0; i < in_frame->size.height ; i++)
+        	//memcpy(out_frame->addr[1],in_frame->addr[1],tmplen/2);
             {
-                for (j = 0; j < in_frame->size.width ; j += 2)
+				uint32_t   i, j ;
+                char *pdst, *psrc ;
+                psrc = in_frame->addr[2];
+                pdst = out_frame->addr[2];
+
+                for (i = 0; i < in_frame->size.height ; i++)
                 {
-                    *pdst++ = *psrc++ ;
-                    psrc++ ;
+                    for (j = 0; j < in_frame->size.width ; j += 2)
+                    {
+                        *pdst++ = *psrc++ ;
+                        psrc++ ;
+                    }
                 }
             }
+			//memcpy(out_frame->addr[2],in_frame->addr[2],tmplen/2);
+            // __log("yuv444 to yuv22 finish tick:%d", esKRNL_TimeGet());
         }
-        //memcpy(out_frame->addr[2],in_frame->addr[2],tmplen/2);
-       // __log("yuv444 to yuv22 finish tick:%d", esKRNL_TimeGet());
+        else if(gscene_bgd_get_flag() == EPDK_FALSE)  //Ëá™ÂÆö‰πâËÉåÊôØ -- yuv420Êï∞ÊçÆ‰∏çÈúÄË¶ÅÂÅöËΩ¨Êç¢
+        {
+            out_frame->fmt.fmt.yuv.mod = YUV_MOD_NON_MB_PLANAR;
+            out_frame->fmt.fmt.yuv.pixelfmt = PIXEL_YUV420;
+            out_frame->fmt.fmt.yuv.yuvseq = YUV_SEQ_UVUV;
+            tmplen = out_frame->size.height * out_frame->size.width;
+            tmplen = ((tmplen >> 6) + 1) << 6; //64‰ΩçÂØπÈΩê
+            out_frame->addr[1] = (uint8_t *)out_frame->addr[0] + tmplen;
+            out_frame->addr[2] = (uint8_t *)out_frame->addr[1] + tmplen / 4;
+
+            memcpy(out_frame->addr[0], in_frame->addr[0], tmplen);
+            memcpy(out_frame->addr[1], in_frame->addr[1], tmplen/4);
+            memcpy(out_frame->addr[2], in_frame->addr[2], tmplen/4);  
+        }
 #if 0
         {
             ES_FILE *pfile ;
@@ -355,21 +391,21 @@ int32_t convert_fb(FB *in_frame, FB *out_frame, SIZE *screen_size, uint8_t mod)
 
 /************************************************************************
 * Function: get_fb_from_file
-* Description: ¥”Œƒº˛÷–»°≥ˆfb
+* Description: ‰ªéÊñá‰ª∂‰∏≠ÂèñÂá∫fb
 * Input:
-*    FB *framebuffer£∫frame buffer.
-*            …Ë÷√ ‰»Îµƒfb typeŒ™FB_TYPE_RGBªÚ’ﬂFB_TYPE_YUV
-*    uint8_t *buffer: framebufferø’º‰°£ƒ¨»œŒ™ªÒ»°yuv422∏Ò Ω£¨¥Û–°Œ™2*height*width
-*    uint8_t *screen_size: ∆¡ƒª≥ﬂ¥Á
-*    uint8_t mod: ƒ£ Ω∞¸¿®:
-*       BACKLAYER_MOD_RATIO----  ∫œ∆¡ƒª≥ﬂ¥Á(Õº∆¨≥§øÌ±»¿˝≤ª±‰)
-*       BACKLAYER_MOD_STRETCH----¿≠…Ïƒ£ Ω,Àı∑≈µΩ∆¡ƒª≥ﬂ¥Á
-*    uint8_t * filename£∫±£¥ÊfbµƒŒƒº˛√˚
+*    FB *framebufferÔºöframe buffer.
+*            ËÆæÁΩÆËæìÂÖ•ÁöÑfb type‰∏∫FB_TYPE_RGBÊàñËÄÖFB_TYPE_YUV
+*    uint8_t *buffer: framebufferÁ©∫Èó¥„ÄÇÈªòËÆ§‰∏∫Ëé∑Âèñyuv422Ê†ºÂºèÔºåÂ§ßÂ∞è‰∏∫2*height*width
+*    uint8_t *screen_size: Â±èÂπïÂ∞∫ÂØ∏
+*    uint8_t mod: Ê®°ÂºèÂåÖÊã¨:
+*       BACKLAYER_MOD_RATIO----ÈÄÇÂêàÂ±èÂπïÂ∞∫ÂØ∏(ÂõæÁâáÈïøÂÆΩÊØî‰æã‰∏çÂèò)
+*       BACKLAYER_MOD_STRETCH----Êãâ‰º∏Ê®°Âºè,Áº©ÊîæÂà∞Â±èÂπïÂ∞∫ÂØ∏
+*    uint8_t * filenameÔºö‰øùÂ≠òfbÁöÑÊñá‰ª∂Âêç
 * Output:
-*    FB *framebuffer£∫∂¡»°µΩµƒµƒframe buffer
+*    FB *framebufferÔºöËØªÂèñÂà∞ÁöÑÁöÑframe buffer
 * Return:
-*     EPDK_OK: ≥…π¶
-*     EPDK_FAIL:  ß∞‹
+*     EPDK_OK: ÊàêÂäü
+*     EPDK_FAIL: Â§±Ë¥•
 *************************************************************************/
 int32_t get_fb_from_file(FB *framebuffer, uint8_t *buffer, SIZE *screen_size, uint8_t mod, uint8_t *filename)
 {
@@ -416,7 +452,7 @@ int32_t get_fb_from_file(FB *framebuffer, uint8_t *buffer, SIZE *screen_size, ui
         return EPDK_FAIL;
     }
 
-    //Œ¥—πÀıµƒ±≥æ∞
+    //Êú™ÂéãÁº©ÁöÑËÉåÊôØ
     if (EPDK_FALSE == AZ100_IsCompress(pbuf, file_len))
     {
         __log("bg pic is uncompress...");
@@ -424,7 +460,7 @@ int32_t get_fb_from_file(FB *framebuffer, uint8_t *buffer, SIZE *screen_size, ui
         uncompress_len  = file_len;
         __log("uncompress_buf=%x", uncompress_buf);
     }
-    else//¥¯—πÀıµƒ±≥æ∞
+    else//Â∏¶ÂéãÁº©ÁöÑËÉåÊôØ
     {
         __log("bg pic is compress...");
         uncompress_len  = AZ100_GetUncompressSize(pbuf, file_len);

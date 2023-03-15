@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 #ifndef __ALARM_SELECT_SONG_FRM_H__
 #define __ALARM_SELECT_SONG_FRM_H__
@@ -16,9 +47,9 @@ typedef enum
 
 typedef struct tag_rat_info
 {
-    HRAT  handle;               //ÎÄ¼şËÑË÷¾ä±ú
-    __s32 index;                //µ±Ç°ÎÄ¼şË÷ÒıºÅ
-    __s32 total;                //ÎÄ¼ş×ÜÊı
+    HRAT  handle;               //æ–‡ä»¶æœç´¢å¥æŸ„
+    __s32 index;                //å½“å‰æ–‡ä»¶ç´¢å¼•å·
+    __s32 total;                //æ–‡ä»¶æ€»æ•°
 } rat_info_t;
 
 typedef struct alarm_sel_song_s
@@ -26,20 +57,20 @@ typedef struct alarm_sel_song_s
     H_LYR layer ;
     GUI_FONT *font ;
     H_LBAR              listbar_handle;
-    __hdle              long_str_handle;        //³¤×Ö·û´®¹ö¶¯¾ä±ú
-    rat_info_t          rat;                    //ÎÄ¼şËÑË÷Êı¾İ½á¹¹
-    char                search_path[RAT_MAX_FULL_PATH_LEN];             //ËÑË÷Â·¾¶
-    rat_media_type_t    media_type;             //ËÑË÷ÎÄ¼şµÄÀàĞÍ
+    __hdle              long_str_handle;        //é•¿å­—ç¬¦ä¸²æ»šåŠ¨å¥æŸ„
+    rat_info_t          rat;                    //æ–‡ä»¶æœç´¢æ•°æ®ç»“æ„
+    char                search_path[RAT_MAX_FULL_PATH_LEN];             //æœç´¢è·¯å¾„
+    rat_media_type_t    media_type;             //æœç´¢æ–‡ä»¶çš„ç±»å‹
     rat_type_t          root_type ;             // rat_tf , rat_usb
     HTHEME              h_button_fc_bmp, h_button_uf_bmp, h_list_item_bg ;
-    button_fcs_e        button_fcs_id ;         //µ±Ç°½¹µãÎªÈ·¶¨£¬»¹ÊÇÈ¡Ïû
-    char                FullFileName[RAT_MAX_FULL_PATH_LEN];        //·µ»Ø¸ø¸¸´°¿ÚµÄ´Ë´ÎÑ¡ÔñµÄÒôÀÖÃû
-    __bool              is_in_sel_disk_scene;       // 1 ±íÊ¾ÔÚ´ÅÅÌÑ¡Ôñ³¡¾°
-    __u32               current_sel_disk_index ;    //µ±Ç°Ñ¡ÔñµÄ´ÅÅÌË÷Òı
-    __bool              is_listening_music;         // ÊÇ·ñÊÇÔÚÊÔÌıÁåÉù
-    __bool              bg_music_is_exist;          // 1 ±íÊ¾±³¾°ÒôÀÖ´æÔÚ
-    rat_play_mode_e     bg_music_play_mode;         // ÓĞ±³¾°ÒôÀÖÊ±£¬±³¾°ÒôÀÖµÄ²¥·ÅÄ£Ê½
-    __u32               current_npl_index ;         // ±³¾°Òô´æÔÚÊ±£¬µ±Ç°²¥·ÅµÄÒôÀÖË÷Òı
+    button_fcs_e        button_fcs_id ;         //å½“å‰ç„¦ç‚¹ä¸ºç¡®å®šï¼Œè¿˜æ˜¯å–æ¶ˆ
+    char                FullFileName[RAT_MAX_FULL_PATH_LEN];        //è¿”å›ç»™çˆ¶çª—å£çš„æ­¤æ¬¡é€‰æ‹©çš„éŸ³ä¹å
+    __bool              is_in_sel_disk_scene;       // 1 è¡¨ç¤ºåœ¨ç£ç›˜é€‰æ‹©åœºæ™¯
+    __u32               current_sel_disk_index ;    //å½“å‰é€‰æ‹©çš„ç£ç›˜ç´¢å¼•
+    __bool              is_listening_music;         // æ˜¯å¦æ˜¯åœ¨è¯•å¬é“ƒå£°
+    __bool              bg_music_is_exist;          // 1 è¡¨ç¤ºèƒŒæ™¯éŸ³ä¹å­˜åœ¨
+    rat_play_mode_e     bg_music_play_mode;         // æœ‰èƒŒæ™¯éŸ³ä¹æ—¶ï¼ŒèƒŒæ™¯éŸ³ä¹çš„æ’­æ”¾æ¨¡å¼
+    __u32               current_npl_index ;         // èƒŒæ™¯éŸ³å­˜åœ¨æ—¶ï¼Œå½“å‰æ’­æ”¾çš„éŸ³ä¹ç´¢å¼•
 } alarm_sel_song_t ;
 
 

@@ -1,19 +1,33 @@
 /*
-************************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                 (c) Copyright 2007-2010, Jackie, China
-*                                       All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File          : dialog_scene.c
-* By            : Jackie.chen
-* Func      : dialog scene
-* Version   : v1.0
-* ======================================================================================================================
-* 2010-10-18  Jackie.chen  create this file, implements the fundemental interface;
-************************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "mod_init_i.h"
@@ -151,11 +165,11 @@ static void scene_dialog_create(init_scene_t *p_scene, __s32 str_id, __s32 dialo
     GUI_LyrWinSetSta(p_scene->dialog_layer, GUI_LYRWIN_STA_ON);
     GUI_LyrWinSetTop(p_scene->dialog_layer);
     p_scene->dialog_win  = dialog_frm_win_create(p_scene->init_win, p_scene->dialog_layer);
-    /* µØ≥ˆ∂‘ª∞øÚ*/
+    /* ÂºπÂá∫ÂØπËØùÊ°Ü*/
     pdialog_para.text_id    = str_id;
     pdialog_para.dialog_id  = dialog_id;
     __msg("before progress_dialog_create\n");
-    progress_dialog_create(p_scene->dialog_win, p_scene->dialog_layer, &pdialog_para);  // ”–œ˚œ¢—≠ª∑
+    progress_dialog_create(p_scene->dialog_win, p_scene->dialog_layer, &pdialog_para);  // ÊúâÊ∂àÊÅØÂæ™ÁéØ
     __msg("after progress_dialog_create\n");
     GUI_LyrWinSetSta(p_scene->dialog_layer, GUI_LYRWIN_STA_SUSPEND);
 }
@@ -174,7 +188,7 @@ void scene_on_dialog(__gui_msg_t *msg)
             {
                 //__here__;
                 p_scene->cur_dialog = LOWPOWER_DIALOG;
-                GUI_SetTimer(msg->h_deswin, LOW_POWER_DIALOG_TIME_ID, LOW_POWER_TOUT, NULL);    // µÕµÁ∂‘ª∞øÚ¥Ê‘⁄ ±º‰º∆ ˝
+                GUI_SetTimer(msg->h_deswin, LOW_POWER_DIALOG_TIME_ID, LOW_POWER_TOUT, NULL);    // ‰ΩéÁîµÂØπËØùÊ°ÜÂ≠òÂú®Êó∂Èó¥ËÆ°Êï∞
                 scene_dialog_create(p_scene, STRING_LOW_POWER, LOWPOWER_DIALOG_ID);
                 //__here__;
             }
@@ -285,4 +299,3 @@ void scene_on_dialog(__gui_msg_t *msg)
             break;
     }
 }
-

@@ -1,21 +1,34 @@
 /*
-**********************************************************************************************************************
-*                                                    ePDK
-*                                    the Easy Portable/Player Develop Kits
-*                                              Lion Sub-System
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2007-2009, Steven.ZGJ.China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* Moudle  : win
-* File    : win.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
-* By      : Steven
-* Version : v1.0
-* Date    : 2008-10-4 11:24:32
-**********************************************************************************************************************
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "frmwin_i.h"
 
 /*
@@ -190,7 +203,7 @@ H_WIN GUI_GetNextDlgTabItem(H_WIN hDlg, H_WIN hCtl, __bool bPrevious)
 *
 * date:             2009-9-6
 *
-* Description:      ´´½¨²¢ÏÔÊ¾Ò»¸öÄ£Ê½¶Ô»°¿ò
+* Description:      åˆ›å»ºå¹¶æ˜¾ç¤ºä¸€ä¸ªæ¨¡å¼å¯¹è¯æ¡†
 *
 * parameters:
 *
@@ -246,14 +259,14 @@ __s32 GUI_ModuleDialogCreate(__gui_dialogcreate_para_t *create_info)
         }
     }
 
-    /*È«¾Ö¶Ô»°¿ò*/
+    /*å…¨å±€å¯¹è¯æ¡†*/
     if (create_info->hLayer)
     {
         CreateInfo.hLayer       = create_info->hLayer;
     }
     else
     {
-        /*±¾µØ¶Ô»°¿ò*/
+        /*æœ¬åœ°å¯¹è¯æ¡†*/
         CreateInfo.hLayer       = GUI_WinGetLyrWin(hOwner);
     }
 
@@ -298,7 +311,7 @@ __s32 GUI_ModuleDialogCreate(__gui_dialogcreate_para_t *create_info)
         __s32  ret = ORANGE_FAIL;
         ret = GUI_DispatchMessage(&Msg);
 
-        if (Msg.p_arg)                           // Í¬²½ÏûÏ¢»ØÓ¦
+        if (Msg.p_arg)                           // åŒæ­¥æ¶ˆæ¯å›åº”
         {
             GUI_SetSyncMsgRetVal(&Msg, ret);
             GUI_PostSyncSem(&Msg);
@@ -314,7 +327,7 @@ __s32 GUI_ModuleDialogCreate(__gui_dialogcreate_para_t *create_info)
     {
         if (isActive)
         {
-            /*·ÇÈ«¾Ö¶Ô»°¿ò*/
+            /*éå…¨å±€å¯¹è¯æ¡†*/
             if (create_info->hLayer)
             {
                 GUI_WinShow(hOwner, GUI_SW_SHOWNORMAL);
@@ -581,7 +594,7 @@ __s32 GUI_DialogDefaultProc(__gui_msg_t    *msg)
 *
 * date:             2009-9-6
 *
-* Description:      ´´½¨²¢ÏÔÊ¾Ò»¸ö·ÇÄ£Ê½¶Ô»°¿ò
+* Description:      åˆ›å»ºå¹¶æ˜¾ç¤ºä¸€ä¸ªéæ¨¡å¼å¯¹è¯æ¡†
 *
 * parameters:
 *
@@ -696,7 +709,7 @@ H_WIN GUI_ModulelessDialogCreate(__gui_dialogcreate_para_t *create_info)
 *
 * date:             2009-9-6
 *
-* Description:      É¾³ıÒ»¸öÎŞÄ£Ê½¶Ô»°¿ò
+* Description:      åˆ é™¤ä¸€ä¸ªæ— æ¨¡å¼å¯¹è¯æ¡†
 *
 * parameters:
 *
@@ -714,4 +727,3 @@ __bool GUI_ModulelessDialogDelete(H_WIN hManWin)
     GUI_WinThreadCleanup(hManWin);
     return ORANGE_TRUE;
 }
-

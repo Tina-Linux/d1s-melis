@@ -1,0 +1,13 @@
+menu "TRNG Devices"
+
+config DRIVERS_TRNG
+    bool "enable trng driver"
+    depends on ARCH_SUN20IW2P1
+        default y
+
+config HAL_TEST_TRNG
+    bool "enable trng hal APIs test command"
+        depends on DRIVERS_TRNG
+        default n
+
+endmenu

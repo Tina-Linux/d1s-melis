@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #ifndef __TXTLAYER_H__
 #define __TXTLAYER_H__
 
@@ -12,8 +43,8 @@ struct tag_TXTBOX_DATA;
 #define   OK_MODE      0
 
 #define   NO_FOUCS     0
-#define   REAL_FOUCS   1     /* µº …Ë÷√Ωπµ„*/
-#define   VAR_FOUCS    2     /*–Èƒ‚…Ë÷√Ωπµ„(øÏÀŸª¨∂Ø ±…Ë÷√)*/
+#define   REAL_FOUCS   1     /*ÂÆûÈôÖËÆæÁΩÆÁÑ¶ÁÇπ*/
+#define   VAR_FOUCS    2     /*ËôöÊãüËÆæÁΩÆÁÑ¶ÁÇπ(Âø´ÈÄüÊªëÂä®Êó∂ËÆæÁΩÆ)*/
 
 #define   WAIT_LOAD    0x01
 //------------------------------------------------------------------------------------------------------------
@@ -28,31 +59,31 @@ typedef struct tag_TXTLAYER_MAN
     __u8                        scnnum;
     __pos_t                     start_pos;
     __bool                      backup;
-    H_LYR                       layer;         /*¥∞ø⁄Õº≤„µƒæ‰±˙*/
+    H_LYR                       layer;         /*Á™óÂè£ÂõæÂ±ÇÁöÑÂè•ÊüÑ*/
     __rect_t                    scnrect;
     txtbuffer_man_t            *txtbuffer;
     void                       *foucs_FB;
     __disp_layer_para_t         sec_layer;
     H_LYR                       focus_lyr;
     __bool                      backalpha;
-    void                       *chg_fb;     /*±∏∑›µƒƒøµƒµÿ÷∑*/
-    void                       *head_fb;     /*±∏∑›µƒÕ∑framebuffer*/
-    void                       *tail_fb;     /*±∏∑›µƒŒ≤alpha framebuffer*/
-    void                       *head_addr;   /*±∏∑›µƒ‘¥µÿ÷∑*/
-    void                       *tail_addr;   /*±∏∑›µƒŒ≤µÿ÷∑*/
-    __u32                       asize;       /*±∏∑›¥Û–°*/
-    void                       *res_addr;    /*±∏∑›µƒ‘¥µÿ÷∑*/
+    void                       *chg_fb;     /*Â§á‰ªΩÁöÑÁõÆÁöÑÂú∞ÂùÄ*/
+    void                       *head_fb;     /*Â§á‰ªΩÁöÑÂ§¥framebuffer*/
+    void                       *tail_fb;     /*Â§á‰ªΩÁöÑÂ∞æalpha framebuffer*/
+    void                       *head_addr;   /*Â§á‰ªΩÁöÑÊ∫êÂú∞ÂùÄ*/
+    void                       *tail_addr;   /*Â§á‰ªΩÁöÑÂ∞æÂú∞ÂùÄ*/
+    __u32                       asize;       /*Â§á‰ªΩÂ§ßÂ∞è*/
+    void                       *res_addr;    /*Â§á‰ªΩÁöÑÊ∫êÂú∞ÂùÄ*/
     __u32                       res_x;
     __u32                       res_y;
-    __u32                       back_size;   /*±∏∑›µƒframebuffer¥Û–°*/
-    __u32                       back_count;  /*±∏∑›µƒitem count*/
+    __u32                       back_size;   /*Â§á‰ªΩÁöÑframebufferÂ§ßÂ∞è*/
+    __u32                       back_count;  /*Â§á‰ªΩÁöÑitem count*/
     __pos_t                     back_pos;
     txtlist_t                  *txtlist;
     struct tag_TXTBOX_DATA     *ptxtbox;
     __u32                       status;
     __u32                       font_size;
     GUI_FONT                   *draw_font;
-    __epdk_charset_enm_e        draw_code;   /*◊÷∑˚±‡¬Î*/
+    __epdk_charset_enm_e        draw_code;   /*Â≠óÁ¨¶ÁºñÁ†Å*/
     GUI_COLOR                   bk_color;
 } txtlayer_man_t;
 

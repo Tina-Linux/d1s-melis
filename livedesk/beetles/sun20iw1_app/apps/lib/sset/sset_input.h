@@ -1,16 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              calendar app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2006-2009, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : sset_input.h
-* By      :lyn
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __SSET_INPUT_H__
 #define __SSET_INPUT_H__
@@ -19,11 +36,11 @@
 *************************************************************************************
 *                                       SSET_ItemAttr_Create
 *
-*Description: SSETÄÚ²¿²ÎÊıÊı¾İ´´½¨
+*Description: SSETå†…éƒ¨å‚æ•°æ•°æ®åˆ›å»º
 *
-*Arguments  : para  £ºÓÃ»§ÊäÈëÊı¾İÍ·Ö¸Õë
+*Arguments  : para  ï¼šç”¨æˆ·è¾“å…¥æ•°æ®å¤´æŒ‡é’ˆ
 *
-*Return     : ÄÚ²¿Êı¾İ½á¹¹Í·Ö¸Õë
+*Return     : å†…éƒ¨æ•°æ®ç»“æ„å¤´æŒ‡é’ˆ
 *
 *************************************************************************************
 */
@@ -33,9 +50,9 @@ __sset_item_t *SSET_ItemAttr_Create(__sset_item_para_t  *para);
 *************************************************************************************
 *                                       SSET_ItemAttr_Destroy
 *
-*Description: SSETÄÚ²¿²ÎÊıÊı¾İÏú»Ù
+*Description: SSETå†…éƒ¨å‚æ•°æ•°æ®é”€æ¯
 *
-*Arguments  : phead  : ÄÚ²¿Êı¾İÖ¸Õë
+*Arguments  : phead  : å†…éƒ¨æ•°æ®æŒ‡é’ˆ
 *
 *Return     : NULL
 *
@@ -47,11 +64,11 @@ __s32 SSET_ItemAttr_Destroy(__sset_item_t *phead);
 ************************************************************************************************************************
 *                                       SSET_ItemAttr_Insert
 *
-*Description: ²åÈëÒ»×éÌõÄ¿
+*Description: æ’å…¥ä¸€ç»„æ¡ç›®
 *
-*Arguments  : pitem Òª²åÈëÌõÄ¿µÄ²åÈë½Úµã
-*             para  ²åÈëÌõÄ¿µÄÍ·Ö¸Õë
-*             num   ²åÈëµÄÌõÄ¿Êı
+*Arguments  : pitem è¦æ’å…¥æ¡ç›®çš„æ’å…¥èŠ‚ç‚¹
+*             para  æ’å…¥æ¡ç›®çš„å¤´æŒ‡é’ˆ
+*             num   æ’å…¥çš„æ¡ç›®æ•°
 *
 *Return     :
 *
@@ -63,9 +80,9 @@ __s32 SSET_ItemAttr_Insert(__sset_item_t *pitem, __sset_item_para_t *para, __u32
 ************************************************************************************************************************
 *                                       SSET_ItemAttr_Delete
 *
-*Description: É¾³ıÒ»×éÌõÄ¿
+*Description: åˆ é™¤ä¸€ç»„æ¡ç›®
 *
-*Arguments  : pitem É¾³ıÌõÄ¿Ëù¹ÒÔØµÄ½Úµã
+*Arguments  : pitem åˆ é™¤æ¡ç›®æ‰€æŒ‚è½½çš„èŠ‚ç‚¹
 *
 *Return     :
 *
@@ -77,7 +94,7 @@ __s32 SSET_ItemAttr_Delete(__sset_item_t *pitem, __sset_item_delete_mode_e mode)
 ************************************************************************************************************************
 *                                       SSET_ItemAttr_Search
 *
-*Description: ÊÍ·ÅÓÃ»§Êı¾İËùÕ¼ÄÚ´æ
+*Description: é‡Šæ”¾ç”¨æˆ·æ•°æ®æ‰€å å†…å­˜
 *
 *Arguments  :
 *
@@ -91,7 +108,7 @@ __sset_item_t *SSET_ItemAttr_Search(char *name, __sset_item_t *pitem);
 ************************************************************************************************************************
 *                                       SSET_ItemAttr_Ennable
 *
-*Description: ÊÍ·ÅÓÃ»§Êı¾İËùÕ¼ÄÚ´æ
+*Description: é‡Šæ”¾ç”¨æˆ·æ•°æ®æ‰€å å†…å­˜
 *
 *Arguments  :
 *
@@ -105,7 +122,7 @@ __s32 SSET_ItemAttr_Ennable(__sset_item_t *pitem);
 ************************************************************************************************************************
 *                                       SSET_ItemAttr_Disable
 *
-*Description: ÊÍ·ÅÓÃ»§Êı¾İËùÕ¼ÄÚ´æ
+*Description: é‡Šæ”¾ç”¨æˆ·æ•°æ®æ‰€å å†…å­˜
 *
 *Arguments  :
 *
@@ -119,7 +136,7 @@ __s32 SSET_ItemAttr_Disable(__sset_item_t *pitem);
 ************************************************************************************************************************
 *                                       SSET_Item_SetAttr
 *
-*Description: ÊÍ·ÅÓÃ»§Êı¾İËùÕ¼ÄÚ´æ
+*Description: é‡Šæ”¾ç”¨æˆ·æ•°æ®æ‰€å å†…å­˜
 *
 *Arguments  :
 *
@@ -133,7 +150,7 @@ __s32 SSET_Item_SetAttr(__sset_item_t *pitem, __sset_item_attr_t *attr);
 ************************************************************************************************************************
 *                                       SSET_Item_GetAttr
 *
-*Description: ÊÍ·ÅÓÃ»§Êı¾İËùÕ¼ÄÚ´æ
+*Description: é‡Šæ”¾ç”¨æˆ·æ•°æ®æ‰€å å†…å­˜
 *
 *Arguments  :
 *

@@ -1,18 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : ebook_i.h
-* By        : Andy.zhang
-* Version   : v1.0
-* ============================================================================================================
-* 2009-11-3 9:39:42  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __DTV_MID_H__
 #define __DTV_MID_H__
@@ -22,23 +37,23 @@
 #include <emodules/mod_maple.h>
 #include "apps.h"
 
-//ÒÔÏÂÎªCMMB/ISDBTĞèÒªÅäÖÃµÄĞÅÏ¢
+//ä»¥ä¸‹ä¸ºCMMB/ISDBTéœ€è¦é…ç½®çš„ä¿¡æ¯
 /**************************************************************/
-//¿ÉÑ¡Ïî // MAPLE_TV_DVB_T//MAPLE_TV_ISDB_T//MAPLE_TV_DTMB//MAPLE_TV_ATSC
+//å¯é€‰é¡¹ // MAPLE_TV_DVB_T//MAPLE_TV_ISDB_T//MAPLE_TV_DTMB//MAPLE_TV_ATSC
 #define  MAPLE_TV_STANDAR   MAPLE_TV_DTMB
 
 
-//ISDBT×ÖÄ»ĞèÒªÉèÖÃµÄ²ÎÊı£¬¼ûdtv_mid.cÎÄ¼ş
+//ISDBTå­—å¹•éœ€è¦è®¾ç½®çš„å‚æ•°ï¼Œè§dtv_mid.cæ–‡ä»¶
 //#if (MAPLE_TV_STANDAR == MAPLE_TV_ISDB_T)
-//static __epdk_charset_enm_e g_type = EPDK_CHARSET_ENM_ISO_8859_15; //Ä¬ÈÏ°ÍÎ÷,ĞèÒª¸ù¾İ³öÍùÄÄ¸ö¹ú¼Ò½øĞĞÉèÖÃ
+//static __epdk_charset_enm_e g_type = EPDK_CHARSET_ENM_ISO_8859_15; //é»˜è®¤å·´è¥¿,éœ€è¦æ ¹æ®å‡ºå¾€å“ªä¸ªå›½å®¶è¿›è¡Œè®¾ç½®
 //#endif
-//static __u32 G_DTV_current_area = 1;   //0:Ö»ÓÃÓÚÉîÛÚÆµÂÊ£¬1:È«Æµ¶ÎËÑË÷
+//static __u32 G_DTV_current_area = 1;   //0:åªç”¨äºæ·±åœ³é¢‘ç‡ï¼Œ1:å…¨é¢‘æ®µæœç´¢
 
 /**************************************************************/
 
 #if((MAPLE_TV_STANDAR == MAPLE_TV_ISDB_T)||(MAPLE_TV_STANDAR == MAPLE_TV_DTMB) \
         || (MAPLE_TV_STANDAR == MAPLE_TV_DVB_T)|| (MAPLE_TV_STANDAR == MAPLE_TV_ATSC))
-#define     SUBTITLE_HIGHT   (0)  //ISDBTµÈ×ÖÄ»Ô¤Áô£¬²»ÕÚµ²ÊÓÆµ²¥·Å£¬²»Ó°Ïì¹Û¿´Ğ§¹û
+#define     SUBTITLE_HIGHT   (0)  //ISDBTç­‰å­—å¹•é¢„ç•™ï¼Œä¸é®æŒ¡è§†é¢‘æ’­æ”¾ï¼Œä¸å½±å“è§‚çœ‹æ•ˆæœ
 
 #endif
 
@@ -58,23 +73,23 @@
 
 typedef struct
 {
-    __u8   flag; //ÓĞĞ§±êÖ¾
-    __s16   index;//µÚ¼¸¸öÌ¨
-    __s32   total;//Ì¨×ÜÊı
+    __u8   flag; //æœ‰æ•ˆæ ‡å¿—
+    __s16   index;//ç¬¬å‡ ä¸ªå°
+    __s32   total;//å°æ€»æ•°
     maple_vd_win_ratio_mode_e mode;
-    //maple_serv_list_t service_list;            //ÕâÁ½¸ö²ÎÊıÓÉÖĞ¼ä¼ş±£´æ£¬
-    //maple_serv_item_t service_item[128];//×î¶à128¸öÌ¨
-    __u32   reserverd[8]; //±£Áô²ÎÊıÉèÖÃ
-    __u32   time_format;//Ê±ÖÆ£¬0´ú±í24Ğ¡Ê±ÖÆ£¬1´ú±í12Ğ¡Ê±ÖÆ
+    //maple_serv_list_t service_list;            //è¿™ä¸¤ä¸ªå‚æ•°ç”±ä¸­é—´ä»¶ä¿å­˜ï¼Œ
+    //maple_serv_item_t service_item[128];//æœ€å¤š128ä¸ªå°
+    __u32   reserverd[8]; //ä¿ç•™å‚æ•°è®¾ç½®
+    __u32   time_format;//æ—¶åˆ¶ï¼Œ0ä»£è¡¨24å°æ—¶åˆ¶ï¼Œ1ä»£è¡¨12å°æ—¶åˆ¶
 
-    __bool  b_show_subtitle;//ÊÇ·ñÏÔÊ¾×ÖÄ»,isdbt²ÅÓĞÓÃ
+    __bool  b_show_subtitle;//æ˜¯å¦æ˜¾ç¤ºå­—å¹•,isdbtæ‰æœ‰ç”¨
 
     __u8    default_antenna;
 } reg_cmmb_para_t;
 
 typedef enum tag_scan_s
 {
-    SLIDE_UPDATE_FREQ = 1,//¸üĞÂÆµµãµÄÍ¬Ê±¸üĞÂ½ø¶ÈÌõ
+    SLIDE_UPDATE_FREQ = 1,//æ›´æ–°é¢‘ç‚¹çš„åŒæ—¶æ›´æ–°è¿›åº¦æ¡
     SLIDE_UPDATE_CH,
 
 } tag_scan_e;
@@ -132,8 +147,8 @@ typedef enum        /* user define msg id */
 
 typedef enum
 {
-    DTV_ANTENNA_LA = 0, //À­¸ËÌìÏß
-    DTV_ANTENNA_OUT,//Íâ½ÓÌìÏß
+    DTV_ANTENNA_LA = 0, //æ‹‰æ†å¤©çº¿
+    DTV_ANTENNA_OUT,//å¤–æ¥å¤©çº¿
 } __dtv_antenna_t;
 
 typedef struct __maple_sl_cb_param_t_pOpaque
@@ -346,10 +361,10 @@ __s32 maple_get_search_freq(__u32 index);
 __s32 maple_get_search_bandwidth(__u32 index);
 
 
-//»ñÈ¡µ±Ç°Ì¨Êı
+//è·å–å½“å‰å°æ•°
 __s32 maple_get_cur_service_list_num(void);
 __s32 maple_get_cur_program_preview_index(void);
-// »ñÈ¡ÆµµÀÃû³Æ
+// è·å–é¢‘é“åç§°
 char  *maple_get_name_of_channel(__s32 index);
 __u8 maple_get_cafree_status_of_channel(__s32 index);
 char *maple_get_channel_of_curprogramname(void);
@@ -389,4 +404,3 @@ void maple_auto_search_major(scan_para_t *scan_para);
 
 
 #endif  /*  __LION_H__  */
-

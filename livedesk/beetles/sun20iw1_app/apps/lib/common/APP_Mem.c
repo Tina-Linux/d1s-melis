@@ -1,24 +1,38 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2011, CHIPHD, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : APP_Mem.c
-* By        : CQQ
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011/06/28 10:35  create this file, implements the fundamental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 //#include "StdAfx.h"
 
 #ifdef _WINDOWS
-// C ‘À–– ±Õ∑Œƒº˛
+// C ËøêË°åÊó∂Â§¥Êñá‰ª∂
 #include <malloc.h>
 #include <memory.h>
 #include <crtdbg.h>
@@ -55,7 +69,7 @@
 //////////////////////////////////////////////////////////////////////////
 #if DEBUG_APP_MEM
 
-//∂®“Âº«¬º¡¥±Ì
+//ÂÆö‰πâËÆ∞ÂΩïÈìæË°®
 #define DEBUG_APP_MEM_FILE_NAME_MAX_MEMLEN    64
 typedef struct tag_DEBUG_APP_MEM_LINK
 {
@@ -67,20 +81,20 @@ typedef struct tag_DEBUG_APP_MEM_LINK
     struct tag_DEBUG_APP_MEM_LINK *prev;
 } DEBUG_APP_MEM_LINK_T;
 
-//¡¥±ÌÕ∑
+//ÈìæË°®Â§¥
 static DEBUG_APP_MEM_LINK_T g_DebugAPPMEM_Head = {NULL, 0, {0}, NULL, NULL};
-//¡¥±ÌŒ≤÷∏’Î
+//ÈìæË°®Â∞æÊåáÈíà
 static DEBUG_APP_MEM_LINK_T *g_DebugAPPMEM_Tail = &g_DebugAPPMEM_Head;
 
-//Õ≥º∆…Í«Îƒ⁄¥Ê¥Œ ˝
+//ÁªüËÆ°Áî≥ËØ∑ÂÜÖÂ≠òÊ¨°Êï∞
 static int gs_NEW_MEM_COUNT = 0;
-//Õ≥º∆…Í«ÎΩ⁄µ„¥Œ ˝ //TODO:to remove
+//ÁªüËÆ°Áî≥ËØ∑ËäÇÁÇπÊ¨°Êï∞ //TODO:to remove
 static int gs_NEW_LINKNODE_COUNT = 0;
 
 #define NewDebugAPPMEMNode(_p)  do {ap_NewMem_T_B(_p, DEBUG_APP_MEM_LINK_T); if (_p){gs_NEW_LINKNODE_COUNT++;}} while(0)
 #define DelDebugAPPMEMNode(_p)  do {if (_p){gs_NEW_LINKNODE_COUNT--;} ap_DelMem_T_B(_p, DEBUG_APP_MEM_LINK_T);} while(0)
 
-//‘ˆº”“ª∏ˆnodeº«¬º
+//Â¢ûÂä†‰∏Ä‰∏™nodeËÆ∞ÂΩï
 void *AddDebugAPPMEM(void *p, int line, TCHAR *filename)
 {
     gs_NEW_MEM_COUNT++;
@@ -100,7 +114,7 @@ void *AddDebugAPPMEM(void *p, int line, TCHAR *filename)
     return p;
 }
 
-//≤È’““ª∏ˆnodeº«¬º
+//Êü•Êâæ‰∏Ä‰∏™nodeËÆ∞ÂΩï
 static DEBUG_APP_MEM_LINK_T *FindDebugAPPMEMNode(void *p)
 {
     DEBUG_APP_MEM_LINK_T *Cur = &g_DebugAPPMEM_Head;
@@ -127,7 +141,7 @@ static DEBUG_APP_MEM_LINK_T *FindDebugAPPMEMNode(void *p)
     }
 }
 
-//»•µÙ“ª∏ˆnodeº«¬º
+//ÂéªÊéâ‰∏Ä‰∏™nodeËÆ∞ÂΩï
 void *SubDebugAPPMEM(void *p)
 {
     DEBUG_APP_MEM_LINK_T *Node;
@@ -145,12 +159,12 @@ void *SubDebugAPPMEM(void *p)
         }
         else
         {
-            if (Node->prev)//«∞Ω⁄µ„next÷∏œÚ∫ÛΩ⁄µ„
+            if (Node->prev)//ÂâçËäÇÁÇπnextÊåáÂêëÂêéËäÇÁÇπ
             {
                 Node->prev->next = Node->next;
             }
 
-            if (Node->next)//∫ÛΩ⁄µ„prev÷∏œÚ«∞Ω⁄µ„
+            if (Node->next)//ÂêéËäÇÁÇπprevÊåáÂêëÂâçËäÇÁÇπ
             {
                 Node->next->prev = Node->prev;
             }
@@ -168,7 +182,7 @@ void *SubDebugAPPMEM(void *p)
     return Node;
 }
 
-//¥Ú”°–≈œ¢
+//ÊâìÂç∞‰ø°ÊÅØ
 #ifdef _WINDOWS
 
 #define DEBUG_APP_MEM_LINK_NOTFREE_TIP(_pNode)   \
@@ -187,7 +201,7 @@ void *SubDebugAPPMEM(void *p)
 
 #endif
 
-//ºÏ≤Èº«¬º
+//Ê£ÄÊü•ËÆ∞ÂΩï
 void _CheckAPPMEM(void)
 {
     DEBUG_APP_MEM_LINK_T *Cur = &g_DebugAPPMEM_Head;
@@ -200,7 +214,7 @@ void _CheckAPPMEM(void)
     }
 }
 
-// Õ∑≈¡¥±Ì
+//ÈáäÊîæÈìæË°®
 void _EndOfDebugAPPMEM(void)
 {
     DEBUG_APP_MEM_LINK_T *next;

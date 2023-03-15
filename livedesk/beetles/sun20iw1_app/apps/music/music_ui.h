@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #ifndef __MUSIC_UI_H__
 #define __MUSIC_UI_H__
 
@@ -163,7 +194,7 @@ typedef enum music_list_icon_id_s
     ID_MUSIC_HEADBAR_BG,
 
     MUSIC_ICON_MAX,
-} music_list_icon_id_e;                         //e:´ú±íenum,  s:´ú±ístruct
+} music_list_icon_id_e;                         //e:ä»£è¡¨enum,  s:ä»£è¡¨struct
 
 typedef enum music_touch_icon
 {
@@ -195,37 +226,37 @@ typedef struct music_icon_data_s
 
 typedef struct music_layer_ui_s
 {
-    __pixel_rgbfmt_t fb_fmt;        //Í¼²ã¸ñÊ½
-    SIZE fb_size;                   //framebuffer´óĞ¡
-    RECT src_rect;                  //srcwinÇøÓò
-    RECT scn_rect;                  //scnwinÇøÓò
-    __u32 reserved[32];             //Ô¤Áô
+    __pixel_rgbfmt_t fb_fmt;        //å›¾å±‚æ ¼å¼
+    SIZE fb_size;                   //framebufferå¤§å°
+    RECT src_rect;                  //srcwinåŒºåŸŸ
+    RECT scn_rect;                  //scnwinåŒºåŸŸ
+    __u32 reserved[32];             //é¢„ç•™
 } music_layer_ui_t;
 
 typedef struct music_menu_layer_ui_s
 {
-    __pixel_rgbfmt_t fb_fmt;        //Í¼²ã¸ñÊ½
-    SIZE fb_size;                   //framebuffer´óĞ¡
-    RECT src_rect;                  //srcwinÇøÓò
-    RECT scn_rect;                  //scnwinÇøÓò
-    __u32 reserved[32];             //Ô¤Áô
+    __pixel_rgbfmt_t fb_fmt;        //å›¾å±‚æ ¼å¼
+    SIZE fb_size;                   //framebufferå¤§å°
+    RECT src_rect;                  //srcwinåŒºåŸŸ
+    RECT scn_rect;                  //scnwinåŒºåŸŸ
+    __u32 reserved[32];             //é¢„ç•™
 } music_menu_layer_ui_t;
 
 typedef struct music_list_ui_s
 {
     RECT listbar_rect;                                  //list display area in list mode
-    RECT item_rect;                                         //list item  UI ²ÎÊı
+    RECT item_rect;                                         //list item  UI å‚æ•°
 
     RECT focus_icon_rect;                       //select border
-    RECT file_icon_rect;              //ÎÄ¼şÍ¼±ê
+    RECT file_icon_rect;              //æ–‡ä»¶å›¾æ ‡
 
     RECT text_rect;
 } music_list_ui_t;
 
 typedef struct music_scrollbar_ui_s
 {
-    RECT BG_rect;                       //±³¾°ÇøÓò
-    RECT scroll_rect;               //¹ö¶¯Ìõ
+    RECT BG_rect;                       //èƒŒæ™¯åŒºåŸŸ
+    RECT scroll_rect;               //æ»šåŠ¨æ¡
     __u32 head_height;
     __u32 body_height;
     __s32 tail_height;
@@ -234,73 +265,73 @@ typedef struct music_scrollbar_ui_s
 
 
 
-//Headbar×´Ì¬Ìõui²¿·Ö
+//HeadbarçŠ¶æ€æ¡uiéƒ¨åˆ†
 typedef struct music_headbar_ui_s
 {
-    RECT BG_rect;                           //±³¾°ÇøÓò
-    RECT play_mode_rect;                    //²¥·ÅÄ£Ê½°´Å¥
-    RECT EQ_mode_rect;                      //EQÄ£Ê½Í¼±ê
-    RECT BLight_rect;                       //±³¹â¹Ø±ÕÊ±¼äÍ¼±ê
-    RECT volume_icon_rect;                  //ÒôÁ¿Í¼±ê
-    RECT volume_text_rect;                  //ÒôÁ¿ÖµÏÔÊ¾ÇøÓò
-    RECT battery_rect;                      //µç³ØÍ¼±ê
-    RECT sys_time_rect;                         //Ê±¼äÏÔÊ¾
+    RECT BG_rect;                           //èƒŒæ™¯åŒºåŸŸ
+    RECT play_mode_rect;                    //æ’­æ”¾æ¨¡å¼æŒ‰é’®
+    RECT EQ_mode_rect;                      //EQæ¨¡å¼å›¾æ ‡
+    RECT BLight_rect;                       //èƒŒå…‰å…³é—­æ—¶é—´å›¾æ ‡
+    RECT volume_icon_rect;                  //éŸ³é‡å›¾æ ‡
+    RECT volume_text_rect;                  //éŸ³é‡å€¼æ˜¾ç¤ºåŒºåŸŸ
+    RECT battery_rect;                      //ç”µæ± å›¾æ ‡
+    RECT sys_time_rect;                         //æ—¶é—´æ˜¾ç¤º
 } music_headbar_ui_t;
 
 
-//²¥·ÅÆ÷½çÃæ²¿·Ö
+//æ’­æ”¾å™¨ç•Œé¢éƒ¨åˆ†
 typedef struct music_palyer_ui_s
 {
-    RECT contrl_BG_rect;        //¿ØÖÆ°´Å¥²¿·ÖÏÔÊ¾ÇøÓò£¬ÓëÆµÆ×²¿·Ö¹²ÓÃÒ»¿éÏÔÊ¾ÇøÓò
-    RECT btn_hint_rect;         //°´¼üÌáÊ¾·ûÇøÓò
-    RECT play_mode_btn_rect;    //²¥·ÅÄ£Ê½°´Å¥
-    RECT EQ_mode_btn_rect;      //EQÄ£Ê½°´Å¥
-    RECT BLight_btn_rect;           //±³¹âÊ±¼ä¿ØÖÆ°´Å¥
+    RECT contrl_BG_rect;        //æ§åˆ¶æŒ‰é’®éƒ¨åˆ†æ˜¾ç¤ºåŒºåŸŸï¼Œä¸é¢‘è°±éƒ¨åˆ†å…±ç”¨ä¸€å—æ˜¾ç¤ºåŒºåŸŸ
+    RECT btn_hint_rect;         //æŒ‰é”®æç¤ºç¬¦åŒºåŸŸ
+    RECT play_mode_btn_rect;    //æ’­æ”¾æ¨¡å¼æŒ‰é’®
+    RECT EQ_mode_btn_rect;      //EQæ¨¡å¼æŒ‰é’®
+    RECT BLight_btn_rect;           //èƒŒå…‰æ—¶é—´æ§åˆ¶æŒ‰é’®
 
     RECT play_usb_disk_btn_rect;        //
     RECT play_sd_card_btn_rect;     //
-    RECT play_pre_btn_rect;     //ÉÏÒ»Ê×°´Å¥
-    RECT play_next_btn_rect;    //ÏÂÒ»Ê×°´Å¥
-    RECT play_pause_btn_rect;   //²¥·ÅÔİÍ£°´Å¥
-    RECT backward_btn_rect;     //¿ìÍË°´Å¥
-    RECT forward_btn_rect;      //¿ì½ø°´Å¥
+    RECT play_pre_btn_rect;     //ä¸Šä¸€é¦–æŒ‰é’®
+    RECT play_next_btn_rect;    //ä¸‹ä¸€é¦–æŒ‰é’®
+    RECT play_pause_btn_rect;   //æ’­æ”¾æš‚åœæŒ‰é’®
+    RECT backward_btn_rect;     //å¿«é€€æŒ‰é’®
+    RECT forward_btn_rect;      //å¿«è¿›æŒ‰é’®
 
-    RECT play_status_rect;      //²¥·Å×´Ì¬Í¼±ê(ÔİÍ£»ò²¥·Å)
-    RECT play_time;                     //µ±Ç°²¥·ÅÊ±¼ä
-    RECT total_time;                    //×ÜÊ±¼äÏÔÊ¾ÇøÓò
+    RECT play_status_rect;      //æ’­æ”¾çŠ¶æ€å›¾æ ‡(æš‚åœæˆ–æ’­æ”¾)
+    RECT play_time;                     //å½“å‰æ’­æ”¾æ—¶é—´
+    RECT total_time;                    //æ€»æ—¶é—´æ˜¾ç¤ºåŒºåŸŸ
 
-    RECT process_bar_head_rect;     //½ø¶ÈÌõÍ·²¿
-    RECT process_bar_body_rect;     //½ø¶ÈÌõbody
-    RECT process_bar_point_rect;    //µ±Ç°½ø¶Èµã
-    RECT process_bar_tail_rect;     //½ø¶ÈÌõÎ²²¿
-    RECT process_bar_flag_rect;     //½ø¶ÈÌõÎ²²¿
+    RECT process_bar_head_rect;     //è¿›åº¦æ¡å¤´éƒ¨
+    RECT process_bar_body_rect;     //è¿›åº¦æ¡body
+    RECT process_bar_point_rect;    //å½“å‰è¿›åº¦ç‚¹
+    RECT process_bar_tail_rect;     //è¿›åº¦æ¡å°¾éƒ¨
+    RECT process_bar_flag_rect;     //è¿›åº¦æ¡å°¾éƒ¨
 
-    RECT performer_icon_rect;   //Ñİ³ªÕßÍ¼±ê
-    RECT performer_name_rect; //Ñİ³ªÕßÃû³Æ
-    RECT file_size_icon_rect;   //ÎÄ¼ş´óĞ¡Í¼±ê
-    RECT file_size_text_rect;           //ÎÄ¼ş´óĞ¡
-    RECT album_icon_rect;       //×¨¼­Ãû³ÆÍ¼±ê
-    RECT album_text_rect;       //×¨¼­Ãû³ÆÎÄ±¾
-    RECT bit_rate_icon_rect;    //BitRateÍ¼±ê
-    RECT bit_rate_text_rect;    //ÎÄ±¾ÏÔÊ¾
+    RECT performer_icon_rect;   //æ¼”å”±è€…å›¾æ ‡
+    RECT performer_name_rect; //æ¼”å”±è€…åç§°
+    RECT file_size_icon_rect;   //æ–‡ä»¶å¤§å°å›¾æ ‡
+    RECT file_size_text_rect;           //æ–‡ä»¶å¤§å°
+    RECT album_icon_rect;       //ä¸“è¾‘åç§°å›¾æ ‡
+    RECT album_text_rect;       //ä¸“è¾‘åç§°æ–‡æœ¬
+    RECT bit_rate_icon_rect;    //BitRateå›¾æ ‡
+    RECT bit_rate_text_rect;    //æ–‡æœ¬æ˜¾ç¤º
 
-    RECT menu_icon_rect;             //²Ëµ¥
-    RECT menu_text_rect;            //²Ëµ¥ÎÄ±¾
-    RECT show_mode_icon_rect;       //ÏÔÊ¾·½Ê½
-    RECT show_mode_text_rect;        // ÏÔÊ¾·½Ê½ÎÄ±¾
-    RECT ab_icon_rect;       //ab²¥·Å
-    RECT ab_text_rect;        // ab ²¥·Å
+    RECT menu_icon_rect;             //èœå•
+    RECT menu_text_rect;            //èœå•æ–‡æœ¬
+    RECT show_mode_icon_rect;       //æ˜¾ç¤ºæ–¹å¼
+    RECT show_mode_text_rect;        // æ˜¾ç¤ºæ–¹å¼æ–‡æœ¬
+    RECT ab_icon_rect;       //abæ’­æ”¾
+    RECT ab_text_rect;        // ab æ’­æ”¾
 
-    RECT tack_text_rect;            // ÏÔÊ¾ÉùµÀ
+    RECT tack_text_rect;            // æ˜¾ç¤ºå£°é“
 } music_palyer_ui_t;
 
-//ÒôÁ¿¿ØÖÆÏÔÊ¾²¿·Ö
+//éŸ³é‡æ§åˆ¶æ˜¾ç¤ºéƒ¨åˆ†
 typedef struct music_volume_bar_ui_s
 {
-    RECT BG_rect;                       //Õû¸öÒôÁ¿¿ØÖÆÇøÓò
-    RECT left_speaker_rect; //×ó±ßÒôÁ¿Í¼±ê
-    RECT vol_bar_rect;          //ÒôÁ¿½ø¶ÈÌõÍ¼±ê
-    RECT right_speaker_rect;//ÓÒ±ßÒôÁ¿Í¼±ê
+    RECT BG_rect;                       //æ•´ä¸ªéŸ³é‡æ§åˆ¶åŒºåŸŸ
+    RECT left_speaker_rect; //å·¦è¾¹éŸ³é‡å›¾æ ‡
+    RECT vol_bar_rect;          //éŸ³é‡è¿›åº¦æ¡å›¾æ ‡
+    RECT right_speaker_rect;//å³è¾¹éŸ³é‡å›¾æ ‡
 } music_volume_bar_ui_t;
 
 typedef struct music_spectrum_ui_s
@@ -334,15 +365,15 @@ typedef struct music_album_ui_s
 
 typedef struct music_ui_s
 {
-    music_layer_ui_t            layer;              //Õû¸ö²¥·ÅÆ÷Í¼²ã×ø±ê²ÎÊı
+    music_layer_ui_t            layer;              //æ•´ä¸ªæ’­æ”¾å™¨å›¾å±‚åæ ‡å‚æ•°
     music_menu_layer_ui_t       menu_layer;
 
-    music_list_ui_t             list_ctrl;      //ä¯ÀÀÆ÷list
-    music_scrollbar_ui_t    scrollbar;      //ä¯ÀÀÆ÷¹ö¶¯Ìõ
+    music_list_ui_t             list_ctrl;      //æµè§ˆå™¨list
+    music_scrollbar_ui_t    scrollbar;      //æµè§ˆå™¨æ»šåŠ¨æ¡
 
-    music_headbar_ui_t      headbar;            //¶¥²¿×´Ì¬Ìõ
-    music_palyer_ui_t     player;               //²¥·ÅÆ÷ÇøÓò
-    music_volume_bar_ui_t volume_bar;       //ÒôÁ¿¿ØÖÆÌõ
+    music_headbar_ui_t      headbar;            //é¡¶éƒ¨çŠ¶æ€æ¡
+    music_palyer_ui_t     player;               //æ’­æ”¾å™¨åŒºåŸŸ
+    music_volume_bar_ui_t volume_bar;       //éŸ³é‡æ§åˆ¶æ¡
 
     music_spectrum_ui_t     spectrum;
 
@@ -355,7 +386,7 @@ typedef struct music_ui_s
     music_icon_data_t       icon_table[MUSIC_ICON_MAX + 1];
 } music_ui_t;
 
-//ÏÔÊ¾»º³åÇø
+//æ˜¾ç¤ºç¼“å†²åŒº
 #define     C_LAYER_CACHE_AREA_X        310
 #define     C_LAYER_CACHE_AREA_Y        40
 #define     C_LAYER_CACHE_AREA_W        180
@@ -366,31 +397,31 @@ extern __s32   tv_out_status;
 extern GUI_RECT *music_get_touch_rect(__u32 iconRectID);
 extern __bool music_is_touch_icon(__u32 iconRectID, __u16 x, __u16 y);
 
-extern music_ui_t *music_get_ui_param(void);                    //»ñµÃUI²ÎÊı
+extern music_ui_t *music_get_ui_param(void);                    //è·å¾—UIå‚æ•°
 
-//»ñµÃExplorer ´°¿Úlayer size
+//è·å¾—Explorer çª—å£layer size
 extern __s32 music_get_screen_rect(RECT *screen_rect);
 
 extern void *music_get_album_buf(void);
 extern void *music_get_icon_res(__u32 index);
 extern __s32 music_free_icon_res(void);
 
-//»ñµÃÒôÀÖä¯ÀÀÆ÷UI²ÎÊı
+//è·å¾—éŸ³ä¹æµè§ˆå™¨UIå‚æ•°
 extern music_ui_t *music_get_ui_param(void);
 
-//»ñµÃÒôÀÖä¯ÀÀÆ÷UI²ÎÊı
+//è·å¾—éŸ³ä¹æµè§ˆå™¨UIå‚æ•°
 extern music_list_ui_t *music_get_list_ui_param(void);
 
-//»ñµÃ¶¥²¿HeadbarUI²ÎÊı
+//è·å¾—é¡¶éƒ¨HeadbarUIå‚æ•°
 extern music_headbar_ui_t *music_get_headbar_ui_param(void);
 
-//»ñµÃ¶¥²¿playerUI²ÎÊı
+//è·å¾—é¡¶éƒ¨playerUIå‚æ•°
 extern music_palyer_ui_t *music_get_player_ui_param(void);
 
-//»ñµÃvolume barUI²ÎÊı
+//è·å¾—volume barUIå‚æ•°
 extern music_volume_bar_ui_t *music_get_volume_bar_ui_param(void);
 
-//»ñµÃlistbarÃ¿Ò³¿ÉÒÔÏÔÊ¾ÌõÄ¿Êı
+//è·å¾—listbaræ¯é¡µå¯ä»¥æ˜¾ç¤ºæ¡ç›®æ•°
 extern __u32 music_count_listbar_pagenum(void);
 
 void music_modify_icon_res(__s32 rat_root_type);

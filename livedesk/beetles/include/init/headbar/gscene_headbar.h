@@ -1,21 +1,34 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : gscene_headbar.h
-* By        : Andy.zhang
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2010-9-25 19:19:34 andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef __GSCENE_HEADBAR_H__
 #define __GSCENE_HEADBAR_H__
 
@@ -25,7 +38,7 @@ typedef enum _HBarState
 {
     HBAR_ST_HIDE,
     HBAR_ST_SHOW,
-    HBAR_ST_SHOW_WIDTH_VOLUME,//œ‘ æµƒÕ¨ ±œ‘ æ“Ù¡øÃı
+    HBAR_ST_SHOW_WIDTH_VOLUME,//ÊòæÁ§∫ÁöÑÂêåÊó∂ÊòæÁ§∫Èü≥ÈáèÊù°
 } HBarState;
 
 typedef enum tag_HBAR_FORMAT
@@ -43,31 +56,31 @@ typedef enum
 
 } __bg_audio_t;
 
-/* √¸¡Ó¬Î */
-#define HBAR_TIME_PAINT         (GUI_MSG_USER_DEF+1)    // ªÊ÷∆ ±º‰
-#define HBAR_DATA_PAINT         (GUI_MSG_USER_DEF+2)    // ªÊ÷∆»’∆⁄
-#define HBAR_VOL_PAINT          (GUI_MSG_USER_DEF+3)    // ªÊ÷∆µÁ≥ÿµÁ¡ø
-#define HBAR_BRIGHT_PAINT       (GUI_MSG_USER_DEF+4)    // ªÊ÷∆¡¡∂»
-#define HBAR_VOLUME_PAINT       (GUI_MSG_USER_DEF+5)    // ªÊ÷∆“Ù¡ø
-#define HBAR_MUSIC_BG_PAINT     (GUI_MSG_USER_DEF+6)    // ªÊ÷∆±≥æ∞“Ù¿÷
-#define HBAR_TITLE_PAINT        (GUI_MSG_USER_DEF+7)    // ªÊ÷∆±ÍÃ‚
-#define HBAR_INIT_PAINT         (GUI_MSG_USER_DEF+8)    // ªÊ÷∆À˘”–
-#define HBAR_SIG_STATUS_PAINT   (GUI_MSG_USER_DEF+9)    // ªÊ÷∆À˘”–
+/* ÂëΩ‰ª§Á†Å */
+#define HBAR_TIME_PAINT         (GUI_MSG_USER_DEF+1)    // ÁªòÂà∂Êó∂Èó¥
+#define HBAR_DATA_PAINT         (GUI_MSG_USER_DEF+2)    // ÁªòÂà∂Êó•Êúü
+#define HBAR_VOL_PAINT          (GUI_MSG_USER_DEF+3)    // ÁªòÂà∂ÁîµÊ±†ÁîµÈáè
+#define HBAR_BRIGHT_PAINT       (GUI_MSG_USER_DEF+4)    // ÁªòÂà∂‰∫ÆÂ∫¶
+#define HBAR_VOLUME_PAINT       (GUI_MSG_USER_DEF+5)    // ÁªòÂà∂Èü≥Èáè
+#define HBAR_MUSIC_BG_PAINT     (GUI_MSG_USER_DEF+6)    // ÁªòÂà∂ËÉåÊôØÈü≥‰πê
+#define HBAR_TITLE_PAINT        (GUI_MSG_USER_DEF+7)    // ÁªòÂà∂Ê†áÈ¢ò
+#define HBAR_INIT_PAINT         (GUI_MSG_USER_DEF+8)    // ÁªòÂà∂ÊâÄÊúâ
+#define HBAR_SIG_STATUS_PAINT   (GUI_MSG_USER_DEF+9)    // ÁªòÂà∂ÊâÄÊúâ
 
 typedef struct
 {
-    char            *name;      // ≥°æ∞√˚≥∆
-    __u16           sid;        // ≥°æ∞id
-    H_WIN           parent;     // ∏∏¥∞ø⁄
-    H_WIN           layer;      // Õº≤„
-    GUI_FONT        *font;      // ◊÷ÃÂæ‰±˙
+    char            *name;      // Âú∫ÊôØÂêçÁß∞
+    __u16           sid;        // Âú∫ÊôØid
+    H_WIN           parent;     // Áà∂Á™óÂè£
+    H_WIN           layer;      // ÂõæÂ±Ç
+    GUI_FONT        *font;      // Â≠ó‰ΩìÂè•ÊüÑ
     __hbar_format_t format;     //format
 } HBarCreatePara;
 
 signed long gscene_hbar_create(H_WIN parent, __hbar_format_t format);
 __s32 gscene_hbar_set_state(HBarState state);
 __s32 gscene_hbar_get_state(HBarState *p_state);
-__s32 gscene_hbar_set_title(char *title, __u32 len);    /* title Œ™utf8±‡¬Î∏Ò Ω◊÷∑˚¥Æ£¨len<=32 ,…Ë÷√hbar title «¯”Ú◊÷∑˚¥Æ*/
+__s32 gscene_hbar_set_title(char *title, __u32 len);    /* title ‰∏∫utf8ÁºñÁ†ÅÊ†ºÂºèÂ≠óÁ¨¶‰∏≤Ôºålen<=32 ,ËÆæÁΩÆhbar title Âå∫ÂüüÂ≠óÁ¨¶‰∏≤*/
 
 
 
@@ -83,4 +96,3 @@ __s32 gscene_hbar_update_text(__s32 id);
 __s32 gscene_hbar_set_screen_rect(RECT *rect);
 
 #endif /* __GSCENE_HEADBAR_H__ */
-

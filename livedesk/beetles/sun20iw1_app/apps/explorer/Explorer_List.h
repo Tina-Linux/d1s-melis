@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 
 #ifndef __EXPLORER_LIST_H__
@@ -13,13 +44,13 @@ typedef enum exp_icon_status_s
 } exp_icon_status_e;
 
 
-//¶¨Òårat ÎÄ¼şËÑË÷Êı¾İ½á¹¹
+//å®šä¹‰rat æ–‡ä»¶æœç´¢æ•°æ®ç»“æ„
 typedef struct tag_rat_ctrl
 {
-    HRAT  handle;               //ÎÄ¼şËÑË÷¾ä±ú
-    __s32 index;                //µ±Ç°ÎÄ¼şË÷ÒıºÅ
-    __s32 total;                //ÎÄ¼ş×ÜÊı
-    //rat_media_type_t media_type;//ËÑË÷ÎÄ¼şµÄÀàĞÍ
+    HRAT  handle;               //æ–‡ä»¶æœç´¢å¥æŸ„
+    __s32 index;                //å½“å‰æ–‡ä»¶ç´¢å¼•å·
+    __s32 total;                //æ–‡ä»¶æ€»æ•°
+    //rat_media_type_t media_type;//æœç´¢æ–‡ä»¶çš„ç±»å‹
 } rat_ctrl_t;
 
 typedef struct file_type_res_s
@@ -31,63 +62,63 @@ typedef struct file_type_res_s
     HTHEME  file_type_music_f_bmp, file_type_music_uf_bmp;
     HTHEME  file_type_photo_f_bmp, file_type_photo_uf_bmp;
     HTHEME  file_type_game_f_bmp, file_type_game_uf_bmp;
-    HTHEME  fiile_manager_icon_bmp;             //ÎÄ¼ş¹ÜÀíÍ¼±ê
-    HTHEME  file_manager_big_bmp;           //ÎÄ¼ş¹ÜÀí´óÍ¼±ê
+    HTHEME  fiile_manager_icon_bmp;             //æ–‡ä»¶ç®¡ç†å›¾æ ‡
+    HTHEME  file_manager_big_bmp;           //æ–‡ä»¶ç®¡ç†å¤§å›¾æ ‡
 } file_type_res_t;
 typedef struct tag_explr_list_para
 {
-    H_WIN               list_win;           //´°¿Ú¾ä±ú
+    H_WIN               list_win;           //çª—å£å¥æŸ„
     GUI_FONT            *explr_list_font;
-    H_LYR               BG_layer;           //±³¾°Í¼²ã
-    H_LYR               list_layer;             //listbar Í¼²ã
+    H_LYR               BG_layer;           //èƒŒæ™¯å›¾å±‚
+    H_LYR               list_layer;             //listbar å›¾å±‚
     void                *core;
     __s32               root_type;
-    __u32               last_start_id;      //ÉÏ´Îä¯ÀÀÆğÊ¼ID
-    __u32               last_focused_id;    //ÉÏ´ÎÑ¡ÖĞÎÄ¼şid
-    char                *last_filename;     //ÉÏ´Îä¯ÀÀÎÄ¼ş Ãû
+    __u32               last_start_id;      //ä¸Šæ¬¡æµè§ˆèµ·å§‹ID
+    __u32               last_focused_id;    //ä¸Šæ¬¡é€‰ä¸­æ–‡ä»¶id
+    char                *last_filename;     //ä¸Šæ¬¡æµè§ˆæ–‡ä»¶ å
 
     GUI_FONT            *font;
 
-    char                search_path[RAT_MAX_FULL_PATH_LEN];             //ËÑË÷Â·¾¶
+    char                search_path[RAT_MAX_FULL_PATH_LEN];             //æœç´¢è·¯å¾„
     H_LBAR              listbar_handle;
     H_LBAR              mediatype_listbar_handle;
 
-    __hdle              long_str_handle;        //³¤×Ö·û´®¹ö¶¯¾ä±ú
+    __hdle              long_str_handle;        //é•¿å­—ç¬¦ä¸²æ»šåŠ¨å¥æŸ„
 
-    rat_ctrl_t          rat;                    //ÎÄ¼şËÑË÷Êı¾İ½á¹¹
-    rat_media_type_t    media_type;             //ËÑË÷ÎÄ¼şµÄÀàĞÍ
-    explorer_view_mode_e view_mode;             //ÏÔÊ¾Ä£Ê½,List or square
+    rat_ctrl_t          rat;                    //æ–‡ä»¶æœç´¢æ•°æ®ç»“æ„
+    rat_media_type_t    media_type;             //æœç´¢æ–‡ä»¶çš„ç±»å‹
+    explorer_view_mode_e view_mode;             //æ˜¾ç¤ºæ¨¡å¼,List or square
 
     file_list_t        *top_file_list;          //top filelist
     file_list_t        *cur_file_list;          //current filelist
-    file_item_t        *file_item;              //»­iconµÄfile_item;
+    file_item_t        *file_item;              //ç”»iconçš„file_item;
 
     H_WIN               h_dialog;
     H_WIN               h_dialog_msg;
-    __bool              del_dlg_open;           //É¾³ı¶Ô»°¿òÊÇ·ñopen
-    H_WIN               h_fw_update_dlg;        //¹Ì¼sÉi¼¶¶Ô»°¿ò
+    __bool              del_dlg_open;           //åˆ é™¤å¯¹è¯æ¡†æ˜¯å¦open
+    H_WIN               h_fw_update_dlg;        //å›ºç´„è’³çº§å¯¹è¯æ¡†
 
     char                fw_update_file[RAT_MAX_FULL_PATH_LEN];
-    root_para_t         *root_para  ;       //¼ÇÂ¼´Óroot ´«½øÀ´µÄ²ÎÊı
+    root_para_t         *root_para  ;       //è®°å½•ä»root ä¼ è¿›æ¥çš„å‚æ•°
     file_type_res_t     h_file_type_res;
     HTHEME              h_item_fcs_bmp, h_item_unfcs_bmp, h_bg_bmp, h_return_bmp;
-    __bool              enter_sd_usb_flag ; // 1 ±íÊ¾ÒÑ¾­½øÈëusb / sd Â·¾¶ÁË
+    __bool              enter_sd_usb_flag ; // 1 è¡¨ç¤ºå·²ç»è¿›å…¥usb / sd è·¯å¾„äº†
 #if (EXPLORER_SUPPORT_MINIATURE == 1)
-    void               *listbar_miniature_buf ; //Ã¿¸öitem ÏÔÊ¾µÄbuf
-    __u32               listbar_miniature_size ;    // buffer ´óĞ¡
-    void               *big_miniature_buf ;     // ×ó²àÎÄ¼şÖĞÏÔÊ¾µÄ´óÍ¼Æ¬µÄbuf
+    void               *listbar_miniature_buf ; //æ¯ä¸ªitem æ˜¾ç¤ºçš„buf
+    __u32               listbar_miniature_size ;    // buffer å¤§å°
+    void               *big_miniature_buf ;     // å·¦ä¾§æ–‡ä»¶ä¸­æ˜¾ç¤ºçš„å¤§å›¾ç‰‡çš„buf
     __u32               big_miniature_size ;
     __s32               big_miniature_index ;
-    __u8                draw_big_miniature_thread ; //»­´óËõÂÔÍ¼Ïß³Ì
-    __krnl_event_t     *willow_miniature_sem ;  // »ñÈ¡´óĞ¡ËõÂÔÍ¼Ê±Ê¹ÓÃµÄĞÅºÅÁ¿
-    __krnl_event_t     *get_miniature_sem ;     //»ñÈ¡ËõÂÔÍ¼Ê±µÄĞÅºÅÁ¿
+    __u8                draw_big_miniature_thread ; //ç”»å¤§ç¼©ç•¥å›¾çº¿ç¨‹
+    __krnl_event_t     *willow_miniature_sem ;  // è·å–å¤§å°ç¼©ç•¥å›¾æ—¶ä½¿ç”¨çš„ä¿¡å·é‡
+    __krnl_event_t     *get_miniature_sem ;     //è·å–ç¼©ç•¥å›¾æ—¶çš„ä¿¡å·é‡
     __u32               draw_miniature_delay_time ;
 #endif
-    __s32               last_focus_index;//´Ó0¿ªÊ¼Ëã
+    __s32               last_focus_index;//ä»0å¼€å§‹ç®—
     __s32               mediatype_index;
     __s32               cp_mov_dialog;
-    __s32               listbar_left_right;//°´¼üµÄÉÏÏÂ²Ù×÷¶ÔÓ¦µÄÊÇ×ó±ß»¹ÊÇÓÒ±ßµÄlistbar
-    char                copy_name_back[RAT_MAX_FULL_PATH_LEN];//¸´ÖÆÎÄ¼şÃû£¬ÔİÊ±±£´æ
+    __s32               listbar_left_right;//æŒ‰é”®çš„ä¸Šä¸‹æ“ä½œå¯¹åº”çš„æ˜¯å·¦è¾¹è¿˜æ˜¯å³è¾¹çš„listbar
+    char                copy_name_back[RAT_MAX_FULL_PATH_LEN];//å¤åˆ¶æ–‡ä»¶åï¼Œæš‚æ—¶ä¿å­˜
     __bool              filelist_update;
 
     __u8                handle_thread_id;

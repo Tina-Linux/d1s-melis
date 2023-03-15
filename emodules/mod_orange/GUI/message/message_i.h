@@ -1,30 +1,33 @@
 /*
-*******************************************************************************************************************
-*                                                           Listmenu  Framework
-*                                                   the display dirver support module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2008, Softwinner Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name£º    gui_message_e.h
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
-*Author£º       William Wang
 *
-*Version :      1.1.0
-*
-*Date:          2009-8-4
-*
-*Description :  message ¹©Íâ²¿Ê¹ÓÃµÄº¯Êý¶¨Òå
-*
-*Others :       None at present.
-*
-* History :
-*
-* <Author>          <time>                  <version>     <description>
-*
-* William Wang     2009-8-4         1.1.0          Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __GUI_MESSAGE_I_H__
 #define __GUI_MESSAGE_I_H__
@@ -33,23 +36,23 @@
 
 typedef enum __GUI_MSG_WINDOWS
 {
-    GUI_MSG_ADDNEWMANWIN   = 0x0000,    /*Ìí¼ÓÖ÷´°¿Ú£¬ÏµÍ³·þÎñÏûÏ¢£¬Í¬²½ÏûÏ¢*/
-    GUI_MSG_REMOVEMANWIN   = 0x0001,    /*É¾³ýÖ÷´°¿Ú£¬ÏµÍ³·þÎñÏûÏ¢£¬Í¬²½ÏûÏ¢*/
-    GUI_MSG_MOVETOTOPMOST   = 0x0002,   /*´°¿ÚÖÃ¶¥£¬  ÏµÍ³·þÎñÏûÏ¢£¬Í¬²½ÏûÏ¢*/
-    GUI_MSG_SETACTIVEMAIN   = 0x0003,   /*ÉèÖÃ½¹µãframewin£¬ÏµÍ³·þÎñÏûÏ¢£¬Í¬²½ÏûÏ¢*/
-    GUI_MSG_GETACTIVEMAIN   = 0x0004,   /*»ñÈ¡½¹µãframewin£¬ÏµÍ³·þÎñÏûÏ¢£¬Í¬²½ÏûÏ¢*/
-    GUI_MSG_SHOWMANWIN     = 0x0005,    /*ÏÔÊ¾framewin£¬ÏµÍ³·þÎñÏûÏ¢£¬Í¬²½ÏûÏ¢*/
-    GUI_MSG_HIDEMANWIN     = 0x0006,    /*Òþ²Øframewin£¬ÏµÍ³·þÎñÏûÏ¢£¬Í¬²½ÏûÏ¢*/
-    GUI_MSG_MOVEMANWIN     = 0x0007,    /*ÒÆ¶¯framewin£¬ÏµÍ³·þÎñÏûÏ¢£¬Í¬²½ÏûÏ¢*/
-    GUI_MSG_SETCAPTURE      = 0x0008,   /*ÉèÖÃcaptureÄ£Ê½£¬ÔÚ¼üÅÌ»òÕß´¥ÃþÆÁµã»÷Ê±µ÷ÓÃ£¬ÏµÍ³·þÎñÏûÏ¢£¬Í¬²½ÏûÏ¢*/
-    GUI_MSG_GETCAPTURE      = 0x0009,   /*»ñÈ¡capture´°¿Ú£¬ÏµÍ³·þÎñÏûÏ¢£¬Í¬²½ÏûÏ¢*/
+    GUI_MSG_ADDNEWMANWIN   = 0x0000,    /*æ·»åŠ ä¸»çª—å£ï¼Œç³»ç»ŸæœåŠ¡æ¶ˆæ¯ï¼ŒåŒæ­¥æ¶ˆæ¯*/
+    GUI_MSG_REMOVEMANWIN   = 0x0001,    /*åˆ é™¤ä¸»çª—å£ï¼Œç³»ç»ŸæœåŠ¡æ¶ˆæ¯ï¼ŒåŒæ­¥æ¶ˆæ¯*/
+    GUI_MSG_MOVETOTOPMOST   = 0x0002,   /*çª—å£ç½®é¡¶ï¼Œ  ç³»ç»ŸæœåŠ¡æ¶ˆæ¯ï¼ŒåŒæ­¥æ¶ˆæ¯*/
+    GUI_MSG_SETACTIVEMAIN   = 0x0003,   /*è®¾ç½®ç„¦ç‚¹framewinï¼Œç³»ç»ŸæœåŠ¡æ¶ˆæ¯ï¼ŒåŒæ­¥æ¶ˆæ¯*/
+    GUI_MSG_GETACTIVEMAIN   = 0x0004,   /*èŽ·å–ç„¦ç‚¹framewinï¼Œç³»ç»ŸæœåŠ¡æ¶ˆæ¯ï¼ŒåŒæ­¥æ¶ˆæ¯*/
+    GUI_MSG_SHOWMANWIN     = 0x0005,    /*æ˜¾ç¤ºframewinï¼Œç³»ç»ŸæœåŠ¡æ¶ˆæ¯ï¼ŒåŒæ­¥æ¶ˆæ¯*/
+    GUI_MSG_HIDEMANWIN     = 0x0006,    /*éšè—framewinï¼Œç³»ç»ŸæœåŠ¡æ¶ˆæ¯ï¼ŒåŒæ­¥æ¶ˆæ¯*/
+    GUI_MSG_MOVEMANWIN     = 0x0007,    /*ç§»åŠ¨framewinï¼Œç³»ç»ŸæœåŠ¡æ¶ˆæ¯ï¼ŒåŒæ­¥æ¶ˆæ¯*/
+    GUI_MSG_SETCAPTURE      = 0x0008,   /*è®¾ç½®captureæ¨¡å¼ï¼Œåœ¨é”®ç›˜æˆ–è€…è§¦æ‘¸å±ç‚¹å‡»æ—¶è°ƒç”¨ï¼Œç³»ç»ŸæœåŠ¡æ¶ˆæ¯ï¼ŒåŒæ­¥æ¶ˆæ¯*/
+    GUI_MSG_GETCAPTURE      = 0x0009,   /*èŽ·å–captureçª—å£ï¼Œç³»ç»ŸæœåŠ¡æ¶ˆæ¯ï¼ŒåŒæ­¥æ¶ˆæ¯*/
 
-    GUI_MSG_ENABLEMANWIN   = 0x0010,    /*Ê¹framewinÓÐÐ§£¬ÏµÍ³·þÎñÏûÏ¢£¬Í¬²½ÏûÏ¢*/
-    GUI_MSG_ISENABLED       = 0x0011,   /*ÅÐ¶ÏframewinÊÇ·ñÓÐÐ§£¬ÏµÍ³·þÎñÏûÏ¢£¬Í¬²½ÏûÏ¢*/
+    GUI_MSG_ENABLEMANWIN   = 0x0010,    /*ä½¿framewinæœ‰æ•ˆï¼Œç³»ç»ŸæœåŠ¡æ¶ˆæ¯ï¼ŒåŒæ­¥æ¶ˆæ¯*/
+    GUI_MSG_ISENABLED       = 0x0011,   /*åˆ¤æ–­framewinæ˜¯å¦æœ‰æ•ˆï¼Œç³»ç»ŸæœåŠ¡æ¶ˆæ¯ï¼ŒåŒæ­¥æ¶ˆæ¯*/
 
-    GUI_MSG_GETNEXTMANWIN  = 0x0013,    /*»ñÈ¡ÏÂÒ»¸öframewin*/
+    GUI_MSG_GETNEXTMANWIN  = 0x0013,    /*èŽ·å–ä¸‹ä¸€ä¸ªframewin*/
 
-    GUI_MSG_SHOWGLOBALCTRL  = 0x0014,   /*ÏÔÊ¾Ö÷´°¿ÚÍâ¿Ø¼þ£¬Í¬²½ÏûÏ¢£¬ÏµÍ³·þÎñÏûÏ¢*/
+    GUI_MSG_SHOWGLOBALCTRL  = 0x0014,   /*æ˜¾ç¤ºä¸»çª—å£å¤–æŽ§ä»¶ï¼ŒåŒæ­¥æ¶ˆæ¯ï¼Œç³»ç»ŸæœåŠ¡æ¶ˆæ¯*/
     GUI_MSG_HIDEGLOBALCTRL  = 0x0015,
 } __gui_msg_windows_t;
 
@@ -184,18 +187,18 @@ typedef enum __GUI_WIDGETCLASS_OP
 } __gui_widgetclass_op_t;
 
 #endif
-#define MSGSTS_KEYDOWN          (0x01)      /*°´¼üÀ´µ½»¹Ã»ÓÐ²ÉÑù·¢³ö*/
-#define MSGSTS_LONGKEYDOWN      (0x02)      /*°´¼ü±»°´ÏÂ£¬³¤°´¼ü»¹Ã»ÓÐ²ÉÑù·¢³ö*/
-#define MSGSTS_POSTLONGKEY      (0x03)      /*³¤°´¼üÒÑ±»²ÉÑù²¢·¢³ö*/
-#define MSGSTS_POSTKEY          (0x04)      /*µÚÒ»¸ö°´ÏÂ¼üÒÑ±»²ÉÑù²¢±»·¢³ö*/
-#define MSGSTS_POSTKEYRISE      (0x05)      /*µÚÒ»¸öRISE¼üÒÑ±»²ÉÑù²¢±»·¢³ö*/
-#define MSGSTS_TOUCHDOWN        (0x06)      /*°´¼üÀ´µ½»¹Ã»ÓÐ²ÉÑù·¢³ö*/
-#define MSGSTS_LONGTOUCHDOWN    (0x07)      /*°´¼ü±»°´ÏÂ£¬³¤°´¼ü»¹Ã»ÓÐ²ÉÑù·¢³ö*/
-#define MSGSTS_POSTLONGTOUCH    (0x03)      /*³¤°´¼üÒÑ±»²ÉÑù²¢·¢³ö*/
+#define MSGSTS_KEYDOWN          (0x01)      /*æŒ‰é”®æ¥åˆ°è¿˜æ²¡æœ‰é‡‡æ ·å‘å‡º*/
+#define MSGSTS_LONGKEYDOWN      (0x02)      /*æŒ‰é”®è¢«æŒ‰ä¸‹ï¼Œé•¿æŒ‰é”®è¿˜æ²¡æœ‰é‡‡æ ·å‘å‡º*/
+#define MSGSTS_POSTLONGKEY      (0x03)      /*é•¿æŒ‰é”®å·²è¢«é‡‡æ ·å¹¶å‘å‡º*/
+#define MSGSTS_POSTKEY          (0x04)      /*ç¬¬ä¸€ä¸ªæŒ‰ä¸‹é”®å·²è¢«é‡‡æ ·å¹¶è¢«å‘å‡º*/
+#define MSGSTS_POSTKEYRISE      (0x05)      /*ç¬¬ä¸€ä¸ªRISEé”®å·²è¢«é‡‡æ ·å¹¶è¢«å‘å‡º*/
+#define MSGSTS_TOUCHDOWN        (0x06)      /*æŒ‰é”®æ¥åˆ°è¿˜æ²¡æœ‰é‡‡æ ·å‘å‡º*/
+#define MSGSTS_LONGTOUCHDOWN    (0x07)      /*æŒ‰é”®è¢«æŒ‰ä¸‹ï¼Œé•¿æŒ‰é”®è¿˜æ²¡æœ‰é‡‡æ ·å‘å‡º*/
+#define MSGSTS_POSTLONGTOUCH    (0x03)      /*é•¿æŒ‰é”®å·²è¢«é‡‡æ ·å¹¶å‘å‡º*/
 #define MSGSTS_POSTTOUCH        (0x08)
 #define MSGSTS_POSTTOUCHRISE    (0x09)
 
-/*ÅÐ¶ÏÎª³¤°´¼üÀÛ¼Ó¼üÖµÊýÁ¿*/
+/*åˆ¤æ–­ä¸ºé•¿æŒ‰é”®ç´¯åŠ é”®å€¼æ•°é‡*/
 #define LONGKEY_OFFSET           (GUI_MSG_KEY_LONGUP - GUI_MSG_KEY_UP)
 #define LONGTOUCH_OFFSET         (GUI_MSG_TOUCH_LONGDOWN - GUI_MSG_TOUCH_DOWN)
 #define LONGKEY_COUNT            5

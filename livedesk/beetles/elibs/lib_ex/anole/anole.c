@@ -1,18 +1,34 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              willow app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                               (c) Copyright 2006-2007, RICHARD, China
-*                                           All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : anole.c
-* By      : john.fu
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY鈥橲 TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS鈥橲DK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY鈥橲 TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "anole_i.h"
 #include <kconfig.h>
 #include <kapi.h>
@@ -36,7 +52,7 @@ static void                 *decoding_buf           = NULL;
 static void                 *unsupported_buf        = NULL;
 static __pCBK_t volatile    cb_show_pic_fail        = NULL;
 static void *volatile       cb_ctx_show_pic_fail    = NULL;
-//自动播放回调
+//鑷姩鎾斁鍥炶皟
 static __pCBK_t volatile    cb_show_pic_next        = NULL;
 static void *volatile       cb_ctx_show_pic_next    = NULL;
 static HRATNPL volatile     anole_npl               = NULL;
@@ -752,11 +768,11 @@ static void __auto_play_maintsk(void *arg)
 
             if (orign_delay != 1)
             {
-                uint8_t count = (orign_delay - 1) * 100 / ANOLE_AUTO_PLAY_THREAD_DELAY_TIME; //延时多次
+                uint8_t count = (orign_delay - 1) * 100 / ANOLE_AUTO_PLAY_THREAD_DELAY_TIME; //寤舵椂澶氭
 
                 while (count)
                 {
-                    esKRNL_TimeDly(ANOLE_AUTO_PLAY_THREAD_DELAY_TIME);  //每次延时ANOLE_AUTO_PLAY_THREAD_DELAY_TIME
+                    esKRNL_TimeDly(ANOLE_AUTO_PLAY_THREAD_DELAY_TIME);  //姣忔寤舵椂ANOLE_AUTO_PLAY_THREAD_DELAY_TIME
 
                     if (anole_get_sta() != ANOLE_MODE_PLAY)
                     {

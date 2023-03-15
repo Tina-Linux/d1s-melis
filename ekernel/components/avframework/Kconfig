@@ -1,0 +1,7 @@
+menu "avframework"
+
+source "ekernel/components/avframework/v4l2/drivers/media/Kconfig"
+
+source "ekernel/components/avframework/eyesee-mpp/Kconfig"
+
+endmenu

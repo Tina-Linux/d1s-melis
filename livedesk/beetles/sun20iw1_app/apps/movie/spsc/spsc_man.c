@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : movie_spsc.c
-* By        :
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011-05-05  Bayden.chen  create this file
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "spsc_man.h"
@@ -29,13 +43,13 @@ typedef enum
 typedef struct
 {
     //input
-    H_WIN hparent;//spsc µÄparent
+    H_WIN hparent;//spsc çš„parent
     __s32 scene_id;
     __s32 sub_state;
 
     //internal
-    H_LYR hlyr;//¸÷¸ö×Ó³¡¾°µÄÍ¼²ã
-    void *spsc_ctrl_scene;//¿ØÖÆ×Ó³¡¾°
+    H_LYR hlyr;//å„ä¸ªå­åœºæ™¯çš„å›¾å±‚
+    void *spsc_ctrl_scene;//æŽ§åˆ¶å­åœºæ™¯
 
     H_WIN spsc_manager;//spsc manwin
 } movie_spsc_scene_t;
@@ -44,7 +58,7 @@ static __s32 __movie_spsc_move_layer_win_up(movie_spsc_scene_t *sence_para);
 
 
 /***********************************************************************************************************
-    ½¨Á¢Í¼²ã
+    å»ºç«‹å›¾å±‚
 ************************************************************************************************************/
 static H_LYR __spsc_32bpp_layer_create(RECT *rect, __s32 pipe)
 {
@@ -99,7 +113,7 @@ static H_LYR __spsc_32bpp_layer_create(RECT *rect, __s32 pipe)
     return layer;
 }
 
-//´´½¨¿ØÖÆ×Ó³¡¾°
+//åˆ›å»ºæŽ§åˆ¶å­åœºæ™¯
 static __s32 __spsc_ctrl_scene_create(movie_spsc_scene_t *scene_para)
 {
     if (!scene_para)
@@ -131,7 +145,7 @@ static __s32 __spsc_ctrl_scene_create(movie_spsc_scene_t *scene_para)
     return EPDK_OK;
 }
 
-//É¾³ý¿ØÖÆ×Ó³¡¾°
+//åˆ é™¤æŽ§åˆ¶å­åœºæ™¯
 __s32 __spsc_ctrl_scene_delete(movie_spsc_scene_t *scene_para)
 {
     if (!scene_para)
@@ -265,9 +279,9 @@ static __s32 __spsc_play_file(movie_spsc_scene_t *sence_para, __s32 index)
         return EPDK_FAIL;
     }
 
-    robin_set_cmd_stop();//ÏÈÍ£Ö¹²¥·Åµ±Ç°Ê×
+    robin_set_cmd_stop();//å…ˆåœæ­¢æ’­æ”¾å½“å‰é¦–
     __msg("robin_play_file, index=%d, filename=%s", index, filename);
-    robin_clear_feedback_msgQ();//Çå¿Õ´íÎóÐÅÏ¢ÏûÏ¢¶ÓÁÐ
+    robin_clear_feedback_msgQ();//æ¸…ç©ºé”™è¯¯ä¿¡æ¯æ¶ˆæ¯é˜Ÿåˆ—
     ret = robin_play_file(filename, NULL);
 
     if (EPDK_FAIL == ret)
@@ -378,7 +392,7 @@ static __s32 __spsc_ctrl_scene_cmd_proc(movie_spsc_scene_t *sence_para, __s32 ms
                 MOVIE_ROBIN_PEND;
                 __spsc_play_prev(sence_para);
 
-                if (1) //¸¸´°¿ÚÍ¨Öªspsc_ctrl³¡¾°¸üÐÂUI ÊÓÆµÎÄ¼þÃû×Ö
+                if (1) //çˆ¶çª—å£é€šçŸ¥spsc_ctrlåœºæ™¯æ›´æ–°UI è§†é¢‘æ–‡ä»¶åå­—
                 {
                     __gui_msg_t msg;
                     eLIBs_memset(&msg, 0, sizeof(__gui_msg_t));
@@ -421,7 +435,7 @@ static __s32 __spsc_ctrl_scene_cmd_proc(movie_spsc_scene_t *sence_para, __s32 ms
                 MOVIE_ROBIN_PEND;
                 __spsc_play_next(sence_para);
 
-                if (1) //¸¸´°¿ÚÍ¨Öªspsc_ctrl³¡¾°¸üÐÂUI
+                if (1) //çˆ¶çª—å£é€šçŸ¥spsc_ctrlåœºæ™¯æ›´æ–°UI
                 {
                     __gui_msg_t msg;
                     eLIBs_memset(&msg, 0, sizeof(__gui_msg_t));
@@ -489,7 +503,7 @@ static __s32 __spsc_ctrl_scene_cmd_proc(movie_spsc_scene_t *sence_para, __s32 ms
                 //  msg.h_deswin = movie_spsc_ctrl_scene_get_hwnd(sence_para->spsc_ctrl_scene);
             //movie_cmd2parent(msg->h_deswin, spsc_scene_msg_tvout, 1, 0);
             return EPDK_OK;*/
-            break;//ÏûÏ¢»¹Òª½»¸ø¸¸´°¿Ú´¦Àí£¬Í¨Öª¸¸´°¿Ú½øÐÐÁËrr²Ù×÷£¬¸üÐÂÒ»ÏÂ×´Ì¬
+            break;//æ¶ˆæ¯è¿˜è¦äº¤ç»™çˆ¶çª—å£å¤„ç†ï¼Œé€šçŸ¥çˆ¶çª—å£è¿›è¡Œäº†rræ“ä½œï¼Œæ›´æ–°ä¸€ä¸‹çŠ¶æ€
         }
 
         case spsc_ctrl_scene_msg_rr:
@@ -510,7 +524,7 @@ static __s32 __spsc_ctrl_scene_cmd_proc(movie_spsc_scene_t *sence_para, __s32 ms
                     __msg("fsm not in play status, do not rr");
                 }
             }
-            break;//ÏûÏ¢»¹Òª½»¸ø¸¸´°¿Ú´¦Àí£¬Í¨Öª¸¸´°¿Ú½øÐÐÁËrr²Ù×÷£¬¸üÐÂÒ»ÏÂ×´Ì¬
+            break;//æ¶ˆæ¯è¿˜è¦äº¤ç»™çˆ¶çª—å£å¤„ç†ï¼Œé€šçŸ¥çˆ¶çª—å£è¿›è¡Œäº†rræ“ä½œï¼Œæ›´æ–°ä¸€ä¸‹çŠ¶æ€
             //return EPDK_OK;
         }
 
@@ -699,11 +713,11 @@ static __s32 __spsc_scene_proc(__gui_msg_t *msg)
                 return EPDK_FAIL;
             }
 
-            sence_para->spsc_manager = msg->h_deswin;//±ØÐëÔÚÕâÀïÉèÖÃ£¬·ñÔò×Ó³¡¾°µÃµ½µÄ¸¸Ç×ÈÔÈ»ÊÇ¿Õ¡£
+            sence_para->spsc_manager = msg->h_deswin;//å¿…é¡»åœ¨è¿™é‡Œè®¾ç½®ï¼Œå¦åˆ™å­åœºæ™¯å¾—åˆ°çš„çˆ¶äº²ä»ç„¶æ˜¯ç©ºã€‚
             __movie_set_title(STRING_MOVIE_TITLE);
             //__here__;
             gscene_hbar_set_state(HBAR_ST_SHOW);
-            //´´½¨¿ØÖÆ×Ó³¡¾°
+            //åˆ›å»ºæŽ§åˆ¶å­åœºæ™¯
             ret = __spsc_ctrl_scene_create(sence_para);
 
             if (EPDK_FAIL == ret)
@@ -759,7 +773,7 @@ static __s32 __spsc_scene_proc(__gui_msg_t *msg)
                 {
                     ret = __spsc_ctrl_scene_cmd_proc(sence_para, HIWORD(msg->dwAddData1), msg->dwAddData2);
 
-                    if (EPDK_FAIL == ret)//Î´´¦ÀíµÄÏûÏ¢½»¸ø¸¸´°¿Ú´¦Àí
+                    if (EPDK_FAIL == ret)//æœªå¤„ç†çš„æ¶ˆæ¯äº¤ç»™çˆ¶çª—å£å¤„ç†
                     {
                         ret_id = __spsc_ctrl_msg_match(HIWORD(msg->dwAddData1));
                     }
@@ -774,12 +788,12 @@ static __s32 __spsc_scene_proc(__gui_msg_t *msg)
                 }
             }
 
-            if (0 == ret)//ÒÑ´¦Àí
+            if (0 == ret)//å·²å¤„ç†
             {
                 //__here__;
                 return EPDK_OK;
             }
-            else//Î´´¦Àí£¬½»¸ø¸¸´°¿Ú´¦Àí£¬ÒôÁ¿ºÍÁÁ¶ÈµÄµ÷ÕûÏûÏ¢½»¸ø¸¸´°¿Ú´¦Àí
+            else//æœªå¤„ç†ï¼Œäº¤ç»™çˆ¶çª—å£å¤„ç†ï¼ŒéŸ³é‡å’Œäº®åº¦çš„è°ƒæ•´æ¶ˆæ¯äº¤ç»™çˆ¶çª—å£å¤„ç†
             {
                 if (-1 == ret_id)
                 {
@@ -797,7 +811,7 @@ static __s32 __spsc_scene_proc(__gui_msg_t *msg)
         case GUI_MSG_KEY:
         {
             movie_spsc_scene_t *sence_para;
-            __msg("__movie_spsc_proc GUI_MSG_KEY");//°´¼üÏûÏ¢È«²¿ÍùÏÂ´«µ½×Ó³¡¾°frmwin
+            __msg("__movie_spsc_proc GUI_MSG_KEY");//æŒ‰é”®æ¶ˆæ¯å…¨éƒ¨å¾€ä¸‹ä¼ åˆ°å­åœºæ™¯frmwin
             sence_para = GUI_WinGetAttr(msg->h_deswin);
 
             if (!sence_para)
@@ -812,7 +826,7 @@ static __s32 __spsc_scene_proc(__gui_msg_t *msg)
         case GUI_MSG_TOUCH:
         {
             movie_spsc_scene_t *sence_para;
-            __msg("__movie_spsc_proc GUI_MSG_TOUCH");//´¥ÃþÏûÏ¢È«²¿ÍùÏÂ´«µ½×Ó³¡¾°frmwin
+            __msg("__movie_spsc_proc GUI_MSG_TOUCH");//è§¦æ‘¸æ¶ˆæ¯å…¨éƒ¨å¾€ä¸‹ä¼ åˆ°å­åœºæ™¯frmwin
             sence_para = GUI_WinGetAttr(msg->h_deswin);
 
             if (!sence_para)
@@ -847,7 +861,7 @@ static __s32 __spsc_scene_proc(__gui_msg_t *msg)
             }
 
             {
-                //¸¸´°¿ÚÍ¨Öªspsc_ctrl³¡¾°¸üÐÂUI
+                //çˆ¶çª—å£é€šçŸ¥spsc_ctrlåœºæ™¯æ›´æ–°UI
                 __gui_msg_t msg;
                 eLIBs_memset(&msg, 0, sizeof(__gui_msg_t));
                 msg.h_deswin = movie_spsc_ctrl_scene_get_hwnd(sence_para->spsc_ctrl_scene);
@@ -881,7 +895,7 @@ void *movie_spsc_scene_create(movie_spsc_create_para_t *create_para)
     __gui_manwincreate_para_t create_info;
     H_WIN hManWin;
     movie_spsc_scene_t *sence_para = NULL;
-    //´´½¨ºÍ³õÊ¼»¯spsc manwin µÄ sence_para
+    //åˆ›å»ºå’Œåˆå§‹åŒ–spsc manwin çš„ sence_para
     {
         movie_spsc_uipara_t *ui_para = NULL;
         RECT lyr_rect;
@@ -894,10 +908,10 @@ void *movie_spsc_scene_create(movie_spsc_create_para_t *create_para)
         }
 
         eLIBs_memset(sence_para, 0, sizeof(movie_spsc_scene_t));
-        //½ÓÊÕÍâ²¿²ÎÊý
+        //æŽ¥æ”¶å¤–éƒ¨å‚æ•°
         sence_para->hparent = create_para->hparent;
         sence_para->scene_id = create_para->scene_id;
-        //´´½¨Í¼²ã
+        //åˆ›å»ºå›¾å±‚
         ui_para = movie_spsc_get_uipara(GUI_GetScnDir());
 
         if (NULL == ui_para)
@@ -944,7 +958,7 @@ void *movie_spsc_scene_create(movie_spsc_create_para_t *create_para)
         return NULL;
     }
 
-    //³¡¾°ÄÚ²¿²ÎÊýÉèÖÃ
+    //åœºæ™¯å†…éƒ¨å‚æ•°è®¾ç½®
     sence_para->spsc_manager = hManWin;
     GUI_LyrWinSetSta(sence_para->hlyr, GUI_LYRWIN_STA_ON);
     GUI_LyrWinSetTop(sence_para->hlyr);
@@ -981,7 +995,7 @@ __s32 movie_spsc_scene_delete(void *handle)
 
     GUI_LyrWinDelete(scene_para->hlyr);
     scene_para->hlyr = NULL;
-    eLIBs_memset(scene_para, 0, sizeof(movie_spsc_scene_t));//Ô¤·ÀÔÙ´ÎÊÍ·Å£¬»á±¨´í
+    eLIBs_memset(scene_para, 0, sizeof(movie_spsc_scene_t));//é¢„é˜²å†æ¬¡é‡Šæ”¾ï¼Œä¼šæŠ¥é”™
     esMEMS_Mfree(0, scene_para);
     __msg("after movie_spsc_manwin_delete");
     return EPDK_OK;
@@ -1075,4 +1089,3 @@ __s32 movie_spsc_scene_get_lyr_scn(RECT *rect)
     rect->height = ui_para->spsc_scene_lyr.h;
     return EPDK_OK;
 }
-

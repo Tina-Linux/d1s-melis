@@ -1,30 +1,33 @@
 /*
-************************************************************************************************************************
-*                                                        robin
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                             Copyright(C), 2009-2010, SoftWinners Microelectronic Co., Ltd.
-*                                                  All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File Name   : robin_i.c
-*
-* Author      : Gary.Wang
-*
-* Version     : 1.1.0
-*
-* Date        : 2009.09.24
-*
-* Description :
-*
-* Others      : None at present.
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
 *
 *
-* History     :
-*
-*  <Author>        <time>       <version>      <description>
-*
-* Gary.Wang      2009.09.24       1.1.0        build the file
-*
-************************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef  __robin_i_c
 #define  __robin_i_c
@@ -168,7 +171,109 @@ void  npl_delete(void)
     */
 }
 
+/***************************************************************************************************
+*Arguments   : arg[0](video_type)   only use LBC on H.264/H.265 video type
+               arg[1](frame_size)   video frame size, (frame_size>>16) is width, (frame_size&0xffff)
+             is height
+*Return      : lbc          contains two values, (lbc>>8) is lbc mode(0/1/2/3), mode==3 compress the most,
+            (lbc&0xff) is lbc lossy(0/1), lossy==0 means the lossless LBC, cost the most memory(even
+             bigger than LBC OFF). lossy==1 means the lossy LBC,cost the least memory(overall effects
+             batter than scaledown). DEFAULT should be lossy==1.
+*Description : User set LBC mode according to video resolution.
+***************************************************************************************************/
+static __s32 CB_UserDef_LBC(void *arg)
+{
+    __s32 lbc = 0;
+    __u32 width, height;
+    long *ubuffer = NULL;
+    long video_type, frame_size;
 
+    ubuffer    = (long *) arg;
+    video_type = (long) ubuffer[0];
+    frame_size = (long) ubuffer[1];
+
+    if (video_type == CEDAR_VBS_TYPE_H264 || video_type == CEDAR_VBS_TYPE_H265)
+    {
+        width   = frame_size >> 16;
+        height  = frame_size & 0xffff;
+
+        if (width * height >= 1920 * 1080)
+        {
+            lbc = 0x0301;
+        }
+        else if (width * height >= 1280 * 720)
+        {
+            lbc = 0x0201;
+        }
+        else if (width * height >= 640 * 480)
+        {
+            lbc = 0x0101;
+        }
+        else
+        {
+			lbc = 0;    // width * height == 0 will enter here
+        }
+    }
+    else
+    {
+        lbc = 0;
+    }
+
+    __wrn("LBC mode:%d, lossy:%d", (lbc >> 8), (lbc & 0xff));
+    return lbc;
+}
+
+/***************************************************************************************************
+*Arguments   : arg[0](video_type)   scaledown can be used on all video types
+               arg[1](frame_size)   video frame size, (frame_size>>16) is width, (frame_size&0xffff)
+            is height
+*Return      : scaledown    scaledown(0/1/2/3),  scaledown==1, the width and height is original's 1/2.
+            scaledown==2, means 1/4. scaledown==3, means 1/8.
+*Description : User set scaledown mode according to video resolution.
+***************************************************************************************************/
+static __s32 CB_UserDef_Scaledown(void *arg)
+{
+    __u8 scaledown = 0;
+    __u32 width, height;
+    long *ubuffer = NULL;
+    long video_type, frame_size;
+
+    ubuffer    = (long *) arg;
+    video_type = (long) ubuffer[0];
+    frame_size = (long) ubuffer[1];
+    width   = frame_size >> 16;
+    height  = frame_size & 0xffff;
+
+    if (video_type != CEDAR_VBS_TYPE_H264 && video_type != CEDAR_VBS_TYPE_H265)
+    {
+		if (width * height >= 2560 * 1920)
+        {
+            scaledown = 2;
+        }
+        else if (width * height >= 1920 * 1080)
+        {
+            scaledown = 1;
+        }
+        else
+        {
+            scaledown = 0;
+        }
+    }
+    else
+    {
+        if (width * height == 0)
+        {
+            scaledown = 1;
+        }
+        else
+        {
+            scaledown = 0;
+        }
+    }
+
+    __wrn("SCALEDOWN:%d", scaledown);
+    return scaledown;
+}
 
 /***************************************************************************************************
 *Name        : cedar_open
@@ -185,6 +290,7 @@ __s32 cedar_open(robin_open_arg_t *arg_p)
     CedarStopMode cedar_stop_mode;
     CedarFileSwitchVplyMode switch_vplay_mode;
     __s32 ret;
+    __pCBK_t call_back;
     __wrn(" cedar_open ");
 
     if (arg_p)
@@ -233,10 +339,15 @@ __s32 cedar_open(robin_open_arg_t *arg_p)
             __wrn("set reserved memory %d Kbyte", reserve_mem_size / 1024);
         }
 
-        //…Ë÷√Õ£÷π ±£¨ «∑Ò–∂‘ÿÀ˘”–≤Âº˛°£
+        //ËÆæÁΩÆÂÅúÊ≠¢Êó∂ÔºåÊòØÂê¶Âç∏ËΩΩÊâÄÊúâÊèí‰ª∂„ÄÇ
         esMODS_MIoctrl(robin_hced, CEDAR_CMD_SET_STOP_MODE, cedar_stop_mode, NULL);
-        //…Ë÷√«–ªªœ¬“ª ◊ ±£¨ «∑ÒŒﬁ∑Ï«–ªª
+        //ËÆæÁΩÆÂàáÊç¢‰∏ã‰∏ÄÈ¶ñÊó∂ÔºåÊòØÂê¶Êó†ÁºùÂàáÊç¢
         esMODS_MIoctrl(robin_hced, CEDAR_CMD_SET_FILE_SWITCH_VPLY_MODE, switch_vplay_mode, NULL);
+        call_back = esKRNL_GetCallBack((__pCBK_t)CB_UserDef_LBC);
+        esMODS_MIoctrl(robin_hced, CEDAR_CMD_USER_SET_LBC_MODE, 0, (void *)call_back);
+        call_back = esKRNL_GetCallBack((__pCBK_t)CB_UserDef_Scaledown);
+        esMODS_MIoctrl(robin_hced, CEDAR_CMD_USER_SET_SCALEDOWN, 0, (void *)call_back);
+        esMODS_MIoctrl(robin_hced, CEDAR_CMD_SET_AUDIO_DEV_INTERFACE, 0, NULL);
     }
 
     return 0;

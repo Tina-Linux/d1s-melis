@@ -1,27 +1,40 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : monkey.h
-* By        : Andy.zhang
-* Func      : monkey core interface
-* Version   : v1.0
-* ============================================================================================================
-* 2009-11-3 9:39:42  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef __MONKEY_H__
 #define __MONKEY_H__
 
 typedef void *H_MKC;
 
-/* ±àÂë¸ñÊ½ */
+/* ç¼–ç æ ¼å¼ */
 typedef enum
 {
     MK_CHAR_ENCODE_UNKNOWN = 0,
@@ -31,7 +44,7 @@ typedef enum
     MK_CHAR_ENCODE_UNICODE_BIG
 } MkEncode;
 
-/* Ğı×ª·½Ïò */
+/* æ—‹è½¬æ–¹å‘ */
 typedef enum
 {
     MK_ROTATE_0 = 1,
@@ -40,7 +53,7 @@ typedef enum
     MK_ROTATE_270
 } MkRotate;
 
-/* ÊéÇ©Ñ¡Ïî */
+/* ä¹¦ç­¾é€‰é¡¹ */
 typedef enum
 {
     MK_BMK_1 = 1,
@@ -54,7 +67,7 @@ typedef enum
     MK_BMK_
 } MkBmk;
 
-/* ×ÖÌå */
+/* å­—ä½“ */
 typedef enum
 {
     MK_FONT_0 = 1,
@@ -62,7 +75,7 @@ typedef enum
     MK_FONT_
 } MkFont;
 
-/* ÑÕÉ« */
+/* é¢œè‰² */
 typedef enum
 {
     MK_COLOR_BLACK = 1,
@@ -73,14 +86,14 @@ typedef enum
     MK_COLOR_
 } MkColor;
 
-/* Ò³ÇĞ»»Ä£Ê½ */
+/* é¡µåˆ‡æ¢æ¨¡å¼ */
 typedef enum
 {
-    MK_SWITCH_NO = 1,       // ÎŞÇĞ»»Ğ§¹û
-    MK_SWITCH_GLIDE         // »¬¶¯ÇĞ»»
+    MK_SWITCH_NO = 1,       // æ— åˆ‡æ¢æ•ˆæœ
+    MK_SWITCH_GLIDE         // æ»‘åŠ¨åˆ‡æ¢
 } MkSwitch;
 
-/* ÁÁ¶È */
+/* äº®åº¦ */
 typedef enum
 {
     MK_BRIGHT_0 = 1,
@@ -91,7 +104,7 @@ typedef enum
     MK_BRIGHT_
 } MkBright;
 
-/* ÉèÖÃ±³¾°Í¼Æ¬ */
+/* è®¾ç½®èƒŒæ™¯å›¾ç‰‡ */
 typedef enum
 {
     MK_BACK_1 = 1,
@@ -101,18 +114,18 @@ typedef enum
     MK_BACK_
 } MkBack;
 
-/* ×Ô¶¯ÇĞ»»Ê±¼ä*/
+/* è‡ªåŠ¨åˆ‡æ¢æ—¶é—´*/
 typedef enum
 {
-    MK_AS_0 = 1,    // ½ûÖ¹×Ô¶¯ÇĞ»»
-    MK_AS_10,       // 10s×Ô¶¯ÇĞ»»
-    MK_AS_15,       // 15s×Ô¶¯ÇĞ»»
-    MK_AS_20,       // 20s×Ô¶¯ÇĞ»»
-    MK_AS_25,       // 25s×Ô¶¯ÇĞ»»
-    MK_AS_30        // 30s×Ô¶¯ÇĞ»»
+    MK_AS_0 = 1,    // ç¦æ­¢è‡ªåŠ¨åˆ‡æ¢
+    MK_AS_10,       // 10sè‡ªåŠ¨åˆ‡æ¢
+    MK_AS_15,       // 15sè‡ªåŠ¨åˆ‡æ¢
+    MK_AS_20,       // 20sè‡ªåŠ¨åˆ‡æ¢
+    MK_AS_25,       // 25sè‡ªåŠ¨åˆ‡æ¢
+    MK_AS_30        // 30sè‡ªåŠ¨åˆ‡æ¢
 } MkAutoP;
 
-/* ĞĞĞÅÏ¢ */
+/* è¡Œä¿¡æ¯ */
 typedef struct
 {
     __s32 start;
@@ -122,69 +135,67 @@ typedef struct
 
 typedef struct
 {
-    /* gui ×ÊÔ´ */
-    H_LYR       hlyr_1;                                     //ÎÄ×ÖÍ¼²ã¾ä±ú
-    H_LYR       hlyr_2;                                     //ÎÄ×ÖÍ¼²ã¾ä±ú
-    int         contentLyrWidth;                            //Í¼²ã¿í¶È
-    int         contentLyrHeight;                           //Í¼²ã¸ß¶È
-    int         sWidth;                                     //ÆÁÄ»¿í¶È
-    int         sHeight;                                    //ÆÁÄ»¸ß¶È
+    /* gui èµ„æº */
+    H_LYR       hlyr_1;                                     //æ–‡å­—å›¾å±‚å¥æŸ„
+    H_LYR       hlyr_2;                                     //æ–‡å­—å›¾å±‚å¥æŸ„
+    int         contentLyrWidth;                            //å›¾å±‚å®½åº¦
+    int         contentLyrHeight;                           //å›¾å±‚é«˜åº¦
+    int         sWidth;                                     //å±å¹•å®½åº¦
+    int         sHeight;                                    //å±å¹•é«˜åº¦
 
-    GUI_FONT    *pFont0;                                    //×ÖÌå¾ä±ú1
-    GUI_FONT    *pFont1;                                    //×ÖÌå¾ä±ú2
+    GUI_FONT    *pFont0;                                    //å­—ä½“å¥æŸ„1
+    GUI_FONT    *pFont1;                                    //å­—ä½“å¥æŸ„2
 
-    /* ÆÁÄ»ÊôĞÔ*/
-    __u32       xStart, yStart;                             //×óÉÏ½Ç×ø±ê
-    __u32       xScrWidth, yScrHeight, lineofspace;         //ÆÁÄ»ÏÔÊ¾ÇøÓò
+    /* å±å¹•å±æ€§*/
+    __u32       xStart, yStart;                             //å·¦ä¸Šè§’åæ ‡
+    __u32       xScrWidth, yScrHeight, lineofspace;         //å±å¹•æ˜¾ç¤ºåŒºåŸŸ
 } MkcConfig;
 
 
-/* ´ò¿ª¾ä±ú*/
+/* æ‰“å¼€å¥æŸ„*/
 H_MKC mkc_open(void);
 
-/* ²éÑ¯ÉèÖÃĞÅÏ¢ */
-MkFont   mkc_getFont(H_MKC mCore);      /* ²éÑ¯µ±Ç°×ÖÌåÀàĞÍ */
-MkColor  mkc_getCharColor(H_MKC mCore); /* ²éÑ¯µ±Ç°×ÖÌåÑÕÉ« */
-MkRotate mkc_getRotate(H_MKC mCore);    /* ²éÑ¯Ğı×ª·½Ïò     */
-MkSwitch mkc_getSwitch(H_MKC mCore);    /* ²éÑ¯ÇĞ»»·½Ê½     */
-MkEncode mkc_getDefEncode(H_MKC mCore); /* ²éÑ¯Ä¬ÈÏ±àÂë·½Ê½ */
-MkBright mkc_getBright(H_MKC mCore);    /* ²éÑ¯±³¹âÇ¿¶È     */
-MkAutoP  mkc_getAutoPage(H_MKC mCore);  /* ²éÑ¯×Ô¶¯·­Ò³Ê±¼ä */
-MkBack   mkc_getBack(H_MKC mCore);      /* ²éÑ¯±³¾°Í¼Æ¬±êºÅ */
+/* æŸ¥è¯¢è®¾ç½®ä¿¡æ¯ */
+MkFont   mkc_getFont(H_MKC mCore);      /* æŸ¥è¯¢å½“å‰å­—ä½“ç±»å‹ */
+MkColor  mkc_getCharColor(H_MKC mCore); /* æŸ¥è¯¢å½“å‰å­—ä½“é¢œè‰² */
+MkRotate mkc_getRotate(H_MKC mCore);    /* æŸ¥è¯¢æ—‹è½¬æ–¹å‘     */
+MkSwitch mkc_getSwitch(H_MKC mCore);    /* æŸ¥è¯¢åˆ‡æ¢æ–¹å¼     */
+MkEncode mkc_getDefEncode(H_MKC mCore); /* æŸ¥è¯¢é»˜è®¤ç¼–ç æ–¹å¼ */
+MkBright mkc_getBright(H_MKC mCore);    /* æŸ¥è¯¢èƒŒå…‰å¼ºåº¦     */
+MkAutoP  mkc_getAutoPage(H_MKC mCore);  /* æŸ¥è¯¢è‡ªåŠ¨ç¿»é¡µæ—¶é—´ */
+MkBack   mkc_getBack(H_MKC mCore);      /* æŸ¥è¯¢èƒŒæ™¯å›¾ç‰‡æ ‡å· */
 
-/* ²éÑ¯ÎÄ¼şĞÅÏ¢ */
-__s32  mkc_getFileName(H_MKC mCore, char *fileName);    /* ²éÑ¯µ±Ç°´ò¿ªÎÄ¼şÃû³Æ*/
+/* æŸ¥è¯¢æ–‡ä»¶ä¿¡æ¯ */
+__s32  mkc_getFileName(H_MKC mCore, char *fileName);    /* æŸ¥è¯¢å½“å‰æ‰“å¼€æ–‡ä»¶åç§°*/
 
-/* ²éÑ¯ÊéÇ©Ñ¡Ïî */
-__s32  mkc_openBmk(H_MKC mCore,         MkBmk    mBmk);     /* Ìø×ªµ½Ö¸¶¨ÊéÇ©Ö¸¶¨Î»ÒÆ */
-__s32  mkc_saveBmk(H_MKC mCore,         MkBmk    mBmk);     /* ±£´æµ±Ç°Æ«ÒÆÁ¿ÎªÊéÇ© */
-__s32  mkc_getBmkOffset(H_MKC mCore,    MkBmk    mBmk);     /* ²éÑ¯µ±Ç°ÊéÇ©Æ«ÒÆ°Ù·Ö±È, Æ«ÒÆÁ¿µ¥Î»: Íò·ÖÖ®Ò» */
+/* æŸ¥è¯¢ä¹¦ç­¾é€‰é¡¹ */
+__s32  mkc_openBmk(H_MKC mCore,         MkBmk    mBmk);     /* è·³è½¬åˆ°æŒ‡å®šä¹¦ç­¾æŒ‡å®šä½ç§» */
+__s32  mkc_saveBmk(H_MKC mCore,         MkBmk    mBmk);     /* ä¿å­˜å½“å‰åç§»é‡ä¸ºä¹¦ç­¾ */
+__s32  mkc_getBmkOffset(H_MKC mCore,    MkBmk    mBmk);     /* æŸ¥è¯¢å½“å‰ä¹¦ç­¾åç§»ç™¾åˆ†æ¯”, åç§»é‡å•ä½: ä¸‡åˆ†ä¹‹ä¸€ */
 
-/* ÏÔÊ¾Ïà¹Ø */
-__s32  mkc_showConfig(H_MKC mCore,      MkcConfig *para);   /* ÅäÖÃÏÔÊ¾Ïà¹ØÊôĞÔ */
-__s32  mkc_showStart(H_MKC mCore);                          /* Ê×Ò³, ·µ»ØÒ³Ê×Æ«ÒÆÁ¿, Æ«ÒÆÁ¿µ¥Î»: Íò·ÖÖ®Ò»  */
-__s32  mkc_showNext(H_MKC mCore);                           /* ÏÂÒ»Ò³, ·µ»ØÒ³Ê×Æ«ÒÆÁ¿, Æ«ÒÆÁ¿µ¥Î»: Íò·ÖÖ®Ò»*/
-__s32  mkc_showPrev(H_MKC mCore);                           /* ÉÏÒ»Ò³, ·µ»ØÒ³Ê×Æ«ÒÆÁ¿, Æ«ÒÆÁ¿µ¥Î»: Íò·ÖÖ®Ò»*/
-__s32  mkc_showSeek(H_MKC mCore,        __s32 offset);      /* Ìø×ª¹¦ÄÜ, ·µ»ØÊµ¼ÊÒ³Ê×Æ«ÒÆÁ¿, Æ«ÒÆÁ¿µ¥Î»: Íò·ÖÖ®Ò» */
+/* æ˜¾ç¤ºç›¸å…³ */
+__s32  mkc_showConfig(H_MKC mCore,      MkcConfig *para);   /* é…ç½®æ˜¾ç¤ºç›¸å…³å±æ€§ */
+__s32  mkc_showStart(H_MKC mCore);                          /* é¦–é¡µ, è¿”å›é¡µé¦–åç§»é‡, åç§»é‡å•ä½: ä¸‡åˆ†ä¹‹ä¸€  */
+__s32  mkc_showNext(H_MKC mCore);                           /* ä¸‹ä¸€é¡µ, è¿”å›é¡µé¦–åç§»é‡, åç§»é‡å•ä½: ä¸‡åˆ†ä¹‹ä¸€*/
+__s32  mkc_showPrev(H_MKC mCore);                           /* ä¸Šä¸€é¡µ, è¿”å›é¡µé¦–åç§»é‡, åç§»é‡å•ä½: ä¸‡åˆ†ä¹‹ä¸€*/
+__s32  mkc_showSeek(H_MKC mCore,        __s32 offset);      /* è·³è½¬åŠŸèƒ½, è¿”å›å®é™…é¡µé¦–åç§»é‡, åç§»é‡å•ä½: ä¸‡åˆ†ä¹‹ä¸€ */
 
-/* ÉèÖÃÑ¡Ïî */
-__s32  mkc_setFont(H_MKC mCore,         MkFont   mFont);    /* ÉèÖÃ×ÖÌå´óĞ¡*/
-__s32  mkc_setCharColor(H_MKC mCore,    MkColor  mColor);   /* ÉèÖÃ×ÖÌåÑÕÉ«*/
-__s32  mkc_setRotate(H_MKC mCore,       MkRotate mRotate);  /* ÉèÖÃĞı×ª½Ç¶È*/
-__s32  mkc_setSwitchMode(H_MKC mCore,   MkSwitch mMode);    /* ÉèÖÃÒ³ÇĞ»»Ä£Ê½*/
-__s32  mkc_setDefEncode(H_MKC mCore,    MkEncode mEncode);  /* ÉèÖÃÄ¬ÈÏ±àÂë¸ñÊ½*/
-__s32  mkc_setBright(H_MKC mCore,       MkBright mBright);  /* ±³¾°ÁÁ¶È */
-__s32  mkc_setAutoPage(H_MKC mCore,     MkAutoP  mAutoP);   /* ×Ô¶¯»»Ò³Ê±¼ä */
-__s32  mkc_setBack(H_MKC mCore,         MkBack   mBack);    /* ±£´æ±³¾°Í¼Æ¬ÀàĞÍ */
+/* è®¾ç½®é€‰é¡¹ */
+__s32  mkc_setFont(H_MKC mCore,         MkFont   mFont);    /* è®¾ç½®å­—ä½“å¤§å°*/
+__s32  mkc_setCharColor(H_MKC mCore,    MkColor  mColor);   /* è®¾ç½®å­—ä½“é¢œè‰²*/
+__s32  mkc_setRotate(H_MKC mCore,       MkRotate mRotate);  /* è®¾ç½®æ—‹è½¬è§’åº¦*/
+__s32  mkc_setSwitchMode(H_MKC mCore,   MkSwitch mMode);    /* è®¾ç½®é¡µåˆ‡æ¢æ¨¡å¼*/
+__s32  mkc_setDefEncode(H_MKC mCore,    MkEncode mEncode);  /* è®¾ç½®é»˜è®¤ç¼–ç æ ¼å¼*/
+__s32  mkc_setBright(H_MKC mCore,       MkBright mBright);  /* èƒŒæ™¯äº®åº¦ */
+__s32  mkc_setAutoPage(H_MKC mCore,     MkAutoP  mAutoP);   /* è‡ªåŠ¨æ¢é¡µæ—¶é—´ */
+__s32  mkc_setBack(H_MKC mCore,         MkBack   mBack);    /* ä¿å­˜èƒŒæ™¯å›¾ç‰‡ç±»å‹ */
 
-__s32  mkc_getCurPageOffset(H_MKC mCore, __s32 *start, __s32 *end); /* ²éÑ¯µ±Ç°Ò³£¬Ò³Í·Ò³Î²Æ«ÒÆÁ¿*/
-__bool mkc_isHead(H_MKC mCore);                                     /* ÊÇ·ñµ½Í· */
-__bool mkc_isTail(H_MKC mCore);                                     /* ÊÇ·ñµ½Î² */
+__s32  mkc_getCurPageOffset(H_MKC mCore, __s32 *start, __s32 *end); /* æŸ¥è¯¢å½“å‰é¡µï¼Œé¡µå¤´é¡µå°¾åç§»é‡*/
+__bool mkc_isHead(H_MKC mCore);                                     /* æ˜¯å¦åˆ°å¤´ */
+__bool mkc_isTail(H_MKC mCore);                                     /* æ˜¯å¦åˆ°å°¾ */
 
 
-/* É¾³ı¾ä±ú */
+/* åˆ é™¤å¥æŸ„ */
 __s32  mkc_close(H_MKC mCore);
 
 #endif /* __MONKEY_H__ */
-
-

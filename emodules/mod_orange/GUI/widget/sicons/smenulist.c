@@ -1,30 +1,33 @@
 /*
-*******************************************************************************************************************
-*                                                           Module Orange
-*                                                   the embedded Graphical module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2008, Softwinner Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name£∫    siconlist.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
 *
-*Author£∫       William Wang
 *
-*Version :      1.1.0
-*
-*Date:          2010-5-20
-*
-*Description :  siconlist implement
-*
-*Others :       None at present.
-*
-* History :
-*
-* <Author>          <time>          <version>     <description>
-*
-* William Wang     2010-5-20         1.1.0          Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __SICONLIST_C__
 #define __SICONLIST_C__
@@ -32,7 +35,7 @@
 #include "sicons_i.h"
 
 //------------------------------------------------------------------------------------------------------------
-//¥¥Ω®iconList
+//ÂàõÂª∫iconList
 
 //==================================================================
 //function name:    SIconList_Create
@@ -65,7 +68,7 @@ __icons_iconlist_t  *SIconList_Create(void)
 }
 
 //------------------------------------------------------------------------------------------------------------
-//≤Â»Îitem
+//ÊèíÂÖ•item
 
 //==================================================================
 //function name:    SIconList_InsertAfter
@@ -119,7 +122,7 @@ __u32 SIconList_InsertAfter(__icons_iconlist_t *iconlist, __icons_iconitem_t *af
 
 
 //------------------------------------------------------------------------------------------------------------
-//…æ≥˝item
+//Âà†Èô§item
 
 //==================================================================
 //function name:    SIconList_DelItem
@@ -217,7 +220,7 @@ __u32    SIconList_DelItem(__icons_iconlist_t *iconlist, __icons_iconitem_t *ico
 
 
 //------------------------------------------------------------------------------------------------------------
-// …æ≥˝»´≤øitem
+// Âà†Èô§ÂÖ®ÈÉ®item
 
 //==================================================================
 //function name:    SIconList_DelAll
@@ -414,7 +417,7 @@ __s32  SIconList_GetCurPageNum(__icons_iconlist_t *iconlist)
 }
 
 //------------------------------------------------------------------------------------------------------------
-//ÃÌº”µΩŒ≤≤ø
+//Ê∑ªÂä†Âà∞Â∞æÈÉ®
 
 //==================================================================
 //function name:    SIconList_AddTail
@@ -460,7 +463,7 @@ __u32    SIconList_AddTail(__icons_iconlist_t *iconlist,  __icons_iconitem_t *ic
 
 
 //------------------------------------------------------------------------------------------------------------
-// ÃÌº”µΩÕ∑≤ø
+// Ê∑ªÂä†Âà∞Â§¥ÈÉ®
 
 //==================================================================
 //function name:    SIconList_AddHead
@@ -551,7 +554,7 @@ __icons_iconitem_t *SIconList_GetIconitem(__icons_iconlist_t *iconlist, __s32 in
     return  ret_item;
 }
 //------------------------------------------------------------------------------------------------------------
-//»°µ√Õ∑itemµƒ÷∏’Î
+//ÂèñÂæóÂ§¥itemÁöÑÊåáÈíà
 
 //==================================================================
 //function name:    SIconList_GetHead
@@ -575,7 +578,7 @@ __icons_iconitem_t *SIconList_GetHead(__icons_iconlist_t *iconlist)
 }
 
 //------------------------------------------------------------------------------------------------------------
-//»°µ√Œ≤itemµƒ÷∏’Î
+//ÂèñÂæóÂ∞æitemÁöÑÊåáÈíà
 
 //==================================================================
 //function name:    SIconList_GetTail
@@ -601,7 +604,7 @@ __icons_iconitem_t *SIconList_GetTail(__icons_iconlist_t *iconlist)
 
 
 //------------------------------------------------------------------------------------------------------------
-//»°µ√itemµƒ ˝ƒø
+//ÂèñÂæóitemÁöÑÊï∞ÁõÆ
 
 //==================================================================
 //function name:    SIconList_GetItemCount
@@ -628,7 +631,7 @@ __u32    SIconList_GetItemCount(__icons_iconlist_t *iconlist)
 }
 
 //------------------------------------------------------------------------------------------------------------
-//œ˙ªŸiconList
+//ÈîÄÊØÅiconList
 
 //==================================================================
 //function name:    SIconList_Destroy

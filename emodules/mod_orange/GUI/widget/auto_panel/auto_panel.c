@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 
 #ifndef __GUI_AUTO_PANEL_C__
@@ -26,7 +57,7 @@
 #if 1
 
 
-//�Ƕȵ�����ת��
+//角度到弧度转化
 
 static int InitDesBmp(AutoPanel *this, BmpInfo *bmp)
 {
@@ -306,23 +337,23 @@ static int RotateBmp(BmpInfo *dstBmp, BmpInfo *srcBmp, int angle)
     {
         for (j = 0; j < desWidth; j++)
         {
-            //ת������ͼ��Ϊ���ĵ�����ϵ������������ת
+            //转换到以图像为中心的坐标系，并进行逆旋转
             tX = (j - tmpDesW) * cosa + (-i + tmpDesH) * sina;
             tY = -(j - tmpDesW) * sina + (-i + tmpDesH) * cosa;
             //printf("i=%d, j=%d\n", i, j);
 
-            //���������겻��ԭͼ���ڣ��򲻸�ֵ
+            //如果这个坐标不在原图像内，则不赋值
             if (tX > (tmpSrcW - 1) || tX < -(tmpSrcW - 1) || tY > (tmpSrcH - 1) || tY < -(tmpSrcH - 1))
             {
                 continue;
             }
 
-            //��ת����ԭ����ϵ��
+            //再转换到原坐标系下
             tXN = tX + tmpSrcW;
             tmp = (tY - tmpSrcH);
             tYN = (tmp < 0) ? (-tmp) : tmp;
 
-            // Ϊ�˽����ת����ľ�ݣ������ٽ����ؼ�Ȩƽ��ֵ�㷨
+            // 为了解决旋转引起的锯齿，引入临近像素加权平均值算法
             tmpX = tXN * 100;
             tmpY = tYN * 100;
             tXD = tmpX / 100;
@@ -336,7 +367,7 @@ static int RotateBmp(BmpInfo *dstBmp, BmpInfo *srcBmp, int angle)
             sB10 = &srcBuf[tYD * lineSize + (tXD + 1) * byteCount];
             sB01 = &srcBuf[(tYD + 1) * lineSize + tXD * byteCount];
             sB11 = &srcBuf[(tYD + 1) * lineSize + (tXD + 1) * byteCount];
-            // a r g b��Ȩ
+            // a r g b加权
             dB[0] = (sB00[0] * (100 - fx) * (100 - fy) + sB10[0] * (fx) * (100 - fy) + sB01[0] * (100 - fx) * (fy) + sB11[0] * (fx) * (fy)) / 10000;
             dB[1] = (sB00[1] * (100 - fx) * (100 - fy) + sB10[1] * (fx) * (100 - fy) + sB01[1] * (100 - fx) * (fy) + sB11[1] * (fx) * (fy)) / 10000;
             dB[2] = (sB00[2] * (100 - fx) * (100 - fy) + sB10[2] * (fx) * (100 - fy) + sB01[2] * (100 - fx) * (fy) + sB11[2] * (fx) * (fy)) / 10000;
@@ -350,15 +381,15 @@ static int RotateBmp(BmpInfo *dstBmp, BmpInfo *srcBmp, int angle)
     {
         for (j = 0; j < desWidth; j++)
         {
-            //ת������ͼ��Ϊ���ĵ�����ϵ������������ת
+            //转换到以图像为中心的坐标系，并进行逆旋转
             tX = (j - desWidth / 2) * cos(RADIAN(360 - angle)) + (-i + desHeight / 2) * sin(RADIAN(360 - angle));
             tY = -(j - desWidth / 2) * sin(RADIAN(360 - angle)) + (-i + desHeight / 2) * cos(RADIAN(360 - angle));
-            //���������겻��ԭͼ���ڣ��򲻸�ֵ
+            //如果这个坐标不在原图像内，则不赋值
             if (tX > srcW / 2 || tX < -srcW / 2 || tY > srcH / 2 || tY < -srcH / 2)
             {
                 continue;
             }
-            //��ת����ԭ����ϵ��
+            //再转换到原坐标系下
             //tXN = tX + srcW / 2;
             //tYN = abs(tY - srcH / 2);
             tXN = tX + tmpSrcW;
@@ -368,7 +399,7 @@ static int RotateBmp(BmpInfo *dstBmp, BmpInfo *srcBmp, int angle)
             tYD = tYN;
 
             //printf("%d, %d, %d, %d\n", j, i, tXN, tYN);
-            //ֵ����
+            //值拷贝
             memcpy(&desBuf[i * desLineSize + j * bitCount / 8], &srcBuf[tYD * lineSize + tXD * bitCount / 8], 4);
         }
     }
@@ -663,7 +694,7 @@ int DestroyAutoPanel(void *hdle)
 
 }
 /*
-Ӧ�õ���ʾ��
+应用调用示例
 init:
 
     autoPanel = (AutoPanel *)GUI_CreateAutoPanel(0);
@@ -683,11 +714,11 @@ destory:
     autoPanel->AtpUnloadBmp(autoPanel, &autoPanel->bmBmp);
     GUI_DestroyAutoPanel(autoPanel);
 
-1����ͼ��ʱ����ͼҪ��32bit��.bmp��ʽ��ͼƬ��
-2����ͼ��ʱ����ͼ����������ε�ͼƬ��
-3��ʱ����ͼָ�벿��͸���ȣ�aֵ����Ϊ0����������͸���ȣ�aֵ��Ϊ0��
-4��ʱ����ͼ��ת������Ҫ��ͼƬ�����ġ�
-5��֧��1~3��ָ����Ǳ��̣������Ҫ���룬ֻҪ������ж������ͼƬ���ɡ�
+1、底图及时分秒图要是32bit的.bmp格式的图片。
+2、底图、时分秒图最好是正方形的图片。
+3、时分秒图指针部分透明度（a值）不为0，其他部分透明度（a值）为0。
+4、时分秒图旋转的中心要是图片的中心。
+5、支持1~3个指针的仪表盘，如果不要秒针，只要不加载卸载秒针图片即可。
 
 */
 #endif

@@ -1,0 +1,5 @@
+menuconfig COMPONENT_MTP
+    bool "Enable mtp support"
+    depends on RT_USING_FINSH && DRIVERS_USB_GADGET_MTP
+
+

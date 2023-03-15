@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <log.h>
 #include "app_multi_screen_home.h"
 #include "desktop_scene.h"
@@ -151,7 +182,7 @@ static __bool _home_has_encrypt_card(void)
 
         if (target.debugenable == EPDK_TRUE)
         {
-            return EPDK_TRUE;  //112350 »Áπ˚ «µ˜ ‘£¨‘Úƒ¨»œŒ™”–Õ‚…Ë
+            return EPDK_TRUE;  //112350 Â¶ÇÊûúÊòØË∞ÉËØïÔºåÂàôÈªòËÆ§‰∏∫ÊúâÂ§ñËÆæ
         }
     }
     ret = rat_get_partition_name(RAT_USB_DISK, diskname, 0);
@@ -657,7 +688,7 @@ H_WIN app_home_create(root_para_t  *para)
     __log("********  enter multi screen home application  **************");
     __inf("****************************************************************************************");
 
-    gscene_hbar_set_state(HBAR_ST_HIDE);    //œ»hide £¨¥¥Ω®ÕÍ÷˜ΩÁ√Ê∫Û‘Ÿshow
+    gscene_hbar_set_state(HBAR_ST_HIDE);    //ÂÖàhide ÔºåÂàõÂª∫ÂÆå‰∏ªÁïåÈù¢ÂêéÂÜçshow
 
     gscene_bgd_set_state(BGD_STATUS_SHOW);
 

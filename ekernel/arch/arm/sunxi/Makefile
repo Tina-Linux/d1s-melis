@@ -1,0 +1,1 @@
+obj-$(CONFIG_ARCH_SUN8IW19) += sun8iw19/

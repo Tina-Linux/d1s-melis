@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 #include <typedef.h>
 #include <libc.h>
@@ -31,7 +62,7 @@ static __bool has_init = 0;
 *               -   open the rat process.
 *
 *  Parameters:
-*   rat_root_type -     rat_root_t RAT_TF¡¢RAT_USB
+*   rat_root_type -     rat_root_t RAT_TFã€RAT_USB
 *   media_type  -   types of media file.
 *   OnceCnt     -   read items number when read once.
 *                   if zero, I will read all items one time.
@@ -123,8 +154,8 @@ HRAT rat_open(const char *pDir, rat_media_type_t media_type, __u32 OnceCnt)
     __u64 file_type;
     __bool rat_npl_need_update;
     __bool rat_list_research;
-    rat_list_research = EPDK_FALSE;//ÎÄ¼şÁĞ±íÊÇ·ñ±»ÖØĞÂËÑË÷
-    rat_npl_need_update = EPDK_FALSE;//ÎÄ¼şÁĞ±í±»ÖØĞÂËÑË÷ºó£¬²¥·ÅÁĞ±íÊÇ·ñĞèÒª¸üĞÂ
+    rat_list_research = EPDK_FALSE;//æ–‡ä»¶åˆ—è¡¨æ˜¯å¦è¢«é‡æ–°æœç´¢
+    rat_npl_need_update = EPDK_FALSE;//æ–‡ä»¶åˆ—è¡¨è¢«é‡æ–°æœç´¢åï¼Œæ’­æ”¾åˆ—è¡¨æ˜¯å¦éœ€è¦æ›´æ–°
     __msg("rat_open: pDir=%s media_type=%d OnceCnt=%d", pDir, media_type, OnceCnt);
     RAT_ENTER_CRITICAL_SECTION;
 
@@ -147,7 +178,7 @@ HRAT rat_open(const char *pDir, rat_media_type_t media_type, __u32 OnceCnt)
                 return NULL;
             }
 
-            if (0 == g_rat_list[i].modify_flag) //Èç¹û¸ÃÁĞ±íÎ´±»¸´ÖÆ»òÉ¾³ı¹ı£¬ÔòÎŞĞèÖØĞÂËÑË÷
+            if (0 == g_rat_list[i].modify_flag) //å¦‚æœè¯¥åˆ—è¡¨æœªè¢«å¤åˆ¶æˆ–åˆ é™¤è¿‡ï¼Œåˆ™æ— éœ€é‡æ–°æœç´¢
             {
                 g_rat_list[i].open_cnt++;
                 ScanMoveToFirst(g_rat_list[i].hscan);
@@ -158,7 +189,7 @@ HRAT rat_open(const char *pDir, rat_media_type_t media_type, __u32 OnceCnt)
             {
                 rat_list_research = EPDK_TRUE;
 
-                //Èç¹û²¥·ÅÁĞ±íËùÔÚÎÄ¼şÁĞ±í±»ÖØĞÂËÑË÷ÁË£¬ÔòĞè°ÑÎÄ¼şÁĞ±íÍ¬²½µ½²¥·ÅÁĞ±í
+                //å¦‚æœæ’­æ”¾åˆ—è¡¨æ‰€åœ¨æ–‡ä»¶åˆ—è¡¨è¢«é‡æ–°æœç´¢äº†ï¼Œåˆ™éœ€æŠŠæ–‡ä»¶åˆ—è¡¨åŒæ­¥åˆ°æ’­æ”¾åˆ—è¡¨
                 if (NULL != g_rat_npl[media_type]
                     && g_rat_npl[media_type] == &g_rat_list[i])
                 {
@@ -225,8 +256,8 @@ HRAT rat_open(const char *pDir, rat_media_type_t media_type, __u32 OnceCnt)
         return NULL;
     }
 
-    //ÎÄ¼şÁĞ±í±»ÖØĞÂËÑË÷ºó£¬ÆäÁ´±íÊ×µØÖ·±»´æ´¢µÄÎ»ÖÃ²»±ä£¬²»ĞèÒªÖØĞÂ²éÕÒ´æ´¢Î»ÖÃ
-    //ÕâÑù¿ÉÒÔ±ÜÃâÎÄ¼şÁĞ±íÖØĞÂËÑË÷ºó£¬²¥·ÅÁĞ±íÃ»ÓĞ±»Í¬²½µÄÎÊÌâ
+    //æ–‡ä»¶åˆ—è¡¨è¢«é‡æ–°æœç´¢åï¼Œå…¶é“¾è¡¨é¦–åœ°å€è¢«å­˜å‚¨çš„ä½ç½®ä¸å˜ï¼Œä¸éœ€è¦é‡æ–°æŸ¥æ‰¾å­˜å‚¨ä½ç½®
+    //è¿™æ ·å¯ä»¥é¿å…æ–‡ä»¶åˆ—è¡¨é‡æ–°æœç´¢åï¼Œæ’­æ”¾åˆ—è¡¨æ²¡æœ‰è¢«åŒæ­¥çš„é—®é¢˜
     __wrn("rat_list_research");
 
     if (EPDK_FALSE == rat_list_research)
@@ -254,8 +285,8 @@ HRAT rat_open(const char *pDir, rat_media_type_t media_type, __u32 OnceCnt)
     g_rat_list[i].hscan = hscan;
     g_rat_list[i].media_type = media_type;
 
-    //Èç¹ûÁĞ±í±»ÖØĞÂËÑË÷£¬ËµÃ÷²»ÊÇµÚÒ»´ÎËÑË÷£¬ÒıÓÃ¼ÆÊı¼Ó1¡£
-    //·ñÔòÒıÓÃ¼ÆÊıÎª1
+    //å¦‚æœåˆ—è¡¨è¢«é‡æ–°æœç´¢ï¼Œè¯´æ˜ä¸æ˜¯ç¬¬ä¸€æ¬¡æœç´¢ï¼Œå¼•ç”¨è®¡æ•°åŠ 1ã€‚
+    //å¦åˆ™å¼•ç”¨è®¡æ•°ä¸º1
     if (EPDK_FALSE == rat_list_research)
     {
         g_rat_list[i].open_cnt = 1;
@@ -265,20 +296,20 @@ HRAT rat_open(const char *pDir, rat_media_type_t media_type, __u32 OnceCnt)
         g_rat_list[i].open_cnt++;
     }
 
-    if (g_rat_list[i].open_cnt < 1) //±£»¤Ò»ÏÂ
+    if (g_rat_list[i].open_cnt < 1) //ä¿æŠ¤ä¸€ä¸‹
     {
         g_rat_list[i].open_cnt = 1;
     }
 
     eLIBs_strcpy(g_rat_list[i].str_path, pDir);
 
-    //Èç¹û²¥·ÅÁĞ±í±»Í¬²½£¬ÔòĞèÖØĞÂÉè¶¨ÕıÈ·µÄnpl_cur_index
+    //å¦‚æœæ’­æ”¾åˆ—è¡¨è¢«åŒæ­¥ï¼Œåˆ™éœ€é‡æ–°è®¾å®šæ­£ç¡®çš„npl_cur_index
     if (EPDK_TRUE == rat_npl_need_update)
     {
         __s32 total_cnt;
         total_cnt = ScanGetCurCnt(hscan);
 
-        //g_rat_list[i].npl_cur_index = 0;  //²»ÔÚÕâÀï×ö£¬ÓÉÓ¦ÓÃ³ÌĞò´ÓrobinÈ¡µÃÎÄ¼şÃû£¬ÖØĞÂµ÷ÓÃset_file_for_play
+        //g_rat_list[i].npl_cur_index = 0;  //ä¸åœ¨è¿™é‡Œåšï¼Œç”±åº”ç”¨ç¨‹åºä»robinå–å¾—æ–‡ä»¶åï¼Œé‡æ–°è°ƒç”¨set_file_for_play
 
         if (g_rat_list[i].npl_cur_index > total_cnt - 1)
         {
@@ -507,7 +538,7 @@ __s32 rat_close(HRAT hRat)
                 g_rat_list[i].str_path[0] = 0;
                 g_rat_list[i].modify_flag = 0;
 
-                if (g_rat_npl[g_rat_list[i].media_type] == pRatList)//É¾³ı²¥·ÅÁĞ±í
+                if (g_rat_npl[g_rat_list[i].media_type] == pRatList)//åˆ é™¤æ’­æ”¾åˆ—è¡¨
                 {
                     g_rat_npl[g_rat_list[i].media_type] = NULL;
                 }
@@ -607,7 +638,7 @@ __s32 rat_set_file_for_play(HRAT hRat, char *file)
     RAT_ENTER_CRITICAL_SECTION;
     g_rat_npl[pRatList->media_type] = pRatList;
     RAT_LEAVE_CRITICAL_SECTION;
-    //ÉèÖÃµ±Ç°²¥·ÅÌõÄ¿
+    //è®¾ç½®å½“å‰æ’­æ”¾æ¡ç›®
     hnpl = rat_npl_open(pRatList->media_type);
 
     if (NULL != hnpl)
@@ -799,7 +830,7 @@ __s32 rat_clear_all_list_by_root(void *arg)
     RAT_ENTER_CRITICAL_SECTION;
     __msg("rat_clear_all_list, str_cur=%s", str_cur);
 
-    //É¾³ı²¥·ÅÁĞ±í
+    //åˆ é™¤æ’­æ”¾åˆ—è¡¨
     for (i = 0 ; i < RAT_MEDIA_TYPE_MAX ; i++)
     {
         if (g_rat_npl[i])
@@ -818,7 +849,7 @@ __s32 rat_clear_all_list_by_root(void *arg)
         }
     }
 
-    //É¾³ıÎÄ¼şÁĞ±í
+    //åˆ é™¤æ–‡ä»¶åˆ—è¡¨
     for (i = 0 ; i < RAT_MAX_LIST_CNT ; i++)
     {
         if (g_rat_list[i].hscan)
@@ -853,7 +884,7 @@ __s32 rat_clear_all_list(void)
     RAT_ENTER_CRITICAL_SECTION;
     __msg("rat_clear_all_list");
 
-    //É¾³ı²¥·ÅÁĞ±í
+    //åˆ é™¤æ’­æ”¾åˆ—è¡¨
     for (i = 0 ; i < RAT_MEDIA_TYPE_MAX ; i++)
     {
         if (g_rat_npl[i])
@@ -871,7 +902,7 @@ __s32 rat_clear_all_list(void)
         }
     }
 
-    //É¾³ıÎÄ¼şÁĞ±í
+    //åˆ é™¤æ–‡ä»¶åˆ—è¡¨
     for (i = 0 ; i < RAT_MAX_LIST_CNT ; i++)
     {
         if (g_rat_list[i].hscan)

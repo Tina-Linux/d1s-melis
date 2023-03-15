@@ -1,0 +1,15 @@
+menuconfig SUBSYS_BLKPART
+    bool "blkpart support"
+    default y
+    help
+        Blkpart Components.
+
+if SUBSYS_BLKPART
+
+config BLKPART_SHOW_INFO_CMD
+    bool "blkpart information cmd"
+    default n
+    help
+        Show All partitions information
+
+endif

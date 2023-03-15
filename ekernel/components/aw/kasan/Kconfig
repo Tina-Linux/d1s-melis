@@ -1,0 +1,18 @@
+menuconfig KASAN
+    bool "Enable Kasan Support"
+    depends on SLAB_DEBUG
+    default n
+
+if KASAN
+	config KASAN_SHADOW_OFFSET
+	hex "kasan shadow offset"
+	default 0x54000000
+
+	config KASAN_INLINE
+	bool "kasan inline"
+	default n
+
+	config KASAN_REPEAT_REPORT_ERROR
+	bool "kasan repeat report error"
+	default y
+endif

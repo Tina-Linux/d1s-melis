@@ -1,19 +1,34 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-* File      :   music_player.h
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* By        :   Libaiao
-* Func  :
-* Version   :   v1.0
-* ============================================================================================================
-* 2010-5-3 15:24:52  Libaiao  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include <log.h>
 #include "beetles_app.h"
 #include "music.h"
@@ -169,9 +184,9 @@ static  __s32  set_charset(__epdk_charset_enm_e  e_charset)
 }
 
 //***********************************************************************************
-//ÒÔÏÂÒÔstatus½áÊøµÄº¯ÊıÃû£¬¶¼ÊôÓÚHeadbar·¶Î§ÄÚ
+//ä»¥ä¸‹ä»¥statusç»“æŸçš„å‡½æ•°åï¼Œéƒ½å±äºHeadbarèŒƒå›´å†…
 
-//¸ù¾İModeÔÚHeaderBarÏÔÊ¾¶ÔÓ¦µÄ×´Ì¬icon
+//æ ¹æ®Modeåœ¨HeaderBaræ˜¾ç¤ºå¯¹åº”çš„çŠ¶æ€icon
 __s32 DrawMusicPlayModeStatus(rat_play_mode_e mode)
 {
 #if 0
@@ -218,7 +233,7 @@ __s32 DrawMusicPlayModeStatus(rat_play_mode_e mode)
     return EPDK_OK;
 }
 
-//¸ù¾İEQ ModeÔÚHeaderBarÏÔÊ¾¶ÔÓ¦µÄ×´Ì¬icon
+//æ ¹æ®EQ Modeåœ¨HeaderBaræ˜¾ç¤ºå¯¹åº”çš„çŠ¶æ€icon
 __s32 DrawMusicEQModeStatus(music_player_ctrl_t *this)
 {
     void *pic_buf = NULL;
@@ -228,7 +243,7 @@ __s32 DrawMusicEQModeStatus(music_player_ctrl_t *this)
     char str[32];
     __s32 lang_id;
     headbar_ui = music_get_headbar_ui_param();
-#if 0//ÏÔÊ¾ÎÄ×Ö 
+#if 0//æ˜¾ç¤ºæ–‡å­— 
     rect.x0 = headbar_ui->EQ_mode_rect.x - 30;
     rect.y0 = headbar_ui->EQ_mode_rect.y;
     rect.x1 = rect.x0 + 54;
@@ -283,7 +298,7 @@ __s32 DrawMusicEQModeStatus(music_player_ctrl_t *this)
     dsk_langres_get_menu_text(lang_id, str, sizeof(str));
     GUI_CharSetToEncode(dsk_get_langres_charset());
     GUI_DispStringInRect(str, &rect, GUI_TA_VCENTER | GUI_TA_RIGHT);
-#else//ÏÔÊ¾Í¼Æ¬
+#else//æ˜¾ç¤ºå›¾ç‰‡
     /* X = headbar_ui->EQ_mode_rect.x;
     Y = headbar_ui->EQ_mode_rect.y;
 
@@ -338,7 +353,7 @@ __s32 DrawMusicEQModeStatus(music_player_ctrl_t *this)
     return EPDK_OK;
 }
 
-//¸ù¾İ±³¹â³ÖĞøÊ±¼äÔÚHeaderBarÏÔÊ¾¶ÔÓ¦µÄ×´Ì¬icon
+//æ ¹æ®èƒŒå…‰æŒç»­æ—¶é—´åœ¨HeaderBaræ˜¾ç¤ºå¯¹åº”çš„çŠ¶æ€icon
 __s32 DrawMusicBLLastTimeStatus(music_BL_time_e BL_time)
 {
 #if 0
@@ -381,7 +396,7 @@ __s32 DrawMusicBLLastTimeStatus(music_BL_time_e BL_time)
     return EPDK_OK;
 }
 
-//HeaderBarÏÔÊ¾¶ÔÓ¦µÄÒôÁ¿×´Ì¬icon
+//HeaderBaræ˜¾ç¤ºå¯¹åº”çš„éŸ³é‡çŠ¶æ€icon
 __s32 DrawMusicVolumeStatus(__s32 volume)
 {
 #if 0
@@ -421,7 +436,7 @@ __s32 DrawMusicVolumeStatus(__s32 volume)
     return EPDK_OK;
 }
 
-//HeaderBarÏÔÊ¾¶ÔÓ¦µÄµç³Ø×´Ì¬ĞÅÏ¢
+//HeaderBaræ˜¾ç¤ºå¯¹åº”çš„ç”µæ± çŠ¶æ€ä¿¡æ¯
 __s32 DrawMusicBatteryStatus(power_level_e level)
 {
 #if 0
@@ -471,7 +486,7 @@ __s32 DrawMusicBatteryStatus(power_level_e level)
     return EPDK_OK;
 }
 
-//HeaderBarÏÔÊ¾¶ÔÓ¦µÄÏµÍ³Ê±¼ä
+//HeaderBaræ˜¾ç¤ºå¯¹åº”çš„ç³»ç»Ÿæ—¶é—´
 __s32 DrawMusicSystemTime(__awos_time_t *sys_time)
 {
 #if 0
@@ -480,9 +495,9 @@ __s32 DrawMusicSystemTime(__awos_time_t *sys_time)
     char time_text[12];
     headbar_ui = music_get_headbar_ui_param();
     eLIBs_memset(time_text, 0, sizeof(time_text));
-    uint2str(sys_time->hour, time_text);            //×ª»»ÎªÁ½Î»×Ö·û£¬×Ô¶¯¼ÓÁã
+    uint2str(sys_time->hour, time_text);            //è½¬æ¢ä¸ºä¸¤ä½å­—ç¬¦ï¼Œè‡ªåŠ¨åŠ é›¶
     eLIBs_strcat(time_text, ":");
-    uint2str(sys_time->minute, time_text + 3);          //×ª»»ÎªÁ½Î»×Ö·û£¬×Ô¶¯¼ÓÁã
+    uint2str(sys_time->minute, time_text + 3);          //è½¬æ¢ä¸ºä¸¤ä½å­—ç¬¦ï¼Œè‡ªåŠ¨åŠ é›¶
     //eLIBs_sprintf(time_text, "%d",sys_time->hour);
     time_rect.x0  = headbar_ui->sys_time_rect.x;
     time_rect.y0  = headbar_ui->sys_time_rect.y;
@@ -521,7 +536,7 @@ __s32 DrawMusicHeadbar(music_player_ctrl_t *player_ctrl)
 
 
 
-//ÒÔÉÏÒÔstatus½áÊøµÄº¯ÊıÃû£¬¶¼ÊôÓÚHeadbar·¶Î§ÄÚ
+//ä»¥ä¸Šä»¥statusç»“æŸçš„å‡½æ•°åï¼Œéƒ½å±äºHeadbarèŒƒå›´å†…
 //---------------------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------------------------
@@ -653,7 +668,7 @@ __s32 DrawMusicPlayModeButton(rat_play_mode_e mode, music_btn_status_e status)
 }
 
 
-//¸ù¾İEQ Mode ÉèÖÃbutton, focused or not
+//æ ¹æ®EQ Mode è®¾ç½®button, focused or not
 __s32 DrawMusicEQModeButton(music_EQ_mode_e mode, music_btn_status_e status)
 {
 #if 0
@@ -713,7 +728,7 @@ __s32 DrawMusicEQModeButton(music_EQ_mode_e mode, music_btn_status_e status)
 }
 
 
-//¸ù¾İBackground Light Time  ÉèÖÃbutton, focused or not
+//æ ¹æ®Background Light Time  è®¾ç½®button, focused or not
 __s32 DrawMusicBLTimeButton(music_BL_time_e time, music_btn_status_e status)
 {
 #if 0
@@ -772,7 +787,7 @@ __s32 DrawMusicBLTimeButton(music_BL_time_e time, music_btn_status_e status)
     return EPDK_OK;
 }
 
-//»æÖÆplay previous button, focused or not
+//ç»˜åˆ¶play previous button, focused or not
 __s32 DrawMusicPlayPreButton(music_btn_status_e status)
 {
 #if 0
@@ -807,7 +822,7 @@ __s32 DrawMusicPlayPreButton(music_btn_status_e status)
     return EPDK_OK;
 }
 
-//»æÖÆplay next button, focused or not
+//ç»˜åˆ¶play next button, focused or not
 __s32 DrawMusicPlayNextButton(music_btn_status_e status)
 {
 #if 0
@@ -842,7 +857,7 @@ __s32 DrawMusicPlayNextButton(music_btn_status_e status)
     return EPDK_OK;
 }
 
-//»æÖÆplay pause button, focused or not
+//ç»˜åˆ¶play pause button, focused or not
 __s32 DrawMusicPlayPauseButton(music_btn_status_e status)
 {
 #if 0
@@ -896,7 +911,7 @@ __s32 DrawMusicPlayPauseButton(music_btn_status_e status)
 }
 
 
-//»æÖÆplay backward button, focused or not
+//ç»˜åˆ¶play backward button, focused or not
 __s32 DrawMusicPlayBackwardButton(music_btn_status_e status)
 {
 #if 0
@@ -933,7 +948,7 @@ __s32 DrawMusicPlayBackwardButton(music_btn_status_e status)
 
 
 
-//»æÖÆplay backward button, focused or not
+//ç»˜åˆ¶play backward button, focused or not
 __s32 DrawMusicPlayForwardButton(music_btn_status_e status)
 {
 #if 0
@@ -970,7 +985,7 @@ __s32 DrawMusicPlayForwardButton(music_btn_status_e status)
 
 
 
-//»æÖÆplay backward button, focused or not
+//ç»˜åˆ¶play backward button, focused or not
 __s32 DrawMusicPlayStatusButton(music_play_status_e status)
 {
 #if 0
@@ -1015,7 +1030,7 @@ __s32 CleanMusicPlayingTime(void)
 #endif
     return EPDK_OK;
 }
-//ÏÔÊ¾ÌáÊ¾×Ö·û
+//æ˜¾ç¤ºæç¤ºå­—ç¬¦
 __s32 DrawMsicButtonHintText(__s32 TextID)
 {
 #if 0
@@ -1217,7 +1232,7 @@ __s32 DrawMusicAlbum(music_player_ctrl_t *This, const char *file, GUI_RECT *clea
     return ret;
 }
 
-//»æÖÆplay next button, focused or not
+//ç»˜åˆ¶play next button, focused or not
 __s32 DrawMusicUsbDiskButton(music_btn_status_e status)
 {
     void *pic_buf = NULL;
@@ -1248,7 +1263,7 @@ __s32 DrawMusicUsbDiskButton(music_btn_status_e status)
     return EPDK_OK;
 }
 
-//»æÖÆplay next button, focused or not
+//ç»˜åˆ¶play next button, focused or not
 __s32 DrawMusicSdCardButton(music_btn_status_e status)
 {
     void *pic_buf = NULL;
@@ -1501,7 +1516,7 @@ __s32 DrawMusicShowModeMenu(music_btn_status_e status)
     return EPDK_OK;
 }
 
-//ÏÔÊ¾ÌáÊ¾×Ö·û
+//æ˜¾ç¤ºæç¤ºå­—ç¬¦
 __s32 DrawMenuBtnText(__s32 TextID)
 {
     GUI_RECT text_rect;
@@ -1520,7 +1535,7 @@ __s32 DrawMenuBtnText(__s32 TextID)
     GUI_DispStringInRect(TextBuf, &text_rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
     return EPDK_OK;
 }
-//ÏÔÊ¾ÌáÊ¾×Ö·û
+//æ˜¾ç¤ºæç¤ºå­—ç¬¦
 __s32 DrawABText(__s32 TextID)
 {
     GUI_RECT text_rect;
@@ -1540,7 +1555,7 @@ __s32 DrawABText(__s32 TextID)
     return EPDK_OK;
 }
 
-//ÏÔÊ¾ÌáÊ¾×Ö·û
+//æ˜¾ç¤ºæç¤ºå­—ç¬¦
 __s32 DrawShowModeText(__s32 TextID)
 {
     GUI_RECT text_rect;
@@ -1560,7 +1575,7 @@ __s32 DrawShowModeText(__s32 TextID)
     return EPDK_OK;
 }
 
-//ÏÔÊ¾ÌáÊ¾×Ö·û
+//æ˜¾ç¤ºæç¤ºå­—ç¬¦
 __s32 DrawShowTACKText(__s32 TextID)
 {
     GUI_RECT text_rect;
@@ -1695,7 +1710,7 @@ void DrawMusicBottomBg(void)
 }
 
 
-//ÏÔÊ¾µ±Ç°²¥·ÅÊ±¼ä
+//æ˜¾ç¤ºå½“å‰æ’­æ”¾æ—¶é—´
 __s32 DrawMusicPlayingTime(__u32 time)
 {
 #if 0
@@ -1737,7 +1752,7 @@ __s32 CleanMusicTotalTime(void)
     return EPDK_OK;
 }
 
-//ÏÔÊ¾ÒôÀÖ²¥·Å×ÜÊ±¼ä
+//æ˜¾ç¤ºéŸ³ä¹æ’­æ”¾æ€»æ—¶é—´
 __s32 DrawMusicTotalTime(__u32 time)
 {
 #if 0
@@ -1761,7 +1776,7 @@ __s32 DrawMusicTotalTime(__u32 time)
     return EPDK_OK;
 }
 
-//Ö»»­½ø¶Èµã£¬²»»­±³¾°Ìõ
+//åªç”»è¿›åº¦ç‚¹ï¼Œä¸ç”»èƒŒæ™¯æ¡
 __s32 DrawMusicProgressBarPoint(__u32 total, __u32 cur_value)
 {
 #if 0
@@ -1779,7 +1794,7 @@ __s32 DrawMusicProgressBarPoint(__u32 total, __u32 cur_value)
         Y = player_ui->process_bar_body_rect.y;
         pic_buf = music_get_icon_res(ID_MUSIC_PROCESS_BAR_BODY_ICON);
         GUI_BMP_Draw(pic_buf, X, Y);
-        return EPDK_OK;                     //Ã»ÓĞÈÎºÎ½ø¶È
+        return EPDK_OK;                     //æ²¡æœ‰ä»»ä½•è¿›åº¦
     }
 
     BodyWidth = player_ui->process_bar_body_rect.width;
@@ -1833,8 +1848,8 @@ __s32 DrawMusicProgressBarPoint(__u32 total, __u32 cur_value)
 
     if (total >= total_pieces)
     {
-        average = total /  total_pieces;        //»ñµÃÆ½¾ùÃ¿·İ´ú±íµÄÖµ
-        point = cur_value / average;            //»ñµÃµ±Ç°ÏÔÊ¾µÄ½ø¶Èµã
+        average = total /  total_pieces;        //è·å¾—å¹³å‡æ¯ä»½ä»£è¡¨çš„å€¼
+        point = cur_value / average;            //è·å¾—å½“å‰æ˜¾ç¤ºçš„è¿›åº¦ç‚¹
     }
     else
     {
@@ -1855,17 +1870,17 @@ __s32 DrawMusicProgressBarPoint(__u32 total, __u32 cur_value)
     //else
     {
         X = player_ui->process_bar_point_rect.x;
-        Y = player_ui->process_bar_point_rect.y;    //point ´ÓµÚ¶ş¸öÎ»ÖÃ¿ªÊ¼ÏÔÊ¾
+        Y = player_ui->process_bar_point_rect.y;    //point ä»ç¬¬äºŒä¸ªä½ç½®å¼€å§‹æ˜¾ç¤º
         pic_buf = music_get_icon_res(ID_MUSIC_PROCESS_BAR_POINT_ICON);
 
         if (pic_buf != NULL)
         {
             for (i = 1; i <= point; i++)
             {
-                if (point == total_pieces)          //»­½áÊø²¿·Ö
+                if (point == total_pieces)          //ç”»ç»“æŸéƒ¨åˆ†
                 {
                     X = player_ui->process_bar_tail_rect.x;
-                    Y = player_ui->process_bar_tail_rect.y; //point ´ÓµÚ¶ş¸öÎ»ÖÃ¿ªÊ¼ÏÔÊ¾
+                    Y = player_ui->process_bar_tail_rect.y; //point ä»ç¬¬äºŒä¸ªä½ç½®å¼€å§‹æ˜¾ç¤º
                     pic_buf = music_get_icon_res(ID_MUSIC_PROCESS_BAR_TAIL_ICON);
                     GUI_BMP_Draw(pic_buf, X, Y);
                     break;
@@ -1881,7 +1896,7 @@ __s32 DrawMusicProgressBarPoint(__u32 total, __u32 cur_value)
     return EPDK_OK;
 }
 
-//»­½ø¶ÈÌõ,totalÎª×ÜÁ¿£¬ cur_valueÎªµ±Ç°½ø¶ÈÖµ
+//ç”»è¿›åº¦æ¡,totalä¸ºæ€»é‡ï¼Œ cur_valueä¸ºå½“å‰è¿›åº¦å€¼
 __s32 DrawMusicProgressBar(__u32 total, __u32 cur_value)
 {
 #if 0
@@ -1901,7 +1916,7 @@ __s32 DrawMusicProgressBar(__u32 total, __u32 cur_value)
     if ((total == 0) || (cur_value == 0))
     {
         //GUI_LyrWinCacheOff();
-        return EPDK_OK;                     //Ã»ÓĞÈÎºÎ½ø¶È
+        return EPDK_OK;                     //æ²¡æœ‰ä»»ä½•è¿›åº¦
     }
 
     DrawMusicProgressBarPoint(total, cur_value);
@@ -1948,7 +1963,7 @@ void DrawMusicPlayBar(void)
 }
 
 
-//»­½ø¶ÈÌõ,totalÎª×ÜÁ¿£¬ cur_valueÎªµ±Ç°½ø¶ÈÖµ
+//ç”»è¿›åº¦æ¡,totalä¸ºæ€»é‡ï¼Œ cur_valueä¸ºå½“å‰è¿›åº¦å€¼
 __s32 DrawMusicPerformerName(audio_file_info_t *file_info)
 {
 #if 0
@@ -2033,7 +2048,7 @@ __s32 DrawMusicPerformerName(audio_file_info_t *file_info)
 }
 
 
-//ÏÔÊ¾ÎÄ¼ş´óĞ¡
+//æ˜¾ç¤ºæ–‡ä»¶å¤§å°
 __s32 DrawMusicFileSize(__s32 file_size)
 {
 #if 0
@@ -2075,7 +2090,7 @@ __s32 DrawMusicFileSize(__s32 file_size)
 }
 
 
-//ÏÔÊ¾ÎÄ¼ş×¨¼­Ãû³Æalbum
+//æ˜¾ç¤ºæ–‡ä»¶ä¸“è¾‘åç§°album
 __s32 DrawMusicFileAlbum(audio_file_info_t *file_info)
 {
 #if 0
@@ -2115,7 +2130,7 @@ __s32 DrawMusicFileAlbum(audio_file_info_t *file_info)
     return EPDK_OK;
 }
 
-//ÏÔÊ¾ÎÄ¼ş±ÈÌØÂÊ
+//æ˜¾ç¤ºæ–‡ä»¶æ¯”ç‰¹ç‡
 __s32 DrawMusicFileBitRate(__s32 bit_rate)
 {
 #if 0
@@ -2154,8 +2169,8 @@ __s32 DrawMusicFileBitRate(__s32 bit_rate)
     return EPDK_OK;
 }
 
-//»æÖÆ¿ØÖÆ°´Å¥, menu_id¼°´ú±íbutton id,
-//status, ±íÊ¾button µ±Ç°µÄ×´Ì¬£¬unfocused, focused,
+//ç»˜åˆ¶æ§åˆ¶æŒ‰é’®, menu_idåŠä»£è¡¨button id,
+//status, è¡¨ç¤ºbutton å½“å‰çš„çŠ¶æ€ï¼Œunfocused, focused,
 __s32 DrawMusicPlayerContrlButtonByID(music_player_ctrl_t *this, __s32 menu_id, music_btn_status_e status)
 {
 #if 0
@@ -2215,7 +2230,7 @@ __s32 ClearMusicPlayerContrlButtonBG(void)
 #endif
     return EPDK_OK;
 }
-//»æÖÆËùÓĞ¿ØÖÆ°´Å¥, unfocused status
+//ç»˜åˆ¶æ‰€æœ‰æ§åˆ¶æŒ‰é’®, unfocused status
 __s32 DrawMusicPlayerContrlButton(music_player_ctrl_t *this)
 {
     //ClearMusicPlayerContrlButtonBG();
@@ -2290,6 +2305,3 @@ __s32 draw_music_player_background(music_player_ctrl_t *player_ctrl)
 #endif
     return EPDK_OK;
 }
-
-
-

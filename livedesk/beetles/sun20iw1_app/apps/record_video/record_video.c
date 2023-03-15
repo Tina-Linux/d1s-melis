@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 #include <log.h>
 #include "record_video.h"
@@ -31,7 +62,7 @@ typedef enum
 static __s32 _record_video_init_listbar(__gui_msg_t *msg);
 
 /***********************************************************************************************************
-    Ω®¡¢Õº≤„
+    Âª∫Á´ãÂõæÂ±Ç
 ************************************************************************************************************/
 static H_LYR record_video_layer_32bpp_create(void)
 {
@@ -145,13 +176,13 @@ static __s32 record_video_antenna_switch_ctrl_init(void)
 }
 static __s32 record_video_set_antenna_mode(__u8 mode)
 {
-    if (mode == 0) //¿≠∏ÀÃÏœﬂ
+    if (mode == 0) //ÊãâÊùÜÂ§©Á∫ø
     {
-        esPINS_WritePinData(record_video_antenna_switch_hdl, 1, NULL); //pg0 øÿ÷∆ÃÏœﬂ«–ªªµƒGPIOø⁄,ƒ⁄÷√
+        esPINS_WritePinData(record_video_antenna_switch_hdl, 1, NULL); //pg0 ÊéßÂà∂Â§©Á∫øÂàáÊç¢ÁöÑGPIOÂè£,ÂÜÖÁΩÆ
     }
     else
     {
-        esPINS_WritePinData(record_video_antenna_switch_hdl, 0, NULL); //pg0 øÿ÷∆ÃÏœﬂ«–ªªµƒGPIOø⁄,Õ‚
+        esPINS_WritePinData(record_video_antenna_switch_hdl, 0, NULL); //pg0 ÊéßÂà∂Â§©Á∫øÂàáÊç¢ÁöÑGPIOÂè£,Â§ñ
     }
 
     return 0;
@@ -429,7 +460,7 @@ static void record_video_paint_info(__gui_msg_t *msg, unsigned char Init_Paint)
     GUI_SetColor(GUI_WHITE);
     GUI_SelLayer((unsigned long)para->layer);
     dsk_display_get_size(&width, &height);
-    /*∆ ºµ„◊¯±Í*/
+    /*Ëµ∑ÂßãÁÇπÂùêÊ†á*/
     gui_rect.x0 = (width - RECORD_VIDEO_LISTBAR_WIDTH) / 2;
     gui_rect.y0 = height / 2 - 180;
     gui_rect.x1 = gui_rect.x0 + RECORD_VIDEO_LISTBAR_WIDTH;
@@ -452,7 +483,7 @@ static void record_video_paint_info(__gui_msg_t *msg, unsigned char Init_Paint)
         eLIBs_memset(str, 0x00, sizeof(str));
     }
 
-    /*µ±«∞—°‘Òµƒ∆µµ„*/
+    /*ÂΩìÂâçÈÄâÊã©ÁöÑÈ¢ëÁÇπ*/
     GUI_SetColor(GUI_BLACK);
     gui_rect.y0 = gui_rect.y1;
     gui_rect.y1 = gui_rect.y0 + RECORD_VIDEO_LISTBAR_HIGH;
@@ -468,12 +499,12 @@ static void record_video_paint_info(__gui_msg_t *msg, unsigned char Init_Paint)
     }
 
 #if 0
-    /*–≈∫≈÷ ¡ø£¨–≈∫≈«ø∂»*/
+    /*‰ø°Âè∑Ë¥®ÈáèÔºå‰ø°Âè∑Âº∫Â∫¶*/
     gui_rect.y0 = gui_rect.y1;
     gui_rect.y1 = gui_rect.y0 + RECORD_VIDEO_LISTBAR_HIGH;
     __wrn("%s %d", __FILE__, __LINE__);
 
-    if (para->record_status == 1)//¬º÷∆÷–
+    if (para->record_status == 1)//ÂΩïÂà∂‰∏≠
     {
         //maple_get_ss(&ss);
     }
@@ -486,7 +517,7 @@ static void record_video_paint_info(__gui_msg_t *msg, unsigned char Init_Paint)
     eLIBs_memset(str, 0x00, sizeof(str));
     __wrn("%s %d", __FILE__, __LINE__);
 #endif
-    /*±£¥ÊŒƒº˛¬∑æ∂*/
+    /*‰øùÂ≠òÊñá‰ª∂Ë∑ØÂæÑ*/
     gui_rect.y0 = gui_rect.y1;
     gui_rect.y1 = gui_rect.y0 + RECORD_VIDEO_LISTBAR_HIGH;
 
@@ -499,7 +530,7 @@ static void record_video_paint_info(__gui_msg_t *msg, unsigned char Init_Paint)
         eLIBs_memset(str, 0x00, sizeof(str));
     }
 
-    /*¬º÷∆ ±º‰*/
+    /*ÂΩïÂà∂Êó∂Èó¥*/
     gui_rect.y0 = gui_rect.y1;
     gui_rect.y1 = gui_rect.y0 + RECORD_VIDEO_LISTBAR_HIGH;
     GUI_BMP_Draw(theme_hdl2buf(para->h_item_unfocus_bmp), gui_rect.x0, gui_rect.y0);
@@ -508,7 +539,7 @@ static void record_video_paint_info(__gui_msg_t *msg, unsigned char Init_Paint)
     GUI_DispStringInRect(str, &gui_rect, GUI_TA_LEFT | GUI_TA_VCENTER);
     eLIBs_memset(str, 0x00, sizeof(str));
     eLIBs_memset(temp_array, 0x00, sizeof(temp_array));
-    /*Œƒº˛¥Û–°*/
+    /*Êñá‰ª∂Â§ßÂ∞è*/
     gui_rect.y0 = gui_rect.y1;
     gui_rect.y1 = gui_rect.y0 + RECORD_VIDEO_LISTBAR_HIGH;
     GUI_BMP_Draw(theme_hdl2buf(para->h_item_unfocus_bmp), gui_rect.x0, gui_rect.y0);
@@ -527,7 +558,7 @@ static void record_video_paint_info(__gui_msg_t *msg, unsigned char Init_Paint)
     eLIBs_sprintf(str, "File Size:		 %s", temp_array);
     GUI_DispStringInRect(str, &gui_rect, GUI_TA_LEFT | GUI_TA_VCENTER);
     eLIBs_memset(str, 0x00, sizeof(str));
-    /*¥≈≈Ã £”‡¥Û–°*/
+    /*Á£ÅÁõòÂâ©‰ΩôÂ§ßÂ∞è*/
     gui_rect.y0 = gui_rect.y1;
     gui_rect.y1 = gui_rect.y0 + RECORD_VIDEO_LISTBAR_HIGH;
     GUI_BMP_Draw(theme_hdl2buf(para->h_item_unfocus_bmp), gui_rect.x0, gui_rect.y0);
@@ -1070,7 +1101,7 @@ static __s32 _record_video_proc(__gui_msg_t *msg)
             }
 
             eLIBs_memset(record_video_para, 0x00, sizeof(record_video_para_t));
-            GUI_WinSetAddData(msg->h_deswin, (unsigned long)record_video_para);//∞—ÀΩ”– ˝æ›º”Ω¯»•
+            GUI_WinSetAddData(msg->h_deswin, (unsigned long)record_video_para);//ÊääÁßÅÊúâÊï∞ÊçÆÂä†ËøõÂéª
             record_video_para->total_freq = maple_get_cur_search_freq_tatol();
             record_video_para->focus_item = 0;
             record_video_para->record_frequency = record_video_attr->current_freq;
@@ -1143,7 +1174,7 @@ static __s32 _record_video_proc(__gui_msg_t *msg)
             }
 
             record_video_antenna_switch_ctrl_init();
-            record_video_set_antenna_mode(1);// 1: Õ‚Ω”ÃÏœﬂ 0:¿≠∏ÀÃÏœﬂ
+            record_video_set_antenna_mode(1);// 1: Â§ñÊé•Â§©Á∫ø 0:ÊãâÊùÜÂ§©Á∫ø
 #if defined Have_TscRec_lib
             if (EPDK_OK != TscRecordInit())
             {

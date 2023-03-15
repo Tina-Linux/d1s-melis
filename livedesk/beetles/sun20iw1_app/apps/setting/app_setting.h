@@ -1,21 +1,34 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : app_settings.c
-* By        : Andy.zhang
-* Func      : desk main thread
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-20 8:51:52  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef __APP_SETTINGS_H__
 #define  __APP_SETTINGS_H__
 #include "app_setting_i.h"
@@ -51,8 +64,8 @@ typedef struct tag_setting_para
 
 typedef struct tag_volume_para
 {
-    char    total_space_txt[128]  ; //◊‹¥≈≈Ã»›¡ø
-    char       free_space_txt[128] ;        // £”‡¥≈≈Ã»›¡ø
+    char    total_space_txt[128]  ; //ÊÄªÁ£ÅÁõòÂÆπÈáè
+    char       free_space_txt[128] ;        //Ââ©‰ΩôÁ£ÅÁõòÂÆπÈáè
 } volume_para_t ;
 
 typedef struct tag_setting_ctrl
@@ -60,13 +73,13 @@ typedef struct tag_setting_ctrl
     H_WIN h_frm_general;
     H_WIN h_frm_power;
     H_WIN h_frm_adjust;
-    H_WIN h_frm_product_info_win;   // ≤˙∆∑–≈œ¢Ã· æøÚ
-    H_WIN h_frm_dafault_dialog_win ;    // ª÷∏¥≥ˆ≥ß…Ë÷√∂‘ª∞øÚ
+    H_WIN h_frm_product_info_win;   // ‰∫ßÂìÅ‰ø°ÊÅØÊèêÁ§∫Ê°Ü
+    H_WIN h_frm_dafault_dialog_win ;    // ÊÅ¢Â§çÂá∫ÂéÇËÆæÁΩÆÂØπËØùÊ°Ü
     H_WIN h_frm_entrance;
     H_WIN h_frm_alarm;
     H_WIN h_frm_alarm_select_song ;
     H_WIN h_frm_alarm_clock ;
-    H_WIN h_frm_alarm_coming ;  //ƒ÷÷”∂® ± ±º‰µΩµƒ ±∫ÚµØ≥ˆµƒ∂‘ª∞øÚµƒ¥∞ø⁄æ‰±˙
+    H_WIN h_frm_alarm_coming ;  //ÈóπÈíüÂÆöÊó∂Êó∂Èó¥Âà∞ÁöÑÊó∂ÂÄôÂºπÂá∫ÁöÑÂØπËØùÊ°ÜÁöÑÁ™óÂè£Âè•ÊüÑ
     H_WIN lyr_setting;
     H_WIN h_frm_handle;
 
@@ -82,4 +95,3 @@ H_WIN app_setting_create(root_para_t *para);
 __s32 app_setting_notify_delete_sub_dlg_scene(H_WIN hmanwin);
 
 #endif
-

@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include "setting_alarm_clock.h"
 #include "app_setting_i.h"
 #include <log.h>
@@ -13,12 +44,12 @@
 
 const static __u32 id_alarm_clock_bmp[ALARM_CLOCK_BMP_MAX] =
 {
-    //±³¾°
+    //èƒŒæ™¯
     ID_SETTING_BG_BMP,
     ID_SETTING_CLOCK_BG_BMP,
-    //Ò³
+    //é¡µ
     ID_SETTING_PAGE_BMP,
-    //Êý×Ö
+    //æ•°å­—
     ID_SETTING_0_BMP,
     ID_SETTING_1_BMP,
     ID_SETTING_2_BMP,
@@ -29,7 +60,7 @@ const static __u32 id_alarm_clock_bmp[ALARM_CLOCK_BMP_MAX] =
     ID_SETTING_7_BMP,
     ID_SETTING_8_BMP,
     ID_SETTING_9_BMP,
-    //°´Å¥
+    //æŒ‰é’®
     ID_SETTING_DOWN_UNF_BMP,
     ID_SETTING_DOWN_F_BMP,
     ID_SETTING_UP_UNF_BMP,
@@ -37,12 +68,12 @@ const static __u32 id_alarm_clock_bmp[ALARM_CLOCK_BMP_MAX] =
 };
 static GUI_RECT alarm_clock_button_touch[ALARM_CLOCK_BUTTON_MAX] =
 {
-    {41, 31, 96, 56},       //Ð¡Ê±+
-    {41, 116, 96, 140},     //Ð¡Ê±-
-    {102, 31, 156, 56},     //·ÖÖÓ+
-    {102, 116, 156, 140},   //·ÖÖÓ-
-    {28, 156, 83, 181},     //È·ÈÏ
-    {114, 156, 168, 181}    //È¡Ïû
+    {41, 31, 96, 56},       //å°æ—¶+
+    {41, 116, 96, 140},     //å°æ—¶-
+    {102, 31, 156, 56},     //åˆ†é’Ÿ+
+    {102, 116, 156, 140},   //åˆ†é’Ÿ-
+    {28, 156, 83, 181},     //ç¡®è®¤
+    {114, 156, 168, 181}    //å–æ¶ˆ
 };
 
 void  alarm_clock_cmd2parent(H_WIN hwin, __s32 id, __s32 data1, __s32 data2)
@@ -190,7 +221,7 @@ static __s32 alarm_clock_frm_change_draw(__gui_msg_t *msg)
     GUI_UC_SetEncodeUTF8();
     GUI_SetDrawMode(GUI_DRAWMODE_NORMAL);
     GUI_SetBkColor(0);
-    //µ÷½Ú°´Å¥
+    //è°ƒèŠ‚æŒ‰é’®
     GUI_BMP_Draw(theme_hdl2buf(palarmClockFrm_attr->h_bmp_alarm_clock[ALARM_CLOCK_UP_UNF_BMP]), 52, 37);
     GUI_BMP_Draw(theme_hdl2buf(palarmClockFrm_attr->h_bmp_alarm_clock[ALARM_CLOCK_DOWN_UNF_BMP]), 52, 121);
     GUI_BMP_Draw(theme_hdl2buf(palarmClockFrm_attr->h_bmp_alarm_clock[ALARM_CLOCK_UP_UNF_BMP]), 110, 37);
@@ -213,13 +244,13 @@ static __s32 alarm_clock_frm_change_draw(__gui_msg_t *msg)
         GUI_BMP_Draw(theme_hdl2buf(palarmClockFrm_attr->h_bmp_alarm_clock[ALARM_CLOCK_DOWN_F_BMP]), 110, 121);
     }
 
-    //µ÷½ÚÊ±¼ä
-    GUI_BMP_Draw(theme_hdl2buf(palarmClockFrm_attr->h_bmp_alarm_clock[ALARM_CLOCK_0_BMP + palarmClockFrm_attr->clock.hour / 10]), 53, 66); //Ð¡Ê±
-    GUI_BMP_Draw(theme_hdl2buf(palarmClockFrm_attr->h_bmp_alarm_clock[ALARM_CLOCK_0_BMP + palarmClockFrm_attr->clock.hour % 10]), 74, 66); //Ð¡Ê±
-    GUI_BMP_Draw(theme_hdl2buf(palarmClockFrm_attr->h_bmp_alarm_clock[ALARM_CLOCK_0_BMP + palarmClockFrm_attr->clock.minute / 10]), 111, 66); //·ÖÖÓ
-    GUI_BMP_Draw(theme_hdl2buf(palarmClockFrm_attr->h_bmp_alarm_clock[ALARM_CLOCK_0_BMP + palarmClockFrm_attr->clock.minute % 10]), 132, 66); //·ÖÖÓ
+    //è°ƒèŠ‚æ—¶é—´
+    GUI_BMP_Draw(theme_hdl2buf(palarmClockFrm_attr->h_bmp_alarm_clock[ALARM_CLOCK_0_BMP + palarmClockFrm_attr->clock.hour / 10]), 53, 66); //å°æ—¶
+    GUI_BMP_Draw(theme_hdl2buf(palarmClockFrm_attr->h_bmp_alarm_clock[ALARM_CLOCK_0_BMP + palarmClockFrm_attr->clock.hour % 10]), 74, 66); //å°æ—¶
+    GUI_BMP_Draw(theme_hdl2buf(palarmClockFrm_attr->h_bmp_alarm_clock[ALARM_CLOCK_0_BMP + palarmClockFrm_attr->clock.minute / 10]), 111, 66); //åˆ†é’Ÿ
+    GUI_BMP_Draw(theme_hdl2buf(palarmClockFrm_attr->h_bmp_alarm_clock[ALARM_CLOCK_0_BMP + palarmClockFrm_attr->clock.minute % 10]), 132, 66); //åˆ†é’Ÿ
 
-    //ÉèÖÃ°´Å¥
+    //è®¾ç½®æŒ‰é’®
     if (palarmClockFrm_attr->buttonF == ALARM_CLOCK_OK)
     {
         GUI_SetColor(GUI_YELLOW);
@@ -243,7 +274,7 @@ static __s32 alarm_clock_frm_change_draw(__gui_msg_t *msg)
 
     dsk_langres_get_menu_text(STRING_SET_CANCLE, str, GUI_NAME_MAX);
     GUI_DispStringInRect(str, &alarm_clock_button_touch[ALARM_CLOCK_CANCEL], GUI_TA_HCENTER | GUI_TA_VCENTER);
-    //Ê±¼äÏÔÊ¾
+    //æ—¶é—´æ˜¾ç¤º
     GUI_BMP_Draw(theme_hdl2buf(palarmClockFrm_attr->h_bmp_alarm_clock[ALARM_CLOCK_CLOCK_BG_BMP]), 63, 9);
     eLIBs_sprintf(str, "%02d:%02d", palarmClockFrm_attr->clock.hour, palarmClockFrm_attr->clock.minute);
     GUI_SetColor(GUI_BLACK);
@@ -317,7 +348,7 @@ static __s32 _alarm_clock_frm_on_paint(__gui_msg_t *msg)
         return EPDK_FAIL;
     }
 
-    //ÉèÖÃ»æ»­ÊôÐÔ
+    //è®¾ç½®ç»˜ç”»å±žæ€§
     GUI_LyrWinSel(palarmClockFrm_attr->layer);
     GUI_SetFont(SWFFont);
     GUI_UC_SetEncodeUTF8();
@@ -338,9 +369,9 @@ static __s32 _alarm_clock_frm_on_create(__gui_msg_t *msg)
     }
 
     palarmClockFrm_attr->buttonF = ALARM_CLOCK_OK;
-    //×ÊÔ´³õÊ¼»¯
+    //èµ„æºåˆå§‹åŒ–
     alarm_clock_res_init(msg);
-    //»æ»­±³¾°
+    //ç»˜ç”»èƒŒæ™¯
     GUI_LyrWinSetSta(palarmClockFrm_attr->layer, GUI_LYRWIN_STA_ON);
     alarm_clock_frm_bg_draw(msg);
     alarm_clock_frm_change_draw(msg);
@@ -467,7 +498,7 @@ static __s32 _alarm_clock_frm_on_touch(__gui_msg_t *msg)
     if (x > alarm_clock_button_touch[ALARM_CLOCK_HOUR_UP].x0 && x < alarm_clock_button_touch[ALARM_CLOCK_HOUR_UP].x1 &&
         y > alarm_clock_button_touch[ALARM_CLOCK_HOUR_UP].y0 && y < alarm_clock_button_touch[ALARM_CLOCK_HOUR_UP].y1)
     {
-        //Ð¡Ê±+
+        //å°æ—¶+
         if (msg->dwAddData1 == GUI_MSG_TOUCH_DOWN || msg->dwAddData1 == GUI_MSG_TOUCH_LONGDOWN)
         {
             palarmClockFrm_attr->buttonF = ALARM_CLOCK_HOUR_UP;
@@ -477,7 +508,7 @@ static __s32 _alarm_clock_frm_on_touch(__gui_msg_t *msg)
     else if (x > alarm_clock_button_touch[ALARM_CLOCK_HOUR_DOWN].x0 && x < alarm_clock_button_touch[ALARM_CLOCK_HOUR_DOWN].x1 &&
              y > alarm_clock_button_touch[ALARM_CLOCK_HOUR_DOWN].y0 && y < alarm_clock_button_touch[ALARM_CLOCK_HOUR_DOWN].y1)
     {
-        //Ð¡Ê±-
+        //å°æ—¶-
         if (msg->dwAddData1 == GUI_MSG_TOUCH_DOWN || msg->dwAddData1 == GUI_MSG_TOUCH_LONGDOWN)
         {
             palarmClockFrm_attr->buttonF = ALARM_CLOCK_HOUR_DOWN;
@@ -487,7 +518,7 @@ static __s32 _alarm_clock_frm_on_touch(__gui_msg_t *msg)
     else if (x > alarm_clock_button_touch[ALARM_CLOCK_MINUTE_UP].x0 && x < alarm_clock_button_touch[ALARM_CLOCK_MINUTE_UP].x1 &&
              y > alarm_clock_button_touch[ALARM_CLOCK_MINUTE_UP].y0 && y < alarm_clock_button_touch[ALARM_CLOCK_MINUTE_UP].y1)
     {
-        //·ÖÖÓ+
+        //åˆ†é’Ÿ+
         if (msg->dwAddData1 == GUI_MSG_TOUCH_DOWN || msg->dwAddData1 == GUI_MSG_TOUCH_LONGDOWN)
         {
             palarmClockFrm_attr->buttonF = ALARM_CLOCK_MINUTE_UP;
@@ -497,7 +528,7 @@ static __s32 _alarm_clock_frm_on_touch(__gui_msg_t *msg)
     else if (x > alarm_clock_button_touch[ALARM_CLOCK_MINUTE_DOWN].x0 && x < alarm_clock_button_touch[ALARM_CLOCK_MINUTE_DOWN].x1 &&
              y > alarm_clock_button_touch[ALARM_CLOCK_MINUTE_DOWN].y0 && y < alarm_clock_button_touch[ALARM_CLOCK_MINUTE_DOWN].y1)
     {
-        //·ÖÖÓ-
+        //åˆ†é’Ÿ-
         if (msg->dwAddData1 == GUI_MSG_TOUCH_DOWN || msg->dwAddData1 == GUI_MSG_TOUCH_LONGDOWN)
         {
             palarmClockFrm_attr->buttonF = ALARM_CLOCK_MINUTE_DOWN;
@@ -507,7 +538,7 @@ static __s32 _alarm_clock_frm_on_touch(__gui_msg_t *msg)
     else if (x > alarm_clock_button_touch[ALARM_CLOCK_OK].x0 && x < alarm_clock_button_touch[ALARM_CLOCK_OK].x1 &&
              y > alarm_clock_button_touch[ALARM_CLOCK_OK].y0 && y < alarm_clock_button_touch[ALARM_CLOCK_OK].y1)
     {
-        //È·ÈÏ
+        //ç¡®è®¤
         if (msg->dwAddData1 == GUI_MSG_TOUCH_UP)
         {
             alarm_clock_frm_close(msg);
@@ -518,7 +549,7 @@ static __s32 _alarm_clock_frm_on_touch(__gui_msg_t *msg)
     else if (x > alarm_clock_button_touch[ALARM_CLOCK_CANCEL].x0 && x < alarm_clock_button_touch[ALARM_CLOCK_CANCEL].x1 &&
              y > alarm_clock_button_touch[ALARM_CLOCK_CANCEL].y0 && y < alarm_clock_button_touch[ALARM_CLOCK_CANCEL].y1)
     {
-        //È¡Ïû
+        //å–æ¶ˆ
         if (msg->dwAddData1 == GUI_MSG_TOUCH_UP)
         {
             alarm_clock_frm_close(msg);
@@ -577,7 +608,7 @@ H_WIN setting_alarm_clock_frm_create(H_WIN parentWin, __u16 id, reg_alarm_para_t
     dsk_display_get_size(&width, &height);
     layerRect.x = (width - 193) / 2;
     layerRect.y = (height - 193) / 2;
-    //·ÖÅä¿Õ¼ä
+    //åˆ†é…ç©ºé—´
     palarmClockFrm_attr = (psetting_alarm_clock_attr)esMEMS_Malloc(0, sizeof(setting_alarm_clock_attr));
 
     if (palarmClockFrm_attr == NULL)
@@ -590,7 +621,7 @@ H_WIN setting_alarm_clock_frm_create(H_WIN parentWin, __u16 id, reg_alarm_para_t
     palarmClockFrm_attr->reg_alarm = reg_alarm;
     palarmClockFrm_attr->clock.hour = palarmClockFrm_attr->reg_alarm->alarm_time.hour;
     palarmClockFrm_attr->clock.minute = palarmClockFrm_attr->reg_alarm->alarm_time.minute;
-    //´´½¨Í¼²ã
+    //åˆ›å»ºå›¾å±‚
     palarmClockFrm_attr->layer = alarm_clock_frm_32bpp_layer_create(&layerRect);
 
     if (palarmClockFrm_attr->layer == NULL)
@@ -600,7 +631,7 @@ H_WIN setting_alarm_clock_frm_create(H_WIN parentWin, __u16 id, reg_alarm_para_t
         return NULL;
     }
 
-    //´´½¨´°Ìå
+    //åˆ›å»ºçª—ä½“
     eLIBs_memset(&framewin_para, 0, sizeof(__gui_framewincreate_para_t));
     framewin_para.name          = "alarm_clock_frame",
     framewin_para.dwExStyle     = WS_EX_NONE;

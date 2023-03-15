@@ -1,16 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              calendar app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2006-2009, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : sset_menu.c
-* By      :lyn
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "sset_i.h"
@@ -28,7 +45,7 @@ static  tbar_para_t     *pmenu_para = 0;
 ************************************************************************************************************************
 *                                       SSET_MenuTbar_Create
 *
-*Description: ¥¥Ω®dsk_tbar
+*Description: ÂàõÂª∫dsk_tbar
 *
 *Arguments  :
 *
@@ -294,7 +311,7 @@ __s32 SSET_MenuTbar_DestroyItem(H_WIN h_win, __u32 index, __u32 fcs_sta)
 ************************************************************************************************************************
 *                                       SSET_MenuTbar_Destroy
 *
-*Description: œ˙ªŸdsk_tbar
+*Description: ÈîÄÊØÅdsk_tbar
 *
 *Arguments  :
 *
@@ -361,7 +378,7 @@ __s32 SSET_MenuTbar_Destroy(H_WIN h_win)
 ************************************************************************************************************************
 *                                       SSET_MenuTbar_SetFocus
 *
-*Description: …Ë÷√MENUµƒΩπµ„
+*Description: ËÆæÁΩÆMENUÁöÑÁÑ¶ÁÇπ
 *
 *Arguments  :
 *
@@ -438,4 +455,3 @@ __s32 SSET_MenuTbar_UpdateItem(H_WIN h_win, __u32 item_no, __u32 index, __u32 fc
 
     return EPDK_OK;
 }
-

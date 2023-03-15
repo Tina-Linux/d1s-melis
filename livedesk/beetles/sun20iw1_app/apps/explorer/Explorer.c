@@ -1,17 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-* File      :   Explorer.c,
-*           Explorer.h
-* By        :   Libaiao
-* Func  :
-* Version   :   v1.0
-* ============================================================================================================
-* 2010-4-14 15:24:52  Libaiao  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "beetles_app.h"
@@ -23,40 +39,40 @@
 
 typedef enum
 {
-    EXP_MEDIA_TYPE_ALL,             //ËùÓÐÃ½ÌåÀàÐÍ
-    EXP_MEDIA_TYPE_PIC,             //ËùÓÐÍ¼Æ¬ÎÄ¼þ
-    EXP_MEDIA_TYPE_AUDIO,           //ËùÓÐÒôÆµÎÄ¼þ
-    EXP_MEDIA_TYPE_VIDEO,           //ËùÓÐÊÓÆµÎÄ¼þ
-    EXP_MEDIA_TYPE_EBOOK,           //ËùÓÐµç×ÓÊéÎÄ¼þ
-    EXP_MEDIA_TYPE_GAME,            //ËùÓÐÓÎÏ·ÎÄ¼þ
-    EXP_MEDIA_TYPE_FIRMWARE,        //ËùÓÐ¹Ì¼þÎÄ¼þ
-    EXP_MEDIA_TYPE_UNKNOWN,         //ËùÓÐÏµÍ³²»Ö§³ÖµÄÎÄ¼þ
+    EXP_MEDIA_TYPE_ALL,             //æ‰€æœ‰åª’ä½“ç±»åž‹
+    EXP_MEDIA_TYPE_PIC,             //æ‰€æœ‰å›¾ç‰‡æ–‡ä»¶
+    EXP_MEDIA_TYPE_AUDIO,           //æ‰€æœ‰éŸ³é¢‘æ–‡ä»¶
+    EXP_MEDIA_TYPE_VIDEO,           //æ‰€æœ‰è§†é¢‘æ–‡ä»¶
+    EXP_MEDIA_TYPE_EBOOK,           //æ‰€æœ‰ç”µå­ä¹¦æ–‡ä»¶
+    EXP_MEDIA_TYPE_GAME,            //æ‰€æœ‰æ¸¸æˆæ–‡ä»¶
+    EXP_MEDIA_TYPE_FIRMWARE,        //æ‰€æœ‰å›ºä»¶æ–‡ä»¶
+    EXP_MEDIA_TYPE_UNKNOWN,         //æ‰€æœ‰ç³»ç»Ÿä¸æ”¯æŒçš„æ–‡ä»¶
 } explorer_media_type_t;
 
 
 typedef struct tag_explorer_ctrl
 {
     H_WIN h_explr;
-    H_LYR BG_layer;         //background layer 8bpp(×¢Òâ±³¾°Í¼ÐèÒªÉèÖÃÎª8bpp)
-    H_LYR list_layer;       //layer for listbar, 32bpp(32bpp,ÒòÎªlistbarËõÂÔÍ¼Îª32bpp)
+    H_LYR BG_layer;         //background layer 8bpp(æ³¨æ„èƒŒæ™¯å›¾éœ€è¦è®¾ç½®ä¸º8bpp)
+    H_LYR list_layer;       //layer for listbar, 32bpp(32bpp,å› ä¸ºlistbarç¼©ç•¥å›¾ä¸º32bpp)
     H_WIN h_list_framewin;
-    H_WIN h_frm_alarm_coming ;  //ÄÖÖÓ¶¨Ê±Ê±¼äµ½µÄÊ±ºòµ¯³öµÄ¶Ô»°¿òµÄ´°¿Ú¾ä±ú
+    H_WIN h_frm_alarm_coming ;  //é—¹é’Ÿå®šæ—¶æ—¶é—´åˆ°çš„æ—¶å€™å¼¹å‡ºçš„å¯¹è¯æ¡†çš„çª—å£å¥æŸ„
 
     H_LYR dialog_layer;
     H_WIN h_dialog_framewin;
 
     __s32 root_type;                    //USB Device, or  SDCard
-    __u32 last_start_id;                //ÉÏ´Îä¯ÀÀÆðÊ¼ID
-    __u32 last_focused_id;              //ÉÏ´ÎÑ¡ÖÐÎÄ¼þid
-    char  *last_filename;               //ÉÏ´Îä¯ÀÀÎÄ¼þ Ãû
+    __u32 last_start_id;                //ä¸Šæ¬¡æµè§ˆèµ·å§‹ID
+    __u32 last_focused_id;              //ä¸Šæ¬¡é€‰ä¸­æ–‡ä»¶id
+    char  *last_filename;               //ä¸Šæ¬¡æµè§ˆæ–‡ä»¶ å
 
-    char root[4];                          //???????¡Â¦Ì??¨¬¡¤?
+    char root[4];                          //???????Ã·Î¼??Ã¬Â·?
     GUI_FONT *explr_font;
     root_para_t  *root_para ;
 
     __s32 mediatype_index;
     rat_media_type_t media_type;
-    explorer_view_mode_e view_mode;     //??¨º??¡ê¨º?
+    explorer_view_mode_e view_mode;     //??Ãª??ï¿¡Ãª?
 } explorer_ctrl_t;
 
 //----------------------------------------------------------------------------------------------------
@@ -105,7 +121,7 @@ static __s32 explorer_alarm_scene_create(__gui_msg_t *msg)
         return EPDK_FAIL;
     }
 
-    /* ·¢ËÍÏûÏ¢µ½explorer list ´°¿ÚÀ´Ïú»Ùµ±Ç°µ¯³öµÄ¶Ô»°¿ò£¬ÒÔ·ÀÍ¼²ã²»¹»*/
+    /* å‘é€æ¶ˆæ¯åˆ°explorer list çª—å£æ¥é”€æ¯å½“å‰å¼¹å‡ºçš„å¯¹è¯æ¡†ï¼Œä»¥é˜²å›¾å±‚ä¸å¤Ÿ*/
     {
         __gui_msg_t sendmsg ;
         sendmsg.h_deswin = explr_ctrl->h_list_framewin ;
@@ -136,7 +152,7 @@ static __s32 explorer_alarm_scene_delete(__gui_msg_t *msg)
 }
 signed long app_explorer_create(root_para_t  *para)
 {
-    __s32 disk_num = 0 ;    // ¡ä??¨¬¡Á¨¹¨ºy
+    __s32 disk_num = 0 ;    // â€²??Ã¬Ã—Ã¼Ãªy
     __s32 ret =  EPDK_FALSE ;
     explorer_ctrl_t *explorer_ctrl = NULL ;
     __gui_manwincreate_para_t create_info;
@@ -145,16 +161,16 @@ signed long app_explorer_create(root_para_t  *para)
     __log("****************************************************************************************");
     gscene_bgd_set_state(BGD_STATUS_SHOW);
     __log("disk_num:%d", disk_num);
-    ret = explorer_check_disk_exist(para->root_type);   // ÅÐ¶Ï¸ø¶¨µÄÅÌ·ûÊÇ·ñ´æÔÚ
+    ret = explorer_check_disk_exist(para->root_type);   // åˆ¤æ–­ç»™å®šçš„ç›˜ç¬¦æ˜¯å¦å­˜åœ¨
 
     if (EPDK_TRUE != ret)
     {
         __wrn("explorer_check_disk_exist fail ");
-        para->return_to_explorer_file_list = 0 ;        //¸ø¶¨ÅÌ·û²»´æÔÚ£¬²»ÓÃ½øÈëµÄËÑË÷Á´±íÖÐ£¬½øÈëÅÌ·ûÑ¡Ôñ´°¿Ú
+        para->return_to_explorer_file_list = 0 ;        //ç»™å®šç›˜ç¬¦ä¸å­˜åœ¨ï¼Œä¸ç”¨è¿›å…¥çš„æœç´¢é“¾è¡¨ä¸­ï¼Œè¿›å…¥ç›˜ç¬¦é€‰æ‹©çª—å£
     }
 
     __log("para->root_type = %d", para->root_type);
-    explorer_ctrl = (explorer_ctrl_t *)esMEMS_Malloc(0, sizeof(explorer_ctrl_t));       //ÎªË½ÓÐÊôÐÔÉêÇëÄÚ´æ
+    explorer_ctrl = (explorer_ctrl_t *)esMEMS_Malloc(0, sizeof(explorer_ctrl_t));       //ä¸ºç§æœ‰å±žæ€§ç”³è¯·å†…å­˜
 
     if (explorer_ctrl == NULL)
     {
@@ -170,7 +186,7 @@ signed long app_explorer_create(root_para_t  *para)
 
     switch (para->data)
     {
-        case ID_EXPLORER_ALL:       //ÎÄ¼þ¹ÜÀí
+        case ID_EXPLORER_ALL:       //æ–‡ä»¶ç®¡ç†
         {
             explorer_ctrl->view_mode = EXPLR_LIST_MODE;
             explorer_ctrl->media_type = RAT_MEDIA_TYPE_ALL;
@@ -291,7 +307,7 @@ signed long app_explorer_create(root_para_t  *para)
     create_info.name            = APP_EXPLORER;
     create_info.hParent         = para->h_parent;
     create_info.ManWindowProc   = (__pGUI_WIN_CB)esKRNL_GetCallBack((__pCBK_t)_explorer_manager_win_cb);
-    create_info.attr            = (void *)explorer_ctrl;            //ÉèÖÃManagerwin Ë½ÓÐÊôÐÔ
+    create_info.attr            = (void *)explorer_ctrl;            //è®¾ç½®Managerwin ç§æœ‰å±žæ€§
     create_info.id              = APP_EXPLORER_ID;
     create_info.hHosting        = NULL;
     __wrn("explr_ctrl->list_layer =%08x,explr_ctrl->h_list_framewin=%08x", explorer_ctrl->list_layer, explorer_ctrl->h_list_framewin);
@@ -302,8 +318,8 @@ signed long app_explorer_create(root_para_t  *para)
 ************************************************************************************************************************
 *Function   :           __s32 app_explorer_on_close(H_WIN h_exp_win)
 *
-*Description    :       ÉèÖÃEXPLORERÖ®ºóµÄAP, ±£´æÉèÖÃ,ÊÍ·Å´°¿Ú
-*                   (ÊÍ·Å´°¿Úº¯ÊýÖ®ºó½«ÏìÓ¦destroyÏûÏ¢)
+*Description    :       è®¾ç½®EXPLORERä¹‹åŽçš„AP, ä¿å­˜è®¾ç½®,é‡Šæ”¾çª—å£
+*                   (é‡Šæ”¾çª—å£å‡½æ•°ä¹‹åŽå°†å“åº”destroyæ¶ˆæ¯)
 *Arguments      :
 *
 *Return         :
@@ -355,7 +371,7 @@ __s32 app_explorer_on_close(__gui_msg_t *msg)
 ************************************************************************************************************************
 *Function   :           __s32 app_explorer_on_destroy(H_WIN h_exp_win)
 *
-*Description    :       ÊÍ·ÅÍ¼²ã£¬ÊÍ·ÅÄÚ´æ
+*Description    :       é‡Šæ”¾å›¾å±‚ï¼Œé‡Šæ”¾å†…å­˜
 *
 *Arguments      :
 *
@@ -403,7 +419,7 @@ static __s32 app_explorer_on_destroy(H_WIN h_exp_win)
 ************************************************************************************************************************
 *Function   :           static __s32 app_explorer_on_command(__gui_msg_t *msg)
 *
-*Description    :       ÓÃ»§×Ô¶¨ÒåÃüÁî´¦Àíº¯Êý
+*Description    :       ç”¨æˆ·è‡ªå®šä¹‰å‘½ä»¤å¤„ç†å‡½æ•°
 *
 *Arguments      :
 *
@@ -457,10 +473,10 @@ static __s32 app_explorer_on_command(__gui_msg_t *msg)
 ************************************************************************************************************************
 *Function   :          void  explorer_cmd2parent(H_WIN hwin, __s32 id, __s32 data1, __s32 data2)
 *
-*Description    :       Ïò¸¸´°¿Ú´«ËÍÃüÁîÏûÏ¢
+*Description    :       å‘çˆ¶çª—å£ä¼ é€å‘½ä»¤æ¶ˆæ¯
 *
-*Arguments      :       hwin, Ö÷´°¿Ú¾ä±ú
-*                   id,     ÃüÁî²ÎÊý
+*Arguments      :       hwin, ä¸»çª—å£å¥æŸ„
+*                   id,     å‘½ä»¤å‚æ•°
 *Return         :
 *
 ************************************************************************************************************************
@@ -553,14 +569,14 @@ static __s32 _explorer_manager_win_cb(__gui_msg_t *msg)
 
         return EPDK_OK;
 
-        case DSK_MSG_ALARM: // ÄÖÖÓµ½À´ÏûÏ¢
+        case DSK_MSG_ALARM: // é—¹é’Ÿåˆ°æ¥æ¶ˆæ¯
         {
             explorer_alarm_scene_create(msg);
         }
 
         return EPDK_OK ;
 
-        case ALARM_MSG_CLOSE:   // ÄÖÖÓÍË³öÏûÏ¢
+        case ALARM_MSG_CLOSE:   // é—¹é’Ÿé€€å‡ºæ¶ˆæ¯
         {
             explorer_alarm_scene_delete(msg);
         }
@@ -619,7 +635,7 @@ static __s32 _explorer_manager_win_cb(__gui_msg_t *msg)
             explr_ctrl = (explorer_ctrl_t *)GUI_WinGetAttr(msg->h_deswin);
             __msg("----explorer manager window DSK_MSG_FS_PART_PLUGIN begin----");
 
-            if (explr_ctrl->h_list_framewin)    //½«ÏûÏ¢·¢Íùexplorer_list win
+            if (explr_ctrl->h_list_framewin)    //å°†æ¶ˆæ¯å‘å¾€explorer_list win
             {
                 __gui_msg_t  sendmsg ;
                 eLIBs_memcpy(&sendmsg, msg, sizeof(__gui_msg_t)) ;
@@ -729,8 +745,8 @@ static __s32 _explorer_manager_win_cb(__gui_msg_t *msg)
 ************************************************************************************************************************
 *Function   :          static H_LYR explorer_8bpp_layer_create(void)
 *
-*Description    :       ±³¾°Í¼²ã£¬Ö÷ÒªÓÃÀ´ÏÔÊ¾8bpp ±³¾°Í¼Æ¬
-*                   ×¢ÒâÓëÇ°¾°Í¼Ó¦´¦ÓÚ²»Í¬µÄpipe
+*Description    :       èƒŒæ™¯å›¾å±‚ï¼Œä¸»è¦ç”¨æ¥æ˜¾ç¤º8bpp èƒŒæ™¯å›¾ç‰‡
+*                   æ³¨æ„ä¸Žå‰æ™¯å›¾åº”å¤„äºŽä¸åŒçš„pipe
 *
 *Arguments      :
 *
@@ -802,12 +818,12 @@ static H_LYR explorer_8bpp_layer_create(void)
 ************************************************************************************************************************
 *Function   :          static H_LYR explorer_32bpp_layer_create(void)
 *
-*Description    :       Ç°¾°Í¼²ã£¬Ö÷ÒªÓÃÀ´ÏÔÊ¾Ç°¾°Í¼Æ¬£¬ListBar×é¼þitem, ËõÂÔÍ¼
-*                   ×¢ÒâÓë±³¾°Í¼Ó¦´¦ÓÚ²»Í¬µÄpipe
+*Description    :       å‰æ™¯å›¾å±‚ï¼Œä¸»è¦ç”¨æ¥æ˜¾ç¤ºå‰æ™¯å›¾ç‰‡ï¼ŒListBarç»„ä»¶item, ç¼©ç•¥å›¾
+*                   æ³¨æ„ä¸ŽèƒŒæ™¯å›¾åº”å¤„äºŽä¸åŒçš„pipe
 *
 *Arguments      :
 *
-*Return         :        Í¼²ã¾ä±ú
+*Return         :        å›¾å±‚å¥æŸ„
 *
 ************************************************************************************************************************
 */
@@ -957,7 +973,7 @@ static __s32 explorer_draw_bg(explorer_ctrl_t   *explr_ctrl)
 ************************************************************************************************************************
 *Function   :           static __s32 explorer_scene_create()
 *
-*Description    :       ´´½¨ä¯ÀÀÆ÷³¡¾°£¬ListBar
+*Description    :       åˆ›å»ºæµè§ˆå™¨åœºæ™¯ï¼ŒListBar
 *
 *Arguments      :
 *
@@ -983,7 +999,7 @@ static __s32 explorer_scene_create(__gui_msg_t *msg)
     ListPara.root_type = explr_ctrl->root_type;
     ListPara.last_start_id = explr_ctrl->last_start_id;
     ListPara.last_focused_id = explr_ctrl->last_focused_id;
-    ListPara.last_filename = explr_ctrl->last_filename;     //»ñµÃÉÏÒ»´Îä¯ÀÀÐÅÏ¢
+    ListPara.last_filename = explr_ctrl->last_filename;     //èŽ·å¾—ä¸Šä¸€æ¬¡æµè§ˆä¿¡æ¯
     ListPara.media_type = explr_ctrl->media_type;
     ListPara.view_mode = explr_ctrl->view_mode;     //view mode,
     ListPara.root_para = explr_ctrl->root_para ;
@@ -993,32 +1009,32 @@ static __s32 explorer_scene_create(__gui_msg_t *msg)
     {
         case RAT_MEDIA_TYPE_ALL:
         {
-            __explorer_set_title(STRING_EXPLR_TITLE);   //ÉèÖÃhbar title
+            __explorer_set_title(STRING_EXPLR_TITLE);   //è®¾ç½®hbar title
             break;
         }
 
         case    RAT_MEDIA_TYPE_VIDEO:
         {
-            __explorer_set_title(STRING_MOVIE_TITLE);   //ÉèÖÃhbar title
+            __explorer_set_title(STRING_MOVIE_TITLE);   //è®¾ç½®hbar title
             break;
         }
 
         case    RAT_MEDIA_TYPE_AUDIO:
         {
-            __explorer_set_title(STRING_MUSIC_TITLE);   //ÉèÖÃhbar title
+            __explorer_set_title(STRING_MUSIC_TITLE);   //è®¾ç½®hbar title
             break;
         }
 
         case    RAT_MEDIA_TYPE_PIC:
         {
                 __log("vrbsdb....RAT_MEDIA_TYPE_PIC");
-            __explorer_set_title(STRING_HOME_PHOTO);    //ÉèÖÃhbar title
+            __explorer_set_title(STRING_HOME_PHOTO);    //è®¾ç½®hbar title
             break;
         }
 
         case    RAT_MEDIA_TYPE_EBOOK:
         {
-            __explorer_set_title(STRING_HOME_EBOOK);    //ÉèÖÃhbar title
+            __explorer_set_title(STRING_HOME_EBOOK);    //è®¾ç½®hbar title
             break;
         }
 
@@ -1027,10 +1043,10 @@ static __s32 explorer_scene_create(__gui_msg_t *msg)
     }
 
     //gscene_bgd_set_state(BGD_STATUS_HIDE);
-    explr_ctrl->BG_layer = NULL; //explorer_32bpp_layer_create(0);    //ÒªÓÃ²»Í¬µÄpipe
+    explr_ctrl->BG_layer = NULL; //explorer_32bpp_layer_create(0);    //è¦ç”¨ä¸åŒçš„pipe
     explr_ctrl->list_layer = explorer_32bpp_layer_create(0);
-    // explorer_draw_bg(explr_ctrl);             // »­±³¾°
-    ListPara.BG_layer = explr_ctrl->BG_layer;       //±³¾°Í¼²ã
+    // explorer_draw_bg(explr_ctrl);             // ç”»èƒŒæ™¯
+    ListPara.BG_layer = explr_ctrl->BG_layer;       //èƒŒæ™¯å›¾å±‚
     ListPara.list_layer = explr_ctrl->list_layer;       //listbar layer
     ListPara.mediatype_index = explr_ctrl->mediatype_index;
     __log("explr_ctrl->mediatype_index = %d ......", explr_ctrl->mediatype_index);

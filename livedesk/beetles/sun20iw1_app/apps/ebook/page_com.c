@@ -1,19 +1,33 @@
 /*
-************************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : page_com.h
-* By        : Andy.zhang
-* Func      : character show scene
-* Version   : v1.0
-* ======================================================================================================================
-* 2009-11-11 15:43:43  andy.zhang  create this file, implements the fundemental interface;
-************************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <string.h>
 #include <log.h>
@@ -34,12 +48,12 @@ typedef struct tag_ebook_page_ctrl
 {
     __page_create_para_t *page_para ;
 
-    __hdle  LongString_hdl ;        //≥§◊÷∑˚¥Ææ‰±˙
-    __s32   page_sta ;          // µ±«∞µÁ◊” È≤•∑≈◊¥Ã¨ , 1 ±Ì æ’˝‘⁄≤•∑≈, 0  ±Ì æ ÷∂Ø≤•∑≈
+    __hdle  LongString_hdl ;        //ÈïøÂ≠óÁ¨¶‰∏≤Âè•ÊüÑ
+    __s32   page_sta ;          // ÂΩìÂâçÁîµÂ≠ê‰π¶Êí≠ÊîæÁä∂ÊÄÅ , 1 Ë°®Á§∫Ê≠£Âú®Êí≠Êîæ, 0  Ë°®Á§∫ÊâãÂä®Êí≠Êîæ
     __s32   txt_color ;
     __pos_t win_pos ;
     __u32   key_cnt ;
-    __bool  page_no_progress ;  //Ω¯∂»Ãıœ‘ æ±Í÷æ , 1 ±Ì æ’˝‘⁄œ‘ æ
+    __bool  page_no_progress ;  //ËøõÂ∫¶Êù°ÊòæÁ§∫Ê†áÂøó , 1 Ë°®Á§∫Ê≠£Âú®ÊòæÁ§∫
     ebook_theme_res_t       page_res_bmp[PAGE_BMP_MAX];
 
 
@@ -151,7 +165,7 @@ static void ebook_page_init(ebook_page_ctrl_t *page_ctrl)
     page_ctrl->page_res_bmp[PAGE_NAME_ROLL].res_buffer = theme_hdl2buf(page_ctrl->page_res_bmp[PAGE_NAME_ROLL].h_bmp_handle);
 }
 
-static void ebook_goto_init(ebook_goto_ctrl_t *goto_ctrl)//..≥ı ºªØ◊ ‘¥
+static void ebook_goto_init(ebook_goto_ctrl_t *goto_ctrl)//..ÂàùÂßãÂåñËµÑÊ∫ê
 {
     eLIBs_memset((void *)&goto_ctrl->goto_bottom_bmp,  0, sizeof(goto_ctrl->goto_bottom_bmp));
     eLIBs_memset((void *)goto_ctrl->goto_res_nbmp,  0, sizeof(goto_ctrl->goto_res_nbmp));
@@ -247,7 +261,7 @@ static void ebook_goto_init(ebook_goto_ctrl_t *goto_ctrl)//..≥ı ºªØ◊ ‘¥
     goto_ctrl->goto_res_fbmp[GOTO_QUITN].res_buffer = theme_hdl2buf(goto_ctrl->goto_res_fbmp[GOTO_QUITN].h_bmp_handle);
 }
 
-static void ebook_goto_uninit(ebook_goto_ctrl_t *goto_ctrl)//..πÿ±’◊ ‘¥
+static void ebook_goto_uninit(ebook_goto_ctrl_t *goto_ctrl)//..ÂÖ≥Èó≠ËµÑÊ∫ê
 {
     theme_close(goto_ctrl->goto_bg_bmp.h_bmp_handle);
     theme_close(goto_ctrl->goto_bottom_bmp.h_bmp_handle);
@@ -355,7 +369,7 @@ static __s32 page_paint_ebook_name(__gui_msg_t *msg)
     return EPDK_OK;
 }
 
-//paint µÁ◊” È“≥ ˝µƒΩ¯∂»Ãı
+//paint ÁîµÂ≠ê‰π¶È°µÊï∞ÁöÑËøõÂ∫¶Êù°
 static __s32 page_paint_page_no_progress(__gui_msg_t *msg)
 {
     ebook_page_ctrl_t *page_ctrl = NULL ;
@@ -574,7 +588,7 @@ static __s32 page_on_touch(__gui_msg_t *msg)
                             __msg("-------------------------------------1\n");
                             //if(ebook_touch_flag == 4)
                             {
-                                Ebook_cmd2parent_syn(msg->h_deswin, CMD_PAGE_SET_PLAY, page_ctrl->page_para->play_status, 0);   //Õ£÷π◊‘∂Ø≤•∑≈
+                                Ebook_cmd2parent_syn(msg->h_deswin, CMD_PAGE_SET_PLAY, page_ctrl->page_para->play_status, 0);   //ÂÅúÊ≠¢Ëá™Âä®Êí≠Êîæ
                             }
                         }
                     }
@@ -600,7 +614,7 @@ static __s32 page_on_touch(__gui_msg_t *msg)
                                 __msg("-------------------------------------3\n");
                                 //if(ebook_touch_flag == 4)
                                 {
-                                    Ebook_cmd2parent_syn(msg->h_deswin, CMD_PAGE_SET_PLAY, page_ctrl->page_para->play_status, 0);   //Õ£÷π◊‘∂Ø≤•∑≈
+                                    Ebook_cmd2parent_syn(msg->h_deswin, CMD_PAGE_SET_PLAY, page_ctrl->page_para->play_status, 0);   //ÂÅúÊ≠¢Ëá™Âä®Êí≠Êîæ
                                 }
                             }
                         }
@@ -613,7 +627,7 @@ static __s32 page_on_touch(__gui_msg_t *msg)
                         {
                             page_ctrl->page_para->play_status = 1;
                             __msg("-------------------------------------4\n");
-                            Ebook_cmd2parent_syn(msg->h_deswin, CMD_PAGE_SET_PLAY, page_ctrl->page_para->play_status, 0);   //Õ£÷π◊‘∂Ø≤•∑≈
+                            Ebook_cmd2parent_syn(msg->h_deswin, CMD_PAGE_SET_PLAY, page_ctrl->page_para->play_status, 0);   //ÂÅúÊ≠¢Ëá™Âä®Êí≠Êîæ
                         }
                     }
 
@@ -626,7 +640,7 @@ static __s32 page_on_touch(__gui_msg_t *msg)
 
                     if (page_ctrl->page_para->cur_page > 0)
                     {
-                        if (page_ctrl->page_para->total_page < 50)      //◊‹“≥ ˝‘⁄50“≥“‘ƒ⁄, √ø∞¥5¥Œ∞¥º¸æÕºı…Ÿ“ª“≥
+                        if (page_ctrl->page_para->total_page < 50)      //ÊÄªÈ°µÊï∞Âú®50È°µ‰ª•ÂÜÖ, ÊØèÊåâ5Ê¨°ÊåâÈîÆÂ∞±ÂáèÂ∞ë‰∏ÄÈ°µ
                         {
                             page_ctrl->page_para->cur_page = page_ctrl->page_para->cur_page - (page_ctrl->key_cnt / 5) ;
 
@@ -635,7 +649,7 @@ static __s32 page_on_touch(__gui_msg_t *msg)
                                 page_ctrl->page_para->cur_page = 1 ;
                             }
                         }
-                        else if (page_ctrl->page_para->total_page < 1000)       //◊‹“≥ ˝‘⁄1000 “≥“‘ƒ⁄, √ø∞¥2 ¥Œ∞¥º¸æÕºı…Ÿ“ª“≥
+                        else if (page_ctrl->page_para->total_page < 1000)       //ÊÄªÈ°µÊï∞Âú®1000 È°µ‰ª•ÂÜÖ, ÊØèÊåâ2 Ê¨°ÊåâÈîÆÂ∞±ÂáèÂ∞ë‰∏ÄÈ°µ
                         {
                             page_ctrl->page_para->cur_page = page_ctrl->page_para->cur_page - (page_ctrl->key_cnt / 2) ;
 
@@ -644,7 +658,7 @@ static __s32 page_on_touch(__gui_msg_t *msg)
                                 page_ctrl->page_para->cur_page = 1;
                             }
                         }
-                        else        //◊‹“≥ ˝¥Û”⁄ 1000 “≥ ± £¨√ª∞¥œ¬“ª¥Œ∞¥º¸Ã¯◊™“ª“≥
+                        else        //ÊÄªÈ°µÊï∞Â§ß‰∫é 1000 È°µÊó∂ ÔºåÊ≤°Êåâ‰∏ã‰∏ÄÊ¨°ÊåâÈîÆË∑≥ËΩ¨‰∏ÄÈ°µ
                         {
                             page_ctrl->page_para->cur_page = page_ctrl->page_para->cur_page - page_ctrl->key_cnt ;
 
@@ -664,7 +678,7 @@ static __s32 page_on_touch(__gui_msg_t *msg)
 
                     if (page_ctrl->page_para->cur_page  < page_ctrl->page_para->total_page)
                     {
-                        if (page_ctrl->page_para->total_page < 50)      //◊‹“≥ ˝‘⁄50“≥“‘ƒ⁄, √ø∞¥5¥Œ∞¥º¸æÕ‘ˆº”“ª“≥
+                        if (page_ctrl->page_para->total_page < 50)      //ÊÄªÈ°µÊï∞Âú®50È°µ‰ª•ÂÜÖ, ÊØèÊåâ5Ê¨°ÊåâÈîÆÂ∞±Â¢ûÂä†‰∏ÄÈ°µ
                         {
                             page_ctrl->page_para->cur_page = page_ctrl->page_para->cur_page +  page_ctrl->key_cnt / 5 ;
 
@@ -673,7 +687,7 @@ static __s32 page_on_touch(__gui_msg_t *msg)
                                 page_ctrl->page_para->cur_page = page_ctrl->page_para->total_page ;
                             }
                         }
-                        else if (page_ctrl->page_para->total_page < 1000)       //◊‹“≥ ˝‘⁄1000 “≥“‘ƒ⁄, √ø∞¥2 ¥Œ∞¥º¸æÕ‘ˆº”“ª“≥
+                        else if (page_ctrl->page_para->total_page < 1000)       //ÊÄªÈ°µÊï∞Âú®1000 È°µ‰ª•ÂÜÖ, ÊØèÊåâ2 Ê¨°ÊåâÈîÆÂ∞±Â¢ûÂä†‰∏ÄÈ°µ
                         {
                             page_ctrl->page_para->cur_page = page_ctrl->page_para->cur_page + (page_ctrl->key_cnt / 2) ;
 
@@ -682,7 +696,7 @@ static __s32 page_on_touch(__gui_msg_t *msg)
                                 page_ctrl->page_para->cur_page = page_ctrl->page_para->total_page ;
                             }
                         }
-                        else        //◊‹“≥ ˝¥Û”⁄ 1000 “≥ ± £¨√ø∞¥œ¬“ª¥Œ∞¥º¸Ã¯◊™“ª“≥
+                        else        //ÊÄªÈ°µÊï∞Â§ß‰∫é 1000 È°µÊó∂ ÔºåÊØèÊåâ‰∏ã‰∏ÄÊ¨°ÊåâÈîÆË∑≥ËΩ¨‰∏ÄÈ°µ
                         {
                             page_ctrl->page_para->cur_page = page_ctrl->page_para->cur_page + page_ctrl->key_cnt ;
 
@@ -697,7 +711,7 @@ static __s32 page_on_touch(__gui_msg_t *msg)
                     Ebook_cmd2parent_syn(msg->h_deswin, CMD_PAGE_SET_NEXT, 0, msg->dwAddData1);// show next page
                 }
 
-                /*  ∏¸–¬“≥¬Î*/
+                /*  Êõ¥Êñ∞È°µÁ†Å*/
                 //if(ebook_touch_flag == 4)
                 {
                     __gui_msg_t setmsg;
@@ -733,7 +747,7 @@ static __s32 page_on_touch(__gui_msg_t *msg)
                     GUI_LyrWinSetSta(page_ctrl->page_para->page_num_progress_lyr, GUI_LYRWIN_STA_SUSPEND) ;
                     page_ctrl->page_no_progress = 0 ;
                     GUI_LyrWinSetSta(page_ctrl->page_para->page_layer, GUI_LYRWIN_STA_ON);
-                    /* ∑¢ÀÕœ˚œ¢µΩ÷˜¥∞ø⁄£¨Õ®÷™µÁ◊” ÈÃ¯◊™µΩµ±«∞“≥*/
+                    /* ÂèëÈÄÅÊ∂àÊÅØÂà∞‰∏ªÁ™óÂè£ÔºåÈÄöÁü•ÁîµÂ≠ê‰π¶Ë∑≥ËΩ¨Âà∞ÂΩìÂâçÈ°µ*/
                     {
                         __gui_msg_t setmsg;
                         setmsg.id = COM_CMD_SEEKPAGE ;
@@ -757,7 +771,7 @@ static __s32 page_on_touch(__gui_msg_t *msg)
                     GUI_LyrWinSetSta(page_ctrl->page_para->page_num_progress_lyr, GUI_LYRWIN_STA_SUSPEND) ;
                     page_ctrl->page_no_progress = 0 ;
                     GUI_LyrWinSetSta(page_ctrl->page_para->page_layer, GUI_LYRWIN_STA_ON);
-                    /* ∑¢ÀÕœ˚œ¢µΩ÷˜¥∞ø⁄£¨Õ®÷™µÁ◊” ÈÃ¯◊™µΩµ±«∞“≥*/
+                    /* ÂèëÈÄÅÊ∂àÊÅØÂà∞‰∏ªÁ™óÂè£ÔºåÈÄöÁü•ÁîµÂ≠ê‰π¶Ë∑≥ËΩ¨Âà∞ÂΩìÂâçÈ°µ*/
                     {
                         __gui_msg_t setmsg;
                         setmsg.id = COM_CMD_SEEKPAGE ;
@@ -816,7 +830,7 @@ static __s32 page_key_proc(__gui_msg_t *msg)
 {
     ebook_page_ctrl_t *page_ctrl = NULL;
     static __s32 last_key = -1, key_cnt = 0;
-    static __s32 menu_show_flag = 0;// 1  ±±Ì æ≤Àµ•‘⁄œ‘ æ£¨0  ±±Ì æ“˛≤ÿ
+    static __s32 menu_show_flag = 0;// 1 Êó∂Ë°®Á§∫ËèúÂçïÂú®ÊòæÁ§∫Ôºå0 Êó∂Ë°®Á§∫ÈöêËóè
     __wrn("aaaaaa menulist longdown 10\n");
     page_ctrl = (ebook_page_ctrl_t *)GUI_WinGetAddData(msg->h_deswin);
 
@@ -835,21 +849,21 @@ static __s32 page_key_proc(__gui_msg_t *msg)
                     page_ctrl->page_para->play_status = 0;
                 }
 
-                Ebook_cmd2parent(msg->h_deswin, CMD_PAGE_SET_PLAY, page_ctrl->page_para->play_status, 0);   //∏¸–¬≤•∑≈◊¥Ã¨
+                Ebook_cmd2parent(msg->h_deswin, CMD_PAGE_SET_PLAY, page_ctrl->page_para->play_status, 0);   //Êõ¥Êñ∞Êí≠ÊîæÁä∂ÊÄÅ
                 page_paint_all(msg) ;
             }
             else
             {
-                Ebook_cmd2parent(msg->h_deswin, CMD_PAGE_SET_SET, 0, 0);//¡¨–¯∞¥enterº¸ ±Ω¯»Î…Ë÷√≥°æ∞÷–
+                Ebook_cmd2parent(msg->h_deswin, CMD_PAGE_SET_SET, 0, 0);//ËøûÁª≠ÊåâenterÈîÆÊó∂ËøõÂÖ•ËÆæÁΩÆÂú∫ÊôØ‰∏≠
             }
 
             key_cnt = 0;
         }
-        else if (/*(last_key == GUI_MSG_KEY_MENU)||*/(last_key == GUI_MSG_KEY_ESCAPE))  //∂Ã∞¥menuº¸£¨ÕÀ≥ˆ”¶”√≥Ã–Ú
+        else if (/*(last_key == GUI_MSG_KEY_MENU)||*/(last_key == GUI_MSG_KEY_ESCAPE))  //Áü≠ÊåâmenuÈîÆÔºåÈÄÄÂá∫Â∫îÁî®Á®ãÂ∫è
         {
             Ebook_cmd2parent(msg->h_deswin, CMD_PAGE_SET_CLOSE, 0, 0);
         }
-        else if (last_key == GUI_MSG_KEY_MENU) //∞¥menuº¸µØ≥ˆ≤Àµ•
+        else if (last_key == GUI_MSG_KEY_MENU) //ÊåâmenuÈîÆÂºπÂá∫ËèúÂçï
         {
             Ebook_cmd2parent(msg->h_deswin, CMD_PAGE_SET_SET, 0, 0);
         }
@@ -1146,7 +1160,7 @@ H_WIN page_frmwin_create(H_WIN parent, __page_create_para_t *para)
     eLIBs_memcpy((void *)p_para, (const void *)para, sizeof(__page_create_para_t));
     GUI_LyrWinGetFB(para->page_layer, &fb);
     g_memset(&frm_create_para, 0, sizeof(__gui_framewincreate_para_t));
-    frm_create_para.dwStyle          = WS_VISIBLE;  //…ËŒ™disabled ÷˜“™ «≤ªΩ” ’¥•√˛œ˚œ¢
+    frm_create_para.dwStyle          = WS_VISIBLE;  //ËÆæ‰∏∫disabled ‰∏ªË¶ÅÊòØ‰∏çÊé•Êî∂Ëß¶Êë∏Ê∂àÊÅØ
     frm_create_para.dwExStyle        = 0;
     frm_create_para.name             = NULL;
     frm_create_para.hOwner           = 0;
@@ -1184,7 +1198,7 @@ __s32 page_frmwin_delete(H_WIN h_win)
 
 /*********************************************************************************
 *********************************************************************************
-                              Ã¯◊™¥∞ø⁄
+                              Ë∑≥ËΩ¨Á™óÂè£
 
 
 
@@ -2419,7 +2433,7 @@ H_WIN goto_frmwin_create(H_WIN parent, __goto_create_para_t *para)
     eLIBs_memcpy((void *)g_para, (const void *)para, sizeof(__goto_create_para_t));
     GUI_LyrWinGetFB(para->goto_layer, &fb);
     g_memset(&frm_create_para, 0, sizeof(__gui_framewincreate_para_t));
-    frm_create_para.dwStyle          = WS_VISIBLE;//..  //…ËŒ™disabled ÷˜“™ «≤ªΩ” ’¥•√˛œ˚œ¢
+    frm_create_para.dwStyle          = WS_VISIBLE;//..  //ËÆæ‰∏∫disabled ‰∏ªË¶ÅÊòØ‰∏çÊé•Êî∂Ëß¶Êë∏Ê∂àÊÅØ
     frm_create_para.dwExStyle        = 0;
     frm_create_para.name             = NULL;
     frm_create_para.hOwner           = 0;
@@ -2463,6 +2477,3 @@ __s32 goto_frmwin_delete(H_WIN h_win)
 
     return EPDK_OK;
 }
-
-
-

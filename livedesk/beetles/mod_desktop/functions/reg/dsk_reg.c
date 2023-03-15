@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include "functions_i.h"
 #include <kconfig.h>
 
@@ -55,9 +86,9 @@ typedef struct
 typedef struct
 {
     __u32 restore_flag[REG_APP_MAX];
-    reg_app_para_t para_current;//µ±«∞÷µ
-    reg_app_para_t para_default;//≥ˆ≥ßƒ¨»œ÷µ
-    __u32 reserverd[3]; //±£¡Ù≤Œ ˝
+    reg_app_para_t para_current;//ÂΩìÂâçÂÄº
+    reg_app_para_t para_default;//Âá∫ÂéÇÈªòËÆ§ÂÄº
+    __u32 reserverd[3]; //‰øùÁïôÂèÇÊï∞
 	__u32 check_sum;
 } reg_all_para_t;
 
@@ -70,7 +101,7 @@ static void multi_screen_unit_init(pmulti_screen_t multi_screen_para)
 
     GUI_RECT desktop_iconRect[DESKTOP_UNIT_MAX] =
     {
-        //πÃ∂®”¶”√
+        //Âõ∫ÂÆöÂ∫îÁî®
         REG_HOME_ICON_POS(0, 0, 1),
         REG_HOME_ICON_POS(0, 1, 1),
         REG_HOME_ICON_POS(0, 2, 1),
@@ -86,7 +117,7 @@ static void multi_screen_unit_init(pmulti_screen_t multi_screen_para)
         { -1, -1,  -1, -1},
         { -1, -1,  -1, -1},
 
-        //øÏΩ›º¸
+        //Âø´Êç∑ÈîÆ
         {0,   0,   99,  100},
         {0,   0,   57,  160},
         {0,   0,   64,  93 },
@@ -147,7 +178,7 @@ static void multi_screen_unit_init(pmulti_screen_t multi_screen_para)
     }
 }
 
-//∂¡»°≈‰÷√Œƒº˛ƒ¨»œ≈‰÷√
+//ËØªÂèñÈÖçÁΩÆÊñá‰ª∂ÈªòËÆ§ÈÖçÁΩÆ
 static __s32 __reg_paramter_config_init(reg_app_para_t *para)
 {
     //init key val by app_config.fex
@@ -428,16 +459,16 @@ static __s32 __reg_paramter_init(reg_app_para_t *para)
     }
 
     para->system_para.audio_output = 0;//normal
-    para->system_para.channel = 0; //¡¢ÃÂ…˘
+    para->system_para.channel = 0; //Á´ã‰ΩìÂ£∞
     para->system_para.charset = 5; //gbk
     para->system_para.detect_gate = 1; //on
     para->system_para.volume =  AUDIO_DEVICE_VOLUME_MAX / 2; //20;
-    para->system_para.language = EPDK_LANGUAGE_ENM_CHINESES; //ºÚÃÂ÷–Œƒ
+    para->system_para.language = EPDK_LANGUAGE_ENM_CHINESES; //ÁÆÄ‰Ωì‰∏≠Êñá
     para->system_para.style = 0;
     para->system_para.backlight = 10;
-    para->system_para.backlightoff = 0; //≤ª◊‘∂Øπÿ∆¡
-    para->system_para.poweroff = 0; //3*60;//≤ª◊‘∂Øπÿª˙
-    para->system_para.keytone = 0; //∞¥º¸“Ù «∑Ò¥Úø™
+    para->system_para.backlightoff = 0; //‰∏çËá™Âä®ÂÖ≥Â±è
+    para->system_para.poweroff = 0; //3*60;//‰∏çËá™Âä®ÂÖ≥Êú∫
+    para->system_para.keytone = 0; //ÊåâÈîÆÈü≥ÊòØÂê¶ÊâìÂºÄ
     /*LCD Parameter Start*/
     para->system_para.lcd_bright = 5;
     para->system_para.lcd_constract = 5;
@@ -449,7 +480,7 @@ static __s32 __reg_paramter_init(reg_app_para_t *para)
     para->system_para.gamma_g_value = 0x0a;
     para->system_para.gamma_b_value = 0x0a;
     para->system_para.output = LION_DISP_LCD;
-    para->system_para.pal_ntsc = 1; //0¥˙±Ìntsc, 1¥˙±Ìpal
+    para->system_para.pal_ntsc = 1; //0‰ª£Ë°®ntsc, 1‰ª£Ë°®pal
     para->system_para.time_set = 1;
     para->system_para.date.year = 2012;
     para->system_para.date.month = 5;
@@ -461,10 +492,10 @@ static __s32 __reg_paramter_init(reg_app_para_t *para)
     para->init_para.default_bgd_index = 0;
 //    eLIBs_strcpy(para->init_para.default_bgd_path, REG_DEFAULT_BGD_PATH);
 //    eLIBs_strcpy(para->init_para.setting_bgd_path, "");
-    para->init_para.bgd_flag = 1; //ƒ¨»œ±≥æ∞
-    para->init_para.bgd_flag_in_main = 1;//ƒ¨»œ±≥æ∞
-    para->root_para.cur_play_storage = -1;           //◊Ó∫Û“ª¥Œ‘À––µƒap¿‡–Õ£¨-1:ø’ 0:“Ù¿÷,1: ”∆µ
-    para->root_para.last_play_app = 0;          //◊Ó∫Û“ª¥Œ‘À––µƒap¿‡–Õ£¨0:“Ù¿÷,1: ”∆µ
+    para->init_para.bgd_flag = 1; //ÈªòËÆ§ËÉåÊôØ
+    para->init_para.bgd_flag_in_main = 1;//ÈªòËÆ§ËÉåÊôØ
+    para->root_para.cur_play_storage = -1;           //ÊúÄÂêé‰∏ÄÊ¨°ËøêË°åÁöÑapÁ±ªÂûãÔºå-1:Á©∫ 0:Èü≥‰πê,1:ËßÜÈ¢ë
+    para->root_para.last_play_app = 0;          //ÊúÄÂêé‰∏ÄÊ¨°ËøêË°åÁöÑapÁ±ªÂûãÔºå0:Èü≥‰πê,1:ËßÜÈ¢ë
 //    eLIBs_memset(para->root_para.last_app_play_storage, 0, sizeof(para->root_para.last_app_play_storage));
 //    eLIBs_memset(para->root_para.last_storage_play_app, 0, sizeof(para->root_para.last_storage_play_app));
     //   para->root_para.last_app_name;
@@ -489,23 +520,23 @@ static __s32 __reg_paramter_init(reg_app_para_t *para)
     para->movie_para.sub_state = 1; //on
     para->movie_para.sub_color = GUI_WHITE;
     para->movie_para.sub_stream = 0;
-    para->movie_para.sub_pos = 0; //œ¬√Ê
-    para->movie_para.channel = 0; //¡¢ÃÂ…˘
-    para->movie_para.track = 0;//“ÙπÏ0  //chengf3  add
+    para->movie_para.sub_pos = 0; //‰∏ãÈù¢
+    para->movie_para.channel = 0; //Á´ã‰ΩìÂ£∞
+    para->movie_para.track = 0;//Èü≥ËΩ®0  //chengf3  add
     para->music_para.start_item_id = 0;
     para->music_para.focus_item_id = 0;
     para->music_para.play_mode = 2; //ROTATE_ALL
     para->music_para.EQ_mode = 0; //NORMAL
-    para->photo_para.bgmusic = 0; //πÿ±’
+    para->photo_para.bgmusic = 0; //ÂÖ≥Èó≠
     para->photo_para.speedflag = 1;
     para->photo_para.interval_time = 6;
     para->photo_para.ratio = 0;
-    para->photo_para.effect = 0; //ƒ¨»œŒﬁ«–ªª–ßπ˚
+    para->photo_para.effect = 0; //ÈªòËÆ§Êó†ÂàáÊç¢ÊïàÊûú
     para->ebook_para.text_colour = GUI_WHITE;
     para->ebook_para.switch_time = 10;
     para->ebook_para.switch_time_flag = 0;
     para->ebook_para.bg_music_switch = 0;
-    para->ebook_para.tts_switch = 1;            /*ƒ¨»œŒ™πÿ±’◊¥Ã¨*/
+    para->ebook_para.tts_switch = 1;            /*ÈªòËÆ§‰∏∫ÂÖ≥Èó≠Áä∂ÊÄÅ*/
     para->fm_para.mode = 0;
     para->fm_para.channel_id = 0;
     para->fm_para.FM_channel[0] = 87500;
@@ -518,8 +549,8 @@ static __s32 __reg_paramter_init(reg_app_para_t *para)
     para->fm_para.reserverd[0] = 7;
     para->fm_para.reserverd[2] = para->fm_para.FM_channel[para->fm_para.channel_id];
 
-    para->record_para.reserverd[0] = 2;//¬º“Ù÷ ¡ø 0:≤Ó 1:÷– 2:∫√
-    para->record_para.reserverd[1] = 0;//¬º“Ù∏Ò Ω 0:mp3 1:wav
+    para->record_para.reserverd[0] = 2;//ÂΩïÈü≥Ë¥®Èáè 0:Â∑Æ 1:‰∏≠ 2:Â•Ω
+    para->record_para.reserverd[1] = 0;//ÂΩïÈü≥Ê†ºÂºè 0:mp3 1:wav
     para->calendar_para.time_format = 0;
 
 //    eLIBs_memcpy(para->system_para.ver_inf, APP_SDK_VERSION, sizeof(APP_SDK_VERSION));
@@ -534,10 +565,10 @@ static __u32 calc_crc32(const unsigned char *buffer, __u32 length)
 {
 	__u32 i, j;
 	CRC32_DATA_t crc32;
-	__u32 CRC32 = 0xffffffff;  /* …Ë÷√≥ı º÷µ */
+	__u32 CRC32 = 0xffffffff;  /* ËÆæÁΩÆÂàùÂßãÂÄº */
 	crc32.CRC = 0;
 
-	for ( i = 0; i < 256; ++i) /* ”√++i“‘Ã·∏ﬂ–ß¬  */
+	for ( i = 0; i < 256; ++i) /* Áî®++i‰ª•ÊèêÈ´òÊïàÁéá */
 	{
 		crc32.CRC = i;
 		for ( j = 0; j < 8 ; ++j)
@@ -550,7 +581,7 @@ static __u32 calc_crc32(const unsigned char *buffer, __u32 length)
 		crc32.CRC_32_Tbl[i] = crc32.CRC;
 	}
 
-	CRC32 = 0xffffffff; /* …Ë÷√≥ı º÷µ */
+	CRC32 = 0xffffffff; /* ËÆæÁΩÆÂàùÂßãÂÄº */
     for ( i = 0; i < length; ++i)
     {
         CRC32 = crc32.CRC_32_Tbl[(CRC32^((unsigned char*)buffer)[i]) & 0xff] ^ (CRC32 >> 8);
@@ -664,7 +695,7 @@ static void save_flash_task(void *parg)
 //	eLIBs_printf("%s %d /dev/udisk_flush\n", __func__, __LINE__);
 	if (fd < 0) {
 		eLIBs_printf("can not find device:%s\n", "/dev/udisk_flush");
-		return ;
+		esKRNL_TDel(EXEC_prioself);
 	}
 	while (1)
     {
@@ -691,7 +722,7 @@ _save_flash_task_exit:
     eLIBs_printf("save_flash_tasky main task end!");
     esKRNL_TDel(EXEC_prioself);
 }
-#ifdef	CONFIG_COMMAND_PQD
+#ifdef	CONFIG_COMMAND_PQD_USELESS
 #define DEST_CFG_NAME	"e:\\disp_firmware"
 #define SOURCE_CFG_NAME	"d:\\res\\disp_firmware"
 __s32 dsk_reg_copy_lcd_screen_cfg(void)
@@ -767,7 +798,7 @@ __s32 dsk_reg_init_para(void)
         return EPDK_OK;
     }
 
-    //∑÷≈‰ƒ⁄¥Ê
+    //ÂàÜÈÖçÂÜÖÂ≠ò
     all_app_para = esMEMS_Malloc(0, sizeof(reg_all_para_t));
 
     if (all_app_para == NULL)
@@ -788,7 +819,7 @@ __s32 dsk_reg_init_para(void)
 	spinor_proc_flag_sem = esKRNL_SemCreate(1);
 	dsk_reg_flush_thread_id = esKRNL_TCreate(save_flash_task, NULL, 0x4000, KRNL_priolevel7);
     eLIBs_memset(all_app_para_bak, 0x00, sizeof(reg_all_para_t));
-    //≥¢ ‘º”‘ÿŒƒº˛
+    //Â∞ùËØïÂä†ËΩΩÊñá‰ª∂
     if (dsk_reg_read_config_file(REG_SETTING_PARA_FILE_PATH, all_app_para) == EPDK_FAIL)
     {
 		__s32 sta = 0;
@@ -797,7 +828,7 @@ __s32 dsk_reg_init_para(void)
 		eLIBs_printf("%s %d config not ok, format e:\n", __func__, __LINE__);
 //		if (eLIBs_statfs("e:\\", &fstat) != 0)
 		eLIBs_format("e:\\", "fat", 0);
-#ifdef	CONFIG_COMMAND_PQD
+#ifdef	CONFIG_COMMAND_PQD_USELESS
 		dsk_reg_copy_lcd_screen_cfg();
 #endif
 		eLIBs_memset(all_app_para, 0, sizeof(reg_all_para_t));
@@ -843,7 +874,7 @@ __s32 dsk_reg_flush(void)
 	esKRNL_SemQuery(spinor_proc_flag_sem, &p_sem_data);
 	if (p_sem_data.OSCnt == 1)
 	{
-		//if (EPDK_YES != eLIBs_memcmp(all_app_para, all_app_para_bak, sizeof(reg_all_para_t))) //≤ªµ» ±≤≈–Ë“™±£¥Ê
+		//if (EPDK_YES != eLIBs_memcmp(all_app_para, all_app_para_bak, sizeof(reg_all_para_t))) //‰∏çÁ≠âÊó∂ÊâçÈúÄË¶Å‰øùÂ≠ò
 		{
 			all_app_para->check_sum = calc_crc32((unsigned char*)all_app_para, sizeof(reg_all_para_t) - sizeof(all_app_para->check_sum));
 			esKRNL_SemPost(spinor_proc_sem);

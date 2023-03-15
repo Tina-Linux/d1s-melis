@@ -1,30 +1,33 @@
 /*
-*******************************************************************************************************************
-*                                                           display driver
-*                                                   the display dirver support module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2008, SoftWinners Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name£º       ListLayer.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
-*Author£º          William Wang
 *
-*Version :         1.1.0
-*
-*Date:             2008-8-25
-*
-*Description :     listlayer interface implement function
-*
-*Others :          None at present.
-*
-* History :
-*
-* <Author>          <time>      <version>     <description>
-*
-* William Wang     2008-8-25      1.1.0        Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __LIST_LAYER__C____
 #define __LIST_LAYER__C____
@@ -233,7 +236,7 @@ __u32 ListLayer_GetLayerInfo(LIST_LAYER_MAN_t *plist_layer)
     }
 
     plist_layer->userscnrect = plist_layer->scnrect;
-    /*»ñÈ¡Í¼²ãµÄframebufferÏà¹ØÐÅÏ¢*/
+    /*èŽ·å–å›¾å±‚çš„framebufferç›¸å…³ä¿¡æ¯*/
     ret = GUI_LyrWinGetFB(plist_layer->layer, &tmpfb);
 
     if (ret != 0)
@@ -242,7 +245,7 @@ __u32 ListLayer_GetLayerInfo(LIST_LAYER_MAN_t *plist_layer)
         return __LINE__;
     }
 
-    /*ÉèÖÃÍ¼²ãµÄframebufferÐÅÏ¢ÖÁlistbuffer½á¹¹*/
+    /*è®¾ç½®å›¾å±‚çš„framebufferä¿¡æ¯è‡³listbufferç»“æž„*/
     plist_layer->listbuffer->buffer                = tmpfb.addr[0];
     plist_layer->listbuffer->layer_format.type     = FB_TYPE_RGB;
     plist_layer->listbuffer->layer_format          = tmpfb.fmt;
@@ -284,11 +287,11 @@ __u32 ListLayer_AdjustFb(LIST_LAYER_MAN_t *plist_layer, __u32 item_w, __u32 fouc
     {
         if (plist_layer->viewrect.height %  item_w)
         {
-            /*ÖØÐÂÉèÖÃ¿ÉÊÓ´°¿Ú¿í¶È*/
+            /*é‡æ–°è®¾ç½®å¯è§†çª—å£å®½åº¦*/
             plist_layer->viewrect.height = (plist_layer->viewrect.height -
                                             plist_layer->viewrect.height %  item_w) + item_w;
 
-            /*»ñÈ¡À©Õ¹¿í¶È*/
+            /*èŽ·å–æ‰©å±•å®½åº¦*/
             if ((foucs_w - item_w) > plist_layer->viewrect.height %  item_w)
             {
                 extend_w = foucs_w - item_w;
@@ -298,10 +301,10 @@ __u32 ListLayer_AdjustFb(LIST_LAYER_MAN_t *plist_layer, __u32 item_w, __u32 fouc
                 extend_w = 0;
             }
 
-            /*»ñÈ¡ÓÐÐ§¿í¶È*/
+            /*èŽ·å–æœ‰æ•ˆå®½åº¦*/
             //valid_w = plist_layer->viewrect.height - plist_layer->viewrect.height %  item_w;
             valid_w = plist_layer->viewrect.height;
-            /*»ñÈ¡framebufferÉî¶È*/
+            /*èŽ·å–framebufferæ·±åº¦*/
             plist_layer->fb_depth = (plist_layer->listbuffer->rectsz.height - extend_w) / valid_w;
             plist_layer->scnnum = (plist_layer->viewrect.height) / item_w;
         }
@@ -309,7 +312,7 @@ __u32 ListLayer_AdjustFb(LIST_LAYER_MAN_t *plist_layer, __u32 item_w, __u32 fouc
         {
             extend_w = foucs_w - item_w;
             valid_w = plist_layer->viewrect.height;
-            /*»ñÈ¡framebufferÉî¶È*/
+            /*èŽ·å–framebufferæ·±åº¦*/
             plist_layer->fb_depth = (plist_layer->listbuffer->rectsz.height - extend_w) / valid_w;
             plist_layer->scnnum = (plist_layer->viewrect.height) / item_w;
         }
@@ -337,7 +340,7 @@ __u32 ListLayer_AdjustFb(LIST_LAYER_MAN_t *plist_layer, __u32 item_w, __u32 fouc
 
     if (plist_layer->fb_depth >= 4)
     {
-        /*¿É±äÊýÁ¿µÄÌõÄ¿´¦Àí*/
+        /*å¯å˜æ•°é‡çš„æ¡ç›®å¤„ç†*/
         plist_layer->mode = VAR_MODE;
         plist_layer->listbuffer->rectsz.height   = valid_w * plist_layer->fb_depth + extend_w;
         plist_layer->listbuffer->size            = (plist_layer->listbuffer->rectsz.height *
@@ -360,7 +363,7 @@ __u32 ListLayer_AdjustFb(LIST_LAYER_MAN_t *plist_layer, __u32 item_w, __u32 fouc
             plist_layer->scn_height = esMODS_MIoctrl(disp, DISP_GET_SCN_HEIGHT, SEL_SCREEN, 0); //modified by Derek,2010.12.07.15:05
             //eLIBs_fclose(disp);
             disp = NULL;
-            /*¹Ì¶¨ÊýÁ¿µÄÌõÄ¿´¦Àí*/
+            /*å›ºå®šæ•°é‡çš„æ¡ç›®å¤„ç†*/
             plist_layer->mode = FIXED_MODE;
             plist_layer->listbuffer->esize           = (LISTMENU_FIXEDEXT_WIDTH * plist_layer->listbuffer->rectsz.width * bpp + 7) >> 3;
             plist_layer->listbuffer->buffer          = (void *)((unsigned long)plist_layer->listbuffer->buffer + plist_layer->listbuffer->esize);
@@ -460,11 +463,11 @@ __hdle ListLayer_Create(H_LYR listlayer, __hdle listmenu, __u32 item_w, __u32 fo
     {
         if (plist_layer->viewrect.height %  item_w)
         {
-            /*ÖØÐÂÉèÖÃ¿ÉÊÓ´°¿Ú¿í¶È*/
+            /*é‡æ–°è®¾ç½®å¯è§†çª—å£å®½åº¦*/
             plist_layer->viewrect.height = (plist_layer->viewrect.height -
                                             plist_layer->viewrect.height %  item_w) + item_w;
 
-            /*»ñÈ¡À©Õ¹¿í¶È*/
+            /*èŽ·å–æ‰©å±•å®½åº¦*/
             if ((foucs_w - item_w) > plist_layer->viewrect.height %  item_w)
             {
                 extend_w = foucs_w - item_w;
@@ -474,10 +477,10 @@ __hdle ListLayer_Create(H_LYR listlayer, __hdle listmenu, __u32 item_w, __u32 fo
                 extend_w = 0;
             }
 
-            /*»ñÈ¡ÓÐÐ§¿í¶È*/
+            /*èŽ·å–æœ‰æ•ˆå®½åº¦*/
             //valid_w = plist_layer->viewrect.height - plist_layer->viewrect.height %  item_w;
             valid_w = plist_layer->viewrect.height;
-            /*»ñÈ¡framebufferÉî¶È*/
+            /*èŽ·å–framebufferæ·±åº¦*/
             plist_layer->fb_depth = (plist_layer->listbuffer->rectsz.height - extend_w) / valid_w;
             plist_layer->scnnum = (plist_layer->viewrect.height) / item_w;
         }
@@ -485,7 +488,7 @@ __hdle ListLayer_Create(H_LYR listlayer, __hdle listmenu, __u32 item_w, __u32 fo
         {
             extend_w = foucs_w - item_w;
             valid_w = plist_layer->viewrect.height;
-            /*»ñÈ¡framebufferÉî¶È*/
+            /*èŽ·å–framebufferæ·±åº¦*/
             plist_layer->fb_depth = (plist_layer->listbuffer->rectsz.height - extend_w) / valid_w;
             plist_layer->scnnum = (plist_layer->viewrect.height) / item_w;
         }
@@ -505,7 +508,7 @@ __hdle ListLayer_Create(H_LYR listlayer, __hdle listmenu, __u32 item_w, __u32 fo
 
     if (plist_layer->fb_depth >= 4)
     {
-        /*¿É±äÊýÁ¿µÄÌõÄ¿´¦Àí*/
+        /*å¯å˜æ•°é‡çš„æ¡ç›®å¤„ç†*/
         plist_layer->mode = VAR_MODE;
         plist_layer->listbuffer->rectsz.height   = valid_w * plist_layer->fb_depth + extend_w;
         plist_layer->listbuffer->size            = (plist_layer->listbuffer->rectsz.height *
@@ -528,7 +531,7 @@ __hdle ListLayer_Create(H_LYR listlayer, __hdle listmenu, __u32 item_w, __u32 fo
             plist_layer->scn_height = esMODS_MIoctrl(disp, DISP_GET_SCN_HEIGHT, SEL_SCREEN, 0); //modified by Derek,2010.12.07.15:05
             //eLIBs_fclose(disp);
             disp = NULL;
-            /*¹Ì¶¨ÊýÁ¿µÄÌõÄ¿´¦Àí*/
+            /*å›ºå®šæ•°é‡çš„æ¡ç›®å¤„ç†*/
             plist_layer->mode = FIXED_MODE;
             plist_layer->listbuffer->esize           = (LISTMENU_FIXEDEXT_WIDTH * plist_layer->listbuffer->rectsz.width * bpp + 7) >> 3;
             plist_layer->listbuffer->buffer          = (void *)((unsigned long)plist_layer->listbuffer->buffer + plist_layer->listbuffer->esize);
@@ -798,7 +801,7 @@ __u32 ListLayer_FixedOnDraw(LIST_LAYER_MAN_t *listlayer)
                 listlayer->setfoucs             = 0;
                 listlayer->menulist->CurItem    = listlayer->menulist->head;
             }
-            else   /*³õÊ¼»¯Ê±ÒÑ¾­ÉèÖÃ½¹µãItem*/
+            else   /*åˆå§‹åŒ–æ—¶å·²ç»è®¾ç½®ç„¦ç‚¹Item*/
             {
                 tmpItem = listlayer->menulist->head;
 
@@ -814,7 +817,7 @@ __u32 ListLayer_FixedOnDraw(LIST_LAYER_MAN_t *listlayer)
             num = 0;
             tmpItem = listlayer->menulist->head;
 
-            /*´ÓÍ·¿ªÊ¼»æÖÆ*/
+            /*ä»Žå¤´å¼€å§‹ç»˜åˆ¶*/
             while (tmpItem != listlayer->menulist->tail)
             {
                 if (num == mid_num)
@@ -1233,12 +1236,12 @@ __u32 ListLayer_OnDraw(LIST_LAYER_MAN_t    *listlayer)
             {
                 if (listlayer->plistmenu->mode & LISTBOX_MOD)
                 {
-                    /*item¶¯Ì¬±ä»¯*/
+                    /*itemåŠ¨æ€å˜åŒ–*/
                     ListLayer_VarBoxOnDraw(listlayer);
                 }
                 else
                 {
-                    /*item¶¯Ì¬±ä»¯*/
+                    /*itemåŠ¨æ€å˜åŒ–*/
                     ListLayer_VarOnDraw(listlayer);
                 }
             }
@@ -1246,12 +1249,12 @@ __u32 ListLayer_OnDraw(LIST_LAYER_MAN_t    *listlayer)
             {
                 if (listlayer->plistmenu->mode & LISTBOX_MOD)
                 {
-                    /*item¶¯Ì¬±ä»¯*/
+                    /*itemåŠ¨æ€å˜åŒ–*/
                     ListLayer_FixedBoxOnDraw(listlayer);
                 }
                 else
                 {
-                    /*item¶¯Ì¬±ä»¯*/
+                    /*itemåŠ¨æ€å˜åŒ–*/
                     ListLayer_FixedOnDraw(listlayer);
                 }
             }
@@ -1345,7 +1348,7 @@ __u32 ListLayer_SetWinFoucs(LIST_LAYER_MAN_t    *listlayer)
 
             if (listlayer->plistmenu->lyrsts != LISTMENU_SLEEP)
             {
-                /*Çå³ýframebuffer*/
+                /*æ¸…é™¤framebuffer*/
                 eLIBs_memset(base, 0x00, size);
             }
 
@@ -1423,7 +1426,7 @@ __u32 ListLayer_SetWinUnFoucs(LIST_LAYER_MAN_t    *listlayer)
 
             if (listlayer->plistmenu->lyrsts != LISTMENU_SLEEP)
             {
-                /*Çå³ýframebuffer*/
+                /*æ¸…é™¤framebuffer*/
                 eLIBs_memset(base, 0x00, size);
             }
 

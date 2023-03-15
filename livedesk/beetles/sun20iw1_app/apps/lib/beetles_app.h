@@ -1,32 +1,34 @@
 /*
-************************************************************************************************************************
-*                                                        CUCKOO
-*                                                   the Audio Player
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                             Copyright(C), 2006-2009, SoftWinners Microelectronic Co., Ltd.
-*                                                  All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File Name   :ResDecode.h
-*
-* Author      : Gary.Wang
-*
-* Version     : 1.1.0
-*
-* Date        : 2008.11.08
-*
-* Description :
-*
-* Others      : None at present.
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
 *
-* History     :
-*
-*  <Author>        <time>       <version>      <description>
-*
-* Gary.Wang      2008.11.08       1.1.0        build the file
-*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef __BEETLES_APP_H_
 #define __BEETLES_APP_H_
 
@@ -80,12 +82,12 @@ extern GUI_FONT                     *SWFFont;
 #define AITALK_STR_GRAMMER_PATH     "f:\\name.xml"
 #define FS_DISK_NAME                "f:\\"
 #define FS_REQUIRE_FREE_SPACE       (1024*1024*50)
-#define HOME_APP_NUM_CHANGE         1   /* 0: ½ö½ö±£Áôkaraoke  music  movie  aux  setting  5¸öapp     1: ±£ÁôÈ«²¿14  ¸öapp*/
+#define HOME_APP_NUM_CHANGE         1   /* 0: ä»…ä»…ä¿ç•™karaoke  music  movie  aux  setting  5ä¸ªapp     1: ä¿ç•™å…¨éƒ¨14  ä¸ªapp*/
 #define HOME_DICT                   0   /*DICT*/
 
-#define KARAOKE_FUNCTION_EX         1 /*ÊÇ·ñÓĞkaraoke¹¦ÄÜ,    0: Ã»ÓĞkaraoke    1:ÓĞkaraoke */
-#define EBOOK_FUNCTION_EX           0 /*ÊÇ·ñÓĞebook¹¦ÄÜ,    0: Ã»ÓĞebook    1:ÓĞebook */
-#define PHOTO_FUNCTION_EX           0 /*ÊÇ·ñÓĞphoto¹¦ÄÜ,    0: Ã»ÓĞphoto    1:ÓĞphoto */
+#define KARAOKE_FUNCTION_EX         1 /*æ˜¯å¦æœ‰karaokeåŠŸèƒ½,    0: æ²¡æœ‰karaoke    1:æœ‰karaoke */
+#define EBOOK_FUNCTION_EX           0 /*æ˜¯å¦æœ‰ebookåŠŸèƒ½,    0: æ²¡æœ‰ebook    1:æœ‰ebook */
+#define PHOTO_FUNCTION_EX           0 /*æ˜¯å¦æœ‰photoåŠŸèƒ½,    0: æ²¡æœ‰photo    1:æœ‰photo */
 
 #define AudioCloseAll               0x0000
 #define AudioOpenMp5                0x0001
@@ -219,8 +221,8 @@ typedef enum
 
 
 //
-//MUSICPLAYER_NORMAL:       Õı³£½øÈëÒôÀÖ²¥·ÅÆ÷
-//MUSICPLAYER_BACKGROUND:   ÒôÀÖ²¥·ÅÆ÷×÷ÎªºóÌ¨²¥·Å
+//MUSICPLAYER_NORMAL:       æ­£å¸¸è¿›å…¥éŸ³ä¹æ’­æ”¾å™¨
+//MUSICPLAYER_BACKGROUND:   éŸ³ä¹æ’­æ”¾å™¨ä½œä¸ºåå°æ’­æ”¾
 typedef enum
 {
     MUSICPLAYER_NORMAL                  = 0,
@@ -302,7 +304,7 @@ typedef enum
     numz                    ,   //------36
     numdec                  , //" -" ---37
 
-    //==µÚÎå¸öÊıÂë¹Ü==
+    //==ç¬¬äº”ä¸ªæ•°ç ç®¡==
     num_play                ,//" > " --------38
     num_pause               ,//" ||" -------39
     num_usb                 ,//"USB" --------40
@@ -338,20 +340,20 @@ typedef struct tag_root_para
     H_WIN           src_win;
     unsigned long        root_type;
     rat_type_t      explr_root;
-    uint32_t        setting_opt;//Îª0´ú±íÍ¨ÓÃÉèÖÃ£¬Îª1´ú±íµçÔ´¹ÜÀí
-    uint32_t        record_opt;//Îª0´ú±íÕı³£½øÈëÂ¼Òô£¬Îª1´ú±ífmÂ¼Òô
+    uint32_t        setting_opt;//ä¸º0ä»£è¡¨é€šç”¨è®¾ç½®ï¼Œä¸º1ä»£è¡¨ç”µæºç®¡ç†
+    uint32_t        record_opt;//ä¸º0ä»£è¡¨æ­£å¸¸è¿›å…¥å½•éŸ³ï¼Œä¸º1ä»£è¡¨fmå½•éŸ³
 
     int32_t         data;
 
 #if 0
-    uint32_t        karaoke_root_type; //karaoke  ÏµÍ³·ÖÇø    //chengf  add
+    uint32_t        karaoke_root_type; //karaoke  ç³»ç»Ÿåˆ†åŒº    //chengf  add
 #endif
-    int32_t         explorer_play_music; //´ÓÎÄ¼ş¹ÜÀíÀïÃæ²¥·ÅÒôÀÖ±êÖ¾, 1 ±íÊ¾´ÓÎÄ¼ş¹ÜÀíÖĞ²¥·Å
+    int32_t         explorer_play_music; //ä»æ–‡ä»¶ç®¡ç†é‡Œé¢æ’­æ”¾éŸ³ä¹æ ‡å¿—, 1 è¡¨ç¤ºä»æ–‡ä»¶ç®¡ç†ä¸­æ’­æ”¾
     char            music_file_name[RAT_MAX_FULL_PATH_LEN];
-    __bool          return_to_explorer_file_list ;       // 1 ±íÊ¾»ØÍËµ½ä¯ÀÀÆ÷ÖĞÏÈÇ°²¥·ÅµÄÃ½ÌåÎÄ¼şÁĞ±í£¬0 ±íÊ¾»ØÍËµ½sd ¿¨/ usb Ñ¡Ôñ´°¿ÚÖĞ
-    __movie_create_mode_e   tv_mode;//ÊÓÆµÄ£Ê½
+    __bool          return_to_explorer_file_list ;       // 1 è¡¨ç¤ºå›é€€åˆ°æµè§ˆå™¨ä¸­å…ˆå‰æ’­æ”¾çš„åª’ä½“æ–‡ä»¶åˆ—è¡¨ï¼Œ0 è¡¨ç¤ºå›é€€åˆ°sd å¡/ usb é€‰æ‹©çª—å£ä¸­
+    __movie_create_mode_e   tv_mode;//è§†é¢‘æ¨¡å¼
 
-    __bool          power_on_tv_out; //¿ª»úÊÇ·ñ½øÈëTV-OUT  Ä£Ê½, EPDK_FALSE: ¿ª»ú²»½øÈë,À­¸ËLCD  ÏÔÊ¾, EPDK_TRUE:¿ª»ú½øÈë,°å¿¨TV-OUT  ÏÔÊ¾
+    __bool          power_on_tv_out; //å¼€æœºæ˜¯å¦è¿›å…¥TV-OUT  æ¨¡å¼, EPDK_FALSE: å¼€æœºä¸è¿›å…¥,æ‹‰æ†LCD  æ˜¾ç¤º, EPDK_TRUE:å¼€æœºè¿›å…¥,æ¿å¡TV-OUT  æ˜¾ç¤º
 
     __bool          multimedia_to_setting;
     int32_t             media_type;
@@ -374,11 +376,11 @@ typedef struct tag_root_para
 
 #define TVOUT_LCD               0
 #define TVOUT_NTSC              1
-#define TF_ENCRYPTION_EX        0   /*karaoke  Êı¾İÊÇ·ñÊ¹ÓÃ¼ÓÃÜT  ¿¨ĞÎÊ½, 0: ²»Ê¹ÓÃ¼ÓÃÜT  ¿¨ ,1:Ê¹ÓÃ¼ÓÃÜT   ¿¨*/
-#define HT_1628_LED_EX          0   /* 0  //ÊÇ·ñÌí¼Ó1628  LED ÆÁ*/
-#define PLUGOUT_USB_SD_TO_PLAY  1   /*0:Ö±½Ó»áÖ÷½çÃæ  1:²¥·Å»¹´æÔÚµÄTF»òUSB*/
-#define OUTAGE_SAVE_CUR_FILE    0   /*·ÀÖ¹¶ÏµçÎŞ·¨¼ÇÒäµ±Ç°ÇúÄ¿*/
-#define JX_APP_MUSIC_MOVIE_FM_VOLUME    1   /*½İĞ¾ÒªÇómusic,movie and fmÉùÒô×î´ó±Èline inµÄĞ¡Ò»¼¶*/
+#define TF_ENCRYPTION_EX        0   /*karaoke  æ•°æ®æ˜¯å¦ä½¿ç”¨åŠ å¯†T  å¡å½¢å¼, 0: ä¸ä½¿ç”¨åŠ å¯†T  å¡ ,1:ä½¿ç”¨åŠ å¯†T   å¡*/
+#define HT_1628_LED_EX          0   /* 0  //æ˜¯å¦æ·»åŠ 1628  LED å±*/
+#define PLUGOUT_USB_SD_TO_PLAY  1   /*0:ç›´æ¥ä¼šä¸»ç•Œé¢  1:æ’­æ”¾è¿˜å­˜åœ¨çš„TFæˆ–USB*/
+#define OUTAGE_SAVE_CUR_FILE    0   /*é˜²æ­¢æ–­ç”µæ— æ³•è®°å¿†å½“å‰æ›²ç›®*/
+#define JX_APP_MUSIC_MOVIE_FM_VOLUME    1   /*æ·èŠ¯è¦æ±‚music,movie and fmå£°éŸ³æœ€å¤§æ¯”line inçš„å°ä¸€çº§*/
 
 extern uint32_t     SetFoucsWindowEx(uint32_t Window);
 extern uint32_t     GetFoucsWindowEx(void);

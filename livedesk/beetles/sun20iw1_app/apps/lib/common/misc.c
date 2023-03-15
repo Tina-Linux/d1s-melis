@@ -1,31 +1,33 @@
 /*
-************************************************************************************************************************
-*                                                        CUCKOO
-*                                                   the Audio Player
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                             Copyright(C), 2006-2009, SoftWinners Microelectronic Co., Ltd.
-*                                                  All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File Name   : misc.c
-*
-* Author      : Gary.Wang
-*
-* Version     : 1.1.0
-*
-* Date        : 2008.11.08
-*
-* Description :
-*
-* Others      : None at present.
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
 *
-* History     :
-*
-*  <Author>        <time>       <version>      <description>
-*
-* Gary.Wang      2008.11.08       1.1.0        build the file
-*
-************************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef  __misc_c
 #define  __misc_c
@@ -47,8 +49,8 @@
 #define PIO_REG_DATA(n)                 ((volatile unsigned int *)(unsigned long)( PIOC_MEM_BASE + ((n)-1)*0x24 + 0x10))
 
 //libaiao, 2011.5.15
-//¸ù¾İÖ¸¶¨³¤¶È´ÓsrcÖĞ½ØÈ¡×Ö·û´®
-//·µ»ØÖµÎªÇÔÈ¡×Ö·û´®µÄ³¤¶È(byteÎªµ¥Î»)
+//æ ¹æ®æŒ‡å®šé•¿åº¦ä»srcä¸­æˆªå–å­—ç¬¦ä¸²
+//è¿”å›å€¼ä¸ºçªƒå–å­—ç¬¦ä¸²çš„é•¿åº¦(byteä¸ºå•ä½)
 __s32 GUI_GetStringByWidth(char *dst, const char GUI_UNI_PTR *src, __u32 width)
 {
     const char GUI_UNI_PTR *s = src;
@@ -68,7 +70,7 @@ __s32 GUI_GetStringByWidth(char *dst, const char GUI_UNI_PTR *src, __u32 width)
         }
 
         r   = GUI_UC_GetCharCode(s + len);
-        len  += GUI_UC_GetCharSize(s + len);    //Ö¸ÏòÏÂÒ»¸ö×Ö·û
+        len  += GUI_UC_GetCharSize(s + len);    //æŒ‡å‘ä¸‹ä¸€ä¸ªå­—ç¬¦
         w += GUI_GetCharDistX(r);
     }
 
@@ -78,10 +80,10 @@ __s32 GUI_GetStringByWidth(char *dst, const char GUI_UNI_PTR *src, __u32 width)
 
 //libaiao, 2011.5.15
 //extern __s32 GUI_GetStringByWidth(char *dst, const char GUI_UNI_PTR *src, __u32 width);
-//¸ù¾İ¿ÉÏÔÊ¾ÇøÓò½ØÈ¡×Ö´®
-//Èç¹û×Ö´®¿í¶È´óÓÚÏÔÊ¾ÇøÓò,ÔòÔÚ¿ÉÏÔÊ¾×Ö´®ºó¼ÓÈı¸öÊ¡ÂÔºÅ
-//×¢Òâ¸Ãº¯ÊıÖ»ÅĞ¶Ï¿í¶È£¬²»ÅĞ¶Ï¸ß¶È
-//appendÎª×·¼ÓÔÚºóÃæµÄÊ¡ÂÔºÅ
+//æ ¹æ®å¯æ˜¾ç¤ºåŒºåŸŸæˆªå–å­—ä¸²
+//å¦‚æœå­—ä¸²å®½åº¦å¤§äºæ˜¾ç¤ºåŒºåŸŸ,åˆ™åœ¨å¯æ˜¾ç¤ºå­—ä¸²ååŠ ä¸‰ä¸ªçœç•¥å·
+//æ³¨æ„è¯¥å‡½æ•°åªåˆ¤æ–­å®½åº¦ï¼Œä¸åˆ¤æ–­é«˜åº¦
+//appendä¸ºè¿½åŠ åœ¨åé¢çš„çœç•¥å·
 __s32 GetClippedString(GUI_RECT *region, char *src_str, char *dst_str, const char *append)
 {
     __u32 src_width = 0, dst_width = 0, append_width = 0;
@@ -175,7 +177,7 @@ void  time2str(__u32 ms, char *str)
 }
 
 
-//¸ù¾İÒªÏÔÊ¾µÄ¸ñÊ½×ª»»
+//æ ¹æ®è¦æ˜¾ç¤ºçš„æ ¼å¼è½¬æ¢
 void time2str_by_format(__u32 ms, char *str, time_format_e format)
 {
     __u32  second;
@@ -217,24 +219,24 @@ void time2str_by_format(__u32 ms, char *str, time_format_e format)
 }
 
 
-//×ª»»ÎÄ¼şsize µ½×Ö·û´®
+//è½¬æ¢æ–‡ä»¶size åˆ°å­—ç¬¦ä¸²
 //add by libaiao, 2011.5.8
 void filesize2str(__u32 size, char *str)
 {
     __msg("size = %d\n", size);
 
-    if (size < 1024)    // Ğ¡ÓÚ1 k
+    if (size < 1024)    // å°äº1 k
     {
         eLIBs_sprintf(str, "%d B", size);
     }
-    else if (size < (1024 * 1024))  // Ğ¡ÓÚ 1 M
+    else if (size < (1024 * 1024))  // å°äº 1 M
     {
         eLIBs_sprintf(str, "%d K", size / 1024);
     }
-    else if (size < (1024 * 1024 * 1024)) // Ğ¡ÓÚ 1 G
+    else if (size < (1024 * 1024 * 1024)) // å°äº 1 G
     {
         //eLIBs_sprintf(str, "%d.%d M",size/(1024*1024), (size%(1024*1024))*100/(1024*1024)/10);
-        eLIBs_sprintf(str, "%d.%d%d M", size / (1024 * 1024), ((size % (1024 * 1024)) / 1024) * 1000 / 1024 / 100, ((size % (1024 * 1024)) / 1024) * 1000 / 1024 % 100 / 10); //±£ÁôÁ½Î»Ğ¡Êı
+        eLIBs_sprintf(str, "%d.%d%d M", size / (1024 * 1024), ((size % (1024 * 1024)) / 1024) * 1000 / 1024 / 100, ((size % (1024 * 1024)) / 1024) * 1000 / 1024 % 100 / 10); //ä¿ç•™ä¸¤ä½å°æ•°
     }
     else
     {
@@ -247,17 +249,17 @@ void filesize2str(__u32 size, char *str)
 
 
 
-//´«Èë24Ê±ÖÆĞ¡Ê±Öµ£¬´«³ö12Ê±ÖÆĞ¡Ê±Öµ£¬·µ»Ø0Îªam£¬·Ç0Îªpm
+//ä¼ å…¥24æ—¶åˆ¶å°æ—¶å€¼ï¼Œä¼ å‡º12æ—¶åˆ¶å°æ—¶å€¼ï¼Œè¿”å›0ä¸ºamï¼Œé0ä¸ºpm
 __s32 hour24_to_hour12(__s32 *hour)
 {
     if (*hour == 0)
     {
-        //Áè³¿12µã
+        //å‡Œæ™¨12ç‚¹
         *hour = 12;
     }
     else if (*hour == 12)
     {
-        //ÖĞÎç12µã
+        //ä¸­åˆ12ç‚¹
         return 1;
     }
     else if (12 < *hour)
@@ -269,8 +271,8 @@ __s32 hour24_to_hour12(__s32 *hour)
     return 0;
 }
 
-//²éÑ¯app_nameÃû³ÆµÄÓ¦ÓÃÊÇ·ñ´æÔÚ
-//²éÑ¯±³¾°ÒôÀÖÊÇ·ñ´æÔÚ¿ÉÒÔÓÃis_app_exist(APP_MUSIC)
+//æŸ¥è¯¢app_nameåç§°çš„åº”ç”¨æ˜¯å¦å­˜åœ¨
+//æŸ¥è¯¢èƒŒæ™¯éŸ³ä¹æ˜¯å¦å­˜åœ¨å¯ä»¥ç”¨is_app_exist(APP_MUSIC)
 __s32 is_app_exist(char *app_name)
 {
     H_WIN root, child;
@@ -489,9 +491,9 @@ static __s32 com_copy_rect_8bpp(char *pDst, __s32 dst_x, __s32 dst_y, __s32 dst_
 //////////////////////////////////////////////////////////////////////////
 
 /************************************************************************/
-// pFileData --- ×ÊÔ´º¯Êı»ñµÃµÄÊı¾İ(Ò²ÊÇ32Î»bmpÎÄ¼şÊı¾İ)
-// x£¬y      --- Ä¿±ê×ø±ê
-// x0, y0, x1, y1 --- Ô´ÇøÓò(¼´bmpÍ¼Æ¬Ä³Ò»ÇøÓò)
+// pFileData --- èµ„æºå‡½æ•°è·å¾—çš„æ•°æ®(ä¹Ÿæ˜¯32ä½bmpæ–‡ä»¶æ•°æ®)
+// xï¼Œy      --- ç›®æ ‡åæ ‡
+// x0, y0, x1, y1 --- æºåŒºåŸŸ(å³bmpå›¾ç‰‡æŸä¸€åŒºåŸŸ)
 /************************************************************************/
 __s32 APP_BMP_DrawEx(H_LYR hlyr, const void *pFileData, int x, int y, int x0, int y0, int x1, int y1)
 {
@@ -514,7 +516,7 @@ __s32 APP_BMP_DrawEx(H_LYR hlyr, const void *pFileData, int x, int y, int x0, in
     }
 
     GUI_LyrWinGetFB(hlyr, &fb);
-    //¼ì²éÇøÓò·¶Î§
+    //æ£€æŸ¥åŒºåŸŸèŒƒå›´
     bmp_w = GUI_BMP_GetXSize(pFileData);
 
     if (! ValueBetweenRangeEx(0, x0, x1, bmp_w))
@@ -577,21 +579,21 @@ void pull_down_gpio(__u32 port, __u32 port_num)
     __u32               tmp_data;
     __u32               tmp1;
     __u32               tmp2;
-    //ÉèÖÃÎªÊä³ö
+    //è®¾ç½®ä¸ºè¾“å‡º
     tmp1 = (port_num - ((port_num >> 3) << 3)) << 2;
     tmp_addr = PIO_REG_CFG(port, (port_num >> 3));
     tmp_data = *tmp_addr;
     tmp_data &= ~(0x07 << tmp1);
     tmp_data |= (0x01 << tmp1);
     *tmp_addr = tmp_data;
-    //ÉèÖÃÎªÏÂÀ­
+    //è®¾ç½®ä¸ºä¸‹æ‹‰
     tmp2 = (port_num - ((port_num >> 4) << 4)) << 1;
     tmp_addr = PIO_REG_PULL(port, (port_num >> 4));
     tmp_data = *tmp_addr;
     tmp_data &= ~(0x03 << tmp2);
     tmp_data |= (0x02 << tmp2);
     *tmp_addr = tmp_data;
-    //Êä³öµÍµçÆ½
+    //è¾“å‡ºä½ç”µå¹³
     tmp_addr = PIO_REG_DATA(port);
     tmp_data = *tmp_addr;
     tmp_data &= ~(1 << port_num);
@@ -605,21 +607,21 @@ void pull_up_gpio(__u32 port, __u32 port_num)
     __u32               tmp_data;
     __u32               tmp1;
     __u32               tmp2;
-    //ÉèÖÃÎªÊä³ö
+    //è®¾ç½®ä¸ºè¾“å‡º
     tmp1 = (port_num - ((port_num >> 3) << 3)) << 2;
     tmp_addr = PIO_REG_CFG(port, (port_num >> 3));
     tmp_data = *tmp_addr;
     tmp_data &= ~(0x07 << tmp1);
     tmp_data |= (0x01 << tmp1);
     *tmp_addr = tmp_data;
-    //ÉèÖÃÎªÉÏÀ­
+    //è®¾ç½®ä¸ºä¸Šæ‹‰
     tmp2 = (port_num - ((port_num >> 4) << 4)) << 1;
     tmp_addr = PIO_REG_PULL(port, (port_num >> 4));
     tmp_data = *tmp_addr;
     tmp_data &= ~(0x03 << tmp2);
     tmp_data |= (0x01 << tmp2);
     *tmp_addr = tmp_data;
-    //Êä³ö¸ßµçÆ½
+    //è¾“å‡ºé«˜ç”µå¹³
     tmp_addr = PIO_REG_DATA(port);
     tmp_data = *tmp_addr;
     tmp_data &= ~(1 << port_num);

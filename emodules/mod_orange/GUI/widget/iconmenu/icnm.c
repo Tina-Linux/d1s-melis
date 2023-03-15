@@ -1,29 +1,43 @@
 /*
-**********************************************************************************************************************
-*                                                    ePDK
-*                                    the Easy Portable/Player Develop Kits
-*                                              eMOD Sub-System
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2007-2009, Steven.ZGJ.China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* Moudle  : lion
-* File    : icnm.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY鈥橲 TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS鈥橲DK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY鈥橲 TECHNOLOGY.
 *
-* By      : Steven
-* Version : v1.0
-* Date    : 2008-10-4 11:24:32
-**********************************************************************************************************************
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "icnm_private.h"
 
-SIZE ICNM_icontbl[16] =                             /* icon 的大小表                                                */
+SIZE ICNM_icontbl[16] =                             /* icon 鐨勫ぇ灏忚〃                                                */
 {
     {80, 128}, {78, 125}, {76, 122}, {74, 118}, {72, 115}, {70, 112}, {68, 109}, {66, 106},
     {64, 102}, {62, 99},  {60, 96},  {58, 93},  {56, 90},  {54, 86},  {52, 83},  {50, 80}
 };
 
-__u32 ICNM_pos[] =                                  /* icon 的大小表                                                */
+__u32 ICNM_pos[] =                                  /* icon 鐨勫ぇ灏忚〃                                                */
 {
     0, 0, 0, 0, 0, 0, 1, 2, 4, 7, 10, 13, 17, 21, 25, 30, 35, 39, 43, 46, 50, 53, 56, 58, 59, 60, 60, 60, 60, 60, 60
 };
@@ -125,7 +139,7 @@ static void ICNM_icon_prescale_thread(void *p_arg)
     __u8            i;
     __lion_icnm_t *icnm = (__lion_icnm_t *)p_arg;
 
-    /* 预先产生变化的图                         */
+    /* 棰勫厛浜х敓鍙樺寲鐨勫浘                         */
     for (i = 0; i < icnm->nitem; i++)
     {
         if (esKRNL_TDelReq(OS_PRIO_SELF) == OS_TASK_DEL_REQ)

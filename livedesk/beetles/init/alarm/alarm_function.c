@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <string.h>
 #include <log.h>
 #include "mod_init_i.h"
@@ -8,7 +39,7 @@ static __s16  alarm_happen_index = -1;
 static __u32  alarm_happen_timeCnt = 0;
 static __bool alarm_is_happen[REG_ALARM_NUM] = {0};
 
-// 0Œ™÷‹»’
+// 0‰∏∫Âë®Êó•
 static __u16 _alarm_get_week_day(__u16 year, __u8 month, __u8 day)
 {
     __u16   temp;
@@ -64,9 +95,9 @@ static __s32 alarm_get_near_on_time(__awos_time_t *time, __s16 *alarmIndex)
     {
         if (res_sys->alarm[i].alarm_status == EPDK_TRUE && alarm_is_happen[i] == EPDK_FALSE)
         {
-            if ((week >= 1 && week <= 5 && res_sys->alarm[i].alarm_repeat == REG_ALARM_DUTYDAY)     ||                              //÷‹“ª÷¡÷‹ŒÂ
-                ((week == 6 || week == 0) && res_sys->alarm[i].alarm_repeat == REG_ALARM_WEEKEND)  ||                               //÷‹ƒ©
-                (res_sys->alarm[i].alarm_repeat == REG_ALARM_EVERYDAY || res_sys->alarm[i].alarm_repeat == REG_ALARM_ONETIME))      //√øÃÏ,“ª¥Œ
+            if ((week >= 1 && week <= 5 && res_sys->alarm[i].alarm_repeat == REG_ALARM_DUTYDAY)     ||                              //Âë®‰∏ÄËá≥Âë®‰∫î
+                ((week == 6 || week == 0) && res_sys->alarm[i].alarm_repeat == REG_ALARM_WEEKEND)  ||                               //Âë®Êú´
+                (res_sys->alarm[i].alarm_repeat == REG_ALARM_EVERYDAY || res_sys->alarm[i].alarm_repeat == REG_ALARM_ONETIME))      //ÊØèÂ§©,‰∏ÄÊ¨°
             {
                 if (_alarm_get_time_minute(curtime) <= _alarm_get_time_minute(res_sys->alarm[i].alarm_time))
                 {
@@ -115,9 +146,9 @@ static __s32 alarm_get_near_on_time_standby(__awos_time_t *time, __awos_date_t *
     {
         if (res_sys->alarm[i].alarm_status == EPDK_TRUE)
         {
-            if ((week >= 1 && week <= 5 && res_sys->alarm[i].alarm_repeat == REG_ALARM_DUTYDAY)     ||                              //÷‹“ª÷¡÷‹ŒÂ
-                ((week == 6 || week == 0) && res_sys->alarm[i].alarm_repeat == REG_ALARM_WEEKEND)  ||                               //÷‹ƒ©
-                (res_sys->alarm[i].alarm_repeat == REG_ALARM_EVERYDAY || res_sys->alarm[i].alarm_repeat == REG_ALARM_ONETIME))      //√øÃÏ,“ª¥Œ
+            if ((week >= 1 && week <= 5 && res_sys->alarm[i].alarm_repeat == REG_ALARM_DUTYDAY)     ||                              //Âë®‰∏ÄËá≥Âë®‰∫î
+                ((week == 6 || week == 0) && res_sys->alarm[i].alarm_repeat == REG_ALARM_WEEKEND)  ||                               //Âë®Êú´
+                (res_sys->alarm[i].alarm_repeat == REG_ALARM_EVERYDAY || res_sys->alarm[i].alarm_repeat == REG_ALARM_ONETIME))      //ÊØèÂ§©,‰∏ÄÊ¨°
             {
                 if (_alarm_get_time_minute(curtime) <= _alarm_get_time_minute(res_sys->alarm[i].alarm_time))
                 {
@@ -157,8 +188,8 @@ static __s32 alarm_get_near_on_time_standby(__awos_time_t *time, __awos_date_t *
         {
             if (res_sys->alarm[i].alarm_status == EPDK_TRUE)
             {
-                if ((week >= 1 && week <= 5 && res_sys->alarm[i].alarm_repeat == REG_ALARM_WEEKEND)     ||  //÷‹“ª÷¡÷‹ŒÂ…Ë÷√÷‹ƒ©
-                    ((week == 6 || week == 0) && res_sys->alarm[i].alarm_repeat == REG_ALARM_DUTYDAY))      //÷‹ƒ©…Ë÷√÷‹“ª÷¡÷‹ŒÂ
+                if ((week >= 1 && week <= 5 && res_sys->alarm[i].alarm_repeat == REG_ALARM_WEEKEND)     ||  //Âë®‰∏ÄËá≥Âë®‰∫îËÆæÁΩÆÂë®Êú´
+                    ((week == 6 || week == 0) && res_sys->alarm[i].alarm_repeat == REG_ALARM_DUTYDAY))      //Âë®Êú´ËÆæÁΩÆÂë®‰∏ÄËá≥Âë®‰∫î
                 {
                     if (_alarm_get_time_minute(curtime) <= _alarm_get_time_minute(res_sys->alarm[i].alarm_time))
                     {
@@ -201,11 +232,11 @@ static __s32 alarm_get_near_on_time_standby(__awos_time_t *time, __awos_date_t *
     }
 
     if (date->month == 1 || date->month == 3 || date->month == 5 ||
-        date->month == 7 || date->month == 8 || date->month == 10 || date->month == 12)     //31ÃÏ√ø‘¬
+        date->month == 7 || date->month == 8 || date->month == 10 || date->month == 12)     //31Â§©ÊØèÊúà
     {
         mDay = 31;
     }
-    else                                                                                    //30ÃÏ√ø‘¬
+    else                                                                                    //30Â§©ÊØèÊúà
     {
         if (date->month != 2)
         {
@@ -213,11 +244,11 @@ static __s32 alarm_get_near_on_time_standby(__awos_time_t *time, __awos_date_t *
         }
         else
         {
-            if ((date->year % 4 == 0 && date->year % 100 != 0) || date->year % 400 == 0) //»ÚƒÍ
+            if ((date->year % 4 == 0 && date->year % 100 != 0) || date->year % 400 == 0) //Èó∞Âπ¥
             {
                 mDay = 29;
             }
-            else                                                                    //∆ΩƒÍ
+            else                                                                    //Âπ≥Âπ¥
             {
                 mDay = 28;
             }
@@ -356,20 +387,20 @@ __bool alarm_check_run(void)
 
     curTimeCnt  = _alarm_get_time_minute(curtime);
 
-    if (curTimeCnt - alarm_happen_timeCnt == 1 && alarm_happen_index != -1) //1∑÷÷”∫Û«Â≥˛µ±«∞∑¢…˙±Íº«
+    if (curTimeCnt - alarm_happen_timeCnt == 1 && alarm_happen_index != -1) //1ÂàÜÈíüÂêéÊ∏ÖÊ•öÂΩìÂâçÂèëÁîüÊ†áËÆ∞
     {
         alarm_is_happen[alarm_happen_index] = EPDK_FALSE;
         alarm_happen_index                  = -1;
 
-        standby_startup_alarm();                                            //…Ë÷√œ¬“ª∏ˆƒ÷÷”
+        standby_startup_alarm();                                            //ËÆæÁΩÆ‰∏ã‰∏Ä‰∏™ÈóπÈíü
     }
 
-    if (alarm_is_open_to_app == EPDK_TRUE)                                  //ƒ÷¡Â“—æ≠ø™∆Ù,Ω¯»Î”¶”√
+    if (alarm_is_open_to_app == EPDK_TRUE)                                  //ÈóπÈìÉÂ∑≤ÁªèÂºÄÂêØ,ËøõÂÖ•Â∫îÁî®
     {
         return EPDK_FALSE;
     }
 
-    if (alarm_get_near_on_time(&nearTime, &alarmIndex) == EPDK_FAIL)        //≤ª¥Ê‘⁄ƒ÷¡Â
+    if (alarm_get_near_on_time(&nearTime, &alarmIndex) == EPDK_FAIL)        //‰∏çÂ≠òÂú®ÈóπÈìÉ
     {
         return EPDK_FALSE;
     }
@@ -388,16 +419,16 @@ __bool alarm_check_run(void)
             res_sys->alarm[alarmIndex].alarm_status = EPDK_FALSE;
         }
 
-        alarm_sendMsg_to_ini();                                             //ƒ÷¡Â ±º‰µΩ¡À, ∑¢ÀÕœ˚œ¢µΩAP
+        alarm_sendMsg_to_ini();                                             //ÈóπÈìÉÊó∂Èó¥Âà∞‰∫Ü, ÂèëÈÄÅÊ∂àÊÅØÂà∞AP
         return EPDK_TRUE;
     }
 
-    return EPDK_FALSE;                                                      //ƒ÷¡Â ±º‰Œ¥µΩ
+    return EPDK_FALSE;                                                      //ÈóπÈìÉÊó∂Èó¥Êú™Âà∞
 }
 
 void alarm_settingTime_cleanHappen(__s16 alarmIndex)
 {
-    alarm_is_happen[alarmIndex] = EPDK_FALSE;           //«Â≥˝µ±«∞ƒ÷÷”∑¢…˙±Íº«
+    alarm_is_happen[alarmIndex] = EPDK_FALSE;           //Ê∏ÖÈô§ÂΩìÂâçÈóπÈíüÂèëÁîüÊ†áËÆ∞
 }
 
 __s32 standby_startup_alarm(void)

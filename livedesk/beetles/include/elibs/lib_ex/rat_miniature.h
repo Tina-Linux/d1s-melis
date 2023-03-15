@@ -1,9 +1,40 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #ifndef __RAT_MINIATURE_H__
 #define __RAT_MINIATURE_H__
 
 /*!
 * \brief
-*     Í¼Æ¬ÎÄ¼ş¸ñÊ½
+*     å›¾ç‰‡æ–‡ä»¶æ ¼å¼
 */
 typedef enum
 {
@@ -16,30 +47,33 @@ typedef enum
 
 /*!
   * \brief
-  *     ËõÂÔÍ¼ÊäÈë²ÎÊı
+  *     ç¼©ç•¥å›¾è¾“å…¥å‚æ•°
 */
 typedef struct
 {
-    char file[RAT_MAX_FULL_PATH_LEN];   //ÎÄ¼şÈ«Â·¾¶
-    __u8 format;                        //Êı¾İ¸ñÊ½
-    __u32 width;                        //¿í¶È
-    __u32 height;                       //¸ß¶È
-    unsigned long mode;                         //Ëõ·ÅÄ£Ê½£¬0·ÇÀ­Éì£¬1À­Éì
+    __u32 input_type;                   // 0 file 1 buffer
+    __u32 input_size;                   //bufferå¤§å°
+    char *input_buf;                    //bufferåœ°å€
+    char file[RAT_MAX_FULL_PATH_LEN];   //æ–‡ä»¶å…¨è·¯å¾„
+    __u8 format;                        //æ•°æ®æ ¼å¼
+    __u32 width;                        //å®½åº¦
+    __u32 height;                       //é«˜åº¦
+    unsigned long mode;                 //ç¼©æ”¾æ¨¡å¼ï¼Œ0éæ‹‰ä¼¸ï¼Œ1æ‹‰ä¼¸
 } rat_miniature_para_t;
 
 /*!
 * \brief
-*     ·µ»ØµÄËõÂÔÍ¼Êı¾İ²ÎÊı
+*     è¿”å›çš„ç¼©ç•¥å›¾æ•°æ®å‚æ•°
 */
 typedef struct
 {
-    __u32 len;      //Êı¾İ³¤¶È
-    char *buf;      //Êı¾İ
+    __u32 len;      //æ•°æ®é•¿åº¦
+    char *buf;      //æ•°æ®
 } rat_miniature_t;
 
 /*!
 * \brief
-*     Í¼Æ¬ÎÄ¼ş¸ñÊ½
+*     å›¾ç‰‡æ–‡ä»¶æ ¼å¼
 */
 
 
@@ -71,7 +105,7 @@ typedef struct
 *
 * date:
 *
-* Description:       µÈ´ıwillowÏß³Ì½áÊø
+* Description:       ç­‰å¾…willowçº¿ç¨‹ç»“æŸ
 *
 * parameters:
 *
@@ -89,7 +123,7 @@ __s32 rat_wait_willow_finish(void);
 *
 * date:
 *
-* Description:       Æô¶¯ËõÂÔÍ¼½âÂë£¨°²×°willow.mod£¬²»ÓÃÃ¿´Î¶¼°²×°£¬²»ÓÃ³£×¤ÄÚ´æ£©
+* Description:       å¯åŠ¨ç¼©ç•¥å›¾è§£ç ï¼ˆå®‰è£…willow.modï¼Œä¸ç”¨æ¯æ¬¡éƒ½å®‰è£…ï¼Œä¸ç”¨å¸¸é©»å†…å­˜ï¼‰
 *
 * parameters:
 *
@@ -107,7 +141,7 @@ __s32 rat_start_miniature_decode(void);
 *
 * date:
 *
-* Description:       Í£Ö¹ËõÂÔÍ¼½âÂë£¨Ğ¶ÔØwillow.mod£©
+* Description:       åœæ­¢ç¼©ç•¥å›¾è§£ç ï¼ˆå¸è½½willow.modï¼‰
 *
 * parameters:
 *
@@ -125,7 +159,7 @@ __s32 rat_stop_miniature_decode(void);
 *
 * date:
 *
-* Description:       »ñÈ¡Í¼Æ¬ËõÂÔÍ¼µÈĞÅÏ¢
+* Description:       è·å–å›¾ç‰‡ç¼©ç•¥å›¾ç­‰ä¿¡æ¯
 *
 * parameters:
 *
@@ -143,7 +177,7 @@ __s32 rat_get_pic_info(rat_miniature_para_t *para, rat_pic_info_t *pic_info);
 *
 * date:
 *
-* Description:       »ñÈ¡ÒôÀÖÏà²áµÈĞÅÏ¢
+* Description:       è·å–éŸ³ä¹ç›¸å†Œç­‰ä¿¡æ¯
 *
 * parameters:
 *
@@ -161,7 +195,7 @@ __s32 rat_get_album_info(rat_miniature_para_t *para, rat_audio_info_t *audio_inf
 *
 * date:
 *
-* Description:       ÉèÖÃËõÂÔÍ¼±³¾°É«
+* Description:       è®¾ç½®ç¼©ç•¥å›¾èƒŒæ™¯è‰²
 *
 * parameters:
 *

@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <typedef.h>
 #include <log.h>
 #include <libc.h>
@@ -12,9 +43,9 @@
 *
 * date:             2010-09-13
 *
-* Description:       »ñÈ¡·ÖÇø
+* Description:       è·å–åˆ†åŒº
 *
-* parameters:       target£ºÊäÈë£¬ Ä¿±ê·ÖÇø res_part£ºÊä³ö£¬·µ»ØµÄ·ÖÇøÃû
+* parameters:       targetï¼šè¾“å…¥ï¼Œ ç›®æ ‡åˆ†åŒº res_partï¼šè¾“å‡ºï¼Œè¿”å›çš„åˆ†åŒºå
 *
 * return:           0   get part success
 -1  part not exist
@@ -45,7 +76,7 @@ static int32_t get_part_by_name(const char *equipment, char *des, int32_t search
         {
             if (0 == search_encrypt_card && eLIBs_strncmp(equipment_name, "SDMMC-DISK:5", eLIBs_strlen("SDMMC-DISK:5")) == 0)
             {
-                //Èç¹û²»°üº¬¼ÓÃÜ¿¨£¬²¢ÇÒµ±Ç°ÊÇ¼ÓÃÜ¿¨£¬Ôò²»¼ÇÂ¼
+                //å¦‚æœä¸åŒ…å«åŠ å¯†å¡ï¼Œå¹¶ä¸”å½“å‰æ˜¯åŠ å¯†å¡ï¼Œåˆ™ä¸è®°å½•
             }
             else
             {
@@ -77,10 +108,10 @@ static int32_t get_part_by_name(const char *equipment, char *des, int32_t search
 *
 * date:
 *
-* Description:       »ñµÃÅÌ·ûĞÅÏ¢
+* Description:       è·å¾—ç›˜ç¬¦ä¿¡æ¯
 *
 * parameters:       disk_type: RAT_SD_CARD RAT_USB_DISK RAT_LOCAL_DISK
-                    disk_name: ·µ»ØµÄÅÌ·ûÃû
+                    disk_name: è¿”å›çš„ç›˜ç¬¦å
 *
 * return:           partition count
                     -1  part not exist
@@ -150,7 +181,7 @@ int32_t rat_get_partition_name(char *disk_type, char disk_name[RAT_MAX_PARTITION
         __inf("************* get part by name fail ");
     }
 
-    //Èç¹ûÊÇuÅÌ£¬¼ì²âcdfs
+    //å¦‚æœæ˜¯uç›˜ï¼Œæ£€æµ‹cdfs
     if (eLIBs_strcmp(disk_type, RAT_USB_DISK) == 0)
     {
         if (get_part_by_name(usb_cdfs, (char *)name, 0) == 0)
@@ -182,8 +213,8 @@ int32_t rat_get_partition_name(char *disk_type, char disk_name[RAT_MAX_PARTITION
     return EPDK_OK;
 }
 
-//ÅĞ¶ÏÊÇ·ñ´æÔÚ¼ÓÃÜ·ÖÇø£¬ÊÇÔò½«ÅÌ·û´æÈëeq_name,²¢·µ»ØÕæ
-//eq_name ÅÌ·û´æ·Åbuffer  ;  encryption 1£½¼ÓÃÜÇø£¬0£½·Ç¼ÓÃÜÇø
+//åˆ¤æ–­æ˜¯å¦å­˜åœ¨åŠ å¯†åˆ†åŒºï¼Œæ˜¯åˆ™å°†ç›˜ç¬¦å­˜å…¥eq_name,å¹¶è¿”å›çœŸ
+//eq_name ç›˜ç¬¦å­˜æ”¾buffer  ;  encryption 1ï¼åŠ å¯†åŒºï¼Œ0ï¼éåŠ å¯†åŒº
 uint32_t rat_is_encryption_partition_Insert(char *eq_name, int32_t encryption)
 {
     int32_t     i = 0;

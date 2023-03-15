@@ -1,19 +1,34 @@
 /*
-**************************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              LARK app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2006-2007, TERRY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : dsk_radio.c
-* By      : terry
-* Version : V1.00
-* time    : 2009-12-01
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "dsk_radio_i.h"
 #include <mod_twi.h>
 #include <kconfig.h>
@@ -34,7 +49,7 @@ __s32 dsk_misc_close_rtc_clk(void);
 *
 * date:             2009-12-01
 *
-* Description:      dsk_radio ¥Úø™∫Ø ˝(≥ı ºªØFM≤•∑≈π¶ƒ‹)
+* Description:      dsk_radio ÊâìÂºÄÂáΩÊï∞(ÂàùÂßãÂåñFMÊí≠ÊîæÂäüËÉΩ)
 *
 * parameters:
 *
@@ -61,9 +76,9 @@ __s32 dsk_radio_open(void)
     eLIBs_memset(h_radio, 0, sizeof(dsk_radio_t));
     //dsk_misc_open_rtc_clk(0);
     //esKRNL_TimeDly(50);
-    /*º”‘ÿFM«˝∂Ø*/
+    /*Âä†ËΩΩFMÈ©±Âä®*/
     esDEV_Plugin("\\drv\\fm.drv", 0, 0, 1);
-    /*¥Úø™FM«˝∂Ø*/
+    /*ÊâìÂºÄFMÈ©±Âä®*/
 	h_radio->fm_drv = open("/dev/fm",O_RDWR);
 
     if (h_radio->fm_drv < 0)
@@ -118,7 +133,7 @@ __pCBK_t dsk_radio_set_cb(dsk_radio_event_e event, __pCBK_t cb, void *ctx)
             break;
         }
 
-        case DSK_RADIO_EVENT_SEARCH_FREQ:           //œ‘ æƒ⁄≤øÀ—À˜π˝≥Ã÷–µƒ∆µ¬ 
+        case DSK_RADIO_EVENT_SEARCH_FREQ:           //ÊòæÁ§∫ÂÜÖÈÉ®ÊêúÁ¥¢ËøáÁ®ã‰∏≠ÁöÑÈ¢ëÁéá
         {
             //cb_old = cb_search_freq;
             //cb_search_freq = cb;
@@ -372,7 +387,7 @@ __s32 dsk_radio_get_max_freq(__s32 *max_freq)
 *
 * date:             2009-12-01
 *
-* Description:      dsk_radioπ¶ƒ‹≤Ÿ◊˜Ω”ø⁄,≤Œ ˝1“ª∞„Œ™ ‰»Î≤Œ ˝£¨≤Œ ˝2Œ™ ‰≥ˆ≤Œ ˝
+* Description:      dsk_radioÂäüËÉΩÊìç‰ΩúÊé•Âè£,ÂèÇÊï∞1‰∏ÄËà¨‰∏∫ËæìÂÖ•ÂèÇÊï∞ÔºåÂèÇÊï∞2‰∏∫ËæìÂá∫ÂèÇÊï∞
 *
 * parameters:
 *
@@ -692,7 +707,7 @@ __s32 dsk_radio_get_max_freq(__s32 *max_freq)
 *
 * date:             2009-12-01
 *
-* Description:       πÿ±’dsk_radio£¨ Õ∑≈œ‡πÿ◊ ‘¥
+* Description:       ÂÖ≥Èó≠dsk_radioÔºåÈáäÊîæÁõ∏ÂÖ≥ËµÑÊ∫ê
 *
 * parameters:
 *
@@ -723,13 +738,13 @@ __s32 dsk_radio_close(void)
             dsk_radio_rcv_close();
             //h_radio->rcv_handle = NULL;
         }
-        /*ÕÀ≥ˆFM«˝∂Ø*/
+        /*ÈÄÄÂá∫FMÈ©±Âä®*/
 		result = ioctl(h_radio->fm_drv, DRV_FM_CMD_EXIT,0);
-        /*πÿ±’FM«˝∂Ø*/
+        /*ÂÖ≥Èó≠FMÈ©±Âä®*/
 		result = close(h_radio->fm_drv);
     }
 
-    /*–∂‘ÿFM«˝∂Ø*/
+    /*Âç∏ËΩΩFMÈ©±Âä®*/
     esDEV_Plugout("\\drv\\fm.drv", 0);
     /*free fm_engine,so the memory can be used for other*/
     esMEMS_Mfree(0, h_radio);

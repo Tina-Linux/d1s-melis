@@ -1,0 +1,50 @@
+#
+# Platform drivers
+#	Most drivers here are currently for webcam support
+
+menuconfig V4L_PLATFORM_DRIVERS
+	bool "V4L platform devices"
+	depends on MEDIA_CAMERA_SUPPORT
+	default n
+	---help---
+	  Say Y here to enable support for platform-specific V4L drivers.
+
+if V4L_PLATFORM_DRIVERS
+
+config VIDEO_SUNXI_TVD
+	tristate "SUNXI TVD(CVBS IN) driver"
+	default n
+	select VIDEOBUF2_DMA_CONTIG
+
+config VIDEO_SUNXI_TVD_TEST
+	tristate "SUNXI TVD(CVBS IN) driver test"
+	depends on VIDEO_SUNXI_TVD
+	default n
+
+#
+# Platform multimedia device configuration
+#
+config VIDEO_SUNXI_EVE
+	tristate "eve"
+	default n
+
+if VIDEO_SUNXI_EVE
+source "ekernel/components/avframework/v4l2/drivers/media/platform/sunxi-eve/Kconfig"
+endif
+
+config VIDEO_SUNXI_VIN
+	tristate "sunxi video input (camera csi/mipi isp vipp)driver"
+	default n
+
+if VIDEO_SUNXI_VIN
+source "ekernel/components/avframework/v4l2/drivers/media/platform/sunxi-vin/Kconfig"
+endif
+
+config SENSOR_POWER
+	tristate "sensor power in front of vin"
+	default n
+
+endif # V4L_PLATFORM_DRIVERS
+
+source "ekernel/components/avframework/v4l2/drivers/media/platform/sunxi-ise/Kconfig"
+source "ekernel/components/avframework/v4l2/drivers/media/platform/sunxi-eise/Kconfig"

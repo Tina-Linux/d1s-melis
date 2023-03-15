@@ -1,32 +1,34 @@
 /*
-*******************************************************************************************************************
-*                                                           Listmenu  Framework
-*                                                   the display dirver support module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2008, Softwinner Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name£º    ctrlwin.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
-*Author£º       William Wang
 *
-*Version :      1.1.0
-*
-*Date:          2009-8-4
-*
-*Description :  widget windows function implement
-*
-*Others :       None at present.
-*
-* History :
-*
-* <Author>         <time>      <version>     <description>
-*
-* William Wang    2009-8-4       1.1.0         Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "ctrlwin_i.h"
 
 /*
@@ -100,7 +102,7 @@ static __bool GUI_CtrlWinAssertPara(__gui_ctlwincreate_para_t *create_info)
 *
 * date:             2009-8-4
 *
-* Description:      Ôö¼ÓÒ»¸öwidgetÊµÀý
+* Description:      å¢žåŠ ä¸€ä¸ªwidgetå®žä¾‹
 *
 * parameters:
 *
@@ -126,7 +128,7 @@ static void _GUI_AddNewCtrlInstance(__gui_widget_t *pParent, __gui_widget_t *pNe
 *
 * date:             2009-8-4
 *
-* Description:      É¾³ýÒ»¸öwidgetÊµÀý
+* Description:      åˆ é™¤ä¸€ä¸ªwidgetå®žä¾‹
 *
 * parameters:
 *
@@ -404,7 +406,7 @@ H_WIN  GUI_CtrlWinCreate(__gui_ctlwincreate_para_t *create_info)
     pFrameWin = (__gui_frmwin_t *)GUI_WinH2P(GUI_WinGetFrmWin(create_info->hParent));
     orange_memset(&create_para, 0, sizeof(__gui_win_t));
 
-    /*¿Ø¼þÖ±½Ó²ÉÓÃÍ¼²ã¼ÓËÙ»úÖÆÊµÏÖ*/
+    /*æŽ§ä»¶ç›´æŽ¥é‡‡ç”¨å›¾å±‚åŠ é€Ÿæœºåˆ¶å®žçŽ°*/
     if (cci->dwStyle & WS_LYRWIN)
     {
         if (create_info->hLayer == NULL)
@@ -415,7 +417,7 @@ H_WIN  GUI_CtrlWinCreate(__gui_ctlwincreate_para_t *create_info)
 
         pLayer  =  GUI_LyrH2P(create_info->hLayer);
 
-        /*´ËÊ±layerÒÑ¾­ÔÚÆäÉÏ½¨Á¢ÁË´°¿Ú»úÖÆ£¬¹Ê²»ÄÜÔÚ×÷ÎªÒ»¸öµ¥¶ÀµÄÍ¼²ãÊ¹ÓÃ*/
+        /*æ­¤æ—¶layerå·²ç»åœ¨å…¶ä¸Šå»ºç«‹äº†çª—å£æœºåˆ¶ï¼Œæ•…ä¸èƒ½åœ¨ä½œä¸ºä¸€ä¸ªå•ç‹¬çš„å›¾å±‚ä½¿ç”¨*/
         if (pLayer->use_sts != LAYER_DRAW)
         {
             ORANGE_WRN("layer status error!\n");
@@ -424,10 +426,10 @@ H_WIN  GUI_CtrlWinCreate(__gui_ctlwincreate_para_t *create_info)
 
         pLayer->use_sts  =   LAYER_WINDOWS;
 
-        /*¿Ø¼þÖ±½Ó¹ÒÔÚ¹ÜÀí´°¿ÚÖ®ÏÂ£¬´ËÊ±ÐèÒª°Ñ¸Ã´°¿ÚÌí¼Óµ½Í¼²ã´°¿ÚZÐòÖÐ*/
+        /*æŽ§ä»¶ç›´æŽ¥æŒ‚åœ¨ç®¡ç†çª—å£ä¹‹ä¸‹ï¼Œæ­¤æ—¶éœ€è¦æŠŠè¯¥çª—å£æ·»åŠ åˆ°å›¾å±‚çª—å£Zåºä¸­*/
         if (!pFrameWin)
         {
-            /*·ÖÅäZÐò½Úµã*/
+            /*åˆ†é…ZåºèŠ‚ç‚¹*/
             create_para.pZOrderNode = orange_malloc(sizeof(__gui_zordernode_t));
 
             if (!create_para.pZOrderNode)
@@ -435,13 +437,13 @@ H_WIN  GUI_CtrlWinCreate(__gui_ctlwincreate_para_t *create_info)
                 ORANGE_WRN("alloc zordernode failed!\n");
                 goto err;
             }
-        }/*¿Ø¼þÖ±½Ó¹ÒÔÚframewin´°¿ÚÖ®ÏÂ£¬´ËÊ±²»ÐèÒª°Ñ¸Ã´°¿ÚÌí¼Óµ½Í¼²ã´°¿ÚZÐòÖÐ*/
+        }/*æŽ§ä»¶ç›´æŽ¥æŒ‚åœ¨framewinçª—å£ä¹‹ä¸‹ï¼Œæ­¤æ—¶ä¸éœ€è¦æŠŠè¯¥çª—å£æ·»åŠ åˆ°å›¾å±‚çª—å£Zåºä¸­*/
         else
         {
             create_para.pZOrderNode = NULL;
         }
     }
-    else /*¿Ø¼þ²ÉÓÃ´°¿Ú»úÖÆÊµÏÖ*/
+    else /*æŽ§ä»¶é‡‡ç”¨çª—å£æœºåˆ¶å®žçŽ°*/
     {
         if (!pFrameWin)
         {
@@ -451,8 +453,8 @@ H_WIN  GUI_CtrlWinCreate(__gui_ctlwincreate_para_t *create_info)
 
         pLayer  = GUI_WinH2P(create_info->hParent)->LyrWin;
 
-        /*´ËÊ±layerÒÑ¾­ÔÚÆäÉÏ½¨Á¢ÁËµ¥´°¿Ú»úÖÆ£¬¶øÇÒ¸Ã´°¿Ú(create win)²»ÊÇÍ¼²ãµ¥´°¿ÚÉÏµÄ×Ó´°¿Ú¡£
-          ¹Ê²»ÄÜÔÚÆäÉÏ½¨Á¢ÆäËû´°¿Ú»úÖÆ*/
+        /*æ­¤æ—¶layerå·²ç»åœ¨å…¶ä¸Šå»ºç«‹äº†å•çª—å£æœºåˆ¶ï¼Œè€Œä¸”è¯¥çª—å£(create win)ä¸æ˜¯å›¾å±‚å•çª—å£ä¸Šçš„å­çª—å£ã€‚
+          æ•…ä¸èƒ½åœ¨å…¶ä¸Šå»ºç«‹å…¶ä»–çª—å£æœºåˆ¶*/
         if (pLayer->use_sts == LAYER_WINDOWS
             && create_info->hParent != pLayer->ManWinZOrder.pTopMost->hWnd
             && create_info->hParent != pLayer->TopMostWinZOrder.pTopMost->hWnd)
@@ -461,13 +463,13 @@ H_WIN  GUI_CtrlWinCreate(__gui_ctlwincreate_para_t *create_info)
             return HWND_INVALID;
         }
 
-        /*Í¼²ãÉÏÃ»ÓÐ½¨Á¢µ¥´°¿Ú»úÖÆ£¬Ö±½Ó×÷Îª´°¿ÚÈÝÆ÷Ê¹ÓÃ*/
+        /*å›¾å±‚ä¸Šæ²¡æœ‰å»ºç«‹å•çª—å£æœºåˆ¶ï¼Œç›´æŽ¥ä½œä¸ºçª—å£å®¹å™¨ä½¿ç”¨*/
         if (pLayer->use_sts != LAYER_WINDOWS)
         {
             pLayer->use_sts         =   LAYER_CONTAINER;
         }
 
-        /*¿Ø¼þÖ±½Ó¹ÒÔÚframewin´°¿ÚÖ®ÏÂ£¬´ËÊ±²»ÐèÒª°Ñ¸Ã´°¿ÚÌí¼Óµ½Í¼²ã´°¿ÚZÐòÖÐ*/
+        /*æŽ§ä»¶ç›´æŽ¥æŒ‚åœ¨framewinçª—å£ä¹‹ä¸‹ï¼Œæ­¤æ—¶ä¸éœ€è¦æŠŠè¯¥çª—å£æ·»åŠ åˆ°å›¾å±‚çª—å£Zåºä¸­*/
         create_para.pZOrderNode = NULL;
     }
 
@@ -497,7 +499,7 @@ H_WIN  GUI_CtrlWinCreate(__gui_ctlwincreate_para_t *create_info)
     create_para.bkColor             = cci->iBkColor;
     create_para.WindowProc          = cci->ControlProc;
     orange_memcpy(create_para.name, create_info->name, GUI_NAME_MAX);
-    /*´´½¨»ù±¾µÄ´°¿Ú¿ò¼Ü*/
+    /*åˆ›å»ºåŸºæœ¬çš„çª—å£æ¡†æž¶*/
     hWnd = GUI_WinCreate(&create_para, sizeof(__gui_widget_t) - sizeof(__gui_win_t));
     if (hWnd == HWND_INVALID)
     {
@@ -583,7 +585,7 @@ __s32  GUI_CtrlWinDelete(H_WIN hWnd)
     {
         if (pLayer)
         {
-            /*ÅÐ¶Ï¸Ã´°¿ÚÊÇ·ñÊÇµ¥´°¿ÚÇÒÖ±½Ó¹ÒÔÚÍ¼²ãµÄZÐòÖ®ÉÏ*/
+            /*åˆ¤æ–­è¯¥çª—å£æ˜¯å¦æ˜¯å•çª—å£ä¸”ç›´æŽ¥æŒ‚åœ¨å›¾å±‚çš„Zåºä¹‹ä¸Š*/
             if (pLayer->use_sts == LAYER_WINDOWS
                 && (pLayer->ManWinZOrder.pTopMost->hWnd == hWnd ||
                     pLayer->TopMostWinZOrder.pTopMost->hWnd == hWnd))

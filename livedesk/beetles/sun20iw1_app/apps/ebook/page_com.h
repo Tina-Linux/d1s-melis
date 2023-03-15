@@ -1,21 +1,34 @@
 /*
-************************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : page_com.h
-* By        : Andy.zhang
-* Func      : character show scene
-* Version   : v1.0
-* ======================================================================================================================
-* 2009-11-11 15:43:43  andy.zhang  create this file, implements the fundemental interface;
-************************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef __PAGE_COM_H__
 #define __PAGE_COM_H__
 
@@ -38,9 +51,9 @@ typedef enum tag_PAGE_CMD_MSG
     COM_CMD_UPDATE_PAGE = GUI_MSG_,
     COM_CMD_SET_PLAY_STATUS,
     COM_CMD_SHOW_PROGRESS,
-    COM_CMD_SEEKPAGE,       //µÁ◊” ÈÃ¯“≥
-    COM_CMD_LONGSTRING_STOP,    // Õ£÷π≥§◊÷∑˚¥Æπˆ∂Ø
-    COM_CMD_LONGSTRING_START,   //ø™ º≥§◊÷∑˚¥Æπˆ∂Ø
+    COM_CMD_SEEKPAGE,       //ÁîµÂ≠ê‰π¶Ë∑≥È°µ
+    COM_CMD_LONGSTRING_STOP,    // ÂÅúÊ≠¢ÈïøÂ≠óÁ¨¶‰∏≤ÊªöÂä®
+    COM_CMD_LONGSTRING_START,   //ÂºÄÂßãÈïøÂ≠óÁ¨¶‰∏≤ÊªöÂä®
     CLOSE_LONG_STRING,
     OPEN_LONG_STRING,
 } __page_cmd_msg_e;
@@ -48,7 +61,7 @@ typedef enum tag_PAGE_CMD_MSG
 typedef struct tag_page_create_para
 {
     H_LYR                       page_layer;
-    H_LYR                       page_num_progress_lyr ; //“≥ ˝Ω¯∂»Õº≤„
+    H_LYR                       page_num_progress_lyr ; //È°µÊï∞ËøõÂ∫¶ÂõæÂ±Ç
     GUI_FONT                    *font;
 
     char            name[128];
@@ -77,4 +90,3 @@ H_WIN goto_frmwin_create(H_WIN parent, __goto_create_para_t *para);
 
 
 #endif /* __PAGE_COM_H__ */
-

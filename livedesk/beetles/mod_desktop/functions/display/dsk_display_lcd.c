@@ -1,30 +1,33 @@
 /*
-************************************************************************************************************************
-*                                                          lcd
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                  Copyright(C), 2006-2010, AllWinner Technology Co., Ltd.
-*                                                  All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File Name   : dsk_display_lcd.c
-*
-* Author      : Gary.Wang
-*
-* Version     : 1.0
-*
-* Date        : 2010.09.02
-*
-* Description :
-*
-* Others      : None at present.
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
 *
 *
-* History     :
-*
-*  <Author>        <time>       <version>      <description>
-*
-* Gary.Wang      2010.09.02        1.0         build the file
-*
-************************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef  __DSK_DISPLAY_LCD_C__
 #define  __DSK_DISPLAY_LCD_C__
@@ -112,7 +115,7 @@ __s32 dsk_display_lcd_off(void)
     {
         arg[0] = DISP_OUTPUT_TYPE_NONE;
         arg[1] = 0;
-        esMODS_MIoctrl(mp_display, MOD_DISP_DEVICE_SWITCH, 0, (void *)arg);  // note: ’‚æ‰”–—” ±
+        esMODS_MIoctrl(mp_display, MOD_DISP_DEVICE_SWITCH, 0, (void *)arg);  // note: ËøôÂè•ÊúâÂª∂Êó∂
     }
 
     mp_display = NULL;
@@ -433,7 +436,7 @@ __s32 dsk_display_set_lcd_bright(__s32 bright)
         return 0;
     }
     ret = esMODS_MIoctrl(mp_display, MOD_DISP_ENHANCE_ENABLE, 0, (void *)0);
-    buf[0] = 0;     // πÿ±’proc1 csc
+    buf[0] = 0;     // ÂÖ≥Èó≠proc1 csc
     // 0-normal mode ( disable enhance) ; 1-enhance mode; 2-demo mode (enable half window)
     if (esMODS_MIoctrl(mp_display, MOD_DISP_ENHANCE_SET_MODE, 0, (void *)buf) < 0)
     {
@@ -445,7 +448,7 @@ __s32 dsk_display_set_lcd_bright(__s32 bright)
         __msg("DISP_ENHANCE_SET_MODE  ok");
     }
 
-    buf[0] = bright;       // «˝∂Ø≤Œ ˝∑∂Œß «0-255
+    buf[0] = bright;       // È©±Âä®ÂèÇÊï∞ËåÉÂõ¥ÊòØ0-255
     buf[1] = 0;
     buf[2] = 0;
     esMODS_MIoctrl(mp_display, MOD_DISP_ENHANCE_SET_BRIGHT, 0, (void *)buf);
@@ -628,6 +631,7 @@ __s32 dsk_display_set_lcd_hue(__s32  value)
     mp_display = NULL;
     return ret;
     #endif
+    return 0;
 }
 
 __s32 dsk_display_get_lcd_hue(void)
@@ -650,6 +654,7 @@ __s32 dsk_display_get_lcd_hue(void)
     mp_display  = NULL;
     return (ret);
     #endif
+    return 0;
 }
 
 __s32 dsk_display_set_lcd_edge(__s32  value)
@@ -693,6 +698,7 @@ __s32 dsk_display_set_lcd_edge(__s32  value)
     mp_display = NULL;
     return ret;
     #endif
+    return 0;
 }
 
 __s32 dsk_display_get_lcd_edge(void)
@@ -715,6 +721,7 @@ __s32 dsk_display_get_lcd_edge(void)
     mp_display = NULL;
     return (ret);
     #endif
+    return 0;
 }
 
 __s32 dsk_display_set_lcd_detail(__s32  value)
@@ -753,6 +760,7 @@ __s32 dsk_display_set_lcd_detail(__s32  value)
     mp_display = NULL;
     return ret;
     #endif
+    return 0;
 }
 
 __s32 dsk_display_get_lcd_detail(void)
@@ -788,6 +796,7 @@ __s32 dsk_display_get_lcd_detail(void)
     mp_display = NULL;
     return (ret);
     #endif
+    return 0;
 }
 
 __s32 dsk_display_set_lcd_denoise(__s32  value)
@@ -826,6 +835,7 @@ __s32 dsk_display_set_lcd_denoise(__s32  value)
     mp_display = NULL;
     return ret;
     #endif
+    return 0;
 }
 
 __s32  dsk_display_get_lcd_denoise(void)
@@ -861,6 +871,7 @@ __s32  dsk_display_get_lcd_denoise(void)
     mp_display = NULL;
     return (ret);
     #endif
+    return 0;
 }
 
 __s32  dsk_display_enhance_enable(void)
@@ -944,6 +955,7 @@ __s32 dsk_display_get_enhance_enable(void)
     mp_display = NULL;
     return ret;
     #endif
+    return 0;
 }
 
 __s32 dsk_display_enhance_demo_enable(void)

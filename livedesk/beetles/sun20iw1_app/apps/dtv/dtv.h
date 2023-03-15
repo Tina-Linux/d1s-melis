@@ -1,16 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              calendar app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2006-2009, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : movie.h
-* By      :kaiyuanyang@sina.com
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __DVBPLAY_H__
 #define __DVBPLAY_H__
@@ -34,25 +51,25 @@ typedef struct dtv_s
     __krnl_event_t *sem;
 
 
-    H_LYR       h_lyr;              //ȫ��ͼ�㣬���ڽ�Ŀ�б���Ƶ���б������õĿ���
+    H_LYR       h_lyr;              //全屏图层，用于节目列表、频道列表、设置的控制
 
     H_WIN       h_loading;
-    H_WIN       h_scan;             //����
-    H_WIN       h_serverlist;      //Ƶ���б�
-    H_WIN       h_epg;             //��ǰ��Ŀ�б���Ϣ
-    H_WIN       h_setting;         //���ý���
+    H_WIN       h_scan;             //搜索
+    H_WIN       h_serverlist;      //频道列表
+    H_WIN       h_epg;             //当前节目列表信息
+    H_WIN       h_setting;         //设置界面
 
 #if((MAPLE_TV_STANDAR == MAPLE_TV_ISDB_T)||(MAPLE_TV_STANDAR == MAPLE_TV_DTMB)\
         || (MAPLE_TV_STANDAR == MAPLE_TV_DVB_T)|| (MAPLE_TV_STANDAR == MAPLE_TV_ATSC))
     //#error "test"
     H_WIN       h_subtitle;
-    __bool      b_has_subtitle; //�л�����������ʱ���ڼ�¼��ǰ��Ļ�Ƿ���� ���˳�ʱ�ָ�
+    __bool      b_has_subtitle; //切换到其它界面时用于记录当前字幕是否存在 ，退出时恢复
 #endif
 
-    __s32       ch_timer;//����ѡ̨��ʱ��
-    __s32       usr_ch; //�û������̨
+    __s32       ch_timer;//数字选台定时器
+    __s32       usr_ch; //用户输入的台
 
-    __s32       cur_user_index; //���û��Ƕȿ�����̨��0 , 1 2 3 4 5 6 7 ^^^^^^
+    __s32       cur_user_index; //从用户角度看到的台号0 , 1 2 3 4 5 6 7 ^^^^^^
 
 
     __u8        old_decode_val;
@@ -78,14 +95,14 @@ typedef struct dtv_s
 
 
     __u32 sel_num;
-    __u32 sel_sta;//0:nothing  1:����ѡ̨2:������ʾ 3:�ֶ���̨
+    __u32 sel_sta;//0:nothing  1:数字选台2:错误提示 3:手动搜台
     __u32 sel_cnt;
-    __u8  play_cnt; //����ͬ��play  ��stop
+    __u8  play_cnt; //用于同步play  和stop
     __u8  hide_vol_cnt;
 
     __hdle      h_no_channel;
-    __hdle      h_no_signal;//�ź���
-    __hdle      h_no_auth;//δ��Ȩ
+    __hdle      h_no_signal;//信号弱
+    __hdle      h_no_auth;//未授权
     __hdle      h_radio_tip;
 #ifdef APP_ADD_RECORD_VEDIO
     __u8        record_ts_remark_num;
@@ -105,5 +122,3 @@ signed long  app_dtv_create(root_para_t  *para);
 
 
 #endif  /* __DVBPLAY_H__ */
-
-

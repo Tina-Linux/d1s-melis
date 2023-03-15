@@ -1,0 +1,29 @@
+menu "POWER Devices"
+
+config DRIVERS_POWER
+    bool "enable power driver"
+        default n
+
+config AXP2585_POWER
+	bool "use axp2585"
+	depends on DRIVERS_POWER
+	select DRIVERS_TWI
+		default y
+
+config AXP2585_TYPE_C
+	bool "Support Type-C cc logic"
+	depends on AXP2585_POWER
+	help
+	  To use Type-C cc logic function
+
+config CONFIG_AXP2585_TYPE_C_AUDIO
+	bool "Support Type-C cc audio"
+	depends on AXP2585_TYPE_C
+	help
+	  To use Type-C cc audio function
+
+config HAL_TEST_POWER
+	bool "power test"
+	depends on DRIVERS_POWER
+		default y
+endmenu

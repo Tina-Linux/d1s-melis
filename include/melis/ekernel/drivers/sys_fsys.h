@@ -53,11 +53,19 @@
 #define FSYS_ERR_CLOSE                  (int16_t)0xff70
 
 #define FSYS_MAX_FPARTS                 16
+#ifdef CONFIG_SOC_SUN20IW1
+#define FSYS_MAX_XPARTS                 9
+#else
 #define FSYS_MAX_XPARTS                 8
+#endif
 #define FSYS_MAX_UPARTS                 2
 #define FSYS_MAX_PARTS                  (FSYS_MAX_FPARTS + FSYS_MAX_XPARTS + FSYS_MAX_UPARTS)
 #define PART_LETTER_FREE                0xff
+#ifdef CONFIG_SOC_SUN20IW1
+#define PART_LETTER_FREESTART           'F'
+#else
 #define PART_LETTER_FREESTART           'E'
+#endif
 #define PART_LETTER_USER                0xfe
 
 #define PART_LETTER_USERSTART           'V'

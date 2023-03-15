@@ -1,30 +1,33 @@
 /*
-************************************************************************************************************************
-*                                             information in register table
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                  Copyright(C), 2006-2010, AllWinner Technology Co., Ltd.
-*                                                  All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File Name   : dsk_reg.h
-*
-* Author      : Gary.Wang
-*
-* Version     : 1.0
-*
-* Date        : 2010.09.01
-*
-* Description :
-*
-* Others      : None at present.
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
 *
-* History     :
-*
-*  <Author>        <time>       <version>      <description>
-*
-* Gary.Wang      2010.09.01        1.0         build the file
-*
-************************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef  __DSK_REG_H__
 #define  __DSK_REG_H__
@@ -58,16 +61,16 @@ typedef enum
 reg_app_e;
 
 /*
- *      ÄÖÖÓ´¦Àí
+ *      é—¹é’Ÿå¤„ç†
  */
-#define REG_ALARM_NUM                   3//²»Òª´óÓÚ5, ´óÓÚÉèÖÃĞèÒªĞŞ¸Ä
+#define REG_ALARM_NUM                   3//ä¸è¦å¤§äº5, å¤§äºè®¾ç½®éœ€è¦ä¿®æ”¹
 #define REG_ALARM_MUSIC_DEFAULT_PATH    BEETLES_APP_ROOT"\\res\\sounds\\alarm_default.mp3"
 typedef enum
 {
-    REG_ALARM_EVERYDAY,     //Ã¿Ìì
-    REG_ALARM_DUTYDAY,      //ÖÜÒ»ÖÁÖÜÎå
-    REG_ALARM_WEEKEND,      //ÖÜÄ©
-    REG_ALARM_ONETIME,      //Ò»´Î
+    REG_ALARM_EVERYDAY,     //æ¯å¤©
+    REG_ALARM_DUTYDAY,      //å‘¨ä¸€è‡³å‘¨äº”
+    REG_ALARM_WEEKEND,      //å‘¨æœ«
+    REG_ALARM_ONETIME,      //ä¸€æ¬¡
     REG_ALARM_REPEAT_MAX
 } reg_alarm_repeattime_e;
 
@@ -100,19 +103,19 @@ typedef struct
 } reg_alarm_para_t;
 
 /*
- *      ¶àÆÁ´¦Àí
+ *      å¤šå±å¤„ç†
  */
 #define MULTI_SCREEN_NUM        2
 
-#define HEADBAR_INITIAL_MAX     4//ÆäÖĞÓĞ4¸öÊÇ³õÊ¼Ê±ÔÚheadbarµÄ¡£
+#define HEADBAR_INITIAL_MAX     4//å…¶ä¸­æœ‰4ä¸ªæ˜¯åˆå§‹æ—¶åœ¨headbarçš„ã€‚
 #define DESKTOP_UNIT_AP_MAX     12
 #define HEADBAR_UNIT_MAX        7
 #define DESKTOP_UNIT_MAX        (DESKTOP_UNIT_AP_MAX+HEADBAR_UNIT_MAX)
 
 typedef struct tag_multi_screen_unit
 {
-    GUI_RECT    rect;           //ËùÔÚµÄÇøÓò
-    __bool      isExist;        //ÊÇ·ñ´æÔÚµ±Ç°´°Ìå
+    GUI_RECT    rect;           //æ‰€åœ¨çš„åŒºåŸŸ
+    __bool      isExist;        //æ˜¯å¦å­˜åœ¨å½“å‰çª—ä½“
 } multi_screen_unit_t, *pmulti_screen_unit_t;
 
 typedef struct tag_multi_screen
@@ -133,16 +136,16 @@ typedef struct
     __u32   detect_gate;
 
     __u32   volume;
-    __u32   language;       //ÓïÑÔ
-    __u32   style;          //Ö÷Ìâ·ç¸ñ
-    __s32   backlight;      //±³¹âÁÁ¶È
-    __u32   backlightoff;   //±³¹â×Ô¶¯¹Ø±ÕÊ±¼ä
+    __u32   language;       //è¯­è¨€
+    __u32   style;          //ä¸»é¢˜é£æ ¼
+    __s32   backlight;      //èƒŒå…‰äº®åº¦
+    __u32   backlightoff;   //èƒŒå…‰è‡ªåŠ¨å…³é—­æ—¶é—´
     __u32   poweroff;
-    __u32   keytone;        //°´¼üÒô
+    __u32   keytone;        //æŒ‰é”®éŸ³
     /*LCD Parameter*/
     __u32   lcd_bright;
     __u32   lcd_constract;
-    __u32   lcd_saturation; //LCD ±¥ºÍ¶È
+    __u32   lcd_saturation; //LCD é¥±å’Œåº¦
     __u32   lcd_hue;
     __u32   lcd_detail;
     /*LCD Parameter End*/
@@ -150,8 +153,8 @@ typedef struct
     __u32   gamma_g_value;
     __u32   gamma_b_value;
     __u32   output;
-    __u32   pal_ntsc;//0´ú±íntsc, 1´ú±ípal
-    __u32   time_set;  //ÏµÍ³Æô¶¯ºóÊÇ·ñÒªÉèÖÃÊ±¼ä
+    __u32   pal_ntsc;//0ä»£è¡¨ntsc, 1ä»£è¡¨pal
+    __u32   time_set;  //ç³»ç»Ÿå¯åŠ¨åæ˜¯å¦è¦è®¾ç½®æ—¶é—´
     __awos_date_t  date;
     __awos_time_t  time;
     __u32   tp_adjust_finish_flag;
@@ -159,7 +162,7 @@ typedef struct
     reg_alarm_para_t    alarm[REG_ALARM_NUM];
     multi_screen_t      multi_screen_para;
     char    ver_inf[32];
-    __u32   reserverd[4];  //±£Áô²ÎÊıÉèÖÃ
+    __u32   reserverd[4];  //ä¿ç•™å‚æ•°è®¾ç½®
 } reg_system_para_t;
 
 
@@ -168,71 +171,71 @@ typedef struct
     __u32   default_bgd_index;
     char    default_bgd_path[768];
     char    setting_bgd_path[768];
-    __u32   bgd_flag;//µ±Ç°µÄ±³¾°×´Ì¬: 0´ú±íÉèÖÃ±³¾°£¬1´ú±íÄ¬ÈÏ±³¾°
-    __u32   bgd_flag_in_main;//´ÓÖ÷½çÃæ½øÈëÆäËüapÖ®Ç°£¬±³¾°×´Ì¬:0´ú±íÉèÖÃ±³¾°£¬1´ú±íÄ¬ÈÏ±³¾°
-    __u32   reserverd[4]; //±£Áô²ÎÊıÉèÖÃ
+    __u32   bgd_flag;//å½“å‰çš„èƒŒæ™¯çŠ¶æ€: 0ä»£è¡¨è®¾ç½®èƒŒæ™¯ï¼Œ1ä»£è¡¨é»˜è®¤èƒŒæ™¯
+    __u32   bgd_flag_in_main;//ä»ä¸»ç•Œé¢è¿›å…¥å…¶å®ƒapä¹‹å‰ï¼ŒèƒŒæ™¯çŠ¶æ€:0ä»£è¡¨è®¾ç½®èƒŒæ™¯ï¼Œ1ä»£è¡¨é»˜è®¤èƒŒæ™¯
+    __u32   reserverd[4]; //ä¿ç•™å‚æ•°è®¾ç½®
 } reg_init_para_t;
 
 typedef struct
 {
-    __u32   cur_storage;             //µ±Ç°²¥·Å²¥·ÅµÄÃ½Ìå½éÖÊ: RAT_TF ¡¢RAT_USB
-    __u32   karaoke_encry_ex;        //ÊÇ·ñ´æÔÚ¼ÓÃÜ·ÖÇø
+    __u32   cur_storage;             //å½“å‰æ’­æ”¾æ’­æ”¾çš„åª’ä½“ä»‹è´¨: RAT_TF ã€RAT_USB
+    __u32   karaoke_encry_ex;        //æ˜¯å¦å­˜åœ¨åŠ å¯†åˆ†åŒº
 
-    __u32   cur_play_storage;           //×îºóÒ»´Î²¥·ÅµÄÅÌ·û
-    __s32   last_play_app;          //×îºóÒ»´ÎÔËĞĞµÄapÀàĞÍ£¬0:ÒôÀÖ,1:ÊÓÆµ, 2:µç×ÓÊé 3:Í¼Æ¬
-    __u32   last_app_play_storage[4];  //¸÷¸öap×îºóÒ»´Î²¥·ÅµÄÃ½Ìå½éÖÊ£¬0:tf¿¨ 1:uÅÌ
-    __u32   last_storage_play_app[2];//¸÷¸öÃ½Ìå½éÖÊ×îºóÒ»´Î²¥·ÅµÄapÀàĞÍ£¬0:ÒôÀÖ,1:ÊÓÆµ, 2:µç×ÓÊé 3:Í¼Æ¬
-    __u32   last_movie_index_sd ;//   2×îºóÒ»´ÎÔÚSD¿¨²¥·ÅµÄÊÓÆµ±àºÅ
-    char    last_movie_path_sd[768];//  3×îºóÒ»´ÎÔÚSD¿¨²¥·ÅµÄÊÓÆµÂ·¾¶
-    __u32   last_movie_start_index_sd   ;//  ÔÚä¯ÀÀÆ÷ÖĞµÄÆğÊ¼Ë÷ÒıºÅ
+    __u32   cur_play_storage;           //æœ€åä¸€æ¬¡æ’­æ”¾çš„ç›˜ç¬¦
+    __s32   last_play_app;          //æœ€åä¸€æ¬¡è¿è¡Œçš„apç±»å‹ï¼Œ0:éŸ³ä¹,1:è§†é¢‘, 2:ç”µå­ä¹¦ 3:å›¾ç‰‡
+    __u32   last_app_play_storage[4];  //å„ä¸ªapæœ€åä¸€æ¬¡æ’­æ”¾çš„åª’ä½“ä»‹è´¨ï¼Œ0:tfå¡ 1:uç›˜
+    __u32   last_storage_play_app[2];//å„ä¸ªåª’ä½“ä»‹è´¨æœ€åä¸€æ¬¡æ’­æ”¾çš„apç±»å‹ï¼Œ0:éŸ³ä¹,1:è§†é¢‘, 2:ç”µå­ä¹¦ 3:å›¾ç‰‡
+    __u32   last_movie_index_sd ;//   2æœ€åä¸€æ¬¡åœ¨SDå¡æ’­æ”¾çš„è§†é¢‘ç¼–å·
+    char    last_movie_path_sd[768];//  3æœ€åä¸€æ¬¡åœ¨SDå¡æ’­æ”¾çš„è§†é¢‘è·¯å¾„
+    __u32   last_movie_start_index_sd   ;//  åœ¨æµè§ˆå™¨ä¸­çš„èµ·å§‹ç´¢å¼•å·
 
-    __u32   last_movie_index_ud;    //  4×îºóÒ»´ÎÔÚUÅÌ²¥·ÅµÄÊÓÆµ±àºÅ
-    char    last_movie_path_ud[768];//  5×îºóÒ»´ÎÔÚUÅÌ²¥·ÅµÄÊÓÆµÂ·¾¶
-    __u32   last_movie_start_index_ud   ;// ÔÚä¯ÀÀÆ÷ÖĞµÄÆğÊ¼Ë÷ÒıºÅ
+    __u32   last_movie_index_ud;    //  4æœ€åä¸€æ¬¡åœ¨Uç›˜æ’­æ”¾çš„è§†é¢‘ç¼–å·
+    char    last_movie_path_ud[768];//  5æœ€åä¸€æ¬¡åœ¨Uç›˜æ’­æ”¾çš„è§†é¢‘è·¯å¾„
+    __u32   last_movie_start_index_ud   ;// åœ¨æµè§ˆå™¨ä¸­çš„èµ·å§‹ç´¢å¼•å·
 
-    __u32   last_music_index_sd ;//  6×îºóÒ»´ÎÔÚSD¿¨²¥·ÅµÄÒôÀÖ±àºÅ
-    char    last_music_path_sd[768];    //  7×îºóÒ»´ÎÔÚSD¿¨²¥·ÅµÄÒôÀÖ¾¶
-    __u32   last_music_start_index_sd   ;// ÔÚä¯ÀÀÆ÷ÖĞµÄÆğÊ¼Ë÷ÒıºÅ
+    __u32   last_music_index_sd ;//  6æœ€åä¸€æ¬¡åœ¨SDå¡æ’­æ”¾çš„éŸ³ä¹ç¼–å·
+    char    last_music_path_sd[768];    //  7æœ€åä¸€æ¬¡åœ¨SDå¡æ’­æ”¾çš„éŸ³ä¹å¾„
+    __u32   last_music_start_index_sd   ;// åœ¨æµè§ˆå™¨ä¸­çš„èµ·å§‹ç´¢å¼•å·
 
-    __u32   last_music_index_ud;//  8×îºóÒ»´ÎÔÚUÅÌ²¥·ÅµÄÒôÀÖ±àºÅ
-    char    last_music_path_ud[768];    //  9×îºóÒ»´ÎÔÚUÅÌ²¥·ÅµÄÒôÀÖÂ·¾¶
-    __u32   last_music_start_index_ud   ;// ÔÚä¯ÀÀÆ÷ÖĞµÄÆğÊ¼Ë÷ÒıºÅ
+    __u32   last_music_index_ud;//  8æœ€åä¸€æ¬¡åœ¨Uç›˜æ’­æ”¾çš„éŸ³ä¹ç¼–å·
+    char    last_music_path_ud[768];    //  9æœ€åä¸€æ¬¡åœ¨Uç›˜æ’­æ”¾çš„éŸ³ä¹è·¯å¾„
+    __u32   last_music_start_index_ud   ;// åœ¨æµè§ˆå™¨ä¸­çš„èµ·å§‹ç´¢å¼•å·
 
-    __u32   last_photo_index_sd;//  10×îºóÒ»´ÎÔÚSD¿¨²¥·ÅµÄÍ¼Æ¬±àºÅ
-    char    last_photo_path_sd[768];//  11×îºóÒ»´ÎÔÚSD¿¨²¥·ÅµÄÍ¼Æ¬Â·¾¶
+    __u32   last_photo_index_sd;//  10æœ€åä¸€æ¬¡åœ¨SDå¡æ’­æ”¾çš„å›¾ç‰‡ç¼–å·
+    char    last_photo_path_sd[768];//  11æœ€åä¸€æ¬¡åœ¨SDå¡æ’­æ”¾çš„å›¾ç‰‡è·¯å¾„
     __u32   last_photo_start_index_sd;//
 
-    __u32   last_photo_index_ud;//  12×îºóÒ»´ÎÔÚUÅÌ²¥·ÅµÄÍ¼Æ¬±àºÅ
-    char    last_photo_path_ud[768];    //  13×îºóÒ»´ÎÔÚUÅÌ²¥·ÅµÄÍ¼Æ¬Â·¾¶
+    __u32   last_photo_index_ud;//  12æœ€åä¸€æ¬¡åœ¨Uç›˜æ’­æ”¾çš„å›¾ç‰‡ç¼–å·
+    char    last_photo_path_ud[768];    //  13æœ€åä¸€æ¬¡åœ¨Uç›˜æ’­æ”¾çš„å›¾ç‰‡è·¯å¾„
     __u32   last_photo_start_index_ud;//
 
-    __u32   last_ebook_index_sd;//  14×îºóÒ»´ÎÔÚSD¿¨²¥·ÅµÄµç×ÓÊé±àºÅ
-    char    last_ebook_path_sd[768];//  15×îºóÒ»´ÎÔÚSD¿¨²¥·ÅµÄµç×ÓÊéÂ·¾¶
+    __u32   last_ebook_index_sd;//  14æœ€åä¸€æ¬¡åœ¨SDå¡æ’­æ”¾çš„ç”µå­ä¹¦ç¼–å·
+    char    last_ebook_path_sd[768];//  15æœ€åä¸€æ¬¡åœ¨SDå¡æ’­æ”¾çš„ç”µå­ä¹¦è·¯å¾„
     __u32   last_ebook_start_index_sd;
 
-    __u32   last_ebook_index_ud;//  16×îºóÒ»´ÎÔÚUÅÌ²¥·ÅµÄµç×ÓÊé±àºÅ
-    char    last_ebook_path_ud[768];//  17×îºóÒ»´ÎÔÚUÅÌ²¥·ÅµÄµç×ÓÊéÂ·¾¶
+    __u32   last_ebook_index_ud;//  16æœ€åä¸€æ¬¡åœ¨Uç›˜æ’­æ”¾çš„ç”µå­ä¹¦ç¼–å·
+    char    last_ebook_path_ud[768];//  17æœ€åä¸€æ¬¡åœ¨Uç›˜æ’­æ”¾çš„ç”µå­ä¹¦è·¯å¾„
     __u32   last_ebook_start_index_ud;//
 
-    __u32   last_game_index_sd;//  14×îºóÒ»´ÎÔÚSD¿¨²¥·ÅµÄÓÎÏ·±àºÅ
-    char    last_game_path_sd[768];//  15×îºóÒ»´ÎÔÚSD¿¨²¥·ÅµÄÓÎÏ·Â·¾¶
+    __u32   last_game_index_sd;//  14æœ€åä¸€æ¬¡åœ¨SDå¡æ’­æ”¾çš„æ¸¸æˆç¼–å·
+    char    last_game_path_sd[768];//  15æœ€åä¸€æ¬¡åœ¨SDå¡æ’­æ”¾çš„æ¸¸æˆè·¯å¾„
     __u32   last_game_start_index_sd;
 
-    __u32   last_game_index_ud;//  18×îºóÒ»´ÎÔÚUÅÌ²¥·ÅµÄÓÎÏ·±àºÅ
-    char    last_game_path_ud[768];//  19×îºóÒ»´ÎÔÚUÅÌ²¥·ÅµÄÓÎÏ·Â·¾¶
+    __u32   last_game_index_ud;//  18æœ€åä¸€æ¬¡åœ¨Uç›˜æ’­æ”¾çš„æ¸¸æˆç¼–å·
+    char    last_game_path_ud[768];//  19æœ€åä¸€æ¬¡åœ¨Uç›˜æ’­æ”¾çš„æ¸¸æˆè·¯å¾„
     __u32   last_game_start_index_ud;//
-    __u32   reserverd[4]; //±£Áô²ÎÊıÉèÖÃ
+    __u32   reserverd[4]; //ä¿ç•™å‚æ•°è®¾ç½®
 
 } reg_root_para_t;
 
 /**************************************************************
-*Ä£¿é movie
-*Ãû³Æ   ±äÁ¿Ãû³Æ    ÀàĞÍ    ·¶Î§    ±¸×¢
-*Ñ­»·Ä£Ê½   rotate_mode __u32   0-4
-*Ëõ·ÅÄ£Ê½   zoom_mode   __u32   0-4
-*×ÖÄ»×´Ì¬   sub_state   __u32   0-1
-*×ÖÄ»ÑÕÉ«   sub_color   __u32   0xffffff    rgbÖµ
-*×ÖÄ»Î»ÖÃ   sub_pos __u32   0-2
+*æ¨¡å— movie
+*åç§°   å˜é‡åç§°    ç±»å‹    èŒƒå›´    å¤‡æ³¨
+*å¾ªç¯æ¨¡å¼   rotate_mode __u32   0-4
+*ç¼©æ”¾æ¨¡å¼   zoom_mode   __u32   0-4
+*å­—å¹•çŠ¶æ€   sub_state   __u32   0-1
+*å­—å¹•é¢œè‰²   sub_color   __u32   0xffffff    rgbå€¼
+*å­—å¹•ä½ç½®   sub_pos __u32   0-2
 ****************************************************************/
 
 typedef struct
@@ -245,17 +248,17 @@ typedef struct
     __u32   sub_stream;
     __u32   channel;
     __u32   track; //chengf3  add
-    __u32   reserverd[4]; //±£Áô²ÎÊıÉèÖÃ
+    __u32   reserverd[4]; //ä¿ç•™å‚æ•°è®¾ç½®
 } reg_movie_para_t;
 
 /**************************************************************
-*Ä£¿é photo
-*±³¾°ÒôÀÖ¿ª¹Ø   bgmusic __s32   0-1 Ô¤ÉèÎª0
-*²¥·ÅËÙ¶È   speedflag   __s32   0-4 Ô¤ÉèÎª1
-*×Ô¶¨Òå²¥·ÅËÙ¶È(Ê±¼ä¼ä¸ô)   interval_time   __s32   0xffffff    Ô¤ÉèÎª5
-*ÏÔÊ¾±ÈÀı   ratio   __s32   0-4 Ô¤ÉèÎª0
-*²¥·ÅÌØĞ§   effect  __s32   0-16    Ô¤ÉèÎª0
-*ÉèÖÃÍ¼Æ¬Îª×ÀÃæ bg_file_name    char[]  768×Ö½Ú Ô¤ÉèÎª0
+*æ¨¡å— photo
+*èƒŒæ™¯éŸ³ä¹å¼€å…³   bgmusic __s32   0-1 é¢„è®¾ä¸º0
+*æ’­æ”¾é€Ÿåº¦   speedflag   __s32   0-4 é¢„è®¾ä¸º1
+*è‡ªå®šä¹‰æ’­æ”¾é€Ÿåº¦(æ—¶é—´é—´éš”)   interval_time   __s32   0xffffff    é¢„è®¾ä¸º5
+*æ˜¾ç¤ºæ¯”ä¾‹   ratio   __s32   0-4 é¢„è®¾ä¸º0
+*æ’­æ”¾ç‰¹æ•ˆ   effect  __s32   0-16    é¢„è®¾ä¸º0
+*è®¾ç½®å›¾ç‰‡ä¸ºæ¡Œé¢ bg_file_name    char[]  768å­—èŠ‚ é¢„è®¾ä¸º0
 *
 ****************************************************************/
 
@@ -266,51 +269,51 @@ typedef struct
     __u32   interval_time   ;
     __u32   ratio;
     __u32   effect;
-    __u32   reserverd[4]; //±£Áô²ÎÊıÉèÖÃ
+    __u32   reserverd[4]; //ä¿ç•™å‚æ•°è®¾ç½®
 } reg_photo_para_t;
 
 typedef struct
 {
-    __u32 start_item_id;    //ÉÏÒ»´Îä¯ÀÀÆ÷ÖĞÆğÊ¼ÌõÄ¿ºÅ
-    __u32 focus_item_id;     //ÉÏÒ»´Îä¯ÀÀÆ÷ÖĞ½¹µãÌõÄ¿ºÅ
-    __u32 play_mode;    //ÉÏÒ»´ÎÉèÖÃµÄ²¥·ÅÄ£Ê½
-    __u32 EQ_mode;  //ÉÏÒ»´ÎÉèÖÃµÄEQÄ£Ê½
-    __u32 reserverd[4]; //±£Áô²ÎÊıÉèÖÃ
+    __u32 start_item_id;    //ä¸Šä¸€æ¬¡æµè§ˆå™¨ä¸­èµ·å§‹æ¡ç›®å·
+    __u32 focus_item_id;     //ä¸Šä¸€æ¬¡æµè§ˆå™¨ä¸­ç„¦ç‚¹æ¡ç›®å·
+    __u32 play_mode;    //ä¸Šä¸€æ¬¡è®¾ç½®çš„æ’­æ”¾æ¨¡å¼
+    __u32 EQ_mode;  //ä¸Šä¸€æ¬¡è®¾ç½®çš„EQæ¨¡å¼
+    __u32 reserverd[4]; //ä¿ç•™å‚æ•°è®¾ç½®
 } reg_music_para_t;
 
 typedef struct
 {
-    __u32   mode;           //FM,AM Ä£Ê½
-    __s32   channel_id;     //ÉÏÒ»´ÎÊÕÌıµÄÆµµÀºÅ
-    __u32   FM_channel[50]; //FMÆµ¶Î±£´æ
-    __u32   AM_channel[50]; //AMÆµ¶Î±£´æ
+    __u32   mode;           //FM,AM æ¨¡å¼
+    __s32   channel_id;     //ä¸Šä¸€æ¬¡æ”¶å¬çš„é¢‘é“å·
+    __u32   FM_channel[50]; //FMé¢‘æ®µä¿å­˜
+    __u32   AM_channel[50]; //AMé¢‘æ®µä¿å­˜
     __u16   curFM1_3AM1_2_id;
-    __u32   FM1_3_AM1_2_freq[5][6]; //Æµ¶Î±£´æ//add by Kingvan
-    __u32   reserverd[4];   //±£Áô²ÎÊıÉèÖÃ reserverd[0]:µçÌ¨¸öÊı
-    __u32   manual_seach_freq;//ÊÖ¶¯ËÑË÷µ½µÄµçÌ¨Æµ¶Î±£´æÖµ//by   cky
+    __u32   FM1_3_AM1_2_freq[5][6]; //é¢‘æ®µä¿å­˜//add by Kingvan
+    __u32   reserverd[4];   //ä¿ç•™å‚æ•°è®¾ç½® reserverd[0]:ç”µå°ä¸ªæ•°
+    __u32   manual_seach_freq;//æ‰‹åŠ¨æœç´¢åˆ°çš„ç”µå°é¢‘æ®µä¿å­˜å€¼//by   cky
 } reg_fm_para_t;
 
 typedef struct
 {
     __u32   text_colour;
     __u32   switch_time;
-    __u32   tts_switch;     /*tts  Ñ¡Ïî*/
-    __u32   bg_music_switch;    //±³¾°ÒôÀÖ¿ª¹Ø
-    __u32   switch_time_flag;//ÊÇÓÃ»§×Ô¶¨ÒåÊ±¼ä»¹ÊÇ³ÌĞòÔ¤¶¨ÒåÊ±¼ä(0-3)
-    __u32   reserverd[4]; //±£Áô²ÎÊıÉèÖÃ
+    __u32   tts_switch;     /*tts  é€‰é¡¹*/
+    __u32   bg_music_switch;    //èƒŒæ™¯éŸ³ä¹å¼€å…³
+    __u32   switch_time_flag;//æ˜¯ç”¨æˆ·è‡ªå®šä¹‰æ—¶é—´è¿˜æ˜¯ç¨‹åºé¢„å®šä¹‰æ—¶é—´(0-3)
+    __u32   reserverd[4]; //ä¿ç•™å‚æ•°è®¾ç½®
     __u32   e_mark;
 } reg_ebook_para_t;
 
 typedef struct
 {
-    __u32   reserverd[8]; //±£Áô²ÎÊıÉèÖÃ
+    __u32   reserverd[8]; //ä¿ç•™å‚æ•°è®¾ç½®
 
 } reg_record_para_t;
 
 typedef struct
 {
-    __u32   reserverd[8]; //±£Áô²ÎÊıÉèÖÃ
-    __u32   time_format;//Ê±ÖÆ£¬0´ú±í24Ğ¡Ê±ÖÆ£¬1´ú±í12Ğ¡Ê±ÖÆ
+    __u32   reserverd[8]; //ä¿ç•™å‚æ•°è®¾ç½®
+    __u32   time_format;//æ—¶åˆ¶ï¼Œ0ä»£è¡¨24å°æ—¶åˆ¶ï¼Œ1ä»£è¡¨12å°æ—¶åˆ¶
 } reg_calendar_para_t;
 
 
@@ -321,13 +324,13 @@ typedef struct
     __s32   stickx;
     __s32   sticky;
     __s32   handle[12][3];
-    __u32   reserverd[8]; //±£Áô²ÎÊıÉèÖÃ
+    __u32   reserverd[8]; //ä¿ç•™å‚æ•°è®¾ç½®
 
 } reg_game_para_t;
 
 typedef struct
 {
-    __u32   reserverd[8]; //±£Áô²ÎÊıÉèÖÃ
+    __u32   reserverd[8]; //ä¿ç•™å‚æ•°è®¾ç½®
 
 } reg_dict_para_t;
 

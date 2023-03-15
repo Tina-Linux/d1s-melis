@@ -1,54 +1,67 @@
 /*
-**********************************************************************************************************************
-*                                                    ePDK
-*                                    the Easy Portable/Player Develop Kits
-*                                              eMOD Sub-System
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2007-2009, SW.China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* Moudle  : Lemon
-* File    : Lang_fmt.h
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
-* By      : Andy
-* Version : v1.0
-* Date    : 2008-11-9 9:13:15
-**********************************************************************************************************************
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef __LANG_FMT_H__
 #define __LANG_FMT_H__
 
-#define SEC_NAME        ".langdat"  //8×Ö½Ú³¤¶È£¬½ÚÃû
+#define SEC_NAME        ".langdat"  //8å­—èŠ‚é•¿åº¦ï¼ŒèŠ‚å
 
-//ÓïÑÔ×ÊÔ´ÎÄ¼şÊı¾İ¸ñÊ½¶¨Òå
+//è¯­è¨€èµ„æºæ–‡ä»¶æ•°æ®æ ¼å¼å®šä¹‰
 typedef struct tag_LANG_HEAD
 {
-    __s8        SecName[8];     //½ÚÃû
-    __u16       version;        //°æ±¾£º0x0100
-    __u16       size;           //LANG_HEADÊı¾İ½á¹¹´óĞ¡
-    __u32       LangTabOff;     //LANG±íÆğÊ¼µØÖ·Æ«ÒÆÁ¿----------------->
-    __u16       LangSize;       //LANG±íÖĞÃ¿¸öÌõÄ¿´óĞ¡
-    __u32       LangNum;        //LANG±íÌõÄ¿¸öÊı,¼ÈÓïÑÔÖÖÀà¸öÊı
-    __u16       StringSize;     //×Ö·û´®size
-    __u32       StringNum;      //×Ö·û´®¸öÊı£»
-    __u32       align;          //Êı¾İ±ß½ç¶ÔÆëÄ£Ê½£»
-    __u32       flags;          //±êÖ¾:SYSRES,LIBRES,APPRES
+    __s8        SecName[8];     //èŠ‚å
+    __u16       version;        //ç‰ˆæœ¬ï¼š0x0100
+    __u16       size;           //LANG_HEADæ•°æ®ç»“æ„å¤§å°
+    __u32       LangTabOff;     //LANGè¡¨èµ·å§‹åœ°å€åç§»é‡----------------->
+    __u16       LangSize;       //LANGè¡¨ä¸­æ¯ä¸ªæ¡ç›®å¤§å°
+    __u32       LangNum;        //LANGè¡¨æ¡ç›®ä¸ªæ•°,æ—¢è¯­è¨€ç§ç±»ä¸ªæ•°
+    __u16       StringSize;     //å­—ç¬¦ä¸²size
+    __u32       StringNum;      //å­—ç¬¦ä¸²ä¸ªæ•°ï¼›
+    __u32       align;          //æ•°æ®è¾¹ç•Œå¯¹é½æ¨¡å¼ï¼›
+    __u32       flags;          //æ ‡å¿—:SYSRES,LIBRES,APPRES
 } __attribute__((__packed__)) LANG_HEAD; //34 byte
 typedef struct tag_LANG
 {
     __u16       LangID;             //0X400 0X420
-    __u32       LangOffSet;         //LANG ÌõÄ¿ÆğÊ¼µØÖ·Æ«ÒÆÁ¿
-    __u32       LangSize;           //LANG ÌõÄ¿´óĞ¡
-    __u32       StringTabOff;       //×Ö·û±íÆğÊ¼µØÖ·
+    __u32       LangOffSet;         //LANG æ¡ç›®èµ·å§‹åœ°å€åç§»é‡
+    __u32       LangSize;           //LANG æ¡ç›®å¤§å°
+    __u32       StringTabOff;       //å­—ç¬¦è¡¨èµ·å§‹åœ°å€
 } __attribute__((__packed__)) LANG; //
 
 typedef struct tag_STRING
 {
     __u16       LangID;         //LangID
     __u16       StringID;       //such as:0x0001
-    __u32       offset;         //string dataÎ»ÖÃ
-    __u32       size;           //dataÊı¾İ³¤¶È
+    __u32       offset;         //string dataä½ç½®
+    __u32       size;           //dataæ•°æ®é•¿åº¦
 } __attribute__((__packed__)) LANG_STRING;
 
 #endif /* __LANG_FMT_H__  */

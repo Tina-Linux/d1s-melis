@@ -1,0 +1,3 @@
+menuconfig COMPONENT_NCM
+    bool "Enable ncm support"
+    depends on RT_USING_FINSH && DRIVERS_USB_GADGET_NCM

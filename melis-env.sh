@@ -83,7 +83,7 @@ unset melis_answer_file
 
 function ctop()
 {
-    top_path=${MELIS_BASE}/..
+    top_path=${MELIS_BASE}/
     if [ "$top_path"  ]; then
         \cd $top_path
     else
@@ -94,7 +94,7 @@ function ctop()
 
 function cdoc()
 {
-    doc_path=${MELIS_BASE}/../document
+    doc_path=${MELIS_BASE}/docs
     if [ "$doc_path"  ]; then
         \cd $doc_path
     else
@@ -248,24 +248,13 @@ function cvideolib()
 
 function crtt()
 {
-    rtt_path=${MELIS_BASE}/ekernel/subsys/net/rt-thread
+    rtt_path=${MELIS_BASE}/ekernel/components/thirdparty/net/rt-thread
     if [ "$rtt_path"  ]; then
         \cd $rtt_path
     else
         echo "Couldn't locate the rtt kernel."
 fi
     unset rtt_path
-}
-
-function czephyr()
-{
-    zephyr_path=${MELIS_BASE}/ekernel/subsys/net/zephyr
-    if [ "$zephyr_path"  ]; then
-        \cd $zephyr_path
-    else
-        echo "Couldn't locate the zephyr kernel."
-    fi
-    unset zephyr_path
 }
 
 function cboot1()

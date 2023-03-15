@@ -946,6 +946,7 @@ enum tag_DISP_CMD {
 	DISP_MEM_RELEASE = 0x2c1,
 	DISP_MEM_GETADR = 0x2c2,
 	DISP_VDPO_SET_CONFIG = 0x2c3,
+	DISP_WAIT_VSYNC = 0x2c4,
 
 	/* --- rotation sw --- */
 	DISP_ROTATION_SW_SET_ROT = 0x300,
@@ -956,6 +957,10 @@ enum tag_DISP_CMD {
 	DISP_EINK_GET_TEMP = 0x404,
 	DISP_EINK_OVERLAP_SKIP = 0x405,
 	DISP_EINK_UPDATE2 = 0x406,
+
+	/* --- pq --- */
+	DISP_PQ_PROC = 0x500,
+	DISP_LCD_GET_GAMMA_TABLE = 0x501,
 };
 
 enum {

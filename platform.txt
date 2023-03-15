@@ -1,0 +1,12 @@
+chip=sun20iw1p1
+platform=melis
+board_platform=none
+board=d1s-nezha
+debug=uart0
+sigmode=none
+securemode=none
+mode=normal
+programmer=none
+tar_image=none
+nor_volume=8
+torage_type=nor

@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      :
-* By        : hotlee
-* Func      :
-* Version   :
-* ============================================================================================================
-* 2013-06-05   hotlee  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "dtv_setting_ca.h"
 #include <emodules/mod_ca.h>
@@ -156,10 +170,10 @@ typedef struct tag_ca_sub_ctrl
 
 typedef struct ca_uipara
 {
-    OFFSET   ca_bmp_pos;    //ÌáÊ¾¿ò±³¾°Í¼×ø±êÎ»ÖÃ
-    RECT     ca_tiltle_pos;     //ÌáÊ¾¿òtitle×ø±êÎ»ÖÃ
-    RECT     ca_content;        //CAĞòÁĞºÅ
-    OFFSET   ca_ok_bmp_pos; //OK ×Ö·ûÏÔÊ¾µ×Í¼×ø±ê
+    OFFSET   ca_bmp_pos;    //æç¤ºæ¡†èƒŒæ™¯å›¾åæ ‡ä½ç½®
+    RECT     ca_tiltle_pos;     //æç¤ºæ¡†titleåæ ‡ä½ç½®
+    RECT     ca_content;        //CAåºåˆ—å·
+    OFFSET   ca_ok_bmp_pos; //OK å­—ç¬¦æ˜¾ç¤ºåº•å›¾åæ ‡
 
 } ca_uipara_t;
 
@@ -462,7 +476,7 @@ static __s32 dtv_setting_ca_info_sub_paint(__gui_msg_t *msg)
     x = 0;//(width-CA_BG_WIDTH)/2;
     y = SETTING_TOP_HIGH;
     GUI_BMP_Draw(theme_hdl2buf(ca_sub_ctrl->ca_background_bmp), x, y);
-    //2 ¿¨ºÅ
+    //2 å¡å·
     gui_rect.x0 = x + 10;
     gui_rect.y0 = y;
     gui_rect.x1 = gui_rect.x0 + 80;
@@ -472,7 +486,7 @@ static __s32 dtv_setting_ca_info_sub_paint(__gui_msg_t *msg)
     gui_rect.x0 = gui_rect.x1 + 10;
     gui_rect.x1 = gui_rect.x0 + 150;
     GUI_DispStringInRect(ca_sub_ctrl->sub_info.user_info.user.sc_id, &gui_rect, GUI_TA_LEFT | GUI_TA_VCENTER);
-    //3 ÀàĞÍ
+    //3 ç±»å‹
     gui_rect.x0 = x + 10;
     gui_rect.y0 = gui_rect.y1;
     gui_rect.x1 = gui_rect.x0 + 80;
@@ -492,7 +506,7 @@ static __s32 dtv_setting_ca_info_sub_paint(__gui_msg_t *msg)
     }
 
     GUI_DispStringInRect(text, &gui_rect, GUI_TA_LEFT | GUI_TA_VCENTER);
-    //4 ²å¿¨×´Ì¬
+    //4 æ’å¡çŠ¶æ€
     gui_rect.x0 = gui_rect.x1;
     gui_rect.x1 = gui_rect.x0 + 80;
     GUI_DispStringInRect(ca_sub_ctrl->sub_info.user_info.text[DTV_SETTING_CA_SC_STATUS], &gui_rect, GUI_TA_LEFT | GUI_TA_VCENTER);
@@ -510,7 +524,7 @@ static __s32 dtv_setting_ca_info_sub_paint(__gui_msg_t *msg)
     }
 
     GUI_DispStringInRect(text, &gui_rect, GUI_TA_LEFT | GUI_TA_VCENTER);
-    //5ÇøÓòID
+    //5åŒºåŸŸID
     gui_rect.x0 = x + 10;
     gui_rect.y0 = gui_rect.y1;
     gui_rect.x1 = gui_rect.x0 + 80;
@@ -521,7 +535,7 @@ static __s32 dtv_setting_ca_info_sub_paint(__gui_msg_t *msg)
     eLIBs_memset(text, 0x00, sizeof(text));
     eLIBs_sprintf(text, "%d", ca_sub_ctrl->sub_info.user_info.user.sc_NetRegionID);
     GUI_DispStringInRect(text, &gui_rect, GUI_TA_LEFT | GUI_TA_VCENTER);
-    //5³ÉÈË¼¶
+    //5æˆäººçº§
     gui_rect.x0 = gui_rect.x1;
     gui_rect.x1 = gui_rect.x0 + 80;
     GUI_DispStringInRect(ca_sub_ctrl->sub_info.user_info.text[DTV_SETTING_CA_SC_USERLEVEL], &gui_rect, GUI_TA_LEFT | GUI_TA_VCENTER);
@@ -530,7 +544,7 @@ static __s32 dtv_setting_ca_info_sub_paint(__gui_msg_t *msg)
     eLIBs_memset(text, 0x00, sizeof(text));
     eLIBs_sprintf(text, "%d", ca_sub_ctrl->sub_info.user_info.user.sc_UserLevel);
     GUI_DispStringInRect(text, &gui_rect, GUI_TA_LEFT | GUI_TA_VCENTER);
-    //6 ¹¤×÷Ê±¼ä
+    //6 å·¥ä½œæ—¶é—´
     gui_rect.x0 = x + 10;
     gui_rect.y0 = gui_rect.y1;
     gui_rect.x1 = gui_rect.x0 + 100;
@@ -542,7 +556,7 @@ static __s32 dtv_setting_ca_info_sub_paint(__gui_msg_t *msg)
     temp = ca_sub_ctrl->sub_info.user_info.user.sc_WorkTime;
     eLIBs_sprintf(text, "%d:%d:%d--%d:%d:%d", *temp, *(temp + 1), *(temp + 2), *(temp + 3), *(temp + 4), *(temp + 5));
     GUI_DispStringInRect(text, &gui_rect, GUI_TA_LEFT | GUI_TA_VCENTER);
-    //7.»ú¿¨Åä¶Ô×´Ì¬
+    //7.æœºå¡é…å¯¹çŠ¶æ€
     gui_rect.x0 = x + 10;
     gui_rect.y0 = gui_rect.y1;
     gui_rect.x1 = gui_rect.x0 + 100;
@@ -913,7 +927,7 @@ static __s32 dtv_setting_ca_info_sub_paint(__gui_msg_t *msg)
     x = 0;//(width-CA_BG_WIDTH)/2;
     y = SETTING_TOP_HIGH;
     GUI_BMP_Draw(theme_hdl2buf(ca_sub_ctrl->ca_background_bmp), x, y);
-    //2 ca ÏµÍ³°æ±¾
+    //2 ca ç³»ç»Ÿç‰ˆæœ¬
     gui_rect.x0 = x + 5;
     gui_rect.y0 = y;
     gui_rect.x1 = gui_rect.x0 + 130;
@@ -928,7 +942,7 @@ static __s32 dtv_setting_ca_info_sub_paint(__gui_msg_t *msg)
     eLIBs_sprintf(text, "%d", ca_sub_ctrl->sub_info.user_info.user.m_stUser_privacy.m_version);
     __wrn("system version:%s\r\n", text);
     GUI_DispStringInRect(text, &gui_rect, GUI_TA_LEFT | GUI_TA_VCENTER);
-    //3 ca ÏµÍ³ºÅ
+    //3 ca ç³»ç»Ÿå·
     gui_rect.x0 = x + 5;
     gui_rect.y0 = gui_rect.y1;
     gui_rect.x1 = gui_rect.x0 + 130;
@@ -943,7 +957,7 @@ static __s32 dtv_setting_ca_info_sub_paint(__gui_msg_t *msg)
     eLIBs_sprintf(text, "%d", ca_sub_ctrl->sub_info.user_info.user.m_stUser_privacy.m_superCASID);
     __wrn("csystem ID:%s\r\n", text);
     GUI_DispStringInRect(text, &gui_rect, GUI_TA_LEFT | GUI_TA_VCENTER);
-    //4.ÃÜÂë¿ØÖÆ±êÖ¾
+    //4.å¯†ç æ§åˆ¶æ ‡å¿—
     gui_rect.x0 = x + 5;
     gui_rect.y0 = gui_rect.y1;
     gui_rect.x1 = gui_rect.x0 + 130;
@@ -958,7 +972,7 @@ static __s32 dtv_setting_ca_info_sub_paint(__gui_msg_t *msg)
     eLIBs_sprintf(text, "%d", ca_sub_ctrl->sub_info.user_info.user.m_stUser_privacy.m_pinAvailabilityFlag);
     __wrn("Password Control Mark:%s\t\n", text);
     GUI_DispStringInRect(text, &gui_rect, GUI_TA_LEFT | GUI_TA_VCENTER);
-    //5.Ä¬ÈÏpinÂë±êÊ¾Î»
+    //5.é»˜è®¤pinç æ ‡ç¤ºä½
     gui_rect.x0 = x + 5;
     gui_rect.y0 = gui_rect.y1;
     gui_rect.x1 = gui_rect.x0 + 130;
@@ -973,7 +987,7 @@ static __s32 dtv_setting_ca_info_sub_paint(__gui_msg_t *msg)
     eLIBs_sprintf(text, "%d", ca_sub_ctrl->sub_info.user_info.user.m_stUser_privacy.m_defaultPINFlag);
     __wrn("Default Pin Mark:%s\r\n", text);
     GUI_DispStringInRect(text, &gui_rect, GUI_TA_LEFT | GUI_TA_VCENTER);
-    //6 Ğí¿É³ÉÈË¼¶
+    //6 è®¸å¯æˆäººçº§
     gui_rect.x0 = x + 5;
     gui_rect.y0 = gui_rect.y1;
     gui_rect.x1 = gui_rect.x0 + 130;
@@ -988,7 +1002,7 @@ static __s32 dtv_setting_ca_info_sub_paint(__gui_msg_t *msg)
     eLIBs_sprintf(text, "%d", ca_sub_ctrl->sub_info.user_info.user.m_stUser_privacy.m_systemApprovalCertificate);
     __wrn("m_systemApprovalCertificate:%s\r\n", text);
     GUI_DispStringInRect(text, &gui_rect, GUI_TA_LEFT | GUI_TA_VCENTER);
-    //7.ÓÃ»§×´Ì¬
+    //7.ç”¨æˆ·çŠ¶æ€
     gui_rect.x0 = x + 5;
     gui_rect.y0 = gui_rect.y1;
     gui_rect.x1 = gui_rect.x0 + 130;
@@ -1267,7 +1281,7 @@ static __s32  dtv_setting_ca_key_proc(__gui_msg_t *msg)
 
 
 /*
-    »Øµ÷
+    å›è°ƒ
 */
 static __s32 _dtv_setting_ca_proc(__gui_msg_t *msg)
 {
@@ -1422,7 +1436,7 @@ void  dtv_setting_ca_win_delete(H_WIN ca_win)
 {
     GUI_FrmWinDelete(ca_win);
 }
-#if (MAPLE_CA_STANDAR == DTV_CA_NONE)// ÎŞca
+#if (MAPLE_CA_STANDAR == DTV_CA_NONE)// æ— ca
 H_WIN dtv_setting_ca_sub_win_create(H_WIN h_parent, setting_ca_sub_para_t *para)
 {
     return NULL;
@@ -1652,7 +1666,7 @@ static __s32 _dtv_setting_ca_sub_proc(__gui_msg_t *msg)
 }
 
 /*
-    ½¨Á¢´°¿Ú
+    å»ºç«‹çª—å£
 */
 H_WIN dtv_setting_ca_sub_win_create(H_WIN h_parent, setting_ca_sub_para_t *para)
 {
@@ -1773,17 +1787,17 @@ void dtv_ca_msg_display(__u32 ca_msg_type)
     {
         case 0xD8:
             lang_id[1] = STRING_DTV_SETTING_CA_NO_AUTHORIZATION;
-            //showCAMessage("Ã»ÓĞÊÚÈ¨£¬ÎŞ·¨ÊÕ¿´´Ë½ÚÄ¿");
+            //showCAMessage("æ²¡æœ‰æˆæƒï¼Œæ— æ³•æ”¶çœ‹æ­¤èŠ‚ç›®");
             break;
 
         case 0xD4:
             lang_id[1] = STRING_DTV_SETTING_CA_BLACK_LIST;
-            //showCAMessage("Äú±»ÁĞÈëÁËºÚÃûµ¥£¬ÎŞ·¨ÊÕ¿´´Ë½ÚÄ¿");
+            //showCAMessage("æ‚¨è¢«åˆ—å…¥äº†é»‘åå•ï¼Œæ— æ³•æ”¶çœ‹æ­¤èŠ‚ç›®");
             break;
 
         case 0xD2:
             lang_id[1] = STRING_DTV_SETTING_CA_ENCRYPTION;
-            //showCAMessage("·Ç±¾ÏµÍ³¼ÓÃÜ£¬ÎŞ·¨ÊÕ¿´");
+            //showCAMessage("éæœ¬ç³»ç»ŸåŠ å¯†ï¼Œæ— æ³•æ”¶çœ‹");
             break;
 
         case 0xD0:
@@ -1792,22 +1806,22 @@ void dtv_ca_msg_display(__u32 ca_msg_type)
 
         case 0xE7:
             lang_id[1] = STRING_DTV_SETTING_CA_ACTIVATE_WRONG;
-            //showCAMessage("¼¤»î´íÎó");
+            //showCAMessage("æ¿€æ´»é”™è¯¯");
             break;
 
         case 0xE6:
             lang_id[1] = STRING_DTV_SETTING_CA_SYSTEM_NOT_ACTIVATE;
-            //showCAMessage("ÏµÍ³ÉĞÎ´¼¤»î");
+            //showCAMessage("ç³»ç»Ÿå°šæœªæ¿€æ´»");
             break;
 
         case 0xb2:
             lang_id[1] = STRING_DTV_SETTING_CA_MATURE_RATED;
-            //showCAMessage("Êı¾İÄÚÈİÎª½ÚÄ¿·Ö¼¶");
+            //showCAMessage("æ•°æ®å†…å®¹ä¸ºèŠ‚ç›®åˆ†çº§");
             break;
 
         case 0xDA:
             lang_id[1] = STRING_DTV_SETTING_CA_AUTHOR_OVERDUE;
-            //showCAMessage("ÓÃ»§ÊÚÈ¨ÒÑ¹ıÆÚ");
+            //showCAMessage("ç”¨æˆ·æˆæƒå·²è¿‡æœŸ");
             break;
 
         case 8888:
@@ -1828,7 +1842,7 @@ void dtv_ca_msg_display(__u32 ca_msg_type)
         case 0x03:
         {
             lang_id[1] = STRING_DTV_SETTING_CA_NO_AUTHORIZATION;
-            //showCAMessage("Ã»ÓĞÊÚÈ¨£¬ÎŞ·¨ÊÕ¿´´Ë½ÚÄ¿");
+            //showCAMessage("æ²¡æœ‰æˆæƒï¼Œæ— æ³•æ”¶çœ‹æ­¤èŠ‚ç›®");
         }
         break;
 
@@ -1839,14 +1853,14 @@ void dtv_ca_msg_display(__u32 ca_msg_type)
                 case 0x00:
                 {
                     lang_id[1] = STRING_DTV_SETTING_CA_CARD_INIT_INSTALL;
-                    //showCAMessage("³õÊ¼»¯°²×°¿¨²»¿ÉÓÃ");
+                    //showCAMessage("åˆå§‹åŒ–å®‰è£…å¡ä¸å¯ç”¨");
                 }
                 break;
 
                 case 0x01:
                 {
                     lang_id[1] = STRING_DTV_SETTING_CA_CARD_INSTALLING;
-                    //showCAMessage("ÕıÔÚ°²×°£¬¿¨µÈ´ı¼¤»î");
+                    //showCAMessage("æ­£åœ¨å®‰è£…ï¼Œå¡ç­‰å¾…æ¿€æ´»");
                 }
                 break;
 
@@ -1859,28 +1873,28 @@ void dtv_ca_msg_display(__u32 ca_msg_type)
                 case 0x03:
                 {
                     lang_id[1] = STRING_DTV_SETTING_CA_CARD_OWE;
-                    //showCAMessage("Ç··ÑÍ£ÓÃ");
+                    //showCAMessage("æ¬ è´¹åœç”¨");
                 }
                 break;
 
                 case 0x04:
                 {
                     lang_id[1] = STRING_DTV_SETTING_CA_CARD_MAINTENANCE;
-                    //showCAMessage("Î¬ĞŞÍ£ÓÃ");
+                    //showCAMessage("ç»´ä¿®åœç”¨");
                 }
                 break;
 
                 case 0x05:
                 {
                     lang_id[1] = STRING_DTV_SETTING_CA_CARD_APPLY_STOP;
-                    //showCAMessage("ÉêÇë±¨Í£Í£ÓÃ");
+                    //showCAMessage("ç”³è¯·æŠ¥åœåœç”¨");
                 }
                 break;
 
                 case 0x09:
                 {
                     lang_id[1] = STRING_DTV_SETTING_CA_CARD_LOGGED_OUT;
-                    //showCAMessage("Ã»ÓĞÊÚÈ¨£¬ÎŞ·¨ÊÕ¿´´Ë½ÚÄ¿");
+                    //showCAMessage("æ²¡æœ‰æˆæƒï¼Œæ— æ³•æ”¶çœ‹æ­¤èŠ‚ç›®");
                 }
                 break;
             }
@@ -1896,12 +1910,12 @@ void dtv_ca_msg_display(__u32 ca_msg_type)
             else if (LOWORD(ca_msg_type) == 0x01)
             {
                 lang_id[1] = STRING_DTV_SETTING_CA_DAUGCARD_ACTIVATE;
-                //showCAMessage("×Ó¿¨¿ÉÁÙÊ±¼¤»î");
+                //showCAMessage("å­å¡å¯ä¸´æ—¶æ¿€æ´»");
             }
             else if (LOWORD(ca_msg_type) == 0x02)
             {
                 lang_id[1] = STRING_DTV_SETTING_CA_DAUGCARD_EXPIRED;
-                //showCAMessage("×Ó¿¨ÒÑ¹ıÆÚ£¬Çë¼¤»î");
+                //showCAMessage("å­å¡å·²è¿‡æœŸï¼Œè¯·æ¿€æ´»");
             }
         }
         break;
@@ -1909,14 +1923,14 @@ void dtv_ca_msg_display(__u32 ca_msg_type)
         case 0x0b:
         {
             lang_id[1] = STRING_DTV_SETTING_CA_CARD_MACHINE_ERR;
-            //showCAMessage("»ú¿¨Åä¶Ô³ö´í");
+            //showCAMessage("æœºå¡é…å¯¹å‡ºé”™");
         }
         break;
 
         case 0x0d:
         {
             lang_id[1] = STRING_DTV_SETTING_CA_CARD_INVALID;
-            //showCAMessage("ÎŞĞ§¿¨");
+            //showCAMessage("æ— æ•ˆå¡");
         }
         break;
 
@@ -1924,14 +1938,14 @@ void dtv_ca_msg_display(__u32 ca_msg_type)
         case 0x0e:
         {
             lang_id[1] = STRING_DTV_SETTING_CA_CARD_NO_INSERT;
-            //showCAMessage("Î´²å¿¨");
+            //showCAMessage("æœªæ’å¡");
         }
         break;
 
         case 0x31:
         {
             lang_id[1] = STRING_DTV_SETTING_CA_CARD_INIT;
-            //showCAMessage("ÕıÔÚ³õÊ¼»¯¿¨")
+            //showCAMessage("æ­£åœ¨åˆå§‹åŒ–å¡")
             delay_time = 7;//7s
         }
         break;
@@ -1939,7 +1953,7 @@ void dtv_ca_msg_display(__u32 ca_msg_type)
         case 0x32:
         {
             lang_id[1] = STRING_DTV_SETTING_CA_CARD_ERR;
-            //showCAMessage("·Ç±¾ÏµÍ³ca½ÚÄ¿£¬ÎŞ·¨¹Û¿´")
+            //showCAMessage("éæœ¬ç³»ç»ŸcaèŠ‚ç›®ï¼Œæ— æ³•è§‚çœ‹")
         }
 
         case 0x02: //let other process
@@ -2145,4 +2159,3 @@ __s32 dtv_get_ca_author_info(char *author_info)
 }
 #endif
 #endif
-

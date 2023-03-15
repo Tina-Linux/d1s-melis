@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2011, CHIPHD, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : photo_main.c
-* By        : CQQ
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011/06/15 17:26  create this file, implements the fundamental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "photo_main.h"
@@ -26,7 +40,7 @@
 /************************************************************************/
 
 /************************************************************************/
-//º”‘ÿ◊ ‘¥
+//Âä†ËΩΩËµÑÊ∫ê
 /************************************************************************/
 static int32_t photo_main_frw_create_res(PHOTO_MAIN_FRW_RES_T *res)
 {
@@ -44,7 +58,7 @@ static int32_t photo_main_frw_create_res(PHOTO_MAIN_FRW_RES_T *res)
 }
 
 /************************************************************************/
-// Õ∑≈◊ ‘¥
+//ÈáäÊîæËµÑÊ∫ê
 /************************************************************************/
 static int32_t photo_main_frw_destroy_res(PHOTO_MAIN_FRW_RES_T *res)
 {
@@ -203,25 +217,25 @@ static __s32 draw_scale_panel(H_WIN hwnd)
 
     switch (wnd_para->ctrl_para.scale_new_item)
     {
-        case PHOTO_SCALE_ITEM_ALL:      //ª≠»´≤ø
+        case PHOTO_SCALE_ITEM_ALL:      //ÁîªÂÖ®ÈÉ®
         {
-            //ƒÊ ±’Î–˝◊™
+            //ÈÄÜÊó∂ÈíàÊóãËΩ¨
             draw_scale_panel_res_bmp(ID_PHOTO_BTN_ROTATELEFT_F_BMP, &rt, GUI_TA_LEFT | GUI_TA_TOP);
-            //À≥ ±’Î–˝◊™
+            //È°∫Êó∂ÈíàÊóãËΩ¨
             draw_scale_panel_res_bmp(ID_PHOTO_BTN_ROTATERIGHT_N_BMP, &rt, GUI_TA_RIGHT | GUI_TA_TOP);
-            //∑≈¥Û
+            //ÊîæÂ§ß
             draw_scale_panel_res_bmp(ID_PHOTO_BTN_ZOOMIN_N_BMP, &rt, GUI_TA_RIGHT | GUI_TA_BOTTOM);
-            //Àı–°
+            //Áº©Â∞è
             draw_scale_panel_res_bmp(ID_PHOTO_BTN_ZOOMOUT_N_BMP, &rt, GUI_TA_LEFT | GUI_TA_BOTTOM);
-            //œÚ…œ
+            //Âêë‰∏ä
             draw_scale_panel_res_bmp(ID_PHOTO_BTN_ZOOMUP_N_BMP, &rt, GUI_TA_HCENTER | GUI_TA_TOP);
-            //œÚœ¬
+            //Âêë‰∏ã
             draw_scale_panel_res_bmp(ID_PHOTO_BTN_ZOOMDOWN_N_BMP, &rt, GUI_TA_HCENTER | GUI_TA_BOTTOM);
-            //œÚ◊Û
+            //ÂêëÂ∑¶
             draw_scale_panel_res_bmp(ID_PHOTO_BTN_ZOOMLEFT_N_BMP, &rt, GUI_TA_LEFT | GUI_TA_VCENTER);
-            //œÚ”“
+            //ÂêëÂè≥
             draw_scale_panel_res_bmp(ID_PHOTO_BTN_ZOOMRIGHT_N_BMP, &rt, GUI_TA_RIGHT | GUI_TA_VCENTER);
-            //πÿ±’
+            //ÂÖ≥Èó≠
             draw_scale_panel_res_bmp(ID_PHOTO_BTN_ZOOMCLOSE_N_BMP, &rt, GUI_TA_HCENTER | GUI_TA_VCENTER);
             wnd_para->ctrl_para.scale_new_item = PHOTO_SCALE_ITEM_ROTATELEFT;
             break;
@@ -306,7 +320,7 @@ static void draw_photo_main_frw_status(PHOTO_PLAY_STATUS_RES_T *res, PHOTO_STATE
     char     buf[32] = {0};
     __s32    str_fmt  = GUI_TA_RIGHT;
     void    *bmp_data;
-    __wrn("-----ø™ ºª≠∂´Œ˜draw_photo_main_frw_status    showpara = %d\n", showpara);
+    __wrn("-----ÂºÄÂßãÁîª‰∏úË•ødraw_photo_main_frw_status    showpara = %d\n", showpara);
 
     switch (showpara)
     {
@@ -343,16 +357,16 @@ static void draw_photo_main_frw_status(PHOTO_PLAY_STATUS_RES_T *res, PHOTO_STATE
         break;
     }
 
-    //µ◊
+    //Â∫ï
     GUI_BMP_Draw(bmp_data, ui->rt.x, ui->rt.y);
-    //µ±«∞
+    //ÂΩìÂâç
     app_sprintf(buf, PHOTO_STATUS_NUM_STR_FMT, APP_ANOLE_GetCurPicIndex());
     rt_str.x0 = ui->rt.x + PHOTO_STATUS_NUM_UI_OFFSET;
     rt_str.x1 = ui->rt.x + ui->rt.width - PHOTO_STATUS_NUM_UI_OFFSET;
     rt_str.y0 = ui->rt.y + PHOTO_STATUS_NUM_UI_OFFSET;
     rt_str.y1 = ui->rt.y + ui->rt.height / 2;
     GUI_DispStringInRect(buf, &rt_str, str_fmt);
-    //◊‹ ˝
+    //ÊÄªÊï∞
     app_sprintf(buf, PHOTO_STATUS_NUM_STR_FMT, APP_ANOLE_GetPicNum());
     rt_str.y0 = rt_str.y1;
     rt_str.y1 = ui->rt.y + ui->rt.height - PHOTO_STATUS_NUM_UI_OFFSET;
@@ -366,7 +380,7 @@ static __s32 on_photo_main_frw_paint(H_WIN hwnd)
 {
     H_LYR layer;
     layer = GUI_WinGetLyrWin(hwnd);
-    __wrn("-----------Ω´“™ª≠µ„∂´Œ˜\n");
+    __wrn("-----------Â∞ÜË¶ÅÁîªÁÇπ‰∏úË•ø\n");
     __wrn("layer=%x\n", layer);
 
     if (GUI_LyrWinGetSta(layer) == GUI_LYRWIN_STA_ON)
@@ -398,7 +412,7 @@ static __s32 on_photo_main_frw_paint(H_WIN hwnd)
         GUI_UC_SetEncodeUTF8();
         GUI_SetColor(ui->colour.txt_n);
         __wrn("ui->colour.txt_n=%x\n", ui->colour.txt_n);
-        __wrn("-----ø™ ºª≠∂´Œ˜-old_showpara = %d, wnd_para->ctrl_para.show_para = %d\n", old_showpara, wnd_para->ctrl_para.show_para);
+        __wrn("-----ÂºÄÂßãÁîª‰∏úË•ø-old_showpara = %d, wnd_para->ctrl_para.show_para = %d\n", old_showpara, wnd_para->ctrl_para.show_para);
 
         switch (wnd_para->ctrl_para.show_para)
         {
@@ -438,7 +452,7 @@ static __s32 on_photo_main_frw_paint(H_WIN hwnd)
 }
 
 /************************************************************************/
-//Õ®÷™ÕÀ≥ˆphoto
+//ÈÄöÁü•ÈÄÄÂá∫photo
 /************************************************************************/
 static __s32 to_close_app_photo(H_WIN hwnd)
 {
@@ -453,7 +467,7 @@ static __s32 to_close_app_photo(H_WIN hwnd)
 }
 
 /************************************************************************/
-//Enter∞¥º¸œ˚œ¢¥¶¿Ì
+//EnterÊåâÈîÆÊ∂àÊÅØÂ§ÑÁêÜ
 /************************************************************************/
 static __s32 on_photo_main_frw_key_enter(H_WIN hwnd, PHOTO_MAIN_FRW_T *wnd_para)
 {
@@ -461,7 +475,7 @@ static __s32 on_photo_main_frw_key_enter(H_WIN hwnd, PHOTO_MAIN_FRW_T *wnd_para)
     ASSERT(wnd_para);
     state = APP_ANOLE_GetSta();
     __wrn("state:%d\r\n", state);
-    __wrn("----Õº∆¨ ’µΩenter œ˚œ¢wnd_para->ctrl_para.show_para = %d\n", wnd_para->ctrl_para.show_para);
+    __wrn("----ÂõæÁâáÊî∂Âà∞enter Ê∂àÊÅØwnd_para->ctrl_para.show_para = %d\n", wnd_para->ctrl_para.show_para);
 
     if (state == ANOLE_MODE_PLAY)
     {
@@ -484,7 +498,7 @@ static __s32 on_photo_main_frw_key_enter(H_WIN hwnd, PHOTO_MAIN_FRW_T *wnd_para)
 
             case  PHOTO_SHOW_SCALE:
             {
-                /*À¢–¬scale œ‘ æΩπµ„*/
+                /*Âà∑Êñ∞scale ÊòæÁ§∫ÁÑ¶ÁÇπ*/
                 if (TouchValidID(wnd_para->ctrl_para.scale_new_item))
                 {
                     todo_anole_command(hwnd, ID_ANOLE_CMD_SCALE, wnd_para->ctrl_para.scale_new_item);
@@ -508,14 +522,14 @@ static __s32 on_photo_main_frw_key_enter(H_WIN hwnd, PHOTO_MAIN_FRW_T *wnd_para)
 }
 
 /************************************************************************/
-//∞¥º¸œ˚œ¢¥¶¿Ì◊¢“‚,µ±”–ssetµƒ ±∫Ú ’‚¿Ô ’≤ªµΩKEY œ˚œ¢
+//ÊåâÈîÆÊ∂àÊÅØÂ§ÑÁêÜÊ≥®ÊÑè,ÂΩìÊúâssetÁöÑÊó∂ÂÄô ËøôÈáåÊî∂‰∏çÂà∞KEY Ê∂àÊÅØ
 /************************************************************************/
 static __s32 photo_main_frw_key_proc(__gui_msg_t *msg)
 {
     PHOTO_MAIN_FRW_T *wnd_para;
     static __s32 lastkey = -1;
     PHOTO_GetWndPara(wnd_para, PHOTO_MAIN_FRW_T, msg->h_deswin);
-    __wrn("-------Õº∆¨FRW ∞¥º¸msg->dwAddData1 = %d, msg->dwAddData2 = %d\n", msg->dwAddData1, msg->dwAddData2);
+    __wrn("-------ÂõæÁâáFRW ÊåâÈîÆmsg->dwAddData1 = %d, msg->dwAddData2 = %d\n", msg->dwAddData1, msg->dwAddData2);
     __wrn("-------lastkey = %d,wnd_para->ctrl_para.show_para = %d \n", lastkey, wnd_para->ctrl_para.show_para);
 
     if (msg->dwAddData2 == KEY_UP_ACTION)
@@ -524,7 +538,7 @@ static __s32 photo_main_frw_key_proc(__gui_msg_t *msg)
         {
             case VK_PHOTO_ESC:
             {
-                /*…æ≥˝¥∞ø⁄°¢ Õ∑≈◊ ‘¥*/
+                /*Âà†Èô§Á™óÂè£„ÄÅÈáäÊîæËµÑÊ∫ê*/
                 todo_anole_command(msg->h_deswin, ID_ANOLE_CMD_SCALE, PHOTO_SCALE_ITEM_EXIT);
                 //do_photo_command(msg->h_deswin, ID_PHOTO_CMD_KILL_PHOTO_FRMWIN,HIDE_UI);
 #if 0
@@ -867,7 +881,7 @@ static __s32 photo_main_frw_key_proc(__gui_msg_t *msg)
 }
 
 /************************************************************************/
-//√¸¡Óœ˚œ¢¥¶¿Ì
+//ÂëΩ‰ª§Ê∂àÊÅØÂ§ÑÁêÜ
 /************************************************************************/
 static __s32 on_photo_main_frw_command(__gui_msg_t *msg)
 {
@@ -927,23 +941,23 @@ static int32_t hit_test_scale_panel_btn(int32_t x, int32_t y)
 
 #if 0
 /************************************************************************/
-//¥•√˛œ˚œ¢¥¶¿Ì(zoomin)
+//Ëß¶Êë∏Ê∂àÊÅØÂ§ÑÁêÜ(zoomin)
 /************************************************************************/
 static __s32 on_photo_main_frw_touch_zoomin(H_WIN hwnd, __s32 x, __s32 y, __s32 pixel_change)
 {
-    return APP_ANOLE_TouchZoomOut(pixel_change); //æ÷≤ø∑≈¥Û(gui∑¢ÀÕµƒœ˚œ¢◊÷√Ê“‚“Âœ‡∑¥¡À)
+    return APP_ANOLE_TouchZoomOut(pixel_change); //Â±ÄÈÉ®ÊîæÂ§ß(guiÂèëÈÄÅÁöÑÊ∂àÊÅØÂ≠óÈù¢ÊÑè‰πâÁõ∏Âèç‰∫Ü)
 }
 
 /************************************************************************/
-//¥•√˛œ˚œ¢¥¶¿Ì(zoomout)
+//Ëß¶Êë∏Ê∂àÊÅØÂ§ÑÁêÜ(zoomout)
 /************************************************************************/
 static __s32 on_photo_main_frw_touch_zoomout(H_WIN hwnd, __s32 x, __s32 y, __s32 pixel_change)
 {
-    return APP_ANOLE_TouchZoomIn(pixel_change); //æ÷≤øÀı–°(gui∑¢ÀÕµƒœ˚œ¢◊÷√Ê“‚“Âœ‡∑¥¡À)
+    return APP_ANOLE_TouchZoomIn(pixel_change); //Â±ÄÈÉ®Áº©Â∞è(guiÂèëÈÄÅÁöÑÊ∂àÊÅØÂ≠óÈù¢ÊÑè‰πâÁõ∏Âèç‰∫Ü)
 }
 
 /************************************************************************/
-//¥•√˛œ˚œ¢¥¶¿Ì(down)
+//Ëß¶Êë∏Ê∂àÊÅØÂ§ÑÁêÜ(down)
 /************************************************************************/
 static __s32 on_photo_main_frw_touch_down(H_WIN hwnd, __s32 x, __s32 y)
 {
@@ -957,7 +971,7 @@ static __s32 on_photo_main_frw_touch_down(H_WIN hwnd, __s32 x, __s32 y)
 }
 
 /************************************************************************/
-//¥•√˛œ˚œ¢¥¶¿Ì(move)
+//Ëß¶Êë∏Ê∂àÊÅØÂ§ÑÁêÜ(move)
 /************************************************************************/
 static __s32 on_photo_main_frw_touch_move(H_WIN hwnd, __s32 x, __s32 y)
 {
@@ -982,7 +996,7 @@ static __s32 on_photo_main_frw_touch_move(H_WIN hwnd, __s32 x, __s32 y)
 }
 
 /************************************************************************/
-//¥•√˛œ˚œ¢¥¶¿Ì(up)
+//Ëß¶Êë∏Ê∂àÊÅØÂ§ÑÁêÜ(up)
 /************************************************************************/
 static __s32 on_photo_main_frw_touch_up(H_WIN hwnd, __s32 x, __s32 y)
 {
@@ -991,7 +1005,7 @@ static __s32 on_photo_main_frw_touch_up(H_WIN hwnd, __s32 x, __s32 y)
     PHOTO_GetWndPara(wnd_para, PHOTO_MAIN_FRW_T, hwnd);
     __msg("on_photo_main_frw_touch_up(%d, %d)\n", x, y);
     __msg("Anole sta = %d, show_para = %d\n", APP_ANOLE_GetSta(), wnd_para->ctrl_para.show_para);
-    //Œ™œ¬“ª¥Œ∂Ø◊˜«Âø’ ˝æ›
+    //‰∏∫‰∏ã‰∏ÄÊ¨°Âä®‰ΩúÊ∏ÖÁ©∫Êï∞ÊçÆ
     wnd_para->ctrl_para.last_pos.x = 0;
     wnd_para->ctrl_para.last_pos.y = 0;
 
@@ -1016,7 +1030,7 @@ static __s32 on_photo_main_frw_touch_up(H_WIN hwnd, __s32 x, __s32 y)
 #endif
 
 /************************************************************************/
-//¥•√˛œ˚œ¢¥¶¿Ì
+//Ëß¶Êë∏Ê∂àÊÅØÂ§ÑÁêÜ
 /************************************************************************/
 static int32_t photo_main_frw_touch_proc(__gui_msg_t *msg)
 {
@@ -1030,7 +1044,7 @@ static int32_t photo_main_frw_touch_proc(__gui_msg_t *msg)
 
     y   = HISWORD(msg->dwAddData2);
 
-    //__wrn(" %s  %d----------photo frm win ¥•√˛µΩ(%d,%d)\n",__FILE__,__LINE__,x,y );
+    //__wrn(" %s  %d----------photo frm win Ëß¶Êë∏Âà∞(%d,%d)\n",__FILE__,__LINE__,x,y );
     speed   = LOSWORD(msg->dwReserved);
 
     direct  = HISWORD(msg->dwReserved);
@@ -1084,8 +1098,8 @@ static int32_t photo_main_frw_touch_proc(__gui_msg_t *msg)
     {
         msg->h_deswin   = GetPhotoManWnd();
 
-        //GUI_SendMessage(msg);               /*∑¢∏¯man win*/
-        /*…æ≥˝¥∞ø⁄°¢ Õ∑≈◊ ‘¥*/
+        //GUI_SendMessage(msg);               /*ÂèëÁªôman win*/
+        /*Âà†Èô§Á™óÂè£„ÄÅÈáäÊîæËµÑÊ∫ê*/
         do_photo_command(msg->h_deswin, ID_PHOTO_CMD_KILL_PHOTO_FRMWIN, HIDE_UI);
 
         wnd_para->ctrl_para.show_para   = PHOTO_SHOW_NULL;
@@ -1126,7 +1140,7 @@ static int32_t photo_main_frw_touch_proc(__gui_msg_t *msg)
             {
                 if (ctrl_para->last_action == GUI_MSG_TOUCH_DOWN || ctrl_para->last_action == GUI_MSG_TOUCH_LONGDOWN)
                 {
-                    //Œﬁ“∆∂Ø≤Ÿ◊˜
+                    //Êó†ÁßªÂä®Êìç‰Ωú
                     int32_t     d1, d2;
 
                     d1  = ABS(x - ctrl_para->last_pos.x);
@@ -1139,7 +1153,7 @@ static int32_t photo_main_frw_touch_proc(__gui_msg_t *msg)
                 }
             }
 
-            //Œ™œ¬“ª¥Œ∂Ø◊˜«Âø’ ˝æ›
+            //‰∏∫‰∏ã‰∏ÄÊ¨°Âä®‰ΩúÊ∏ÖÁ©∫Êï∞ÊçÆ
             ctrl_para->last_pos.x   = 0;
             ctrl_para->last_pos.y   = 0;
         }
@@ -1154,7 +1168,7 @@ static int32_t photo_main_frw_touch_proc(__gui_msg_t *msg)
 }
 
 /************************************************************************/
-//¥∞ø⁄œ˙ªŸ¥¶¿Ì
+//Á™óÂè£ÈîÄÊØÅÂ§ÑÁêÜ
 /************************************************************************/
 static int32_t on_photo_main_frw_destory(__gui_msg_t *msg)
 {
@@ -1173,16 +1187,16 @@ static int32_t on_photo_main_frw_destory(__gui_msg_t *msg)
 }
 
 /************************************************************************/
-//¥∞ø⁄¥¥Ω®¥¶¿Ì
+//Á™óÂè£ÂàõÂª∫Â§ÑÁêÜ
 /************************************************************************/
 static int32_t on_photo_main_frw_create(__gui_msg_t *msg)
 {
     PHOTO_MAIN_FRW_T    *wnd_frm_para;
     PHOTO_WND_T         *wnd_para;
 
-    wnd_para        = (PHOTO_WND_T *)GUI_WinGetAttr(msg->h_deswin); /*¥¥Ω®¥∞ø⁄µƒ ±∫ÚªÒ»°¥∞ø⁄ÀΩ”–≤Œ ˝£¨À˚ «“ª∏ˆPHOTO_WND_T µƒ“ª∏ˆ÷∏’Î*/
+    wnd_para        = (PHOTO_WND_T *)GUI_WinGetAttr(msg->h_deswin); /*ÂàõÂª∫Á™óÂè£ÁöÑÊó∂ÂÄôËé∑ÂèñÁ™óÂè£ÁßÅÊúâÂèÇÊï∞Ôºå‰ªñÊòØ‰∏Ä‰∏™PHOTO_WND_T ÁöÑ‰∏Ä‰∏™ÊåáÈíà*/
 
-    wnd_frm_para    = wnd_para->photo_frm_para; /*÷ÿ–¬…Ë÷√frm ¥∞ø⁄µƒ Ù–‘ ˝æ›*/
+    wnd_frm_para    = wnd_para->photo_frm_para; /*ÈáçÊñ∞ËÆæÁΩÆfrm Á™óÂè£ÁöÑÂ±ûÊÄßÊï∞ÊçÆ*/
 
     //BallocType(wnd_para, PHOTO_MAIN_FRW_T);
     ASSERT(wnd_frm_para != NULL);
@@ -1199,7 +1213,7 @@ static int32_t on_photo_main_frw_create(__gui_msg_t *msg)
     return 0;
 }
 
-//œ˚œ¢¥¶¿Ì∫Ø ˝
+//Ê∂àÊÅØÂ§ÑÁêÜÂáΩÊï∞
 static int32_t _photo_main_frw_proc(__gui_msg_t *msg)
 {
     APP_DEBUG_CBMSGEx;
@@ -1305,7 +1319,7 @@ static int32_t _photo_main_frw_proc(__gui_msg_t *msg)
                 }
                 else
                 {
-                    /*∑¢œ˚œ¢…æ≥˝¥∞ø⁄ Õ∑≈◊ ‘¥*/
+                    /*ÂèëÊ∂àÊÅØÂà†Èô§Á™óÂè£ÈáäÊîæËµÑÊ∫ê*/
                     do_photo_command(msg->h_deswin, ID_PHOTO_CMD_KILL_PHOTO_FRMWIN, msg->dwAddData2);
                 }
             }
@@ -1329,7 +1343,7 @@ static int32_t _photo_main_frw_proc(__gui_msg_t *msg)
                 }
                 else
                 {
-                    /*∑¢œ˚œ¢…æ≥˝¥∞ø⁄ Õ∑≈◊ ‘¥*/
+                    /*ÂèëÊ∂àÊÅØÂà†Èô§Á™óÂè£ÈáäÊîæËµÑÊ∫ê*/
                     do_photo_command(msg->h_deswin, ID_PHOTO_CMD_KILL_PHOTO_FRMWIN, msg->dwAddData2);
 
                     //APP_ANOLE_EnableTouch(EPDK_TRUE);
@@ -1346,7 +1360,7 @@ static int32_t _photo_main_frw_proc(__gui_msg_t *msg)
     return GUI_FrmWinDefaultProc(msg);
 }
 
-//¥∞ø⁄¥¥Ω®
+//Á™óÂè£ÂàõÂª∫
 H_WIN photo_main_frw_create(H_WIN h_parent, H_LYR layer, void *para)
 {
     __gui_framewincreate_para_t framewin_para;
@@ -1379,5 +1393,3 @@ H_WIN photo_main_frw_create(H_WIN h_parent, H_LYR layer, void *para)
 
     return (GUI_FrmWinCreate(&framewin_para));
 }
-
-

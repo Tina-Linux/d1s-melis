@@ -1,30 +1,33 @@
 /*
-************************************************************************************************************************
-*                                                        usb host
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                  Copyright(C), 2006-2010, AllWinner Technology Co., Ltd.
-*                                                  All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File Name   : dsk_usbh.c
-*
-* Author      : Gary.Wang
-*
-* Version     : 1.0
-*
-* Date        : 2010.10.18
-*
-* Description :
-*
-* Others      : None at present.
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
 *
-* History     :
-*
-*  <Author>        <time>       <version>      <description>
-*
-* Gary.Wang      2010.10.18        1.0         build the file
-*
-************************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef  __DSK_USBH_C__
 #define  __DSK_USBH_C__
@@ -38,10 +41,10 @@
 *Name        : dsk_send_insmod_usbh_cmd
 *Prototype   : __s32 dsk_send_insmod_usbh_cmd(void)
 *Arguments   : void
-*Return      : EPDK_OK     ·¢ËÍ³É¹¦
-*              EPDK_FAIL   ·¢ËÍÊ§°Ü
-*Description : Ïòusbh_monitor·¢ËÍ¼ÓÔØhostÇı¶¯ÃüÁî
-*Other       : ÃüÁî·¢ËÍÍê±Ïºó£¬delay 2s È·±£¼ÓÔØ³É¹¦
+*Return      : EPDK_OK     å‘é€æˆåŠŸ
+*              EPDK_FAIL   å‘é€å¤±è´¥
+*Description : å‘usbh_monitorå‘é€åŠ è½½hosté©±åŠ¨å‘½ä»¤
+*Other       : å‘½ä»¤å‘é€å®Œæ¯•åï¼Œdelay 2s ç¡®ä¿åŠ è½½æˆåŠŸ
 ****************************************************************************************************
 */
 __s32 dsk_send_insmod_usbh_cmd(void)
@@ -54,7 +57,7 @@ __s32 dsk_send_insmod_usbh_cmd(void)
 
     __msg("%s %d :send_insmod_usbh_cmd \n", __FUNCTION__, __LINE__);
 
-    /* ´ò¿ª hwsc Éè±¸ */
+    /* æ‰“å¼€ hwsc è®¾å¤‡ */
     usbm_dev_hadle = eLIBs_fopen("b:\\HWSC\\hwsc", "r");
 
     if (usbm_dev_hadle == NULL)
@@ -63,7 +66,7 @@ __s32 dsk_send_insmod_usbh_cmd(void)
         return EPDK_FAIL;
     }
 
-    /* ·¢ËÍ¼ÓÔØhostÃüÁî */
+    /* å‘é€åŠ è½½hostå‘½ä»¤ */
     ret = esMODS_MIoctrl(usbm_dev_hadle, DEV_IOC_USR_HWSC_APP_INSMOD_USBH, 0, NULL);
 
     if (ret == EPDK_FAIL)
@@ -74,7 +77,7 @@ __s32 dsk_send_insmod_usbh_cmd(void)
         return EPDK_FAIL;
     }
 
-    /* ¹Ø±Õ hwsc Éè±¸ */
+    /* å…³é—­ hwsc è®¾å¤‡ */
     eLIBs_fclose(usbm_dev_hadle);
 
     usbm_dev_hadle = NULL;
@@ -92,10 +95,10 @@ __s32 dsk_send_insmod_usbh_cmd(void)
 *Name        : dsk_send_rmmod_usbh_cmd
 *Prototype   : __s32 dsk_send_rmmod_usbh_cmd(void)
 *Arguments   : void
-*Return      : EPDK_OK     ·¢ËÍ³É¹¦
-*              EPDK_FAIL   ·¢ËÍÊ§°Ü
-*Description : Ïòusbh_monitor·¢ËÍĞ¶ÔØhostÇı¶¯ÃüÁî
-*Other       : ÃüÁî·¢ËÍÍê±Ïºó£¬delay 1s È·±£Ğ¶ÔØ³É¹¦
+*Return      : EPDK_OK     å‘é€æˆåŠŸ
+*              EPDK_FAIL   å‘é€å¤±è´¥
+*Description : å‘usbh_monitorå‘é€å¸è½½hosté©±åŠ¨å‘½ä»¤
+*Other       : å‘½ä»¤å‘é€å®Œæ¯•åï¼Œdelay 1s ç¡®ä¿å¸è½½æˆåŠŸ
 ****************************************************************************************************
 */
 __s32 dsk_send_rmmod_usbh_cmd(void)
@@ -108,7 +111,7 @@ __s32 dsk_send_rmmod_usbh_cmd(void)
 
     __msg("%s %d :send_rmmod_usbh_cmd \n", __FUNCTION__, __LINE__);
 
-    /* ´ò¿ª hwsc Éè±¸ */
+    /* æ‰“å¼€ hwsc è®¾å¤‡ */
     usbm_dev_hadle = eLIBs_fopen("b:\\HWSC\\hwsc", "r");
 
     if (usbm_dev_hadle == NULL)
@@ -117,7 +120,7 @@ __s32 dsk_send_rmmod_usbh_cmd(void)
         return EPDK_FAIL;
     }
 
-    /* ·¢ËÍ¼ÓÔØhostÃüÁî */
+    /* å‘é€åŠ è½½hostå‘½ä»¤ */
     ret = esMODS_MIoctrl(usbm_dev_hadle, DEV_IOC_USR_HWSC_APP_RMMOD_USBH, 0, NULL);
 
     if (ret == EPDK_FAIL)
@@ -128,12 +131,12 @@ __s32 dsk_send_rmmod_usbh_cmd(void)
         return EPDK_FAIL;
     }
 
-    /* ¹Ø±Õ hwsc Éè±¸ */
+    /* å…³é—­ hwsc è®¾å¤‡ */
     eLIBs_fclose(usbm_dev_hadle);
 
     usbm_dev_hadle = NULL;
 
-    /* delay 4s È·±£usb_monitorÓĞ×ã¹»µÄÊ±¼äĞ¶ÔØ */
+    /* delay 4s ç¡®ä¿usb_monitoræœ‰è¶³å¤Ÿçš„æ—¶é—´å¸è½½ */
     esKRNL_TimeDly(400);
     return EPDK_OK;
 #endif
@@ -160,7 +163,7 @@ __bool dsk_usbh_is_working(void)
     ES_FILE *usbm_dev_hadle = NULL;
     __s32   ret = 0;
 
-    /* ´ò¿ª hwsc Éè±¸ */
+    /* æ‰“å¼€ hwsc è®¾å¤‡ */
     usbm_dev_hadle = eLIBs_fopen("b:\\HWSC\\hwsc", "r");
 
     if (usbm_dev_hadle == NULL)
@@ -169,10 +172,10 @@ __bool dsk_usbh_is_working(void)
         return EPDK_FALSE;
     }
 
-    /* »ñÈ¡usb hostµÄ¹¤×÷×´Ì¬ */
+    /* è·å–usb hostçš„å·¥ä½œçŠ¶æ€ */
     ret = esMODS_MIoctrl(usbm_dev_hadle, DEV_IOC_USR_HWSC_GET_USBH_WORK_STATUS, 0, NULL);
 
-    /* ¹Ø±Õ hwsc Éè±¸ */
+    /* å…³é—­ hwsc è®¾å¤‡ */
     eLIBs_fclose(usbm_dev_hadle);
 
     usbm_dev_hadle = NULL;

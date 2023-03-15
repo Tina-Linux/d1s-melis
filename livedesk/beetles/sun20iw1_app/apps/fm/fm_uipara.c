@@ -1,21 +1,34 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2011, CHIPHD, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : fm_uipara.c
-* By        : CQQ
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011/07/25 10:31  create this file, implements the fundamental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "fm_uipara.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -33,23 +46,23 @@ static FM_UI_PARA_T fm_ui_800x480 =  //..480x272
             0, 0, 800, 480,  //..480 272
         },
         {
-            // scale_bg ±Í≥ﬂ±≥æ∞Œª÷√
+            // scale_bg Ê†áÂ∞∫ËÉåÊôØ‰ΩçÁΩÆ
             //0, 60, 480, 45
             //29, 172, 420, 12
-            90, 333, 601, 12  //..190, 246, 420, 12   //..30, 142, 420, 12 «∞¡Ω∏ˆ±Í≥ﬂŒª÷√
+            90, 333, 601, 12  //..190, 246, 420, 12   //..30, 142, 420, 12 Ââç‰∏§‰∏™Ê†áÂ∞∫‰ΩçÁΩÆ
         },
         {
-            //scale, øÃ∂»x÷µ∑∂Œß
+            //scale, ÂàªÂ∫¶xÂÄºËåÉÂõ¥
             //29, 449
             90, 691 //..189,609  //..29,449
         },
         {
-            //btn_thumb; // ∞¥≈•¥Û–°
+            //btn_thumb; // ÊåâÈíÆÂ§ßÂ∞è
             //28, 17
             15, 11
         },
-        53, //cursor_y, ”Œ±Íy÷µ(œ‡∂‘”⁄øÃ∂»Õº∆¨)..0
-        24, //Œƒ±æy÷µ(œ‡∂‘”⁄øÃ∂»Õº∆¨)..24
+        53, //cursor_y, Ê∏∏Ê†áyÂÄº(Áõ∏ÂØπ‰∫éÂàªÂ∫¶ÂõæÁâá)..0
+        24, //ÊñáÊú¨yÂÄº(Áõ∏ÂØπ‰∫éÂàªÂ∫¶ÂõæÁâá)..24
         APP_COLOR_WHITE,
     },
 };
@@ -62,5 +75,3 @@ FM_UI_PARA_T *get_fm_uipara(void)
 
 //////////////////////////////////////////////////////////////////////////
 //end of file
-
-

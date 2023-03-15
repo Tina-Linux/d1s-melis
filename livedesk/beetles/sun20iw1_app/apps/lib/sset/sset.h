@@ -1,28 +1,45 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              calendar app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2006-2009, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : sset.h
-* By      :lyn
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __SSET_H__
 #define __SSET_H__
 
 
 /********** sset   widget  id    ***********/
-#define     SSET_SUBMENU_ID     3000                /* ¿Ø¼şlistmenu µÄID ºÅ             */
-#define     SSET_MENU_ID        ID_TOOL_BAR         /* ¿Ø¼ştoolbar  µÄID ºÅ             */
+#define     SSET_SUBMENU_ID     3000                /* æ§ä»¶listmenu çš„ID å·             */
+#define     SSET_MENU_ID        ID_TOOL_BAR         /* æ§ä»¶toolbar  çš„ID å·             */
 
 #define     SSET_NAME_MAX           128
 #define     SSET_TEXT_MAX           128
-#define     MENU_CNT                5                   /* ²Ëµ¥¼¶Êı         */
+#define     MENU_CNT                5                   /* èœå•çº§æ•°         */
 
 typedef enum tag_SSET_MENU_TYPE
 {
@@ -46,8 +63,8 @@ typedef enum tag_SSET_IN_MSG
 /**********app send msg to setting***********/
 typedef enum tag_APP_TO_SSET_MSG
 {
-    SSET_APP2SSET_PREV = SSET_IN_INFO_NUM,                  /*·µ»ØÉÏÒ»¼¶²Ëµ¥*/
-    SSET_APP2SSET_TO_TBAR,          /*·µ»Øµ½µÚÒ»¼¶²Ëµ¥*/
+    SSET_APP2SSET_PREV = SSET_IN_INFO_NUM,                  /*è¿”å›ä¸Šä¸€çº§èœå•*/
+    SSET_APP2SSET_TO_TBAR,          /*è¿”å›åˆ°ç¬¬ä¸€çº§èœå•*/
     //..SSET_STRING_UPDATE, // 30234384
     //..SSET_ITEM_UPDATE,   // 30234384
 
@@ -78,7 +95,7 @@ typedef struct tag_SSET_ITEM_NCMSG
 
 typedef struct tag_SSET_ITEM_ATTR
 {
-    __u32                       icon[8];                /* ITEMÍ¼±ê×ÊÔ´IDºÅ     */
+    __u32                       icon[8];                /* ITEMå›¾æ ‡èµ„æºIDå·     */
     /*********************************************************************************
         type = TYPE_TBAR
         icon[0] = active focus bmp
@@ -118,14 +135,14 @@ typedef struct tag_SSET_ITEM_ATTR
         icon[2] = item opt bmp
     ***********************************************
     *********************************************************************************/
-    __u32                       string[2];              /* ITEMÎÄ±¾×ÊÔ´IDºÅ     */
+    __u32                       string[2];              /* ITEMæ–‡æœ¬èµ„æºIDå·     */
 
-    __u32                       cur_value;              /* µ±Ç°Öµ               */
-    __u32                       max_value;              /* ×î´óÖµ               */
-    __u32                       min_value;              /* ×îĞ¡Öµ               */
+    __u32                       cur_value;              /* å½“å‰å€¼               */
+    __u32                       max_value;              /* æœ€å¤§å€¼               */
+    __u32                       min_value;              /* æœ€å°å€¼               */
 
-    __u32                       opt;                    /* OPTÑ¡ÖÖ±êÊ¾          */
-    char                        text[SSET_TEXT_MAX];    /* ITEMÎÄ±¾             */
+    __u32                       opt;                    /* OPTé€‰ç§æ ‡ç¤º          */
+    char                        text[SSET_TEXT_MAX];    /* ITEMæ–‡æœ¬             */
 
 } __sset_item_attr_t;
 
@@ -133,14 +150,14 @@ typedef struct tag_SSET_ITEM_ATTR
 /**********  sset  date  struct  ***********/
 typedef struct tag_ITEM
 {
-    char                        name[SSET_NAME_MAX];    /* ITEMµÄÌõÄ¿Ãû³Æ       */
-    __u32                       item_sta;               /* ITEMµÄÌõÄ¿ÊÇ·ñÓĞĞ§   */
+    char                        name[SSET_NAME_MAX];    /* ITEMçš„æ¡ç›®åç§°       */
+    __u32                       item_sta;               /* ITEMçš„æ¡ç›®æ˜¯å¦æœ‰æ•ˆ   */
 
-    __sset_item_type_t          item_type;              /* ITEMµÄ·ç¸ñ           */
+    __sset_item_type_t          item_type;              /* ITEMçš„é£æ ¼           */
 
-    __sset_item_attr_t          item_attr;              /* ITEMµÄÌõÄ¿Ë½ÓĞÊı¾İ   */
+    __sset_item_attr_t          item_attr;              /* ITEMçš„æ¡ç›®ç§æœ‰æ•°æ®   */
 
-    __sset_item_ncmsg_t         item_msg;               /* ITEMµÄÏûÏ¢Âë         */
+    __sset_item_ncmsg_t         item_msg;               /* ITEMçš„æ¶ˆæ¯ç          */
 
     struct tag_ITEM             *father;
     struct tag_ITEM             *childlst;
@@ -156,13 +173,13 @@ typedef enum SSET_FOCUSE_STA//..
 } SSET_FOCUSE_STA;
 
 
-/*ÅĞ¶Ïsset tbar µÄÍ¼²ãÊÇ·ñÊÇÒş²Ø»¹ÊÇÏÖÊµ×´Ì¬×´Ì¬*/
+/*åˆ¤æ–­sset tbar çš„å›¾å±‚æ˜¯å¦æ˜¯éšè—è¿˜æ˜¯ç°å®çŠ¶æ€çŠ¶æ€*/
 __bool SSET_tbar_is_show(void);
 
-/*ÅĞ¶Ïµ±Ç°SSET ÊÇ·ñÊÇTBAR  ×´Ì¬£¬1ÎªÊÇ£¬0Îª²»ÊÇ*/
+/*åˆ¤æ–­å½“å‰SSET æ˜¯å¦æ˜¯TBAR  çŠ¶æ€ï¼Œ1ä¸ºæ˜¯ï¼Œ0ä¸ºä¸æ˜¯*/
 __bool SSET_court_is_tbar(void);
 
-/*°Ñtbar show ³öÀ´*/
+/*æŠŠtbar show å‡ºæ¥*/
 void SSET_show_tbar(void);
 
 void SSET_hide_tbar(void);
@@ -174,4 +191,3 @@ void SSET_item_update(__u32 icon_id, __u32 index, __u32 fcs_sta);
 
 
 #endif  /* __SSET_H__ */
-

@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2011, CHIPHD, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : app_anole.h
-* By        : CQQ
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011/07/04 16:57  create this file, implements the fundamental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __APP_ANOLE_H__DFB9326F_D8C1_4EC9_9369_496528D2D1FF__
 #define __APP_ANOLE_H__DFB9326F_D8C1_4EC9_9369_496528D2D1FF__
@@ -31,69 +45,69 @@ typedef enum
     PHOTO_SPEEDFLAG_EXIT,
 } photo_speedflag_t;
 
-//Í¼Æ¬ÎÄ¼þÐÅÏ¢
+//å›¾ç‰‡æ–‡ä»¶ä¿¡æ¯
 typedef struct
 {
-    char               path_name[MAX_FILE_NAME_LEN]; //´æ·ÅÎÄ¼þÂ·¾¶¼°ÎÄ¼þÃûµÄ»º³å
-    char              *pic_name;                     //Ö¸ÏòÎÄ¼þÃû(²»º¬Â·¾¶)
-    ES_TIMESTAMP       time;                         //ÎÄ¼þÉú³ÉÊ±¼ä
-    __anole_pic_info_t pic;                          //Í¼Æ¬ÐÅÏ¢(ÓÐÎÄ¼þÂ·¾¶ÐÅÏ¢)
+    char               path_name[MAX_FILE_NAME_LEN]; //å­˜æ”¾æ–‡ä»¶è·¯å¾„åŠæ–‡ä»¶åçš„ç¼“å†²
+    char              *pic_name;                     //æŒ‡å‘æ–‡ä»¶å(ä¸å«è·¯å¾„)
+    ES_TIMESTAMP       time;                         //æ–‡ä»¶ç”Ÿæˆæ—¶é—´
+    __anole_pic_info_t pic;                          //å›¾ç‰‡ä¿¡æ¯(æœ‰æ–‡ä»¶è·¯å¾„ä¿¡æ¯)
 } APP_ANOLE_FILE_INFO_T;
 
-//Ó¦ÓÃ³õÊ¼»¯anole²ÎÊý
+//åº”ç”¨åˆå§‹åŒ–anoleå‚æ•°
 typedef struct
 {
-    void               *pErrFileData;               //³ö´í»òÖ§³ÖÏÔÊ¾µÄÍ¼Æ¬ÎÄ¼þÊý¾Ý
-    void               *pDecodingData;              //±íÊ¾ÕýÔÚ½âÂëÊ±µÄÍ¼Æ¬ÎÄ¼þÊý¾Ý
-    //  H_WIN               hNotifyWnd;                 //»Øµ÷º¯ÊýÓÃ×÷Í¨ÖªÓ¦ÓÃµÄ´°¿Ú¾ä±ú
-    __pCBK_t            cb_err;                     //anole³ö´íÊ±µÄ»Øµ÷º¯Êý
-    __pCBK_t            cb_pic_change;              //anoleÏÔÊ¾Í¼Æ¬¸Ä±äÊ±µÄ»Øµ÷º¯Êý
-    void               *pUserPara;                  //ÓÃ»§²ÎÊý£¬ÓÃÓÚ»Øµ÷º¯Êý£¬
+    void               *pErrFileData;               //å‡ºé”™æˆ–æ”¯æŒæ˜¾ç¤ºçš„å›¾ç‰‡æ–‡ä»¶æ•°æ®
+    void               *pDecodingData;              //è¡¨ç¤ºæ­£åœ¨è§£ç æ—¶çš„å›¾ç‰‡æ–‡ä»¶æ•°æ®
+    //  H_WIN               hNotifyWnd;                 //å›žè°ƒå‡½æ•°ç”¨ä½œé€šçŸ¥åº”ç”¨çš„çª—å£å¥æŸ„
+    __pCBK_t            cb_err;                     //anoleå‡ºé”™æ—¶çš„å›žè°ƒå‡½æ•°
+    __pCBK_t            cb_pic_change;              //anoleæ˜¾ç¤ºå›¾ç‰‡æ”¹å˜æ—¶çš„å›žè°ƒå‡½æ•°
+    void               *pUserPara;                  //ç”¨æˆ·å‚æ•°ï¼Œç”¨äºŽå›žè°ƒå‡½æ•°ï¼Œ
 } APP_ANOLE_INIT_T;
 //////////////////////////////////////////////////////////////////////////
 #define TouchMinDist()                 16
-//³õÊ¼»¯
+//åˆå§‹åŒ–
 extern __s32 APP_ANOLE_Init(APP_ANOLE_INIT_T *pInitData);
-//ÍË³ö
+//é€€å‡º
 extern void APP_ANOLE_Exit(void);
-//È¡ÎÄ¼þÐÅÏ¢
+//å–æ–‡ä»¶ä¿¡æ¯
 extern __s32 APP_ANOLE_GetCurPicInfo(APP_ANOLE_FILE_INFO_T *file_info);
-//²¥·Åµ±Ç°Í¼Æ¬
+//æ’­æ”¾å½“å‰å›¾ç‰‡
 extern __s32 APP_ANOLE_PlayCurFile(void);
-//ÉèÖÃÌØÐ§
+//è®¾ç½®ç‰¹æ•ˆ
 extern __s32 APP_ANOLE_SetSwitchMode(__u32 Id);
-//È¡ÌØÐ§ID
+//å–ç‰¹æ•ˆID
 extern __s32 APP_ANOLE_GetSwitchMode(void);
-//ÉèÖÃ²¥·ÅËÙ¶È(id_flag -- ¿ì,ÖÐ,Âý,×Ô¶¨Òå±ê¼Ç; para -- ×Ô¶¨ÒåÊ±ÓÐÐ§£¬ÎªÃëÊý)
+//è®¾ç½®æ’­æ”¾é€Ÿåº¦(id_flag -- å¿«,ä¸­,æ…¢,è‡ªå®šä¹‰æ ‡è®°; para -- è‡ªå®šä¹‰æ—¶æœ‰æ•ˆï¼Œä¸ºç§’æ•°)
 extern __s32 APP_ANOLE_SetPlayInterval(__s32 id_flag, __s32 para);
-//Á½µã´¥Ãþ·Å´ó
+//ä¸¤ç‚¹è§¦æ‘¸æ”¾å¤§
 extern __s32 APP_ANOLE_TouchZoomIn(__u32 pixel_change);
-//Á½µã´¥ÃþËõÐ¡
+//ä¸¤ç‚¹è§¦æ‘¸ç¼©å°
 extern __s32 APP_ANOLE_TouchZoomOut(__u32 pixel_change);
-//´¥ÃþÒÆ¶¯
+//è§¦æ‘¸ç§»åŠ¨
 extern __s32 APP_ANOLE_TouchMove(__s32 delta_x, __s32 delta_y);
 /************************************************************************/
-//´¥Ãþ(ÊÖ¶¯)ÇÐ»»Í¼Æ¬
+//è§¦æ‘¸(æ‰‹åŠ¨)åˆ‡æ¢å›¾ç‰‡
 // delta_x = x_up - x_down; > TouchMinDist() play prev, < -TouchMinDist() play next, else see delta_y;
 // delta_y = y_up - y_down; > TouchMinDist() play next, < TouchMinDist() play prev, else do nothing;
 /************************************************************************/
 //extern __s32 APP_ANOLE_TouchSwitchPic(__s32 delta_x, __s32 delta_y);
 
 /************************************************************************/
-// anole touch ´¦Àí
+// anole touch å¤„ç†
 // touch_action --- __gui_msg_touchid_t
-// return value --- 0, Ã»´¦Àí; ·Ç0£¬ÒÑ¶ÔÏûÏ¢½øÐÐÁË´¦Àí£¬
+// return value --- 0, æ²¡å¤„ç†; éž0ï¼Œå·²å¯¹æ¶ˆæ¯è¿›è¡Œäº†å¤„ç†ï¼Œ
 /************************************************************************/
 extern __s32 APP_ANOLE_Touch(__s16 x, __s16 y, __s32 touch_action, __s32 pixel_change);
 
-//ÏÔÊ¾ÄÚ´æÖÐbmpÍ¼Æ¬ÎÄ¼þ
+//æ˜¾ç¤ºå†…å­˜ä¸­bmpå›¾ç‰‡æ–‡ä»¶
 __s32 APP_ANOLE_ShowBufPic(void *file_data);
 
-//ÏÔÊ¾³ö´íÍ¼Æ¬
+//æ˜¾ç¤ºå‡ºé”™å›¾ç‰‡
 //#define APP_ANOLE_ShowErrorPic(_buffer, _w, _h)   anole_show_pic_from_buffer(_buffer, _w, _h)
 __s32 APP_ANOLE_ShowErrorPic(void);
 
-//È¡µ±Ç°²¥·ÅÍ¼Æ¬ÐòºÅ
+//å–å½“å‰æ’­æ”¾å›¾ç‰‡åºå·
 #define APP_ANOLE_GetCurPicIndex()                anole_npl_get_cur()
 #define APP_ANOLE_GetPicNum()                     anole_npl_get_total_count()
 #define APP_ANOLE_GetSta()                        anole_get_sta()
@@ -126,4 +140,3 @@ extern __s32 g_ANOLE_EnableTouch;
 
 #endif //__APP_ANOLE_H__DFB9326F_D8C1_4EC9_9369_496528D2D1FF__
 //End of this file
-

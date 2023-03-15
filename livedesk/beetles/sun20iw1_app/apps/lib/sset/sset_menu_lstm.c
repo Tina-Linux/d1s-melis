@@ -1,22 +1,39 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              calendar app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2006-2009, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : sset_menu_lstm.c
-* By      :lyn
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "sset_i.h"
 
 //////////////////////////////////////////////////////////////////////////
-#if 0 //(ÎªÁË´òÓ¡¼òµ¥, ¿É°ÑÏÂÃæÖØ¶¨ÒåµÄGUIºêÁÙÊ±¿½µ½ÓÐÐèÒªµÄCÎÄ¼þÖÐÊ¹ÓÃ)
+#if 0 //(ä¸ºäº†æ‰“å°ç®€å•, å¯æŠŠä¸‹é¢é‡å®šä¹‰çš„GUIå®ä¸´æ—¶æ‹·åˆ°æœ‰éœ€è¦çš„Cæ–‡ä»¶ä¸­ä½¿ç”¨)
 //re define GUI_BMP_Draw
 #ifdef GUI_BMP_Draw
 #define MY_GUI_BMP_DRAW                      (ORANGEMOD_FUNC_ENTRY->ptr_GUI_BMP_Draw            )
@@ -54,13 +71,13 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-#define     ID_LISTITEM     1                   /* LISTITEM ÌõÄ¿ÉÏ¿Ø¼þµÄID ºÅ       */
+#define     ID_LISTITEM     1                   /* LISTITEM æ¡ç›®ä¸ŠæŽ§ä»¶çš„ID å·       */
 
-#define     COLOR_FOCUS     GUI_YELLOW//(APP_COLOR_YELLOW+0x0f)//0xB000A3FF         /* ½¹µãÑÕÉ«                         */
-#define     COLOR_INVALID   GUI_GREEN//(APP_COLOR_GREEN+0x0f)//0xB0A7A7A7           /* ÎÞÐ§ÑÕÉ«                         */
-#define     COLOR_UFOCUS    GUI_GRAY//(APP_COLOR_GREEN+0x0f)//0xB0575757            /* ·Ç½¹µãÑÕÉ«                       */
-#define     COLOR_RIM1      0x0//0xff575757         /* ±ß¿òÑÕÉ«                         */
-#define     COLOR_RIM2      0x0//0xffBDBDBD         /* ±ß¿òÑÕÉ«                         */
+#define     COLOR_FOCUS     GUI_YELLOW//(APP_COLOR_YELLOW+0x0f)//0xB000A3FF         /* ç„¦ç‚¹é¢œè‰²                         */
+#define     COLOR_INVALID   GUI_GREEN//(APP_COLOR_GREEN+0x0f)//0xB0A7A7A7           /* æ— æ•ˆé¢œè‰²                         */
+#define     COLOR_UFOCUS    GUI_GRAY//(APP_COLOR_GREEN+0x0f)//0xB0575757            /* éžç„¦ç‚¹é¢œè‰²                       */
+#define     COLOR_RIM1      0x0//0xff575757         /* è¾¹æ¡†é¢œè‰²                         */
+#define     COLOR_RIM2      0x0//0xffBDBDBD         /* è¾¹æ¡†é¢œè‰²                         */
 
 /********** sset  menu_lstm  draw  ***********/
 typedef struct taglstmitempara
@@ -117,7 +134,7 @@ typedef struct  taglistmenudata
 ************************************************************************************************************************
 *                                       _draw_back
 *
-*Description: listmenu µÄ»æÖÆº¯Êý
+*Description: listmenu çš„ç»˜åˆ¶å‡½æ•°
 *
 *Arguments  :
 *
@@ -157,7 +174,7 @@ static __s32 _draw_back(__u32 width, __u32 height)
 ************************************************************************************************************************
 *                                       _draw_lstm
 *
-*Description: listmenu µÄ»æÖÆº¯Êý
+*Description: listmenu çš„ç»˜åˆ¶å‡½æ•°
 *
 *Arguments  :
 *
@@ -195,7 +212,7 @@ static __s32 _draw_lstm(__draw_para_t *item_para)
 
     switch (item_para->mode)
     {
-        case GUI_PAIN_MODE_FOCUS:           /*ÌõÄ¿ÓÉÒÆ¶¯±äÍ£Ö¹£¬½Óµ½µÄ»æÖÆÏûÏ¢  */
+        case GUI_PAIN_MODE_FOCUS:           /*æ¡ç›®ç”±ç§»åŠ¨å˜åœæ­¢ï¼ŒæŽ¥åˆ°çš„ç»˜åˆ¶æ¶ˆæ¯  */
         {
             __gui_msg_t         setmsg;
             setmsg.id           =  SSET_IN_UPDATE_INFO;
@@ -208,7 +225,7 @@ static __s32 _draw_lstm(__draw_para_t *item_para)
         }
         break;
 
-        case GUI_PAIN_MODE_FASTFOCUS:       /*ÌõÄ¿ÒÆ¶¯Ê±·¢ËÍ£¬Î´Í£Ö¹½Óµ½µÄ»æÖÆÏûÏ¢*/
+        case GUI_PAIN_MODE_FASTFOCUS:       /*æ¡ç›®ç§»åŠ¨æ—¶å‘é€ï¼Œæœªåœæ­¢æŽ¥åˆ°çš„ç»˜åˆ¶æ¶ˆæ¯*/
         {
             GUI_SetBkColor(COLOR_FOCUS);
             GUI_ClearRect(item_rect.x, item_rect.y,
@@ -272,9 +289,9 @@ static __s32 _draw_lstm(__draw_para_t *item_para)
         }
         break;
 
-        case GUI_PAIN_MODE_FASTDRAW:        /*ÌõÄ¿´´½¨Ê±·¢ËÍ£¬×îÏÈ½Óµ½µÄ»æÖÆÏûÏ¢*/
-        case GUI_PAIN_MODE_UNFOCUS:         /*ÌõÄ¿ÓÉÒÆ¶¯±äÍ£Ö¹£¬½Óµ½µÄ»æÖÆÏûÏ¢  */
-        case GUI_PAIN_MODE_FASTUNFOCUS:     /*ÌõÄ¿ÒÆ¶¯Ê±·¢ËÍ£¬Î´Í£Ö¹½Óµ½µÄ»æÖÆÏûÏ¢*/
+        case GUI_PAIN_MODE_FASTDRAW:        /*æ¡ç›®åˆ›å»ºæ—¶å‘é€ï¼Œæœ€å…ˆæŽ¥åˆ°çš„ç»˜åˆ¶æ¶ˆæ¯*/
+        case GUI_PAIN_MODE_UNFOCUS:         /*æ¡ç›®ç”±ç§»åŠ¨å˜åœæ­¢ï¼ŒæŽ¥åˆ°çš„ç»˜åˆ¶æ¶ˆæ¯  */
+        case GUI_PAIN_MODE_FASTUNFOCUS:     /*æ¡ç›®ç§»åŠ¨æ—¶å‘é€ï¼Œæœªåœæ­¢æŽ¥åˆ°çš„ç»˜åˆ¶æ¶ˆæ¯*/
         {
             if (item_para->item == GUI_LstmGetCurItem(lstmwin))
             {
@@ -385,7 +402,7 @@ static __s32 _draw_lstm(__draw_para_t *item_para)
 ************************************************************************************************************************
 *                                       _spin_create
 *
-*Description: ÌõÄ¿ÖÐ¿Ø¼þSPINBOXµÄ´´½¨
+*Description: æ¡ç›®ä¸­æŽ§ä»¶SPINBOXçš„åˆ›å»º
 *
 *Arguments  :
 *
@@ -484,7 +501,7 @@ static void _spin_create(__lstm_item_ctrl_t *pctrl, __sset_item_t  *item_para, H
 ************************************************************************************************************************
 *                                       _spin_destroy
 *
-*Description: ÌõÄ¿ÖÐ¿Ø¼þSPINBOXµÄ×ÊÔ´ÊÍ·Å
+*Description: æ¡ç›®ä¸­æŽ§ä»¶SPINBOXçš„èµ„æºé‡Šæ”¾
 *
 *Arguments  :
 *
@@ -541,7 +558,7 @@ static void _spin_destroy(__lstm_item_ctrl_t *pctrl, H_WIN h_win)
 ************************************************************************************************************************
 *                                       _slider_create
 *
-*Description: ÌõÄ¿ÖÐ¿Ø¼þSLIDERµÄ´´½¨
+*Description: æ¡ç›®ä¸­æŽ§ä»¶SLIDERçš„åˆ›å»º
 *
 *Arguments  :
 *
@@ -614,7 +631,7 @@ static void _slider_create(__lstm_item_ctrl_t *pctrl, __sset_item_t *item_para, 
 ************************************************************************************************************************
 *                                       _slider_destroy
 *
-*Description: ÌõÄ¿ÖÐ¿Ø¼þSLIDERµÄ×ÊÔ´ÊÍ·Å
+*Description: æ¡ç›®ä¸­æŽ§ä»¶SLIDERçš„èµ„æºé‡Šæ”¾
 *
 *Arguments  :
 *
@@ -664,7 +681,7 @@ static void _slider_destroy(__lstm_item_ctrl_t *pctrl, H_WIN h_win)
 ************************************************************************************************************************
 *                                       _bttn_create
 *
-*Description: ÌõÄ¿ÖÐ¿Ø¼þBUTTONµÄ´´½¨
+*Description: æ¡ç›®ä¸­æŽ§ä»¶BUTTONçš„åˆ›å»º
 *
 *Arguments  :
 *
@@ -743,7 +760,7 @@ static void _bttn_create(__lstm_item_ctrl_t *pctrl, __sset_item_t  *item_para, H
 ************************************************************************************************************************
 *                                       _bttn_destroy
 *
-*Description: ÌõÄ¿ÖÐ¿Ø¼þBUTTONµÄ×ÊÔ´ÊÍ·Å
+*Description: æ¡ç›®ä¸­æŽ§ä»¶BUTTONçš„èµ„æºé‡Šæ”¾
 *
 *Arguments  :
 *
@@ -1233,7 +1250,7 @@ static __s32  _bttn_command(H_WIN h_win, __u32 wid, __sset_item_t *para)
 ************************************************************************************************************************
 *                                       menu_lstm_proc
 *
-*Description: menu_lstm win»Øµ÷
+*Description: menu_lstm winå›žè°ƒ
 *
 *Arguments  :
 *
@@ -1361,7 +1378,7 @@ static void  _menu_lstm_command(__gui_msg_t *msg)
 ************************************************************************************************************************
 *                                       menu_lstm_proc
 *
-*Description: menu_lstm win»Øµ÷
+*Description: menu_lstm winå›žè°ƒ
 *
 *Arguments  :
 *
@@ -1465,8 +1482,8 @@ static int menu_lstm_proc(__gui_msg_t *msg)
 *
 *Description:
 *
-*Arguments  : hparent ¸¸´°¿Ú
-*             pitem   ±¾¼¶²Ëµ¥Ëù¶ÔÓ¦µÄ²ÎÊý½Úµã
+*Arguments  : hparent çˆ¶çª—å£
+*             pitem   æœ¬çº§èœå•æ‰€å¯¹åº”çš„å‚æ•°èŠ‚ç‚¹
 *
 *Return     :
 *
@@ -1509,9 +1526,9 @@ H_WIN SSET_MenuLstm_Create(H_WIN hparent, H_WIN hlayer, __sset_item_t *pitem)
 ************************************************************************************************************************
 *                                       SSET_MenuLstm_Destroy
 *
-*Description: Ïú»ÙÒ»¼¶×Ó²Ëµ¥menu_lstm
+*Description: é”€æ¯ä¸€çº§å­èœå•menu_lstm
 *
-*Arguments  : cnt ²Ëµ¥¼¶Êý
+*Arguments  : cnt èœå•çº§æ•°
 *
 *Return     :
 *
@@ -1549,7 +1566,7 @@ __s32 SSET_MenuLstm_SetFocus(H_WIN h_win, __u32 fcs_id)
 ************************************************************************************************************************
 *                                       SSET_SubMenuUpdateItem
 *
-*Description: ¸üÐÂ×Ó²Ëµ¥submenuµÄÒ»¸öÌõÄ¿
+*Description: æ›´æ–°å­èœå•submenuçš„ä¸€ä¸ªæ¡ç›®
 *
 *Arguments  :
 *
@@ -1564,4 +1581,3 @@ __s32 SSET_MenuLstm_UpdateItem(H_WIN h_win, __u32 item_no)
     GUI_LstmUpdateItem(plist_data->h_lstm, item_no);
     return EPDK_OK;
 }
-

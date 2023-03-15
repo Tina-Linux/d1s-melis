@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <log.h>
 #include "beetles_app.h"
 
@@ -74,8 +105,8 @@ static __s32  explorer_draw_string_dialog(explr_dialog_para_t *dlg_para)
     GUI_UC_SetEncodeUTF8();
     GUI_SetDrawMode(GUI_DRAWMODE_NORMAL);
     ui_param = explorer_get_viewer_ui_param();
-    //∏˘æ›dialog±≥æ∞Õº≥ﬂ¥Á«Ûµ√√ø∏ˆitemµƒheight  \ width
-    //≤¢∏˘æ›∆ º◊¯±Íª≠◊÷∑˚¥Æ
+    //Ê†πÊçÆdialogËÉåÊôØÂõæÂ∞∫ÂØ∏Ê±ÇÂæóÊØè‰∏™itemÁöÑheight  \ width
+    //Âπ∂Ê†πÊçÆËµ∑ÂßãÂùêÊ†áÁîªÂ≠óÁ¨¶‰∏≤
     height = ui_param->cp_mov_dialog_coor.height / ID_EXPLR_MAX;
     width = ui_param->cp_mov_dialog_coor.width;
 
@@ -127,7 +158,7 @@ static __s32 explorer_update_dlg_item(explr_dialog_para_t *dlg_para)
 *****************************************************************************************
 *Function   :           static __s32 explorer_dialog_onpaint(__gui_msg_t *msg)
 *
-*Description    :       OnPaint¥¶¿Ì∫Ø ˝,ª≠±≥æ∞Õº£¨«∞æ∞ListBar showpage, ∆‰À˚icon‘™Àÿ
+*Description    :       OnPaintÂ§ÑÁêÜÂáΩÊï∞,ÁîªËÉåÊôØÂõæÔºåÂâçÊôØListBar showpage, ÂÖ∂‰ªñiconÂÖÉÁ¥†
 *
 *Arguments      :
 *
@@ -160,7 +191,7 @@ static __s32 explorer_dialog_onpaint(__gui_msg_t *msg)
     return EPDK_OK;
 }
 
-// Õ∑≈Listwindow
+//ÈáäÊîæListwindow
 static __s32 explorer_dlg_frame_win_delete(H_WIN win)
 {
     GUI_FrmWinDelete(win);
@@ -276,7 +307,7 @@ static __s32 explorer_dlg_win_key_proc(__gui_msg_t *msg)
             }
             break;
 
-            case GUI_MSG_KEY_VADD:      // ”√”⁄æ≈π¨∏Ò∫Õ¡–±Ìƒ£ Ω«–ªª
+            case GUI_MSG_KEY_VADD:      // Áî®‰∫é‰πùÂÆ´Ê†ºÂíåÂàóË°®Ê®°ÂºèÂàáÊç¢
                 break;
 
             case GUI_MSG_KEY_VDEC:
@@ -308,7 +339,7 @@ static __s32 explorer_dlg_win_key_proc(__gui_msg_t *msg)
         {
             case GUI_MSG_KEY_MENU:
             {
-                if (last_key == GUI_MSG_KEY_MENU)       //ªÿµΩ…œ“ªº∂≤Àµ•.
+                if (last_key == GUI_MSG_KEY_MENU)       //ÂõûÂà∞‰∏ä‰∏ÄÁ∫ßËèúÂçï.
                 {
                 }
 
@@ -422,7 +453,7 @@ static __s32 _explorer_dialog_win_cb(__gui_msg_t *msg)
             return EPDK_OK ;
         }
 
-        case DSK_MSG_ALARM: //explorer list  ’µΩ’‚∏ˆœ˚œ¢ ±£¨÷ª–Ë∞—µ±«∞µØ≥ˆµƒ¥∞ø⁄…æ≥˝µÙº¥ø…
+        case DSK_MSG_ALARM: //explorer list Êî∂Âà∞Ëøô‰∏™Ê∂àÊÅØÊó∂ÔºåÂè™ÈúÄÊääÂΩìÂâçÂºπÂá∫ÁöÑÁ™óÂè£Âà†Èô§ÊéâÂç≥ÂèØ
         {
             /**explr_dialog_para_t *dlg_para;
             dlg_para = (explr_dialog_para_t *)GUI_WinGetAttr(msg->h_deswin);
@@ -452,7 +483,7 @@ static __s32 _explorer_dialog_win_cb(__gui_msg_t *msg)
 ********************************************************************************************
 *Function   :      H_WIN explorer_dlg_win_create(H_WIN h_parent, explr_dialog_para_t *para)
 *
-*Description    :       ∏˘æ›ManagerWin¥´µ›π˝¿¥µƒ≤Œ ˝¥¥Ω®FrameWIn≥°æ∞
+*Description    :       Ê†πÊçÆManagerWin‰º†ÈÄíËøáÊù•ÁöÑÂèÇÊï∞ÂàõÂª∫FrameWInÂú∫ÊôØ
 *
 *Arguments      :
 *

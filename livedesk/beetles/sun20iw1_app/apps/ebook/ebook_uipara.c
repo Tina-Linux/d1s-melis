@@ -1,18 +1,34 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              willow app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                               (c) Copyright 2006-2007, SoftWinners Microelectronic Co., Ltd.
-*                                           All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    :  ebook_uipara.c
-* By      : john.fu
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "ebook_uipara.h"
 #define SET_TIPS_W  191
 #define SET_TIPS_H  101
@@ -29,7 +45,7 @@ ebook_uipara_t *get_ebook_uipara(void)
     ebook_uipara.page_num_progress_lyr.y = 30;
     ebook_uipara.page_num_progress_lyr.w = 24;
     ebook_uipara.page_num_progress_lyr.h = 200;
-    //œ‘ æ“≥¬ÎÕº≤„
+    //ÊòæÁ§∫È°µÁ†ÅÂõæÂ±Ç
     ebook_uipara.page_lyr.x  = 50;
     ebook_uipara.page_lyr.y  = 448;//..
     ebook_uipara.page_lyr.w  = 700;//..
@@ -38,12 +54,12 @@ ebook_uipara_t *get_ebook_uipara(void)
     ebook_uipara.page_lyr.y  = 0;//..
     ebook_uipara.page_lyr.w  = 800;//..
     ebook_uipara.page_lyr.h  = 480;//..*/
-    //œ‘ æplay pause Õº∆¨Œª÷√
+    //ÊòæÁ§∫play pause ÂõæÁâá‰ΩçÁΩÆ
     ebook_uipara.bmp_play.x = 70;//..
     ebook_uipara.bmp_play.y = 0;//..
     ebook_uipara.bmp_play.w = 25;
     ebook_uipara.bmp_play.h = 27;
-    ebook_uipara.page_name_pos.x = 230;//.. // È√˚œ‘ æŒª÷√
+    ebook_uipara.page_name_pos.x = 230;//.. //‰π¶ÂêçÊòæÁ§∫‰ΩçÁΩÆ
     ebook_uipara.page_name_pos.y = 0;//..
     ebook_uipara.page_name_pos.w = 260;
     ebook_uipara.page_name_pos.h = 24;
@@ -59,12 +75,12 @@ ebook_uipara_t *get_ebook_uipara(void)
     ebook_uipara.page_no_dot_length.x = ebook_uipara.page_no_progress_length.x + (ebook_uipara.page_no_progress_length.w - ebook_uipara.page_no_dot_length.w) / 2 ;
     ebook_uipara.page_no_dot_length.y =  ebook_uipara.page_no_progress_length.y + ebook_uipara.page_no_head_length.h ;
     ebook_uipara.page_no_dot_length.h = 1;
-    //œ‘ æ“≥ ˝
+    //ÊòæÁ§∫È°µÊï∞
     ebook_uipara.page_no_pos.x = 550;//..300
     ebook_uipara.page_no_pos.y = 0;//..
     ebook_uipara.page_no_pos.w = 140;
     ebook_uipara.page_no_pos.h = 24;
-    ebook_uipara.tips_txt_pos.x = 0;    //∂œµ„Ã· æŒƒ◊÷œ‘ æŒª÷√
+    ebook_uipara.tips_txt_pos.x = 0;    //Êñ≠ÁÇπÊèêÁ§∫ÊñáÂ≠óÊòæÁ§∫‰ΩçÁΩÆ
     ebook_uipara.tips_txt_pos.y = 30;
     ebook_uipara.tips_txt_pos.w = 180;
     ebook_uipara.tips_txt_pos.h = 15;
@@ -76,21 +92,20 @@ ebook_uipara_t *get_ebook_uipara(void)
     ebook_uipara.tip_no_bmp_pos.y = 59;
     ebook_uipara.tip_no_bmp_pos.w = 37;
     ebook_uipara.tip_no_bmp_pos.h = 18;
-    //œ‘ æ±≥æ∞µ◊Õº//..
+    //ÊòæÁ§∫ËÉåÊôØÂ∫ïÂõæ//..
     ebook_uipara.bottom_bg.x = 0;
     ebook_uipara.bottom_bg.y = 0;
     ebook_uipara.bottom_bg.w = 800;
     ebook_uipara.bottom_bg.h = 480;
-    //Ã¯◊™¥∞ø⁄Õº≤„//..
+    //Ë∑≥ËΩ¨Á™óÂè£ÂõæÂ±Ç//..
     ebook_uipara.goto_lyr.x = 0;
     ebook_uipara.goto_lyr.y = 0;
     ebook_uipara.goto_lyr.w = 800;
     ebook_uipara.goto_lyr.h = 480;
-    //Ã¯◊™¥∞ø⁄ œ‘ æÃ¯◊™ “≥¬Î
+    //Ë∑≥ËΩ¨Á™óÂè£ ÊòæÁ§∫Ë∑≥ËΩ¨ È°µÁ†Å
     ebook_uipara.goto_page.x = 286;
     ebook_uipara.goto_page.y = 99;
     ebook_uipara.goto_page.w = 250;
     ebook_uipara.goto_page.h = 50;
     return &ebook_uipara;
 }
-

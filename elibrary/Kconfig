@@ -1,0 +1,15 @@
+menu "elibrary Setup"
+
+config SYSCALL
+	bool "support syscall"
+	default n
+	help
+          enable syscall.
+
+config MELIS_LIBC
+	bool "support melis libc"
+	default n
+	help
+          support melis libc.
+
+endmenu

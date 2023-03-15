@@ -1,18 +1,34 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              dsk_radio  sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                               (c) Copyright 2006-2007, terry, China
-*                                           All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : dsk_radio.h
-* By      : terry.zeng
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef __DSK_RADIO_H__
 #define __DSK_RADIO_H__
 
@@ -32,7 +48,7 @@ typedef struct
 } dsk_radio_ch_list_t;
 /*!
   * \brief
-  *     dsk_radio²¨¶ÎÀàĞÍÃ¶¾Ù
+  *     dsk_radioæ³¢æ®µç±»å‹æšä¸¾
 */
 typedef enum
 {
@@ -43,7 +59,7 @@ typedef enum
 
 /*!
   * \brief
-  *     DSK_RADIOĞÅºÅÇ¿¶ÈÃÅÏŞÖµÃ¶¾Ù
+  *     DSK_RADIOä¿¡å·å¼ºåº¦é—¨é™å€¼æšä¸¾
 */
 typedef enum
 {
@@ -55,7 +71,7 @@ typedef enum
 
 /*!
   * \brief
-  *     dsk_radioËÑË÷·½Ïò
+  *     dsk_radioæœç´¢æ–¹å‘
 */
 typedef enum
 {
@@ -71,7 +87,7 @@ typedef enum
 
 /*!
   * \brief
-  *     dsk_radio²¥·ÅµÄÉùµÀÄ£Ê½
+  *     dsk_radioæ’­æ”¾çš„å£°é“æ¨¡å¼
 */
 typedef enum
 {
@@ -85,60 +101,60 @@ typedef enum
     DSK_RADIO_EVENT_SEARCH_SUCCESS      = 0,
     DSK_RADIO_EVENT_SEARCH_FAIL         = 1,
     DSK_RADIO_EVENT_SEARCH_OVER         = 2,
-    DSK_RADIO_EVENT_SEARCH_FREQ         = 3,    //ÏÔÊ¾ÄÚ²¿ËÑË÷¹ı³ÌÖĞµÄÆµÂÊ
+    DSK_RADIO_EVENT_SEARCH_FREQ         = 3,    //æ˜¾ç¤ºå†…éƒ¨æœç´¢è¿‡ç¨‹ä¸­çš„é¢‘ç‡
     DSK_RADIO_EVENT_UNKNOWN             = -1
 } dsk_radio_event_e;
 
 /*!
   * \brief
-  *     dsk_radioÏòÍâÌá¹©µÄ¹¦ÄÜÃüÁî
+  *     dsk_radioå‘å¤–æä¾›çš„åŠŸèƒ½å‘½ä»¤
 */
 typedef enum
 {
 
-    /*DSK_RADIO ·¢Éä½ÓÊÕ¹«¹²½Ó¿Ú-----------------------------------------------------------*/
+    /*DSK_RADIO å‘å°„æ¥æ”¶å…¬å…±æ¥å£-----------------------------------------------------------*/
 
 
-    /*! ¾²Òô param1=0,param2=0*/
+    /*! é™éŸ³ param1=0,param2=0*/
     DSK_RADIO_MUTE                      = 0x01,
-    /*! È¡Ïû¾²Òô param1=0,param2=0*/
+    /*! å–æ¶ˆé™éŸ³ param1=0,param2=0*/
     DSK_RADIO_UNMUTE,
-    /*! ÉèÖÃ²¨¶Î param1=dsk_radio_band_mode_t,param2=0*/
+    /*! è®¾ç½®æ³¢æ®µ param1=dsk_radio_band_mode_t,param2=0*/
     DSK_RADIO_SET_BAND,
-    /*! ÉèÖÃĞÅºÅÇ¿¶ÈÃÅÏŞÖµ param1=dsk_radio_threshold_mode_t,param2=0*/
+    /*! è®¾ç½®ä¿¡å·å¼ºåº¦é—¨é™å€¼ param1=dsk_radio_threshold_mode_t,param2=0*/
     DSK_RADIO_SET_HTRESHOLD,
-    /*! ÉèÖÃÉùµÀÄ£Ê½ param1=dsk_radio_audio_mode_t,param2=0*/
+    /*! è®¾ç½®å£°é“æ¨¡å¼ param1=dsk_radio_audio_mode_t,param2=0*/
     DSK_RADIO_SET_AUDIO_MODE,
 
-    /*! »ñÈ¡µ±Ç°²¨¶Î param1=0,param2=(int)&band*/
+    /*! è·å–å½“å‰æ³¢æ®µ param1=0,param2=(int)&band*/
     DSK_RADIO_GET_BAND,
-    /*! »ñÈ¡µ±Ç°ÆµÂÊ£¬·µ»ØÖµÒÔKHZÎªµ¥Î» param1=0,param2=(int)&freq*/
+    /*! è·å–å½“å‰é¢‘ç‡ï¼Œè¿”å›å€¼ä»¥KHZä¸ºå•ä½ param1=0,param2=(int)&freq*/
     DSK_RADIO_GET_FREQ,
-    /*! »ñÈ¡ÉùµÀÄ£Ê½  param1=0,param2=(int)&audio_mode*/
+    /*! è·å–å£°é“æ¨¡å¼  param1=0,param2=(int)&audio_mode*/
     DSK_RADIO_GET_AUDIO_MODE,
-    /*! »ñÈ¡µ±Ç°²¨¶Î×îĞ¡ÆµÂÊ param1=0,param2=(int)&min_freq*/
+    /*! è·å–å½“å‰æ³¢æ®µæœ€å°é¢‘ç‡ param1=0,param2=(int)&min_freq*/
     DSK_RADIO_GET_MIN_FREQ,
-    /*! »ñÈ¡µ±Ç°²¨¶Î×î´óÆµÂÊ param1=0,param2=(int)&max_freq*/
+    /*! è·å–å½“å‰æ³¢æ®µæœ€å¤§é¢‘ç‡ param1=0,param2=(int)&max_freq*/
     DSK_RADIO_GET_MAX_FREQ,
 
 
-    /*DSK_RADIO ·¢Éä½ÓÊÕ¹«¹²½Ó¿Ú-----------------------------------------------------------*/
+    /*DSK_RADIO å‘å°„æ¥æ”¶å…¬å…±æ¥å£-----------------------------------------------------------*/
 
-    /*DSK_RADIO ½ÓÊÕ²¿·Ö------------------------------------------------------------------*/
+    /*DSK_RADIO æ¥æ”¶éƒ¨åˆ†------------------------------------------------------------------*/
 
     DSK_RADIO_REC_OPEN,
 
-    /*ËÑË÷¹¦ÄÜ²¿·Ö*/
+    /*æœç´¢åŠŸèƒ½éƒ¨åˆ†*/
     DSK_RADIO_REC_SET_AUTO_SEARCH_MODE,
     DSK_RADIO_REC_AUTO_SEARCH,
     DSK_RADIO_REC_AUTO_SEARCH_ALL,
 
-    /*²¥·Å¹¦ÄÜ²¿·Ö*/
+    /*æ’­æ”¾åŠŸèƒ½éƒ¨åˆ†*/
     DSK_RADIO_REC_SET_FREQ_PLAY,
     DSK_RADIO_REC_NEXT_FREQ_PLAY,
     DSK_RADIO_REC_PRE_FREQ_PLAY,
 
-    /*ÁĞ±í¹ÜÀí²¿·Ö*/
+    /*åˆ—è¡¨ç®¡ç†éƒ¨åˆ†*/
     DSK_RADIO_REC_SET_PLAY_LIST_TYPE,
     DSK_RADIO_REC_GET_PLAY_LIST_TYPE,
 
@@ -157,23 +173,23 @@ typedef enum
 
     DSK_RADIO_REC_CLOSE,
 
-    /*DSK_RADIO ½ÓÊÕ²¿·Ö------------------------------------------------------------------*/
+    /*DSK_RADIO æ¥æ”¶éƒ¨åˆ†------------------------------------------------------------------*/
 
-    /*DSK_RADIO ·¢Éä²¿·Ö------------------------------------------------------------------*/
+    /*DSK_RADIO å‘å°„éƒ¨åˆ†------------------------------------------------------------------*/
 
 
-    /*! ´ò¿ªDSK_RADIO·¢Éä¹¦ÄÜ param1=0,param2=0*/
+    /*! æ‰“å¼€DSK_RADIOå‘å°„åŠŸèƒ½ param1=0,param2=0*/
     DSK_RADIO_SEND_OPEN,
-    /*! ÉèÖÃ·¢ÉäµÄÆµÂÊ½øĞĞ²¥·Å param1=freq,param2=0*/
+    /*! è®¾ç½®å‘å°„çš„é¢‘ç‡è¿›è¡Œæ’­æ”¾ param1=freq,param2=0*/
     DSK_RADIO_SEND_SET_FREQ_PLAY,
-    /*! ÉèÖÃ·¢ÉäµÄÔöÒæ£¨¼´·¢ÉäÉùÒô´óĞ¡£© param1=(__u32)gain,param2=0*/
+    /*! è®¾ç½®å‘å°„çš„å¢ç›Šï¼ˆå³å‘å°„å£°éŸ³å¤§å°ï¼‰ param1=(__u32)gain,param2=0*/
     DSK_RADIO_SEND_SET_GAIN,
-    /*! »ñÈ¡·¢ÉäµÄÔöÒæ£¨¼´·¢ÉäÉùÒô´óĞ¡£© param1=0,param2=(__u32)&gain*/
+    /*! è·å–å‘å°„çš„å¢ç›Šï¼ˆå³å‘å°„å£°éŸ³å¤§å°ï¼‰ param1=0,param2=(__u32)&gain*/
     DSK_RADIO_SEND_GET_GAIN,
-    /*! ¹Ø±ÕDSK_RADIO·¢Éä¹¦ÄÜ param1=0,param2=0*/
+    /*! å…³é—­DSK_RADIOå‘å°„åŠŸèƒ½ param1=0,param2=0*/
     DSK_RADIO_SEND_CLOSE
 
-    /*DSK_RADIO ·¢Éä²¿·Ö------------------------------------------------------------------*/
+    /*DSK_RADIO å‘å°„éƒ¨åˆ†------------------------------------------------------------------*/
 } dsk_radio_cmd_t;
 
 /*
@@ -184,7 +200,7 @@ typedef enum
 *
 * date:             2009-12-01
 *
-* Description:      dsk_radio ´ò¿ªº¯Êı(³õÊ¼»¯FM²¥·Å¹¦ÄÜ)
+* Description:      dsk_radio æ‰“å¼€å‡½æ•°(åˆå§‹åŒ–FMæ’­æ”¾åŠŸèƒ½)
 *
 * parameters:
 *
@@ -227,7 +243,7 @@ __s32 dsk_radio_get_max_freq(__s32 *max_freq);
 *
 * date:             2009-12-01
 *
-* Description:      dsk_radio¹¦ÄÜ²Ù×÷½Ó¿Ú,²ÎÊı1Ò»°ãÎªÊäÈë²ÎÊı£¬²ÎÊı2ÎªÊä³ö²ÎÊı
+* Description:      dsk_radioåŠŸèƒ½æ“ä½œæ¥å£,å‚æ•°1ä¸€èˆ¬ä¸ºè¾“å…¥å‚æ•°ï¼Œå‚æ•°2ä¸ºè¾“å‡ºå‚æ•°
 *
 * parameters:
 *
@@ -245,7 +261,7 @@ __s32 dsk_radio_get_max_freq(__s32 *max_freq);
 *
 * date:             2009-12-01
 *
-* Description:       ¹Ø±Õdsk_radio£¬ÊÍ·ÅÏà¹Ø×ÊÔ´
+* Description:       å…³é—­dsk_radioï¼Œé‡Šæ”¾ç›¸å…³èµ„æº
 *
 * parameters:
 *

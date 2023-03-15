@@ -1,17 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              FM app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2006-2007, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : mbook_decode.h
-* By      : lyn
-* Version : V1.00
-* time    : 2009-8-14
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __MBOOK_DECODE_H__
 #define __MBOOK_DECODE_H__
@@ -24,17 +40,17 @@ typedef     void   *H_DECODE;
 typedef struct tag_DECODE_CONFIG
 {
     GUI_FONT  *char_font;
-    __u32       font_size;              // ×ÖÌå´óĞ¡
-    __u32       border_width;           // Á½±ßÁô°×¿í¶È
-    __u32       bottom_width;           // µ×±ßÁô°×¿í¶È
-    __u32       scroll_width;           //»¬¶¯ÌõµÄ¿í¶È
-    __u32       show_width;             // ÏÔÊ¾µÄ¿í¶È
-    __u32       show_height;            // ÏÔÊ¾µÄ¸ß¶È
-    __u32       row_space;              // ĞĞ¼ä¾à
-    __u32       col_space;              // ÁĞ¼ä¾à
-    __u32       font_color;             // ×ÖÌåµÄÑÕÉ«
-    __u32       back_color;             // ±³¾°µÄÑÕÉ«
-    __u32       show_rotate;            // ºáÊúÆÁÏÔÊ¾
+    __u32       font_size;              // å­—ä½“å¤§å°
+    __u32       border_width;           // ä¸¤è¾¹ç•™ç™½å®½åº¦
+    __u32       bottom_width;           // åº•è¾¹ç•™ç™½å®½åº¦
+    __u32       scroll_width;           //æ»‘åŠ¨æ¡çš„å®½åº¦
+    __u32       show_width;             // æ˜¾ç¤ºçš„å®½åº¦
+    __u32       show_height;            // æ˜¾ç¤ºçš„é«˜åº¦
+    __u32       row_space;              // è¡Œé—´è·
+    __u32       col_space;              // åˆ—é—´è·
+    __u32       font_color;             // å­—ä½“çš„é¢œè‰²
+    __u32       back_color;             // èƒŒæ™¯çš„é¢œè‰²
+    __u32       show_rotate;            // æ¨ªç«–å±æ˜¾ç¤º
 } __decode_config_t;
 
 
@@ -43,54 +59,54 @@ typedef struct tag_DECODE_CONFIG
 
 typedef enum tag__DECODE_MODE
 {
-    DECODE_NULL = 0,                                /* ²»½âÂëÈÎºÎÒ³         */
-    DECODE_CURR,                                    /* ½âÂëµ±Ç°Ò³           */
-    DECODE_PREV,                                    /* ½âÂëµ±Ç°Ò³µÄÇ°ÃæÒ³   */
-    DECODE_NEXT,                                    /* ½âÂëËùÓĞÒ³µÄºóÃæÒ³   */
+    DECODE_NULL = 0,                                /* ä¸è§£ç ä»»ä½•é¡µ         */
+    DECODE_CURR,                                    /* è§£ç å½“å‰é¡µ           */
+    DECODE_PREV,                                    /* è§£ç å½“å‰é¡µçš„å‰é¢é¡µ   */
+    DECODE_NEXT,                                    /* è§£ç æ‰€æœ‰é¡µçš„åé¢é¡µ   */
 } __decode_mode_e;
 
-typedef struct tag_MBOOK_CACHE               // Ò³»º³å
+typedef struct tag_MBOOK_CACHE               // é¡µç¼“å†²
 {
-    __s32       page_sta;                   // Ò³Ãæ½âÂë³É¹¦±êÊ¾£º1 ³É¹¦¡¢ 0 Ê§°Ü
-    __s32       page_no;                    // »º´æÀïµÄÒ³ÃæºÅ
-    H_WIN       page_lyr;                   // »º´æÒ³¶ÔÓ¦µÄÈíÍ¼²ã
+    __s32       page_sta;                   // é¡µé¢è§£ç æˆåŠŸæ ‡ç¤ºï¼š1 æˆåŠŸã€ 0 å¤±è´¥
+    __s32       page_no;                    // ç¼“å­˜é‡Œçš„é¡µé¢å·
+    H_WIN       page_lyr;                   // ç¼“å­˜é¡µå¯¹åº”çš„è½¯å›¾å±‚
 } __page_cache_t;
 
 
 typedef struct tag_MBOOK_DECODE
 {
-    char                    file_path[MAX_FILE_NAME];       // ÎÄ¼şÂ·¾¶
-    ES_FILE                *file_hdle;                      // ÎÄ¼ş¾ä±ú
-    void              *analysis_hdle;                  // ÎÄ¼ş·ÖÎö¾ä±ú
-    void                   *show_hdle;                      // Ò³ÃæÏÔÊ¾¾ä±ú
+    char                    file_path[MAX_FILE_NAME];       // æ–‡ä»¶è·¯å¾„
+    ES_FILE                *file_hdle;                      // æ–‡ä»¶å¥æŸ„
+    void              *analysis_hdle;                  // æ–‡ä»¶åˆ†æå¥æŸ„
+    void                   *show_hdle;                      // é¡µé¢æ˜¾ç¤ºå¥æŸ„
 
-    void                   *font_hdle;                      // ×ÖÌå²Ù×÷¾ä±ú
+    void                   *font_hdle;                      // å­—ä½“æ“ä½œå¥æŸ„
 
-    __s64                   file_size;                      // ÎÄ¼ş´óĞ¡
-    __epdk_charset_enm_e    default_charset;                // Ä¬ÈÏ±àÂë¸ñÊ½
-    GUI_FONT               *char_font;                      // ×Ö¿â¾ä±ú
-    __s32                  *char_table;                     // ×Ö·û×Ö¿í±í
+    __s64                   file_size;                      // æ–‡ä»¶å¤§å°
+    __epdk_charset_enm_e    default_charset;                // é»˜è®¤ç¼–ç æ ¼å¼
+    GUI_FONT               *char_font;                      // å­—åº“å¥æŸ„
+    __s32                  *char_table;                     // å­—ç¬¦å­—å®½è¡¨
 
-    H_WIN                   show_lyr;                       // ÏÔÊ¾Í¼²ã
-    __page_cache_t          page[DECODE_MBOOK_NUM];          // Ò³Ãæ»º³åÆ÷
-    __u32                   data_len;                       // Ò»Ò³Êı¾İµÄ´óĞ¡
-    __u8                   *page_data;                      // Ò»Ò³Êı¾İ´æ·ÅµØÖ·
+    H_WIN                   show_lyr;                       // æ˜¾ç¤ºå›¾å±‚
+    __page_cache_t          page[DECODE_MBOOK_NUM];          // é¡µé¢ç¼“å†²å™¨
+    __u32                   data_len;                       // ä¸€é¡µæ•°æ®çš„å¤§å°
+    __u8                   *page_data;                      // ä¸€é¡µæ•°æ®å­˜æ”¾åœ°å€
 
-    __u8                   *curt_page_data;              //µ±Ç°Ò³Êı¾İ´æ·ÅµØÖ·£¬Îªtts·şÎñ
+    __u8                   *curt_page_data;              //å½“å‰é¡µæ•°æ®å­˜æ”¾åœ°å€ï¼Œä¸ºttsæœåŠ¡
 
-    __s32                   total_page;                     // ÎÄ¼ş×ÜÒ³Êı
-    __s32                   current_page;                   // µ±Ç°ÏÔÊ¾Ò³ºÅ
+    __s32                   total_page;                     // æ–‡ä»¶æ€»é¡µæ•°
+    __s32                   current_page;                   // å½“å‰æ˜¾ç¤ºé¡µå·
 
-    __s32                   move_state;                     // Ò³ÃæÒÆ¶¯¿ØÖÆ±êÊ¾
-    __s32                   move_height;                    // Ò³ÃæÒÆ¶¯¸ß¶È
+    __s32                   move_state;                     // é¡µé¢ç§»åŠ¨æ§åˆ¶æ ‡ç¤º
+    __s32                   move_height;                    // é¡µé¢ç§»åŠ¨é«˜åº¦
 
-    __u32                   decode_tsk;                     // Ô¤½âÏß³Ì
-    __s32                   decode_cnt;                     // Ô¤½âÒ³Ñ­»·¼ÆÊı
-    __krnl_event_t         *decode_sem;                     // Ô¤½â¿ØÖÆĞÅºÅÁ¿
-    __decode_mode_e         decode_sta;                     // Ô¤½âÄ£Ê½
+    __u32                   decode_tsk;                     // é¢„è§£çº¿ç¨‹
+    __s32                   decode_cnt;                     // é¢„è§£é¡µå¾ªç¯è®¡æ•°
+    __krnl_event_t         *decode_sem;                     // é¢„è§£æ§åˆ¶ä¿¡å·é‡
+    __decode_mode_e         decode_sta;                     // é¢„è§£æ¨¡å¼
 
-    __decode_config_t       config;                         // ÅäÖÃĞÅÏ¢
-    __epdk_charset_enm_e    charset;                        // ÎÄ¼ş±àÂë
+    __decode_config_t       config;                         // é…ç½®ä¿¡æ¯
+    __epdk_charset_enm_e    charset;                        // æ–‡ä»¶ç¼–ç 
 } __mbook_decode_t;
 
 
@@ -172,4 +188,3 @@ __s32   MBOOK_Show_LastPage(H_DECODE hdle, __u32 page_no);
 
 
 #endif /* __MBOOK_DECODE_H__ */
-

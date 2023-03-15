@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2011, CHIPHD, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : APP_Mem.h
-* By        : CQQ
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011/06/28 10:34  create this file, implements the fundamental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __APP_MEM_H__C7FF2028_BBAF_4206_B67C_2DEE5D2EAF60__
 #define __APP_MEM_H__C7FF2028_BBAF_4206_B67C_2DEE5D2EAF60__
@@ -28,10 +42,10 @@ typedef char        TCHAR;
 #define _T(x)       x
 #endif
 //////////////////////platform interface//////////////////////////////////
-/////////////////////////////////ƒ⁄¥Ê¿‡
+/////////////////////////////////ÂÜÖÂ≠òÁ±ª
 #ifdef _WINDOWS
 //for win32
-//…Í«Îƒ⁄¥Ê
+//Áî≥ËØ∑ÂÜÖÂ≠ò
 #define ap_NewMem_B(_p, _size)                  ((_p) = (new BYTE[_size]))//((_p) = (void*)(new BYTE[_size]))
 #define ap_NewMem_M(_p, _heap, _size)           ap_NewMem_B(_p, _size)
 #define ap_NewMem_P(_p, _page, _mode)           ap_NewMem_B(_p, (_page) * 1024)
@@ -39,7 +53,7 @@ typedef char        TCHAR;
 #define ap_NewMem_T_B(_p, _type)                ((_p) = new _type)
 #define ap_NewMem_T_M(_p, _heap, _type)         ap_NewMem_T_B(_p, _type)
 
-// Õ∑≈ƒ⁄¥Ê
+//ÈáäÊîæÂÜÖÂ≠ò
 #define ap_DelMem_B(_p, _size)                  (delete [] _p)
 #define ap_DelMem_M(_p, _heap)                  (delete [] _p)
 #define ap_DelMem_P(_p, _page)                  ap_DelMem_B(_p, (_page) * 1024)
@@ -47,7 +61,7 @@ typedef char        TCHAR;
 #define ap_DelMem_T_B(_p, _type)                (delete _p)
 #define ap_DelMem_T_M(_p, _heap)                (delete _p)
 
-//≤Ÿ◊˜ƒ⁄¥Ê
+//Êìç‰ΩúÂÜÖÂ≠ò
 #ifndef ZeroMemory
 #define ZeroMemory(_p, _size)                    memset((_p), 0, (_size))
 #endif
@@ -55,7 +69,7 @@ typedef char        TCHAR;
 #else
 //for other platform
 //eDPK
-//…Í«Îƒ⁄¥Ê
+//Áî≥ËØ∑ÂÜÖÂ≠ò
 #define ap_NewMem_B(_p, _size)                    ((_p) = esMEMS_Balloc(_size))
 #define ap_NewMem_M(_p, _heap, _size)             ((_p) = esMEMS_Malloc(_heap, _size))
 #define ap_NewMem_P(_p, _page, _mode)             ((_p) = esMEMS_Palloc(_page, _mode))
@@ -63,7 +77,7 @@ typedef char        TCHAR;
 #define ap_NewMem_T_B(_p, _type)                  ((_p) = (_type *)esMEMS_Balloc(sizeof(_type)))
 #define ap_NewMem_T_M(_p, _heap, _type)           ((_p) = (_type *)esMEMS_Malloc(_heap, sizeof(_type)))
 
-// Õ∑≈ƒ⁄¥Ê
+//ÈáäÊîæÂÜÖÂ≠ò
 #define ap_DelMem_B(_p, _size)                    (esMEMS_Bfree(_p, _size))
 #define ap_DelMem_M(_p, _heap)                    (esMEMS_Mfree(_heap, _p))
 #define ap_DelMem_P(_p, _page)                    (esMEMS_Pfree(_p, _page))
@@ -71,40 +85,40 @@ typedef char        TCHAR;
 #define ap_DelMem_T_B(_p, _type)                  ap_DelMem_B(_p, sizeof(_type))
 #define ap_DelMem_T_M(_p, _heap)                  ap_DelMem_M(_p, _heap)
 
-//≤Ÿ◊˜ƒ⁄¥Ê
+//Êìç‰ΩúÂÜÖÂ≠ò
 #ifndef ZeroMemory
 #define ZeroMemory(_p, _size)                    eLIBs_memset((_p), 0, (_size))
 #endif
 
 #endif //_WINDOWS
 
-//«Âø’ƒ≥¿‡–Õƒ⁄¥Ê
+//Ê∏ÖÁ©∫ÊüêÁ±ªÂûãÂÜÖÂ≠ò
 #define ZeroTypeMem(_p, _type)                   ZeroMemory(_p, sizeof(_type))
 
-/////////////////////////////////æ‰±˙¿‡
+/////////////////////////////////Âè•ÊüÑÁ±ª
 #ifdef _WINDOWS
-//Õº∆¨◊ ‘¥
+//ÂõæÁâáËµÑÊ∫ê
 #define ap_dsk_theme_open(_h, _id)               NULL
 #define ap_dsk_theme_close(_h)                   NULL
 
-//Œƒº˛
+//Êñá‰ª∂
 #define ap_fopen(_f, _name, _mode)               NULL
 #define ap_fclose(_f)                            NULL
 
-//Õº≤„
+//ÂõæÂ±Ç
 #define ap_create_layer(_layer, _pcreateinfo)    NULL
 #define ap_destroy_layer(_layer)                 NULL
 
 #else//EDPK_OS
-//Õº∆¨◊ ‘¥
+//ÂõæÁâáËµÑÊ∫ê
 #define ap_dsk_theme_open(_h, _id)               (_h = dsk_theme_open(_id))
 #define ap_dsk_theme_close(_h)                   dsk_theme_close(_h)
 
-//Œƒº˛
+//Êñá‰ª∂
 #define ap_fopen(_f, _name, _mode)               (_f = eLIBs_fopen(_name, _mode))
 #define ap_fclose(_f)                            eLIBs_fclose(_f)
 
-//Õº≤„
+//ÂõæÂ±Ç
 #define ap_create_layer(_layer, _pcreateinfo)    (_layer = GUI_LyrWinCreate(_pcreateinfo))
 #define ap_destroy_layer(_layer)                 GUI_LyrWinDelete(_layer)
 
@@ -114,7 +128,7 @@ typedef char        TCHAR;
 
 
 ///////////////////////////app interface//////////////////////////////////
-//≤ª“™ debug memory,–ﬁ∏ƒ DEBUG_APP_MEM ∂®“Âº¥ø…
+//‰∏çË¶Å debug memory,‰øÆÊîπ DEBUG_APP_MEM ÂÆö‰πâÂç≥ÂèØ
 #ifdef _WINDOWS
 
 #ifdef _DEBUG
@@ -130,8 +144,8 @@ typedef char        TCHAR;
 //debug mem
 extern void *AddDebugAPPMEM(void *p, int line, TCHAR *filename);
 extern void *SubDebugAPPMEM(void *p);
-extern void _CheckAPPMEM(void);//ºÏ≤È√ª Õ∑≈µƒΩ⁄µ„
-extern void _EndOfDebugAPPMEM(void);// Õ∑≈¡¥±Ì
+extern void _CheckAPPMEM(void);//Ê£ÄÊü•Ê≤°ÈáäÊîæÁöÑËäÇÁÇπ
+extern void _EndOfDebugAPPMEM(void);//ÈáäÊîæÈìæË°®
 #define CheckAPPMEM()       do \
         {esKSRV_SysInfo(); __msg("  !!!!  CheckAPPMEM, %s\n", __FUNCTION__); _CheckAPPMEM();} while (0)
 
@@ -141,7 +155,7 @@ extern void _EndOfDebugAPPMEM(void);// Õ∑≈¡¥±Ì
 #define EndOfDebugAPPMEM()  do \
         {_EndOfDebugAPPMEM(); esKSRV_SysInfo(); __msg("  !!!!  EndOfDebugAPPMEM, %s\n", __FUNCTION__);} while (0)
 
-//…Í«Îƒ⁄¥Ê
+//Áî≥ËØ∑ÂÜÖÂ≠ò
 #define APP_NewMem_B(_p, _size)                 do \
     { \
         ap_NewMem_B(_p, _size); \
@@ -172,7 +186,7 @@ extern void _EndOfDebugAPPMEM(void);// Õ∑≈¡¥±Ì
         AddDebugAPPMEM(_p, __LINE__, _T(__FILE__)); \
     } while (0)
 
-// Õ∑≈ƒ⁄¥Ê
+//ÈáäÊîæÂÜÖÂ≠ò
 #define APP_DelMem_B(_p, _size)                 if (_p){SubDebugAPPMEM(_p); ap_DelMem_B(_p, _size); _p = NULL;}
 #define APP_DelMem_M(_p, _heap)                 if (_p){SubDebugAPPMEM(_p); ap_DelMem_M(_p, _heap); _p = NULL;}
 #define APP_DelMem_P(_p, _page)                 if (_p){SubDebugAPPMEM(_p); ap_DelMem_P(_p, _page); _p = NULL;}
@@ -180,8 +194,8 @@ extern void _EndOfDebugAPPMEM(void);// Õ∑≈¡¥±Ì
 #define APP_DelMem_T_B(_p, _type)               APP_DelMem_B(_p, sizeof(_type))
 #define APP_DelMem_T_M(_p, _heap)               APP_DelMem_M(_p, _heap)
 
-/////////////////////////////////æ‰±˙¿‡
-//Õº∆¨◊ ‘¥
+/////////////////////////////////Âè•ÊüÑÁ±ª
+//ÂõæÁâáËµÑÊ∫ê
 #define APP_dsk_theme_open(_h, _id)             do \
     { \
         ap_dsk_theme_open(_h, _id); \
@@ -190,7 +204,7 @@ extern void _EndOfDebugAPPMEM(void);// Õ∑≈¡¥±Ì
 
 #define APP_dsk_theme_close(_h)                 do { SubDebugAPPMEM((void*)_h); ap_dsk_theme_close(_h); } while (0)
 
-//Œƒº˛
+//Êñá‰ª∂
 #define APP_fopen(_f, _name, _mode)             do \
     { \
         ap_fopen(_f, _name, _mode); \
@@ -199,7 +213,7 @@ extern void _EndOfDebugAPPMEM(void);// Õ∑≈¡¥±Ì
 
 #define APP_fclose(_f)                          if (_f) {SubDebugAPPMEM((void*)_f); ap_fclose(_f); _f = NULL;}
 
-//Õº≤„
+//ÂõæÂ±Ç
 #define APP_create_layer(_layer, _pcreateinfo)  do \
     { \
         ap_create_layer(_layer, _pcreateinfo); \
@@ -215,7 +229,7 @@ extern void _EndOfDebugAPPMEM(void);// Õ∑≈¡¥±Ì
 #define StartDebugAPPMEM()     NULL
 
 //eDPK
-//…Í«Îƒ⁄¥Ê
+//Áî≥ËØ∑ÂÜÖÂ≠ò
 #define APP_NewMem_B(_p, _size)                 ap_NewMem_B(_p, _size)
 #define APP_NewMem_M(_p, _heap, _size)          ap_NewMem_M(_p, _heap, _size)
 #define APP_NewMem_P(_p, _page, _mode)          ap_NewMem_P(_p, _page, _mode)
@@ -223,7 +237,7 @@ extern void _EndOfDebugAPPMEM(void);// Õ∑≈¡¥±Ì
 #define APP_NewMem_T_B(_p, _type)               ap_NewMem_T_B(_p, _type)
 #define APP_NewMem_T_M(_p, _heap, _type)        ap_NewMem_T_M(_p, _heap, _type)
 
-// Õ∑≈ƒ⁄¥Ê
+//ÈáäÊîæÂÜÖÂ≠ò
 #define APP_DelMem_B(_p, _size)                 if (_p){ap_DelMem_B(_p, _size); _p = NULL;}
 #define APP_DelMem_M(_p, _heap)                 if (_p){ap_DelMem_M(_p, _heap); _p = NULL;}
 #define APP_DelMem_P(_p, _page)                 if (_p){ap_DelMem_P(_p, _page); _p = NULL;}
@@ -231,16 +245,16 @@ extern void _EndOfDebugAPPMEM(void);// Õ∑≈¡¥±Ì
 #define APP_DelMem_T_B(_p, _type)               APP_DelMem_B(_p, sizeof(_type))
 #define APP_DelMem_T_M(_p, _heap)               APP_DelMem_M(_p, _heap)
 
-/////////////////////////////////æ‰±˙¿‡
-//Õº∆¨◊ ‘¥
+/////////////////////////////////Âè•ÊüÑÁ±ª
+//ÂõæÁâáËµÑÊ∫ê
 #define APP_dsk_theme_open(_h, _id)             ap_dsk_theme_open(_h, _id)
-#define APP_dsk_theme_close(_h)                 ap_dsk_theme_close(_h) //dsk_theme_closeƒ⁄≤ø“—”–≈–∂œ
+#define APP_dsk_theme_close(_h)                 ap_dsk_theme_close(_h) //dsk_theme_closeÂÜÖÈÉ®Â∑≤ÊúâÂà§Êñ≠
 
-//Œƒº˛
+//Êñá‰ª∂
 #define APP_fopen(_f, _name, _mode)             ap_fopen(_f, _name, _mode)
 #define APP_fclose(_f)                          if (_f) {ap_fclose(_f); _f = NULL;}
 
-//Õº≤„
+//ÂõæÂ±Ç
 #define APP_create_layer(_layer, _pcreateinfo)  ap_create_layer(_layer, _pcreateinfo)
 #define APP_destroy_layer(_layer)               if (_layer) {ap_destroy_layer(_layer); _layer = NULL;}
 
@@ -249,4 +263,3 @@ extern void _EndOfDebugAPPMEM(void);// Õ∑≈¡¥±Ì
 
 #endif //__APP_MEM_H__C7FF2028_BBAF_4206_B67C_2DEE5D2EAF60__
 //End of this file
-

@@ -1,0 +1,38 @@
+menu "Allwinner Components Support"
+
+config SUBSYS_KGDB
+    bool "kgdb sutb"
+    default n
+    help
+        The is kgdb stub program, which work as gdbserver.
+
+source "ekernel/components/aw/blkpart/Kconfig"
+
+source "ekernel/components/aw/multi_console/Kconfig"
+
+source "ekernel/components/aw/rpbuf/Kconfig"
+
+source "ekernel/components/aw/virt_log/Kconfig"
+
+source "ekernel/components/aw/env/Kconfig"
+
+source "ekernel/components/aw/samples/Kconfig"
+
+source "ekernel/components/aw/standby/Kconfig"
+
+source "ekernel/components/aw/kasan/Kconfig"
+
+source "ekernel/components/aw/usb_gadget/adbd/Kconfig"
+
+source "ekernel/components/aw/usb_gadget/mtp/Kconfig"
+
+source "ekernel/components/aw/usb_gadget/ncm/Kconfig"
+
+source "ekernel/components/aw/usb_gadget/msc/Kconfig"
+
+source "ekernel/components/aw/usb_gadget/cdc/Kconfig"
+
+source "ekernel/components/aw/debug/Kconfig"
+
+source "ekernel/components/aw/newlib/Kconfig"
+endmenu

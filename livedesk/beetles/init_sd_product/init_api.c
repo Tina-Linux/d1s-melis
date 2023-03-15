@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File          : init.c
-* By            : Andy.zhang
-* Func      : init thread
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-20 8:51:52  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "mod_init_i.h"
 #include <kconfig.h>
@@ -134,7 +148,7 @@ static __s32 __init_prog_draw_progress(init_fw_update_rect_t *prog_bg, init_fw_u
                                        __s32 min, __s32 max, __s32 cur)
 {
     char str_text[128];
-    //ª≠Ω¯∂»Ãı±≥æ∞
+    //ÁîªËøõÂ∫¶Êù°ËÉåÊôØ
     {
         void *pbmp;
 
@@ -154,7 +168,7 @@ static __s32 __init_prog_draw_progress(init_fw_update_rect_t *prog_bg, init_fw_u
 
         GUI_BMP_Draw(pbmp, prog_bg->x, prog_bg->y);
     }
-    //ª≠Ω¯∂»Ãı◊Û±ﬂµƒÕº±Í
+    //ÁîªËøõÂ∫¶Êù°Â∑¶ËæπÁöÑÂõæÊ†á
     {
         void *pbmp;
         __s32 focus;
@@ -177,13 +191,13 @@ static __s32 __init_prog_draw_progress(init_fw_update_rect_t *prog_bg, init_fw_u
         GUI_BMP_Draw(pbmp, prog_left->x, prog_left->y);
     }
 
-    //ª≠Ω¯∂»Ãı∫Õcursor
-    if (cur > max) //±£ª§“ªœ¬
+    //ÁîªËøõÂ∫¶Êù°Âíåcursor
+    if (cur > max) //‰øùÊä§‰∏Ä‰∏ã
     {
         cur = max;
     }
 
-    if (cur < min) //±£ª§“ªœ¬
+    if (cur < min) //‰øùÊä§‰∏Ä‰∏ã
     {
         cur = min;
     }
@@ -233,7 +247,7 @@ static __s32 __init_prog_draw_progress(init_fw_update_rect_t *prog_bg, init_fw_u
             bg_pos = prog_bg->x;
             bg_w = prog_bg->w;
 
-            //∑¿÷π∑«’˚ ˝±∂ ±ª≠≤ª¬˙
+            //Èò≤Ê≠¢ÈùûÊï¥Êï∞ÂÄçÊó∂Áîª‰∏çÊª°
             if (max_mid_w - n * mid_w < mid_w)
             {
                 n++;
@@ -250,7 +264,7 @@ static __s32 __init_prog_draw_progress(init_fw_update_rect_t *prog_bg, init_fw_u
                              , prog_mid->y);
             }
 
-            //ª≠cursor
+            //Áîªcursor
             if (!prog_cursor->res_hdl[0])
             {
                 __msg("prog_cursor->res_hdl[0] is null...");
@@ -458,7 +472,7 @@ static void fw_update(void)
             GUI_DispStringInRect(str_text, &gui_rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
 			GUI_LyrWinFlushFB(hlyr);
             eLIBs_memset(str_text, 0x00, sizeof(str_text));
-            __log("«Î‘⁄TFø®∑≈÷√…˝º∂≈‰÷√Œƒº˛:[%s]", UPDATE_CONFIG_PATH);
+            __log("ËØ∑Âú®TFÂç°ÊîæÁΩÆÂçáÁ∫ßÈÖçÁΩÆÊñá‰ª∂:[%s]", UPDATE_CONFIG_PATH);
 
             while (1);
         }
@@ -483,7 +497,7 @@ static void fw_update(void)
                 GUI_DispStringInRect(str_text, &gui_rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
 				GUI_LyrWinFlushFB(hlyr);
                 eLIBs_memset(str_text, 0x00, sizeof(str_text));
-                __log("«Î‘⁄TFø®∑≈÷√πÃº˛:[%s]", update_file);
+                __log("ËØ∑Âú®TFÂç°ÊîæÁΩÆÂõ∫‰ª∂:[%s]", update_file);
 
                 while (1);
             }
@@ -523,7 +537,7 @@ static void fw_update(void)
                     {
                         __wrn("dsk_theme_open fail...");
                     }
-                    else//œ»∂¡»°nor ˝æ›’º◊°µΩƒ⁄¥Ê
+                    else//ÂÖàËØªÂèñnorÊï∞ÊçÆÂç†‰ΩèÂà∞ÂÜÖÂ≠ò
                     {
                         dsk_theme_hdl2buf(prog_ui[i].res_hdl[j]);
                     }
@@ -666,8 +680,8 @@ static void fw_update(void)
 
         if (card_pin_hd[0])
         {
-            __s32 data = 0;// 0:in£ª1:out°£
-            data = esPINS_ReadPinData(card_pin_hd[0], "detect_pin");  //ªÒ»°µÁ∆Ω
+            __s32 data = 0;// 0:inÔºõ1:out„ÄÇ
+            data = esPINS_ReadPinData(card_pin_hd[0], "detect_pin");  //Ëé∑ÂèñÁîµÂπ≥
 
             if (1 == data)
             {
@@ -697,7 +711,7 @@ __s32 live_init(void)
 
     dsk_langres_init(LANG_DIR);
     dsk_theme_init(THEME_DIR);
-	dsk_display_set_lcd_brightness(10);//¥Úø™±≥π‚£¨∆Ù∂Øƒ¨»œ «√ª”–±≥π‚µƒ
+	dsk_display_set_lcd_brightness(10);//ÊâìÂºÄËÉåÂÖâÔºåÂêØÂä®ÈªòËÆ§ÊòØÊ≤°ÊúâËÉåÂÖâÁöÑ
     return EPDK_OK;
 }
 

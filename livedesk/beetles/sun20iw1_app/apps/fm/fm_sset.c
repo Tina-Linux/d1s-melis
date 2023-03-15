@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2011, CHIPHD, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : fm_sset.c
-* By        : CQQ
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011/07/22 22:00  create this file, implements the fundamental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "fm_sset.h"
@@ -22,7 +36,7 @@
 static __sset_item_para_t fm_audio_list[] =
 {
     {
-        // µ¥ÉùµÀ
+        // å•å£°é“
         "fm\\audio\\0",
         1,
         TYPE_OPT,
@@ -40,7 +54,7 @@ static __sset_item_para_t fm_audio_list[] =
         NULL,
     },
     {
-        // Á¢ÌåÉù
+        // ç«‹ä½“å£°
         "fm\\audio\\1",
         1,
         TYPE_OPT,
@@ -58,7 +72,7 @@ static __sset_item_para_t fm_audio_list[] =
         NULL,
     },
     {
-        // ÍË³ö
+        // é€€å‡º
         "fm\\audio\\2",
         1,
         TYPE_OPT,
@@ -85,7 +99,7 @@ const __sset_item_para_t fm_channel_list_empty_item[2 ] =
 {
 
     {
-        // ÍË³ö
+        // é€€å‡º
         FM_CHANNEL_ITEM_NAME,
         1,
         TYPE_OPT,
@@ -128,7 +142,7 @@ static __sset_item_para_t fm_channel_list[ID_MAX_CHANNEL_COUNT] =
 {
 
     {
-        // ÍË³ö
+        // é€€å‡º
         FM_CHANNEL_ITEM_NAME,
         1,
         TYPE_OPT,
@@ -186,7 +200,7 @@ static __sset_item_para_t fm_channel_list[ID_MAX_CHANNEL_COUNT] =
     },
 };
 
-//Ö÷²Ëµ¥
+//ä¸»èœå•
 static __sset_item_para_t fm_mainmenu[] =
 {
     {
@@ -329,32 +343,32 @@ static __sset_item_para_t fm_mainmenu[] =
 };
 
 
-//ssetÅäÖÃÈë¿Ú
+//sseté…ç½®å…¥å£
 static __sset_item_para_t fm_sset_root[] =
 {
     {
-        "fm",                    // Ãû³Æ
-        1,                       // ÊÇ·ñÓĞĞ§
-        TYPE_NORMAL,             // ·ç¸ñ
+        "fm",                    // åç§°
+        1,                       // æ˜¯å¦æœ‰æ•ˆ
+        TYPE_NORMAL,             // é£æ ¼
         {
-            {0, 0, 0, 0, 0, 0, 0, 0}, // Í¼±ê×ÊÔ´ID
-            {0, 0},              // ÎÄ±¾×ÊÔ´ID
-            0,                   // µ±Ç°Öµ
-            0,                   // ×î´óÖµ
-            0,                   // ×îĞ¡Öµ
-            0,                   // OPTÑ¡ÖĞ±êÊ¾
-            {NULL},                // ÎÄ±¾Êı¾İ
+            {0, 0, 0, 0, 0, 0, 0, 0}, // å›¾æ ‡èµ„æºID
+            {0, 0},              // æ–‡æœ¬èµ„æºID
+            0,                   // å½“å‰å€¼
+            0,                   // æœ€å¤§å€¼
+            0,                   // æœ€å°å€¼
+            0,                   // OPTé€‰ä¸­æ ‡ç¤º
+            {NULL},                // æ–‡æœ¬æ•°æ®
         },
-        {0, 0},                  // ÏûÏ¢Âë
+        {0, 0},                  // æ¶ˆæ¯ç 
 
-        BEETLES_TBL_SIZE(fm_mainmenu),   // ±¾Ïî×Ó²Ëµ¥ÖĞµÄÌõÄ¿Êı
-        fm_mainmenu,                     // ±¾Ïî×Ó²Ëµ¥µØÖ·
+        BEETLES_TBL_SIZE(fm_mainmenu),   // æœ¬é¡¹å­èœå•ä¸­çš„æ¡ç›®æ•°
+        fm_mainmenu,                     // æœ¬é¡¹å­èœå•åœ°å€
     },
 };
 
 //////////////////////////////////////////////////////////////////////////
-//ÖØÖÃÎªÄ¬ÈÏÖµ
-#if 1//Ôö¼ÓÍË³ö
+//é‡ç½®ä¸ºé»˜è®¤å€¼
+#if 1//å¢åŠ é€€å‡º
 static void FM_ParaReset(void)
 {
     char  buf[16] = {0};
@@ -387,7 +401,7 @@ static void FM_ParaReset(void)
 
 void FM_InitSetting(void)
 {
-    //¶Á×¢²á±íÀ´Ïà¹Ø³õÊ¼»¯Êı¾İ
+    //è¯»æ³¨å†Œè¡¨æ¥ç›¸å…³åˆå§‹åŒ–æ•°æ®
     __s32 i = 0;
     __s32 channel_num = 0;
     char exit_txt[128] = {0} ;
@@ -395,9 +409,9 @@ void FM_InitSetting(void)
     get_reg_pointer(para, reg_fm_para_t, REG_APP_FM);
     channel_num = fm_reg_get_channel_count(para);
     __wrn("cur_count = %d,   sel_audio = %d\n", fm_reg_get_channel_count(para), fm_reg_get_audio(para));
-    //ÆµµÀÁĞ±í
+    //é¢‘é“åˆ—è¡¨
 
-    for (i = 0; i < BEETLES_TBL_SIZE(fm_channel_list); i++) //ÒòÎªÔö¼ÓÍË³öÒ»Ïî
+    for (i = 0; i < BEETLES_TBL_SIZE(fm_channel_list); i++) //å› ä¸ºå¢åŠ é€€å‡ºä¸€é¡¹
     {
         if (0 == i)
         {
@@ -405,7 +419,7 @@ void FM_InitSetting(void)
         }
         else
         {
-            if ((i - 1 < fm_reg_get_channel_count(para)) && (para->FM_channel[i - 1] != 0)) //reserverd[0]ÓÃÓÚ±£´æÓĞĞ§ÆµµÀ¸öÊı
+            if ((i - 1 < fm_reg_get_channel_count(para)) && (para->FM_channel[i - 1] != 0)) //reserverd[0]ç”¨äºä¿å­˜æœ‰æ•ˆé¢‘é“ä¸ªæ•°
             {
                 MAKE_STR_CHANNEL_FREQ(fm_channel_list[i].item_attr.text, para->FM_channel[i - 1]);
                 __wrn("fm_channel_list[%d] = %d, para->FM_channel[%d-1] = %d\n",
@@ -432,12 +446,12 @@ void FM_InitSetting(void)
     }
 
     fm_mainmenu[1].n = channel_num + 1;
-    //ÉùµÀÁĞ±í
+    //å£°é“åˆ—è¡¨
     dsk_radio_get_audio_mode(&para->reserverd[1]);
 
     //__wrn("initSETTING sel_audio = %d\n", para->reserverd[1]);
 
-    if ((para->reserverd[1] - 1) < BEETLES_TBL_SIZE(fm_audio_list)) //reserverd[1]ÓÃÓÚ±£´æÉùµÀ
+    if ((para->reserverd[1] - 1) < BEETLES_TBL_SIZE(fm_audio_list)) //reserverd[1]ç”¨äºä¿å­˜å£°é“
     {
         fm_audio_list[para->reserverd[1] - 2].item_attr.opt = 1; //..
     }
@@ -447,8 +461,8 @@ void FM_InitSetting(void)
     }
 
     /*
-        //ÉùµÀÁĞ±í
-        if (fm_reg_get_audio(para) < BEETLES_TBL_SIZE(fm_audio_list))//reserverd[1]ÓÃÓÚ±£´æÉùµÀ
+        //å£°é“åˆ—è¡¨
+        if (fm_reg_get_audio(para) < BEETLES_TBL_SIZE(fm_audio_list))//reserverd[1]ç”¨äºä¿å­˜å£°é“
         {
 
             fm_audio_list[fm_reg_get_audio(para)].item_attr.opt = 1;
@@ -460,7 +474,7 @@ void FM_InitSetting(void)
     */
 }
 #else
-//ÖØÖÃÎªÄ¬ÈÏÖµ
+//é‡ç½®ä¸ºé»˜è®¤å€¼
 static void FM_ParaReset(void)
 {
     char  buf[16] = {0};
@@ -485,16 +499,16 @@ static void FM_ParaReset(void)
 
 void FM_InitSetting(void)
 {
-    //¶Á×¢²á±íÀ´Ïà¹Ø³õÊ¼»¯Êı¾İ
+    //è¯»æ³¨å†Œè¡¨æ¥ç›¸å…³åˆå§‹åŒ–æ•°æ®
     __s32 i;
     reg_fm_para_t *para;
     get_reg_pointer(para, reg_fm_para_t, REG_APP_FM);
     __wrn("count = %d, sel_audio = %d\n", fm_reg_get_channel_count(para), fm_reg_get_audio(para));
 
-    //ÆµµÀÁĞ±í
+    //é¢‘é“åˆ—è¡¨
     for (i = 0; i < BEETLES_TBL_SIZE(fm_channel_list); i++)
     {
-        if ((i < fm_reg_get_channel_count(para)) && (para->FM_channel[i] != 0))//reserverd[0]ÓÃÓÚ±£´æÓĞĞ§ÆµµÀ¸öÊı
+        if ((i < fm_reg_get_channel_count(para)) && (para->FM_channel[i] != 0))//reserverd[0]ç”¨äºä¿å­˜æœ‰æ•ˆé¢‘é“ä¸ªæ•°
         {
             MAKE_STR_CHANNEL_FREQ(fm_channel_list[i].item_attr.text, para->FM_channel[i]);
             __wrn("fm_channel_list[%d] = %d, para->FM_channel[%d] = %d\n",
@@ -518,11 +532,11 @@ void FM_InitSetting(void)
         fm_channel_list[para->channel_id = 0].item_attr.opt = 1;
     }
 
-    //ÉùµÀÁĞ±í
+    //å£°é“åˆ—è¡¨
     dsk_radio_get_audio_mode(&para->reserverd[1]);
     __msg("initSETTING sel_audio = %d\n", para->reserverd[1]);
 
-    if ((para->reserverd[1] - 1) < BEETLES_TBL_SIZE(fm_audio_list)) //reserverd[1]ÓÃÓÚ±£´æÉùµÀ
+    if ((para->reserverd[1] - 1) < BEETLES_TBL_SIZE(fm_audio_list)) //reserverd[1]ç”¨äºä¿å­˜å£°é“
     {
         fm_audio_list[para->reserverd[1] - 1].item_attr.opt = 1;
     }
@@ -532,8 +546,8 @@ void FM_InitSetting(void)
     }
 
     /*
-        //ÉùµÀÁĞ±í
-        if (fm_reg_get_audio(para) < BEETLES_TBL_SIZE(fm_audio_list))//reserverd[1]ÓÃÓÚ±£´æÉùµÀ
+        //å£°é“åˆ—è¡¨
+        if (fm_reg_get_audio(para) < BEETLES_TBL_SIZE(fm_audio_list))//reserverd[1]ç”¨äºä¿å­˜å£°é“
         {
 
             fm_audio_list[fm_reg_get_audio(para)].item_attr.opt = 1;
@@ -547,7 +561,7 @@ void FM_InitSetting(void)
 #endif
 
 
-//´´½¨¼°³õÊ¼»¯SSET´´½¨²ÎÊıÊµÀı
+//åˆ›å»ºåŠåˆå§‹åŒ–SSETåˆ›å»ºå‚æ•°å®ä¾‹
 __sset_create_para_t *FM_SSET_Build_CreatePara(H_WIN h_win)
 {
     __sset_create_para_t *create_para;
@@ -573,4 +587,3 @@ __sset_create_para_t *FM_SSET_Build_CreatePara(H_WIN h_win)
 
 
 //end of file
-

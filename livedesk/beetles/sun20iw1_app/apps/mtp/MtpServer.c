@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include "MtpServer.h"
 #include "MtpDebug.h"
 #include "MtpProperty.h"
@@ -589,6 +620,25 @@ static MtpResponseCode doGetObjectInfo(struct MtpServer *mServer)
 #endif
     return MTP_RESPONSE_OK;
 }
+static int switch_path_format_to_melis(unsigned char *path) {
+	unsigned char *temp_path = path;
+	int index = 0, len = 0;
+
+	len = strlen(path);
+	temp_path = strchr(path, ':');
+	if (temp_path) {
+		memcpy(temp_path, temp_path + 1, (len + path) - (temp_path + 1));
+		*(path + len - 1) = '\0';
+	}
+	temp_path = strchr(path, '\\');
+	if (temp_path) {
+		*temp_path = '/';
+	 	if (*(temp_path - 1) >= 97 && *(temp_path - 1) <= 122) {
+			*(temp_path - 1) = *(temp_path - 1) - 32;
+		}
+	}
+	return 0;
+}
 
 static MtpResponseCode doSendObjectInfo(struct MtpServer *mServer)
 {
@@ -784,14 +834,17 @@ static MtpResponseCode doSendObjectInfo(struct MtpServer *mServer)
     if (format == MTP_FORMAT_ASSOCIATION)
     {
         int ret;
-//        mode_t mask = umask(0);
-        ret = mkdir(path, mServer->mDirectoryPermission);
-//        umask(mask);
+	char *fullpath = NULL;
+	fullpath = malloc(strlen(path) + 5);
+	memset(fullpath, 0x00, strlen(path) + 5);
+	sprintf(fullpath, "/mnt/%s", path);
+	switch_path_format_to_melis(fullpath);
+        ret = mkdir(fullpath, mServer->mDirectoryPermission);
+	free(fullpath);
         if (ret && ret != -EEXIST)
         {
             return MTP_RESPONSE_GENERAL_ERROR;
         }
-//        chown(path, getuid(), mServer->mFileGroup);
         MtpDataBaseEndSendObject(path, handle, MTP_FORMAT_ASSOCIATION, MTP_RESPONSE_OK, mDataBase);
     }
     else

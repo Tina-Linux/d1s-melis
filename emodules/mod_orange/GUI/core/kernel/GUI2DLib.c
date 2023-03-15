@@ -1,22 +1,34 @@
 /*
-**********************************************************************************************************************
-*                                                    ePDK
-*                                    the Easy Portable/Player Develop Kits
-*                                              eMOD Sub-System
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2007-2009, Steven.ZGJ.China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* Moudle  : lemon
-* File    : GUI2DLib.c
-* Purpose : Main part of the 2D graphics library
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
-* By      : Miracle
-* Version : v1.0
-* Date    : 2009-2-19 10:58:42
-**********************************************************************************************************************
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include <stddef.h>           /* needed for definition of NULL */
 #include "gui_core_kernel_private.h"
 
@@ -55,7 +67,7 @@ static int Abs(int v)
 *   All trigonometric functions are for internal usage only and
 *   use the following conventions:
 *
-*      Angles: 4096 <==> 360°
+*      Angles: 4096 <==> 360Â°
 *
 **********************************************************************
 */
@@ -68,28 +80,28 @@ static int Abs(int v)
 *
 *       sin / cos (internal)
 *
-*  Angle : 90/1024°
+*  Angle : 90/1024Â°
 *  Data  : 1/1024
 */
 static const U16 aSin[] =
 {
-    0,       /*  1/16 *90° */
-    100,     /*  1/16 *90° */
-    200,     /*  2/16 *90° */
-    297,     /*  3/16 *90° */
-    392,     /*  4/16 *90° */
-    483,     /*  5/16 *90° */
-    569,     /*  6/16 *90° */
-    650,     /*  7/16 *90° */
-    724,     /*  8/16 *90° */
-    792,     /*  9/16 *90° */
-    851,     /* 10/16 *90° */
-    903,     /* 11/16 *90° */
-    946,     /* 12/16 *90° */
-    980,     /* 13/16 *90° */
-    1004,    /* 14/16 *90° */
-    1019,    /* 15/16 *90° */
-    1024     /* 16/16 *90° */
+    0,       /*  1/16 *90Â° */
+    100,     /*  1/16 *90Â° */
+    200,     /*  2/16 *90Â° */
+    297,     /*  3/16 *90Â° */
+    392,     /*  4/16 *90Â° */
+    483,     /*  5/16 *90Â° */
+    569,     /*  6/16 *90Â° */
+    650,     /*  7/16 *90Â° */
+    724,     /*  8/16 *90Â° */
+    792,     /*  9/16 *90Â° */
+    851,     /* 10/16 *90Â° */
+    903,     /* 11/16 *90Â° */
+    946,     /* 12/16 *90Â° */
+    980,     /* 13/16 *90Â° */
+    1004,    /* 14/16 *90Â° */
+    1019,    /* 15/16 *90Â° */
+    1024     /* 16/16 *90Â° */
 };
 
 /*********************************************************************
@@ -115,7 +127,7 @@ int GUI_sin(int angle)
         angle = 2 * GUI_90DEG - angle; /* use sine symetry */
     }
 
-    /* Now angle is reduced to 0° <= <= 90° */
+    /* Now angle is reduced to 0Â° <= <= 90Â° */
 #if 0
     angle >>= 2;   /* make sure we do not exceed 16 bits in calculations */
     i = angle >> 4;
@@ -157,7 +169,7 @@ int GUI_cos(int angle)
 *
 *       atan() (internal)
 *
-*  Angle : 360/4096°
+*  Angle : 360/4096Â°
 */
 const I16 aTan[] =
 {
@@ -177,7 +189,7 @@ const I16 aTan[] =
     445,     /* atan(13/16) */
     469,     /* atan(14/16) */
     491,     /* atan(15/16) */
-    512      /* atan(1) = 45° = 512/1024 */
+    512      /* atan(1) = 45Â° = 512/1024 */
 };
 
 /*********************************************************************
@@ -190,7 +202,7 @@ static int _atan0_45(int q)
 {
     int r;
     int i, Faktor;
-    /* Now angle is reduced to 0° <= <= 90° ==>  0 <= <= 256*/
+    /* Now angle is reduced to 0Â° <= <= 90Â° ==>  0 <= <= 256*/
     q >>= 2;   /* make sure we do not exceed 16 bits in calculations */
     i = q >> 4;
     Faktor = (1 << 4) - (q & ((1 << 4) - 1));
@@ -214,7 +226,7 @@ static int _atan2(I32 x, I32 y)
     U8 q = 0;
     int angle;
 
-    /* first make sure we are in angle between 0 and 45° */
+    /* first make sure we are in angle between 0 and 45Â° */
     if (x < 0)
     {
         q = 1;

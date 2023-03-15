@@ -1,0 +1,5 @@
+menuconfig COMPONENT_MSC
+    bool "Enable msc support"
+    depends on RT_USING_FINSH && DRIVERS_USB_GADGET_MSC
+
+

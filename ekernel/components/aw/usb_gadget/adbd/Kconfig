@@ -1,0 +1,19 @@
+menuconfig COMPONENT_ADBD
+    bool "Enable Adb support"
+    depends on RT_USING_FINSH && DRIVERS_USB_GADGET_ADB
+
+config COMPONENTS_ADBD_SOCKETS
+    bool "adbd socket service"
+    select LWIP
+    default n
+	depends on COMPONENT_ADBD && NETWORK
+    help
+	adbd socket ervice
+
+if COMPONENT_ADBD
+    config ADBD_AUTOLOAD
+        bool "ADB AutoLoad"
+        default n
+        help
+           "support adb autoload when system up"
+endif

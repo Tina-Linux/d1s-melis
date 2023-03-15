@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY鈥橲 TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS鈥橲DK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY鈥橲 TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 #include <log.h>
 #include "record_view.h"
@@ -103,7 +134,7 @@ static void record_view_recInfo(precord_view_t prec_view)
     GUI_RECT rectSize = {435, 250, 565, 282};
     GUI_RECT rectQuty = {246, 250, 348, 282};
     __s16 offsetX = 0, offsetY = 0;
-    //可录时间
+    //鍙綍鏃堕棿
     //draw_record_lang( prec_view->pui, STRING_RECORD_TIME, APP_COLOR_WHITE);
     GUI_SetColor(GUI_WHITE);
     /*if( prec_view->precord_doc->diskFreeTime >= 100*3600 )
@@ -115,7 +146,7 @@ static void record_view_recInfo(precord_view_t prec_view)
         record_s_to_char(curRecTimes, prec_view->precord_doc->diskFreeTime, ':');
         GUI_DispStringAt( curRecTimes, 110, 29 );
     }*///..
-    //已录时间00:00:01
+    //宸插綍鏃堕棿00:00:01
     __wrn("prec_view->precord_doc->recordCurTimes=%d\n", prec_view->precord_doc->recordCurTimes);
     record_ms_to_char(curRecTimes, prec_view->precord_doc->recordCurTimes, ':');
     draw_record_bmp_ext(prec_view->pui, curRecTimes[0] - '0' + RECORD_0_BMP, offsetX, offsetY);
@@ -134,7 +165,7 @@ static void record_view_recInfo(precord_view_t prec_view)
     offsetX += 44;
     draw_record_bmp_ext(prec_view->pui, curRecTimes[7] - '0' + RECORD_0_BMP, offsetX, offsetY);
     offsetX += 44;
-    //录制文件信息
+    //褰曞埗鏂囦欢淇℃伅
     draw_record_lang_ext(prec_view->pui, prec_view->precord_doc->recQuality + STRING_POOR_QUALITY, GUI_WHITE, &rectQuty);
     //..draw_record_str( prec_view->pui, prec_view->precord_doc->recordName, APP_COLOR_WHITE, &rectName );
     eLIBs_int2str_dec(prec_view->precord_doc->fileSize, curRecTimes);

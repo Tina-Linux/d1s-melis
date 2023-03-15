@@ -1,30 +1,33 @@
 /*
-*******************************************************************************************************************
-*                                                           Graphic Library
-*                                                   the graphic library support module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2008, SoftWinners Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name:       ListMenu_i.h
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
 *
-*Author:          William Wang
 *
-*Version :        1.1.0
-*
-*Date:            2008-10-24
-*
-*Description :    listmenu head file definition
-*
-*Others :         None at present.
-*
-* History :
-*
-* <Author>          <time>              <version>     <description>
-*
-* William Wang     2008-10-24    1.1.0          Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __LISTMENU_I_H__
 #define __LISTMENU_I_H__
@@ -40,36 +43,36 @@
 #define LISTMENU_FRM_RXQ_DEPTH     64
 #define LISTMENU_OTHER_NUM         2
 /**********************************************************************************************************************/
-/* listmenu÷°∏Ò Ω                                                                                                        */
-#define LISTMENU_FRMBUF_FREEFLAG      0xff      /* Õ®≥££¨»Ù¥Àbuffer±ª π”√¡À£¨flag≤ªø…ƒ‹Œ™IPIPE_FRMBUF_FREEFLAG           */
+/* listmenuÂ∏ßÊ†ºÂºè                                                                                                        */
+#define LISTMENU_FRMBUF_FREEFLAG      0xff      /* ÈÄöÂ∏∏ÔºåËã•Ê≠§bufferË¢´‰ΩøÁî®‰∫ÜÔºåflag‰∏çÂèØËÉΩ‰∏∫IPIPE_FRMBUF_FREEFLAG           */
 #define LISTMENU_FRMBUF_USEDFLAG      0x00
-#define LISTMENU_FIXEDEXT_WIDTH       0x00      /*listmenuπÃ∂®ƒ£ Ωœ¬ ◊Œ≤¿©’πøÌ∂»*/
+#define LISTMENU_FIXEDEXT_WIDTH       0x00      /*listmenuÂõ∫ÂÆöÊ®°Âºè‰∏ãÈ¶ñÂ∞æÊâ©Â±ïÂÆΩÂ∫¶*/
 
 typedef enum LISTMENU_STATUS
 {
     LISTMENU_ONRES      = 0,
     LISTMENU_ONDRAW     = 1 << 1,
-    LISTMENU_ONRUN      = 1 << 2,              /*‘À∂Ø◊¥Ã¨*/
-    LISTMENU_ONLOAD     = 1 << 3,              /*º”‘ÿ◊¥Ã¨*/
+    LISTMENU_ONRUN      = 1 << 2,              /*ËøêÂä®Áä∂ÊÄÅ*/
+    LISTMENU_ONLOAD     = 1 << 3,              /*Âä†ËΩΩÁä∂ÊÄÅ*/
     LISTMENU_PUSHED     = 1 << 8,
     LISTMENU_UNPUSHED   = 1 << 9,
     LISTMENU_FOCUS      = 1 << 10
 } LISTMENU_STATUS_E;
 
-/*listmenuøÿº˛À˘‘⁄Õº≤„µƒ◊¥Ã¨–≈œ¢*/
+/*listmenuÊéß‰ª∂ÊâÄÂú®ÂõæÂ±ÇÁöÑÁä∂ÊÄÅ‰ø°ÊÅØ*/
 typedef enum LISTMENU_LYRSTS
 {
-    LISTMENU_WAKEUP,                    /*listmenu’º”–framebuffer*/
-    LISTMENU_SLEEP                      /*listbufferframebuffer Õ∑≈*/
+    LISTMENU_WAKEUP,                    /*listmenuÂç†Êúâframebuffer*/
+    LISTMENU_SLEEP                      /*listbufferframebufferÈáäÊîæ*/
 } LISTMENU_LYRSTS_E;
 
 typedef enum LISTMENU_REQCMD
 {
-    LISTMENU_REQSTOP = 1 << 0      /*”¶”√≥Ã–Ú…Í«ÎÕ£÷π*/
+    LISTMENU_REQSTOP = 1 << 0      /*Â∫îÁî®Á®ãÂ∫èÁî≥ËØ∑ÂÅúÊ≠¢*/
 } LISTMENU_REQCMD_e;
 
 
-/*listmenuœ˚œ¢∂”¡–Ω·ππ*/
+/*listmenuÊ∂àÊÅØÈòüÂàóÁªìÊûÑ*/
 typedef struct LISTMENU_RUNMSG
 {
     __u32       id;
@@ -87,38 +90,38 @@ typedef enum tag_glide_state
 } lstmglide_state_t;
 
 
-/*listmenuπ‹¿Ì–≈œ¢Ω·ππ*/
+/*listmenuÁÆ°ÁêÜ‰ø°ÊÅØÁªìÊûÑ*/
 typedef struct tag_LISTMENU_DATA
 {
-    LIST_LAYER_MAN_t        *listlayer;                 /*Õº≤„øÿ÷∆–≈œ¢Ω·ππ*/
-    __listmenu_runmsg_t     *msgbuff;                   /*œ˚œ¢ª∫≥ÂΩ·ππ*/
-    __krnl_event_t          *listmenu_RxQ;              /* À˘”–µƒÕ®µ¿π≤”√“ª∏ˆ ‰≥ˆÕ®µ¿∂”¡–                 */
-    __u32                    listmenu_RxTID;            /*Ω” ’œ˚œ¢œﬂ≥ÃID*/
-    __u32                    mode;                      /*listmenuƒ£ Ωøÿ÷∆*/
-    __krnl_event_t          *run_sem;                   /*øÿ÷∆…œœ¬º¸µƒ ‰»Î*/
-    __krnl_event_t          *dist_sem;                   /*øÿ÷∆‘⁄‘À∂Ø∆⁄º‰ «∑Ò”–∆‰À˚œ˚œ¢π˝¿¥*/
-    __krnl_event_t          *load_sem;                  /*øÿ÷∆‘⁄Õ£÷π÷Æ∫Ûµƒº”‘ÿ«Èøˆ*/
-    H_WIN                    handle;                    /*listmenuÀ˘‘⁄¥∞ø⁄µƒæ‰±˙*/
-    __pGUI_WIN_CB            user_cb;                   /*”√ªß∂®“Âµƒªÿµ˜∫Ø ˝*/
-    __u16                    status;                    /*listmenu◊¥Ã¨–≈œ¢*/
+    LIST_LAYER_MAN_t        *listlayer;                 /*ÂõæÂ±ÇÊéßÂà∂‰ø°ÊÅØÁªìÊûÑ*/
+    __listmenu_runmsg_t     *msgbuff;                   /*Ê∂àÊÅØÁºìÂÜ≤ÁªìÊûÑ*/
+    __krnl_event_t          *listmenu_RxQ;              /* ÊâÄÊúâÁöÑÈÄöÈÅìÂÖ±Áî®‰∏Ä‰∏™ËæìÂá∫ÈÄöÈÅìÈòüÂàó                 */
+    __u32                    listmenu_RxTID;            /*Êé•Êî∂Ê∂àÊÅØÁ∫øÁ®ãID*/
+    __u32                    mode;                      /*listmenuÊ®°ÂºèÊéßÂà∂*/
+    __krnl_event_t          *run_sem;                   /*ÊéßÂà∂‰∏ä‰∏ãÈîÆÁöÑËæìÂÖ•*/
+    __krnl_event_t          *dist_sem;                   /*ÊéßÂà∂Âú®ËøêÂä®ÊúüÈó¥ÊòØÂê¶ÊúâÂÖ∂‰ªñÊ∂àÊÅØËøáÊù•*/
+    __krnl_event_t          *load_sem;                  /*ÊéßÂà∂Âú®ÂÅúÊ≠¢‰πãÂêéÁöÑÂä†ËΩΩÊÉÖÂÜµ*/
+    H_WIN                    handle;                    /*listmenuÊâÄÂú®Á™óÂè£ÁöÑÂè•ÊüÑ*/
+    __pGUI_WIN_CB            user_cb;                   /*Áî®Êà∑ÂÆö‰πâÁöÑÂõûË∞ÉÂáΩÊï∞*/
+    __u16                    status;                    /*listmenuÁä∂ÊÄÅ‰ø°ÊÅØ*/
     __u32                    lastmsg;
     __u32                    lastkeyaction;             /*key action added by Derek 2011-1-5 14:27:17*/
-    __pos_t                  last_pos;                  /*…œ¥Œ Û±ÍªÚ’ﬂ¥•√˛∆¡µƒµ„ª˜µ„*/
+    __pos_t                  last_pos;                  /*‰∏äÊ¨°Èº†Ê†áÊàñËÄÖËß¶Êë∏Â±èÁöÑÁÇπÂáªÁÇπ*/
     __u32                    last_touch;
-    LISTMENU_LYRSTS_E        lyrsts;                    /*listmenuÕº≤„◊¥Ã¨–≈œ¢*/
+    LISTMENU_LYRSTS_E        lyrsts;                    /*listmenuÂõæÂ±ÇÁä∂ÊÄÅ‰ø°ÊÅØ*/
     H_LYR                    slave_lyr;
-    __rect_t                 slyr_rect;                 /* slave layer‘≠ ºŒª÷√ */
-    __rect_t                 slyr_crect;                /* slave µ±«∞Œª÷√*/
+    __rect_t                 slyr_rect;                 /* slave layerÂéüÂßã‰ΩçÁΩÆ */
+    __rect_t                 slyr_crect;                /* slave ÂΩìÂâç‰ΩçÁΩÆ*/
 
-    /* µØ–‘«˙œﬂ */
-    int                      step[STEP_ARRAY];           // touch ª¨∂Ø≤Ω≥§ ˝◊È
-    __krnl_event_t          *move_sem;                  /*øÿ÷∆‘⁄Õ£÷π÷Æ∫Ûµƒº”‘ÿ«Èøˆ*/
-    int                      len;                       //  ˝◊Èƒ⁄”––ß ˝æ›≥§∂»
-    int                      index;                     // Õº≤„“∆∂Øº∆ ˝
-    __pos_t                  win_start;                 // ∆ ºµ„∂‘”¶µƒ¥∞ø⁄◊¯±Í
-    __lstmgcuv_para_t        gcurv;                     // gcurv ≤Œ ˝
+    /* ÂºπÊÄßÊõ≤Á∫ø */
+    int                      step[STEP_ARRAY];           // touch ÊªëÂä®Ê≠•ÈïøÊï∞ÁªÑ
+    __krnl_event_t          *move_sem;                  /*ÊéßÂà∂Âú®ÂÅúÊ≠¢‰πãÂêéÁöÑÂä†ËΩΩÊÉÖÂÜµ*/
+    int                      len;                       // Êï∞ÁªÑÂÜÖÊúâÊïàÊï∞ÊçÆÈïøÂ∫¶
+    int                      index;                     // ÂõæÂ±ÇÁßªÂä®ËÆ°Êï∞
+    __pos_t                  win_start;                 // Ëµ∑ÂßãÁÇπÂØπÂ∫îÁöÑÁ™óÂè£ÂùêÊ†á
+    __lstmgcuv_para_t        gcurv;                     // gcurv ÂèÇÊï∞
 
-    lstmglide_state_t        gstate;                    // tbar “∆∂Ø◊¥Ã¨
+    lstmglide_state_t        gstate;                    // tbar ÁßªÂä®Áä∂ÊÄÅ
 
     __u32                    request;
 } __listmenu_data_t;

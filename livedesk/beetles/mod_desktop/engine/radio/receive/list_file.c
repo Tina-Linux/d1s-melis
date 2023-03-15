@@ -1,19 +1,34 @@
 /*
-**************************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              LARK sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2006-2007, TERRY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : list_file.c
-* By      : terry
-* Version : V1.00
-* time    : 2009-12-01
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "dsk_radio_i.h"
 #include "format_output.h"
 
@@ -21,11 +36,11 @@
 **********************************************************************************************************************
 *                                               myatoi
 *
-* Description: ½«bufÀïµÄ×Ö·ûÊı¾İ×ª±äÎªÕûÊı
+* Description: å°†bufé‡Œçš„å­—ç¬¦æ•°æ®è½¬å˜ä¸ºæ•´æ•°
 *
-* Arguments  : buf£º´ı×ªµÄ×Ö·û´« len£º×Ö·û´®³¤¶È
+* Arguments  : bufï¼šå¾…è½¬çš„å­—ç¬¦ä¼  lenï¼šå­—ç¬¦ä¸²é•¿åº¦
 *
-* Returns    : ·µ»Ø×ª»¯ºóµÄÕûÊı
+* Returns    : è¿”å›è½¬åŒ–åçš„æ•´æ•°
 *
 * Notes      :
 *
@@ -49,11 +64,11 @@ __s32 myatoi(char *buf, __s32 len)
 **********************************************************************************************************************
 *                                               check_list_file
 *
-* Description: ÅĞ¶ÏbufÀïµÄÊı¾İÊÇ·ñÊôÓÚFMÁĞ±íÎÄ¼şµÄÊı¾İ
+* Description: åˆ¤æ–­bufé‡Œçš„æ•°æ®æ˜¯å¦å±äºFMåˆ—è¡¨æ–‡ä»¶çš„æ•°æ®
 *
-* Arguments  : buf£ºÊı¾İ buf_len£ºbuf³¤¶È
+* Arguments  : bufï¼šæ•°æ® buf_lenï¼šbufé•¿åº¦
 *
-* Returns    : ÕıÈ··µ»Ø0£¬´íÎó·µ»Ø-1
+* Returns    : æ­£ç¡®è¿”å›0ï¼Œé”™è¯¯è¿”å›-1
 *
 * Notes      :
 *
@@ -89,11 +104,11 @@ __s32 check_list_file(char *buf, __u32 buf_len)
 **********************************************************************************************************************
 *                                               get_channel_list_from_file
 *
-* Description: ´ÓÁĞ±íÎÄ¼şÀï»ñÈ¡ÆµµÀÁĞ±í
+* Description: ä»åˆ—è¡¨æ–‡ä»¶é‡Œè·å–é¢‘é“åˆ—è¡¨
 *
-* Arguments  : file_name£ºÎÄ¼şÃû channel_list£ºÆµµÀÁĞ±íÊı¾İ½á¹¹Ö¸Õë
+* Arguments  : file_nameï¼šæ–‡ä»¶å channel_listï¼šé¢‘é“åˆ—è¡¨æ•°æ®ç»“æ„æŒ‡é’ˆ
 *
-* Returns    : ÕıÈ··µ»Ø0£¬´íÎó·µ»Ø-1
+* Returns    : æ­£ç¡®è¿”å›0ï¼Œé”™è¯¯è¿”å›-1
 *
 * Notes      :
 *
@@ -212,11 +227,11 @@ __s32 get_channel_list_from_file(char *file_name, dsk_radio_ch_list_t *channel_l
 **********************************************************************************************************************
 *                                               write_channel_list_to_file
 *
-* Description: °ÑÄ¿Ç°ÏµÍ³ÔËĞĞµÄÆµµÀÁĞ±íĞ´»ØÎÄ¼ş
+* Description: æŠŠç›®å‰ç³»ç»Ÿè¿è¡Œçš„é¢‘é“åˆ—è¡¨å†™å›æ–‡ä»¶
 *
-* Arguments  : file_name£ºÎÄ¼şÃû channel_list£ºÆµµÀÁĞ±íÊı¾İ½á¹¹Ö¸Õë
+* Arguments  : file_nameï¼šæ–‡ä»¶å channel_listï¼šé¢‘é“åˆ—è¡¨æ•°æ®ç»“æ„æŒ‡é’ˆ
 *
-* Returns    : ÕıÈ··µ»Ø0£¬´íÎó·µ»Ø-1
+* Returns    : æ­£ç¡®è¿”å›0ï¼Œé”™è¯¯è¿”å›-1
 *
 * Notes      :
 *
@@ -280,4 +295,3 @@ __s32 write_channel_list_to_file(char *file_name, dsk_radio_ch_list_t *channel_l
     __msg("\n");
     return 0;
 }
-

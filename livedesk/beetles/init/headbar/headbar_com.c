@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                               desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : headbar_com.c
-* By        : Andy.zhang
-* Func      : app bar view
-* Version   : v1.0
-* ============================================================================================================
-* 2009-9-24 15:12:06  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "mod_init_i.h"
@@ -55,34 +69,34 @@ typedef enum
 
 typedef struct
 {
-    int32_t         vol_level;          // µÁ—πº∂±£¨π©µÁ≥ÿœ‘ æ
-    __bool          charge_sta;         //≥‰µÁ◊¥Ã¨
-    __awos_date_t   date;               // »’∆⁄
-    __awos_time_t   time;               //  ±º‰
-    int32_t         music_bg;           // ±Í ∂“Ù¿÷ «∑Ò∫ÛÃ®
+    int32_t         vol_level;          // ÁîµÂéãÁ∫ßÂà´Ôºå‰æõÁîµÊ±†ÊòæÁ§∫
+    __bool          charge_sta;         //ÂÖÖÁîµÁä∂ÊÄÅ
+    __awos_date_t   date;               // Êó•Êúü
+    __awos_time_t   time;               // Êó∂Èó¥
+    int32_t         music_bg;           // Ê†áËØÜÈü≥‰πêÊòØÂê¶ÂêéÂè∞
 
-    int32_t         volume;             // ±Í ∂µ±«∞“Ù¡ø¥Û–°
-    int32_t         bright;             // ±Í ∂µ±«∞¡¡∂»
+    int32_t         volume;             // Ê†áËØÜÂΩìÂâçÈü≥ÈáèÂ§ßÂ∞è
+    int32_t         bright;             // Ê†áËØÜÂΩìÂâç‰∫ÆÂ∫¶
 
 } headbar_data_t;
 
 typedef struct
 {
-    H_WIN   hbar;                       // bar¥∞ø⁄
+    H_WIN   hbar;                       // barÁ™óÂè£
 
-    RECT    music_rect;                 // “Ù¿÷∫ÛÃ®◊¯±Í
-    GUI_RECT    date_rect;                  // »’∆⁄◊¯±Í
-    GUI_RECT    time_rect;                  //  ±º‰◊¯±Í
-    RECT    volume_rect;                // “Ù¡ø◊¯±Í
-    RECT    volume_data_rect;           // “Ù¡ø ˝æ›◊¯±Í
-    RECT    bright_rect;                // ¡¡∂»◊¯±Í
-    RECT    bright_data_rect;           // ¡¡∂» ˝æ›◊¯±Í
-    RECT    vol_rect;                   // µÁ≥ÿ◊¯±Í
-    RECT    home_rect;                  // home◊¯±Í
-    RECT    title_rect;                 // title◊¯±Í
+    RECT    music_rect;                 // Èü≥‰πêÂêéÂè∞ÂùêÊ†á
+    GUI_RECT    date_rect;                  // Êó•ÊúüÂùêÊ†á
+    GUI_RECT    time_rect;                  // Êó∂Èó¥ÂùêÊ†á
+    RECT    volume_rect;                // Èü≥ÈáèÂùêÊ†á
+    RECT    volume_data_rect;           // Èü≥ÈáèÊï∞ÊçÆÂùêÊ†á
+    RECT    bright_rect;                // ‰∫ÆÂ∫¶ÂùêÊ†á
+    RECT    bright_data_rect;           // ‰∫ÆÂ∫¶Êï∞ÊçÆÂùêÊ†á
+    RECT    vol_rect;                   // ÁîµÊ±†ÂùêÊ†á
+    RECT    home_rect;                  // homeÂùêÊ†á
+    RECT    title_rect;                 // titleÂùêÊ†á
 
-    RECT    sig_strength_rect;          //–≈∫≈«ø∂»
-    RECT    sig_qa_rect;                // –≈∫≈÷ ¡ø
+    RECT    sig_strength_rect;          //‰ø°Âè∑Âº∫Â∫¶
+    RECT    sig_qa_rect;                // ‰ø°Âè∑Ë¥®Èáè
 
     HTHEME  vol_htheme[MAX_VOL_LEVEL];
     HTHEME  vol_htheme_charge[MAX_VOL_LEVEL];
@@ -97,30 +111,30 @@ typedef struct
 
     HTHEME  bg_hsig_st[MAX_SIGNAL_LEVEL];
 
-    __u32   vol_id[MAX_VOL_LEVEL];          // µÁ≥ÿ◊ ‘¥
-    __u32   vol_id_charge[MAX_VOL_LEVEL];   // ≥‰µÁµÁ≥ÿ◊ ‘¥
+    __u32   vol_id[MAX_VOL_LEVEL];          // ÁîµÊ±†ËµÑÊ∫ê
+    __u32   vol_id_charge[MAX_VOL_LEVEL];   // ÂÖÖÁîµÁîµÊ±†ËµÑÊ∫ê
 
-    void   *vol_bmp[MAX_VOL_LEVEL];         // µÁ≥ÿÕº∆¨
-    void   *vol_bmp_charge[MAX_VOL_LEVEL];  //≥‰µÁµÁ≥ÿÕº∆¨
-    void   *music_bmp;                      // “Ù¿÷∫ÛÃ®≤•∑≈Õº∆¨
-    void   *aux_bmp;                        // aux∫ÛÃ®≤•∑≈Õº∆¨
-    void   *pause_bmp;                  // “Ù¿÷\ aux∫ÛÃ®‘›Õ£Õº∆¨
-    void   *bright_bmp;                 // ±≥π‚«ø∂»Õº∆¨
-    void   *volume_bmp;                 // “Ù¡øÕº∆¨
-    void   *home_bmp;                   // “Ù¡øÕº∆¨
+    void   *vol_bmp[MAX_VOL_LEVEL];         // ÁîµÊ±†ÂõæÁâá
+    void   *vol_bmp_charge[MAX_VOL_LEVEL];  //ÂÖÖÁîµÁîµÊ±†ÂõæÁâá
+    void   *music_bmp;                      // Èü≥‰πêÂêéÂè∞Êí≠ÊîæÂõæÁâá
+    void   *aux_bmp;                        // auxÂêéÂè∞Êí≠ÊîæÂõæÁâá
+    void   *pause_bmp;                  // Èü≥‰πê\ auxÂêéÂè∞ÊöÇÂÅúÂõæÁâá
+    void   *bright_bmp;                 // ËÉåÂÖâÂº∫Â∫¶ÂõæÁâá
+    void   *volume_bmp;                 // Èü≥ÈáèÂõæÁâá
+    void   *home_bmp;                   // Èü≥ÈáèÂõæÁâá
     void   *home_fcs_bmp;
-    void   *bg_bmp;                     // ±≥æ∞Õº∆¨
+    void   *bg_bmp;                     // ËÉåÊôØÂõæÁâá
     void   *sig_st[6];
 
-    char    date_buf[32];               // »’∆⁄
-    char    time_buf[32];               //  ±º‰
-    char    volume_buf[32];             // “Ù¡ø
-    char    bright_buf[32];             // ¡¡∂»
-    char    title_buf[32];              // ”¶”√≥Ã–Útitle
+    char    date_buf[32];               // Êó•Êúü
+    char    time_buf[32];               // Êó∂Èó¥
+    char    volume_buf[32];             // Èü≥Èáè
+    char    bright_buf[32];             // ‰∫ÆÂ∫¶
+    char    title_buf[32];              // Â∫îÁî®Á®ãÂ∫ètitle
 
-    headbar_data_t  data;               // ◊¥Ã¨ ˝æ›
+    headbar_data_t  data;               // Áä∂ÊÄÅÊï∞ÊçÆ
     GUI_FONT        *font;
-    __bool          flag;               //”√”⁄º«¬º «∑Ò«ø÷∆À¢–¬µÁ≥ÿ
+    __bool          flag;               //Áî®‰∫éËÆ∞ÂΩïÊòØÂê¶Âº∫Âà∂Âà∑Êñ∞ÁîµÊ±†
 } headbar_para_t;
 
 typedef struct
@@ -197,9 +211,9 @@ static int32_t copy_rect(uint32_t *pDst, int32_t dst_x, int32_t dst_y, int32_t d
 //////////////////////////////////////////////////////////////////////////
 
 /************************************************************************/
-// pFileData --- ◊ ‘¥∫Ø ˝ªÒµ√µƒ ˝æ›(“≤ «32ŒªbmpŒƒº˛ ˝æ›)
-// x£¨y      --- ƒø±Í◊¯±Í
-// x0, y0, x1, y1 --- ‘¥«¯”Ú(º¥bmpÕº∆¨ƒ≥“ª«¯”Ú)
+// pFileData --- ËµÑÊ∫êÂáΩÊï∞Ëé∑ÂæóÁöÑÊï∞ÊçÆ(‰πüÊòØ32‰ΩçbmpÊñá‰ª∂Êï∞ÊçÆ)
+// xÔºåy      --- ÁõÆÊ†áÂùêÊ†á
+// x0, y0, x1, y1 --- Ê∫êÂå∫Âüü(Âç≥bmpÂõæÁâáÊüê‰∏ÄÂå∫Âüü)
 /************************************************************************/
 static __s32 APP_BMP_Draw(H_LYR hlyr, const void *pFileData, int x, int y, int x0, int y0, int x1, int y1)
 {
@@ -218,7 +232,7 @@ static __s32 APP_BMP_Draw(H_LYR hlyr, const void *pFileData, int x, int y, int x
     }
 
     GUI_LyrWinGetFB(hlyr, &fb);
-    //ºÏ≤È«¯”Ú∑∂Œß
+    //Ê£ÄÊü•Âå∫ÂüüËåÉÂõ¥
     bmp_w = GUI_BMP_GetXSize(pFileData);
 
     if (! ValueBetweenRangeEx(0, x0, x1, bmp_w))
@@ -253,36 +267,36 @@ static void reset_headbar_data(headbar_para_t *para)
 	//para->data.time.hour = 12;
 	//para->data.time.minute = 12;
 	//para->data.time.second = 12;
-    esTIME_GetTime(&(para->data.time));                     //  ±º‰
+    esTIME_GetTime(&(para->data.time));                     // Êó∂Èó¥
     eLIBs_memset(para->time_buf, 0, 32);
     time_to_char(para->time_buf, para->data.time);
 	//para->data.date.year = 2020;
 	//para->data.date.month = 4;
 	//para->data.date.day = 13;
-    esTIME_GetDate(&(para->data.date));                     // »’∆⁄
+    esTIME_GetDate(&(para->data.date));                     // Êó•Êúü
 
     eLIBs_memset(para->date_buf, 0, 32);
 
     date_to_char(para->date_buf, para->data.date);
     
     dsk_power_get_voltage_level(&level);
-    para->data.vol_level = power_level_2_display(level);    //µÁ≥ÿº∂±
-    para->data.charge_sta = dsk_get_charge_state();         //≥‰µÁ◊¥Ã¨
+    para->data.vol_level = power_level_2_display(level);    //ÁîµÊ±†Á∫ßÂà´
+    para->data.charge_sta = dsk_get_charge_state();         //ÂÖÖÁîµÁä∂ÊÄÅ
     
-    para->data.volume = dsk_volume_get();                   //“Ù¡ø
+    para->data.volume = dsk_volume_get();                   //Èü≥Èáè
     __log("xxxxxx para->data.volume = %d",para->data.volume);
     eLIBs_memset(para->volume_buf, 0, 32);
     eLIBs_int2str_dec(para->data.volume, para->volume_buf);
     bright = dsk_display_get_lcd_brightness();
     __log("xxxxxx bright = %d",bright);
 
-    para->data.bright = bright_level_2_display(bright);     //±≥π‚¡¡∂»
+    para->data.bright = bright_level_2_display(bright);     //ËÉåÂÖâ‰∫ÆÂ∫¶
     //eLIBs_printf("%s %d bright:%d\r\n", __FILE__, __LINE__, bright);
     eLIBs_memset(para->bright_buf, 0, 32);
 
     eLIBs_int2str_dec(para->data.bright, para->bright_buf);
 
-    para->data.music_bg = is_music_background();            //“Ù¿÷∫ÛÃ®
+    para->data.music_bg = is_music_background();            //Èü≥‰πêÂêéÂè∞
 }
 
 static void init_headbar_para(__gui_msg_t *p_msg, headbar_para_t *para)
@@ -622,17 +636,17 @@ static int32_t power_level_2_display(power_level_e level)
     return ret;
 }
 
-//¥´»Î24 ±÷∆–° ±÷µ£¨¥´≥ˆ12 ±÷∆–° ±÷µ£¨∑µªÿ0Œ™am£¨∑«0Œ™pm
+//‰º†ÂÖ•24Êó∂Âà∂Â∞èÊó∂ÂÄºÔºå‰º†Âá∫12Êó∂Âà∂Â∞èÊó∂ÂÄºÔºåËøîÂõû0‰∏∫amÔºåÈùû0‰∏∫pm
 static int32_t hour24_to_hour12(int32_t *hour)
 {
     if (*hour == 0)
     {
-        //¡Ë≥ø12µ„
+        //ÂáåÊô®12ÁÇπ
         *hour = 12;
     }
     else if (*hour == 12)
     {
-        //÷–ŒÁ12µ„
+        //‰∏≠Âçà12ÁÇπ
         return 1;
     }
     else if (12 < *hour)
@@ -665,7 +679,7 @@ static void headbar_refresh_thread(void *arg)
 
         if (GUI_LYRWIN_STA_ON == GUI_LyrWinGetSta(lyr))
         {
-            esTIME_GetTime(&new_data.time);                         // ±º‰
+            esTIME_GetTime(&new_data.time);                         //Êó∂Èó¥
             esTIME_GetDate(&new_data.date);
             __inf("headbar time =%d %d %d",new_data.time.hour,new_data.time.minute,new_data.time.second);
 
@@ -685,13 +699,13 @@ static void headbar_refresh_thread(void *arg)
             }
 
             bright              = dsk_display_get_lcd_brightness();
-            new_data.bright     = bright;//bright_level_2_display(bright);      //±≥π‚¡¡∂»
-            new_data.volume     = dsk_volume_get();             //“Ù¡ø
-            new_data.music_bg   = is_music_background();                //“Ù¿÷∫ÛÃ®
+            new_data.bright     = bright;//bright_level_2_display(bright);      //ËÉåÂÖâ‰∫ÆÂ∫¶
+            new_data.volume     = dsk_volume_get();             //Èü≥Èáè
+            new_data.music_bg   = is_music_background();                //Èü≥‰πêÂêéÂè∞
 
             if ((new_data.date.year != para->data.date.year) || (new_data.date.month != para->data.date.month)|| (new_data.date.day != para->data.date.day))
             {
-                //∏¸–¬œ‘ æ»’∆⁄
+                //Êõ¥Êñ∞ÊòæÁ§∫Êó•Êúü
                 eLIBs_memset(para->date_buf, 0, 32);
                 para->data.date = new_data.date;
                 date_to_char(para->date_buf, para->data.date);
@@ -707,7 +721,7 @@ static void headbar_refresh_thread(void *arg)
 
             if ((new_data.time.hour != para->data.time.hour) || (new_data.time.minute != para->data.time.minute))
             {
-                //∏¸–¬œ‘ æ ±º‰
+                //Êõ¥Êñ∞ÊòæÁ§∫Êó∂Èó¥
                 eLIBs_memset(para->time_buf, 0, 32);
                 para->data.time = new_data.time;
                 time_to_char(para->time_buf, para->data.time);
@@ -723,7 +737,7 @@ static void headbar_refresh_thread(void *arg)
 
             if (new_data.bright != para->data.bright)
             {
-                // ∏¸–¬¡¡∂»
+                // Êõ¥Êñ∞‰∫ÆÂ∫¶
                 extern __bool init_is_close_screen(void);
 
                 if (init_is_close_screen() == EPDK_TRUE)
@@ -744,7 +758,7 @@ static void headbar_refresh_thread(void *arg)
 
             if (new_data.volume != para->data.volume)
             {
-                // ∏¸–¬“Ù¡ø
+                // Êõ¥Êñ∞Èü≥Èáè
                 msg.id          = HBAR_VOLUME_PAINT;
                 msg.h_srcwin    = NULL;
                 msg.h_deswin    = para->hbar;
@@ -795,7 +809,7 @@ static int32_t headbar_on_paint_argb(__gui_msg_t *msg, headbar_paint_e mode)
 
     switch (mode)
     {
-        case HB_PAINT_INIT:         /* »´≤ø∏¸–¬ */
+        case HB_PAINT_INIT:         /* ÂÖ®ÈÉ®Êõ¥Êñ∞ */
         {
             int32_t     i;
             for (i = 0 ; i < HB_PAINT_NUM ; i++)
@@ -806,7 +820,7 @@ static int32_t headbar_on_paint_argb(__gui_msg_t *msg, headbar_paint_e mode)
             return EPDK_OK;
         }
 
-        case HB_PAINT_TIME:     /* ∏¸–¬µ±«∞ ±º‰ */
+        case HB_PAINT_TIME:     /* Êõ¥Êñ∞ÂΩìÂâçÊó∂Èó¥ */
         {
 #if BEETLES_RTC_EXIST
             if (g_enable_paint_time)
@@ -825,9 +839,9 @@ static int32_t headbar_on_paint_argb(__gui_msg_t *msg, headbar_paint_e mode)
             return EPDK_OK;
         }
 
-        case HB_PAINT_DATA:     /* ∏¸–¬µ±«∞»’∆⁄ */
+        case HB_PAINT_DATA:     /* Êõ¥Êñ∞ÂΩìÂâçÊó•Êúü */
         {
-            //≤ªœ‘ æ»’∆⁄
+            //‰∏çÊòæÁ§∫Êó•Êúü
             if (0)
             {
 #if BEETLES_RTC_EXIST
@@ -851,7 +865,7 @@ static int32_t headbar_on_paint_argb(__gui_msg_t *msg, headbar_paint_e mode)
             return EPDK_OK;
         }
 
-        case HB_PAINT_BG:           /* ∏¸–¬±≥æ∞ */
+        case HB_PAINT_BG:           /* Êõ¥Êñ∞ËÉåÊôØ */
         {
             GUI_SetDrawMode(GUI_DRAWMODE_NORMAL);
             GUI_ARGB_Draw(p_ctrl->bg_bmp, 0, 0);
@@ -859,7 +873,7 @@ static int32_t headbar_on_paint_argb(__gui_msg_t *msg, headbar_paint_e mode)
             return EPDK_OK;
         }
 
-        case HB_PAINT_VOL:          /* ∏¸–¬µÁ¡ø */
+        case HB_PAINT_VOL:          /* Êõ¥Êñ∞ÁîµÈáè */
         {
             static int32_t  cur_charge_showing_vol = 0;
             int32_t         vol_level;
@@ -894,7 +908,7 @@ static int32_t headbar_on_paint_argb(__gui_msg_t *msg, headbar_paint_e mode)
             return EPDK_OK;
         }
 
-        case HB_PAINT_BRIGHT:       /* ∏¸–¬¡¡∂» */
+        case HB_PAINT_BRIGHT:       /* Êõ¥Êñ∞‰∫ÆÂ∫¶ */
         {
             GUI_RECT gui_rect;
 
@@ -912,7 +926,7 @@ static int32_t headbar_on_paint_argb(__gui_msg_t *msg, headbar_paint_e mode)
             return EPDK_OK;
         }
 
-        case HB_PAINT_VOLUME:       /*  ∏¸–¬“Ù¡ø */
+        case HB_PAINT_VOLUME:       /*  Êõ¥Êñ∞Èü≥Èáè */
         {
             GUI_RECT gui_rect;
 
@@ -931,7 +945,7 @@ static int32_t headbar_on_paint_argb(__gui_msg_t *msg, headbar_paint_e mode)
             return EPDK_OK;
         }
 
-        case HB_PAINT_HOME:     /*  ∏¸–¬homeÕº±Í */
+        case HB_PAINT_HOME:     /*  Êõ¥Êñ∞homeÂõæÊ†á */
         {
 
             if (msg->dwAddData1 == GUI_MSG_TOUCH_DOWN)
@@ -953,7 +967,7 @@ static int32_t headbar_on_paint_argb(__gui_msg_t *msg, headbar_paint_e mode)
             return EPDK_OK;
         }
 
-        case HB_PAINT_MUSCI_BG:     /* ∏¸–¬∫ÛÃ®≤•∑≈◊¥Ã¨ */
+        case HB_PAINT_MUSCI_BG:     /* Êõ¥Êñ∞ÂêéÂè∞Êí≠ÊîæÁä∂ÊÄÅ */
         {
 
             GUI_SetDrawMode(GUI_DRAWMODE_NORMAL);
@@ -964,17 +978,17 @@ static int32_t headbar_on_paint_argb(__gui_msg_t *msg, headbar_paint_e mode)
 
             if (BG_MUSIC == p_ctrl->data.music_bg)
             {
-                /* ª≠∫ÛÃ®≤•∑≈Õº±Í */
+                /* ÁîªÂêéÂè∞Êí≠ÊîæÂõæÊ†á */
                 GUI_ARGB_Draw(p_ctrl->music_bmp, p_ctrl->music_rect.x, p_ctrl->music_rect.y);
             }
             else if (BG_AUX == p_ctrl->data.music_bg)
             {
-                /* ª≠∫ÛÃ®≤•∑≈Õº±Í */
+                /* ÁîªÂêéÂè∞Êí≠ÊîæÂõæÊ†á */
                 GUI_ARGB_Draw(p_ctrl->aux_bmp, p_ctrl->music_rect.x, p_ctrl->music_rect.y);
             }
             else if (BG_PAUSE == p_ctrl->data.music_bg)
             {
-                /* ª≠∫ÛÃ®≤•∑≈Õº±Í */
+                /* ÁîªÂêéÂè∞Êí≠ÊîæÂõæÊ†á */
                 GUI_ARGB_Draw(p_ctrl->pause_bmp, p_ctrl->music_rect.x, p_ctrl->music_rect.y);
             }
             else
@@ -1106,7 +1120,7 @@ static int32_t cb_headbar_framewin(__gui_msg_t *p_msg)
         {
             headbar_ctl_t   *p_ctrl;
 
-            p_ctrl  = (headbar_ctl_t *)esMEMS_Malloc(0, sizeof(headbar_ctl_t));      // ∑÷≈‰ƒ⁄¥Êµ•‘™
+            p_ctrl  = (headbar_ctl_t *)esMEMS_Malloc(0, sizeof(headbar_ctl_t));      // ÂàÜÈÖçÂÜÖÂ≠òÂçïÂÖÉ
 
             if (!p_ctrl)
             {
@@ -1179,10 +1193,10 @@ static int32_t cb_headbar_framewin(__gui_msg_t *p_msg)
 
                     p_ctrl      = (headbar_ctl_t *)GUI_WinGetAttr(p_msg->h_deswin);
                     dsk_power_get_voltage_level(&level);
-                    vol_level   = power_level_2_display(level);   //µÁ¡øº∂±
+                    vol_level   = power_level_2_display(level);   //ÁîµÈáèÁ∫ßÂà´
                     charge_sta  = dsk_get_charge_state();
 
-                    if (p_ctrl->para.data.vol_level != vol_level || p_ctrl->para.data.charge_sta != charge_sta || EPDK_TRUE == charge_sta)//≥‰µÁ◊¥Ã¨–Ë“™≤ª∂œ∏¸–¬Õº±Í
+                    if (p_ctrl->para.data.vol_level != vol_level || p_ctrl->para.data.charge_sta != charge_sta || EPDK_TRUE == charge_sta)//ÂÖÖÁîµÁä∂ÊÄÅÈúÄË¶Å‰∏çÊñ≠Êõ¥Êñ∞ÂõæÊ†á
                     {
                         p_ctrl->para.data.vol_level     = vol_level;
                         p_ctrl->para.data.charge_sta    = charge_sta;

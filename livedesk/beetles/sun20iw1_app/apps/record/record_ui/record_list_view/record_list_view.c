@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include "record_list_view.h"
 #include "record_comm.h"
 #include <log.h>
@@ -114,9 +145,9 @@ __s32 record_list_view_musicList_init(precord_list_view_t prec_list_view, H_WIN 
     config.start_id = prec_list_view->precord_list_doc->topIndex;
     config.focus_id = prec_list_view->precord_list_doc->playIndex;
     config.bk_color = 0xFF2B2E36;
-    config.alpha_status = 1;                                    //´ò¿ªAlpha¿ª¹Ø
+    config.alpha_status = 1;                                    //æ‰“å¼€Alphaå¼€å…³
     config.list_attr = (void *)prec_list_view;
-    config.item_cnt = prec_list_view->precord_list_doc->total;   //Rat.total±ØÐëÒÑ¾­»ñµÃ
+    config.item_cnt = prec_list_view->precord_list_doc->total;   //Rat.totalå¿…é¡»å·²ç»èŽ·å¾—
 #if 0
     __wrn("config.item_cnt:%d\r\n", config.item_cnt);
     __wrn("config.start_id:%d\r\n", config.start_id);
@@ -125,11 +156,11 @@ __s32 record_list_view_musicList_init(precord_list_view_t prec_list_view, H_WIN 
     scroll_param.show_rect.y = 46;
     scroll_param.show_rect.width = 10;
     scroll_param.show_rect.height = 434;
-    //¹ö¶¯ÌõÇøÓò(³ýÈ¥head,body,tail)
+    //æ»šåŠ¨æ¡åŒºåŸŸ(é™¤åŽ»head,body,tail)
     scroll_param.scroll_rect.x = 325;
     scroll_param.scroll_rect.y = 46;
     scroll_param.scroll_rect.width = 10;
-    scroll_param.scroll_rect.height = 404 - 2;      //¹ö¶¯ÌõÇøÓò(³ýÈ¥head,body,tail)
+    scroll_param.scroll_rect.height = 404 - 2;      //æ»šåŠ¨æ¡åŒºåŸŸ(é™¤åŽ»head,body,tail)
     scroll_param.head_height = 3;
     scroll_param.tail_height = 3;               //head, tail
     scroll_param.back_bmp = get_record_bmp_data(prec_list_view->pui, RECORD_MUSIC_PROGRESS_BG_BMP);

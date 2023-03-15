@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <log.h>
 #include "scan_proc_uipara.h"
 #include "scan_proc.h"
@@ -10,9 +41,9 @@
 #undef  SCREEN_HEIGHT
 #define SCREEN_HEIGHT   272
 
-#define SCAN_STEP       10 //Ω¯∂»Ãı≤Ω≥§
-#define SEARCH_PROC_WIDTH  300 //Ω¯∂»Ãı≥§∂»
-#define SEARCH_PROC_HEIGHT  20 //Ω¯∂»ÃıøÌ∂»
+#define SCAN_STEP       10 //ËøõÂ∫¶Êù°Ê≠•Èïø
+#define SEARCH_PROC_WIDTH  300 //ËøõÂ∫¶Êù°ÈïøÂ∫¶
+#define SEARCH_PROC_HEIGHT  20 //ËøõÂ∫¶Êù°ÂÆΩÂ∫¶
 
 #define DTV_SCAN_UPDATE_MAX_ICON_RES_NUM 2
 
@@ -46,7 +77,7 @@ typedef struct tag_dvb_scan_proc_ctrl
 {
     dvb_scan_proc_para_t *dvb_scan_proc_scene_para;
 
-    __s32  total_ch;//À—À˜µΩµƒÃ® ˝
+    __s32  total_ch;//ÊêúÁ¥¢Âà∞ÁöÑÂè∞Êï∞
 
     dtv_scan_update_rect_t prog_ui[dtv_scan_update_prog_icon_num];
 
@@ -70,7 +101,7 @@ static __s32 dtv_scan_draw_progress(dtv_scan_update_rect_t *prog_bg, dtv_scan_up
                                     dtv_scan_update_rect_t *prog_mid, dtv_scan_update_rect_t *prog_cursor,
                                     __s32 min, __s32 max, __s32 cur)
 {
-    //ª≠Ω¯∂»Ãı±≥æ∞
+    //ÁîªËøõÂ∫¶Êù°ËÉåÊôØ
     {
         void *pbmp;
 
@@ -90,7 +121,7 @@ static __s32 dtv_scan_draw_progress(dtv_scan_update_rect_t *prog_bg, dtv_scan_up
 
         GUI_BMP_Draw(pbmp, prog_bg->x, prog_bg->y);
     }
-    //ª≠Ω¯∂»Ãı◊Û±ﬂµƒÕº±Í
+    //ÁîªËøõÂ∫¶Êù°Â∑¶ËæπÁöÑÂõæÊ†á
     {
         void *pbmp;
         __s32 focus;
@@ -113,13 +144,13 @@ static __s32 dtv_scan_draw_progress(dtv_scan_update_rect_t *prog_bg, dtv_scan_up
         GUI_BMP_Draw(pbmp, prog_left->x, prog_left->y);
     }
 
-    //ª≠Ω¯∂»Ãı∫Õcursor
-    if (cur > max) //±£ª§“ªœ¬
+    //ÁîªËøõÂ∫¶Êù°Âíåcursor
+    if (cur > max) //‰øùÊä§‰∏Ä‰∏ã
     {
         cur = max;
     }
 
-    if (cur < min) //±£ª§“ªœ¬
+    if (cur < min) //‰øùÊä§‰∏Ä‰∏ã
     {
         cur = min;
     }
@@ -169,7 +200,7 @@ static __s32 dtv_scan_draw_progress(dtv_scan_update_rect_t *prog_bg, dtv_scan_up
             bg_pos = prog_bg->x;
             bg_w = prog_bg->w;
 
-            //∑¿÷π∑«’˚ ˝±∂ ±ª≠≤ª¬˙
+            //Èò≤Ê≠¢ÈùûÊï¥Êï∞ÂÄçÊó∂Áîª‰∏çÊª°
             if (max_mid_w - n * mid_w < mid_w)
             {
                 n++;
@@ -186,7 +217,7 @@ static __s32 dtv_scan_draw_progress(dtv_scan_update_rect_t *prog_bg, dtv_scan_up
                              , prog_mid->y);
             }
 
-            //ª≠cursor
+            //Áîªcursor
             if (!prog_cursor->res_hdl[0])
             {
                 __msg("prog_cursor->res_hdl[0] is null...\n");
@@ -256,7 +287,7 @@ static __s32 dtv_scan_res_init(__gui_msg_t *msg)
                     {
                         __wrn("dsk_theme_open fail...\n");
                     }
-                    else//œ»∂¡»°nor ˝æ›’º◊°µΩƒ⁄¥Ê
+                    else//ÂÖàËØªÂèñnorÊï∞ÊçÆÂç†‰ΩèÂà∞ÂÜÖÂ≠ò
                     {
                         dsk_theme_hdl2buf(scan_ctrl->prog_ui[i].res_hdl[j]);
                     }
@@ -289,8 +320,8 @@ static void dtv_scan_res_uninit(__gui_msg_t *msg)
         }
     }
 }
-//msg->dwAddData1¥Êµƒ «À—À˜µΩµƒÃ® ˝
-//msg->dwAddData2∏ﬂ16Œª¥Êµƒ «À—À˜µƒ∆µµ„ ˝£¨µÕ16Œª¥Ê «µ±«∞’˝‘⁄À—À˜µƒµ⁄º∏∏ˆ∆µµ„
+//msg->dwAddData1Â≠òÁöÑÊòØÊêúÁ¥¢Âà∞ÁöÑÂè∞Êï∞
+//msg->dwAddData2È´ò16‰ΩçÂ≠òÁöÑÊòØÊêúÁ¥¢ÁöÑÈ¢ëÁÇπÊï∞Ôºå‰Ωé16‰ΩçÂ≠òÊòØÂΩìÂâçÊ≠£Âú®ÊêúÁ¥¢ÁöÑÁ¨¨Âá†‰∏™È¢ëÁÇπ
 
 static __s32 dvb_scan_proc_loading_paint(__gui_msg_t *msg)
 {
@@ -326,14 +357,14 @@ static __s32 dvb_scan_proc_loading_paint(__gui_msg_t *msg)
     GUI_UC_SetEncodeUTF8();
     GUI_SetDrawMode(LCD_DRAWMODE_NORMAL);
     //__here__;
-    //œ»ª≠Õº∆¨£¨‘Ÿ–¥◊÷
+    //ÂÖàÁîªÂõæÁâáÔºåÂÜçÂÜôÂ≠ó
     dtv_scan_draw_progress(&scan_ctrl->prog_ui[dtv_scan_update_prog_bg],
                            &scan_ctrl->prog_ui[dtv_scan_update_prog_left],
                            &scan_ctrl->prog_ui[dtv_scan_update_prog_mid],
                            &scan_ctrl->prog_ui[dtv_scan_update_prog_cursor],
                            0, maple_get_cur_search_freq_tatol(), 1);
     GUI_SetColor(GUI_WHITE);
-    //œ‘ æ"’˝‘⁄À—À˜"
+    //ÊòæÁ§∫"Ê≠£Âú®ÊêúÁ¥¢"
     dsk_langres_get_menu_text(STRING_DTV_SEARCH_NOW, txt, sizeof(txt));
     __wrn("txt = %s\n", txt);
     gui_rect.x0 = dvb_scan_proc_uipara->dvb_scan_str.x ;
@@ -342,7 +373,7 @@ static __s32 dvb_scan_proc_loading_paint(__gui_msg_t *msg)
     gui_rect.y1 = gui_rect.y0 + dvb_scan_proc_uipara->dvb_scan_str.height - 1 ;
     GUI_DispStringInRect(txt, &gui_rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
 #if 0
-    //œ‘ æ∆µµ„
+    //ÊòæÁ§∫È¢ëÁÇπ
     //dsk_langres_get_menu_text(STRING_DTV_SEARCH_NOW,txt,sizeof(txt));
     cur_freq = maple_get_cur_search_freq(cur_index);
     eLIBs_sprintf(txt, "%d.%03d MHz", cur_freq / 1000000, cur_freq % 1000000);
@@ -353,7 +384,7 @@ static __s32 dvb_scan_proc_loading_paint(__gui_msg_t *msg)
     gui_rect.y1 = gui_rect.y0 + dvb_scan_proc_uipara->dvb_scan_freq.height - 1 ;
     GUI_DispStringInRect(txt, &gui_rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
 #endif
-    //À—À˜µΩµƒÃ® ˝
+    //ÊêúÁ¥¢Âà∞ÁöÑÂè∞Êï∞
     eLIBs_memset(txt, 0x00, sizeof(txt));
 #if (MAPLE_CA_STANDAR == DTV_CA_NONE)
     {
@@ -429,7 +460,7 @@ static __s32 dvb_scan_cmd_proc(__gui_msg_t *msg)
     {
         case SLIDE_UPDATE_FREQ:
         {
-            __s32 freq = msg->dwAddData2;//µ±«∞À—À˜∆µµ„
+            __s32 freq = msg->dwAddData2;//ÂΩìÂâçÊêúÁ¥¢È¢ëÁÇπ
             __s32 x, y;
             __s32 total = (msg->dwAddData1 >> 8) & 0xff; //maple_get_cur_search_freq_tatol();
             __s32 cur_index = HIWORD(msg->dwAddData1);
@@ -437,20 +468,20 @@ static __s32 dvb_scan_cmd_proc(__gui_msg_t *msg)
             x = dvb_scan_proc_uipara->dvb_scan_proc_bmp_pos.x + cur_index * (SEARCH_PROC_WIDTH) / total;
             y = dvb_scan_proc_uipara->dvb_scan_proc_bmp_pos.y;
             __msg("cur_index = %d  x = %d \n", cur_index, x);
-#if 1   //Ã˘Õº∑Ω Ω      
+#if 1   //Ë¥¥ÂõæÊñπÂºè      
             dtv_scan_draw_progress(&scan_ctrl->prog_ui[dtv_scan_update_prog_bg],
                                    &scan_ctrl->prog_ui[dtv_scan_update_prog_left],
                                    &scan_ctrl->prog_ui[dtv_scan_update_prog_mid],
                                    &scan_ctrl->prog_ui[dtv_scan_update_prog_cursor],
                                    1, total, cur_index);
-#else   //ÃÓ≥‰—’…´∑Ω Ω
+#else   //Â°´ÂÖÖÈ¢úËâ≤ÊñπÂºè
             {
                 GUI_LyrWinSel(scan_ctrl->dvb_scan_proc_scene_para->layer);
                 GUI_SetColor(GUI_RED);
                 GUI_FillRect(x, y, x + (SEARCH_PROC_WIDTH) / total, y + SEARCH_PROC_HEIGHT - 1);
             }
 #endif
-            //œ‘ æ∆µµ„
+            //ÊòæÁ§∫È¢ëÁÇπ
             //dsk_langres_get_menu_text(STRING_DTV_SEARCH_NOW,txt,sizeof(txt));
             GUI_SetColor(GUI_WHITE);
             eLIBs_sprintf(txt, "%d.%03d MHz", freq / 1000, freq % 1000);
@@ -469,7 +500,7 @@ static __s32 dvb_scan_cmd_proc(__gui_msg_t *msg)
         {
             __wrn("dvb_scan_cmd_proc, SLIDE_UPDATE_CH.\n");
             GUI_LyrWinSel(scan_ctrl->dvb_scan_proc_scene_para->layer);
-            //À—À˜µΩµƒÃ® ˝
+            //ÊêúÁ¥¢Âà∞ÁöÑÂè∞Êï∞
 #if((MAPLE_TV_STANDAR == MAPLE_TV_ISDB_T)||(MAPLE_TV_STANDAR == MAPLE_TV_DTMB)\
 || (MAPLE_TV_STANDAR == MAPLE_TV_DVB_T)|| (MAPLE_TV_STANDAR == MAPLE_TV_ATSC))
             scan_ctrl->total_ch = msg->dwAddData2;
@@ -667,7 +698,7 @@ static __s32 _dvb_scan_proc_proc(__gui_msg_t *msg)
 }
 
 /*
-    Ω®¡¢¥∞ø⁄
+    Âª∫Á´ãÁ™óÂè£
 */
 static H_WIN dvb_scan_proc_win_create(H_WIN h_parent, dvb_scan_proc_para_t *para)
 {

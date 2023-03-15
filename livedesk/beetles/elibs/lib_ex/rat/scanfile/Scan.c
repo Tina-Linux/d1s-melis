@@ -1,17 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Development Kit
-*                                       ebook information manager libary
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2010-2012, Sunny China
-*                                              All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : Scan.c
-* By      : Sunny
-* Version : V1.00
-* Date    : 2010-4-22 13:54:03
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <typedef.h>
 #include <log.h>
@@ -21,9 +37,12 @@
 #include "rat_common.h"
 #include <kconfig.h>
 #include <kapi.h>
+#include <string.h>
+#include <ctype.h>
 
 #define LIST_DATA_OFFSET(list)      ((int)((list)->Data - (__u8 *)(list)))
 #define ENTRY_NAME_OFFSET(entry)    ((int)((entry)->Name - (__u8 *)(entry)))
+#define USE_SORT 1 //是否开启排序功能
 
 static int  __ScanAllFiles(ScanInfo_t *pScanInfo);
 static int  __SetupScanProcess(ScanInfo_t *pScanInfo);
@@ -603,12 +622,135 @@ static int __SetupScanProcess(ScanInfo_t *pScanInfo)
     }
 }
 
+int count_digits(const char* s)
+{
+	const char *p = s;
+	while (isdigit(*p)) {
+		p++;
+	}
+	return (int)(p - s);
+}
+/*
+****************************************************************************************************
+*                                       compare_str
+*  Description:
+*               -   1.The non-numeric part is sorted by string
+*               -   2.The numeric section is sorted by size
+*               -   3.The priority of rule 1 is higher than that of rule 2
+*  Return value:
+*               -   > 0: a_ptr>b_ptr
+*               -   < 0: a_ptr<b_ptr
+*               -   = 0: a_ptr=b_ptr
+****************************************************************************************************
+*/
+int compare_str(char *a_ptr, char *b_ptr)
+{
+	char *a = a_ptr, *b = b_ptr;
+
+	while (*a != '\0' && *b != '\0')
+    {
+		/* If a and b are both numbers */
+		if (isdigit(*a) && isdigit(*b))
+        {
+            /* the digits of a */
+			int a_count = count_digits(a);
+			/* Whether a and b have the same number of digits */
+			int diff = a_count - count_digits(b);
+			if (diff) //Different bits are judged by their size
+            {
+				return diff;
+			}
+			diff = memcmp(a, b, a_count); //The same bit is compared by memory
+			if (diff)
+            {
+				return diff;
+			}
+			a += a_count;
+			b += a_count;
+		}
+		if (*a != *b)
+        {
+			return *a - *b;
+		}
+		a++;
+		b++;
+	}
+	/* The two names are not the same length, but the characters are the same, the shorter one comes first */
+	return strlen(a) - strlen(b);
+}
+
+void init_tempPathTree(tempPathTree *t)
+{
+    (*t) = NULL;
+}
+
+int create_tempPathTree(tempPathTree *t, const char *filepath, const char *filename)
+{
+    if(!(*t))
+    {
+        (*t) = (tempPathTree)rat_malloc(sizeof(tempPathTNode_t));
+        eLIBs_strcpy((*t)->filepath, filepath);  // (*t)->filepath = filepath;
+        eLIBs_strcpy((*t)->filename, filename);
+        (*t)->rchild = NULL;
+        (*t)->lchild = NULL;
+    }
+    else if(compare_str(filename, (*t)->filename) > 0)    //strcmp(filename, (*t)->filename) > 0
+    {
+        create_tempPathTree(&((*t)->rchild), filepath, filename);
+    }
+    else
+    {
+        create_tempPathTree(&((*t)->lchild), filepath, filename);
+    }
+  return 0;
+}
+
+void sort_tempPath(tempPathTree *t, const char *filePath)
+{
+    const char filename[SCAN_MAX_PATH];
+    char *filename_len = 0;
+    char temp_len = 0;
+
+    //1.Extract the filename from the file path
+    filename_len = strchr(filePath, '.') - strrchr(filePath, '\\') - 1; //Filename Length
+    temp_len = strrchr(filePath, '\\') - filePath + 1;                  //Address at the beginning of the file name
+    eLIBs_strncpy(filename, filePath + temp_len, filename_len);
+
+    //2.Build a binary tree
+    create_tempPathTree(t, filePath, filename);
+}
+
+void insert_tempPath(tempPathTree t, int format, ScanInfo_t *pScanInfo)
+{
+	if(t == NULL)
+    {
+		return;
+	}
+
+	insert_tempPath(t->lchild, format, pScanInfo);
+
+    if (EPDK_OK != __InsertFileEntryToList(t->filepath, format, pScanInfo))
+    {
+        __wrn("insert file entry to list failed");
+
+        esFSYS_closedir(pScanInfo->pCurDir);
+
+        pScanInfo->pCurDir = NULL;
+    }
+
+	insert_tempPath(t->rchild, format, pScanInfo);
+}
 
 static int __ScanAllFiles(ScanInfo_t *pScanInfo)
 {
     ES_DIRENT   *pDirent;
     int          Format = RAT_MEDIA_TYPE_UNKNOWN;
     int          Count  = 0;
+
+#if USE_SORT
+    tempPathTree t;
+    init_tempPathTree(&t);
+#endif
 
     __wrn("__ScanAllFiles0");
 
@@ -653,6 +795,9 @@ static int __ScanAllFiles(ScanInfo_t *pScanInfo)
                     eLIBs_strcat(pScanInfo->tempPath, "\\");
                     eLIBs_strcat(pScanInfo->tempPath, (char *)pDirent->d_name);
 
+#if USE_SORT
+                    sort_tempPath(&t, pScanInfo->tempPath);
+#else
                     if (EPDK_OK != __InsertFileEntryToList(pScanInfo->tempPath, Format, pScanInfo))
                     {
                         __wrn("insert file entry to list failed");
@@ -662,6 +807,7 @@ static int __ScanAllFiles(ScanInfo_t *pScanInfo)
                         pScanInfo->pCurDir = NULL;
                         return Count;
                     }
+#endif
 
                     Count++;
 
@@ -679,6 +825,10 @@ static int __ScanAllFiles(ScanInfo_t *pScanInfo)
 
         pScanInfo->pCurDir = NULL;
     }
+
+#if USE_SORT
+        insert_tempPath(t, Format, pScanInfo);
+#endif
 
     //..__wrn("__ScanAllFiles7");
     return Count;
@@ -805,8 +955,8 @@ int ScanFilesOneTime(ScanInfo_t *pScanInfo)
 static int __InsertFileEntryToList(const char *filePath, int format, ScanInfo_t *pScanInfo)
 {
     ScanFileList_t      *pLastList;
-    ScanFileEntry_t     *pEntry;
     __u32               RecLen = 0;
+    ScanFileEntry_t     *pEntry;
 
     /* insert file full path to the last file list of pScanInfo */
     pLastList   = pScanInfo->LastList;
@@ -849,6 +999,7 @@ static int __InsertFileEntryToList(const char *filePath, int format, ScanInfo_t 
     /* adjust the last file list management information */
     pLastList->Top    = pLastList->Size;
     pLastList->Size  += RecLen;
+
     return EPDK_OK;
 }
 

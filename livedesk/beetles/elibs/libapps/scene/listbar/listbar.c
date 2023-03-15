@@ -1,93 +1,109 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              record app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2006-2010, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : listbar.c
-* By      : lyn
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "listbar_private.h"
 #include <kconfig.h>
 
 typedef enum tag_DECODE_MODE
 {
-    DECODE_NULL             = 0,                    // ≤ªΩ‚¬Î»Œ∫Œ“≥
-    DECODE_CURR,                                    // Ω‚¬Îµ±«∞“≥
-    DECODE_PREV,                                    // Ω‚¬Îµ±«∞“≥µƒ«∞√Ê“≥
-    DECODE_NEXT,                                    // Ω‚¬ÎÀ˘”–“≥µƒ∫Û√Ê“≥
-    DECODE_ITEM,                                    // ÷ªœ‘ æµ±«∞“≥
+    DECODE_NULL             = 0,                    // ‰∏çËß£Á†Å‰ªª‰ΩïÈ°µ
+    DECODE_CURR,                                    // Ëß£Á†ÅÂΩìÂâçÈ°µ
+    DECODE_PREV,                                    // Ëß£Á†ÅÂΩìÂâçÈ°µÁöÑÂâçÈù¢È°µ
+    DECODE_NEXT,                                    // Ëß£Á†ÅÊâÄÊúâÈ°µÁöÑÂêéÈù¢È°µ
+    DECODE_ITEM,                                    // Âè™ÊòæÁ§∫ÂΩìÂâçÈ°µ
 } __decode_mode_e;
 
 typedef struct tag_ONE_PAGE
 {
-    __s32                   page_sta;               // “≥√ÊΩ‚¬Î≥…π¶±Í æ£∫1 ≥…π¶°¢ 0  ß∞‹
-    __s32                   page_no;                // ª∫¥Ê¿Ôµƒ“≥√Ê∫≈
-    H_WIN                   page_lyr;               // ª∫¥Ê“≥∂‘”¶µƒ»ÌÕº≤„
+    __s32                   page_sta;               // È°µÈù¢Ëß£Á†ÅÊàêÂäüÊ†áÁ§∫Ôºö1 ÊàêÂäü„ÄÅ 0 Â§±Ë¥•
+    __s32                   page_no;                // ÁºìÂ≠òÈáåÁöÑÈ°µÈù¢Âè∑
+    H_WIN                   page_lyr;               // ÁºìÂ≠òÈ°µÂØπÂ∫îÁöÑËΩØÂõæÂ±Ç
 } __one_page_t;
 
 typedef struct  tag_LISTBAR
 {
-    H_WIN                   fwin_hdle;              // ¥∞ø⁄≤Ÿ◊˜æ‰±˙
-    H_WIN                   lwin_hdle;              // MENUÀ˘‘⁄Õº≤„æ‰±˙
+    H_WIN                   fwin_hdle;              // Á™óÂè£Êìç‰ΩúÂè•ÊüÑ
+    H_WIN                   lwin_hdle;              // MENUÊâÄÂú®ÂõæÂ±ÇÂè•ÊüÑ
 
-    __one_page_t            lbar_page[PAGE_NUM];    // ª∫¥Ê“≥√Ê
-    // øÿ÷∆≤ø∑÷
-    RECT                    lbar_rect;              // MENUÀ˘‘⁄¥∞ø⁄«¯”Ú
+    __one_page_t            lbar_page[PAGE_NUM];    // ÁºìÂ≠òÈ°µÈù¢
+    // ÊéßÂà∂ÈÉ®ÂàÜ
+    RECT                    lbar_rect;              // MENUÊâÄÂú®Á™óÂè£Âå∫Âüü
 
-    __s32                   lbar_page_num;          // µ•“≥√Êƒ⁄◊‹Ãıƒø ˝
-    __s32                   lbar_page_row;          // ––
-    __s32                   lbar_page_col;          // ¡–
-    __s32                   lbar_page_width;        // ”––ß“≥øÌ
-    __s32                   lbar_page_height;       // ”––ß“≥∏ﬂ
+    __s32                   lbar_page_num;          // ÂçïÈ°µÈù¢ÂÜÖÊÄªÊù°ÁõÆÊï∞
+    __s32                   lbar_page_row;          // Ë°å
+    __s32                   lbar_page_col;          // Âàó
+    __s32                   lbar_page_width;        // ÊúâÊïàÈ°µÂÆΩ
+    __s32                   lbar_page_height;       // ÊúâÊïàÈ°µÈ´ò
 
-    __s32                   lbar_current_move;      // µ±«∞“∆∂Ø≤Ω≥§
-    __s32                   lbar_current_page;      // µ±«∞œ‘ æ“≥√Ê∫≈
-    __s32                   lbar_current_total;     // µ±«∞◊‹Ãıƒø ˝
-    __s32                   lbar_current_focus;     // µ±«∞Ωπµ„Ãıƒø∫≈
+    __s32                   lbar_current_move;      // ÂΩìÂâçÁßªÂä®Ê≠•Èïø
+    __s32                   lbar_current_page;      // ÂΩìÂâçÊòæÁ§∫È°µÈù¢Âè∑
+    __s32                   lbar_current_total;     // ÂΩìÂâçÊÄªÊù°ÁõÆÊï∞
+    __s32                   lbar_current_focus;     // ÂΩìÂâçÁÑ¶ÁÇπÊù°ÁõÆÂè∑
 
-    __s32                   lbar_item;              // Ωπµ„Ãıƒø‘⁄œ‘ æ“≥√Êµƒ±‡∫≈£¨¥”0ø™ º°£
-    __s32                   lbar_move;              // “≥√Ê“∆∂Ø÷∏ æ
+    __s32                   lbar_item;              // ÁÑ¶ÁÇπÊù°ÁõÆÂú®ÊòæÁ§∫È°µÈù¢ÁöÑÁºñÂè∑Ôºå‰ªé0ÂºÄÂßã„ÄÇ
+    __s32                   lbar_move;              // È°µÈù¢ÁßªÂä®ÊåáÁ§∫
 
-    __s32                   lbar_focus_sta;         // ∞¥º¸œ˚œ¢◊¥Ã¨Œª
-    __s32                   lbar_touch_sta;         // ¥•√˛œ˚œ¢◊¥Ã¨Œª
-    __pos_t                 lbar_last_pos;          // ¥•√˛œ˚œ¢µƒŒª÷√
-    __s32                   lbar_last_direct;       // ª¨∂Øµƒ∑ΩœÚ
+    __s32                   lbar_focus_sta;         // ÊåâÈîÆÊ∂àÊÅØÁä∂ÊÄÅ‰Ωç
+    __s32                   lbar_touch_sta;         // Ëß¶Êë∏Ê∂àÊÅØÁä∂ÊÄÅ‰Ωç
+    __pos_t                 lbar_last_pos;          // Ëß¶Êë∏Ê∂àÊÅØÁöÑ‰ΩçÁΩÆ
+    __s32                   lbar_last_direct;       // ÊªëÂä®ÁöÑÊñπÂêë
 
-    // ‘§Ω‚≤ø∑÷
-    __s32                   lbar_cnt;               // ‘§Ω‚Ãıƒø ˝
-    __decode_mode_e         lbar_dec_state;         // ‘§Ω‚œﬂ≥Ã◊¥Ã¨
-    __u32                   lbar_dec_tsk;           // ‘§Ω‚œﬂ≥Ã
-    __krnl_event_t         *lbar_dec_sem;           // ‘§Ω‚øÿ÷∆–≈∫≈¡ø
+    // È¢ÑËß£ÈÉ®ÂàÜ
+    __s32                   lbar_cnt;               // È¢ÑËß£Êù°ÁõÆÊï∞
+    __decode_mode_e         lbar_dec_state;         // È¢ÑËß£Á∫øÁ®ãÁä∂ÊÄÅ
+    __u32                   lbar_dec_tsk;           // È¢ÑËß£Á∫øÁ®ã
+    __krnl_event_t         *lbar_dec_sem;           // È¢ÑËß£ÊéßÂà∂‰ø°Âè∑Èáè
 
-    // ¿©…¢œﬂ≥Ã
-    __s32                   lbar_dif_page[PAGE_NUM * ITEM_NUM];     // ¥Ê¥¢¥˝¿©»ˆ“≥
-    __s32                   lbar_dif_num;           // ¿©»ˆø™ ºÀ˜“˝
-    __u32                   lbar_dif_tsk;           // ‘§Ω‚œﬂ≥Ã
-    __krnl_event_t         *lbar_dif_sem;           // ‘§Ω‚øÿ÷∆–≈∫≈¡ø
+    // Êâ©Êï£Á∫øÁ®ã
+    __s32                   lbar_dif_page[PAGE_NUM * ITEM_NUM];     // Â≠òÂÇ®ÂæÖÊâ©ÊííÈ°µ
+    __s32                   lbar_dif_num;           // Êâ©ÊííÂºÄÂßãÁ¥¢Âºï
+    __u32                   lbar_dif_tsk;           // È¢ÑËß£Á∫øÁ®ã
+    __krnl_event_t         *lbar_dif_sem;           // È¢ÑËß£ÊéßÂà∂‰ø°Âè∑Èáè
 
-    // ªÊ÷∆ªÿµ˜∫Õ≈‰÷√≤Œ ˝
-    H_WIN                   item_layer;             // itemª∫¥ÊÕº≤„
-    __draw_item             lbar_draw;              // ªÊ÷∆∫Ø ˝
-    __listbar_config_t      config;                 // ≈‰÷√–≈œ¢
+    // ÁªòÂà∂ÂõûË∞ÉÂíåÈÖçÁΩÆÂèÇÊï∞
+    H_WIN                   item_layer;             // itemÁºìÂ≠òÂõæÂ±Ç
+    __draw_item             lbar_draw;              // ÁªòÂà∂ÂáΩÊï∞
+    __listbar_config_t      config;                 // ÈÖçÁΩÆ‰ø°ÊÅØ
 
-    // πˆ∂ØÃı≤Œ ˝
-    H_WIN                   scroll_b_layer;         // ±≥æ∞ª∫¥ÊÕº≤„
-    H_WIN                   scroll_f_layer;         // «∞æ∞ª∫¥ÊÕº≤„
-    __u32                   scroll_state;           // πˆ∂ØÃı◊¥Ã¨
-    __scroll_bar_t          scroll_para;            // πˆ∂ØÃı≤Œ ˝
+    // ÊªöÂä®Êù°ÂèÇÊï∞
+    H_WIN                   scroll_b_layer;         // ËÉåÊôØÁºìÂ≠òÂõæÂ±Ç
+    H_WIN                   scroll_f_layer;         // ÂâçÊôØÁºìÂ≠òÂõæÂ±Ç
+    __u32                   scroll_state;           // ÊªöÂä®Êù°Áä∂ÊÄÅ
+    __scroll_bar_t          scroll_para;            // ÊªöÂä®Êù°ÂèÇÊï∞
 
-    // ª¨∂Øœﬂ≥Ã
-    __s32                   lbar_sld_speed;         // ª¨∂ØÀŸ∂»
-    __s32                   lbar_sld_state;         // ª¨∂Ø◊¥Ã¨
-    __u32                   lbar_sld_tsk;           // ª¨∂Øœﬂ≥Ã
-    __krnl_event_t         *lbar_sld_sem;           // ª¨∂Øøÿ÷∆–≈∫≈¡ø
+    // ÊªëÂä®Á∫øÁ®ã
+    __s32                   lbar_sld_speed;         // ÊªëÂä®ÈÄüÂ∫¶
+    __s32                   lbar_sld_state;         // ÊªëÂä®Áä∂ÊÄÅ
+    __u32                   lbar_sld_tsk;           // ÊªëÂä®Á∫øÁ®ã
+    __krnl_event_t         *lbar_sld_sem;           // ÊªëÂä®ÊéßÂà∂‰ø°Âè∑Èáè
 } __listbar_t;
 
 
@@ -153,7 +169,7 @@ static H_WIN __listbar_layer_create(__u32 width, __u32 height, __s32 pipe)
 **********************************************************************************************************************
 *                                               __listbar_brush_page
 *
-* Description: À¢–¬ª∫¥Ê÷–µƒ“≥√Ê ˝æ›
+* Description: Âà∑Êñ∞ÁºìÂ≠ò‰∏≠ÁöÑÈ°µÈù¢Êï∞ÊçÆ
 *
 * Arguments  :
 *
@@ -249,7 +265,7 @@ static void __listbar_brush_page(__listbar_t *hdle, __decode_mode_e mode)
 **********************************************************************************************************************
 *                                               __listbar_show_scroll
 *
-* Description: œ‘ æΩ¯∂»Ãı
+* Description: ÊòæÁ§∫ËøõÂ∫¶Êù°
 *
 * Arguments  :
 *
@@ -281,7 +297,7 @@ static void __listbar_show_scroll(__listbar_t *hdle)
 
     if (p_listbar->scroll_para.back_bmp != NULL)
     {
-        // ±≥æ∞Õº±Í
+        // ËÉåÊôØÂõæÊ†á
         tmp_x = p_listbar->scroll_para.scroll_rect.x;
         tmp_y = p_listbar->scroll_para.scroll_rect.y;
         GUI_ARGB_Draw(p_listbar->scroll_para.back_bmp, tmp_x, tmp_y);
@@ -305,13 +321,13 @@ static void __listbar_show_scroll(__listbar_t *hdle)
 
     if (p_listbar->lbar_current_total <= p_listbar->lbar_page_num)
     {
-        // ≤ª≥¨π˝“ª∆¡ ˝æ›
+        // ‰∏çË∂ÖËøá‰∏ÄÂ±èÊï∞ÊçÆ
         tmp_x = p_listbar->scroll_para.scroll_rect.x;
         tmp_y = p_listbar->scroll_para.scroll_rect.y;
 
         for (i = 0; i < tmp_h; i++)
         {
-            GUI_ARGB_Draw(p_listbar->scroll_para.body_bmp, tmp_x, tmp_y + i);//body µƒ∏ﬂ∂»±ÿ–ÎŒ™1
+            GUI_ARGB_Draw(p_listbar->scroll_para.body_bmp, tmp_x, tmp_y + i);//body ÁöÑÈ´òÂ∫¶ÂøÖÈ°ª‰∏∫1
         }
     }
     else
@@ -350,7 +366,7 @@ static void __listbar_show_scroll(__listbar_t *hdle)
 **********************************************************************************************************************
 *                                               __listbar_draw_page
 *
-* Description: ªÊ÷∆“ª“≥
+* Description: ÁªòÂà∂‰∏ÄÈ°µ
 *
 * Arguments  :
 *
@@ -393,7 +409,7 @@ static void __listbar_draw_page(__listbar_t *hdle)
 
             for (i = 0; i < p_listbar->lbar_page_num; i++)
             {
-                p_listbar->lbar_dif_page[num + i] = tmp_page + i;       // …Ë÷√∫ÛÃ®±Í÷æŒª
+                p_listbar->lbar_dif_page[num + i] = tmp_page + i;       // ËÆæÁΩÆÂêéÂè∞Ê†áÂøó‰Ωç
                 draw_para.rect.x      = (i % p_listbar->lbar_page_col) * p_listbar->config.item_width;
                 draw_para.rect.y      = (i / p_listbar->lbar_page_col) * p_listbar->config.item_height;
                 draw_para.rect.width  = p_listbar->config.item_width;
@@ -403,13 +419,13 @@ static void __listbar_draw_page(__listbar_t *hdle)
 
                 if (draw_para.index >= p_listbar->lbar_current_total)
                 {
-                    // µ±ªÊ÷∆Ãıƒø∫≈≥¨π˝◊Ó¥ÛÃıƒø ±£¨∑¢ø’∞◊ªÊ÷∆œ˚œ¢
+                    // ÂΩìÁªòÂà∂Êù°ÁõÆÂè∑Ë∂ÖËøáÊúÄÂ§ßÊù°ÁõÆÊó∂ÔºåÂèëÁ©∫ÁôΩÁªòÂà∂Ê∂àÊÅØ
                     draw_para.mode = LBAR_MODE_VACANT;
                     p_listbar->lbar_draw(&draw_para);
                 }
                 else
                 {
-                    // ∑¢∆’Õ®ªÊ÷∆œ˚œ¢
+                    // ÂèëÊôÆÈÄöÁªòÂà∂Ê∂àÊÅØ
                     draw_para.mode = LBAR_MODE_NORMAL;
                     p_listbar->lbar_draw(&draw_para);
                 }
@@ -427,7 +443,7 @@ static void __listbar_draw_page(__listbar_t *hdle)
 **********************************************************************************************************************
 *                                               __listbar_draw_focus
 *
-* Description: ªÊ÷∆“ª∏ˆΩπµ„Ãıƒø
+* Description: ÁªòÂà∂‰∏Ä‰∏™ÁÑ¶ÁÇπÊù°ÁõÆ
 *
 * Arguments  :
 *
@@ -472,8 +488,8 @@ static void __listbar_draw_focus(__listbar_t *hdle)
 **********************************************************************************************************************
 *                                               __listbar_draw_miniature
 *
-* Description: ªÊ÷∆“ª∏ˆµ±«∞Ωπµ„∂‘”¶µƒÀı¬‘Õº( ∂‘”⁄Õº∆¨≤≈”––ß£¨π ”¶”√–Ë◊˜≈–∂œ)
-*           ”¶”√–Ë≈–∂œ∏√Ωπµ„Àı¬‘Õº «∑Ò“—æ≠ª≠π˝¡À£¨“‘±‹√‚÷ÿ∏¥ª≠¥ÀÀı¬‘Õº
+* Description: ÁªòÂà∂‰∏Ä‰∏™ÂΩìÂâçÁÑ¶ÁÇπÂØπÂ∫îÁöÑÁº©Áï•Âõæ( ÂØπ‰∫éÂõæÁâáÊâçÊúâÊïàÔºåÊïÖÂ∫îÁî®ÈúÄ‰ΩúÂà§Êñ≠)
+*           Â∫îÁî®ÈúÄÂà§Êñ≠ËØ•ÁÑ¶ÁÇπÁº©Áï•ÂõæÊòØÂê¶Â∑≤ÁªèÁîªËøá‰∫ÜÔºå‰ª•ÈÅøÂÖçÈáçÂ§çÁîªÊ≠§Áº©Áï•Âõæ
 * Arguments  :
 *
 * Returns    :
@@ -498,7 +514,7 @@ static void __listbar_draw_miniature(__listbar_t *hdle)
 **********************************************************************************************************************
 *                                               __listbar_show_page
 *
-* Description: œ‘ æ“ª“≥
+* Description: ÊòæÁ§∫‰∏ÄÈ°µ
 *
 * Arguments  :
 *
@@ -529,7 +545,7 @@ static void __listbar_show_page(__listbar_t *hdle, __decode_mode_e mode)
         __listbar_draw_page(p_listbar);
         GUI_LyrWinSel(p_listbar->lwin_hdle);
         GUI_LyrWinGetFB(p_listbar->lbar_page[PAGE_NUM / 2 - 1].page_lyr, &fb);
-        // FBµƒ÷∏’Îœ¬“∆µΩ÷∏∂®Œª÷√
+        // FBÁöÑÊåáÈíà‰∏ãÁßªÂà∞ÊåáÂÆö‰ΩçÁΩÆ
         fb.addr[0]      = (void *)((unsigned long)fb.addr[0] + ((fb.size.height - p_listbar->lbar_move) * fb.size.width * 4));
         fb.size.width   = fb.size.width;
         fb.size.height  = p_listbar->lbar_move;
@@ -545,7 +561,7 @@ static void __listbar_show_page(__listbar_t *hdle, __decode_mode_e mode)
         __listbar_draw_page(p_listbar);
         GUI_LyrWinSel(p_listbar->lwin_hdle);
         GUI_LyrWinGetFB(p_listbar->lbar_page[PAGE_NUM / 2].page_lyr, &fb);
-        // FBµƒ÷∏’Îœ¬“∆µΩ÷∏∂®Œª÷√
+        // FBÁöÑÊåáÈíà‰∏ãÁßªÂà∞ÊåáÂÆö‰ΩçÁΩÆ
         fb.addr[0]      = (void *)((unsigned long)fb.addr[0] + (p_listbar->lbar_move * fb.size.width * 4));
         fb.size.width   = fb.size.width;
         fb.size.height  = fb.size.height - p_listbar->lbar_move;
@@ -574,14 +590,14 @@ static void __listbar_show_page(__listbar_t *hdle, __decode_mode_e mode)
 
         if (p_listbar->lbar_move == 0)
         {
-            // ’˚“≥√Êœ‘ æ
+            // Êï¥È°µÈù¢ÊòæÁ§∫
             GUI_LyrWinGetFB(p_listbar->lbar_page[PAGE_NUM / 2].page_lyr, &fb);
             GUI_BitString_DrawEx(&fb, p_listbar->lbar_rect.x, p_listbar->lbar_rect.y);
         }
         else
         {
             GUI_LyrWinGetFB(p_listbar->lbar_page[PAGE_NUM / 2].page_lyr, &fb);
-            // FBµƒ÷∏’Îœ¬“∆µΩ÷∏∂®Œª÷√
+            // FBÁöÑÊåáÈíà‰∏ãÁßªÂà∞ÊåáÂÆö‰ΩçÁΩÆ
             fb.addr[0]      = (void *)((unsigned long)fb.addr[0] + (p_listbar->lbar_move * fb.size.width * 4));
             fb.size.width   = fb.size.width;
             fb.size.height  = fb.size.height - p_listbar->lbar_move;
@@ -593,13 +609,13 @@ static void __listbar_show_page(__listbar_t *hdle, __decode_mode_e mode)
         }
     }
 
-    // ªÊ÷∆Ωπµ„œÓ
+    // ÁªòÂà∂ÁÑ¶ÁÇπÈ°π
     if (p_listbar->lbar_focus_sta == 1)
     {
         __listbar_draw_focus(p_listbar);
     }
 
-    // ªÊ÷∆Ω¯∂»Ãı
+    // ÁªòÂà∂ËøõÂ∫¶Êù°
     if (p_listbar->scroll_state == 1)
     {
         __listbar_show_scroll(p_listbar);
@@ -613,7 +629,7 @@ static void __listbar_show_page(__listbar_t *hdle, __decode_mode_e mode)
 **********************************************************************************************************************
 *                                               __listbar_move_page
 *
-* Description: “≥√Ê“∆∂Ø
+* Description: È°µÈù¢ÁßªÂä®
 *
 * Arguments  :
 *
@@ -693,7 +709,7 @@ static void __listbar_move_page(__listbar_t *hdle, __s32 step)
 **********************************************************************************************************************
 *                                               __listbar_decode_task
 *
-* Description: ‘§Ω‚œﬂ≥Ã
+* Description: È¢ÑËß£Á∫øÁ®ã
 *
 * Arguments  :
 *
@@ -723,9 +739,9 @@ static void __listbar_decode_task(void *p_arg)
             if (p_listbar->lbar_page[p_listbar->lbar_cnt].page_sta == 0)
             {
                 esKRNL_SemPend(p_listbar->lbar_dec_sem, 0, &err);
-                // Ω‚“ª“≥ƒ⁄»›
+                // Ëß£‰∏ÄÈ°µÂÜÖÂÆπ
                 __listbar_draw_page(p_listbar);
-                // “≥√Êº∆ ˝∆˜±‰ªØ
+                // È°µÈù¢ËÆ°Êï∞Âô®ÂèòÂåñ
                 p_listbar->lbar_cnt++;
 
                 if (p_listbar->lbar_cnt == PAGE_NUM)
@@ -737,7 +753,7 @@ static void __listbar_decode_task(void *p_arg)
             }
             else
             {
-                // “≥√Êº∆ ˝∆˜±‰ªØ
+                // È°µÈù¢ËÆ°Êï∞Âô®ÂèòÂåñ
                 p_listbar->lbar_cnt++;
 
                 if (p_listbar->lbar_cnt == PAGE_NUM)
@@ -756,7 +772,7 @@ EXIT_DEC_TASK:
 **********************************************************************************************************************
 *                                               __listbar_diffuse_task
 *
-* Description: ¿©»ˆœﬂ≥Ã
+* Description: Êâ©ÊííÁ∫øÁ®ã
 *
 * Arguments  :
 *
@@ -795,19 +811,19 @@ static void __listbar_diffuse_task(void *p_arg)
             {
                 if (p_listbar->lbar_sld_state == 0)
                 {
-                    // ∂˛¥Œ≈–∂œµ±«∞◊¥Ã¨
+                    // ‰∫åÊ¨°Âà§Êñ≠ÂΩìÂâçÁä∂ÊÄÅ
                     esKRNL_SemQuery(p_listbar->lbar_dec_sem, &pdata);
 
                     if (pdata.OSCnt == 1)
                     {
-                        // ¿©»ˆ÷–π“∆‘§ªÊœﬂ≥Ã°£
+                        // Êâ©Êíí‰∏≠ÊåÇËµ∑È¢ÑÁªòÁ∫øÁ®ã„ÄÇ
                         esKRNL_SemPend(p_listbar->lbar_dec_sem, 0, &err);
                         tmp_cnt = p_listbar->lbar_dif_num / p_listbar->lbar_page_num;
                         tmp_page = p_listbar->lbar_dif_page[p_listbar->lbar_dif_num];
 
                         if ((tmp_page >= 0) && (tmp_page < p_listbar->lbar_current_total))
                         {
-                            /* ‘⁄µ±«∞–Ë“™÷±Ω”œ‘ æ‘⁄∆¡ƒª…œµƒ∑∂Œßƒ⁄*/
+                            /* Âú®ÂΩìÂâçÈúÄË¶ÅÁõ¥Êé•ÊòæÁ§∫Âú®Â±èÂπï‰∏äÁöÑËåÉÂõ¥ÂÜÖ*/
                             if ((tmp_page >= (p_listbar->lbar_current_focus - p_listbar->lbar_item)) &&
                                 (tmp_page <= (p_listbar->lbar_current_focus - p_listbar->lbar_item + p_listbar->lbar_page_num - 1)))
                             {
@@ -823,7 +839,7 @@ static void __listbar_diffuse_task(void *p_arg)
                                 p_listbar->lbar_draw(&draw_para);
                             }
 
-                            /* ≤ª‘⁄µ±«∞–Ë“™÷±Ω”œ‘ æ‘⁄∆¡ƒª…œµƒ∑∂Œßƒ⁄*/
+                            /* ‰∏çÂú®ÂΩìÂâçÈúÄË¶ÅÁõ¥Êé•ÊòæÁ§∫Âú®Â±èÂπï‰∏äÁöÑËåÉÂõ¥ÂÜÖ*/
                             GUI_LyrWinSel(p_listbar->lbar_page[tmp_cnt].page_lyr);
                             tmp_num = tmp_page % p_listbar->lbar_page_num;
                             draw_para.rect.x      = 0 + (tmp_num % p_listbar->lbar_page_col) * p_listbar->config.item_width;
@@ -862,7 +878,7 @@ EXIT_DIF_TASK:
 **********************************************************************************************************************
 *                                               __listbar_slider_task
 *
-* Description: ª¨∂Øœﬂ≥Ã
+* Description: ÊªëÂä®Á∫øÁ®ã
 *
 * Arguments  :
 *
@@ -899,7 +915,7 @@ static void __listbar_slider_task(void *p_arg)
 
                 if (p_listbar->lbar_sld_speed == 0)
                 {
-                    // ÀŸ∂»Œ™0 ±£¨Ω¯––Œ¢µ˜°£
+                    // ÈÄüÂ∫¶‰∏∫0Êó∂ÔºåËøõË°åÂæÆË∞É„ÄÇ
                     if (tmp_height == 0)
                     {
                         tmp_height = (p_listbar->lbar_current_total + p_listbar->lbar_page_col - 1)
@@ -908,7 +924,7 @@ static void __listbar_slider_task(void *p_arg)
 
                     if (p_listbar->lbar_current_move < 0)
                     {
-                        // …œ∑ΩœÚ“Á≥ˆ
+                        // ‰∏äÊñπÂêëÊ∫¢Âá∫
                         if (tmp_number == -1)
                         {
                             tmp_number = (0 - p_listbar->lbar_current_move) / MAX_GLIDE_STEP;
@@ -928,7 +944,7 @@ static void __listbar_slider_task(void *p_arg)
                     }
                     else if (p_listbar->lbar_current_move >= (tmp_height - p_listbar->lbar_page_height))
                     {
-                        // œ¬∑ΩœÚ“Á≥ˆ
+                        // ‰∏ãÊñπÂêëÊ∫¢Âá∫
                         if ((tmp_height - p_listbar->lbar_page_height) < 0)
                         {
                             if (tmp_number == -1)
@@ -1030,7 +1046,7 @@ static void __listbar_slider_task(void *p_arg)
 
                     if (tmp_number == -1)
                     {
-                        // ª¨∂ØÕÍ≥…
+                        // ÊªëÂä®ÂÆåÊàê
                         tmp = 0;
                         tmp_height = 0;
                         tmp_number = -1;
@@ -1046,7 +1062,7 @@ static void __listbar_slider_task(void *p_arg)
                 }
                 else
                 {
-                    // ∏˘æ›ª¨∂ØÀŸ∂»Ω¯––πﬂ–‘ª¨∂Ø°£
+                    // Ê†πÊçÆÊªëÂä®ÈÄüÂ∫¶ËøõË°åÊÉØÊÄßÊªëÂä®„ÄÇ
                     if (p_listbar->lbar_last_direct > 0)
                     {
                         if (p_listbar->lbar_sld_speed)
@@ -1095,7 +1111,7 @@ static void __listbar_slider_task(void *p_arg)
             {
                 if (p_listbar->lbar_sld_state == -1)
                 {
-                    // π“∆¿©»ˆœﬂ≥Ã
+                    // ÊåÇËµ∑Êâ©ÊííÁ∫øÁ®ã
                     p_listbar->lbar_sld_state = 0;
                 }
 
@@ -1122,7 +1138,7 @@ EXIT_SLD_TASK:
 **********************************************************************************************************************
 *                                               LISTBAR_Create
 *
-* Description: ¥¥Ω®“ª∏ˆøÿ÷∆≤Ÿ◊˜æ‰±˙
+* Description: ÂàõÂª∫‰∏Ä‰∏™ÊéßÂà∂Êìç‰ΩúÂè•ÊüÑ
 *
 * Arguments  :
 *
@@ -1135,7 +1151,7 @@ EXIT_SLD_TASK:
 H_LBAR  LISTBAR_Create(H_WIN hwin)
 {
     __listbar_t        *p_listbar;
-    p_listbar = (__listbar_t *)esMEMS_Malloc(0, sizeof(__listbar_t));   // …Í«Îƒ⁄¥Ê
+    p_listbar = (__listbar_t *)esMEMS_Malloc(0, sizeof(__listbar_t));   // Áî≥ËØ∑ÂÜÖÂ≠ò
 
     if (p_listbar == NULL)
     {
@@ -1145,21 +1161,21 @@ H_LBAR  LISTBAR_Create(H_WIN hwin)
 
     eLIBs_memset(p_listbar, 0, sizeof(__listbar_t));
     p_listbar->fwin_hdle = hwin;
-    // ªÒ»°µ±«∞≤Ÿ◊˜Õº≤„æ‰±˙
+    // Ëé∑ÂèñÂΩìÂâçÊìç‰ΩúÂõæÂ±ÇÂè•ÊüÑ
     p_listbar->lwin_hdle = GUI_WinGetLyrWin(hwin);
-    p_listbar->lbar_dec_state   = DECODE_NULL;              // Ω‚¬Î◊¥Ã¨Œª
-    p_listbar->lbar_cnt         = PAGE_NUM / 2;             // Ω‚¬Î“≥ ˝º∆ ˝
-    // ¥¥Ω®∫ÛÃ®‘§ªÊœﬂ≥Ã
-    p_listbar->lbar_dec_sem     = esKRNL_SemCreate(1);      // ‘§ªÊøÿ÷∆–≈∫≈¡ø
-    p_listbar->lbar_dec_tsk     = esKRNL_TCreate(__listbar_decode_task, (void *)p_listbar, 0x8000, KRNL_priolevel4);    // ∫ÛÃ®‘§ªÊœﬂ≥Ã
-    // ¥¥Ω®∫ÛÃ®ª¨∂Øœﬂ≥Ã
+    p_listbar->lbar_dec_state   = DECODE_NULL;              // Ëß£Á†ÅÁä∂ÊÄÅ‰Ωç
+    p_listbar->lbar_cnt         = PAGE_NUM / 2;             // Ëß£Á†ÅÈ°µÊï∞ËÆ°Êï∞
+    // ÂàõÂª∫ÂêéÂè∞È¢ÑÁªòÁ∫øÁ®ã
+    p_listbar->lbar_dec_sem     = esKRNL_SemCreate(1);      // È¢ÑÁªòÊéßÂà∂‰ø°Âè∑Èáè
+    p_listbar->lbar_dec_tsk     = esKRNL_TCreate(__listbar_decode_task, (void *)p_listbar, 0x8000, KRNL_priolevel4);    // ÂêéÂè∞È¢ÑÁªòÁ∫øÁ®ã
+    // ÂàõÂª∫ÂêéÂè∞ÊªëÂä®Á∫øÁ®ã
     p_listbar->lbar_sld_speed   = -1;
     p_listbar->lbar_sld_state   = 0;
-    p_listbar->lbar_sld_sem     = esKRNL_SemCreate(1);      // ª¨∂Øøÿ÷∆–≈∫≈¡ø
+    p_listbar->lbar_sld_sem     = esKRNL_SemCreate(1);      // ÊªëÂä®ÊéßÂà∂‰ø°Âè∑Èáè
     p_listbar->lbar_sld_tsk     = esKRNL_TCreate(__listbar_slider_task, (void *)p_listbar, 0x8000, KRNL_priolevel5);
-    // ¥¥Ω®∫ÛÃ®¿©»ˆœﬂ≥Ã
-    p_listbar->lbar_dif_sem     = esKRNL_SemCreate(1);      // ¿©…¢øÿ÷∆–≈∫≈¡ø
-    p_listbar->lbar_dif_tsk     = esKRNL_TCreate(__listbar_diffuse_task, (void *)p_listbar, 0x8000, KRNL_priolevel5);   // œ‘ æ¿©…¢œﬂ≥Ã
+    // ÂàõÂª∫ÂêéÂè∞Êâ©ÊííÁ∫øÁ®ã
+    p_listbar->lbar_dif_sem     = esKRNL_SemCreate(1);      // Êâ©Êï£ÊéßÂà∂‰ø°Âè∑Èáè
+    p_listbar->lbar_dif_tsk     = esKRNL_TCreate(__listbar_diffuse_task, (void *)p_listbar, 0x8000, KRNL_priolevel5);   // ÊòæÁ§∫Êâ©Êï£Á∫øÁ®ã
     __msg("task 1 = %d, task2 = %d, task3 = %d \n", p_listbar->lbar_sld_tsk, p_listbar->lbar_dec_tsk, p_listbar->lbar_dif_tsk);
     return p_listbar;
 }
@@ -1168,7 +1184,7 @@ H_LBAR  LISTBAR_Create(H_WIN hwin)
 **********************************************************************************************************************
 *                                               LISTBAR_Config
 *
-* Description: ≈‰÷√listbarœ‡πÿ Ù–‘
+* Description: ÈÖçÁΩÆlistbarÁõ∏ÂÖ≥Â±ûÊÄß
 *
 * Arguments  :
 *
@@ -1238,7 +1254,7 @@ __s32   LISTBAR_Config(H_LBAR hdle, __draw_item draw_cb, __listbar_config_t *con
 **********************************************************************************************************************
 *                                               LISTBAR_ScrollConfig
 *
-* Description: ≈‰÷√listbarœ‡πÿ Ù–‘
+* Description: ÈÖçÁΩÆlistbarÁõ∏ÂÖ≥Â±ûÊÄß
 *
 * Arguments  :
 *
@@ -1266,7 +1282,7 @@ __s32   LISTBAR_ScrollConfig(H_LBAR hdle, __scroll_bar_t *scroll_para)
 
     if (p_listbar->scroll_para.back_bmp != NULL)
     {
-        // ±≥æ∞Õº±Í
+        // ËÉåÊôØÂõæÊ†á
         GUI_ARGB_Draw(p_listbar->scroll_para.back_bmp, 0, 0);
     }
     else
@@ -1282,13 +1298,13 @@ __s32   LISTBAR_ScrollConfig(H_LBAR hdle, __scroll_bar_t *scroll_para)
 ************************************************************************************************************************
 *                                       LISTBAR_ShowPage
 *
-*Description: œ‘ æµ±«∞“≥√Ê
+*Description: ÊòæÁ§∫ÂΩìÂâçÈ°µÈù¢
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑ
 *
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 ************************************************************************************************************************
 */
@@ -1314,13 +1330,13 @@ __s32   LISTBAR_ShowPage(H_LBAR hdle)
 ************************************************************************************************************************
 *                                       LISTBAR_NextPage
 *
-*Description: œÚœ¬∑≠“ª“≥
+*Description: Âêë‰∏ãÁøª‰∏ÄÈ°µ
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑ
 *
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 ************************************************************************************************************************
 */
@@ -1366,13 +1382,13 @@ __s32   LISTBAR_NextPage(H_LBAR hdle)
 ************************************************************************************************************************
 *                                       LISTBAR_PrevPage
 *
-*Description: œÚ…œ∑≠“ª“≥
+*Description: Âêë‰∏äÁøª‰∏ÄÈ°µ
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑ
 *
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 ************************************************************************************************************************
 */
@@ -1396,7 +1412,7 @@ __s32   LISTBAR_PrevPage(H_LBAR hdle)
 
         if (p_listbar->lbar_current_page < p_listbar->lbar_page_num)
         {
-            return EPDK_FAIL;   //≤ªœÚ«∞∑≠“≥
+            return EPDK_FAIL;   //‰∏çÂêëÂâçÁøªÈ°µ
         }
 
         p_listbar->lbar_current_page = p_listbar->lbar_current_page - p_listbar->lbar_page_num;
@@ -1429,13 +1445,13 @@ __s32   LISTBAR_PrevPage(H_LBAR hdle)
 ************************************************************************************************************************
 *                                       LISTBAR_NextItem
 *
-*Description: œ¬“∆∏ˆÃıƒø
+*Description: ‰∏ãÁßª‰∏™Êù°ÁõÆ
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑ
 *
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 ************************************************************************************************************************
 */
@@ -1452,12 +1468,12 @@ __s32   LISTBAR_NextItem(H_LBAR hdle)
     p_listbar = (__listbar_t *)hdle;
     esKRNL_SemPend(p_listbar->lbar_dec_sem, 0, &err);
     p_listbar->lbar_focus_sta   = 1;
-    // Ωπµ„œ¬“∆“ª∏ˆÃıƒø
+    // ÁÑ¶ÁÇπ‰∏ãÁßª‰∏Ä‰∏™Êù°ÁõÆ
     p_listbar->lbar_current_focus++;
 
     if (p_listbar->lbar_current_focus >= p_listbar->lbar_current_total)
     {
-        // “— «◊Ó∫Û“ª∏ˆÃıƒø£¨Ã¯◊™µΩµ⁄“ª∏ˆÃıƒø
+        // Â∑≤ÊòØÊúÄÂêé‰∏Ä‰∏™Êù°ÁõÆÔºåË∑≥ËΩ¨Âà∞Á¨¨‰∏Ä‰∏™Êù°ÁõÆ
         if (p_listbar->lbar_current_total <= p_listbar->lbar_page_num)
         {
             p_listbar->lbar_current_focus   = 0;
@@ -1514,13 +1530,13 @@ __s32   LISTBAR_NextItem(H_LBAR hdle)
 ************************************************************************************************************************
 *                                       LISTBAR_PrevItem
 *
-*Description: …œ“∆∏ˆÃıƒø
+*Description: ‰∏äÁßª‰∏™Êù°ÁõÆ
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑ
 *
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 ************************************************************************************************************************
 */
@@ -1537,12 +1553,12 @@ __s32   LISTBAR_PrevItem(H_LBAR hdle)
     p_listbar = (__listbar_t *)hdle;
     esKRNL_SemPend(p_listbar->lbar_dec_sem, 0, &err);
     p_listbar->lbar_focus_sta   = 1;
-    // Ωπµ„…œ“∆“ª∏ˆÃıƒø
+    // ÁÑ¶ÁÇπ‰∏äÁßª‰∏Ä‰∏™Êù°ÁõÆ
     p_listbar->lbar_current_focus--;
 
     if (p_listbar->lbar_current_focus < 0)
     {
-        // “— «µ⁄“ª∏ˆÃıƒø£¨Ã¯◊™µΩ◊Ó∫Û“ª∏ˆÃıƒø
+        // Â∑≤ÊòØÁ¨¨‰∏Ä‰∏™Êù°ÁõÆÔºåË∑≥ËΩ¨Âà∞ÊúÄÂêé‰∏Ä‰∏™Êù°ÁõÆ
         if (p_listbar->lbar_current_total <= p_listbar->lbar_page_num)
         {
             p_listbar->lbar_current_focus   = p_listbar->lbar_current_total - 1;
@@ -1631,7 +1647,7 @@ __s32   LISTBAR_UpdateCurItem(H_LBAR hdle)
 
     p_listbar = (__listbar_t *)hdle;
     esKRNL_SemPend(p_listbar->lbar_dec_sem, 0, &err);
-    // À¢–¬‘§ªÊœﬂ≥Ã£¨≤¢«“À¢–¬“≥√Êœ‘ æ
+    // Âà∑Êñ∞È¢ÑÁªòÁ∫øÁ®ãÔºåÂπ∂‰∏îÂà∑Êñ∞È°µÈù¢ÊòæÁ§∫
     p_listbar->lbar_focus_sta   = 1;
     __listbar_show_page(p_listbar, DECODE_ITEM);
     esKRNL_SemPost(p_listbar->lbar_dec_sem);
@@ -1654,12 +1670,12 @@ __s32   LISTBAR_UpdateFocusItem(H_LBAR hdle)
     p_listbar = (__listbar_t *)hdle;
     eLIBs_printf("LISTBAR_UpdateFocusItem===========%s %d\n", __FUNCTION__, __LINE__);
     esKRNL_SemPend(p_listbar->lbar_dec_sem, 0, &err);
-    // À¢–¬‘§ªÊœﬂ≥Ã£¨≤¢«“À¢–¬“≥√Êœ‘ æ
+    // Âà∑Êñ∞È¢ÑÁªòÁ∫øÁ®ãÔºåÂπ∂‰∏îÂà∑Êñ∞È°µÈù¢ÊòæÁ§∫
     p_listbar->lbar_focus_sta   = 1;
     eLIBs_printf("LISTBAR_UpdateFocusItem======1=====%s %d\n", __FUNCTION__, __LINE__);
 
     // __listbar_show_page(p_listbar, DECODE_ITEM);
-    // ªÊ÷∆Ωπµ„œÓ
+    // ÁªòÂà∂ÁÑ¶ÁÇπÈ°π
     if (p_listbar->lbar_focus_sta == 1)
     {
         eLIBs_printf("LISTBAR_UpdateFocusItem=========2==%s %d\n", __FUNCTION__, __LINE__);
@@ -1675,13 +1691,13 @@ __s32   LISTBAR_UpdateFocusItem(H_LBAR hdle)
 ************************************************************************************************************************
 *                                       LISTBAR_NextRow
 *
-*Description: œÚœ¬“∆∂Ø(“ª––)
+*Description: Âêë‰∏ãÁßªÂä®(‰∏ÄË°å)
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑ
 *
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 ************************************************************************************************************************
 */
@@ -1698,12 +1714,12 @@ __s32   LISTBAR_NextRow(H_LBAR hdle)
     p_listbar = (__listbar_t *)hdle;
     esKRNL_SemPend(p_listbar->lbar_dec_sem, 0, &err);
     p_listbar->lbar_focus_sta   = 1;
-    // Ωπµ„œ¬“∆“ª––Ãıƒø
+    // ÁÑ¶ÁÇπ‰∏ãÁßª‰∏ÄË°åÊù°ÁõÆ
     p_listbar->lbar_current_focus = p_listbar->lbar_current_focus + p_listbar->lbar_page_col;
 
     if (p_listbar->lbar_current_focus >= p_listbar->lbar_current_total)
     {
-        // “— «◊Ó∫Û“ª∏ˆÃıƒø£¨Ã¯◊™µΩµ⁄“ª∏ˆÃıƒø
+        // Â∑≤ÊòØÊúÄÂêé‰∏Ä‰∏™Êù°ÁõÆÔºåË∑≥ËΩ¨Âà∞Á¨¨‰∏Ä‰∏™Êù°ÁõÆ
         if (p_listbar->lbar_current_total <= p_listbar->lbar_page_num)
         {
             p_listbar->lbar_current_focus   = p_listbar->lbar_current_focus % p_listbar->lbar_page_col;
@@ -1749,13 +1765,13 @@ __s32   LISTBAR_NextRow(H_LBAR hdle)
 ************************************************************************************************************************
 *                                       LISTBAR_PrevRow
 *
-*Description: œÚ…œ“∆∂Ø(“ª––)
+*Description: Âêë‰∏äÁßªÂä®(‰∏ÄË°å)
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑ
 *
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 2************************************************************************************************************************
 */
@@ -1772,12 +1788,12 @@ __s32   LISTBAR_PrevRow(H_LBAR hdle)
     p_listbar = (__listbar_t *)hdle;
     esKRNL_SemPend(p_listbar->lbar_dec_sem, 0, &err);
     p_listbar->lbar_focus_sta   = 1;
-    // Ωπµ„…œ“∆“ª∏ˆÃıƒø
+    // ÁÑ¶ÁÇπ‰∏äÁßª‰∏Ä‰∏™Êù°ÁõÆ
     p_listbar->lbar_current_focus = p_listbar->lbar_current_focus - p_listbar->lbar_page_col;
 
     if (p_listbar->lbar_current_focus < 0)
     {
-        // “— «µ⁄“ª∏ˆÃıƒø£¨Ã¯◊™µΩ◊Ó∫Û“ª∏ˆÃıƒø
+        // Â∑≤ÊòØÁ¨¨‰∏Ä‰∏™Êù°ÁõÆÔºåË∑≥ËΩ¨Âà∞ÊúÄÂêé‰∏Ä‰∏™Êù°ÁõÆ
         if (p_listbar->lbar_current_total <= p_listbar->lbar_page_num)
         {
             p_listbar->lbar_current_focus   = (p_listbar->lbar_current_total + p_listbar->lbar_page_col - 1) / p_listbar->lbar_page_col * p_listbar->lbar_page_col
@@ -1837,13 +1853,13 @@ __s32   LISTBAR_PrevRow(H_LBAR hdle)
 ************************************************************************************************************************
 *                                       LISTBAR_TouchDown
 *
-*Description: ¥•√˛∞¥œ¬
+*Description: Ëß¶Êë∏Êåâ‰∏ã
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙£¨ x: Xµ„◊¯±Í£¨ y£∫Yµ„◊¯±Í (x, y  «∑Ò”––ß–Ë≈–∂œ)
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑÔºå x: XÁÇπÂùêÊ†áÔºå yÔºöYÁÇπÂùêÊ†á (x, y ÊòØÂê¶ÊúâÊïàÈúÄÂà§Êñ≠)
 *
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 ************************************************************************************************************************
 */
@@ -1862,7 +1878,7 @@ __s32   LISTBAR_TouchDown(H_LBAR hdle, __s32 x, __s32 y, __s32 direct, __s32 spe
 
     if (p_listbar->lbar_current_total == 0)
     {
-        // ◊‹Ãıƒø ˝Œ™ø’ ±£¨≤ª◊˜œÏ”¶°£
+        // ÊÄªÊù°ÁõÆÊï∞‰∏∫Á©∫Êó∂Ôºå‰∏ç‰ΩúÂìçÂ∫î„ÄÇ
         return EPDK_OK;
     }
 
@@ -1870,7 +1886,7 @@ __s32   LISTBAR_TouchDown(H_LBAR hdle, __s32 x, __s32 y, __s32 direct, __s32 spe
         || (x > (p_listbar->config.list_rect.x + p_listbar->config.list_rect.width))
         || (y > (p_listbar->config.list_rect.y + p_listbar->config.list_rect.height)))
     {
-        // ◊¯±Í≤ª∫œ∑®
+        // ÂùêÊ†á‰∏çÂêàÊ≥ï
         p_listbar->lbar_touch_sta = -1;
         return EPDK_FAIL;
     }
@@ -1879,19 +1895,19 @@ __s32   LISTBAR_TouchDown(H_LBAR hdle, __s32 x, __s32 y, __s32 direct, __s32 spe
 
     if (p_listbar->lbar_sld_state == 0)
     {
-        // π“∆¿©»ˆœﬂ≥Ã
+        // ÊåÇËµ∑Êâ©ÊííÁ∫øÁ®ã
         p_listbar->lbar_sld_state = 1;
     }
 
     if (p_listbar->lbar_sld_speed == -1)
     {
-        // µ±«∞¥¶”⁄æ≤÷π◊¥Ã¨
+        // ÂΩìÂâçÂ§Ñ‰∫éÈùôÊ≠¢Áä∂ÊÄÅ
         p_listbar->lbar_last_pos.x  = x;
         p_listbar->lbar_last_pos.y  = y;
 
         if (p_listbar->lbar_touch_sta == 0)
         {
-            // ∞¥œ¬ªÊ÷∆Ωπµ„◊¥Ã¨
+            // Êåâ‰∏ãÁªòÂà∂ÁÑ¶ÁÇπÁä∂ÊÄÅ
             esKRNL_SemPend(p_listbar->lbar_dec_sem, 0, &err);
             p_listbar->lbar_touch_sta   = 1;
             tmp = p_listbar->lbar_current_move / p_listbar->config.item_height * p_listbar->lbar_page_col
@@ -1900,7 +1916,7 @@ __s32   LISTBAR_TouchDown(H_LBAR hdle, __s32 x, __s32 y, __s32 direct, __s32 spe
 
             if (tmp < p_listbar->lbar_current_total)
             {
-                // µ„µΩÃıƒøƒ⁄≤ø
+                // ÁÇπÂà∞Êù°ÁõÆÂÜÖÈÉ®
                 p_listbar->lbar_focus_sta   = 1;
                 p_listbar->lbar_current_focus = tmp;
                 __listbar_show_page(p_listbar, DECODE_ITEM);
@@ -1910,24 +1926,24 @@ __s32   LISTBAR_TouchDown(H_LBAR hdle, __s32 x, __s32 y, __s32 direct, __s32 spe
         }
         else if (p_listbar->lbar_touch_sta == 1)
         {
-            // ∑¿÷π≥§∞¥ ±÷ÿ∏¥ªÊ÷∆
+            // Èò≤Ê≠¢ÈïøÊåâÊó∂ÈáçÂ§çÁªòÂà∂
             p_listbar->lbar_touch_sta   = 2;
         }
     }
     else
     {
-        // µ±«∞¥¶”⁄ª¨∂Ø◊¥Ã¨
+        // ÂΩìÂâçÂ§Ñ‰∫éÊªëÂä®Áä∂ÊÄÅ
         p_listbar->lbar_last_pos.x = x;
         p_listbar->lbar_last_pos.y = y;
 
         if (p_listbar->lbar_touch_sta == 0)
         {
-            // ºÃ–¯ª¨∂Ø
+            // ÁªßÁª≠ÊªëÂä®
             p_listbar->lbar_touch_sta   = 1;
         }
         else if (p_listbar->lbar_touch_sta == 1)
         {
-            // ≥§∞¥º±Õ£
+            // ÈïøÊåâÊÄ•ÂÅú
             p_listbar->lbar_touch_sta   = 2;
             p_listbar->lbar_sld_speed   = -1;
             p_listbar->lbar_current_move = (p_listbar->lbar_current_move + p_listbar->config.item_height / 2)
@@ -1940,7 +1956,7 @@ __s32   LISTBAR_TouchDown(H_LBAR hdle, __s32 x, __s32 y, __s32 direct, __s32 spe
 
             if (tmp < p_listbar->lbar_current_total)
             {
-                // µ„µΩÃıƒøƒ⁄≤ø
+                // ÁÇπÂà∞Êù°ÁõÆÂÜÖÈÉ®
                 p_listbar->lbar_focus_sta   = 1;
                 p_listbar->lbar_current_focus = tmp;
                 __listbar_draw_focus(p_listbar);
@@ -1957,13 +1973,13 @@ __s32   LISTBAR_TouchDown(H_LBAR hdle, __s32 x, __s32 y, __s32 direct, __s32 spe
 ************************************************************************************************************************
 *                                       LISTBAR_TouchMove
 *
-*Description: ¥•√˛“∆∂Ø
+*Description: Ëß¶Êë∏ÁßªÂä®
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙£¨ x: Xµ„◊¯±Í£¨ y£∫Yµ„◊¯±Í
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑÔºå x: XÁÇπÂùêÊ†áÔºå yÔºöYÁÇπÂùêÊ†á
 *
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 ************************************************************************************************************************
 */
@@ -1982,7 +1998,7 @@ __s32   LISTBAR_TouchMove(H_LBAR hdle, __s32 x, __s32 y, __s32 direct, __s32 spe
 
     if (p_listbar->lbar_current_total == 0)
     {
-        // ◊‹Ãıƒø ˝Œ™ø’ ±£¨≤ª◊˜œÏ”¶°£
+        // ÊÄªÊù°ÁõÆÊï∞‰∏∫Á©∫Êó∂Ôºå‰∏ç‰ΩúÂìçÂ∫î„ÄÇ
         return EPDK_OK;
     }
 
@@ -1995,7 +2011,7 @@ __s32   LISTBAR_TouchMove(H_LBAR hdle, __s32 x, __s32 y, __s32 direct, __s32 spe
 
     if (p_listbar->lbar_sld_speed == -1)
     {
-        // √ª”–πﬂ–‘ª¨∂Ø ±£¨≤Ω≥§–°”⁄10≤ª◊ˆª¨∂Ø°£
+        // Ê≤°ÊúâÊÉØÊÄßÊªëÂä®Êó∂ÔºåÊ≠•ÈïøÂ∞è‰∫é10‰∏çÂÅöÊªëÂä®„ÄÇ
         step = y - p_listbar->lbar_last_pos.y;
 
         if ((step > 10) || (step < -10))
@@ -2009,7 +2025,7 @@ __s32   LISTBAR_TouchMove(H_LBAR hdle, __s32 x, __s32 y, __s32 direct, __s32 spe
     }
     else
     {
-        // ”–πﬂ–‘ª¨∂Ø ±£¨µ˜’˚µ±«∞ª¨∂Ø∑ΩœÚ°£
+        // ÊúâÊÉØÊÄßÊªëÂä®Êó∂ÔºåË∞ÉÊï¥ÂΩìÂâçÊªëÂä®ÊñπÂêë„ÄÇ
         step = y - p_listbar->lbar_last_pos.y;
 
         if ((step > 10) || (step < -10))
@@ -2029,13 +2045,13 @@ __s32   LISTBAR_TouchMove(H_LBAR hdle, __s32 x, __s32 y, __s32 direct, __s32 spe
 ************************************************************************************************************************
 *                                       LISTBAR_TouchUp
 *
-*Description: ¥•√˛Ãß∆
+*Description: Ëß¶Êë∏Êä¨Ëµ∑
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙£¨ x: Xµ„◊¯±Í£¨ y£∫Yµ„◊¯±Í
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑÔºå x: XÁÇπÂùêÊ†áÔºå yÔºöYÁÇπÂùêÊ†á
 *
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 ************************************************************************************************************************
 */
@@ -2053,7 +2069,7 @@ __s32   LISTBAR_TouchUp(H_LBAR hdle, __s32 x, __s32 y, __s32 direct, __s32 speed
 
     if (p_listbar->lbar_current_total == 0)
     {
-        // ◊‹Ãıƒø ˝Œ™ø’ ±£¨≤ª◊˜œÏ”¶°£
+        // ÊÄªÊù°ÁõÆÊï∞‰∏∫Á©∫Êó∂Ôºå‰∏ç‰ΩúÂìçÂ∫î„ÄÇ
         return EPDK_OK;
     }
 
@@ -2068,7 +2084,7 @@ __s32   LISTBAR_TouchUp(H_LBAR hdle, __s32 x, __s32 y, __s32 direct, __s32 speed
 
     if (p_listbar->lbar_touch_sta == 3)
     {
-        // ∑«≥§∞¥Ãß∆∫Û£¨◊ˆπﬂ–‘ª¨∂Ø°£
+        // ÈùûÈïøÊåâÊä¨Ëµ∑ÂêéÔºåÂÅöÊÉØÊÄßÊªëÂä®„ÄÇ
         p_listbar->lbar_touch_sta = 0;
         esKRNL_SemPend(p_listbar->lbar_sld_sem, 0, &err);
 
@@ -2111,12 +2127,12 @@ __s32   LISTBAR_TouchUp(H_LBAR hdle, __s32 x, __s32 y, __s32 direct, __s32 speed
 ************************************************************************************************************************
 *                                       LISTBAR_GetTotalItem
 *
-*Description: ªÒ»°µ±«∞Ωπµ„Ãıƒø
+*Description: Ëé∑ÂèñÂΩìÂâçÁÑ¶ÁÇπÊù°ÁõÆ
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑ
 *
 *
-*Return     : ∑µªÿ◊‹±‡∫≈£® ß∞‹∑µªÿ-1£©
+*Return     : ËøîÂõûÊÄªÁºñÂè∑ÔºàÂ§±Ë¥•ËøîÂõû-1Ôºâ
 *
 *
 ************************************************************************************************************************
@@ -2138,12 +2154,12 @@ __s32   LISTBAR_GetTotalItem(H_LBAR hdle)
 ************************************************************************************************************************
 *                                       LISTBAR_GetListAttr
 *
-*Description: ªÒ»°listbarÀΩ”– ˝æ›
+*Description: Ëé∑ÂèñlistbarÁßÅÊúâÊï∞ÊçÆ
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑ
 *
 *
-*Return     : ∑µªÿlistÀΩ”– ˝æ›£® ß∞‹∑µªÿNULL£©
+*Return     : ËøîÂõûlistÁßÅÊúâÊï∞ÊçÆÔºàÂ§±Ë¥•ËøîÂõûNULLÔºâ
 *
 *
 ************************************************************************************************************************
@@ -2165,12 +2181,12 @@ void   *LISTBAR_GetListAttr(H_LBAR hdle)
 ************************************************************************************************************************
 *                                       LISTBAR_GetFocusItem
 *
-*Description: ªÒ»°µ±«∞Ωπµ„Ãıƒø
+*Description: Ëé∑ÂèñÂΩìÂâçÁÑ¶ÁÇπÊù°ÁõÆ
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑ
 *
 *
-*Return     : ∑µªÿΩπµ„Ãıƒø±‡∫≈£® ß∞‹∑µªÿ-1£©
+*Return     : ËøîÂõûÁÑ¶ÁÇπÊù°ÁõÆÁºñÂè∑ÔºàÂ§±Ë¥•ËøîÂõû-1Ôºâ
 *
 *
 ************************************************************************************************************************
@@ -2192,13 +2208,13 @@ __s32   LISTBAR_GetFocusItem(H_LBAR hdle)
 ************************************************************************************************************************
 *                                       LISTBAR_GetItemRect
 *
-*Description: ªÒ»°÷∏∂®ÃıƒøµƒRECT(÷ªƒ‹ «∆¡…œœ‘ æµƒÃıƒø∫≈)°£
+*Description: Ëé∑ÂèñÊåáÂÆöÊù°ÁõÆÁöÑRECT(Âè™ËÉΩÊòØÂ±è‰∏äÊòæÁ§∫ÁöÑÊù°ÁõÆÂè∑)„ÄÇ
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙£¨item£∫“™ªÒ»°µƒÃıƒø∫≈£¨rect£∫ªÒ»°∫Ûµƒ«¯”Ú
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑÔºåitemÔºöË¶ÅËé∑ÂèñÁöÑÊù°ÁõÆÂè∑ÔºårectÔºöËé∑ÂèñÂêéÁöÑÂå∫Âüü
 *
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 ************************************************************************************************************************
 */
@@ -2232,7 +2248,7 @@ __s32   LISTBAR_GetItemRect(H_LBAR hdle, __s32 item, RECT *rect)
 **********************************************************************************************************************
 *                                             static void LISTBAR_LostFocus(__listbar_t * hdle)
 *
-* Description: Ω´ªÒµ√Ωπµ„µƒ∫Ø ˝ ß»•Ωπµ„
+* Description: Â∞ÜËé∑ÂæóÁÑ¶ÁÇπÁöÑÂáΩÊï∞Â§±ÂéªÁÑ¶ÁÇπ
 *
 * Arguments  :
 *
@@ -2286,13 +2302,13 @@ void LISTBAR_LostFocus(H_LBAR *hdle)
 ************************************************************************************************************************
 *                                       LISTBAR_SetFocusItem
 *
-*Description: …Ë÷√“ª∏ˆÃıƒøΩπµ„Ãıƒø
+*Description: ËÆæÁΩÆ‰∏Ä‰∏™Êù°ÁõÆÁÑ¶ÁÇπÊù°ÁõÆ
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙£¨ item£∫Ãıƒø±‡∫≈
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑÔºå itemÔºöÊù°ÁõÆÁºñÂè∑
 *
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 ************************************************************************************************************************
 */
@@ -2430,13 +2446,13 @@ __s32   LISTBAR_SetFocusItem(H_LBAR hdle, __s32 item)
 ************************************************************************************************************************
 *                                       LISTBAR_SetFocusItem
 *
-*Description: …Ë÷√“ª∏ˆÃıƒøΩπµ„Ãıƒø
+*Description: ËÆæÁΩÆ‰∏Ä‰∏™Êù°ÁõÆÁÑ¶ÁÇπÊù°ÁõÆ
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙£¨ item£∫Ãıƒø±‡∫≈
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑÔºå itemÔºöÊù°ÁõÆÁºñÂè∑
 *
-*author     : libaiao, √ª”–œ‘ æ£¨÷ª…Ë÷√focus item
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*author     : libaiao, Ê≤°ÊúâÊòæÁ§∫ÔºåÂè™ËÆæÁΩÆfocus item
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 ************************************************************************************************************************
 */
@@ -2574,13 +2590,13 @@ __s32   LISTBAR_SetFocusItemExt(H_LBAR hdle, __s32 item)
 ************************************************************************************************************************
 *                                       LISTBAR_SetNormalItem
 *
-*Description: ªÒµ√“ª∏ˆÃıƒøŒ™∆’Õ®Ãıƒø
+*Description: Ëé∑Âæó‰∏Ä‰∏™Êù°ÁõÆ‰∏∫ÊôÆÈÄöÊù°ÁõÆ
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙£¨ item£∫Ãıƒø±‡∫≈
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑÔºå itemÔºöÊù°ÁõÆÁºñÂè∑
 *
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 ************************************************************************************************************************
 */
@@ -2661,13 +2677,13 @@ __s32   LISTBAR_SetNormalItem(H_LBAR hdle, __s32 item)
 ************************************************************************************************************************
 *                                       LISTBAR_SetInvalidItem
 *
-*Description: ªÒµ√“ª∏ˆÃıƒøŒ™Œﬁ–ßÃıƒø
+*Description: Ëé∑Âæó‰∏Ä‰∏™Êù°ÁõÆ‰∏∫Êó†ÊïàÊù°ÁõÆ
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙£¨ item£∫Ãıƒø±‡∫≈
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑÔºå itemÔºöÊù°ÁõÆÁºñÂè∑
 *
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 ************************************************************************************************************************
 */
@@ -2718,13 +2734,13 @@ __s32   LISTBAR_SetInvalidItem(H_LBAR hdle, __s32 item)
 ************************************************************************************************************************
 *                                       LISTBAR_SetTotalItem
 *
-*Description: …Ë÷√◊‹µƒÃıƒø ˝
+*Description: ËÆæÁΩÆÊÄªÁöÑÊù°ÁõÆÊï∞
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙£¨ num£∫Ãıƒø◊‹ ˝
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑÔºå numÔºöÊù°ÁõÆÊÄªÊï∞
 *
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 ************************************************************************************************************************
 */
@@ -2749,13 +2765,13 @@ __s32   LISTBAR_SetTotalItem(H_LBAR hdle, __u32 num)
 ************************************************************************************************************************
 *                                       LISTBAR_GetListAttr
 *
-*Description: ªÒ»°listbarÀΩ”– ˝æ›
+*Description: Ëé∑ÂèñlistbarÁßÅÊúâÊï∞ÊçÆ
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙£¨attr£∫”√ªßÀΩ”– ˝æ›
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑÔºåattrÔºöÁî®Êà∑ÁßÅÊúâÊï∞ÊçÆ
 *
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 ************************************************************************************************************************
 */
@@ -2777,13 +2793,13 @@ __s32   LISTBAR_SetListAttr(H_LBAR hdle, void *attr)
 ************************************************************************************************************************
 *                                       LISTBAR_ChangeMode
 *
-*Description: ∏ƒ±‰µ±«∞œ‘ æ∑Ω Ω
+*Description: ÊîπÂèòÂΩìÂâçÊòæÁ§∫ÊñπÂºè
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙£¨item_width£∫ÃıƒøµƒøÌ∂»£¨item_height£∫Ãıƒøµƒ∏ﬂ∂»
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑÔºåitem_widthÔºöÊù°ÁõÆÁöÑÂÆΩÂ∫¶Ôºåitem_heightÔºöÊù°ÁõÆÁöÑÈ´òÂ∫¶
 *
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 ************************************************************************************************************************
 */
@@ -2798,25 +2814,25 @@ __s32   LISTBAR_ChangeMode(H_LBAR hdle, __s32 item_width, __s32 item_height)
 
     p_listbar = (__listbar_t *)hdle;
     LISTBAR_SuspendPage(hdle);          //add by libaiao,2011.4.22
-    // ±£¥Ê–¬µƒÃıƒøøÌ∏ﬂ–≈œ¢
+    // ‰øùÂ≠òÊñ∞ÁöÑÊù°ÁõÆÂÆΩÈ´ò‰ø°ÊÅØ
     p_listbar->config.item_width  = item_width;
     p_listbar->config.item_height = item_height;
 
     if (p_listbar->item_layer)
     {
-        // …æ≥˝ITEMª∫¥ÊÕº≤„
+        // Âà†Èô§ITEMÁºìÂ≠òÂõæÂ±Ç
         GUI_LyrWinDelete(p_listbar->item_layer);
         p_listbar->item_layer = NULL;
     }
 
     p_listbar->item_layer = __listbar_layer_create(p_listbar->config.item_width, p_listbar->config.item_height, 0);
-    // ÷ÿ–¬º∆À„µ±«∞––¡–º∞µ•“≥Ãıƒø ˝–≈œ¢
+    // ÈáçÊñ∞ËÆ°ÁÆóÂΩìÂâçË°åÂàóÂèäÂçïÈ°µÊù°ÁõÆÊï∞‰ø°ÊÅØ
     p_listbar->lbar_page_col        = p_listbar->lbar_rect.width / p_listbar->config.item_width;
     p_listbar->lbar_page_row        = p_listbar->lbar_rect.height / p_listbar->config.item_height;
     p_listbar->lbar_page_num        = p_listbar->lbar_page_row * p_listbar->lbar_page_col;
     p_listbar->lbar_page_width      = p_listbar->lbar_page_col * p_listbar->config.item_width;
     p_listbar->lbar_page_height     = p_listbar->lbar_page_row * p_listbar->config.item_height;
-    // µ˜’˚µ±«∞ΩÁ√Êœ÷≥°
+    // Ë∞ÉÊï¥ÂΩìÂâçÁïåÈù¢Áé∞Âú∫
     p_listbar->lbar_current_page    = p_listbar->lbar_current_focus / p_listbar->lbar_page_num * p_listbar->lbar_page_num;
     p_listbar->lbar_current_move    = p_listbar->lbar_current_focus / p_listbar->lbar_page_col * p_listbar->config.item_height;
     LISTBAR_ResumePage(hdle);           //add by libaiao,2011.4.22
@@ -2827,13 +2843,13 @@ __s32   LISTBAR_ChangeMode(H_LBAR hdle, __s32 item_width, __s32 item_height)
 ************************************************************************************************************************
 *                                       LISTBAR_SuspendPage
 *
-*Description: π“∆µ±«∞œ‘ æΩÁ√Ê
+*Description: ÊåÇËµ∑ÂΩìÂâçÊòæÁ§∫ÁïåÈù¢
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑ
 *
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 ************************************************************************************************************************
 */
@@ -2850,7 +2866,7 @@ __s32   LISTBAR_SuspendPage(H_LBAR hdle)
     p_listbar = (__listbar_t *)hdle;
     esKRNL_SemPend(p_listbar->lbar_sld_sem, 0, &err);
 
-    // Õ£÷πª¨∂Øœﬂ≥Ã
+    // ÂÅúÊ≠¢ÊªëÂä®Á∫øÁ®ã
     if (p_listbar->lbar_sld_speed != -1)
     {
         p_listbar->lbar_sld_speed   = -1;
@@ -2865,7 +2881,7 @@ __s32   LISTBAR_SuspendPage(H_LBAR hdle)
 
     esKRNL_SemPost(p_listbar->lbar_sld_sem);
     esKRNL_SemPend(p_listbar->lbar_dec_sem, 0, &err);
-    // Õ£÷π‘§ªÊ
+    // ÂÅúÊ≠¢È¢ÑÁªò
     p_listbar->lbar_dec_state = DECODE_NULL;
     esKRNL_SemPost(p_listbar->lbar_dec_sem);
     return EPDK_OK;
@@ -2875,13 +2891,13 @@ __s32   LISTBAR_SuspendPage(H_LBAR hdle)
 ************************************************************************************************************************
 *                                       LISTBAR_ResumePage
 *
-*Description: ª÷∏¥µ±«∞œ‘ æΩÁ√Ê
+*Description: ÊÅ¢Â§çÂΩìÂâçÊòæÁ§∫ÁïåÈù¢
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑ
 *
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 ************************************************************************************************************************
 */
@@ -2897,7 +2913,7 @@ __s32   LISTBAR_ResumePage(H_LBAR hdle)
 
     p_listbar = (__listbar_t *)hdle;
     esKRNL_SemPend(p_listbar->lbar_dec_sem, 0, &err);
-    // ∆Ù∂Ø‘§ªÊœﬂ≥Ã£¨µ´≤ªÀ¢–¬“—ªÊ÷∆∫√µƒ“≥√Ê£¨≤¢«“∏¸–¬Ω¯∂»Ãı
+    // ÂêØÂä®È¢ÑÁªòÁ∫øÁ®ãÔºå‰ΩÜ‰∏çÂà∑Êñ∞Â∑≤ÁªòÂà∂Â•ΩÁöÑÈ°µÈù¢ÔºåÂπ∂‰∏îÊõ¥Êñ∞ËøõÂ∫¶Êù°
     p_listbar->lbar_dec_state = DECODE_ITEM;
     __listbar_show_scroll(p_listbar);
     esKRNL_SemPost(p_listbar->lbar_dec_sem);
@@ -2908,13 +2924,13 @@ __s32   LISTBAR_ResumePage(H_LBAR hdle)
 ************************************************************************************************************************
 *                                       LISTBAR_UpdatePage
 *
-*Description: ∏¸–¬µ±«∞œ‘ æΩÁ√Ê
+*Description: Êõ¥Êñ∞ÂΩìÂâçÊòæÁ§∫ÁïåÈù¢
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑ
 *
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 ************************************************************************************************************************
 */
@@ -2931,7 +2947,7 @@ __s32   LISTBAR_UpdatePage(H_LBAR hdle)
 
     p_listbar = (__listbar_t *)hdle;
     esKRNL_SemPend(p_listbar->lbar_dec_sem, 0, &err);
-    // À¢–¬‘§ªÊœﬂ≥Ã£¨≤¢«“À¢–¬“≥√Êœ‘ æ
+    // Âà∑Êñ∞È¢ÑÁªòÁ∫øÁ®ãÔºåÂπ∂‰∏îÂà∑Êñ∞È°µÈù¢ÊòæÁ§∫
     p_listbar->lbar_focus_sta   = 1;
     __listbar_show_page(p_listbar, DECODE_CURR);
     esKRNL_SemPost(p_listbar->lbar_dec_sem);
@@ -2942,13 +2958,13 @@ __s32   LISTBAR_UpdatePage(H_LBAR hdle)
 ************************************************************************************************************************
 *                                       LISTBAR_SetScene
 *
-*Description: …Ë÷√listbarƒ⁄≤øœ÷≥°
+*Description: ËÆæÁΩÆlistbarÂÜÖÈÉ®Áé∞Âú∫
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙£¨ scene£∫œ÷≥° ˝æ›
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑÔºå sceneÔºöÁé∞Âú∫Êï∞ÊçÆ
 *
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 ************************************************************************************************************************
 */
@@ -2983,13 +2999,13 @@ __s32   LISTBAR_SetScene(H_LBAR hdle, __listbar_scene_t *scene)
 ************************************************************************************************************************
 *                                       LISTBAR_GetScene
 *
-*Description: ªÒ»°listbarƒ⁄≤øœ÷≥°
+*Description: Ëé∑ÂèñlistbarÂÜÖÈÉ®Áé∞Âú∫
 *
-*Arguments  : hdle: ≤Ÿ◊˜æ‰±˙£¨ scene£∫œ÷≥° ˝æ›
+*Arguments  : hdle: Êìç‰ΩúÂè•ÊüÑÔºå sceneÔºöÁé∞Âú∫Êï∞ÊçÆ
 *
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 ************************************************************************************************************************
 */
@@ -3012,9 +3028,9 @@ __s32   LISTBAR_GetScene(H_LBAR hdle, __listbar_scene_t *scene)
 **********************************************************************************************************************
 *                                               LISTBAR_Delete
 *
-* Description: …æ≥˝listbar≤Ÿ◊˜æ‰±˙
+* Description: Âà†Èô§listbarÊìç‰ΩúÂè•ÊüÑ
 *
-* Arguments  : hdle£∫≤Ÿ◊˜æ‰±˙
+* Arguments  : hdleÔºöÊìç‰ΩúÂè•ÊüÑ
 *
 * Returns    : EPDK_OK / EPDK_FAIL
 
@@ -3037,7 +3053,7 @@ __s32   LISTBAR_Delete(H_LBAR hdle)
 
     if (p_listbar->lbar_dif_tsk)
     {
-        // …æ≥˝¿©»ˆœﬂ≥Ã
+        // Âà†Èô§Êâ©ÊííÁ∫øÁ®ã
         while (1)
         {
             if (esKRNL_TDelReq(p_listbar->lbar_dif_tsk) == OS_TASK_NOT_EXIST)
@@ -3059,7 +3075,7 @@ __s32   LISTBAR_Delete(H_LBAR hdle)
 
     if (p_listbar->lbar_sld_tsk)
     {
-        // …æ≥˝ª¨∂Øœﬂ≥Ã
+        // Âà†Èô§ÊªëÂä®Á∫øÁ®ã
         while (1)
         {
             if (esKRNL_TDelReq(p_listbar->lbar_sld_tsk) == OS_TASK_NOT_EXIST)
@@ -3075,14 +3091,14 @@ __s32   LISTBAR_Delete(H_LBAR hdle)
 
     if (p_listbar->lbar_sld_sem)
     {
-        // …æ≥˝ª¨∂Øœﬂ≥Ã∑√Œ øÿ÷∆–≈∫≈¡ø
+        // Âà†Èô§ÊªëÂä®Á∫øÁ®ãËÆøÈóÆÊéßÂà∂‰ø°Âè∑Èáè
         esKRNL_SemDel(p_listbar->lbar_sld_sem, OS_DEL_ALWAYS, &err);
         p_listbar->lbar_sld_sem = NULL;
     }
 
     if (p_listbar->lbar_dec_tsk)
     {
-        // …æ≥˝‘§Ω‚œﬂ≥Ã
+        // Âà†Èô§È¢ÑËß£Á∫øÁ®ã
         while (1)
         {
             if (esKRNL_TDelReq(p_listbar->lbar_dec_tsk) == OS_TASK_NOT_EXIST)
@@ -3098,21 +3114,21 @@ __s32   LISTBAR_Delete(H_LBAR hdle)
 
     if (p_listbar->lbar_dec_sem)
     {
-        // …æ≥˝‘§Ω‚œﬂ≥Ã∑√Œ øÿ÷∆–≈∫≈¡ø
+        // Âà†Èô§È¢ÑËß£Á∫øÁ®ãËÆøÈóÆÊéßÂà∂‰ø°Âè∑Èáè
         esKRNL_SemDel(p_listbar->lbar_dec_sem, OS_DEL_ALWAYS, &err);
         p_listbar->lbar_dec_sem = NULL;
     }
 
     if (p_listbar->item_layer)
     {
-        // …æ≥˝ITEMª∫¥ÊÕº≤„
+        // Âà†Èô§ITEMÁºìÂ≠òÂõæÂ±Ç
         GUI_LyrWinDelete(p_listbar->item_layer);
         p_listbar->item_layer = NULL;
     }
 
     for (i = 0; i < PAGE_NUM; i++)
     {
-        // …æ≥˝ª∫¥ÊÕº≤„
+        // Âà†Èô§ÁºìÂ≠òÂõæÂ±Ç
         if (p_listbar->lbar_page[i].page_lyr)
         {
             GUI_LyrWinDelete(p_listbar->lbar_page[i].page_lyr);
@@ -3122,14 +3138,14 @@ __s32   LISTBAR_Delete(H_LBAR hdle)
 
     if (p_listbar->scroll_b_layer)
     {
-        // …æ≥˝Ω¯∂»Ãı±≥æ∞ª∫¥ÊÕº≤„
+        // Âà†Èô§ËøõÂ∫¶Êù°ËÉåÊôØÁºìÂ≠òÂõæÂ±Ç
         GUI_LyrWinDelete(p_listbar->scroll_b_layer);
         p_listbar->scroll_b_layer = NULL;
     }
 
     if (p_listbar->scroll_f_layer)
     {
-        // …æ≥˝Ω¯∂»Ãı«∞æ∞ª∫¥ÊÕº≤„
+        // Âà†Èô§ËøõÂ∫¶Êù°ÂâçÊôØÁºìÂ≠òÂõæÂ±Ç
         GUI_LyrWinDelete(p_listbar->scroll_f_layer);
         p_listbar->scroll_f_layer = NULL;
     }
@@ -3143,12 +3159,12 @@ __s32   LISTBAR_Delete(H_LBAR hdle)
 **********************************************************************************************************************
 *                                               LISTBAR_GetState
 *
-* Description: ªÒ»°µ±«∞ª¨∂Ø◊¥Ã¨
+* Description: Ëé∑ÂèñÂΩìÂâçÊªëÂä®Áä∂ÊÄÅ
 *
-* Arguments  : hdle£∫≤Ÿ◊˜æ‰±˙
+* Arguments  : hdleÔºöÊìç‰ΩúÂè•ÊüÑ
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 **********************************************************************************************************************
 */
@@ -3175,12 +3191,12 @@ __lbar_state_e   LISTBAR_GetState(H_LBAR hdle)
 **********************************************************************************************************************
 *                                               LISTBAR_GetItemNo
 *
-* Description: ªÒ»°÷∏∂®Œª÷√µƒÃıƒø∫≈
+* Description: Ëé∑ÂèñÊåáÂÆö‰ΩçÁΩÆÁöÑÊù°ÁõÆÂè∑
 *
-* Arguments  : hdle£∫≤Ÿ◊˜æ‰±˙
+* Arguments  : hdleÔºöÊìç‰ΩúÂè•ÊüÑ
 *
-*Return     : EPDK_OK: ≥…π¶
-*             EPDK_FAIL:  ß∞‹
+*Return     : EPDK_OK: ÊàêÂäü
+*             EPDK_FAIL: Â§±Ë¥•
 *
 **********************************************************************************************************************
 */
@@ -3205,12 +3221,12 @@ __s32   LISTBAR_GetItemNo(H_LBAR hdle, __pos_t pos)
 **********************************************************************************************************************
 *                                               LISTBAR_GetPageItemCount
 *
-* Description   : ªÒµ√√ø“≥”–∂‡…Ÿ∏ˆÃıƒø
+* Description   : Ëé∑ÂæóÊØèÈ°µÊúâÂ§öÂ∞ë‰∏™Êù°ÁõÆ
 *
-* Arguments  : hdle£∫≤Ÿ◊˜æ‰±˙
+* Arguments  : hdleÔºöÊìç‰ΩúÂè•ÊüÑ
 *
-*Return         :Ãıƒø ˝
-*             EPDK_FAIL:  ß∞‹
+*Return         :Êù°ÁõÆÊï∞
+*             EPDK_FAIL: Â§±Ë¥•
 *
 *Author     : add by Libaiao, 2011.04.21
 **********************************************************************************************************************
@@ -3232,12 +3248,12 @@ __s32 LISTBAR_GetPageItemCount(H_LBAR handle)
 **********************************************************************************************************************
 *                                               LISTBAR_GetRowItemNumber
 *
-* Description   : ªÒµ√√ø––”–∂‡…Ÿ∏ˆÃıƒø
+* Description   : Ëé∑ÂæóÊØèË°åÊúâÂ§öÂ∞ë‰∏™Êù°ÁõÆ
 *
-* Arguments  : hdle£∫≤Ÿ◊˜æ‰±˙
+* Arguments  : hdleÔºöÊìç‰ΩúÂè•ÊüÑ
 *
-*Return         : Ãıƒø ˝
-*             EPDK_FAIL:  ß∞‹
+*Return         : Êù°ÁõÆÊï∞
+*             EPDK_FAIL: Â§±Ë¥•
 *
 *Author     : add by Libaiao, 2011.04.21
 **********************************************************************************************************************

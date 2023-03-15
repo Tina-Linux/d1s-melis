@@ -1,42 +1,56 @@
 /*
-**************************************************************************************************************
-*                                                   ePOS
-*                                  the Easy Portable/Player Operation System
-*                                             update sub-system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2008, Andy.zhang China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : parser_plugin_i.h
-* Version   : V1.0
-* Data      : 2009-5-02
-* By        : Andy.zhang
-* Biref     : txt parser
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef __PARSER_PLUGIN_I_H__
 #define __PARSER_PLUGIN_I_H__
 
 #include "monkey_i.h"
 
 
-#define BufferLenght        4*1024                          //8kÊı¾İ    8*1024
+#define BufferLenght        4*1024                          //8kæ•°æ®    8*1024
 
 struct tag_txtEncodeParser;
 typedef struct tag_txtEncodeParser  txtEncodeParser;
 
 typedef struct tag_ParserConfig
 {
-    ES_FILE     *fd;                                // ÎÄ¼ş¾ä±ú
-    __s32       len;                                // µ±Ç°ÎÄ¼şµÄ³¤¶È
-    __s32       lineofpage;                         // µ±Ç°ÊÓÍ¼Çé¿öÏÂ¿ÉÒÔÏÔÊ¾µÄĞĞÊı
-    MkEncode    encodeType;                         // ±àÂë¸ñÊ½
+    ES_FILE     *fd;                                // æ–‡ä»¶å¥æŸ„
+    __s32       len;                                // å½“å‰æ–‡ä»¶çš„é•¿åº¦
+    __s32       lineofpage;                         // å½“å‰è§†å›¾æƒ…å†µä¸‹å¯ä»¥æ˜¾ç¤ºçš„è¡Œæ•°
+    MkEncode    encodeType;                         // ç¼–ç æ ¼å¼
 
-    __u32       xScrWidth;                          // ¿ÉÊÓÇøÓòµÄ¿í
-    __u32       startOffset;                        // ³õÊ¼Æ«ÒÆÁ¿
-    H_LYR       hlyr;                               // Í¼²ã¾ä±ú
-    GUI_FONT    *pFont;                             // ÎÄ×Ö¾ä±ú
+    __u32       xScrWidth;                          // å¯è§†åŒºåŸŸçš„å®½
+    __u32       startOffset;                        // åˆå§‹åç§»é‡
+    H_LYR       hlyr;                               // å›¾å±‚å¥æŸ„
+    GUI_FONT    *pFont;                             // æ–‡å­—å¥æŸ„
 
     void (*p_dispstr)(char *s, int len, int x, int y);
 } ParserConfig;
@@ -61,17 +75,17 @@ struct tag_txtEncodeParser
     txt_parserDestroy               destroy;
 
     /* context */
-    ES_FILE *fd;                            // ÎÄ¼ş¾ä±ú
-    __s32   txtLength;                      // µ±Ç°ÎÄ¼şµÄ³¤¶È
-    __s32   viewWidth;                      // ¿ÉÊÓÇøÓòµÄ¿í
-    __s32   chinese_width;                  // ºº×ÖµÄ×Ö·û¿í¶È(ÒòÎªºº×ÖµÄ¿í¶ÈÒ»Ñù´óĞ¡£¬ÄÜ¹»¼ÓËÙ·ÖÎö¹ı³Ì)
+    ES_FILE *fd;                            // æ–‡ä»¶å¥æŸ„
+    __s32   txtLength;                      // å½“å‰æ–‡ä»¶çš„é•¿åº¦
+    __s32   viewWidth;                      // å¯è§†åŒºåŸŸçš„å®½
+    __s32   chinese_width;                  // æ±‰å­—çš„å­—ç¬¦å®½åº¦(å› ä¸ºæ±‰å­—çš„å®½åº¦ä¸€æ ·å¤§å°ï¼Œèƒ½å¤ŸåŠ é€Ÿåˆ†æè¿‡ç¨‹)
 
-    __u8    *bufferTxt;                     // ÎÄ¼ş»º³å
-    __s32   bufferTxtlen;                   // ÎÄ¼ş»º³å³¤¶È
-    __s32   start;                          // ÎÄ¼ş»º³åÆğÊ¼Æ«ÒÆÁ¿, ×¢Òâ : start ²»Ò»¶¨ºÍ ParserConfig.startOffsetÏàÍ¬
-    __s32   cur_offset;                     // analysis µ±Ç°Æ«ÒÆÁ¿
-    __bool  eof;                            // »º³åÇøÄÚÈİÊÇ·ñÒÑµ½ÎÄµµ×îºóÃæ
-    __bool  bof;                            // »º³åÇøÄÚÈİÊÇ·ñÒÑµ½ÎÄµµ×îÇ°Ãæ
+    __u8    *bufferTxt;                     // æ–‡ä»¶ç¼“å†²
+    __s32   bufferTxtlen;                   // æ–‡ä»¶ç¼“å†²é•¿åº¦
+    __s32   start;                          // æ–‡ä»¶ç¼“å†²èµ·å§‹åç§»é‡, æ³¨æ„ : start ä¸ä¸€å®šå’Œ ParserConfig.startOffsetç›¸åŒ
+    __s32   cur_offset;                     // analysis å½“å‰åç§»é‡
+    __bool  eof;                            // ç¼“å†²åŒºå†…å®¹æ˜¯å¦å·²åˆ°æ–‡æ¡£æœ€åé¢
+    __bool  bof;                            // ç¼“å†²åŒºå†…å®¹æ˜¯å¦å·²åˆ°æ–‡æ¡£æœ€å‰é¢
 
     H_LYR       hlyr;
     GUI_FONT    *pFont;

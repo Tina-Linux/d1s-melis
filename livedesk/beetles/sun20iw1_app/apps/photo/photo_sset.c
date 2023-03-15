@@ -1,30 +1,44 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2011, CHIPHD, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : photo_sset.c
-* By        : CQQ
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011/07/21 14:23  create this file, implements the fundamental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "photo_sset.h"
 #include "dtv_func_interface.h"
 //////////////////////////////////////////////////////////////////////////
-////////////////////sset ÅäÖÃ
-//×Ó²Ëµ¥--²¥·ÅÌØĞ§
+////////////////////sset é…ç½®
+//å­èœå•--æ’­æ”¾ç‰¹æ•ˆ
 __sset_item_para_t submenu_slideshow[] =
 {
     {
-        //Ä¬ÈÏÎŞÇĞ»»Ğ§¹û
+        //é»˜è®¤æ— åˆ‡æ¢æ•ˆæœ
         "photo\\slideshow\\default",
         1,
         TYPE_OPT,
@@ -42,7 +56,7 @@ __sset_item_para_t submenu_slideshow[] =
         NULL,
     },
     {
-        //µ­Èëµ­³ö
+        //æ·¡å…¥æ·¡å‡º
         "photo\\slideshow\\fade_in_out",
         1,
         TYPE_OPT,
@@ -60,7 +74,7 @@ __sset_item_para_t submenu_slideshow[] =
         NULL,
     },
     {
-        //Ë®Æ½°ÙÒ¶´°
+        //æ°´å¹³ç™¾å¶çª—
         "photo\\slideshow\\persian_blind_h",
         1,
         TYPE_OPT,
@@ -78,7 +92,7 @@ __sset_item_para_t submenu_slideshow[] =
         NULL,
     },
     {
-        //´¹Ö±°ÙÒ¶´°
+        //å‚ç›´ç™¾å¶çª—
         "photo\\slideshow\\persian_blind_v",
         1,
         TYPE_OPT,
@@ -96,7 +110,7 @@ __sset_item_para_t submenu_slideshow[] =
         NULL,
     },
     {
-        //ÏòÉÏ»¬¶¯
+        //å‘ä¸Šæ»‘åŠ¨
         "photo\\slideshow\\slid_up",
         1,
         TYPE_OPT,
@@ -114,7 +128,7 @@ __sset_item_para_t submenu_slideshow[] =
         NULL,
     },
     {
-        //ÏòÏÂ»¬¶¯
+        //å‘ä¸‹æ»‘åŠ¨
         "photo\\slideshow\\slid_down",
         1,
         TYPE_OPT,
@@ -132,7 +146,7 @@ __sset_item_para_t submenu_slideshow[] =
         NULL,
     },
     {
-        //Ïò×ó»¬¶¯
+        //å‘å·¦æ»‘åŠ¨
         "photo\\slideshow\\slid_left",
         1,
         TYPE_OPT,
@@ -150,7 +164,7 @@ __sset_item_para_t submenu_slideshow[] =
         NULL,
     },
     {
-        //ÏòÓÒ»¬¶¯
+        //å‘å³æ»‘åŠ¨
         "photo\\slideshow\\slid_right",
         1,
         TYPE_OPT,
@@ -168,7 +182,7 @@ __sset_item_para_t submenu_slideshow[] =
         NULL,
     },
     {
-        //ÏòÉÏÕ¹¿ª
+        //å‘ä¸Šå±•å¼€
         "photo\\slideshow\\stretch_up",
         1,
         TYPE_OPT,
@@ -186,7 +200,7 @@ __sset_item_para_t submenu_slideshow[] =
         NULL,
     },
     {
-        //ÏòÏÂÕ¹¿ª
+        //å‘ä¸‹å±•å¼€
         "photo\\slideshow\\stretch_down",
         1,
         TYPE_OPT,
@@ -204,7 +218,7 @@ __sset_item_para_t submenu_slideshow[] =
         NULL,
     },
     {
-        //Ïò×óÕ¹¿ª
+        //å‘å·¦å±•å¼€
         "photo\\slideshow\\stretch_left",
         1,
         TYPE_OPT,
@@ -222,7 +236,7 @@ __sset_item_para_t submenu_slideshow[] =
         NULL,
     },
     {
-        //ÏòÓÒÕ¹¿ª
+        //å‘å³å±•å¼€
         "photo\\slideshow\\stretch_right",
         1,
         TYPE_OPT,
@@ -240,7 +254,7 @@ __sset_item_para_t submenu_slideshow[] =
         NULL,
     },
     {
-        //ÂíÈü¿Ë
+        //é©¬èµ›å…‹
         "photo\\slideshow\\mosaic",
         1,
         TYPE_OPT,
@@ -258,7 +272,7 @@ __sset_item_para_t submenu_slideshow[] =
         NULL,
     },
     {
-        //ËõĞ¡
+        //ç¼©å°
         "photo\\slideshow\\room_in",
         1,
         TYPE_OPT,
@@ -276,7 +290,7 @@ __sset_item_para_t submenu_slideshow[] =
         NULL,
     },
     {
-        //·Å´ó
+        //æ”¾å¤§
         "photo\\slideshow\\room_out",
         1,
         TYPE_OPT,
@@ -294,7 +308,7 @@ __sset_item_para_t submenu_slideshow[] =
         NULL,
     },
     {
-        //Ëæ»ú
+        //éšæœº
         "photo\\slideshow\\fade_in_out",
         1,
         TYPE_OPT,
@@ -312,7 +326,7 @@ __sset_item_para_t submenu_slideshow[] =
         NULL,
     },
     {
-        //ÍË³ö
+        //é€€å‡º
         "photo\\slideshow\\exit",
         1,
         TYPE_OPT,
@@ -331,7 +345,7 @@ __sset_item_para_t submenu_slideshow[] =
     },
 };
 
-//×Ó²Ëµ¥--²¥·ÅËÙ¶È
+//å­èœå•--æ’­æ”¾é€Ÿåº¦
 __sset_item_para_t submenu_interval[] =
 {
     {
@@ -413,9 +427,9 @@ __sset_item_para_t submenu_interval[] =
         {
             {0,0,0,ID_PHOTO_BTN_SUB_F_BMP,ID_PHOTO_BTN_ADD_F_BMP,ID_PHOTO_BTN_SUB_N_BMP,ID_PHOTO_BTN_ADD_N_BMP,0},
             {0,0},
-            10,   // µ±Ç°Öµ
-            59,   // ×î´óÖµ
-            1,    // ×îĞ¡Öµ
+            10,   // å½“å‰å€¼
+            59,   // æœ€å¤§å€¼
+            1,    // æœ€å°å€¼
             0,
             NULL,
         },
@@ -425,7 +439,7 @@ __sset_item_para_t submenu_interval[] =
     },*/
 };
 
-//Ö÷²Ëµ¥
+//ä¸»èœå•
 static __sset_item_para_t mainmenu[] =
 {
     {
@@ -562,7 +576,7 @@ static __sset_item_para_t mainmenu[] =
         BEETLES_TBL_SIZE(submenu_interval),
         submenu_interval,
     },
-#if 0
+#if 1
     {
         // ID_MMENU_SAVE_BG
         "photo\\save_bg",
@@ -585,30 +599,30 @@ static __sset_item_para_t mainmenu[] =
 #endif
 };
 
-//ssetÅäÖÃÈë¿Ú
+//sseté…ç½®å…¥å£
 __sset_item_para_t photo_sset_arry[] =
 {
     {
-        "photo",                 // Ãû³Æ
-        1,                       // ÊÇ·ñÓĞĞ§
-        TYPE_NORMAL,             // ·ç¸ñ
+        "photo",                 // åç§°
+        1,                       // æ˜¯å¦æœ‰æ•ˆ
+        TYPE_NORMAL,             // é£æ ¼
         {
-            {0, 0, 0, 0, 0, 0, 0, 0}, // Í¼±ê×ÊÔ´ID
-            {0, 0},              // ÎÄ±¾×ÊÔ´ID
-            0,                   // µ±Ç°Öµ
-            0,                   // ×î´óÖµ
-            0,                   // ×îĞ¡Öµ
-            0,                   // OPTÑ¡ÖĞ±êÊ¾
-            {NULL},                // ÎÄ±¾Êı¾İ
+            {0, 0, 0, 0, 0, 0, 0, 0}, // å›¾æ ‡èµ„æºID
+            {0, 0},              // æ–‡æœ¬èµ„æºID
+            0,                   // å½“å‰å€¼
+            0,                   // æœ€å¤§å€¼
+            0,                   // æœ€å°å€¼
+            0,                   // OPTé€‰ä¸­æ ‡ç¤º
+            {NULL},                // æ–‡æœ¬æ•°æ®
         },
-        {0, 0},                  // ÏûÏ¢Âë
+        {0, 0},                  // æ¶ˆæ¯ç 
 
-        BEETLES_TBL_SIZE(mainmenu),   // ±¾Ïî×Ó²Ëµ¥ÖĞµÄÌõÄ¿Êı
-        mainmenu,                     // ±¾Ïî×Ó²Ëµ¥µØÖ·
+        BEETLES_TBL_SIZE(mainmenu),   // æœ¬é¡¹å­èœå•ä¸­çš„æ¡ç›®æ•°
+        mainmenu,                     // æœ¬é¡¹å­èœå•åœ°å€
     },
 };
 
-//ÖØÖÃÎªÄ¬ÈÏÖµ
+//é‡ç½®ä¸ºé»˜è®¤å€¼
 static void Photo_ParaReset(void)
 {
     __s32 i;
@@ -633,7 +647,7 @@ static void Photo_ParaReset(void)
 
 static void Photo_InitSetting(void)
 {
-    //¶Á×¢²á±íÀ´Ïà¹Ø³õÊ¼»¯Êı¾İ
+    //è¯»æ³¨å†Œè¡¨æ¥ç›¸å…³åˆå§‹åŒ–æ•°æ®
     __s32 val;
     get_photo_value(val, photo_get_effect);
 
@@ -679,7 +693,7 @@ void Photo_sset_process_for_tvout(void)
     return ;
 }
 
-//´´½¨¼°³õÊ¼»¯SSET´´½¨²ÎÊıÊµÀı
+//åˆ›å»ºåŠåˆå§‹åŒ–SSETåˆ›å»ºå‚æ•°å®ä¾‹
 __sset_create_para_t *Photo_SSET_Build_CreatePara(H_WIN h_win)
 {
     __sset_create_para_t *create_para;
@@ -709,7 +723,7 @@ __sset_create_para_t *Photo_SSET_Build_CreatePara(H_WIN h_win)
     return create_para;
 }
 
-//Ïú»ÙSSET´´½¨²ÎÊıÊµÀı
+//é”€æ¯SSETåˆ›å»ºå‚æ•°å®ä¾‹
 // __s32 Photo_SSET_Destroy_CreatePara(__sset_create_para_t* create_para)
 // {
 //  BFreeType(create_para, __sset_create_para_t);
@@ -731,7 +745,7 @@ __sset_create_para_t *Photo_SSET_Build_CreatePara(H_WIN h_win)
 //  else
 //      itemnum = subtitle_para.nSubtitleStrmNum;
 //
-//  /*¶¯Ì¬´´½¨´´½¨SSET²ÎÊı*/
+//  /*åŠ¨æ€åˆ›å»ºåˆ›å»ºSSETå‚æ•°*/
 //  sset_data = (__sset_item_para_t*)esMEMS_Balloc(sizeof(__sset_item_para_t) * itemnum);
 //  eLIBs_memset(sset_data, 0x0, sizeof(__sset_item_para_t) * itemnum);
 //
@@ -765,4 +779,3 @@ __sset_create_para_t *Photo_SSET_Build_CreatePara(H_WIN h_win)
 //  return 0;
 //
 // }
-

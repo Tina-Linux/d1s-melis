@@ -1,19 +1,50 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <log.h>
 #include "app_alarm.h"
 
 static H_WIN alarm_win = NULL;
 const static __u32 id_alarm_bmp[ALARM_BMP_MAX] =
 {
-    ID_ALARM_ALARM_BG_BMP,      //±³¾°
+    ID_ALARM_ALARM_BG_BMP,      //èƒŒæ™¯
 
-    ID_ALARM_ALARM_ANI1_BMP,    //¶¯»­1
-    ID_ALARM_ALARM_ANI2_BMP,    //¶¯»­2
-    ID_ALARM_ALARM_ANI3_BMP,    //¶¯»­3
+    ID_ALARM_ALARM_ANI1_BMP,    //åŠ¨ç”»1
+    ID_ALARM_ALARM_ANI2_BMP,    //åŠ¨ç”»2
+    ID_ALARM_ALARM_ANI3_BMP,    //åŠ¨ç”»3
 
-    ID_ALARM_BUTTON_UNF_BMP,    //ÎÞ½¹µã
-    ID_ALARM_BUTTON_F_BMP,      //½¹µã
+    ID_ALARM_BUTTON_UNF_BMP,    //æ— ç„¦ç‚¹
+    ID_ALARM_BUTTON_F_BMP,      //ç„¦ç‚¹
 
-    ID_ALARM_0_BMP,             //Êý×Ö
+    ID_ALARM_0_BMP,             //æ•°å­—
     ID_ALARM_1_BMP,
     ID_ALARM_2_BMP,
     ID_ALARM_3_BMP,
@@ -27,8 +58,8 @@ const static __u32 id_alarm_bmp[ALARM_BMP_MAX] =
 };
 static GUI_RECT alarm_button_touch[2] =
 {
-    {14, 159, 156, 197},    //ÍË³ö
-    {167, 159, 309, 197}    //Ì°Ë¯
+    {14, 159, 156, 197},    //é€€å‡º
+    {167, 159, 309, 197}    //è´ªç¡
 };
 
 static H_LYR alarm_frm_32bpp_layer_create(RECT *LayerRect)
@@ -241,7 +272,7 @@ static __s32 alarm_frm_alarmSt_draw(__gui_msg_t *msg)
     GUI_UC_SetEncodeUTF8();
     GUI_SetDrawMode(GUI_DRAWMODE_NORMAL);
 
-    //»æ»­ÄÖÖÓ
+    //ç»˜ç”»é—¹é’Ÿ
     if (palarmFrm_attr->isDelay)
     {
         GUI_BMP_Draw(theme_hdl2buf(palarmFrm_attr->h_bmp_alarm[ALARM_ALARM_ANI1_BMP]), 33, 43);
@@ -253,7 +284,7 @@ static __s32 alarm_frm_alarmSt_draw(__gui_msg_t *msg)
         palarmFrm_attr->ani_fp++;
     }
 
-    //»æ»­Ê±¼ä
+    //ç»˜ç”»æ—¶é—´
     eLIBs_GetTime(&time);
     GUI_BMP_Draw(theme_hdl2buf(palarmFrm_attr->h_bmp_alarm[ALARM_0_BMP + ((time.hour / 10) % 10)]), 150, 70);
     GUI_BMP_Draw(theme_hdl2buf(palarmFrm_attr->h_bmp_alarm[ALARM_0_BMP + ((time.hour) % 10)]), 177, 70);
@@ -416,7 +447,7 @@ static __s32 _alarm_frm_on_paint(__gui_msg_t *msg)
         return EPDK_FAIL;
     }
 
-    //ÉèÖÃ»æ»­ÊôÐÔ
+    //è®¾ç½®ç»˜ç”»å±žæ€§
     GUI_LyrWinSel(palarmFrm_attr->layer);
     GUI_SetFont(SWFFont);
     GUI_UC_SetEncodeUTF8();
@@ -443,15 +474,15 @@ static __s32 _alarm_frm_on_create(__gui_msg_t *msg)
     palarmFrm_attr->alarmTimeStart  = alarm_get_cur_second_cnt(msg);
     palarmFrm_attr->alarmTimeID     = 0x71;
     GUI_SetTimer(msg->h_deswin, palarmFrm_attr->alarmTimeID, ALARM_TIMER_TIMES, NULL);
-    //×ÊÔ´³õÊ¼»¯
+    //èµ„æºåˆå§‹åŒ–
     alarm_res_init(msg);
-    //»æ»­±³¾°
+    //ç»˜ç”»èƒŒæ™¯
     alarm_frm_bg_draw(msg);
     alarm_frm_alarm_change_draw(msg);
     alarm_frm_alarmSt_draw(msg);
     alarm_frm_button_draw(msg);
 
-    //ÉùÒô³õÊ¼»¯
+    //å£°éŸ³åˆå§‹åŒ–
     if (robin_is_open() == EPDK_FALSE)
     {
         robin_open(ROBIN_MODE_AUDIO_MIN, NULL);
@@ -506,14 +537,14 @@ static __s32 _alarm_frm_on_destory(__gui_msg_t *msg)
         return EPDK_FAIL;
     }
 
-    //ÉùÒôÏú»Ù
+    //å£°éŸ³é”€æ¯
     robin_set_cmd_stop();
 
     if (palarmFrm_attr->extRobinOpen == EPDK_FALSE)
     {
         robin_close();
 
-        //robin_close»á¹Ø±Õ¹¦·Å£¬Èç¹û´æÔÚºóÌ¨linein£¬Ôò²»Òª¹Ø±Õ¹¦·Å
+        //robin_closeä¼šå…³é—­åŠŸæ”¾ï¼Œå¦‚æžœå­˜åœ¨åŽå°lineinï¼Œåˆ™ä¸è¦å…³é—­åŠŸæ”¾
         if (EPDK_TRUE == is_app_exist(APP_RECORD)
             || EPDK_TRUE == is_app_exist(APP_FM))
         {
@@ -538,7 +569,7 @@ static __s32 _alarm_frm_on_destory(__gui_msg_t *msg)
         __s32 cur_close_time;
         cur_close_time = g_get_close_scn_time();
 
-        //Èç¹ûÆÚ¼äÃ»ÓÐÆäËüµØ·½ÐÞ¸Ä¹ØÆÁÊ±¼ä£¬ÔòÖØÖÃ¹ØÆÁÊ±¼ä
+        //å¦‚æžœæœŸé—´æ²¡æœ‰å…¶å®ƒåœ°æ–¹ä¿®æ”¹å…³å±æ—¶é—´ï¼Œåˆ™é‡ç½®å…³å±æ—¶é—´
         if (0 == cur_close_time)
         {
             g_set_close_scn_time(palarmFrm_attr->close_time_before_alarm);
@@ -628,13 +659,13 @@ static __s32 _alarm_frm_on_touch(__gui_msg_t *msg)
     if (x > alarm_button_touch[0].x0 && x < alarm_button_touch[0].x1 &&
         y > alarm_button_touch[0].y0 && y < alarm_button_touch[0].y1)
     {
-        //ÍË³ö
+        //é€€å‡º
         alarm_frm_close(msg);
     }
     else if (x > alarm_button_touch[1].x0 && x < alarm_button_touch[1].x1 &&
              y > alarm_button_touch[1].y0 && y < alarm_button_touch[1].y1)
     {
-        //Ì°Ë¯
+        //è´ªç¡
         palarmFrm_attr->alarmTimeStart = alarm_get_cur_second_cnt(msg);
         palarmFrm_attr->isDelay = EPDK_TRUE;
         palarmFrm_attr->buttonF = ALARM_DELAY_BUTTON;
@@ -656,7 +687,7 @@ static __s32 _alarm_frm_manager_proc(__gui_msg_t *msg)
         case GUI_MSG_CREATE:
             g_mute_status = dsk_amplifier_is_on();
             __wrn("g_mute_status=%d\n", g_mute_status);
-            dsk_amplifier_onoff(1);//´ò¿ª¹¦·Å
+            dsk_amplifier_onoff(1);//æ‰“å¼€åŠŸæ”¾
             return _alarm_frm_on_create(msg);
 
         case GUI_MSG_CLOSE:
@@ -667,11 +698,11 @@ static __s32 _alarm_frm_manager_proc(__gui_msg_t *msg)
 
             if (0 == g_mute_status)
             {
-                dsk_amplifier_onoff(1);//´ò¿ª¹¦·Å
+                dsk_amplifier_onoff(1);//æ‰“å¼€åŠŸæ”¾
             }
             else
             {
-                dsk_amplifier_onoff(0);//¹Ø±Õ¹¦·Å
+                dsk_amplifier_onoff(0);//å…³é—­åŠŸæ”¾
             }
 
             return _alarm_frm_on_destory(msg);
@@ -714,9 +745,9 @@ static __s32 _alarm_frm_manager_proc(__gui_msg_t *msg)
                 }
             }
 
-            //»æ»­
+            //ç»˜ç”»
             alarm_frm_alarmSt_draw(msg);
-            //ÒôÀÖ
+            //éŸ³ä¹
             alarm_frm_music_play(msg);
         }
 
@@ -747,7 +778,7 @@ H_WIN app_alarm_frm_create(H_WIN parentWin)
         return NULL;
     }
 
-    //·ÖÅä¿Õ¼ä
+    //åˆ†é…ç©ºé—´
     palarmFrm_attr = (papp_alarm_attr)esMEMS_Malloc(0, sizeof(app_alarm_attr));
 
     if (palarmFrm_attr == NULL)
@@ -766,7 +797,7 @@ H_WIN app_alarm_frm_create(H_WIN parentWin)
         return NULL;
     }
 
-    //´´½¨Í¼²ã
+    //åˆ›å»ºå›¾å±‚
     palarmFrm_attr->layer = alarm_frm_32bpp_layer_create(&layerRect);
 
     if (palarmFrm_attr->layer == NULL)
@@ -776,7 +807,7 @@ H_WIN app_alarm_frm_create(H_WIN parentWin)
         return NULL;
     }
 
-    //´´½¨´°Ìå
+    //åˆ›å»ºçª—ä½“
     eLIBs_memset(&framewin_para, 0, sizeof(__gui_framewincreate_para_t));
     framewin_para.name          = "alarm_frame";
     framewin_para.dwExStyle     = WS_EX_NONE;

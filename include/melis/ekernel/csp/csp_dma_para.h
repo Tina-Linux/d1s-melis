@@ -3,8 +3,7 @@
 
 #include <typedef.h>
 #include <kconfig.h>
-
-#if defined CONFIG_SOC_SUN8IW19 || defined CONFIG_SOC_SUN20IW1
+#if defined(CONFIG_SOC_SUN8IW19) || defined(CONFIG_SOC_SUN20IW1) || defined(CONFIG_SOC_SUN20IW3)
 
 typedef enum _csp_dma_status {
 	CSP_DMA_INVALID_PARAMETER = -2,

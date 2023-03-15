@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2011, CHIPHD, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : fm_main.c
-* By        : CQQ
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011/07/22 21:23  create this file, implements the fundamental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "fm_main.h"
@@ -25,7 +39,7 @@
 /************************************************************************/
 
 /************************************************************************/
-//º”‘ÿ◊ ‘¥
+//Âä†ËΩΩËµÑÊ∫ê
 /************************************************************************/
 static __s32 fm_mainfrw_create_res(FM_MAINWND_RES_T *res)
 {
@@ -35,7 +49,7 @@ static __s32 fm_mainfrw_create_res(FM_MAINWND_RES_T *res)
 }
 
 /************************************************************************/
-// Õ∑≈◊ ‘¥
+//ÈáäÊîæËµÑÊ∫ê
 /************************************************************************/
 static __s32 fm_mainfrw_destroy_res(FM_MAINWND_RES_T *res)
 {
@@ -56,7 +70,7 @@ static __s32 fm_mainfrw_destroy_res(FM_MAINWND_RES_T *res)
     }while(0)
 
 /************************************************************************/
-//∞¥º¸œ˚œ¢¥¶¿Ì
+//ÊåâÈîÆÊ∂àÊÅØÂ§ÑÁêÜ
 /************************************************************************/
 static __s32 fm_mainfrw_key_proc(__gui_msg_t *msg)
 {
@@ -64,7 +78,7 @@ static __s32 fm_mainfrw_key_proc(__gui_msg_t *msg)
     static __s32  lastkey = -1;
     FM_GetWndPara(wnd_para, FM_MAINWND_T, msg->h_deswin);
 
-    //eLIBs_printf("----fm frm  ’µΩ∞¥º¸œ˚œ¢ lastkey = %d, msg->dwAddData2 = %d , msg->dwAddData1 = %d  \n",lastkey ,msg->dwAddData2,msg->dwAddData1);
+    //eLIBs_printf("----fm frm Êî∂Âà∞ÊåâÈîÆÊ∂àÊÅØ lastkey = %d, msg->dwAddData2 = %d , msg->dwAddData1 = %d  \n",lastkey ,msg->dwAddData2,msg->dwAddData1);
     if (msg->dwAddData2 == KEY_UP_ACTION)
     {
         switch (lastkey)
@@ -131,7 +145,7 @@ static __s32 fm_mainfrw_key_proc(__gui_msg_t *msg)
 }
 
 /************************************************************************/
-//√¸¡Óœ˚œ¢¥¶¿Ì
+//ÂëΩ‰ª§Ê∂àÊÅØÂ§ÑÁêÜ
 /************************************************************************/
 static __s32 on_fm_mainfrw_command(__gui_msg_t *msg)
 {
@@ -148,7 +162,7 @@ static __s32 on_fm_mainfrw_command(__gui_msg_t *msg)
 }
 
 /************************************************************************/
-//¥•√˛œ˚œ¢∞¥œ¬¥¶¿Ì
+//Ëß¶Êë∏Ê∂àÊÅØÊåâ‰∏ãÂ§ÑÁêÜ
 /************************************************************************/
 // static __s32 on_fm_mainfrw_touch_down(H_WIN hwnd, int x, int y)
 // {
@@ -160,7 +174,7 @@ static __s32 on_fm_mainfrw_command(__gui_msg_t *msg)
 // }
 
 /************************************************************************/
-//¥•√˛œ˚œ¢“∆∂Ø¥¶¿Ì
+//Ëß¶Êë∏Ê∂àÊÅØÁßªÂä®Â§ÑÁêÜ
 /************************************************************************/
 // static __s32 on_fm_mainfrw_touch_move(H_WIN hwnd, int x, int y)
 // {
@@ -171,7 +185,7 @@ static __s32 on_fm_mainfrw_command(__gui_msg_t *msg)
 // }
 
 /************************************************************************/
-//¥•√˛œ˚œ¢µØ∆¥¶¿Ì
+//Ëß¶Êë∏Ê∂àÊÅØÂºπËµ∑Â§ÑÁêÜ
 /************************************************************************/
 // static __s32 on_fm_mainfrw_touch_up(H_WIN hwnd, int x, int y)
 // {
@@ -186,7 +200,7 @@ static __s32 on_fm_mainfrw_command(__gui_msg_t *msg)
 
 
 /************************************************************************/
-//¥•√˛œ˚œ¢¥¶¿Ì
+//Ëß¶Êë∏Ê∂àÊÅØÂ§ÑÁêÜ
 /************************************************************************/
 static __s32 fm_mainfrw_touch_proc(__gui_msg_t *msg)
 {
@@ -231,7 +245,7 @@ static __s32 fm_mainfrw_touch_proc(__gui_msg_t *msg)
 }
 
 /************************************************************************/
-// ª≠∆µµ¿±Ìº∞µ±«∞∆µµ¿”Œ±Í
+// ÁîªÈ¢ëÈÅìË°®ÂèäÂΩìÂâçÈ¢ëÈÅìÊ∏∏Ê†á
 /************************************************************************/
 // static __s32 draw_freq_scale(H_WIN hwnd, H_LYR layer, FM_UI_MAINWND *ui)
 // {
@@ -252,10 +266,10 @@ static __s32 fm_mainfrw_touch_proc(__gui_msg_t *msg)
 //
 //  GUI_LyrWinCacheOn();
 //
-//  //ª≠±Í≥ﬂ
+//  //ÁîªÊ†áÂ∞∫
 //  GUI_BMP_RES_Draw(res->bmp_scale, ui->scale.x, ui->scale.y);
 //
-//  //ª≠”Œ±Í
+//  //ÁîªÊ∏∏Ê†á
 //  x = RANGE_MAPPING(ui->scale.x, ui->scale.x + ui->scale.width,
 //      fm_ctrl->cur_min_freq, fm_ctrl->cur_max_freq, fm_ctrl->cur_freq);
 //
@@ -286,7 +300,7 @@ static __s32 fm_mainfrw_touch_proc(__gui_msg_t *msg)
 // }
 
 /***********************************************************************************
-…Ë÷√¥∞ø⁄∞¥≈•”Œ±ÍÀÊ◊≈4702ƒ£øÈƒ⁄≤øÀ—À˜∏°∂Øœ‘ æ∫Ø ˝
+ËÆæÁΩÆÁ™óÂè£ÊåâÈíÆÊ∏∏Ê†áÈöèÁùÄ4702Ê®°ÂùóÂÜÖÈÉ®ÊêúÁ¥¢ÊµÆÂä®ÊòæÁ§∫ÂáΩÊï∞
 *************************************************************************************/
 /*
 __s32 fm_auto_search_cb(FM_WND_T *fmplay_menu_attr)
@@ -386,7 +400,7 @@ static __s32 on_fm_mainfrw_updatepaint(__gui_msg_t *msg)
 
 
 /************************************************************************/
-//¥∞ø⁄œ˙ªŸ¥¶¿Ì
+//Á™óÂè£ÈîÄÊØÅÂ§ÑÁêÜ
 /************************************************************************/
 static __s32 on_fm_mainfrw_destory(__gui_msg_t *msg)
 {
@@ -399,7 +413,7 @@ static __s32 on_fm_mainfrw_destory(__gui_msg_t *msg)
 }
 
 /************************************************************************/
-//¥∞ø⁄¥¥Ω®¥¶¿Ì
+//Á™óÂè£ÂàõÂª∫Â§ÑÁêÜ
 /************************************************************************/
 static __s32 on_fm_mainfrw_create(__gui_msg_t *msg)
 {
@@ -418,7 +432,7 @@ static __s32 on_fm_mainfrw_create(__gui_msg_t *msg)
     return 0;
 }
 
-//œ˚œ¢¥¶¿Ì∫Ø ˝
+//Ê∂àÊÅØÂ§ÑÁêÜÂáΩÊï∞
 static __s32 _fm_mainfrw_proc(__gui_msg_t *msg)
 {
     APP_DEBUG_CBMSGEx;
@@ -498,7 +512,7 @@ static __s32 _fm_mainfrw_proc(__gui_msg_t *msg)
         return EPDK_OK;  */
         case CMD_AUTOSRH_FINDCH:
         {
-            //◊‘∂ØÀ—À˜◊¥Ã¨œ¬À—À˜µΩ“ª∏ˆ∆µµ„:
+            //Ëá™Âä®ÊêúÁ¥¢Áä∂ÊÄÅ‰∏ãÊêúÁ¥¢Âà∞‰∏Ä‰∏™È¢ëÁÇπ:
             FM_UpdateUI(msg->h_deswin);
         }
 
@@ -513,7 +527,7 @@ static __s32 _fm_mainfrw_proc(__gui_msg_t *msg)
 
         case CMD_AUTOSRH_OVER:
         {
-            //◊‘∂ØÀ—À˜ÕÍ≥…
+            //Ëá™Âä®ÊêúÁ¥¢ÂÆåÊàê
             FM_UpdateUI(msg->h_deswin);
         }
 
@@ -526,7 +540,7 @@ static __s32 _fm_mainfrw_proc(__gui_msg_t *msg)
     return GUI_FrmWinDefaultProc(msg);
 }
 
-//¥∞ø⁄¥¥Ω®
+//Á™óÂè£ÂàõÂª∫
 H_WIN fm_mainfrw_create(H_WIN h_parent, H_LYR layer, void *para)
 {
     __gui_framewincreate_para_t framewin_para;
@@ -555,5 +569,3 @@ H_WIN fm_mainfrw_create(H_WIN h_parent, H_LYR layer, void *para)
 }
 //////////////////////////////////////////////////////////////////////////
 // end of file
-
-

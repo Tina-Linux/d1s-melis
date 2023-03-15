@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 
 #ifndef __SETTING_ALARM_H__
@@ -38,13 +69,13 @@ typedef enum setting_alarm_bmp_e
 
 typedef enum setting_alarm_item_e
 {
-    SET_ALARMSTATE,         //ƒ÷÷”◊¥Ã¨
-    SET_ALARMTIME,          //ƒ÷÷” ±º‰
-    SET_ALARM_REPEATTIME,   //÷ÿ∏¥¥Œ ˝
-    SET_ALARM_RING,         //ƒ÷¡Â
-    SET_ALARM_VOL,          //ƒ÷¡Â“Ù¡ø
-    SET_ALARM_RUNTIME,      //ƒ÷¡Â≥÷–¯ ±º‰
-    SET_ALARM_DELAY,        //ƒ÷¡ÂÃ∞ÀØ ±º‰
+    SET_ALARMSTATE,         //ÈóπÈíüÁä∂ÊÄÅ
+    SET_ALARMTIME,          //ÈóπÈíüÊó∂Èó¥
+    SET_ALARM_REPEATTIME,   //ÈáçÂ§çÊ¨°Êï∞
+    SET_ALARM_RING,         //ÈóπÈìÉ
+    SET_ALARM_VOL,          //ÈóπÈìÉÈü≥Èáè
+    SET_ALARM_RUNTIME,      //ÈóπÈìÉÊåÅÁª≠Êó∂Èó¥
+    SET_ALARM_DELAY,        //ÈóπÈìÉË¥™Áù°Êó∂Èó¥
 
     SET_ALARM_MAX
 
@@ -81,7 +112,7 @@ typedef struct tag_setting_alarm_attr
 
 
     setting_alarm_view  view;
-    __hdle              long_str_handle;        //≥§◊÷∑˚¥Æπˆ∂Øæ‰±˙
+    __hdle              long_str_handle;        //ÈïøÂ≠óÁ¨¶‰∏≤ÊªöÂä®Âè•ÊüÑ
 
     HTHEME              h_bmp_setting_alarm[SETTING_ALARM_BMP_MAX];
 

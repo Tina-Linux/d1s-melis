@@ -1,10 +1,41 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <log.h>
 #include"ebook_sset.h"
 
 static reg_ebook_para_t *reg_ebook_para = 0;
 
 
-/* ±≥æ∞“Ù¿÷—°œÓ*/
+/* ËÉåÊôØÈü≥‰πêÈÄâÈ°π*/
 __sset_item_para_t ebook_bg_music_array[ ] =
 {
     {
@@ -49,7 +80,7 @@ __sset_item_para_t ebook_bg_music_array[ ] =
     }
 };
 
-/* ◊÷ÃÂ—’…´—°œÓ*/
+/* Â≠ó‰ΩìÈ¢úËâ≤ÈÄâÈ°π*/
 __sset_item_para_t ebook_font_color_array[ ] =
 {
 
@@ -137,7 +168,7 @@ __sset_item_para_t ebook_font_color_array[ ] =
     }
 };
 
-/* ◊‘∂Ø≤•∑≈—°œÓ*/
+/* Ëá™Âä®Êí≠ÊîæÈÄâÈ°π*/
 __sset_item_para_t ebook_auto_play_array[ ] =
 {
     {
@@ -244,7 +275,7 @@ __sset_item_para_t ebook_auto_play_array[ ] =
 
 };
 
-/* tts —°œÓ*/
+/* tts ÈÄâÈ°π*/
 __sset_item_para_t ebook_tts_array[ ] =
 {
     {
@@ -443,14 +474,14 @@ __sset_item_para_t ebook_obmk_array[ ] = //..
 
 
 
-/* tbar —°œÓ*/
+/* tbar ÈÄâÈ°π*/
 __sset_item_para_t ebook_tbar_array[ ] =
 {
 #if 0
     {
         "epdf\\exit",
         1,
-        TYPE_TBAR,              /* ÕÀ≥ˆ—°œÓ */
+        TYPE_TBAR,              /* ÈÄÄÂá∫ÈÄâÈ°π */
 
         {
             {ID_EBOOK_EXIT_F_BMP, ID_EBOOK_EXIT_UF_BMP, 0, 0, 0, 0, 0, 0},
@@ -469,7 +500,7 @@ __sset_item_para_t ebook_tbar_array[ ] =
     {
         "epdf\\music",
         1,
-        TYPE_TBAR,              /* “Ù¿÷øÏΩ› */
+        TYPE_TBAR,              /* Èü≥‰πêÂø´Êç∑ */
 
         {
             {ID_EBOOK_MUSIC_F_BMP, ID_EBOOK_MUSIC_UF_BMP, 0, 0, 0, 0, 0, 0},
@@ -489,7 +520,7 @@ __sset_item_para_t ebook_tbar_array[ ] =
     {
         "epdf\\fcolor",
         1,
-        TYPE_TBAR,              /* ◊÷ÃÂ —’…´ */
+        TYPE_TBAR,              /* Â≠ó‰Ωì È¢úËâ≤ */
 
         {
             {ID_EBOOK_FONTCOLOR_F_BMP, ID_EBOOK_FONTCOLOR_UF_BMP, 0, 0, 0, 0, 0, 0},
@@ -509,7 +540,7 @@ __sset_item_para_t ebook_tbar_array[ ] =
     {
         "epdf\\auto_play",
         1,
-        TYPE_TBAR,              /* ◊‘∂Ø≤•∑≈—°œÓ */
+        TYPE_TBAR,              /* Ëá™Âä®Êí≠ÊîæÈÄâÈ°π */
 
         {
             {ID_EBOOK_AUTO_F_BMP, ID_EBOOK_AUTO_UF_BMP, 0, 0, 0, 0, 0, 0},
@@ -531,7 +562,7 @@ __sset_item_para_t ebook_tbar_array[ ] =
     {
         "epdf\\tts",
         1,
-        TYPE_TBAR,              /* ◊‘∂Ø≤•∑≈—°œÓ */
+        TYPE_TBAR,              /* Ëá™Âä®Êí≠ÊîæÈÄâÈ°π */
 
         {
             {ID_EBOOK_TTS_F_BMP, ID_EBOOK_TTS_UF_BMP, 0, 0, 0, 0, 0, 0},
@@ -554,7 +585,7 @@ __sset_item_para_t ebook_tbar_array[ ] =
     {
         "epdf\\goto_page",
         1,
-        TYPE_TBAR,              /* ÕÀ≥ˆ—°œÓ */
+        TYPE_TBAR,              /* ÈÄÄÂá∫ÈÄâÈ°π */
 
         {
             {ID_EBOOK_GOTO_PAGE_F_BMP, ID_EBOOK_GOTO_PAGE_UF_BMP, 0, 0, 0, 0, 0, 0},
@@ -574,7 +605,7 @@ __sset_item_para_t ebook_tbar_array[ ] =
     //  {
     //      "epdf\\rotate",
     //      1,
-    //      TYPE_TBAR,              /* ◊‘∂Ø—°œÓ */
+    //      TYPE_TBAR,              /* Ëá™Âä®ÈÄâÈ°π */
     //
     //      {
     //          {ID_EPDF_AUTO_F_BMP,ID_EPDF_AUTO_UF_BMP, 0,0,0,0,0,0},
@@ -595,7 +626,7 @@ __sset_item_para_t ebook_tbar_array[ ] =
         //....
         "epdf\\openbmk",
         1,
-        TYPE_TBAR,              /* ¥Úø™ È«©—°œÓ */
+        TYPE_TBAR,              /* ÊâìÂºÄ‰π¶Á≠æÈÄâÈ°π */
 
         {
             {ID_EBOOK_BMARK_F_BMP, ID_EBOOK_BMARK_UF_BMP, 0, 0, 0, 0, 0, 0},
@@ -615,7 +646,7 @@ __sset_item_para_t ebook_tbar_array[ ] =
     {
         "epdf\\savebmk",
         1,
-        TYPE_TBAR,              /* ±£¥Ê È«©—°œÓ */
+        TYPE_TBAR,              /* ‰øùÂ≠ò‰π¶Á≠æÈÄâÈ°π */
 
         {
             {ID_EBOOK_FONTCOLOR_F_BMP, ID_EBOOK_FONTCOLOR_UF_BMP, 0, 0, 0, 0, 0, 0},
@@ -636,7 +667,7 @@ __sset_item_para_t ebook_tbar_array[ ] =
     //  {
     //      "epdf\\bcolor",
     //      1,
-    //      TYPE_TBAR,              /* —’…´ */
+    //      TYPE_TBAR,              /* È¢úËâ≤ */
     //
     //      {
     //          {ID_EPDF_BCOLOR_F_BMP,ID_EPDF_BCOLOR_UF_BMP, 0,0,0,0,0,0},
@@ -655,7 +686,7 @@ __sset_item_para_t ebook_tbar_array[ ] =
     //  {
     //      "epdf\\prev",
     //      1,
-    //      TYPE_TBAR,              /* …œ“ª“≥ */
+    //      TYPE_TBAR,              /* ‰∏ä‰∏ÄÈ°µ */
     //
     //      {
     //          {ID_EPDF_PREV_F_BMP,ID_EPDF_PREV_UF_BMP, 0,0,0,0,0,0},
@@ -674,7 +705,7 @@ __sset_item_para_t ebook_tbar_array[ ] =
     //  {
     //      "epdf\\next",
     //      1,
-    //      TYPE_TBAR,              /* œ¬“ª“≥ */
+    //      TYPE_TBAR,              /* ‰∏ã‰∏ÄÈ°µ */
     //
     //      {
     //          {ID_EPDF_NEXT_F_BMP,ID_EPDF_NEXT_UF_BMP, 0,0,0,0,0,0},
@@ -716,7 +747,7 @@ __sset_item_para_t ebook_sset_arry[ ] =
     }
 };
 
-//∏˘æ›◊¢≤·±Ì≥ı ºªØsset◊Èº˛÷–µƒ∏˜∏ˆ—°œÓ
+//Ê†πÊçÆÊ≥®ÂÜåË°®ÂàùÂßãÂåñssetÁªÑ‰ª∂‰∏≠ÁöÑÂêÑ‰∏™ÈÄâÈ°π
 __s32 ebook_sset_init_focus_item_by_reg(__sset_create_para_t *sset_para)
 {
     __s32   i ;
@@ -729,9 +760,9 @@ __s32 ebook_sset_init_focus_item_by_reg(__sset_create_para_t *sset_para)
         return EPDK_FAIL;
     }
 
-    ret = is_app_exist(APP_MUSIC);  //≤È—Øµ±«∞“Ù¿÷ «∑Ò¥Ê‘⁄
+    ret = is_app_exist(APP_MUSIC);  //Êü•ËØ¢ÂΩìÂâçÈü≥‰πêÊòØÂê¶Â≠òÂú®
 
-    if (EPDK_TRUE == ret)    //“Ù¿÷¥Ê‘⁄
+    if (EPDK_TRUE == ret)    //Èü≥‰πêÂ≠òÂú®
     {
         ebook_bg_music_array[BG_MUSIC_OPEN].item_attr.opt = 1;
     }
@@ -766,7 +797,7 @@ __s32 ebook_sset_init_focus_item_by_reg(__sset_create_para_t *sset_para)
         }
     }
 
-    //◊÷ÃÂ—’…´
+    //Â≠ó‰ΩìÈ¢úËâ≤
     //reg_ebook_para->text_colour = GUI_BLACK;//..
     if (reg_ebook_para->text_colour == APP_COLOR_BLACK)
     {
@@ -794,10 +825,10 @@ __s32 ebook_sset_init_focus_item_by_reg(__sset_create_para_t *sset_para)
         reg_ebook_para->text_colour = APP_COLOR_BLACK ;
     }
 
-    //◊‘∂Ø≤•∑≈
+    //Ëá™Âä®Êí≠Êîæ
     __wrn("...................reg_ebook_para->switch_time=%d/n", reg_ebook_para->switch_time);
 
-    if (reg_ebook_para->switch_time == 10)   //10s ◊‘∂Ø≤•∑≈
+    if (reg_ebook_para->switch_time == 10)   //10s Ëá™Âä®Êí≠Êîæ
     {
         ebook_auto_play_array[AUTO_TIME_10].item_attr.opt = 1;
         ebook_auto_play_array[AUTO_TIME_20].item_attr.opt = 0;
@@ -827,7 +858,7 @@ __s32 ebook_sset_init_focus_item_by_reg(__sset_create_para_t *sset_para)
         reg_ebook_para->switch_time = 0 ;
     }
 
-    //µÁ◊” È«©
+    //ÁîµÂ≠ê‰π¶Á≠æ
     __wrn("reg_ebook_para->e_mark=%d\n", reg_ebook_para->e_mark);
 
     if (reg_ebook_para->e_mark == LABEL1)
@@ -888,7 +919,7 @@ __s32 ebook_sset_init_focus_item_by_reg(__sset_create_para_t *sset_para)
     return EPDK_OK;
 }
 
-//¥¥Ω®º∞≥ı ºªØSSET¥¥Ω®≤Œ ˝ µ¿˝
+//ÂàõÂª∫ÂèäÂàùÂßãÂåñSSETÂàõÂª∫ÂèÇÊï∞ÂÆû‰æã
 __sset_create_para_t *Ebook_SSET_Build_CreatePara(H_WIN h_win)
 {
     __sset_create_para_t *create_para;

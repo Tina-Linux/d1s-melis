@@ -1,30 +1,33 @@
 /*
-*******************************************************************************************************************
-*                                                           txtbox  Framework
-*                                                   the display dirver support module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2008, SoftWinners Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name£º        txtbox.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
-*Author£º           William Wang
 *
-*Version :          1.1.0
-*
-*Date:              2008-12-17
-*
-*Description :      gui txtbox control function implement
-*
-*Others :           None at present.
-*
-* History :
-*
-* <Author>          <time>         <version>     <description>
-*
-* William Wang     2008-12-17        1.1.0          Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __TXT_BOX_C__
 #define __TXT_BOX_C__
@@ -463,7 +466,7 @@ static __s32 TxtBoxCtrlProc(__gui_msg_t *msg)
                 return ORANGE_FAIL;
             }
 
-            /*´¦Àí»æÖÆÏûÏ¢*/
+            /*å¤„ç†ç»˜åˆ¶æ¶ˆæ¯*/
             ret = GUI_TxtboxOnDraw(msg->h_deswin);
 
             if (ret != OK)
@@ -488,7 +491,7 @@ static __s32 TxtBoxCtrlProc(__gui_msg_t *msg)
                 break;
             }
 
-            /*»ñÈ¡¼üÅÌIDÖµ*/
+            /*èŽ·å–é”®ç›˜IDå€¼*/
             switch (msg->dwAddData1)
             {
                 case GUI_MSG_TOUCH_UP    :
@@ -522,12 +525,12 @@ static __s32 TxtBoxCtrlProc(__gui_msg_t *msg)
         case GUI_MSG_WIN_SLEEP:
             return ORANGE_OK;
 
-        /*menuitemÉÏµÄ×Ó¿Ø¼þÍ¨ÖªÏûÏ¢µÄ´¦Àíº¯Êý*/
+        /*menuitemä¸Šçš„å­æŽ§ä»¶é€šçŸ¥æ¶ˆæ¯çš„å¤„ç†å‡½æ•°*/
         case GUI_MSG_COMMAND:
         {
             __gui_msg_t     notifymsg;
-            /*Ö±½Ó½«×Ó¿Ø¼þµÄÍ¨ÖªÂëÍùlistmenu¿Ø¼þµÄ¸¸´°¿Ú´«µÝ
-            ´«µÝµÄÍ¨ÖªÂëºÍid±£³Ö²»±ä£¬ÕâÐèÒªÓ¦ÓÃ³ÌÐò±£Ö¤ÔÚlistmenuÖÐËùÓÐµÄ¿Ø¼þµÄid£¬Î¨Ò»*/
+            /*ç›´æŽ¥å°†å­æŽ§ä»¶çš„é€šçŸ¥ç å¾€listmenuæŽ§ä»¶çš„çˆ¶çª—å£ä¼ é€’
+            ä¼ é€’çš„é€šçŸ¥ç å’Œidä¿æŒä¸å˜ï¼Œè¿™éœ€è¦åº”ç”¨ç¨‹åºä¿è¯åœ¨listmenuä¸­æ‰€æœ‰çš„æŽ§ä»¶çš„idï¼Œå”¯ä¸€*/
             notifymsg.h_srcwin  = msg->h_deswin;
             notifymsg.h_deswin  = GUI_WinGetParent(msg->h_deswin);
             notifymsg.id        = GUI_MSG_COMMAND;

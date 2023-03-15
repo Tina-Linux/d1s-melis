@@ -262,6 +262,7 @@ extern int32_t      esCFG_GetGPIOSecData(char *GPIOSecName, void *pGPIOCfg, int3
 extern int32_t      esCFG_GetGPIOSecData_Ex(intptr_t* parser, char *GPIOSecName, void *pGPIOCfg, int32_t GPIONum);
 extern int32_t      esCFG_GetGPIOSecKeyCount(char *GPIOSecName);
 extern int32_t      esCFG_GetGPIOSecKeyCount_Ex(intptr_t* parser, char *GPIOSecName);
+extern int32_t	    esCFG_GetSubKeyData(char *MainKeyName, char *SubKeyName, void *pConfigCfg, int32_t CfgType);
 extern int32_t      esCFG_GetKeyValue(char *SecName, char *KeyName, int32_t Value[], int32_t Count);
 extern int32_t      esCFG_GetKeyValue_Ex(intptr_t* parser, char *KeyName, int32_t Value[], int32_t Count);
 extern int32_t      esCFG_GetSecCount(void);
@@ -270,6 +271,7 @@ extern int32_t      esCFG_GetSecKeyCount(char *SecName);
 extern int32_t      esCFG_GetSecKeyCount_Ex(intptr_t* parser, char *SecName);
 extern int32_t      esCFG_Init(uint8_t *CfgVAddr, uint32_t size);
 extern intptr_t*    esCFG_Init_Ex(char *path);
+extern void         esCFG_Dump(void);
 
 //CHS
 extern int32_t      esCHS_Char2Uni(int32_t type, const uint8_t *str, uint32_t len, uint16_t *uni);
@@ -279,6 +281,7 @@ extern int32_t      eschs_init(uint32_t mode, void *p_arg);
 extern int32_t      esCHS_Uni2Char(int32_t type, uint16_t uni, uint8_t *str, uint32_t len);
 
 //CLOCK
+#ifdef CONFIG_MELIS_LEGACY_DRIVER_MAN
 extern int32_t     esCLK_CloseMclk(sys_clk_id_t mclk);
 extern int32_t     esCLK_GetMclkDiv(sys_clk_id_t mclk);
 extern sys_clk_id_t    esCLK_GetMclkSrc(sys_clk_id_t mclk);
@@ -295,6 +298,7 @@ extern int32_t     esCLK_MclkAssert(sys_clk_id_t r_mclk);
 extern int32_t     esCLK_MclkDeassert(sys_clk_id_t r_mclk);
 extern int32_t     esCLK_MclkReset(sys_clk_id_t r_mclk);
 extern int32_t     esCLK_MclkGetRstStatus(sys_clk_id_t r_mclk);
+#endif
 extern void        esCLK_SysInfo(const char *name);
 extern void        esCLK_ModInfo(const char *name);
 
@@ -345,7 +349,7 @@ extern void*        esFSYS_fd2file(int32_t  fd);
 extern void         esFSYS_ferrclr(void* hFile);
 extern int32_t      esFSYS_ferror(void* hFile);
 extern int32_t      esFSYS_file2fd(void* hFile);
-extern int32_t      esFSYS_fioctrl(__hdle hFile, int32_t Cmd, int32_t Aux, void *pBuffer);
+extern int32_t      esFSYS_fioctrl(__hdle hFile, int32_t Cmd, long Aux, void *pBuffer);
 extern void*        esFSYS_fopen(const char *pFileName, const char *pMode);
 extern int32_t      esFSYS_format(const char *partname, const char *fstype, void* fmtpara);
 extern uint32_t     esFSYS_fread(void *pData, uint32_t Size, uint32_t N, void* hFile);
@@ -498,6 +502,7 @@ extern __pCBK_t     esKRNL_GetCallBack(__pCBK_t cb);
 extern long         esKRNL_CallBack(__pCBK_t cb, void *arg);
 extern __krnl_sktfrm_t  *esKRNL_SktPend(void* skt, uint8_t user, uint32_t timeout);
 extern __krnl_sktfrm_t  *esKRNL_SktAccept(void* skt, uint8_t user);
+extern long         esKRNL_Ioctrl(void *hdle, int cmd, void *arg);
 
 //KRSV
 extern void             esKSRV_Reset(void);
@@ -692,6 +697,7 @@ extern uint32_t     esTIME_QuerryCntr(void* hCntr);
 extern int32_t      esTIME_SetCntrPrescale(void* hCntr, int32_t prescl);
 extern int32_t      esTIME_QuerryCntrStat(void* hCntr);
 
+
 typedef struct
 {
     void *SWIHandler_SIOS           ;
@@ -721,6 +727,12 @@ typedef struct
     void *SWIHandler_CONFIG         ;
     void *SWIHandler_PTHREAD        ;
     void *SWIHandler_NLIBOPS        ;
+#ifdef CONFIG_NETWORK
+    void *SWIHandler_LWIP           ;
+#endif
+#ifdef CONFIG_KASAN
+    void *SWIHandler_KASANOPS       ;
+#endif
 } SWIHandler_SWIT_t;
 
 typedef struct
@@ -827,6 +839,9 @@ typedef struct
 #ifdef CONFIG_DEBUG_BACKTRACE
     void* backtrace                     ;
 #endif
+    void* mmap 							;
+    void* select 						;
+    void* esKRNL_Ioctrl                 ;
 } SWIHandler_KRNL_t;
 
 typedef struct
@@ -1081,7 +1096,7 @@ typedef struct
 {
     void* esKSRV_SysInfo             ;
     void* esKSRV_Get_Display_Hld     ;
-    void* esKSRV_Save_Display_Hld    ;	
+    void* esKSRV_Save_Display_Hld    ;
     void* esKSRV_SendMsgEx           ;
     void* esKSRV_GetMsg              ;
     void* esKSRV_GetVersion          ;
@@ -1384,7 +1399,75 @@ typedef struct
     void* getfscharset                  ;
     void* setfs                         ;
     void* statfs                        ;
+    void* dup                           ;
+    void* dup2                          ;
 } SWIHandler_NLIBOPS_t;
+
+typedef struct
+{
+    void* __asan_load1                  ;
+    void* __asan_load2                  ;
+    void* __asan_load4                  ;
+    void* __asan_load8                  ;
+    void* __asan_load16                 ;
+    void* __asan_loadN                  ;
+    void* __asan_store1                 ;
+    void* __asan_store2                 ;
+    void* __asan_store4                 ;
+    void* __asan_store8                 ;
+    void* __asan_store16                ;
+    void* __asan_storeN                 ;
+    void* __asan_load1_noabort          ;
+    void* __asan_load2_noabort          ;
+    void* __asan_load4_noabort          ;
+    void* __asan_load8_noabort          ;
+    void* __asan_load16_noabort         ;
+    void* __asan_loadN_noabort          ;
+    void* __asan_store1_noabort         ;
+    void* __asan_store2_noabort         ;
+    void* __asan_store4_noabort         ;
+    void* __asan_store8_noabort         ;
+    void* __asan_store16_noabort        ;
+    void* __asan_storeN_noabort         ;
+    void* __asan_poison_stack_memory    ;
+    void* __asan_unpoison_stack_memory  ;
+    void* __asan_alloca_poison          ;
+    void* __asan_alloca_unpoison        ;
+    void* __asan_handle_no_return       ;
+    void* __asan_register_globals       ;
+    void* __asan_unregister_globals     ;
+}SWIHandler_KASANOPS_t;
+
+typedef struct
+{
+    void* lwip_socket                   ;
+    void* lwip_bind                     ;
+    void* lwip_listen                   ;
+    void* lwip_connect                  ;
+    void* lwip_accept                   ;
+    void* lwip_recvfrom                 ;
+    void* lwip_read                     ;
+    void* lwip_recv                     ;
+    void* lwip_sendto                   ;
+    void* lwip_write                    ;
+    void* lwip_send                     ;
+    void* lwip_close                    ;
+    void* lwip_shutdown                 ;
+    void* lwip_getpeername              ;
+    void* lwip_getsockname              ;
+    void* lwip_setsockopt               ;
+    void* lwip_getsockopt               ;
+    void* lwip_recvmsg                  ;
+    void* lwip_sendmsg                  ;
+    void* lwip_select                   ;
+    void* lwip_poll                     ;
+    void* lwip_ioctl                    ;
+    void* lwip_inet_ntop                ;
+    void* lwip_inet_pton                ;
+    void* lwip_readv                    ;
+    void* lwip_writev                   ;
+    void* lwip_fcntl                    ;
+}SWIHandler_LWIP_t;
 
 #ifndef __LP64__
 #define SWINO(base,type,isr)    (base+(((long)(&(((type*)0)->isr)))>> 2))
@@ -1392,37 +1475,38 @@ typedef struct
 #define SWINO(base,type,isr)    (base+(((long)(&(((type*)0)->isr)))>> 3))
 #endif
 
-#define SYSCALL_SWINO(x)        (SWINO(0, SWIHandler_SWIT_t, x) << 8)
+#define SYSCALL_SWINO(x) (SWINO(0, SWIHandler_SWIT_t, x) << 8)
 
-#define SWINO_SIOS          SYSCALL_SWINO(SWIHandler_SIOS)
-#define SWINO_KRNL          SYSCALL_SWINO(SWIHandler_KRNL)
-#define SWINO_MEMS          SYSCALL_SWINO(SWIHandler_MEMS)
-#define SWINO_FSYS      	SYSCALL_SWINO(SWIHandler_FSYS)
-#define SWINO_EXEC          SYSCALL_SWINO(SWIHandler_EXEC)
-#define SWINO_MODS          SYSCALL_SWINO(SWIHandler_MODS)
-#define SWINO_RESM          SYSCALL_SWINO(SWIHandler_RESM)
-#define SWINO_INT           SYSCALL_SWINO(SWIHandler_INT)
-#define SWINO_DMA           SYSCALL_SWINO(SWIHandler_DMA )
-#define SWINO_TIME          SYSCALL_SWINO(SWIHandler_TIME)
-#define SWINO_IPIPE         SYSCALL_SWINO(SWIHandler_IPIPE)
-#define SWINO_PWRS          SYSCALL_SWINO(SWIHandler_PWRS)
-#define SWINO_ERRS          SYSCALL_SWINO(SWIHandler_ERRS)
-#define SWINO_SVC           SYSCALL_SWINO(SWIHandler_SVC)
-#define SWINO_DEV           SYSCALL_SWINO(SWIHandler_DEV)
-#define SWINO_KSRV          SYSCALL_SWINO(SWIHandler_KSRV)
-#define SWINO_PINS          SYSCALL_SWINO(SWIHandler_PINS)
-#define SWINO_CLK           SYSCALL_SWINO(SWIHandler_CLK)
-#define SWINO_MEM           SYSCALL_SWINO(SWIHandler_MEM)
-#define SWINO_HID           SYSCALL_SWINO(SWIHandler_HID)
-#define SWINO_PWRMAN        SYSCALL_SWINO(SWIHandler_PWRMAN)
-#define SWINO_CHS           SYSCALL_SWINO(SWIHandler_CHS)
-#define SWINO_MSTUB         SYSCALL_SWINO(SWIHandler_MSTUB)
-#define SWINO_INPUT         SYSCALL_SWINO(SWIHandler_INPUT)
-#define SWINO_CFG           SYSCALL_SWINO(SWIHandler_CONFIG)
-#define SWINO_PTD           SYSCALL_SWINO(SWIHandler_PTHREAD)
-#define SWINO_NLIBOPS       SYSCALL_SWINO(SWIHandler_NLIBOPS)
+#define SWINO_SIOS      SYSCALL_SWINO(SWIHandler_SIOS)  /* ??׼IOģ??ϵͳ           */
+#define SWINO_KRNL      SYSCALL_SWINO(SWIHandler_KRNL)  /* ?ں?ϵͳ                 */
+#define SWINO_MEMS      SYSCALL_SWINO(SWIHandler_MEMS)  /* ?ڴ?????ϵͳ             */
+#define SWINO_FSYS      SYSCALL_SWINO(SWIHandler_FSYS)  /* ?ļ?ϵͳ                 */
+#define SWINO_EXEC      SYSCALL_SWINO(SWIHandler_EXEC)  /* ???̹???ϵͳ             */
+#define SWINO_MODS      SYSCALL_SWINO(SWIHandler_MODS)  /* ģ??????ϵͳ             */
+#define SWINO_RESM      SYSCALL_SWINO(SWIHandler_RESM)  /* ??Դ????ϵͳ             */
+#define SWINO_INT       SYSCALL_SWINO(SWIHandler_INT)   /* ?жϿ???ϵͳ             */
+#define SWINO_DMA       SYSCALL_SWINO(SWIHandler_DMA )  /* DMA                      */
+#define SWINO_TIME      SYSCALL_SWINO(SWIHandler_TIME)  /* ʱ??????ϵͳ             */
+#define SWINO_IPIPE     SYSCALL_SWINO(SWIHandler_IPIPE) /*                          */
+#define SWINO_PWRS      SYSCALL_SWINO(SWIHandler_PWRS)  /* ???Ĺ???ϵͳ             */
+#define SWINO_ERRS      SYSCALL_SWINO(SWIHandler_ERRS)  /* ???�??ʹ???ϵͳ       */
+#define SWINO_SVC       SYSCALL_SWINO(SWIHandler_SVC)   /*                          */
+#define SWINO_DEV       SYSCALL_SWINO(SWIHandler_DEV)   /* ?豸????ϵͳ             */
+#define SWINO_KSRV      SYSCALL_SWINO(SWIHandler_KSRV)  /* ?ں˷???                 */
+#define SWINO_PINS      SYSCALL_SWINO(SWIHandler_PINS)  /* pin????                  */
+#define SWINO_CLK       SYSCALL_SWINO(SWIHandler_CLK)   /* ʱ?ӷ???                 */
+#define SWINO_MEM       SYSCALL_SWINO(SWIHandler_MEM)   /* ?ڴ??豸????             */
+#define SWINO_HID       SYSCALL_SWINO(SWIHandler_HID)   /* hid??ϵͳ                */
+#define SWINO_PWRMAN    SYSCALL_SWINO(SWIHandler_PWRMAN)/* pwm??ϵͳ                */
+#define SWINO_CHS       SYSCALL_SWINO(SWIHandler_CHS)   /* charset ??ϵͳ           */
+#define SWINO_MSTUB     SYSCALL_SWINO(SWIHandler_MSTUB) /* module stub ??ϵͳ       */
+#define SWINO_INPUT     SYSCALL_SWINO(SWIHandler_INPUT) /* ??????ϵͳ               */
+#define SWINO_CFG       SYSCALL_SWINO(SWIHandler_CONFIG)/* ??????ϵͳ               */
+#define SWINO_PTD       SYSCALL_SWINO(SWIHandler_PTHREAD) /*PTHREADϵͳ*/
+#define SWINO_NLIBOPS   SYSCALL_SWINO(SWIHandler_NLIBOPS)
+#define SWINO_KASANOPS  SYSCALL_SWINO(SWIHandler_KASANOPS)
+#define SWINO_LWIP      SYSCALL_SWINO(SWIHandler_LWIP)
 
-//void*  const *SWIVectorTable[];
 //#define SYSCALL_KRNL(y) SWINO(SWINO_KRNL, SWIHandler_KRNL_t, y)
 #if !defined(CONFIG_KERNEL_USE_SBI)
 #define SYSCALL_SIOS(y)     SWINO(SWINO_SIOS,       SWIHandler_SIOS_t, y)
@@ -1450,6 +1534,8 @@ typedef struct
 #define SYSCALL_CFG(y)      SWINO(SWINO_CFG,        SWIHandler_CONFIG_t, y)
 #define SYSCALL_PTD(y)      SWINO(SWINO_PTD,        SWIHandler_PTHREAD_t, y)
 #define SYSCALL_NLIBOPS(y)  SWINO(SWINO_NLIBOPS,    SWIHandler_NLIBOPS_t, y)
+#define SYSCALL_KASANOPS(y) SWINO(SWINO_KASANOPS,   SWIHandler_KASANOPS_t, y)
+#define SYSCALL_LWIP(y)     SWINO(SWINO_LWIP,       SWIHandler_LWIP_t, y)
 #else
 /*if using sbi module, the syscall number need to be different from sbi function number*/
 #define SYSCALL_SIOS(y)     (0x10000000 | SWINO(SWINO_SIOS,     SWIHandler_SIOS_t, y))
@@ -1477,5 +1563,7 @@ typedef struct
 #define SYSCALL_CFG(y)      (0x10000000 | SWINO(SWINO_CFG,      SWIHandler_CONFIG_t, y))
 #define SYSCALL_PTD(y)      (0x10000000 | SWINO(SWINO_PTD,      SWIHandler_PTHREAD_t, y))
 #define SYSCALL_NLIBOPS(y)  (0x10000000 | SWINO(SWINO_NLIBOPS,  SWIHandler_NLIBOPS_t, y))
+#define SYSCALL_KASANOPS(y) (0x10000000 | SWINO(SWINO_KASANOPS, SWIHandler_KASANOPS_t, y))
+#define SYSCALL_LWIP(y)     (0x10000000 | SWINO(SWINO_LWIP,     SWIHandler_LWIP_t, y))
 #endif
 #endif

@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #ifndef __RAT_H__
 #define __RAT_H__
 #include <kconfig.h>
@@ -9,11 +40,11 @@ typedef struct  __rat_list
     HSCAN   hscan;
     rat_media_type_t media_type;
     char    str_path[RAT_MAX_FULL_PATH_LEN];
-    __s32   open_cnt;   //“˝”√º∆ ˝
+    __s32   open_cnt;   //ÂºïÁî®ËÆ°Êï∞
     __s32   npl_cur_index;
     ScanListCursor_t NplCursor; /* point to the npl cursor*/
     rat_play_mode_e play_mode;
-    __s32   modify_flag;//–ﬁ∏ƒ±Íº«£¨±Íº«list¿Ô√ÊµƒŒƒº˛ «∑Ò±ª…æ≥˝ªÚ∏¥÷∆
+    __s32   modify_flag;//‰øÆÊîπÊ†áËÆ∞ÔºåÊ†áËÆ∞listÈáåÈù¢ÁöÑÊñá‰ª∂ÊòØÂê¶Ë¢´Âà†Èô§ÊàñÂ§çÂà∂
 } __rat_list_t;
 
 #define RAT_ENTER_CRITICAL_SECTION \
@@ -36,7 +67,7 @@ typedef struct  __rat_list
 *               -   open the rat process.
 *
 *  Parameters:
-*   rat_root_type -     rat_type_t RAT_TF°¢RAT_USB
+*   rat_root_type -     rat_type_t RAT_TF„ÄÅRAT_USB
 *   media_type  -   types of media file.
 *   OnceCnt     -   read items number when read once.
 *                   if zero, I will read all items one time.

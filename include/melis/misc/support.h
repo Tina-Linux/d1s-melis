@@ -153,6 +153,14 @@ static inline int is_power_of_2(unsigned long n)
 
 //#define DIV_ROUND_UP(n,d)  (((n) + (d) - 1) / (d))
 
+#undef set_bit
+#undef test_bit
+#undef clear_bit
+#undef change_bit
+#undef test_and_set_bit
+#undef test_and_clear_bit
+#undef test_and_change_bit
+
 /**
  * test_bit - Determine whether a bit is set
  * @nr: bit number to test

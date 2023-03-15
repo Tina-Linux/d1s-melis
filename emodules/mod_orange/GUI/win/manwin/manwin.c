@@ -1,30 +1,33 @@
 /*
-*******************************************************************************************************************
-*                                                           Listmenu  Framework
-*                                                   the display dirver support module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2008, Softwinner Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name£∫        manwin.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
 *
-*Author£∫           William Wang
 *
-*Version :          1.1.0
-*
-*Date:              2009-8-1
-*
-*Description :      manwin function implement
-*
-*Others :           None at present.
-*
-* History :
-*
-* <Author>          <time>        <version>     <description>
-*
-* William Wang     2009-8-1         1.1.0          Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __MANWIN_C__
 #define __MANWIN_C__
@@ -141,7 +144,7 @@ H_WIN   GUI_SetActiveManWin(H_WIN actwin)
 *
 * date:             2009-8-12
 *
-* Description:      ªÒ»°Õº≤„…œµƒFrmwinwin
+* Description:      Ëé∑ÂèñÂõæÂ±Ç‰∏äÁöÑFrmwinwin
 *
 * parameters:
 *
@@ -227,7 +230,7 @@ __gui_win_t *GUI_GetLayerFrameWinUnderPoint(__gui_lyrwin_t *pLayer, __s32 x, __s
 *
 * date:             2010-7-27
 *
-* Description:      ªÒ»°‘⁄ƒ≥µ„÷Æ…œµƒ¥∞ø⁄æ‰±˙°£»Áπ˚…œ√ÊµƒÕº≤„Œﬁ¥∞ø⁄,‘Ú“ª÷±’“µΩ∏√µ„œ¬µƒ¥∞ø⁄Œ™÷π
+* Description:      Ëé∑ÂèñÂú®ÊüêÁÇπ‰πã‰∏äÁöÑÁ™óÂè£Âè•ÊüÑ„ÄÇÂ¶ÇÊûú‰∏äÈù¢ÁöÑÂõæÂ±ÇÊó†Á™óÂè£,Âàô‰∏ÄÁõ¥ÊâæÂà∞ËØ•ÁÇπ‰∏ãÁöÑÁ™óÂè£‰∏∫Ê≠¢
 *
 * parameters:
 *
@@ -253,7 +256,7 @@ __gui_win_t *GUI_GetFrameWinUnderPointEx(__s32 x, __s32 y)
     GUI_ScnPhyPt2LogPt(gui_scndir, &pPhyPt, &pLogPt);
     x           = pLogPt.x;
     y           = pLogPt.y;
-    /*œ»‘⁄Sprite÷–ªÒ»°Spriteµƒæ‰±˙*/
+    /*ÂÖàÂú®Sprite‰∏≠Ëé∑ÂèñSpriteÁöÑÂè•ÊüÑ*/
     pCur = sg_VisiSpriteList;
 
     while (pCur)
@@ -276,7 +279,7 @@ __gui_win_t *GUI_GetFrameWinUnderPointEx(__s32 x, __s32 y)
         pCur = pCur->Next;
     }
 
-    /*‘Ÿ‘⁄Õº≤„¡¥±Ì÷–ªÒ»°Õº≤„µƒæ‰±˙*/
+    /*ÂÜçÂú®ÂõæÂ±ÇÈìæË°®‰∏≠Ëé∑ÂèñÂõæÂ±ÇÁöÑÂè•ÊüÑ*/
     pCur = sg_VisiLayerList;
 
     while (pCur)
@@ -330,7 +333,7 @@ __gui_lyrwin_t *GUI_GetLayerUnderPoint(__s32 x, __s32 y)
     __gui_rect_t     lyr_rect;
     //__gui_lyrwin_t    *pLayer = NULL;
     __gui_lyrwin_t    *pCur   = NULL;
-    /*œ»‘⁄Sprite÷–ªÒ»°Spriteµƒæ‰±˙*/
+    /*ÂÖàÂú®Sprite‰∏≠Ëé∑ÂèñSpriteÁöÑÂè•ÊüÑ*/
     pCur = sg_VisiSpriteList;
 
     while (pCur)
@@ -348,7 +351,7 @@ __gui_lyrwin_t *GUI_GetLayerUnderPoint(__s32 x, __s32 y)
         pCur = pCur->Next;
     }
 
-    /*‘Ÿ‘⁄Õº≤„¡¥±Ì÷–ªÒ»°Õº≤„µƒæ‰±˙*/
+    /*ÂÜçÂú®ÂõæÂ±ÇÈìæË°®‰∏≠Ëé∑ÂèñÂõæÂ±ÇÁöÑÂè•ÊüÑ*/
     pCur = sg_VisiLayerList;
 
     while (pCur)
@@ -382,7 +385,7 @@ __gui_lyrwin_t *GUI_GetLayerUnderPoint(__s32 x, __s32 y)
 *
 * date:             2009-8-12
 *
-* Description:      ªÒ»°‘⁄ƒ≥µ„÷Æ…œµƒ¥∞ø⁄æ‰±˙°£»Áπ˚…œ√ÊµƒÕº≤„Œﬁ¥∞ø⁄,‘Ú∑µªÿø’
+* Description:      Ëé∑ÂèñÂú®ÊüêÁÇπ‰πã‰∏äÁöÑÁ™óÂè£Âè•ÊüÑ„ÄÇÂ¶ÇÊûú‰∏äÈù¢ÁöÑÂõæÂ±ÇÊó†Á™óÂè£,ÂàôËøîÂõûÁ©∫
 *
 * parameters:
 *
@@ -475,7 +478,7 @@ __gui_win_t *GUI_GetWinUnderPoint(__gui_win_t *pWin, __s32 x, __s32 y, __pos_t *
     hMainManWin = GUI_WinGetMainManWin(GUI_WinP2H(pWin));
     pMainManWin = GUI_WinH2P(hMainManWin);
 
-    /*»Áπ˚ «÷˜¥∞ø⁄£¨–Ë“™’“µΩ∂‘”¶µƒframewin,¥À ±◊¯±ÍŒ™∆¡ƒª◊¯±Í*/
+    /*Â¶ÇÊûúÊòØ‰∏ªÁ™óÂè£ÔºåÈúÄË¶ÅÊâæÂà∞ÂØπÂ∫îÁöÑframewin,Ê≠§Êó∂ÂùêÊ†á‰∏∫Â±èÂπïÂùêÊ†á*/
     if (pWin->WinType == TYPE_MANWIN)
     {
         __pos_t                 sc_pos;
@@ -491,7 +494,7 @@ __gui_win_t *GUI_GetWinUnderPoint(__gui_win_t *pWin, __s32 x, __s32 y, __pos_t *
             return NULL;
         }
 
-        /*≈–∂œµ±«∞’“µΩµƒfrmwin «∑Ò‘⁄œ˚œ¢—≠ª∑¥∞ø⁄µƒ◊”ÀÔ¥∞ø⁄÷–*/
+        /*Âà§Êñ≠ÂΩìÂâçÊâæÂà∞ÁöÑfrmwinÊòØÂê¶Âú®Ê∂àÊÅØÂæ™ÁéØÁ™óÂè£ÁöÑÂ≠êÂ≠ôÁ™óÂè£‰∏≠*/
         isChild = GUI_WinIsAncestor(GUI_WinP2H(pMainManWin->Primitive), GUI_WinP2H(pFrameWin));
 
         if (!isChild && (pMainManWin->Primitive != (__gui_win_t *)pFrameWin))
@@ -511,14 +514,14 @@ __gui_win_t *GUI_GetWinUnderPoint(__gui_win_t *pWin, __s32 x, __s32 y, __pos_t *
         winpos->y   = win_pos.y;
         return (__gui_win_t *)pFrameWin;
     }
-    else/*»Áπ˚ «framewinªÚ’ﬂøÿº˛¥∞ø⁄,–Ë“™’“µΩ∂‘”¶µƒ◊”øÿº˛,¥À ±◊¯±ÍŒ™framewinƒ⁄µƒ◊¯±Í*/
+    else/*Â¶ÇÊûúÊòØframewinÊàñËÄÖÊéß‰ª∂Á™óÂè£,ÈúÄË¶ÅÊâæÂà∞ÂØπÂ∫îÁöÑÂ≠êÊéß‰ª∂,Ê≠§Êó∂ÂùêÊ†á‰∏∫framewinÂÜÖÁöÑÂùêÊ†á*/
     {
         __pos_t     sc_pos;
         __pos_t     win_pos;
 
         if (pWin->WinType == TYPE_FRAMEWIN && pMainManWin->Primitive == pWin)
         {
-            /*»Áπ˚ «framewin«“œ˚œ¢—≠ª∑‘⁄¥À¥∞ø⁄÷Æ…œ,–Ë“™’“µΩ∂‘”¶µƒ◊”øÿº˛,¥À ±◊¯±ÍŒ™∆¡ƒªƒ⁄µƒ◊¯±Í*/
+            /*Â¶ÇÊûúÊòØframewin‰∏îÊ∂àÊÅØÂæ™ÁéØÂú®Ê≠§Á™óÂè£‰πã‰∏ä,ÈúÄË¶ÅÊâæÂà∞ÂØπÂ∫îÁöÑÂ≠êÊéß‰ª∂,Ê≠§Êó∂ÂùêÊ†á‰∏∫Â±èÂπïÂÜÖÁöÑÂùêÊ†á*/
             {
                 GUI_POINT       pPhyPt;
                 GUI_POINT       pLogPt;
@@ -595,7 +598,7 @@ H_WIN GUI_GetChildWinUnderPoint(H_WIN hWnd, __s32 x, __s32 y)
 
 #endif
 
-    /*capture ¥∞ø⁄÷±Ω”≈–∂œ*/
+    /*capture Á™óÂè£Áõ¥Êé•Âà§Êñ≠*/
     if (capture_wnd)
     {
         ischild = GUI_WinIsAncestor(hWnd, capture_wnd);
@@ -611,7 +614,7 @@ H_WIN GUI_GetChildWinUnderPoint(H_WIN hWnd, __s32 x, __s32 y)
     }
     else
     {
-        /*»Áπ˚ «÷˜¥∞ø⁄£¨–Ë“™’“µΩ∂‘”¶µƒframewin,¥À ±◊¯±ÍŒ™∆¡ƒª◊¯±Í*/
+        /*Â¶ÇÊûúÊòØ‰∏ªÁ™óÂè£ÔºåÈúÄË¶ÅÊâæÂà∞ÂØπÂ∫îÁöÑframewin,Ê≠§Êó∂ÂùêÊ†á‰∏∫Â±èÂπïÂùêÊ†á*/
         if (pWin->WinType == TYPE_MANWIN)
         {
             pPhyPt.x    = x;
@@ -638,7 +641,7 @@ H_WIN GUI_GetChildWinUnderPoint(H_WIN hWnd, __s32 x, __s32 y)
                 return NULL;
             }
         }
-        else/*»Áπ˚ «framewinªÚ’ﬂøÿº˛¥∞ø⁄,–Ë“™’“µΩ∂‘”¶µƒ◊”øÿº˛,¥À ±◊¯±ÍŒ™framewinƒ⁄µƒ◊¯±Í*/
+        else/*Â¶ÇÊûúÊòØframewinÊàñËÄÖÊéß‰ª∂Á™óÂè£,ÈúÄË¶ÅÊâæÂà∞ÂØπÂ∫îÁöÑÂ≠êÊéß‰ª∂,Ê≠§Êó∂ÂùêÊ†á‰∏∫framewinÂÜÖÁöÑÂùêÊ†á*/
         {
             pControl = (__gui_win_t *)pWin->FirstChild;
 
@@ -714,17 +717,17 @@ static int GUI_DefOtherMsgHandler(__gui_msg_t *msg)
 
             break;
 
-        /*wakeup a windows£¨µ±Õº≤„”…suspend◊¥Ã¨◊™ªª≥…∆‰À˚◊¥Ã¨ ±”––ß*/
+        /*wakeup a windowsÔºåÂΩìÂõæÂ±ÇÁî±suspendÁä∂ÊÄÅËΩ¨Êç¢ÊàêÂÖ∂‰ªñÁä∂ÊÄÅÊó∂ÊúâÊïà*/
         case GUI_MSG_WIN_WAKEUP:
         {
             __gui_win_t         *pControl;
 
-            /*»Áπ˚ «÷˜¥∞ø⁄,≤ª–Ë“™¥¶¿Ìwakeupœ˚œ¢*/
+            /*Â¶ÇÊûúÊòØ‰∏ªÁ™óÂè£,‰∏çÈúÄË¶ÅÂ§ÑÁêÜwakeupÊ∂àÊÅØ*/
             if (pWin->WinType == TYPE_MANWIN)
             {
                 break;
             }
-            else/*»Áπ˚ «framewinªÚ’ﬂøÿº˛¥∞ø⁄,–Ë“™¥¶¿ÌªÊ÷∆œ˚œ¢*/
+            else/*Â¶ÇÊûúÊòØframewinÊàñËÄÖÊéß‰ª∂Á™óÂè£,ÈúÄË¶ÅÂ§ÑÁêÜÁªòÂà∂Ê∂àÊÅØ*/
             {
                 {
                     __gui_msg_t     newmsg;
@@ -769,12 +772,12 @@ static int GUI_DefOtherMsgHandler(__gui_msg_t *msg)
         {
             __gui_win_t         *pControl;
 
-            /*»Áπ˚ «÷˜¥∞ø⁄,≤ª–Ë“™¥¶¿Ìwakeupœ˚œ¢*/
+            /*Â¶ÇÊûúÊòØ‰∏ªÁ™óÂè£,‰∏çÈúÄË¶ÅÂ§ÑÁêÜwakeupÊ∂àÊÅØ*/
             if (pWin->WinType == TYPE_MANWIN)
             {
                 break;
             }
-            else/*»Áπ˚ «framewinªÚ’ﬂøÿº˛¥∞ø⁄,–Ë“™¥¶¿ÌªÊ÷∆œ˚œ¢*/
+            else/*Â¶ÇÊûúÊòØframewinÊàñËÄÖÊéß‰ª∂Á™óÂè£,ÈúÄË¶ÅÂ§ÑÁêÜÁªòÂà∂Ê∂àÊÅØ*/
             {
                 pControl = (__gui_win_t *)pWin->FirstChild;
 
@@ -798,11 +801,11 @@ static int GUI_DefOtherMsgHandler(__gui_msg_t *msg)
         }
         break;
 
-        /*◊”øÿº˛Õ®÷™œ˚œ¢µƒ¥¶¿Ì∫Ø ˝*/
+        /*Â≠êÊéß‰ª∂ÈÄöÁü•Ê∂àÊÅØÁöÑÂ§ÑÁêÜÂáΩÊï∞*/
         case GUI_MSG_COMMAND:
         {
             __gui_msg_t     notifymsg;
-            /*÷±Ω”Ω´◊”øÿº˛µƒÕ®÷™¬ÎÕ˘øÿº˛µƒ∏∏¥∞ø⁄¥´µ›*/
+            /*Áõ¥Êé•Â∞ÜÂ≠êÊéß‰ª∂ÁöÑÈÄöÁü•Á†ÅÂæÄÊéß‰ª∂ÁöÑÁà∂Á™óÂè£‰º†ÈÄí*/
             notifymsg.h_srcwin  = msg->h_deswin;
             notifymsg.h_deswin  = GUI_WinGetParent(msg->h_deswin);
             notifymsg.id        = GUI_MSG_COMMAND;
@@ -1224,7 +1227,7 @@ static int GUI_DefTouchMsgHandler(__gui_msg_t *msg)
             if (capture_wnd)
             {
                 __gui_msg_t     new_msg;
-                /*œ»∑¢œ˚œ¢»•Ωπµ„◊¥Ã¨*/
+                /*ÂÖàÂèëÊ∂àÊÅØÂéªÁÑ¶ÁÇπÁä∂ÊÄÅ*/
                 new_msg.id          = GUI_MSG_TOUCHINACTIVE;
                 new_msg.h_deswin    = GUI_WinP2H(capture_wnd);
                 new_msg.h_srcwin    = 0;
@@ -1251,7 +1254,7 @@ static int GUI_DefTouchMsgHandler(__gui_msg_t *msg)
                     break;
                 }
 
-                /*œ»∑¢œ˚œ¢»•Ωπµ„◊¥Ã¨*/
+                /*ÂÖàÂèëÊ∂àÊÅØÂéªÁÑ¶ÁÇπÁä∂ÊÄÅ*/
                 new_msg.id          = GUI_MSG_TOUCHINACTIVE;
                 new_msg.h_deswin    = GUI_WinP2H(pUnderPointer);
                 new_msg.h_srcwin    = 0;
@@ -1425,7 +1428,7 @@ H_WIN  GUI_GetTouchFocusWin(__s32 x, __s32 y)
 
         if (touchfocus_wnd)
         {
-            /*≈–∂œµ±«∞’“µΩµƒfrmwin «∑Ò‘⁄touchfocus_wndµƒ◊”ÀÔ¥∞ø⁄÷–*/
+            /*Âà§Êñ≠ÂΩìÂâçÊâæÂà∞ÁöÑfrmwinÊòØÂê¶Âú®touchfocus_wndÁöÑÂ≠êÂ≠ôÁ™óÂè£‰∏≠*/
             isChild = GUI_WinIsAncestor(GUI_WinP2H(touchfocus_wnd), GUI_WinP2H(pFrameWin));
 
             if (!isChild && (GUI_WinP2H(touchfocus_wnd) != GUI_WinP2H(pFrameWin)))
@@ -1436,7 +1439,7 @@ H_WIN  GUI_GetTouchFocusWin(__s32 x, __s32 y)
 
         mainwin = GUI_WinGetMainManWin(GUI_WinP2H(pFrameWin));
         pWin    = GUI_WinH2P(mainwin);
-        /*≈–∂œµ±«∞’“µΩµƒfrmwin «∑Ò‘⁄œ˚œ¢—≠ª∑¥∞ø⁄µƒ◊”ÀÔ¥∞ø⁄÷–*/
+        /*Âà§Êñ≠ÂΩìÂâçÊâæÂà∞ÁöÑfrmwinÊòØÂê¶Âú®Ê∂àÊÅØÂæ™ÁéØÁ™óÂè£ÁöÑÂ≠êÂ≠ôÁ™óÂè£‰∏≠*/
         isChild = GUI_WinIsAncestor(GUI_WinP2H(pWin->Primitive), GUI_WinP2H(pFrameWin));
 
         if (!isChild && (pWin->Primitive != (__gui_win_t *)pFrameWin))
@@ -1635,7 +1638,7 @@ H_WIN GUI_ManWinCreate(__gui_manwincreate_para_t *create_info)
     }
     else if ((Hosting != NULL) && (Parent != NULL))
     {
-        /*‘⁄’‚÷÷«Èøˆœ¬£¨hosting¥∞ø⁄±ÿ–Î «–¬Ω®¥∞ø⁄µƒ–÷µ‹¥∞ø⁄*/
+        /*Âú®ËøôÁßçÊÉÖÂÜµ‰∏ãÔºåhostingÁ™óÂè£ÂøÖÈ°ªÊòØÊñ∞Âª∫Á™óÂè£ÁöÑÂÖÑÂºüÁ™óÂè£*/
         if (Hosting->Parent != Parent)
         {
             ORANGE_WRN("inpur hosting win failed!");
@@ -1708,7 +1711,7 @@ H_WIN GUI_ManWinCreate(__gui_manwincreate_para_t *create_info)
             goto err;
         }
 
-        /*π‹¿Ì¥∞ø⁄Œ™»Îø⁄π‹¿Ì¥∞ø⁄*/
+        /*ÁÆ°ÁêÜÁ™óÂè£‰∏∫ÂÖ•Âè£ÁÆ°ÁêÜÁ™óÂè£*/
         manwin->ManWinType    = TYPE_ROOTMAIN;
         manwin->pRootMain     = GUI_WinH2P(hWnd);
     }
@@ -1724,7 +1727,7 @@ H_WIN GUI_ManWinCreate(__gui_manwincreate_para_t *create_info)
             manwin->pMessages = GUI_WinGetMsgQueue(create_info->hParent);
         }
 
-        /*π‹¿Ì¥∞ø⁄Œ™◊”π‹¿Ì¥∞ø⁄*/
+        /*ÁÆ°ÁêÜÁ™óÂè£‰∏∫Â≠êÁÆ°ÁêÜÁ™óÂè£*/
         manwin->ManWinType    = TYPE_CHILDMAIN;
         manwin->pRootMain     = GUI_WinH2P(GUI_WinGetMainManWin(create_info->hParent));
     }
@@ -1775,7 +1778,7 @@ err:
 
     if (hWnd)
     {
-        /*¥”∏∏¥∞ø⁄¡¥±Ì÷–…æ≥˝∏√¥∞ø⁄*/
+        /*‰ªéÁà∂Á™óÂè£ÈìæË°®‰∏≠Âà†Èô§ËØ•Á™óÂè£*/
         GUI_WinLock();
         Win_DeattachFromParent(GUI_WinH2P(hWnd));
         GUI_WinUnlock();

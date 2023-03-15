@@ -1,21 +1,34 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : msg_emit.c
-* By        : Andy.zhang
-* Func      : system msg emit
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-24 10:56:38 andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "mod_desktop_i.h"
 #include <mod_touchpanel.h>
 #include <kconfig.h>
@@ -33,11 +46,11 @@ typedef struct _msrv_msg_t
 
 typedef struct _memit_ctr_t
 {
-    __hdle              p_array_sem;                   // ����������
+    __hdle              p_array_sem;                   // 缓冲区互斥
     __hdle              p_hook_sem;
-    __hdle              psys_msg_queue;                // msg ��Ϣ����
+    __hdle              psys_msg_queue;                // msg 消息队列
     __s32               sys_msg_counter;
-    __msrv_msg_t        sys_msg_array[SYS_MSGQ_SIZE];   // msg ��Ϣ���л���
+    __msrv_msg_t        sys_msg_array[SYS_MSGQ_SIZE];   // msg 消息队列缓冲
     __u32               ksrv_th_id;
 
     cb_key_hook         key_hook;
@@ -62,7 +75,7 @@ static __s32 msg_srv_init_input_panel(__memit_ctr_t *emit);
 /**************************************************************************************************************/
 static __s32 msg_srv_init_input_panel(__memit_ctr_t *emit)
 {
-    /* ���� desktop_msg_queue */
+    /* 创建 desktop_msg_queue */
     emit->sys_msg_counter = 0;
     emit->psys_msg_queue  = esKRNL_QCreate(SYS_MSGQ_SIZE);
 
@@ -72,7 +85,7 @@ static __s32 msg_srv_init_input_panel(__memit_ctr_t *emit)
         return EPDK_FAIL;
     }
 
-    /* ���� p_array_sem */
+    /* 创建 p_array_sem */
     emit->p_array_sem = esKRNL_SemCreate(1);
 
     if (!emit->p_array_sem)
@@ -103,12 +116,12 @@ static __s32 msg_srv_init_input_panel(__memit_ctr_t *emit)
 
 }
 /**
- *  ��ʼ�� touch panel ��Ϣ����ͨ��
+ *  初始化 touch panel 消息传输通道
  */
 __s32 msg_srv_init_tp_channel(__memit_ctr_t *emit)
 {
-    /* װ�� touchpanel ���� */
-    /*  ע��ص����� tp_msg_cb */
+    /* 装载 touchpanel 驱动 */
+    /*  注册回调函数 tp_msg_cb */
     /*{
         ES_FILE *p_tpfile;
         p_tpfile = eLIBs_fopen("b:\\HID\\TP", "r+");
@@ -160,7 +173,7 @@ __s32 msg_srv_init_key_channel(__memit_ctr_t *emit)
 
     __log("LdevID=%d", LdevID);
 
-    //����ʱ������λΪ1ms��
+    //设置时间间隔单位为1ms，
     if (esINPUT_LdevCtl(LdevID, INPUT_SET_REP_PERIOD, 200 | (4 << 16), NULL) != EPDK_OK)
     {
         __log("logical device ioctl failed");
@@ -177,18 +190,18 @@ __s32 msg_srv_deinit_key_channel(__memit_ctr_t *emit)
 }
 
 /**
- *  �ͷ� touch panel ��Ϣ����ͨ��
+ *  释放 touch panel 消息传输通道
  */
 __s32 msg_srv_deinit_tp_channel(__memit_ctr_t *emit)
 {
     __u8    err;
 
-    /* ɾ�� psys_msg_queue */
+    /* 删除 psys_msg_queue */
     esKRNL_QDel(emit->psys_msg_queue, 0, &err);
 
     emit->psys_msg_queue = NULL;
 
-    /* ɾ�� p_array_sem */
+    /* 删除 p_array_sem */
     esKRNL_SemDel(emit->p_array_sem, 0, &err);
     esKRNL_SemDel(emit->p_hook_sem, 0, &err);
     esKRNL_SemDel(emit->p_tvout_tp_hook_sem, 0, &err);
@@ -198,7 +211,7 @@ __s32 msg_srv_deinit_tp_channel(__memit_ctr_t *emit)
     emit->p_hook_sem            = NULL;
     emit->sys_msg_counter       = 0;
 
-    /* ע���ص����� */
+    /* 注销回调函数 */
     /*{
         ES_FILE  *p_tpfile;
         p_tpfile = eLIBs_fopen("b:\\HID\\TP", "r+");
@@ -216,7 +229,7 @@ __s32 msg_srv_deinit_tp_channel(__memit_ctr_t *emit)
 }
 
 /**
- * ��ʼ��ϵͳ��Ϣ������Ϣ����ͨ��
+ * 初始化系统消息队列消息传输通道
  */
 __s32 msg_srv_init_ksrv_channel(__memit_ctr_t *emit)
 {
@@ -240,7 +253,7 @@ __s32 msg_srv_init_ksrv_channel(__memit_ctr_t *emit)
 }
 
 /**
- * �ͷ�ϵͳ��Ϣ������Ϣ����ͨ��
+ * 释放系统消息队列消息传输通道
  */
 __s32 msg_srv_deinit_ksrv_channel(__memit_ctr_t *emit)
 {
@@ -261,7 +274,7 @@ static __msrv_msg_t  *get_msg_buf(__memit_ctr_t *emit)
 }
 
 /**
- * ͨ���ص������ķ�ʽȡ��������Ϣ
+ * 通过回调函数的方式取触摸屏消息
  */
 static __s32 tp_msg_cb(void *msg)
 {
@@ -636,37 +649,37 @@ static void auto_test(void*arg)
 	__u16 spec_lock = 0;
 
     {
-		msg_sim(KPAD_VIDIO,6);//��Ӱ��ݼ�,6S��˺���������Ĭ�ϲ��ţ��ȹ��صĴ洢����
-		msg_sim(KPAD_DOWN,6);//��һ����Ӱ
-		msg_sim(KPAD_DOWN,6);//��һ������Ӱ
+		msg_sim(KPAD_VIDIO,6);//电影快捷键,6S后此函数结束，默认播放，先挂载的存储介质
+		msg_sim(KPAD_DOWN,6);//下一曲电影
+		msg_sim(KPAD_DOWN,6);//下一曲进电影
 	}
 	{
-    	msg_sim(KPAD_MUSIC,6);//���ֿ�ݼ�
+    	msg_sim(KPAD_MUSIC,6);//音乐快捷键
     }
 	msg_sim(KPAD_RETURN,2);
 	msg_sim(KPAD_RETURN,3);
 	//msg_sim(KPAD_RETURN,3);
-	msg_sim(KPAD_TF_USB,1);//�л��洢����
+	msg_sim(KPAD_TF_USB,1);//切换存储介质
 
 	{
 
-        msg_sim(KPAD_PICTURE,4);//���ս���Ƭ
-		msg_sim(KPAD_MENU,1);//���ս���Ƭ
+        msg_sim(KPAD_PICTURE,4);//保险进相片
+		msg_sim(KPAD_MENU,1);//保险进相片
 		msg_sim(KPAD_DOWN,1);
 		msg_sim(KPAD_DOWN,1);
-		msg_sim(KPAD_ENTER,1);//�������Ų˵�
+		msg_sim(KPAD_ENTER,1);//进入缩放菜单
 		msg_sim(KPAD_UP,1);
-		msg_sim(KPAD_ENTER,1);//�Ŵ�
+		msg_sim(KPAD_ENTER,1);//放大
 		msg_sim(KPAD_UP,1);
 		msg_sim(KPAD_UP,1);
 		msg_sim(KPAD_ENTER,1);
-		msg_sim(KPAD_ENTER,1);//��С
+		msg_sim(KPAD_ENTER,1);//缩小
 		msg_sim(KPAD_MENU,1);
     }
 	msg_sim(KPAD_RETURN,3);
 	msg_sim(KPAD_RETURN,1);
-	msg_sim(KPAD_RETURN,2);//����һ�Σ������˵�������
-	msg_sim(KPAD_TF_USB,1);//�л��洢����
+	msg_sim(KPAD_RETURN,2);//多退一次，保障退到主界面
+	msg_sim(KPAD_TF_USB,1);//切换存储介质
 	//msg_sim(KPAD_UP,1);
 	//msg_sim(KPAD_UP,1);
 	//msg_sim(KPAD_UP,1);
@@ -886,7 +899,15 @@ static __s32 key_msg_cb(void *msg)
 
             switch (pEventFrame->code)
             {                
-                case KPAD_SCAN:
+                
+#if defined(CONFIG_SUNXI_QA_TEST)
+				case KEY_RESERVED:
+				{
+					qa_auto_test();
+					break;
+				}
+#endif
+				case KPAD_SCAN:
                 {
                     __wrn("+++++++++++++++++ GUI_MSG_KEY_SCAN");
                     pmsg->type  = GUI_MSG_KEY;
@@ -1150,7 +1171,7 @@ static __s32 key_msg_cb(void *msg)
                 case KPAD_POWEROFF:
                 case IR_KPAD_POWEROFF:
                 {
-                    //����standby
+                    //进入standby
                     __wrn("+++++++++++++++ ir GUI_MSG_KEY_POWEROFF");
                     pmsg->type  = GUI_MSG_KEY;
                     pmsg->id    = GUI_MSG_KEY_POWEROFF;
@@ -1325,7 +1346,7 @@ static __s32 key_msg_cb(void *msg)
                     __wrn("+++++++++++++++ir GUI_MSG_KEY_PLAY_PAUSE");
                     pmsg->type  = GUI_MSG_KEY;
                     pmsg->id    = GUI_MSG_KEY_PLAY_PAUSE;
-                    pmsg->reserved = 1;//Ϊ1������ir�������İ�����Ϣ������������KPAD_PLAY_PAUSE
+                    pmsg->reserved = 1;//为1代表从ir发过来的按键消息，以区分面板的KPAD_PLAY_PAUSE
                     break;
                 }
 
@@ -1419,14 +1440,14 @@ static __s32 key_msg_cb(void *msg)
 }
 
 /**
- * ��ϵͳ��Ϣ����ȡ��Ϣ
+ * 从系统消息队列取消息
  */
 static void ksrv_msg_thread(void *arg)
 {
     __memit_ctr_t *emit = (__memit_ctr_t *)arg;
     __u8    error;
 
-    /* ��հ�����Ϣ���� */
+    /* 清空按键消息队列 */
     while (1)
     {
         __u32           usrmsg;
@@ -1452,7 +1473,7 @@ static void ksrv_msg_thread(void *arg)
                 esKRNL_TDel(OS_PRIO_SELF);
             }
 
-            usrmsg = esKSRV_GetMsg();               // ϵͳ��Ϣ����
+            usrmsg = esKSRV_GetMsg();               // 系统消息队列
 
             if (usrmsg)
             {
@@ -1470,7 +1491,7 @@ static void ksrv_msg_thread(void *arg)
 
         esKRNL_SemPost(emit->p_array_sem);
 
-        if ((usrmsg & 0xffff0000) == KMSG_USR_CLS_KEY)  // key ������Ϣ
+        if ((usrmsg & 0xffff0000) == KMSG_USR_CLS_KEY)  // key 按键消息
         {
             tmp = usrmsg & 0x0000ffff;
 
@@ -1482,15 +1503,15 @@ static void ksrv_msg_thread(void *arg)
                     pmsg->type  = DSK_MSG_STANDBY;
                     break;
 
-                case KMSG_USR_KEY_REPEATE:              /* �л���ɫ����� */
+                case KMSG_USR_KEY_REPEATE:              /* 切换到色差输出 */
                     pmsg->type  = DSK_MSG_SWITCH_YPBPR;
                     break;
 
-                case KMSG_USR_KEY_CLEAR:                /* �л���cvbs��� */
+                case KMSG_USR_KEY_CLEAR:                /* 切换到cvbs输出 */
                     pmsg->type  = DSK_MSG_SWITCH_CVBS;
                     break;
 
-                case KMSG_USR_KEY_DISPLAY:              /* �л���hdmi��� */
+                case KMSG_USR_KEY_DISPLAY:              /* 切换到hdmi输出 */
                     pmsg->type  = DSK_MSG_SWITCH_HDMI;
                     break;
 
@@ -1519,20 +1540,20 @@ static void ksrv_msg_thread(void *arg)
                     pmsg->data  = AUDIO_DEV_IF_SPDIF;
                     break;
 
-                case KMSG_USR_KEY_NUM8:                 /* hold ���� */
+                case KMSG_USR_KEY_NUM8:                 /* hold 按键 */
                     pmsg->type  = DSK_MSG_HOLD;
                     break;
 
-                case KMSG_USR_KEY_NUM7:                 // ��������
+                case KMSG_USR_KEY_NUM7:                 // 禁音功能
                     pmsg->type  = DSK_MSG_BAN_VOLUME;
                     pmsg->data  = 0;
                     break;
 
                 case KMSG_USR_KEY_GOTO:
-                    pmsg->type  = DSK_MSG_APP_EXIT;      /* һ���������� */
+                    pmsg->type  = DSK_MSG_APP_EXIT;      /* 一键回主界面 */
                     break;
 
-                case KMSG_USR_KEY_POWEROFF:             // �ػ���Ϣ
+                case KMSG_USR_KEY_POWEROFF:             // 关机消息
                     pmsg->type  = DSK_MSG_POWER_OFF;
                     break;
 
@@ -1585,7 +1606,7 @@ static void ksrv_msg_thread(void *arg)
                     continue;
             }
         }
-        else    /* system ��Ϣ */
+        else    /* system 消息 */
         {
             if ((usrmsg & 0x0000ffff) == KMSG_USR_SYSTEM_FS_PLUGIN)
             {
@@ -1617,7 +1638,7 @@ static void ksrv_msg_thread(void *arg)
                         pmsg->type  = DSK_MSG_APP_EXIT;
                         break;
 
-                    case KMSG_USR_SYSTEM_USBH_PLUGOUT:      // usb host �豸�γ�
+                    case KMSG_USR_SYSTEM_USBH_PLUGOUT:      // usb host 设备拔出
                         pmsg->type  = DSK_MSG_HANDLE_PLUGOUT;//112350//DSK_MSG_APP_EXIT;
                         break;
 
@@ -1674,7 +1695,7 @@ __s32 msg_srv_get_message(__memit_ctr_t *emit, __msrv_msg_t *p_msg)
 }
 
 /**
- * ������Ϣ������ϵͳ��Ϣ����
+ * 发送消息到桌面系统消息队列
  */
 __s32 msg_srv_dispatch_message(__memit_ctr_t *emit, __msrv_msg_t *p_msg)
 {
@@ -1739,7 +1760,7 @@ __s32 msg_srv_dispatch_message(__memit_ctr_t *emit, __msrv_msg_t *p_msg)
             return EPDK_OK;
         }
 
-        h_win = GUI_GetTouchFocusWin(x, y); /* λ�ڴ��ڷ�Χ��, ���͵����� */
+        h_win = GUI_GetTouchFocusWin(x, y); /* 位于窗口范围内, 则发送到窗口 */
 
         if (h_win)
         {
@@ -1747,7 +1768,7 @@ __s32 msg_srv_dispatch_message(__memit_ctr_t *emit, __msrv_msg_t *p_msg)
             msg.h_srcwin    = NULL;
             msg.h_deswin    = h_win;
         }
-        else                                /* �����κδ�������, ���͵����㴰�� */
+        else                                /* 不在任何窗口区域, 则发送到焦点窗口 */
         {
             h_win   = GUI_GetActiveManWin();
           //  __log("%d:h_win = %x", __LINE__, h_win);
@@ -1861,12 +1882,12 @@ void msg_srv_thread(void *arg)
 #endif
     msg_srv_init_ksrv_channel(&emit_ctr);
 	
-    /* ��Ϣ�ַ� */
+    /* 消息分发 */
     while (1)
     {
         if (esKRNL_TDelReq(OS_PRIO_SELF) == OS_TASK_DEL_REQ)
         {
-            /* �ͷ���Ϣͨ�� */
+            /* 释放消息通道 */
             msg_srv_deinit_key_channel(&emit_ctr);
 #ifdef CONFIG_SUPPORT_TOUCHPANEL
             msg_srv_deinit_tp_channel(&emit_ctr);
@@ -1901,7 +1922,7 @@ void msg_srv_thread(void *arg)
 
 __s32 msg_emit_init(void)
 {
-    /* ������Ϣ�ռ��߳� */
+    /* 创建消息收集线程 */
 
     msg_srv_tid = esKRNL_TCreate(msg_srv_thread, NULL, 0x1000, KRNL_priolevel3);
     esKRNL_TaskNameSet(msg_srv_tid, "emitq2orange");
@@ -1917,7 +1938,7 @@ __s32 msg_emit_init(void)
 
 __s32 msg_emit_deinit(void)
 {
-    /* ɾ����Ϣ�ɼ��߳� */
+    /* 删除消息采集线程 */
     while (esKRNL_TDelReq(msg_srv_tid) != OS_TASK_NOT_EXIST)
     {
         esKRNL_TimeDly(1);

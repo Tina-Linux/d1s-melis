@@ -1,0 +1,12 @@
+menu "DBI Devices"
+
+config DRIVERS_DBI
+    bool "enable dbi driver"
+        default y
+
+config HAL_TEST_DBI
+    bool "enable dbi hal APIs test command"
+    depends on DRIVERS_DBI
+        default y
+
+endmenu

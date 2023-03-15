@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2011, CHIPHD, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : photo_fileinfo.c
-* By        : CQQ
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011/06/20 10:28  create this file, implements the fundamental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "photo_fileinfo.h"
@@ -26,7 +40,7 @@
 
 
 /************************************************************************/
-//¼ÓÔØ×ÊÔ´
+//åŠ è½½èµ„æº
 /************************************************************************/
 int32_t photo_file_info_create_res(PHOTO_FILE_INFO_RES_T *res)
 {
@@ -45,7 +59,7 @@ int32_t photo_file_info_create_res(PHOTO_FILE_INFO_RES_T *res)
 }
 
 /************************************************************************/
-//ÊÍ·Å×ÊÔ´
+//é‡Šæ”¾èµ„æº
 /************************************************************************/
 int32_t photo_file_info_destroy_res(PHOTO_FILE_INFO_RES_T *res)
 {
@@ -54,7 +68,7 @@ int32_t photo_file_info_destroy_res(PHOTO_FILE_INFO_RES_T *res)
 }
 
 /************************************************************************/
-//»­ÎÄ¼þÐÅÏ¢
+//ç”»æ–‡ä»¶ä¿¡æ¯
 /************************************************************************/
 void draw_photo_file_info(H_WIN hwnd, PHOTO_FILE_INFO_RES_T *res, PHOTO_INFO_UI_T *ui)
 {
@@ -83,7 +97,7 @@ void draw_photo_file_info(H_WIN hwnd, PHOTO_FILE_INFO_RES_T *res, PHOTO_INFO_UI_
     //GUI_BMP_RES_Draw(res->bmp_bg, ui->rt.x, ui->rt.y);
     //GUI_BMP_RES_Draw(res->bmp_icon, ui->icon.x, ui->icon.y);
 
-    __wrn("²âÊÔ  ui->rt.x=%d  ui->rt.y=%d\n", ui->rt.x, ui->rt.y);
+    __wrn("æµ‹è¯•  ui->rt.x=%d  ui->rt.y=%d\n", ui->rt.x, ui->rt.y);
 
     GUI_CharSetToEncode(EPDK_CHARSET_ENM_UTF8);
 
@@ -95,10 +109,10 @@ void draw_photo_file_info(H_WIN hwnd, PHOTO_FILE_INFO_RES_T *res, PHOTO_INFO_UI_
 
     APP_Temp_ResBmpDraw(ID_PHOTO_FILEINFO_BG_BMP, ui->rt.x, ui->rt.y);
 
-    x   = ui->txt.x + ui->rt.x; //Ïà¶ÔÓÚrt
+    x   = ui->txt.x + ui->rt.x; //ç›¸å¯¹äºŽrt
     y   = ui->txt.y + ui->rt.y;
 
-    //ÎÄ¼þÃû
+    //æ–‡ä»¶å
     {
         GUI_RECT    rt;
         char        *psrc = info.pic_name;
@@ -136,7 +150,7 @@ void draw_photo_file_info(H_WIN hwnd, PHOTO_FILE_INFO_RES_T *res, PHOTO_INFO_UI_
     }
     //GUI_DispStringAt(buf, x, y);
     //y += ui->txt_sp;
-    //Ê±¼ä
+    //æ—¶é—´
     app_sprintf(buf1, FILE_INFO_TIME_STR_FORMAT, info.time.year, info.time.month, info.time.day,
                 info.time.hour / 10, info.time.hour % 10, info.time.minute / 10, info.time.minute % 10);
 
@@ -149,7 +163,7 @@ void draw_photo_file_info(H_WIN hwnd, PHOTO_FILE_INFO_RES_T *res, PHOTO_INFO_UI_
 
     y   += ui->txt_sp;
 
-    //ÎÄ¼þ´óÐ¡
+    //æ–‡ä»¶å¤§å°
     filesize2str(info.pic.file_len, buf1);
 
     app_sprintf(buf, FILE_INFO_TXT_FORMAT, res->str_filesize, buf1);
@@ -161,7 +175,7 @@ void draw_photo_file_info(H_WIN hwnd, PHOTO_FILE_INFO_RES_T *res, PHOTO_INFO_UI_
 
     y   += ui->txt_sp;
 
-    //·Ö±æÂÊ
+    //åˆ†è¾¨çŽ‡
     app_sprintf(buf, FILE_INFO_TXT_SIZE_FORMAT, res->str_size, info.pic.size.width, info.pic.size.height);
 
     GUI_DispStringAt(buf, x, y + 44);
@@ -171,7 +185,7 @@ void draw_photo_file_info(H_WIN hwnd, PHOTO_FILE_INFO_RES_T *res, PHOTO_INFO_UI_
 
     y   += ui->txt_sp;
 
-    //ÎÄ¼þÎ»ÖÃ
+    //æ–‡ä»¶ä½ç½®
     app_sprintf(buf, FILE_INFO_TXT_FORMAT, res->str_path, info.path_name);
 
     {

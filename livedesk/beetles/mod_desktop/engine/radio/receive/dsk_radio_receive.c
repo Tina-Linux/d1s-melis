@@ -1,19 +1,34 @@
 /*
-**************************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              LARK app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2006-2007, TERRY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : dsk_radio.c
-* By      : terry
-* Version : V1.00
-* time    : 2009-12-01
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "dsk_radio_i.h"
 #include "list_file.h"
 #include <kconfig.h>
@@ -48,7 +63,7 @@ typedef struct
     __u32               FM1_3_AM1_2_freq[MAX_FM1_3_AM1_2][MAX_FM1_3_AM1_2_FREQ];//add by Kingvan
     __u16               curFM1_3AM1_2_id;                                       //add by Kingvan
     dsk_radio_ch_list_t     favorite;
-    __u32               manual_seach_cur_freq;  //by cky  �ֶ��������ĵ�ǰƵ��
+    __u32               manual_seach_cur_freq;  //by cky  手动搜索到的当前频段
 } dsk_radio_rcv_t;
 
 static dsk_radio_rcv_t *dsk_radio_rcv = NULL;
@@ -79,7 +94,7 @@ void __autosearch_thread(void *p_arg)
                 radio_freq = dsk_radio_rcv->start_freq + LARK_SEARCH_STEP_US;
                 __wrn(" DSK:radio_freq = %d", radio_freq);
 
-                if (dsk_radio_rcv->manual_search_way != 0) //add by Kingvan  //���ķ�������
+                if (dsk_radio_rcv->manual_search_way != 0) //add by Kingvan  //向大的方向搜索
                 {
                     signed long curfreq = 0;
                     curfreq = dsk_radio_rcv->start_freq - LARK_SEARCH_STEP_US;
@@ -115,7 +130,7 @@ void __autosearch_thread(void *p_arg)
                         __wrn(" DSK:result = %d", result);
                     }
                 }
-                else//��С�ķ�������
+                else//向小的方向搜索
                 {
                     if ((dsk_radio_rcv->manual_cur_channum & 0xf0000000)
                         && (radio_freq >= dsk_radio_rcv->manual_start_freq))
@@ -161,7 +176,7 @@ void __autosearch_thread(void *p_arg)
             {
                 dsk_radio_rcv->search_flag = 0x02;
             }
-            else if (result & 0xff000000) //search fail~ֻ��FM5807ģ��,����ʧ�ܣ���������
+            else if (result & 0xff000000) //search fail~只对FM5807模块,搜索失败，继续搜索
             {
                 __wrn("result&0xff000000 = %d", result & 0xff000000);
                 dsk_radio_rcv->cur_freq = (result & 0x00ffffff);
@@ -192,7 +207,7 @@ void __autosearch_thread(void *p_arg)
                     __u32 isvalidstop = 1;
                     __wrn(" earch_result.valid_num = %d", dsk_radio_rcv->search_result.valid_num);
 
-                    for (i = 0; i < dsk_radio_rcv->search_result.valid_num; i++) //���Ҹ�Ƶ�����б����Ƿ��Ѵ��ڣ�����������������
+                    for (i = 0; i < dsk_radio_rcv->search_result.valid_num; i++) //查找该频点在列表中是否已存在，如果存在则继续搜索
                     {
                         if (dsk_radio_rcv->search_result.freq_list[i].freq == result)
                         {
@@ -207,11 +222,11 @@ void __autosearch_thread(void *p_arg)
                     __wrn(" manual_seach_cur_freq = %d", dsk_radio_rcv->manual_seach_cur_freq);
 
                     //dsk_radio_rcv->start_freq = result;
-                    //if(isvalidstop == 1)//�������Ч�ĵ�̨
+                    //if(isvalidstop == 1)//如果是有效的电台
                     //{
                     //dsk_radio_rcv->search_result.freq_list[dsk_radio_rcv->manual_cur_channum&0x0fffffff-1].freq = result;
                     //}
-                    //else//��Ƶ�����źţ������б����Ѵ���
+                    //else//该频点有信号，但在列表中已存在
                     //{
                     if (cb_search_success != NULL)
                     {
@@ -219,7 +234,7 @@ void __autosearch_thread(void *p_arg)
                     }
 
                     //}
-                    dsk_radio_rcv->search_flag = 0x02;  //by cky ������һ��Ƶ�������Ƿ�
+                    dsk_radio_rcv->search_flag = 0x02;  //by cky 搜索到一个频段无论是否
                 }
                 else  //dsk_radio_rcv->auto_maual_mode == DSK_RADIO_SEARCH_AUTO
                 {
@@ -245,7 +260,7 @@ void __autosearch_thread(void *p_arg)
 
         if (dsk_radio_rcv->search_flag == 0x02) //search over
         {
-            if (dsk_radio_rcv->auto_maual_mode == DSK_RADIO_SEARCH_MANUAL) //�ֶ�����
+            if (dsk_radio_rcv->auto_maual_mode == DSK_RADIO_SEARCH_MANUAL) //手动搜索
             {
                 dsk_radio_rcv->manual_cur_channum &= 0x0fffffff;
                 __wrn(" DSK:search over:dsk_radio_rcv->cur_freq  = %d", dsk_radio_rcv->cur_freq);
@@ -255,7 +270,7 @@ void __autosearch_thread(void *p_arg)
                 result = ioctl(h_radio->fm_drv, DRV_FM_CMD_RECVE_PLAY,(void*)arg);
                 __wrn(" DSK:search over:result  = %d", result);
             }
-            else//�Զ�����
+            else//自动搜索
             {
                 if (dsk_radio_rcv->search_result.valid_num > 0)
                 {
@@ -269,8 +284,8 @@ void __autosearch_thread(void *p_arg)
                     __wrn(" dsk_radio_rcv->cur_freq = %d", dsk_radio_rcv->cur_freq);
                     channel_no = 0;
                 }
-                /*���򲥷���СƵ��*/
-                else//�Զ�����û������̨
+                /*否则播放最小频率*/
+                else//自动搜索没搜索到台
                 {
                     //result = esMODS_MIoctrl(h_radio->fm_drv, DRV_FM_CMD_RECVE_PLAY, 0, (void *)dsk_radio_rcv->start_freq);
 					arg[0] = 0;
@@ -357,12 +372,12 @@ __s32 dsk_radio_rcv_set_freq_play(signed long freq)
         return -1;
     }
 
-    /*���������ڲ��ζ�Ӧ�����Ƶ��ʱ,Ƶ����Ϊ���ε����Ƶ��*/
+    /*当参数大于波段对应的最大频率时,频率设为波段的最大频率*/
     if (freq < freq_range.fm_area_min_freq)
     {
         freq = freq_range.fm_area_min_freq;
     }
-    /*������С�ڲ��ζ�Ӧ����СƵ��ʱ,Ƶ����Ϊ���ε���СƵ��*/
+    /*当参数小于波段对应的最小频率时,频率设为波段的最小频率*/
     else if (freq > freq_range.fm_area_max_freq)
     {
         freq = freq_range.fm_area_max_freq;
@@ -399,7 +414,7 @@ __s32 dsk_radio_rcv_set_search_cb(__pCBK_t cb, void *ctx)
     arg[1] = (unsigned long)cb;
     arg[2] = (unsigned long)ctx;
     //__msg("arg[0]=%x, arg[1] = %x", cb, ctx);
-    //��Ҫʵ��
+    //需要实现
 	ret = ioctl(h_radio->fm_drv, DRV_FM_CMD_SET_SEARCH_CB,(void *)arg);
     return ret;
 }
@@ -663,18 +678,18 @@ __s32 dsk_radio_rcv_next_freq_play(void)
         return -1;
     }
 
-    /*������Ϊ�ձ�����ʱ,Ƶ�ʵ�����Ϊ50KHZ*/
+    /*当波段为日本波段时,频率的跳幅为50KHZ*/
     if (cur_band == DSK_RADIO_BAND_JAPAN)
     {
         freq = dsk_radio_rcv->cur_freq + LARK_SEARCH_STEP_JAPAN;
     }
-    /*������Ϊ��������ʱ,Ƶ�ʵ�����Ϊ100KHZ*/
+    /*当波段为其他波段时,频率的跳幅为100KHZ*/
     else
     {
         freq = dsk_radio_rcv->cur_freq + LARK_SEARCH_STEP_US;
     }
 
-    /*����һƵ�ʵ�ֵ���ڲ��ζ�Ӧ�����Ƶ��ʱ,ѭ�����ص���СƵ�ʴ�*/
+    /*当下一频率的值大于波段对应的最大频率时,循环返回到最小频率处*/
     if (freq > freq_range.fm_area_max_freq)
     {
         freq = freq_range.fm_area_min_freq;
@@ -710,18 +725,18 @@ __s32 dsk_radio_rcv_pre_freq_play(void)
         return -1;
     }
 
-    /*������Ϊ�ձ�����ʱ,Ƶ�ʵ�����Ϊ50KHZ*/
+    /*当波段为日本波段时,频率的跳幅为50KHZ*/
     if (cur_band == DSK_RADIO_BAND_JAPAN)
     {
         freq = dsk_radio_rcv->cur_freq - LARK_SEARCH_STEP_JAPAN;
     }
-    /*������Ϊ��������ʱ,Ƶ�ʵ�����Ϊ100KHZ*/
+    /*当波段为其他波段时,频率的跳幅为100KHZ*/
     else
     {
         freq = dsk_radio_rcv->cur_freq - LARK_SEARCH_STEP_US;
     }
 
-    /*����һƵ�ʵ�ֵ���ڲ��ζ�Ӧ�����Ƶ��ʱ,ѭ�����ص���СƵ�ʴ�*/
+    /*当下一频率的值大于波段对应的最大频率时,循环返回到最小频率处*/
     if (freq < freq_range.fm_area_min_freq)
     {
         freq = freq_range.fm_area_max_freq;
@@ -794,7 +809,7 @@ __s32 dsk_radio_rcv_get_search_result_chaninfo(__s32 id, dsk_radio_chan_t *chan_
         return EPDK_FAIL;
     }
 
-    //�ֶ���������Ƶ�������޸�Ϊ�������ˣ��������²���Ҫ��
+    //手动搜索到的频道现在修改为不保存了，所以以下不需要了
     //if(dsk_radio_rcv->auto_maual_mode == DSK_RADIO_SEARCH_MANUAL)//by cky add
     //{
     //  chan_info->freq = dsk_radio_rcv->manual_seach_cur_freq;
@@ -977,7 +992,7 @@ __s32 dsk_radio_rcv_save_cur_freq(void)
         para->FM_channel[i] = dsk_radio_rcv->search_result.freq_list[i].freq;
         //__wrn("i=%d, para->FM_channel[i]=%d", i, para->FM_channel[i]);
 
-        //��ǰƵ���Ƿ���Ƶ���б������ֵ���,ȡǰ��λ�Ƚ���Чby cky
+        //当前频段是否与频道列表里面的值相等,取前三位比较有效by cky
         if (dsk_radio_rcv->cur_freq / 100 == dsk_radio_rcv->search_result.freq_list[i].freq / 100)
         {
             para->channel_id = i;
@@ -1004,10 +1019,10 @@ __s32 dsk_radio_rcv_save_cur_freq(void)
         __wrn("@@@@@dsk_radio_rcv->search_result.freq_list[i].freq=%d", dsk_radio_rcv->search_result.freq_list[i].freq);
         __wrn("dsk_radio_rcv->search_result.valid_num=%d", dsk_radio_rcv->search_result.valid_num);
     }
-    else//��Ҫ��������
+    else//需要插入的情况
     {
         __bool bok;
-        bok = 0;//�Ƿ�����־
+        bok = 0;//是否插入标志
 
         for (i = 0; i < MAX_CHANNEL_NUM - 1; i++)
         {
@@ -1019,7 +1034,7 @@ __s32 dsk_radio_rcv_save_cur_freq(void)
             if (dsk_radio_rcv->cur_freq > dsk_radio_rcv->search_result.freq_list[i].freq
                 && dsk_radio_rcv->cur_freq < dsk_radio_rcv->search_result.freq_list[i + 1].freq)
             {
-                bok = 1;//�����־
+                bok = 1;//插入标志
 
                 for (j = MAX_CHANNEL_NUM - 2 ; j >= i + 1; j--)
                 {
@@ -1164,6 +1179,3 @@ __s32 dsk_radio_rcv_close(void)
     dsk_radio_rcv = NULL;
     return result;
 }
-
-
-

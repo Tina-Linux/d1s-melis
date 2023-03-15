@@ -5,11 +5,11 @@
 
 [product]
 version = "100"
-machine = "nezha"
+machine = "evb"
 
 [platform]
 eraseflag   = 0
-debug_mode  = 1
+debug_mode  = 0
 ;----------------------------------------------------------------------------------
 ;   system configuration
 ;   ?
@@ -199,8 +199,8 @@ twi1_scl         = port:PB04<4><1><default><default>
 twi1_sda         = port:PB05<4><1><default><default>
 
 [twi2]
-twi2_scl         = port:PH05<4><1><default><default>
-twi2_sda         = port:PH06<4><1><default><default>
+twi2_scl         = port:PE12<2><1><default><default>
+twi2_sda         = port:PE13<2><1><default><default>
 
 [twi3]
 twi3_scl         = port:PE06<4><1><default><default>
@@ -288,17 +288,15 @@ rtp_exchange_x_y_flag = 0
 ;notice ---    tp_int_port &  tp_io_port use the same port
 ;----------------------------------------------------------------------------------
 [ctp_para]
-ctp_used            = 1
-ctp_twi_id          = 1
-ctp_twi_addr        = 0x5d
-ctp_screen_max_x    = 1280
-ctp_screen_max_y    = 800
-ctp_revert_x_flag   = 1
-ctp_revert_y_flag   = 1
-ctp_exchange_x_y_flag = 1
-
-ctp_int_port        = port:PA03<6><default><default><default>
-ctp_wakeup          = port:PA02<1><default><default><1>
+ctp_used                = 1
+ctp_twi_id              = 2
+ctp_twi_addr            = 0xba
+ctp_screen_max_x        = 800
+ctp_screen_max_y        = 480
+ctp_exchange_x_y_flag   = 0
+ctp_modify_reg          = 0
+ctp_int_port            = port:PE10<1><1><3><1>
+ctp_wakeup              = port:PE11<1><1><3><1>
 ;----------------------------------------------------------------------------------
 ;touch key configuration
 ;----------------------------------------------------------------------------------
@@ -453,12 +451,12 @@ screen0_output_range     = 2
 screen0_output_scan      = 0
 screen0_output_aspect_ratio = 8
 
-screen1_output_type      = 1
-screen1_output_mode      = 4
+screen1_output_type      = 2
+screen1_output_mode      = 11
 screen1_output_format    = 1
 screen1_output_bits      = 0
 screen1_output_eotf      = 4
-screen1_output_cs        = 260
+screen1_output_cs        = 257
 screen1_output_dvi_hdmi  = 2
 screen1_output_range     = 2
 screen1_output_scan      = 0
@@ -543,12 +541,12 @@ lcd_used            = 1
 lcd_driver_name     = "default_lcd"
 lcd_backlight       = 0
 lcd_if              = 0
-lcd_x               = 480
-lcd_y               = 272
+lcd_x               = 800
+lcd_y               = 480
 lcd_width           = 150
 lcd_height          = 94
 lcd_rb_swap         = 0
-lcd_dclk_freq       = 33
+lcd_dclk_freq       = 38
 lcd_pwm_used        = 1
 lcd_pwm_ch          = 7
 lcd_pwm_freq        = 50000
@@ -840,30 +838,22 @@ pwm_positive        = port:PL10<7><0><default><default>
 ;--------------------------------------------------------------------------------
 [vind0]
 vind0_used		= 1
-vind0_clk		= 336000000
+vind0_clk		= 432000000
 vind0_isp		= 322000000
 
-[vind0/csi1]
-csi1_used               = 1
-csi1_pck                = port:PE00<2><default><default><default>
-csi1_hsync              = port:PE02<2><default><default><default>
-csi1_vsync              = port:PE03<2><default><default><default>
-csi1_d0                 = port:PE04<2><default><default><default>
-csi1_d1                 = port:PE05<2><default><default><default>
-csi1_d2                 = port:PE06<2><default><default><default>
-csi1_d3                 = port:PE07<2><default><default><default>
-csi1_d4                 = port:PE08<2><default><default><default>
-csi1_d5                 = port:PE09<2><default><default><default>
-csi1_d6                 = port:PE10<2><default><default><default>
-csi1_d7                 = port:PE11<2><default><default><default>
-csi1_d8                 = port:PE12<2><default><default><default>
-csi1_d9                 = port:PE13<2><default><default><default>
-csi1_d10                = port:PE14<2><default><default><default>
-csi1_d11                = port:PE15<2><default><default><default>
-csi1_d12                = port:PE18<2><default><default><default>
-csi1_d13                = port:PE19<2><default><default><default>
-csi1_d14                = port:PE20<2><default><default><default>
-csi1_d15                = port:PE21<2><default><default><default>
+[vind0/csi0]
+csi0_used               = 1
+csi0_pck                = port:PE02<2><default><default><default>
+csi0_hsync              = port:PE00<2><default><default><default>
+csi0_vsync              = port:PE01<2><default><default><default>
+csi0_d0                 = port:PE04<2><default><default><default>
+csi0_d1                 = port:PE05<2><default><default><default>
+csi0_d2                 = port:PE06<2><default><default><default>
+csi0_d3                 = port:PE07<2><default><default><default>
+csi0_d4                 = port:PE08<2><default><default><default>
+csi0_d5                 = port:PE09<2><default><default><default>
+csi0_d6                 = port:PE10<2><default><default><default>
+csi0_d7                 = port:PE11<2><default><default><default>
 
 [vind0/flash0]
 flash0_used		= 0
@@ -884,7 +874,7 @@ actuator0_afvdd_vol     = 2800000
 [vind0/sensor0]
 sensor0_used          = 1
 sensor0_mname         = "ov5640"
-sensor0_twi_cci_id    = 0
+sensor0_twi_cci_id    = 2
 sensor0_twi_addr      = 0x78
 sensor0_mclk_id       = 0
 sensor0_pos           = "rear"
@@ -900,75 +890,81 @@ sensor0_avdd_vol      = 2800000
 sensor0_dvdd          = "dvdd-csi-18"
 sensor0_dvdd_vol      = 1800000
 sensor0_power_en      =
-sensor0_reset         = port:PE14<0><0><1><0>
-sensor0_pwdn          = port:PE16<0><0><1><0>
+sensor0_reset         = port:PG00<0><0><1><0>
+sensor0_pwdn          = port:PG01<0><0><1><0>
 
-[vind0/sensor1]
-sensor1_used          = 1
-sensor1_mname         = "ov5647"
-sensor1_twi_cci_id    = 1
-sensor1_twi_addr      = 0x6c
-sensor1_mclk_id       = 1
-sensor1_pos           = "front"
-sensor1_isp_used      = 0
-sensor1_fmt           = 0
-sensor1_stby_mode     = 1
-sensor1_vflip         = 0
-sensor1_hflip         = 0
-sensor1_iovdd         = "iovdd-csi"
-sensor1_iovdd_vol     = 2800000
-sensor1_avdd          = "avdd-csi"
-sensor1_avdd_vol      = 2800000
-sensor1_dvdd          = "dvdd-csi-18"
-sensor1_dvdd_vol      = 1800000
-sensor1_power_en      =
-sensor1_reset         = port:PE14<0><0><1><0>
-sensor1_pwdn          = port:PE15<0><0><1><0>
+;[vind0/sensor0]
+;sensor0_used          = 0
+;sensor0_mname         = "ov5647"
+;sensor0_twi_cci_id    = 1
+;sensor0_twi_addr      = 0x6c
+;sensor0_mclk_id       = 1
+;sensor0_pos           = "front"
+;sensor0_isp_used      = 0
+;sensor0_fmt           = 0
+;sensor0_stby_mode     = 1
+;sensor0_vflip         = 0
+;sensor0_hflip         = 0
+;sensor0_iovdd         = "iovdd-csi"
+;sensor0_iovdd_vol     = 2800000
+;sensor0_avdd          = "avdd-csi"
+;sensor0_avdd_vol      = 2800000
+;sensor0_dvdd          = "dvdd-csi-18"
+;sensor0_dvdd_vol      = 1800000
+;sensor0_power_en      =
+;sensor0_reset         = port:PE14<0><0><1><0>
+;sensor0_pwdn          = port:PE15<0><0><1><0>
+
+;[vind0/sensor0]
+;sensor0_used          = 1
+;sensor0_mname         = "tp9950"
+;sensor0_twi_cci_id    = 2
+;sensor0_twi_addr      = 0x88
+;sensor0_mclk_id       = 0
+;sensor0_pos           = "rear"
+;sensor0_isp_used      = 0
+;sensor0_fmt           = 0
+;sensor0_stby_mode     = 1
+;sensor0_vflip         = 0
+;sensor0_hflip         = 0
+;sensor0_iovdd         = "iovdd-csi"
+;sensor0_iovdd_vol     = 2800000
+;sensor0_avdd          = "avdd-csi"
+;sensor0_avdd_vol      = 2800000
+;sensor0_dvdd          = "dvdd-csi-18"
+;sensor0_dvdd_vol      = 1800000
+;sensor0_power_en      =
+;sensor0_reset         = port:PG00<0><0><1><0>
+;sensor0_pwdn          = port:PG01<0><0><1><0>
 
 [vind0/vinc0]
 vinc0_used		= 1
 vinc0_csi_sel		= 0
 vinc0_mipi_sel		= 0xff
 vinc0_isp_sel		= 0
+vinc0_isp_tx_ch		= 0
 vinc0_rear_sensor_sel	= 0
 vinc0_front_sensor_sel	= 0
 vinc0_sensor_list	= 0
 
 [vind0/vinc1]
-vinc1_used		= 0
-vinc1_csi_sel		= 1
+vinc1_used		= 1
+vinc1_csi_sel		= 0
 vinc1_mipi_sel		= 0xff
 vinc1_isp_sel		= 0
+vinc1_isp_tx_ch		= 1
 vinc1_rear_sensor_sel	= 0
 vinc1_front_sensor_sel	= 0
 vinc1_sensor_list	= 0
-
-[vind0/vinc2]
-vinc2_used		= 0
-vinc2_csi_sel		= 0
-vinc2_mipi_sel		= 0
-vinc2_isp_sel		= 0
-vinc2_rear_sensor_sel	= 0
-vinc2_front_sensor_sel	= 0
-vinc2_sensor_list	= 0
-
-[vind0/vinc3]
-vinc3_used		= 0
-vinc3_csi_sel		= 0
-vinc3_mipi_sel		= 0
-vinc3_isp_sel		= 0
-vinc3_rear_sensor_sel	= 0
-vinc3_front_sensor_sel	= 0
-vinc3_sensor_list	= 0
 
 ;--------------------------------------------------------------------------------
 ;tv configuration
 ;
 ;--------------------------------------------------------------------------------
 [tvout_para]
-tvout_used          = 1
-tvout_channel_num   = 0
-tv_en               = 1
+tvout_used          =
+tvout_channel_num   =
+tv_en               =
 
 [tvin_para]
 tvin_used           =
@@ -1749,7 +1745,7 @@ shutdown_ani_inter_time          = 100
 
 carback_en              = 0
 ;----------------------------------------------------------------------------------
-;adc power   (no pmu) 
+;adc power   (no pmu)
 ;----------------------------------------------------------------------------------
 [adc_power]
 power_det_io        = port:PB02<0><0><default><default>
@@ -1759,9 +1755,9 @@ power_det_io        = port:PB02<0><0><default><default>
 standby_mode_en = 0
 
 ;----------------------------------------------------------------------------------
-;mode :  1 bgd --- 0 jpg
+;mode :  0--jpg  1--bgd  2--yuv
 ;----------------------------------------------------------------------------------
 [backlayer]
-backlayer_mode = 0
+backlayer_mode = 2
 
 

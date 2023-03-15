@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 #include <log.h>
 #include "dtv_i.h"
@@ -37,8 +68,8 @@ __s32  g_wate_cnt = 0;
 
 
 
-#define  SINGAL_Q   20//Ö¸Ê¾ÎŞĞÅºÅ modify140327 //0    // SHOULD > 7 FOR CMMB
-#define  SINGAL_Q_2   60//Ö¸Ê¾ÓĞĞÅºÅ¿ÉÒÔ²¥·Å»òÕßÇ¿ĞÅºÅ»Ö¸´ modify140327
+#define  SINGAL_Q   20//æŒ‡ç¤ºæ— ä¿¡å· modify140327 //0    // SHOULD > 7 FOR CMMB
+#define  SINGAL_Q_2   60//æŒ‡ç¤ºæœ‰ä¿¡å·å¯ä»¥æ’­æ”¾æˆ–è€…å¼ºä¿¡å·æ¢å¤ modify140327
 #define  SINGAL_STRENGTH_MAX  96
 
 
@@ -52,10 +83,10 @@ __s32 dtv_switch_tvout(__gui_msg_t *msg);
 
 
 /**********************************************************************************************************************
-* Âß¼­ÆµµÀºÅ
+* é€»è¾‘é¢‘é“å·
 **********************************************************************************************************************/
 
-#if 1 //ÆäÊµÂß¼­ÆµµÀºÅ·ÅÔÚdtv_mid.cÖĞ¸üºÏÊÊ
+#if 1 //å…¶å®é€»è¾‘é¢‘é“å·æ”¾åœ¨dtv_mid.cä¸­æ›´åˆé€‚
 __s32  dtv_get_cur_user_index(void)
 {
     return  dtv_ctr.cur_user_index;
@@ -74,7 +105,7 @@ __s32 dtv_set_cur_user_index(__s32 index)
 #endif
 
 /**********************************************************************************************************************
-* Í¼²ã´´½¨½Ó¿Ú
+* å›¾å±‚åˆ›å»ºæ¥å£
 **********************************************************************************************************************/
 H_WIN dtv_com_layer_create(RECT *rect, char *layer_name)
 {
@@ -124,8 +155,8 @@ H_WIN dtv_com_layer_create(RECT *rect, char *layer_name)
 }
 
 
-//Í¼²ãÓÉmainwin¿ØÖÆ£¬±ãÓÚ¸÷½çÃæÖ®¼äÇĞ»»
-//ÉèÖÃ¡¢½ÚÄ¿Ô¤¸æ¡¢½ÚÄ¿Ô¤ÀÀ¡¢ËÑË÷½çÃæ
+//å›¾å±‚ç”±mainwinæ§åˆ¶ï¼Œä¾¿äºå„ç•Œé¢ä¹‹é—´åˆ‡æ¢
+//è®¾ç½®ã€èŠ‚ç›®é¢„å‘Šã€èŠ‚ç›®é¢„è§ˆã€æœç´¢ç•Œé¢
 __s32  dtv_layer_create(RECT *rect)
 {
     dtv_ctr.h_lyr = dtv_com_layer_create(rect, "comman layer");
@@ -139,7 +170,7 @@ __s32  dtv_layer_create(RECT *rect)
 }
 
 /**********************************************************************************************************************
-* Í¼²ã´´½¨½Ó¿Ú
+* å›¾å±‚åˆ›å»ºæ¥å£
 **********************************************************************************************************************/
 
 
@@ -222,7 +253,7 @@ void uninit_select_dtv_bmp(void)
     }
 }
 
-//ÊÍ·ÅÑ¡Ì¨Ê±Ïà¹ØµÄ×ÊÔ´,timer & layer
+//é‡Šæ”¾é€‰å°æ—¶ç›¸å…³çš„èµ„æº,timer & layer
 void clear_dtv_select_number(__gui_msg_t *msg)
 {
     if (GUI_IsTimerInstalled(msg->h_deswin, DVB_SPIC_CHANNEL_ID))
@@ -241,7 +272,7 @@ void clear_dtv_select_number(__gui_msg_t *msg)
     dtv_ctr.sel_num = 0;
     dtv_ctr.sel_cnt = 0;
 }
-//Êı×ÖÑ¡Ì¨½çÃæÏÔÊ¾
+//æ•°å­—é€‰å°ç•Œé¢æ˜¾ç¤º
 __s32 dtv_show_select_number(__gui_msg_t *msg)
 {
     __u32 x1 = 20;
@@ -271,7 +302,7 @@ __s32 dtv_show_select_number(__gui_msg_t *msg)
         GUI_SetFont(SWFFont);
         GUI_SetDrawMode(GUI_DRAWMODE_NORMAL);
         GUI_SetColor(GUI_WHITE);
-        GUI_BMP_Draw(dsk_theme_hdl2buf(dtv_sel_bg_bmp), 0, 0); //ÏÔÊ¾±³¾°
+        GUI_BMP_Draw(dsk_theme_hdl2buf(dtv_sel_bg_bmp), 0, 0); //æ˜¾ç¤ºèƒŒæ™¯
     }
 
     //reset:
@@ -286,7 +317,7 @@ __s32 dtv_show_select_number(__gui_msg_t *msg)
     //{
     //  GUI_MEMDEV_Select(draw_mem);
     //}
-    GUI_BMP_Draw(dsk_theme_hdl2buf(dtv_sel_bg_bmp), 0, 0); //ÏÔÊ¾±³¾°
+    GUI_BMP_Draw(dsk_theme_hdl2buf(dtv_sel_bg_bmp), 0, 0); //æ˜¾ç¤ºèƒŒæ™¯
 
     if (dtv_ctr.sel_sta == 3)
     {
@@ -295,8 +326,8 @@ __s32 dtv_show_select_number(__gui_msg_t *msg)
             gui_rect1.y0 = y1 + 10;
             gui_rect1.x1 = BG_BMP_WIDTH - x1;
             gui_rect1.y1 = gui_rect1.y0 + 28;
-            //GUI_ClearRectEx(&gui_rect2);//Çå³ıÇøÓò
-            dsk_langres_get_menu_text(STRING_DTV_MANU_SEARCH, item_str, GUI_TITLE_MAX); //ÏÔÊ¾ ÊäÈëÆµµÀ
+            //GUI_ClearRectEx(&gui_rect2);//æ¸…é™¤åŒºåŸŸ
+            dsk_langres_get_menu_text(STRING_DTV_MANU_SEARCH, item_str, GUI_TITLE_MAX); //æ˜¾ç¤º è¾“å…¥é¢‘é“
             GUI_DispStringInRect((const char *)item_str, &gui_rect1, GUI_TA_HCENTER | GUI_TA_VCENTER);
             number = dtv_ctr.sel_num;
 
@@ -325,8 +356,8 @@ __s32 dtv_show_select_number(__gui_msg_t *msg)
         gui_rect1.y0 = y1 + 40;
         gui_rect1.x1 = BG_BMP_WIDTH - x1;
         gui_rect1.y1 = gui_rect1.y0 + 28;
-        //GUI_ClearRectEx(&gui_rect2);//Çå³ıÇøÓò
-        dsk_langres_get_menu_text(STRING_DTV_SEL_ERR, item_str, GUI_TITLE_MAX);//ÏÔÊ¾ ÕÒ²»µ½Ö¸¶¨ÆµµÀ
+        //GUI_ClearRectEx(&gui_rect2);//æ¸…é™¤åŒºåŸŸ
+        dsk_langres_get_menu_text(STRING_DTV_SEL_ERR, item_str, GUI_TITLE_MAX);//æ˜¾ç¤º æ‰¾ä¸åˆ°æŒ‡å®šé¢‘é“
         GUI_DispStringInRect((const char *)item_str, &gui_rect1, GUI_TA_HCENTER | GUI_TA_VCENTER);
         //  if(draw_mem)
         //  {
@@ -348,8 +379,8 @@ __s32 dtv_show_select_number(__gui_msg_t *msg)
         gui_rect1.y0 = y1 + 10;
         gui_rect1.x1 = BG_BMP_WIDTH - x1;
         gui_rect1.y1 = gui_rect1.y0 + 28;
-        //GUI_ClearRectEx(&gui_rect2);//Çå³ıÇøÓò
-        dsk_langres_get_menu_text(STRING_DTV_SEL_CH, item_str, GUI_TITLE_MAX); //ÏÔÊ¾ ÊäÈëÆµµÀ
+        //GUI_ClearRectEx(&gui_rect2);//æ¸…é™¤åŒºåŸŸ
+        dsk_langres_get_menu_text(STRING_DTV_SEL_CH, item_str, GUI_TITLE_MAX); //æ˜¾ç¤º è¾“å…¥é¢‘é“
         GUI_DispStringInRect((const char *)item_str, &gui_rect1, GUI_TA_HCENTER | GUI_TA_VCENTER);
         number = dtv_ctr.sel_num;
         //if(number > 0)
@@ -404,7 +435,7 @@ __s32 dtv_show_select_number(__gui_msg_t *msg)
 void dtv_check_cmmb_disk_format(void)
 {
     ES_FILE *fp = NULL;
-    //´æÖüÅÌ·ûÊÇ·ñ´æÔÚ£¬²»´æÔÚÔòĞèÒª¸ñÊ½ÅÌ·û
+    //å­˜è´®ç›˜ç¬¦æ˜¯å¦å­˜åœ¨ï¼Œä¸å­˜åœ¨åˆ™éœ€è¦æ ¼å¼ç›˜ç¬¦
     fp = eLIBs_fopen(DTV_BASEINFO_NAME, "rb");
 
     if (fp == NULL)
@@ -412,14 +443,14 @@ void dtv_check_cmmb_disk_format(void)
 #if 0
         fp = eLIBs_fopen(DTV_BASEINFO_NAME, "wb");
 
-        if (fp == NULL) //Ğ´²»³É¹¦Ê±²Å¸ñÊ½»¯ZÅÌ
+        if (fp == NULL) //å†™ä¸æˆåŠŸæ—¶æ‰æ ¼å¼åŒ–Zç›˜
         {
             eLIBs_format("z:\\", "fat", 0);
             esKRNL_TimeDly(10);
         }
         else
         {
-            //´´½¨ÎÄ¼şÖ»Îª²âÊÔÅÌ·ûÊÇ·ñÒÑ¾­¸ñÊ½»¯
+            //åˆ›å»ºæ–‡ä»¶åªä¸ºæµ‹è¯•ç›˜ç¬¦æ˜¯å¦å·²ç»æ ¼å¼åŒ–
             eLIBs_fclose(fp);
             fp = NULL;
             eLIBs_remove(DTV_BASEINFO_NAME);
@@ -429,7 +460,7 @@ void dtv_check_cmmb_disk_format(void)
     }
     else
     {
-        //ÎÄ¼ş´æÔÚ£¬Ö¤Ã÷ÅÌ·ûÒÑ¾­¸ñÊ½»¯
+        //æ–‡ä»¶å­˜åœ¨ï¼Œè¯æ˜ç›˜ç¬¦å·²ç»æ ¼å¼åŒ–
         eLIBs_fclose(fp);
         fp = NULL;
     }
@@ -518,7 +549,7 @@ __s32 dtv_send_cmd2close_dialog(__s32 dlg_id)
     return EPDK_OK;
 }
 #endif
-//ÊÇ·ñ´æÔÚ×Ó³¡¾°
+//æ˜¯å¦å­˜åœ¨å­åœºæ™¯
 __bool dtv_has_sub_scene(void)
 {
     if (dtv_ctr.h_lyr)
@@ -531,7 +562,7 @@ __bool dtv_has_sub_scene(void)
 
 
 #if 0
-//½ÚÄ¿Ô¤¸æÖĞĞèÒªÓÃÓÚÊ±¼äĞ£×¼,È·±£»ñÈ¡µÄÊÇÏëÒªµÄÖ¸¶¨µÄÄÇÒ»ÌìµÄÊ±¼ä
+//èŠ‚ç›®é¢„å‘Šä¸­éœ€è¦ç”¨äºæ—¶é—´æ ¡å‡†,ç¡®ä¿è·å–çš„æ˜¯æƒ³è¦çš„æŒ‡å®šçš„é‚£ä¸€å¤©çš„æ—¶é—´
 __s32 dtv_time_check(void)
 {
     maple_time_t        current_tv_time;
@@ -591,11 +622,11 @@ __s32 dtv_time_check(void)
 
 
 
-//ĞÅºÅµÄÇ¿Èõ¼ì²â
-//¸ù¾İĞÅºÅÇ¿Èõ¸ø³öÈõĞÅºÅÌáÊ¾»òÆµµÀ²¥·Å¶¼·ÅÔÚ´Ëº¯ÊıÖĞ
+//ä¿¡å·çš„å¼ºå¼±æ£€æµ‹
+//æ ¹æ®ä¿¡å·å¼ºå¼±ç»™å‡ºå¼±ä¿¡å·æç¤ºæˆ–é¢‘é“æ’­æ”¾éƒ½æ”¾åœ¨æ­¤å‡½æ•°ä¸­
 
-//Ö®ËùÒÔ·ÅÔÚGUI TIMER ¶¨Ê±Æ÷ÖĞ¼ì²â£¬ÒòÎªÏß³ÌµÄÓÅÏÈ¼¶È¡Ì«¸ßÌ«µÍ¶¼²»ºÏÊÊ
-//·ÅÔÚ¶¨Ê±Æ÷ÖĞ¿ÉÒÔÈ·±£ÏûÏ¢µÃµ½¼°Ê±´¦Àí£¬¼õĞ¡»»Ì¨¼ä¸ô
+//ä¹‹æ‰€ä»¥æ”¾åœ¨GUI TIMER å®šæ—¶å™¨ä¸­æ£€æµ‹ï¼Œå› ä¸ºçº¿ç¨‹çš„ä¼˜å…ˆçº§å–å¤ªé«˜å¤ªä½éƒ½ä¸åˆé€‚
+//æ”¾åœ¨å®šæ—¶å™¨ä¸­å¯ä»¥ç¡®ä¿æ¶ˆæ¯å¾—åˆ°åŠæ—¶å¤„ç†ï¼Œå‡å°æ¢å°é—´éš”
 __s32 dtv_singal_strength_detect(H_WIN hand)
 {
 #if 0
@@ -614,7 +645,7 @@ __s32 dtv_singal_strength_detect(H_WIN hand)
         esKRNL_SemPend(dtv_ctr.sem, 0, NULL);
         //maple_get_ss(&ss);
         //gscene_hbar_set_sig_status(ss.strength,ss.quality);
-        //ÏëÒªÏÔÊ¾ĞÅºÅ×´Ì¬£¬ÔÚĞèÒªµÄµØ·½¿ÉÒÔÊ¹ÄÜ
+        //æƒ³è¦æ˜¾ç¤ºä¿¡å·çŠ¶æ€ï¼Œåœ¨éœ€è¦çš„åœ°æ–¹å¯ä»¥ä½¿èƒ½
         esKRNL_SemPost(dtv_ctr.sem);
     }
 #endif
@@ -672,9 +703,9 @@ __s32 dtv_show_signal_status(__bool en)
 }
 
 //exp 0:delete all
-//É¾³ıËùÓĞµÄ×Ó³¡¾°
-//ËÑÌ¨»òÍË³öÓ¦ÓÃÊ±µ÷ÓÃ
-//»òĞèÒªÇĞ»»½çÃæÊ±¼òµ¥´Ö±©µÄÉ¾³ıµ±Ç°ËùÓĞ½çÃæ£¬È»ºóÖØ½¨
+//åˆ é™¤æ‰€æœ‰çš„å­åœºæ™¯
+//æœå°æˆ–é€€å‡ºåº”ç”¨æ—¶è°ƒç”¨
+//æˆ–éœ€è¦åˆ‡æ¢ç•Œé¢æ—¶ç®€å•ç²—æš´çš„åˆ é™¤å½“å‰æ‰€æœ‰ç•Œé¢ï¼Œç„¶åé‡å»º
 void dtv_delete_all_menu(__u32 exp)
 {
     __wrn("dtv_delete_all_menu().");
@@ -809,7 +840,7 @@ void  tv_short_key_cmd2parent(H_WIN hwin, __s32 data1, __s32 data2, __u32 dw)
 
 __s32 __dtv_switch_output(void)
 {
-    //ÇĞ»»Êä³ö
+    //åˆ‡æ¢è¾“å‡º
     {
         reg_system_para_t *para;
         para = (reg_system_para_t *)dsk_reg_get_para_by_app(REG_APP_SYSTEM);
@@ -848,17 +879,17 @@ __s32 __dtv_switch_output(void)
 
 
 
-//ËÑÌ¨
-//1¡¢´´½¨layer
-//2¡¢´´½¨ËÑÌ¨frmwin
-//3¡¢Æô¶¯ËÑÌ¨Ïß³Ì
+//æœå°
+//1ã€åˆ›å»ºlayer
+//2ã€åˆ›å»ºæœå°frmwin
+//3ã€å¯åŠ¨æœå°çº¿ç¨‹
 __s32 dtv_search_program_start(__gui_msg_t  *msg, __u8 scan_type, __u32 index)
 {
     __s32 ret = 0;
     scan_para_t *scan_para = NULL;
     extern  maple_demod_info_t *demodParam;
     extern maple_serv_list_t *search_service_list;
-    //esKRNL_SemPend(dtv_ctr.sem,0,NULL);//ÓÃÓÚ¸÷½çÃæµÄÍ¬²½
+    //esKRNL_SemPend(dtv_ctr.sem,0,NULL);//ç”¨äºå„ç•Œé¢çš„åŒæ­¥
     g_is_searching = 1;
     __msg("dtv_search_program_start()...");
     //
@@ -954,7 +985,7 @@ __s32 dtv_search_program_start(__gui_msg_t  *msg, __u8 scan_type, __u32 index)
 __s32 dtv_schedule_list_menu_create(__gui_msg_t  *msg)
 {
     __s32 ret = 0;
-    esKRNL_SemPend(dtv_ctr.sem, 0, NULL); //ÓÃÓÚ¸÷½çÃæµÄÍ¬²½
+    esKRNL_SemPend(dtv_ctr.sem, 0, NULL); //ç”¨äºå„ç•Œé¢çš„åŒæ­¥
     __msg("dtv_schedule_list_menu_create()...");
     clear_dtv_select_number(msg);
 
@@ -997,7 +1028,7 @@ __s32 dtv_schedule_list_menu_create(__gui_msg_t  *msg)
 __s32 dtv_preview_menu_create(__gui_msg_t  *msg)
 {
     __s32 ret = 0;
-    esKRNL_SemPend(dtv_ctr.sem, 0, NULL); //ÓÃÓÚ¸÷½çÃæµÄÍ¬²½
+    esKRNL_SemPend(dtv_ctr.sem, 0, NULL); //ç”¨äºå„ç•Œé¢çš„åŒæ­¥
     __msg("dtv_preview_menu_create()...");
     clear_dtv_select_number(msg);
 
@@ -1046,7 +1077,7 @@ __s32 dtv_setting_menu_create(__gui_msg_t  *msg)
     }
 
     __wrn("dtv_setting_menu_create1.");
-    //esKRNL_SemPend(dtv_ctr.sem,0,NULL);//ÓÃÓÚ¸÷½çÃæµÄÍ¬²½
+    //esKRNL_SemPend(dtv_ctr.sem,0,NULL);//ç”¨äºå„ç•Œé¢çš„åŒæ­¥
     __wrn("dtv_setting_menu_create2.");
     clear_dtv_select_number(msg);
 
@@ -1154,7 +1185,7 @@ __s32 is_tv_out_on(void)
 #endif
 
 
-//ÅĞ¶Ïµ±Ç°ÊÇ·ñ´¦ÔÚTV-OUTÄ£Ê½
+//åˆ¤æ–­å½“å‰æ˜¯å¦å¤„åœ¨TV-OUTæ¨¡å¼
 __bool is_on_tv(void)
 {
     __u32 output;
@@ -1175,10 +1206,10 @@ __bool is_on_tv(void)
 
 //extern __s32 __root_switch_output(void);
 
-//¸ù¾İ×¢²á±íĞÅÏ¢½øĞĞÇĞ»»NTFS OR PAL
+//æ ¹æ®æ³¨å†Œè¡¨ä¿¡æ¯è¿›è¡Œåˆ‡æ¢NTFS OR PAL
 __s32 __root_switch_output(void)
 {
-    //ÇĞ»»Êä³ö
+    //åˆ‡æ¢è¾“å‡º
     {
         reg_system_para_t *para;
         para = (reg_system_para_t *)dsk_reg_get_para_by_app(REG_APP_SYSTEM);
@@ -1223,7 +1254,7 @@ __s32 __root_switch_output_NTSC_PAL(__gui_msg_t *msg)
 {
     H_WIN    h_dialog = NULL;
     //if(EPDK_TRUE == is_on_tv())
-    //ÇĞ»»Êä³ö
+    //åˆ‡æ¢è¾“å‡º
     {
         reg_system_para_t *para;
         para = (reg_system_para_t *)dsk_reg_get_para_by_app(REG_APP_SYSTEM);

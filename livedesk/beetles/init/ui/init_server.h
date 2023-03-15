@@ -1,19 +1,33 @@
 /*
-************************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                 (c) Copyright 2007-2010, Jackie, China
-*                                       All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File          : init_server.c
-* By            : Jackie.chen
-* Func      : init server
-* Version   : v1.0
-* ======================================================================================================================
-* 2010-10-25  Jackie.chen  create this file, implements the fundemental interface;
-************************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __INIT_SERVER_H__
 #define __INIT_SERVER_H__
@@ -21,32 +35,32 @@
 #include <kconfig.h>
 typedef struct init_ctl_t
 {
-    /* ¹Ø»ú timer */
-    __s32                    autooff_timeout;   /* ×Ô¶¯¹Ø»úÊ±¼ä     */
-    __s32                    auto_off_time_id;      /* ×Ô¶¯¹Ø»útimer id */
+    /* å…³æœº timer */
+    __s32                    autooff_timeout;   /* è‡ªåŠ¨å…³æœºæ—¶é—´     */
+    __s32                    auto_off_time_id;      /* è‡ªåŠ¨å…³æœºtimer id */
 
-    /* ¹ØÆÁ timer */
-    __s32                    closescn_timeout;  /* ×Ô¶¯¹ØÆÁÊ±¼ä     */
-    __bool                   closescn_gate_on;      /* ÊÇ·ñ½ûÖ¹×Ô¶¯¹ØÆÁ */
-    __s32                    close_scn_time_id;     /* ×Ô¶¯¹ØÆÁtimer id */
+    /* å…³å± timer */
+    __s32                    closescn_timeout;  /* è‡ªåŠ¨å…³å±æ—¶é—´     */
+    __bool                   closescn_gate_on;      /* æ˜¯å¦ç¦æ­¢è‡ªåŠ¨å…³å± */
+    __s32                    close_scn_time_id;     /* è‡ªåŠ¨å…³å±timer id */
 
-    /* µÍµç²éÑ¯ */
+    /* ä½ç”µæŸ¥è¯¢ */
     __s32                    low_power_check_timeout;
     __s32                    low_power_check_time_id;
 
-    /* ĞÅºÅÁ¿ */
-    __krnl_event_t          *state_sem;         /* ²éÑ¯×´Ì¬ĞÅºÅÁ¿  */
+    /* ä¿¡å·é‡ */
+    __krnl_event_t          *state_sem;         /* æŸ¥è¯¢çŠ¶æ€ä¿¡å·é‡  */
 
     /* cursor */
     __s32                   cursor_timeout;     /* cursor time out */
     __s32                   cursor_time_id;         /* cursor time id  */
-    /* cursor ´´½¨ĞÅÏ¢ */
+    /* cursor åˆ›å»ºä¿¡æ¯ */
     __u8                   *cursor_bmp;
     __gui_cursor_t          cursor_info;
 
-    /* ×ÀÃæÊÂ¼ş×´Ì¬±êÊ¶Î»*/
-    __bool                   usb_connect;       /* usb ÊÇ·ñÁ¬½Óµ½ pc */
-    __bool                   screen_close_done; /* ÆÁÄ»ÊÇ·ñÒÑ¾­¹Ø±Õ  */
+    /* æ¡Œé¢äº‹ä»¶çŠ¶æ€æ ‡è¯†ä½*/
+    __bool                   usb_connect;       /* usb æ˜¯å¦è¿æ¥åˆ° pc */
+    __bool                   screen_close_done; /* å±å¹•æ˜¯å¦å·²ç»å…³é—­  */
 
     /* msg enble */
     __bool                  key_msg_enble;
@@ -74,26 +88,26 @@ typedef enum
 
 typedef struct
 {
-    /* Í¼²ã¾ä±ú */
-    //H_LYR hbar_layer;         // ±êÌâÀ¸Í¼²ã
-    H_LYR dialog_layer;         // µ¯¿òÍ¼²ã
+    /* å›¾å±‚å¥æŸ„ */
+    //H_LYR hbar_layer;         // æ ‡é¢˜æ å›¾å±‚
+    H_LYR dialog_layer;         // å¼¹æ¡†å›¾å±‚
 
-    /* ´°¿Ú¾ä±ú */
+    /* çª—å£å¥æŸ„ */
     H_WIN init_win;
-    H_WIN headbar_win;          // ±êÌâÀ¸´°¿Ú
-    H_WIN dialog_win;           // ¶Ô»°¿ò´°¿Ú
+    H_WIN headbar_win;          // æ ‡é¢˜æ çª—å£
+    H_WIN dialog_win;           // å¯¹è¯æ¡†çª—å£
     H_WIN scnlock_win;
     H_WIN assistant_win;
 
     char app_title[32];         // headbar show app_name
 
-    /* µ±Ç°headbar ÏÖ³¡ */
+    /* å½“å‰headbar ç°åœº */
     //__hbar_format_t hbar_format;
     //char hbar_title[32];
 
-    /* ÏµÍ³×´Ì¬ dialog Ïà¹Ø */
+    /* ç³»ç»ŸçŠ¶æ€ dialog ç›¸å…³ */
     main_dialog_t cur_dialog;
-    __bool usb_plug_in;//usb¸Õ¸ÕÁ¬½Ó£¬ÓÃÓÚ·ÀÖ¹µÍµç»ò¹Ø»ú¶Ô»°¿ò¹Ø±Õºó£¬³ÌĞò±»¹Ø±Õ¡£
+    __bool usb_plug_in;//usbåˆšåˆšè¿æ¥ï¼Œç”¨äºé˜²æ­¢ä½ç”µæˆ–å…³æœºå¯¹è¯æ¡†å…³é—­åï¼Œç¨‹åºè¢«å…³é—­ã€‚
     __bool usb_connect;
     __bool orchid_update;
     __bool low_power;
@@ -108,4 +122,3 @@ void init_unlock(__gui_msg_t *msg);
 H_WIN init_mainwin_create(void);
 
 #endif
-

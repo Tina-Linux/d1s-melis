@@ -1,0 +1,3 @@
+config SND_CORE_TINY
+	bool
+	default n

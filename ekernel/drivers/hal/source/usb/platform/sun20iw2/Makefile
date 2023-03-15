@@ -1,0 +1,1 @@
+obj-y += usb_sun20iw2.o

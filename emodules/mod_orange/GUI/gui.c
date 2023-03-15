@@ -1,21 +1,34 @@
 /*
-**********************************************************************************************************************
-*                                                    ePDK
-*                                    the Easy Portable/Player Develop Kits
-*                                              eMOD Sub-System
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2007-2009, Steven.ZGJ.China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* Moudle  : lemon
-* File    : gui.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
-* By      : Steven
-* Version : v1.0
-* Date    : 2009-1-6 11:59:31
-**********************************************************************************************************************
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "GUI_Private.h"
 #include <elibs_stdio.h>
 #include <mod_display.h>
@@ -334,16 +347,16 @@ void GUI_DirMemcpy(__gui_blitinfo_t *blitinfo)
         fb_height       = blitinfo->dst_height;
         srcfb_width     = blitinfo->src_width;
         srcfb_height    = blitinfo->src_height;
-        /*Ó³ÉäÔ´ÆðÊ¼×ø±ê*/
+        /*æ˜ å°„æºèµ·å§‹åæ ‡*/
         src_start.x     = blitinfo->srcstart.x;
         src_start.y     = blitinfo->srcstart.y;
-        /*Ó³ÉäÔ´½áÊø×ø±ê*/
+        /*æ˜ å°„æºç»“æŸåæ ‡*/
         //src_end.x       = blitinfo->srcend.x;
         //src_end.y       = blitinfo->srcend.y;
-        /*Ó³ÉäÄ¿±êÆðÊ¼×ø±ê*/
+        /*æ˜ å°„ç›®æ ‡èµ·å§‹åæ ‡*/
         dst_start.x     = blitinfo->dststart.x;
         dst_start.y     = blitinfo->dststart.y;
-        /*Ó³ÉäÄ¿±ê½áÊø×ø±ê*/
+        /*æ˜ å°„ç›®æ ‡ç»“æŸåæ ‡*/
         dst_end.x       = blitinfo->dstend.x;
         dst_end.y       = blitinfo->dstend.x;
         cpy_height      = blitinfo->dstend.y - blitinfo->dststart.y;
@@ -354,16 +367,16 @@ void GUI_DirMemcpy(__gui_blitinfo_t *blitinfo)
         fb_height       = blitinfo->dst_width;
         srcfb_width     = blitinfo->src_height;
         srcfb_height    = blitinfo->src_width;
-        /*Ó³ÉäÔ´ÆðÊ¼×ø±ê*/
+        /*æ˜ å°„æºèµ·å§‹åæ ‡*/
         src_start.x     = blitinfo->src_width - blitinfo->srcend.y;
         src_start.y     = blitinfo->srcstart.x;
-        /*Ó³ÉäÔ´½áÊø×ø±ê*/
+        /*æ˜ å°„æºç»“æŸåæ ‡*/
         //src_end.x       = blitinfo->src_width - blitinfo->srcstart.y;
         //src_end.y       = blitinfo->srcend.x;
-        /*Ó³ÉäÄ¿±êÆðÊ¼×ø±ê*/
+        /*æ˜ å°„ç›®æ ‡èµ·å§‹åæ ‡*/
         dst_start.x     = fb_height - blitinfo->dststart.y;
         dst_start.y     = blitinfo->dstend.x;
-        /*Ó³ÉäÄ¿±ê½áÊø×ø±ê*/
+        /*æ˜ å°„ç›®æ ‡ç»“æŸåæ ‡*/
         dst_end.x       = fb_height - blitinfo->dststart.y;
         dst_end.y       = blitinfo->dstend.x;
         cpy_height      = blitinfo->dstend.x - blitinfo->dststart.x;
@@ -374,16 +387,16 @@ void GUI_DirMemcpy(__gui_blitinfo_t *blitinfo)
         fb_height       = blitinfo->dst_height;
         srcfb_width     = blitinfo->src_width;
         srcfb_height    = blitinfo->src_height;
-        /*Ó³ÉäÔ´ÆðÊ¼×ø±ê*/
+        /*æ˜ å°„æºèµ·å§‹åæ ‡*/
         src_start.x     = srcfb_width  - blitinfo->srcend.x;
         src_start.y     = srcfb_height - blitinfo->srcend.y;
-        /*Ó³ÉäÔ´½áÊø×ø±ê*/
+        /*æ˜ å°„æºç»“æŸåæ ‡*/
         //src_end.x       = srcfb_width  - blitinfo->srcstart.x;
         //src_end.y       = srcfb_height - blitinfo->srcstart.y;
-        /*Ó³ÉäÔ´ÆðÊ¼×ø±ê*/
+        /*æ˜ å°„æºèµ·å§‹åæ ‡*/
         dst_start.x     = fb_width  - blitinfo->dstend.x;
         dst_start.y     = fb_height - blitinfo->dstend.y;
-        /*Ó³ÉäÔ´½áÊø×ø±ê*/
+        /*æ˜ å°„æºç»“æŸåæ ‡*/
         dst_end.x       = fb_width  - blitinfo->dststart.x;
         dst_end.y       = fb_height - blitinfo->dststart.y;
         cpy_height      = blitinfo->dstend.y - blitinfo->dststart.y;
@@ -394,16 +407,16 @@ void GUI_DirMemcpy(__gui_blitinfo_t *blitinfo)
         fb_height       = blitinfo->dst_width;
         srcfb_width     = blitinfo->src_height;
         srcfb_height    = blitinfo->src_width;
-        /*Ó³ÉäÔ´ÆðÊ¼×ø±ê*/
+        /*æ˜ å°„æºèµ·å§‹åæ ‡*/
         src_start.x     = blitinfo->srcstart.y;
         src_start.y     = blitinfo->src_height - blitinfo->srcend.x;
-        /*Ó³ÉäÔ´½áÊø×ø±ê*/
+        /*æ˜ å°„æºç»“æŸåæ ‡*/
         //src_end.x       = blitinfo->srcend.y;
         //src_end.y       = blitinfo->src_height - blitinfo->srcstart.x;
-        /*Ó³ÉäÄ¿±êÆðÊ¼×ø±ê*/
+        /*æ˜ å°„ç›®æ ‡èµ·å§‹åæ ‡*/
         dst_start.x     = blitinfo->dststart.y;
         dst_start.y     = fb_width - blitinfo->dstend.x;
-        /*Ó³ÉäÄ¿±ê½áÊø×ø±ê*/
+        /*æ˜ å°„ç›®æ ‡ç»“æŸåæ ‡*/
         dst_end.x       = blitinfo->dstend.y;
         dst_end.y       = fb_width - blitinfo->dststart.x;
         cpy_height      = blitinfo->dstend.x - blitinfo->dststart.x;
@@ -654,43 +667,43 @@ __s16  GUI_TouchLogDirToPhyDir(__u8 direct, __s16 LogDir)
         case GUI_SCNDIR_ROTATE90:
             switch (LogDir)
             {
-                case EV_TP_ACTION_DOWN:                 //´¥ÃþÆÁÏÂ»¬
+                case EV_TP_ACTION_DOWN:                 //è§¦æ‘¸å±ä¸‹æ»‘
                     PhyDir = EV_TP_ACTION_RIGHT;
                     break;
 
-                case EV_TP_ACTION_UP:                   //´¥ÃþÆÁÉÏ»¬
+                case EV_TP_ACTION_UP:                   //è§¦æ‘¸å±ä¸Šæ»‘
                     PhyDir = EV_TP_ACTION_LEFT;
                     break;
 
-                case EV_TP_ACTION_LEFT:                 //´¥ÃþÆÁ×ó»¬
+                case EV_TP_ACTION_LEFT:                 //è§¦æ‘¸å±å·¦æ»‘
                     PhyDir = EV_TP_ACTION_DOWN;
                     break;
 
-                case EV_TP_ACTION_RIGHT:                //´¥ÃþÆÁÓÒ»¬
+                case EV_TP_ACTION_RIGHT:                //è§¦æ‘¸å±å³æ»‘
                     PhyDir = EV_TP_ACTION_UP;
                     break;
 
-                case EV_TP_ACTION_ANTICLOCKWISE:        //´¥ÃþÆÁÄæÊ±Õë»¬¶¯
+                case EV_TP_ACTION_ANTICLOCKWISE:        //è§¦æ‘¸å±é€†æ—¶é’ˆæ»‘åŠ¨
                     PhyDir = EV_TP_ACTION_ANTICLOCKWISE;
                     break;
 
-                case EV_TP_ACTION_CLOCKWISE:            //´¥ÃþÆÁË³Ê±Õë»¬¶¯
+                case EV_TP_ACTION_CLOCKWISE:            //è§¦æ‘¸å±é¡ºæ—¶é’ˆæ»‘åŠ¨
                     PhyDir = EV_TP_ACTION_CLOCKWISE;
                     break;
 
-                case EV_TP_ACTION_LD2RU:                //´¥ÃþÆÁÐ±Ïß»¬¶¯,×óÏÂµ½ÓÒÉÏ
+                case EV_TP_ACTION_LD2RU:                //è§¦æ‘¸å±æ–œçº¿æ»‘åŠ¨,å·¦ä¸‹åˆ°å³ä¸Š
                     PhyDir = EV_TP_ACTION_RD2LU;
                     break;
 
-                case EV_TP_ACTION_RU2LD:                //´¥ÃþÆÁÐ±Ïß»¬¶¯,ÓÒÉÏµ½×óÏÂ
+                case EV_TP_ACTION_RU2LD:                //è§¦æ‘¸å±æ–œçº¿æ»‘åŠ¨,å³ä¸Šåˆ°å·¦ä¸‹
                     PhyDir = EV_TP_ACTION_LU2RD;
                     break;
 
-                case EV_TP_ACTION_LU2RD:                //´¥ÃþÆÁ·´Ð±Ïß»¬¶¯,×óÉÏµ½ÓÒÏÂ
+                case EV_TP_ACTION_LU2RD:                //è§¦æ‘¸å±åæ–œçº¿æ»‘åŠ¨,å·¦ä¸Šåˆ°å³ä¸‹
                     PhyDir = EV_TP_ACTION_LD2RU;
                     break;
 
-                case EV_TP_ACTION_RD2LU:                //´¥ÃþÆÁ·´Ð±Ïß»¬¶¯,ÓÒÏÂµ½×óÉÏ
+                case EV_TP_ACTION_RD2LU:                //è§¦æ‘¸å±åæ–œçº¿æ»‘åŠ¨,å³ä¸‹åˆ°å·¦ä¸Š
                     PhyDir = EV_TP_ACTION_RU2LD;
                     break;
 
@@ -704,43 +717,43 @@ __s16  GUI_TouchLogDirToPhyDir(__u8 direct, __s16 LogDir)
         case GUI_SCNDIR_ROTATE180:
             switch (LogDir)
             {
-                case EV_TP_ACTION_DOWN:                 //´¥ÃþÆÁÏÂ»¬
+                case EV_TP_ACTION_DOWN:                 //è§¦æ‘¸å±ä¸‹æ»‘
                     PhyDir = EV_TP_ACTION_UP;
                     break;
 
-                case EV_TP_ACTION_UP:                   //´¥ÃþÆÁÉÏ»¬
+                case EV_TP_ACTION_UP:                   //è§¦æ‘¸å±ä¸Šæ»‘
                     PhyDir = EV_TP_ACTION_DOWN;
                     break;
 
-                case EV_TP_ACTION_LEFT:                 //´¥ÃþÆÁ×ó»¬
+                case EV_TP_ACTION_LEFT:                 //è§¦æ‘¸å±å·¦æ»‘
                     PhyDir = EV_TP_ACTION_RIGHT;
                     break;
 
-                case EV_TP_ACTION_RIGHT:                //´¥ÃþÆÁÓÒ»¬
+                case EV_TP_ACTION_RIGHT:                //è§¦æ‘¸å±å³æ»‘
                     PhyDir = EV_TP_ACTION_LEFT;
                     break;
 
-                case EV_TP_ACTION_ANTICLOCKWISE:        //´¥ÃþÆÁÄæÊ±Õë»¬¶¯
+                case EV_TP_ACTION_ANTICLOCKWISE:        //è§¦æ‘¸å±é€†æ—¶é’ˆæ»‘åŠ¨
                     PhyDir = EV_TP_ACTION_ANTICLOCKWISE;
                     break;
 
-                case EV_TP_ACTION_CLOCKWISE:            //´¥ÃþÆÁË³Ê±Õë»¬¶¯
+                case EV_TP_ACTION_CLOCKWISE:            //è§¦æ‘¸å±é¡ºæ—¶é’ˆæ»‘åŠ¨
                     PhyDir = EV_TP_ACTION_CLOCKWISE;
                     break;
 
-                case EV_TP_ACTION_LD2RU:                //´¥ÃþÆÁÐ±Ïß»¬¶¯,×óÏÂµ½ÓÒÉÏ
+                case EV_TP_ACTION_LD2RU:                //è§¦æ‘¸å±æ–œçº¿æ»‘åŠ¨,å·¦ä¸‹åˆ°å³ä¸Š
                     PhyDir = EV_TP_ACTION_RU2LD;
                     break;
 
-                case EV_TP_ACTION_RU2LD:                //´¥ÃþÆÁÐ±Ïß»¬¶¯,ÓÒÉÏµ½×óÏÂ
+                case EV_TP_ACTION_RU2LD:                //è§¦æ‘¸å±æ–œçº¿æ»‘åŠ¨,å³ä¸Šåˆ°å·¦ä¸‹
                     PhyDir = EV_TP_ACTION_LD2RU;
                     break;
 
-                case EV_TP_ACTION_LU2RD:                //´¥ÃþÆÁ·´Ð±Ïß»¬¶¯,×óÉÏµ½ÓÒÏÂ
+                case EV_TP_ACTION_LU2RD:                //è§¦æ‘¸å±åæ–œçº¿æ»‘åŠ¨,å·¦ä¸Šåˆ°å³ä¸‹
                     PhyDir = EV_TP_ACTION_RD2LU;
                     break;
 
-                case EV_TP_ACTION_RD2LU:                //´¥ÃþÆÁ·´Ð±Ïß»¬¶¯,ÓÒÏÂµ½×óÉÏ
+                case EV_TP_ACTION_RD2LU:                //è§¦æ‘¸å±åæ–œçº¿æ»‘åŠ¨,å³ä¸‹åˆ°å·¦ä¸Š
                     PhyDir = EV_TP_ACTION_LD2RU;
                     break;
 
@@ -754,43 +767,43 @@ __s16  GUI_TouchLogDirToPhyDir(__u8 direct, __s16 LogDir)
         case GUI_SCNDIR_ROTATE270:
             switch (LogDir)
             {
-                case EV_TP_ACTION_DOWN:                 //´¥ÃþÆÁÏÂ»¬
+                case EV_TP_ACTION_DOWN:                 //è§¦æ‘¸å±ä¸‹æ»‘
                     PhyDir = EV_TP_ACTION_LEFT;
                     break;
 
-                case EV_TP_ACTION_UP:                   //´¥ÃþÆÁÉÏ»¬
+                case EV_TP_ACTION_UP:                   //è§¦æ‘¸å±ä¸Šæ»‘
                     PhyDir = EV_TP_ACTION_RIGHT;
                     break;
 
-                case EV_TP_ACTION_LEFT:                 //´¥ÃþÆÁ×ó»¬
+                case EV_TP_ACTION_LEFT:                 //è§¦æ‘¸å±å·¦æ»‘
                     PhyDir = EV_TP_ACTION_UP;
                     break;
 
-                case EV_TP_ACTION_RIGHT:                //´¥ÃþÆÁÓÒ»¬
+                case EV_TP_ACTION_RIGHT:                //è§¦æ‘¸å±å³æ»‘
                     PhyDir = EV_TP_ACTION_DOWN;
                     break;
 
-                case EV_TP_ACTION_ANTICLOCKWISE:        //´¥ÃþÆÁÄæÊ±Õë»¬¶¯
+                case EV_TP_ACTION_ANTICLOCKWISE:        //è§¦æ‘¸å±é€†æ—¶é’ˆæ»‘åŠ¨
                     PhyDir = EV_TP_ACTION_ANTICLOCKWISE;
                     break;
 
-                case EV_TP_ACTION_CLOCKWISE:            //´¥ÃþÆÁË³Ê±Õë»¬¶¯
+                case EV_TP_ACTION_CLOCKWISE:            //è§¦æ‘¸å±é¡ºæ—¶é’ˆæ»‘åŠ¨
                     PhyDir = EV_TP_ACTION_CLOCKWISE;
                     break;
 
-                case EV_TP_ACTION_LD2RU:                //´¥ÃþÆÁÐ±Ïß»¬¶¯,×óÏÂµ½ÓÒÉÏ
+                case EV_TP_ACTION_LD2RU:                //è§¦æ‘¸å±æ–œçº¿æ»‘åŠ¨,å·¦ä¸‹åˆ°å³ä¸Š
                     PhyDir = EV_TP_ACTION_LU2RD;
                     break;
 
-                case EV_TP_ACTION_RU2LD:                //´¥ÃþÆÁÐ±Ïß»¬¶¯,ÓÒÉÏµ½×óÏÂ
+                case EV_TP_ACTION_RU2LD:                //è§¦æ‘¸å±æ–œçº¿æ»‘åŠ¨,å³ä¸Šåˆ°å·¦ä¸‹
                     PhyDir = EV_TP_ACTION_RD2LU;
                     break;
 
-                case EV_TP_ACTION_LU2RD:                //´¥ÃþÆÁ·´Ð±Ïß»¬¶¯,×óÉÏµ½ÓÒÏÂ
+                case EV_TP_ACTION_LU2RD:                //è§¦æ‘¸å±åæ–œçº¿æ»‘åŠ¨,å·¦ä¸Šåˆ°å³ä¸‹
                     PhyDir = EV_TP_ACTION_RU2LD;
                     break;
 
-                case EV_TP_ACTION_RD2LU:                //´¥ÃþÆÁ·´Ð±Ïß»¬¶¯,ÓÒÏÂµ½×óÉÏ
+                case EV_TP_ACTION_RD2LU:                //è§¦æ‘¸å±åæ–œçº¿æ»‘åŠ¨,å³ä¸‹åˆ°å·¦ä¸Š
                     PhyDir = EV_TP_ACTION_LD2RU;
                     break;
 
@@ -840,43 +853,43 @@ __s16  GUI_TouchPhyDirToLogDir(__u8 direct, __s16 PhyDir)
         case GUI_SCNDIR_ROTATE90:
             switch (PhyDir)
             {
-                case EV_TP_ACTION_DOWN:                 //´¥ÃþÆÁÏÂ»¬
+                case EV_TP_ACTION_DOWN:                 //è§¦æ‘¸å±ä¸‹æ»‘
                     LogDir = EV_TP_ACTION_LEFT;
                     break;
 
-                case EV_TP_ACTION_UP:                   //´¥ÃþÆÁÉÏ»¬
+                case EV_TP_ACTION_UP:                   //è§¦æ‘¸å±ä¸Šæ»‘
                     LogDir = EV_TP_ACTION_RIGHT;
                     break;
 
-                case EV_TP_ACTION_LEFT:                 //´¥ÃþÆÁ×ó»¬
+                case EV_TP_ACTION_LEFT:                 //è§¦æ‘¸å±å·¦æ»‘
                     LogDir = EV_TP_ACTION_UP;
                     break;
 
-                case EV_TP_ACTION_RIGHT:                //´¥ÃþÆÁÓÒ»¬
+                case EV_TP_ACTION_RIGHT:                //è§¦æ‘¸å±å³æ»‘
                     LogDir = EV_TP_ACTION_DOWN;
                     break;
 
-                case EV_TP_ACTION_ANTICLOCKWISE:        //´¥ÃþÆÁÄæÊ±Õë»¬¶¯
+                case EV_TP_ACTION_ANTICLOCKWISE:        //è§¦æ‘¸å±é€†æ—¶é’ˆæ»‘åŠ¨
                     LogDir = EV_TP_ACTION_ANTICLOCKWISE;
                     break;
 
-                case EV_TP_ACTION_CLOCKWISE:            //´¥ÃþÆÁË³Ê±Õë»¬¶¯
+                case EV_TP_ACTION_CLOCKWISE:            //è§¦æ‘¸å±é¡ºæ—¶é’ˆæ»‘åŠ¨
                     LogDir = EV_TP_ACTION_CLOCKWISE;
                     break;
 
-                case EV_TP_ACTION_LD2RU:                //´¥ÃþÆÁÐ±Ïß»¬¶¯,×óÏÂµ½ÓÒÉÏ
+                case EV_TP_ACTION_LD2RU:                //è§¦æ‘¸å±æ–œçº¿æ»‘åŠ¨,å·¦ä¸‹åˆ°å³ä¸Š
                     LogDir = EV_TP_ACTION_LU2RD;
                     break;
 
-                case EV_TP_ACTION_RU2LD:                //´¥ÃþÆÁÐ±Ïß»¬¶¯,ÓÒÉÏµ½×óÏÂ
+                case EV_TP_ACTION_RU2LD:                //è§¦æ‘¸å±æ–œçº¿æ»‘åŠ¨,å³ä¸Šåˆ°å·¦ä¸‹
                     LogDir = EV_TP_ACTION_RD2LU;
                     break;
 
-                case EV_TP_ACTION_LU2RD:                //´¥ÃþÆÁ·´Ð±Ïß»¬¶¯,×óÉÏµ½ÓÒÏÂ
+                case EV_TP_ACTION_LU2RD:                //è§¦æ‘¸å±åæ–œçº¿æ»‘åŠ¨,å·¦ä¸Šåˆ°å³ä¸‹
                     LogDir = EV_TP_ACTION_RU2LD;
                     break;
 
-                case EV_TP_ACTION_RD2LU:                //´¥ÃþÆÁ·´Ð±Ïß»¬¶¯,ÓÒÏÂµ½×óÉÏ
+                case EV_TP_ACTION_RD2LU:                //è§¦æ‘¸å±åæ–œçº¿æ»‘åŠ¨,å³ä¸‹åˆ°å·¦ä¸Š
                     LogDir = EV_TP_ACTION_LD2RU;
                     break;
 
@@ -890,43 +903,43 @@ __s16  GUI_TouchPhyDirToLogDir(__u8 direct, __s16 PhyDir)
         case GUI_SCNDIR_ROTATE180:
             switch (PhyDir)
             {
-                case EV_TP_ACTION_DOWN:                 //´¥ÃþÆÁÏÂ»¬
+                case EV_TP_ACTION_DOWN:                 //è§¦æ‘¸å±ä¸‹æ»‘
                     LogDir = EV_TP_ACTION_UP;
                     break;
 
-                case EV_TP_ACTION_UP:                   //´¥ÃþÆÁÉÏ»¬
+                case EV_TP_ACTION_UP:                   //è§¦æ‘¸å±ä¸Šæ»‘
                     LogDir = EV_TP_ACTION_DOWN;
                     break;
 
-                case EV_TP_ACTION_LEFT:                 //´¥ÃþÆÁ×ó»¬
+                case EV_TP_ACTION_LEFT:                 //è§¦æ‘¸å±å·¦æ»‘
                     LogDir = EV_TP_ACTION_RIGHT;
                     break;
 
-                case EV_TP_ACTION_RIGHT:                //´¥ÃþÆÁÓÒ»¬
+                case EV_TP_ACTION_RIGHT:                //è§¦æ‘¸å±å³æ»‘
                     LogDir = EV_TP_ACTION_LEFT;
                     break;
 
-                case EV_TP_ACTION_ANTICLOCKWISE:        //´¥ÃþÆÁÄæÊ±Õë»¬¶¯
+                case EV_TP_ACTION_ANTICLOCKWISE:        //è§¦æ‘¸å±é€†æ—¶é’ˆæ»‘åŠ¨
                     LogDir = EV_TP_ACTION_ANTICLOCKWISE;
                     break;
 
-                case EV_TP_ACTION_CLOCKWISE:            //´¥ÃþÆÁË³Ê±Õë»¬¶¯
+                case EV_TP_ACTION_CLOCKWISE:            //è§¦æ‘¸å±é¡ºæ—¶é’ˆæ»‘åŠ¨
                     LogDir = EV_TP_ACTION_CLOCKWISE;
                     break;
 
-                case EV_TP_ACTION_LD2RU:                //´¥ÃþÆÁÐ±Ïß»¬¶¯,×óÏÂµ½ÓÒÉÏ
+                case EV_TP_ACTION_LD2RU:                //è§¦æ‘¸å±æ–œçº¿æ»‘åŠ¨,å·¦ä¸‹åˆ°å³ä¸Š
                     LogDir = EV_TP_ACTION_RU2LD;
                     break;
 
-                case EV_TP_ACTION_RU2LD:                //´¥ÃþÆÁÐ±Ïß»¬¶¯,ÓÒÉÏµ½×óÏÂ
+                case EV_TP_ACTION_RU2LD:                //è§¦æ‘¸å±æ–œçº¿æ»‘åŠ¨,å³ä¸Šåˆ°å·¦ä¸‹
                     LogDir = EV_TP_ACTION_LD2RU;
                     break;
 
-                case EV_TP_ACTION_LU2RD:                //´¥ÃþÆÁ·´Ð±Ïß»¬¶¯,×óÉÏµ½ÓÒÏÂ
+                case EV_TP_ACTION_LU2RD:                //è§¦æ‘¸å±åæ–œçº¿æ»‘åŠ¨,å·¦ä¸Šåˆ°å³ä¸‹
                     LogDir = EV_TP_ACTION_RD2LU;
                     break;
 
-                case EV_TP_ACTION_RD2LU:                //´¥ÃþÆÁ·´Ð±Ïß»¬¶¯,ÓÒÏÂµ½×óÉÏ
+                case EV_TP_ACTION_RD2LU:                //è§¦æ‘¸å±åæ–œçº¿æ»‘åŠ¨,å³ä¸‹åˆ°å·¦ä¸Š
                     LogDir = EV_TP_ACTION_LD2RU;
                     break;
 
@@ -940,43 +953,43 @@ __s16  GUI_TouchPhyDirToLogDir(__u8 direct, __s16 PhyDir)
         case GUI_SCNDIR_ROTATE270:
             switch (PhyDir)
             {
-                case EV_TP_ACTION_DOWN:                 //´¥ÃþÆÁÏÂ»¬
+                case EV_TP_ACTION_DOWN:                 //è§¦æ‘¸å±ä¸‹æ»‘
                     LogDir = EV_TP_ACTION_RIGHT;
                     break;
 
-                case EV_TP_ACTION_UP:                   //´¥ÃþÆÁÉÏ»¬
+                case EV_TP_ACTION_UP:                   //è§¦æ‘¸å±ä¸Šæ»‘
                     LogDir = EV_TP_ACTION_LEFT;
                     break;
 
-                case EV_TP_ACTION_LEFT:                 //´¥ÃþÆÁ×ó»¬
+                case EV_TP_ACTION_LEFT:                 //è§¦æ‘¸å±å·¦æ»‘
                     LogDir = EV_TP_ACTION_DOWN;
                     break;
 
-                case EV_TP_ACTION_RIGHT:                //´¥ÃþÆÁÓÒ»¬
+                case EV_TP_ACTION_RIGHT:                //è§¦æ‘¸å±å³æ»‘
                     LogDir = EV_TP_ACTION_UP;
                     break;
 
-                case EV_TP_ACTION_ANTICLOCKWISE:        //´¥ÃþÆÁÄæÊ±Õë»¬¶¯
+                case EV_TP_ACTION_ANTICLOCKWISE:        //è§¦æ‘¸å±é€†æ—¶é’ˆæ»‘åŠ¨
                     LogDir = EV_TP_ACTION_ANTICLOCKWISE;
                     break;
 
-                case EV_TP_ACTION_CLOCKWISE:            //´¥ÃþÆÁË³Ê±Õë»¬¶¯
+                case EV_TP_ACTION_CLOCKWISE:            //è§¦æ‘¸å±é¡ºæ—¶é’ˆæ»‘åŠ¨
                     LogDir = EV_TP_ACTION_CLOCKWISE;
                     break;
 
-                case EV_TP_ACTION_LD2RU:                //´¥ÃþÆÁÐ±Ïß»¬¶¯,×óÏÂµ½ÓÒÉÏ
+                case EV_TP_ACTION_LD2RU:                //è§¦æ‘¸å±æ–œçº¿æ»‘åŠ¨,å·¦ä¸‹åˆ°å³ä¸Š
                     LogDir = EV_TP_ACTION_RD2LU;
                     break;
 
-                case EV_TP_ACTION_RU2LD:                //´¥ÃþÆÁÐ±Ïß»¬¶¯,ÓÒÉÏµ½×óÏÂ
+                case EV_TP_ACTION_RU2LD:                //è§¦æ‘¸å±æ–œçº¿æ»‘åŠ¨,å³ä¸Šåˆ°å·¦ä¸‹
                     LogDir = EV_TP_ACTION_LU2RD;
                     break;
 
-                case EV_TP_ACTION_LU2RD:                //´¥ÃþÆÁ·´Ð±Ïß»¬¶¯,×óÉÏµ½ÓÒÏÂ
+                case EV_TP_ACTION_LU2RD:                //è§¦æ‘¸å±åæ–œçº¿æ»‘åŠ¨,å·¦ä¸Šåˆ°å³ä¸‹
                     LogDir = EV_TP_ACTION_LD2RU;
                     break;
 
-                case EV_TP_ACTION_RD2LU:                //´¥ÃþÆÁ·´Ð±Ïß»¬¶¯,ÓÒÏÂµ½×óÉÏ
+                case EV_TP_ACTION_RD2LU:                //è§¦æ‘¸å±åæ–œçº¿æ»‘åŠ¨,å³ä¸‹åˆ°å·¦ä¸Š
                     LogDir = EV_TP_ACTION_RU2LD;
                     break;
 

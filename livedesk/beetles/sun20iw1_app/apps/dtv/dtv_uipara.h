@@ -1,18 +1,34 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              willow app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                               (c) Copyright 2006-2007, JOHN, China
-*                                           All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : movie_uipara.h
-* By      : john.fu
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef _DVBPLAY_UIPARA_H_
 #define _DVBPLAY_UIPARA_H_
 
@@ -22,11 +38,11 @@
 
 typedef struct MOVIE_UIPARA_LAYER
 {
-    __pixel_rgbfmt_t    fb_fmt;                         //Õº≤„∏Ò Ω
-    SIZE    fb_size;                        //framebuffer¥Û–°
-    RECT    src_rect;                       //srcwin«¯”Ú
-    RECT    scn_rect;                       //scnwin«¯”Ú
-    __u32  reserved[32];                    //‘§¡Ù
+    __pixel_rgbfmt_t    fb_fmt;                         //ÂõæÂ±ÇÊ†ºÂºè
+    SIZE    fb_size;                        //framebufferÂ§ßÂ∞è
+    RECT    src_rect;                       //srcwinÂå∫Âüü
+    RECT    scn_rect;                       //scnwinÂå∫Âüü
+    __u32  reserved[32];                    //È¢ÑÁïô
 } __movie_uipara_layer_t;
 
 typedef struct MOVIE_UIPARA
@@ -34,7 +50,7 @@ typedef struct MOVIE_UIPARA
     __movie_uipara_layer_t  spsc_lyrwin;   //lyrwin
     __movie_uipara_layer_t  sub_lyrwin;     //sub layer win
 
-    RECT                    preview;    //‘§¿¿¥Û–°
+    RECT                    preview;    //È¢ÑËßàÂ§ßÂ∞è
 } __movie_uipara_t;
 
 

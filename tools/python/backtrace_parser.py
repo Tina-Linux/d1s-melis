@@ -132,6 +132,10 @@ class Core_Dump(object):
                             try_list.append(e)
                     else:
                         try_list.append(e)
+        list_len=len(list)
+        trylist_len=len(try_list)
+        if  list_len == 1 and trylist_len == 0:
+            try_list.append(e)
         return try_list
 
     def find_pc_addr(self, pc_addr):
@@ -156,7 +160,7 @@ class Core_Dump(object):
                 else:
                     err_num+=1
                 i+=1
-        if err_num == list_len:
+        if (err_num == list_len) and (err_num != 0):
             print "addr invalid"
         print ""
 

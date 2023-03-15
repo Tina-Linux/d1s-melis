@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : setting_general.c
-* By        : Andy.zhang
-* Func      : desk main thread
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-20 8:51:52  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "setting_entrance.h"
@@ -63,7 +77,7 @@ static setting_item_id_t setting_entrance_res_id[] =
 };
 
 /***********************************************************************************************************
-    ½¨Á¢Í¼²ã
+    å»ºç«‹å›¾å±‚
 ************************************************************************************************************/
 static H_LYR setting_entrance_layer_32bpp_create(void)
 {
@@ -123,7 +137,7 @@ static H_LYR setting_entrance_layer_32bpp_create(void)
 }
 
 /*
-    ÉêÇë×ÊÔ´
+    ç”³è¯·èµ„æº
 */
 static void _setting_entrance_res_init(setting_entrance_attr_t *entrance_attr)
 {
@@ -141,7 +155,7 @@ static void _setting_entrance_res_init(setting_entrance_attr_t *entrance_attr)
 
     if (!(rat_is_encryption_partition_Insert(NULL, 1))
         //||(EPDK_FAIL== CFG_get_game_and_dict_flag(ID_HOME_GAME))
-       )//°´ÀíÓ¦¸ÃÍ¬Ê±´¦ÀíalarmºÍhandleÊÇ·ñ´æÔÚµÄÇé¿ö£¬ÏÖÔÚÄ¬ÈÏalarm´æÔÚ
+       )//æŒ‰ç†åº”è¯¥åŒæ—¶å¤„ç†alarmå’Œhandleæ˜¯å¦å­˜åœ¨çš„æƒ…å†µï¼ŒçŽ°åœ¨é»˜è®¤alarmå­˜åœ¨
     {
         //#if ADD_ALARM_SETTING
         entrance_attr->item_nr -= 1;
@@ -400,18 +414,18 @@ static __s32  setting_entrance_key_proc(__gui_msg_t *msg)
         {
             if (SETTING_ENTER_GENERAL == entrance_attr->new_focus)
             {
-                main_cmd2parent(msg->h_deswin, SETTING_ENTER_GENERAL, 0, 0);            //·¢ËÍÏûÏ¢¸ø¸¸´°¿Ú£¬½øÈëÍ¨ÓÃÉèÖÃ
+                main_cmd2parent(msg->h_deswin, SETTING_ENTER_GENERAL, 0, 0);            //å‘é€æ¶ˆæ¯ç»™çˆ¶çª—å£ï¼Œè¿›å…¥é€šç”¨è®¾ç½®
                 GUI_LyrWinSetSta(entrance_attr->layer, GUI_LYR_STA_SUSPEND);
             }
             else if (SETTING_ENTER_POWER_MANAGEMENT == entrance_attr->new_focus)
             {
                 __wrn("@@@@@@@ SETTING_ENTER_POWER_MANAGEMENT @@@@@@\n");
-                main_cmd2parent(msg->h_deswin, SETTING_ENTER_POWER_MANAGEMENT, 0, 0);   //·¢ËÍÏûÏ¢¸ø¸¸´°¿Ú£¬½øÈëµçÔ´¹ÜÀí
+                main_cmd2parent(msg->h_deswin, SETTING_ENTER_POWER_MANAGEMENT, 0, 0);   //å‘é€æ¶ˆæ¯ç»™çˆ¶çª—å£ï¼Œè¿›å…¥ç”µæºç®¡ç†
                 GUI_LyrWinSetSta(entrance_attr->layer, GUI_LYR_STA_SUSPEND);
             }
             else if (SETTING_ENTER_ALARM == entrance_attr->new_focus)
             {
-                main_cmd2parent(msg->h_deswin, SETTING_ENTER_ALARM, 0, 0);              //·¢ËÍÏûÏ¢¸ø¸¸´°¿Ú£¬½øÈëÄÖÖÓ
+                main_cmd2parent(msg->h_deswin, SETTING_ENTER_ALARM, 0, 0);              //å‘é€æ¶ˆæ¯ç»™çˆ¶çª—å£ï¼Œè¿›å…¥é—¹é’Ÿ
                 GUI_LyrWinSetSta(entrance_attr->layer, GUI_LYR_STA_SUSPEND);
             }
             else
@@ -534,28 +548,28 @@ void setting_entrance_enter_action(__gui_msg_t *msg)
 
     if (SETTING_ENTER_GENERAL == entrance_attr->new_focus)
     {
-        main_cmd2parent(msg->h_deswin, SETTING_ENTER_GENERAL, 0, 0); //·¢ËÍÏûÏ¢¸ø¸¸´°¿Ú£¬½øÈëÍ¨ÓÃÉèÖÃ
+        main_cmd2parent(msg->h_deswin, SETTING_ENTER_GENERAL, 0, 0); //å‘é€æ¶ˆæ¯ç»™çˆ¶çª—å£ï¼Œè¿›å…¥é€šç”¨è®¾ç½®
         GUI_LyrWinSetSta(entrance_attr->layer, GUI_LYR_STA_SUSPEND);
     }
     else if (SETTING_ENTER_POWER_MANAGEMENT == entrance_attr->new_focus)
     {
         __wrn("@@@@@@@ SETTING_ENTER_POWER_MANAGEMENT @@@@@@\n");
-        main_cmd2parent(msg->h_deswin, SETTING_ENTER_POWER_MANAGEMENT, 0, 0);   //·¢ËÍÏûÏ¢¸ø¸¸´°¿Ú£¬½øÈëµçÔ´¹ÜÀí
+        main_cmd2parent(msg->h_deswin, SETTING_ENTER_POWER_MANAGEMENT, 0, 0);   //å‘é€æ¶ˆæ¯ç»™çˆ¶çª—å£ï¼Œè¿›å…¥ç”µæºç®¡ç†
         GUI_LyrWinSetSta(entrance_attr->layer, GUI_LYR_STA_SUSPEND);
     }
     else if (SETTING_ENTER_ALARM == entrance_attr->new_focus)
     {
-        main_cmd2parent(msg->h_deswin, SETTING_ENTER_ALARM, 0, 0);              //·¢ËÍÏûÏ¢¸ø¸¸´°¿Ú£¬½øÈëÄÖÖÓ
+        main_cmd2parent(msg->h_deswin, SETTING_ENTER_ALARM, 0, 0);              //å‘é€æ¶ˆæ¯ç»™çˆ¶çª—å£ï¼Œè¿›å…¥é—¹é’Ÿ
         GUI_LyrWinSetSta(entrance_attr->layer, GUI_LYR_STA_SUSPEND);
     }
     else if (SETTING_ENTER_HANDLE_ADJUST == entrance_attr->new_focus)
     {
-        main_cmd2parent(msg->h_deswin, SETTING_ENTER_HANDLE_ADJUST, 0, 0);              //·¢ËÍÏûÏ¢¸ø¸¸´°¿Ú£¬½øÈëÄÖÖÓ
+        main_cmd2parent(msg->h_deswin, SETTING_ENTER_HANDLE_ADJUST, 0, 0);              //å‘é€æ¶ˆæ¯ç»™çˆ¶çª—å£ï¼Œè¿›å…¥é—¹é’Ÿ
         GUI_LyrWinSetSta(entrance_attr->layer, GUI_LYR_STA_SUSPEND);
     }
 }
 
-/*ÓÉ´¥ÃþµÄÎ»ÖÃ»ñµÃµ±Ç°itemµÄÏÂ±ê*/
+/*ç”±è§¦æ‘¸çš„ä½ç½®èŽ·å¾—å½“å‰itemçš„ä¸‹æ ‡*/
 static __s32 entrance_TouchPos_2_ItemIndex(__gui_msg_t *msg)
 {
     __s32 pos_x, pos_y;
@@ -583,7 +597,7 @@ static __s32 entrance_TouchPos_2_ItemIndex(__gui_msg_t *msg)
     else
     {
         //__here__;
-        return EPDK_FAIL;   //²»ÔÚitemÇøÓò
+        return EPDK_FAIL;   //ä¸åœ¨itemåŒºåŸŸ
     }
 }
 
@@ -603,7 +617,7 @@ static __s32  setting_entrance_touch_proc(__gui_msg_t *msg)
     {
         __s32 ret;
 
-        //´¥ÃþÇøÓòÔÚ·µ»Ø°´Å¥·¶Î§ÄÚ
+        //è§¦æ‘¸åŒºåŸŸåœ¨è¿”å›žæŒ‰é’®èŒƒå›´å†…
         if ((pos_x > uipara->return_bmp.x) && (pos_x < uipara->return_bmp.x + uipara->return_bmp.w)
             && (pos_y > uipara->return_bmp.y) && (pos_y < uipara->return_bmp.y + uipara->return_bmp.h))
         {
@@ -618,7 +632,7 @@ static __s32  setting_entrance_touch_proc(__gui_msg_t *msg)
         else
         {
             GUI_BMP_Draw(theme_hdl2buf(entrance_attr->h_return_unfcs_bmp), uipara->return_bmp.x, uipara->return_bmp.y);
-            ret = entrance_TouchPos_2_ItemIndex(msg);   //»ñÈ¡´¥ÃþµÄÎ»ÖÃÇøÓò
+            ret = entrance_TouchPos_2_ItemIndex(msg);   //èŽ·å–è§¦æ‘¸çš„ä½ç½®åŒºåŸŸ
 
             if (EPDK_FAIL == ret)
             {
@@ -648,7 +662,7 @@ static __s32  setting_entrance_touch_proc(__gui_msg_t *msg)
 }
 
 /*
-    »Øµ÷
+    å›žè°ƒ
 */
 static __s32 _Setting_Entrance_Proc(__gui_msg_t *msg)
 {
@@ -658,7 +672,7 @@ static __s32 _Setting_Entrance_Proc(__gui_msg_t *msg)
         {
             setting_entrance_attr_t *entrance_attr;
             entrance_attr = (setting_entrance_attr_t *)GUI_WinGetAttr(msg->h_deswin);
-            _setting_entrance_res_init(entrance_attr);//»ñµÃÍ¼Æ¬×ÊÔ´
+            _setting_entrance_res_init(entrance_attr);//èŽ·å¾—å›¾ç‰‡èµ„æº
             entrance_attr->focus_txt_color = SETTING_FOCUS_COLOR;
             entrance_attr->unfocus_txt_color = SETTING_UNFOCUS_COLOR;
             //GUI_LyrWinSetSta(entrance_attr->layer, GUI_LYRWIN_STA_ON);
@@ -830,4 +844,3 @@ __s32 setting_entrance_win_delete(H_WIN h_entrance_win)
 
     return EPDK_OK;
 }
-

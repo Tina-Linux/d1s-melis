@@ -1,28 +1,41 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : dsk_power.h
-* By        : Andy.zhang
-* Func      : power interface
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-20 8:51:52  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "functions_i.h"
 #include <mod_power.h>
 #include <kconfig.h>
 #define     BATTERY_AVER_CNT    20
 #define POWERDEV "/dev/power"
 /*
- *  £”‡µÁ¡ølevel, ≈–∂œµÕµ„
+ * Ââ©‰ΩôÁîµÈáèlevel, Âà§Êñ≠‰ΩéÁÇπ
  */
 //static __u32    g_battery[BATTERY_AVER_CNT];
 //static __u32    g_battery_cnt = 0;
@@ -50,7 +63,7 @@ __s32 dsk_power_dev_uninit(void)
     return EPDK_OK;
 }
 
-//µÁ—πº∂± DRV_POWER_CMD_BATADC_GET
+//ÁîµÂéãÁ∫ßÂà´ DRV_POWER_CMD_BATADC_GET
 __s32 dsk_power_get_battery_level(power_level_e *p_level)
 {
     /*
@@ -118,9 +131,9 @@ __s32 dsk_power_get_battery_level(power_level_e *p_level)
 }
 
 /*
- * π§◊˜µÁ—πlevel,(π§æﬂ¿∏œ‘ æµÁ≥ÿµÁ¡øº∂±)
+ * Â∑•‰ΩúÁîµÂéãlevel,(Â∑•ÂÖ∑Ê†èÊòæÁ§∫ÁîµÊ±†ÁîµÈáèÁ∫ßÂà´)
  */
-//µÁ¡øº∂± DRV_POWER_CMD_GET_FUELGUAGE
+//ÁîµÈáèÁ∫ßÂà´ DRV_POWER_CMD_GET_FUELGUAGE
 __s32 dsk_power_get_voltage_level(power_level_e *p_level)
 {
     power_level_e                   vol_level = 0;
@@ -219,7 +232,7 @@ __bool dsk_power_is_low(void)
     __msg("***********bat_sta.charge_status=%d, level=%d***********", bat_sta.charge_status, level);
     __msg("low_power_cnt=%d", low_power_cnt);
 
-    if (0 == bat_sta.charge_status && level == DSK_POWER_LEVEL_0)   // µÕµÁ
+    if (0 == bat_sta.charge_status && level == DSK_POWER_LEVEL_0)   // ‰ΩéÁîµ
     {
         low_power_cnt++;
 
@@ -389,12 +402,12 @@ __bool dsk_get_charge_state(void)
     eLIBs_memset(&bat_sta, 0, sizeof(__drv_power_battery_status_t3));
     ioctl(power_fp, DRV_POWER_CMD_GET_DCIN,(void *)&bat_sta);
 
-    if (0 == bat_sta.charge_status) // ∑«≥‰µÁ
+    if (0 == bat_sta.charge_status) // ÈùûÂÖÖÁîµ
     {
         __wrn("no in charge");
         return EPDK_FALSE;
     }
-    else//≥‰µÁ
+    else//ÂÖÖÁîµ
     {
         __wrn("in charge");
         return EPDK_TRUE;

@@ -1,21 +1,34 @@
 /*
-************************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                 (c) Copyright 2007-2010, Jackie, China
-*                                       All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File          : init_server.c
-* By            : Jackie.chen
-* Func      : init server
-* Version   : v1.0
-* ======================================================================================================================
-* 2010-10-25  Jackie.chen  create this file, implements the fundemental interface;
-************************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include <log.h>
 #include <emodules/mod_update.h>
 #include "mod_init_i.h"
@@ -141,21 +154,21 @@ static void pull_down_gpio(uint32_t port, uint32_t port_num)
     uint32_t                tmp1;
     uint32_t                tmp2;
 
-    //…Ë÷√Œ™ ‰≥ˆ
+    //ËÆæÁΩÆ‰∏∫ËæìÂá∫
     tmp1 = (port_num - ((port_num >> 3) << 3)) << 2;
     tmp_addr = PIO_REG_CFG(port, (port_num >> 3));
     tmp_data = *tmp_addr;
     tmp_data &= ~(0x07 << tmp1);
     tmp_data |= (0x01 << tmp1);
     *tmp_addr = tmp_data;
-    //…Ë÷√Œ™œ¬¿≠
+    //ËÆæÁΩÆ‰∏∫‰∏ãÊãâ
     tmp2 = (port_num - ((port_num >> 4) << 4)) << 1;
     tmp_addr = PIO_REG_PULL(port, (port_num >> 4));
     tmp_data = *tmp_addr;
     tmp_data &= ~(0x03 << tmp2);
     tmp_data |= (0x02 << tmp2);
     *tmp_addr = tmp_data;
-    // ‰≥ˆµÕµÁ∆Ω
+    //ËæìÂá∫‰ΩéÁîµÂπ≥
     tmp_addr = PIO_REG_DATA(port);
     tmp_data = *tmp_addr;
     tmp_data &= ~(1 << port_num);
@@ -170,21 +183,21 @@ static void pull_up_gpio(uint32_t port, uint32_t port_num)
     uint32_t                tmp1;
     uint32_t                tmp2;
 
-    //…Ë÷√Œ™ ‰≥ˆ
+    //ËÆæÁΩÆ‰∏∫ËæìÂá∫
     tmp1 = (port_num - ((port_num >> 3) << 3)) << 2;
     tmp_addr = PIO_REG_CFG(port, (port_num >> 3));
     tmp_data = *tmp_addr;
     tmp_data &= ~(0x07 << tmp1);
     tmp_data |= (0x01 << tmp1);
     *tmp_addr = tmp_data;
-    //…Ë÷√Œ™…œ¿≠
+    //ËÆæÁΩÆ‰∏∫‰∏äÊãâ
     tmp2 = (port_num - ((port_num >> 4) << 4)) << 1;
     tmp_addr = PIO_REG_PULL(port, (port_num >> 4));
     tmp_data = *tmp_addr;
     tmp_data &= ~(0x03 << tmp2);
     tmp_data |= (0x01 << tmp2);
     *tmp_addr = tmp_data;
-    // ‰≥ˆ∏ﬂµÁ∆Ω
+    //ËæìÂá∫È´òÁîµÂπ≥
     tmp_addr = PIO_REG_DATA(port);
     tmp_data = *tmp_addr;
     tmp_data &= ~(1 << port_num);
@@ -204,7 +217,7 @@ static int32_t get_gpio_status(uint32_t port, uint32_t port_num)
     ret = (tmp_data & (1 << port_num)) >> port_num;
     return ret;
 }
-//∏˙init_manwinœ‡πÿµƒ◊ ‘¥≥ı ºªØ∑÷ø™¥¶¿Ì
+//Ë∑üinit_manwinÁõ∏ÂÖ≥ÁöÑËµÑÊ∫êÂàùÂßãÂåñÂàÜÂºÄÂ§ÑÁêÜ
 static uint32_t init_server_init(__gui_msg_t *msg)
 {
     __init_ctl_t    *init_ctr = NULL;
@@ -235,8 +248,8 @@ static uint32_t init_server_init(__gui_msg_t *msg)
     dsk_display_set_lcd_saturation(Init_reg_para->lcd_saturation * 10);
     dsk_display_set_lcd_hue(Init_reg_para->lcd_hue * 10);
     */
-    //dsk_keytone_set_state((__set_keytone_t)(Init_reg_para->keytone));//desktopƒ£øÈ¿Ô√Ê1 ±Ì æon,2 ±Ì æoff
-    dsk_display_set_lcd_brightness((__lion_bright_t)(Init_reg_para->backlight + 1)); //±≥π‚¡¡∂»
+    //dsk_keytone_set_state((__set_keytone_t)(Init_reg_para->keytone));//desktopÊ®°ÂùóÈáåÈù¢1 Ë°®Á§∫on,2 Ë°®Á§∫off
+    dsk_display_set_lcd_brightness((__lion_bright_t)(Init_reg_para->backlight + 1)); //ËÉåÂÖâ‰∫ÆÂ∫¶
     return EPDK_OK;
 }
 
@@ -299,7 +312,7 @@ static int32_t sys_msg_handle_init(__gui_msg_t *msg)
 {
     __init_ctl_t *init_ctr = (__init_ctl_t *)GUI_WinGetAttr(msg->h_deswin);
 
-    /*¥¥Ω®system_message_handle œﬂ≥Ã */
+    /*ÂàõÂª∫system_message_handle Á∫øÁ®ã */
     init_ctr->sys_msg_handle_tid = esKRNL_TCreate(system_message_handle, (void *)msg->h_deswin, 0x800, KRNL_priolevel5);
     esKRNL_TaskNameSet(init_ctr->sys_msg_handle_tid, "initbkhdle");
     return EPDK_OK;
@@ -309,7 +322,7 @@ static int32_t sys_msg_handle_exit(__gui_msg_t *msg)
 {
     __init_ctl_t    *init_ctr = (__init_ctl_t *)GUI_WinGetAttr(msg->h_deswin);
 
-    /* …æ≥˝system_message_handle œﬂ≥Ã */
+    /* Âà†Èô§system_message_handle Á∫øÁ®ã */
     while (esKRNL_TDelReq(init_ctr->sys_msg_handle_tid) != OS_TASK_NOT_EXIST)
     {
         esKRNL_TimeDly(1);
@@ -325,7 +338,7 @@ static int32_t init_low_power_proc(__gui_msg_t *msg)
 
     if (!init_ctr->usb_connect)
     {
-        /* ÕÀ≥ˆ”¶”√≥Ã–Ú*/
+        /* ÈÄÄÂá∫Â∫îÁî®Á®ãÂ∫è*/
         //activity_return_home(NULL);
         //activity_kill_all_backgrd();
         //__here__;
@@ -386,7 +399,7 @@ static __s32 init_low_power_off_proc(__gui_msg_t *msg)
         //__here__;
         scene_on_dialog(msg);
         NOTIFY_MSG(GUI_MSG_CLOSE, 0, msg->h_deswin, 0, 0);
-        //init_close_screen(msg, 2);◊ﬂstandby¡˜≥Ã
+        //init_close_screen(msg, 2);Ëµ∞standbyÊµÅÁ®ã
         //__here__;
         //__here__;
     }
@@ -413,10 +426,10 @@ static __s32 init_power_off_proc(__gui_msg_t *msg)
         scene_on_dialog(msg);
 
         //__here__;
-        if (EPDK_FALSE == p_scene->usb_plug_in) //usb¡¨Ω”µΩ¿¥∞—πÿª˙∂‘ª∞øÚπÿ±’∫Û£¨≥Ã–Ú≤ª”¶∏√Õ˘œ¬÷¥––£¨÷ª”–usbŒ¥¡¨Ω”≤≈ƒ‹πÿª˙
+        if (EPDK_FALSE == p_scene->usb_plug_in) //usbËøûÊé•Âà∞Êù•ÊääÂÖ≥Êú∫ÂØπËØùÊ°ÜÂÖ≥Èó≠ÂêéÔºåÁ®ãÂ∫è‰∏çÂ∫îËØ•ÂæÄ‰∏ãÊâßË°åÔºåÂè™ÊúâusbÊú™ËøûÊé•ÊâçËÉΩÂÖ≥Êú∫
         {
             __msg("NOTIFY_MSG(GUI_MSG_CLOSE");
-            /* …Ë÷√ƒ÷¡ÂªΩ–—  */
+            /* ËÆæÁΩÆÈóπÈìÉÂî§ÈÜí  */
             standby_startup_alarm();
             //notify "init" to exit
             NOTIFY_MSG(GUI_MSG_CLOSE, 0, msg->h_deswin, 0, 0);
@@ -431,7 +444,7 @@ static __s32 init_power_off_proc(__gui_msg_t *msg)
 static __s32 init_usb_device_plugin_proc(__gui_msg_t *msg)
 {
     __init_ctl_t *init_ctr = (__init_ctl_t *)GUI_WinGetAttr(msg->h_deswin);
-    /* Õ®÷™≥˝÷˜ΩÁ√ÊÕ‚À˘”–”¶”√≥Ã–ÚÕÀ≥ˆ */
+    /* ÈÄöÁü•Èô§‰∏ªÁïåÈù¢Â§ñÊâÄÊúâÂ∫îÁî®Á®ãÂ∫èÈÄÄÂá∫ */
     init_ctr->usb_connect = EPDK_TRUE;
     //activity_return_home(NULL);
     //activity_kill_all_backgrd();
@@ -442,6 +455,12 @@ static __s32 init_usb_device_plugin_proc(__gui_msg_t *msg)
     {
         dsk_wkm_close();
     }
+#ifdef CONFIG_DRIVERS_USB_GADGET_MSC
+	{
+	   extern void usbd_plugin_all_disk(void);
+	   usbd_plugin_all_disk();
+	}
+#endif
 
     gscene_bgd_set_state(BGD_STATUS_SHOW);
     gscene_hbar_set_state(HBAR_ST_HIDE);
@@ -469,7 +488,7 @@ static __s32 init_usb_device_plugout_proc(__gui_msg_t *msg)
     return EPDK_OK;
 }
 
-/* Õ®÷™÷˜”¶”√≥Ã–Ú ∏¸–¬orchidø™ º */
+/* ÈÄöÁü•‰∏ªÂ∫îÁî®Á®ãÂ∫è Êõ¥Êñ∞orchidÂºÄÂßã */
 static __s32 init_orchid_update_start(__gui_msg_t *msg)
 {
     {
@@ -481,7 +500,7 @@ static __s32 init_orchid_update_start(__gui_msg_t *msg)
     return EPDK_OK;
 }
 
-/* Õ®÷™÷˜”¶”√≥Ã–Ú ∏¸–¬orchidΩ· ¯ */
+/* ÈÄöÁü•‰∏ªÂ∫îÁî®Á®ãÂ∫è Êõ¥Êñ∞orchidÁªìÊùü */
 static __s32 init_orchid_update_end(__gui_msg_t *msg)
 {
     {
@@ -513,14 +532,14 @@ static void init_out_standby(void)
 */
 
 /*
-   πÿ∆¡”…”⁄‘⁄¥˝ª˙÷–ø…ƒ‹ª·∞¥º¸ªΩ–—ª˙∆˜£¨’‚¿Ô∞¥power∞¥º¸πÿª˙ ±
-   ±„≤…”√¡ÀΩ¯»Îstandbyµƒ∑Ω∑®£¨π ÃÌº”type«¯∑÷ «∆’Õ®Ω¯»Îstandbyªπ «
-   πÿª˙£¨ªπ «µÕµÁπÿª˙°£∆⁄÷–Ω¯»Îstandby∫Õ∆’Õ®∂® ±ªÚ «“£øÿπÿª˙
-   –Ë“™”–ªΩ–—π¶ƒ‹£¨µÕµÁπÿª˙’‚¿Ô¥¶¿ÌŒ™≤ª‘ –ÌªΩ–—£¨÷ªƒ‹”≤º˛
-   ÷ÿ∆Ù°£πÿª˙π˝≥Ã÷–≤ª–Ë“™ºÏ≤Èµ±«∞µƒ”¶”√£¨≥‰µÁ◊¥Ã¨°£
-   type 0 ±Ì æΩ¯»Îstandby
-   type 1 ±Ì æ∆’Õ®πÿª˙‘ –ÌªΩ–—
-   type 2 ±Ì æµÁ¡øµÕπÿª˙
+   ÂÖ≥Â±èÁî±‰∫éÂú®ÂæÖÊú∫‰∏≠ÂèØËÉΩ‰ºöÊåâÈîÆÂî§ÈÜíÊú∫Âô®ÔºåËøôÈáåÊåâpowerÊåâÈîÆÂÖ≥Êú∫Êó∂
+   ‰æøÈááÁî®‰∫ÜËøõÂÖ•standbyÁöÑÊñπÊ≥ïÔºåÊïÖÊ∑ªÂä†typeÂå∫ÂàÜÊòØÊôÆÈÄöËøõÂÖ•standbyËøòÊòØ
+   ÂÖ≥Êú∫ÔºåËøòÊòØ‰ΩéÁîµÂÖ≥Êú∫„ÄÇÊúü‰∏≠ËøõÂÖ•standbyÂíåÊôÆÈÄöÂÆöÊó∂ÊàñÊòØÈÅ•ÊéßÂÖ≥Êú∫
+   ÈúÄË¶ÅÊúâÂî§ÈÜíÂäüËÉΩÔºå‰ΩéÁîµÂÖ≥Êú∫ËøôÈáåÂ§ÑÁêÜ‰∏∫‰∏çÂÖÅËÆ∏Âî§ÈÜíÔºåÂè™ËÉΩÁ°¨‰ª∂
+   ÈáçÂêØ„ÄÇÂÖ≥Êú∫ËøáÁ®ã‰∏≠‰∏çÈúÄË¶ÅÊ£ÄÊü•ÂΩìÂâçÁöÑÂ∫îÁî®ÔºåÂÖÖÁîµÁä∂ÊÄÅ„ÄÇ
+   type 0 Ë°®Á§∫ËøõÂÖ•standby
+   type 1 Ë°®Á§∫ÊôÆÈÄöÂÖ≥Êú∫ÂÖÅËÆ∏Âî§ÈÜí
+   type 2 Ë°®Á§∫ÁîµÈáè‰ΩéÂÖ≥Êú∫
 */
 static __s32 init_close_screen(__gui_msg_t *msg, unsigned char enter_type)
 {
@@ -533,15 +552,15 @@ static __s32 init_close_screen(__gui_msg_t *msg, unsigned char enter_type)
 
     if ((output == DISP_OUTPUT_TYPE_LCD && !init_ctr->usb_connect) || enter_type) //add by Kingvan
     {
-        /* ÷√πÿ∆¡◊¥Ã¨Œª */
+        /* ÁΩÆÂÖ≥Â±èÁä∂ÊÄÅ‰Ωç */
         init_lock(msg);
 
-        if (!init_ctr->screen_close_done || enter_type) /* Œ¥πÿ∆¡ */
+        if (!init_ctr->screen_close_done || enter_type) /* Êú™ÂÖ≥Â±è */
         {
             init_ctr->screen_close_done = EPDK_TRUE;
             is_close_screen = EPDK_TRUE;
             init_unlock(msg);
-            /* µ˜”√œ‘ æ«˝∂Ø, πÿ∆¡ */
+            /* Ë∞ÉÁî®ÊòæÁ§∫È©±Âä®, ÂÖ≥Â±è */
             dsk_display_lcd_off();
             __wrn("%s %d", __FILE__, __LINE__);
 
@@ -551,7 +570,7 @@ static __s32 init_close_screen(__gui_msg_t *msg, unsigned char enter_type)
                 //__init_decr_freq(msg);//112350
             }
 
-            /* …Ë÷√ƒ÷¡ÂªΩ–—  */
+            /* ËÆæÁΩÆÈóπÈìÉÂî§ÈÜí  */
             standby_startup_alarm();
             /*{
                 ES_FILE                 *p_disp;
@@ -571,7 +590,7 @@ static __s32 init_close_screen(__gui_msg_t *msg, unsigned char enter_type)
             msgex.dwAddData1    = 0;
             msgex.dwAddData2    = 0;
             activity_notify_top(&msgex);    */
-            /* Ω¯»Î standby */
+            /* ËøõÂÖ• standby */
             //__here__;
             is_host_working = dsk_usbh_is_working();
             __wrn("g_is_enable_standby:%d", g_is_enable_standby());
@@ -620,7 +639,7 @@ static __s32 init_close_screen(__gui_msg_t *msg, unsigned char enter_type)
 	                        __wrn("gpio_set.port=%d", gpio_set.port);
 	                        __wrn("gpio_set.port_num=%d", gpio_set.port_num);
 	                        switch_dpdm_io_sta = get_gpio_status(gpio_set.port, gpio_set.port_num);
-	                        //¿≠∏ﬂgpio£¨∏¯¥Ûø⁄u≈ÃstandbyºÏ≤‚”√
+	                        //ÊãâÈ´ògpioÔºåÁªôÂ§ßÂè£uÁõòstandbyÊ£ÄÊµãÁî®
 	                        pull_up_gpio(gpio_set.port, gpio_set.port_num);
 	                    }
 	                }
@@ -630,7 +649,7 @@ static __s32 init_close_screen(__gui_msg_t *msg, unsigned char enter_type)
 	                //init_out_standby();
 #if 0
 	                {
-	                    //ª÷∏¥gpioø⁄
+	                    //ÊÅ¢Â§çgpioÂè£
 	                    if (-1 != switch_dpdm_io_sta)
 	                    {
 	                        if (0 == switch_dpdm_io_sta)
@@ -646,7 +665,7 @@ static __s32 init_close_screen(__gui_msg_t *msg, unsigned char enter_type)
 #endif
 	                __wrn("shiql standby test 1");
 	                {
-	                    //≤Èø¥ «∑Òπÿª˙ ±º‰“—æ≠µΩ¡À
+	                    //Êü•ÁúãÊòØÂê¶ÂÖ≥Êú∫Êó∂Èó¥Â∑≤ÁªèÂà∞‰∫Ü
 	                    __sys_pwrman_para_t standby_para;
 	                    esPWRMAN_GetStandbyPara(&standby_para);
 
@@ -673,7 +692,7 @@ static __s32 init_close_screen(__gui_msg_t *msg, unsigned char enter_type)
 	            }
 			}
         }
-        else                                    /* “—æ≠πÿ∆¡ */
+        else                                    /* Â∑≤ÁªèÂÖ≥Â±è */
         {
             init_unlock(msg);
         }
@@ -729,7 +748,7 @@ static __s32 __init_incr_freq(__gui_msg_t *msg)
 
 
 /**
- * ø™∆¡
+ * ÂºÄÂ±è
  */
 static __s32 init_open_screen(__gui_msg_t *msg)
 {
@@ -758,22 +777,22 @@ static __s32 init_open_screen(__gui_msg_t *msg)
         init_lock(msg);
 
         //__here__;
-        if (init_ctr->screen_close_done)    /* ∆¡ƒª“—æ≠πÿ±’ */
+        if (init_ctr->screen_close_done)    /* Â±èÂπïÂ∑≤ÁªèÂÖ≥Èó≠ */
         {
             //__here__;
             init_unlock(msg);
             //__here__;
             //__init_incr_freq(msg);//112350
-            dsk_display_lcd_on();               /* µ˜”√œ‘ æ«˝∂Ø, ø™∆¡*/
+            dsk_display_lcd_on();               /* Ë∞ÉÁî®ÊòæÁ§∫È©±Âä®, ÂºÄÂ±è*/
             init_lock(msg);
-            init_ctr->screen_close_done = EPDK_FALSE;/*     «Âπÿ∆¡◊¥Ã¨Œª */
+            init_ctr->screen_close_done = EPDK_FALSE;/*     Ê∏ÖÂÖ≥Â±èÁä∂ÊÄÅ‰Ωç */
             is_close_screen = EPDK_FALSE;
             init_unlock(msg);
-            //∆¡ƒªÀ¯
+            //Â±èÂπïÈîÅ
             //p_scene->scnlock_win = create_screen_lock(msg->h_deswin);
             //GUI_WinSetFocusChild(p_scene->scnlock_win);
         }
-        else                                    /* ∆¡ƒªªπ√ªπÿ±’ */
+        else                                    /* Â±èÂπïËøòÊ≤°ÂÖ≥Èó≠ */
         {
             init_unlock(msg);
         }
@@ -784,7 +803,7 @@ static __s32 init_open_screen(__gui_msg_t *msg)
 
         if (init_ctr->closescn_gate_on == EPDK_TRUE && init_ctr->closescn_timeout != 0)
         {
-            GUI_SetTimer(msg->h_deswin, init_ctr->close_scn_time_id, init_ctr->closescn_timeout, NULL);/* ¥”–¬…Ë÷√∂® ±∆˜*/
+            GUI_SetTimer(msg->h_deswin, init_ctr->close_scn_time_id, init_ctr->closescn_timeout, NULL);/* ‰ªéÊñ∞ËÆæÁΩÆÂÆöÊó∂Âô®*/
         }
     }
 
@@ -792,7 +811,7 @@ static __s32 init_open_screen(__gui_msg_t *msg)
 }
 
 /**
- * …Ë÷√◊‘∂Øπÿ∆¡ ±º‰
+ * ËÆæÁΩÆËá™Âä®ÂÖ≥Â±èÊó∂Èó¥
  */
 static __s32 init_set_close_scn(__gui_msg_t *msg)
 {
@@ -835,7 +854,7 @@ static __s32 init_set_close_scn(__gui_msg_t *msg)
 }
 
 /**
- * ªÒ»°◊‘∂Øπÿ∆¡ ±º‰
+ * Ëé∑ÂèñËá™Âä®ÂÖ≥Â±èÊó∂Èó¥
  */
 static __s32 init_get_close_scn(__gui_msg_t *msg)
 {
@@ -847,7 +866,7 @@ static __s32 init_get_close_scn(__gui_msg_t *msg)
 
 
 /**
- * …Ë÷√◊‘∂Øπÿª˙ ±º‰
+ * ËÆæÁΩÆËá™Âä®ÂÖ≥Êú∫Êó∂Èó¥
  */
 static __s32 init_set_auto_off(__gui_msg_t *msg)
 {
@@ -938,7 +957,7 @@ static __s32 __init_prog_draw_progress(init_fw_update_rect_t *prog_bg, init_fw_u
                                        init_fw_update_rect_t *prog_mid, init_fw_update_rect_t *prog_cursor,
                                        __s32 min, __s32 max, __s32 cur)
 {
-    //ª≠Ω¯∂»Ãı±≥æ∞
+    //ÁîªËøõÂ∫¶Êù°ËÉåÊôØ
     {
         void *pbmp;
 
@@ -958,7 +977,7 @@ static __s32 __init_prog_draw_progress(init_fw_update_rect_t *prog_bg, init_fw_u
 
         GUI_BMP_Draw(pbmp, prog_bg->x, prog_bg->y);
     }
-    //ª≠Ω¯∂»Ãı◊Û±ﬂµƒÕº±Í
+    //ÁîªËøõÂ∫¶Êù°Â∑¶ËæπÁöÑÂõæÊ†á
     {
         void *pbmp;
         __s32 focus;
@@ -981,13 +1000,13 @@ static __s32 __init_prog_draw_progress(init_fw_update_rect_t *prog_bg, init_fw_u
         GUI_BMP_Draw(pbmp, prog_left->x, prog_left->y);
     }
 
-    //ª≠Ω¯∂»Ãı∫Õcursor
-    if (cur > max) //±£ª§“ªœ¬
+    //ÁîªËøõÂ∫¶Êù°Âíåcursor
+    if (cur > max) //‰øùÊä§‰∏Ä‰∏ã
     {
         cur = max;
     }
 
-    if (cur < min) //±£ª§“ªœ¬
+    if (cur < min) //‰øùÊä§‰∏Ä‰∏ã
     {
         cur = min;
     }
@@ -1037,7 +1056,7 @@ static __s32 __init_prog_draw_progress(init_fw_update_rect_t *prog_bg, init_fw_u
             bg_pos = prog_bg->x;
             bg_w = prog_bg->w;
 
-            //∑¿÷π∑«’˚ ˝±∂ ±ª≠≤ª¬˙
+            //Èò≤Ê≠¢ÈùûÊï¥Êï∞ÂÄçÊó∂Áîª‰∏çÊª°
             if (max_mid_w - n * mid_w < mid_w)
             {
                 n++;
@@ -1054,7 +1073,7 @@ static __s32 __init_prog_draw_progress(init_fw_update_rect_t *prog_bg, init_fw_u
                              , prog_mid->y);
             }
 
-            //ª≠cursor
+            //Áîªcursor
             if (!prog_cursor->res_hdl[0])
             {
                 __msg("prog_cursor->res_hdl[0] is null...");
@@ -1212,7 +1231,7 @@ static void fw_update(char *fw_path)
         }
         else
         {
-            __log("«Î‘⁄TFø®∑≈÷√πÃº˛:[%s]", fw_path);
+            __log("ËØ∑Âú®TFÂç°ÊîæÁΩÆÂõ∫‰ª∂:[%s]", fw_path);
         }
     }
 
@@ -1232,7 +1251,7 @@ static void fw_update(char *fw_path)
                     {
                         __wrn("dsk_theme_open fail...");
                     }
-                    else//œ»∂¡»°nor ˝æ›’º◊°µΩƒ⁄¥Ê
+                    else//ÂÖàËØªÂèñnorÊï∞ÊçÆÂç†‰ΩèÂà∞ÂÜÖÂ≠ò
                     {
                         dsk_theme_hdl2buf(prog_ui[i].res_hdl[j]);
                     }
@@ -1371,8 +1390,8 @@ static void fw_update(char *fw_path)
 
         if (card_pin_hd[0])
         {
-            __s32 data = 0;// 0:in£ª1:out°£
-            data = esPINS_ReadPinData(card_pin_hd[0], 0);  //ªÒ»°µÁ∆Ω
+            __s32 data = 0;// 0:inÔºõ1:out„ÄÇ
+            data = esPINS_ReadPinData(card_pin_hd[0], 0);  //Ëé∑ÂèñÁîµÂπ≥
 
             if (1 == data)
             {
@@ -2148,7 +2167,7 @@ void lcd_tool_thread(void *parg)
                 break;
 
 				
-            // usb”¶¥–ƒÃ¯∞¸
+            // usbÂ∫îÁ≠îÂøÉË∑≥ÂåÖ
             case 0x03:
                 usb_send_data[0] = 0x07;
                 usb_send_data[1] = 0x55;
@@ -2169,6 +2188,169 @@ end:
     }
 }
 #endif
+#ifdef CONFIG_DRIVERS_USB_GADGET_MSC
+enum
+{
+       USB_SLAVE_MSC_PART_PLUGIN = 0,
+       USB_SLAVE_MSC_PART_PLUGOUT,
+};
+
+typedef struct disk_manager_tag
+{
+       unsigned char part_path[16];
+       unsigned char device_name[16];
+       unsigned char used;
+       unsigned char plug_status;
+} disk_manager_t;
+disk_manager_t disk_manager[CONFIG_DRIVERS_USB_GADGET_MSC_MAX_LUNS] = {0};
+
+#if 0
+static int device_file_isexist(disk_manager_t *disk_manager)
+{
+   int ret = -1;
+   unsigned char device_name[16] = {0};
+
+   ret = eLIBs_GetPTName(disk_manager->part_path, device_name);
+   if (ret == 0 && 0 == strncmp(device_name, disk_manager->device_name, strlen(disk_manager->device_name))) {
+	   return 1;
+   }
+   return 0;
+}
+
+static int disk_manager_add_and_plugin(unsigned char *path, __gui_msg_t *msg)
+{
+	int index = 0, ret = 0, fd = -1;
+	__init_ctl_t *init_ctr = (__init_ctl_t *)GUI_WinGetAttr(msg->h_deswin);
+	init_scene_t *p_scene;
+
+	p_scene = (init_scene_t *)GUI_WinGetAddData(msg->h_deswin);
+	if (p_scene->usb_plug_in == EPDK_TRUE) {
+		fd = open("/dev/msc", O_RDWR);
+		if (fd < 0) {
+			eLIBs_printf("can not find device:%s\n", "/dev/msc");
+			return EPDK_FAIL;
+		}
+	}
+	for (index = 0; index < sizeof(disk_manager)/sizeof(disk_manager[0]); index++) {
+		eLIBs_printf("%s %d %s disk_manager[%d].used:%d plug_status:%d\n", __FILE__, __LINE__, __func__, index, disk_manager[index].used,disk_manager[index].plug_status);
+		if (disk_manager[index].used == 0) {
+			eLIBs_memset(disk_manager[index].part_path, 0x00, sizeof(disk_manager[index].part_path));
+			eLIBs_strcpy(disk_manager[index].part_path, path);
+			eLIBs_memset(disk_manager[index].device_name, 0x00, sizeof(disk_manager[index].device_name));
+			eLIBs_GetPTName(path, disk_manager[index].device_name);
+			eLIBs_printf("%s %d %s device_name:%s\n", __FILE__, __LINE__, __func__, disk_manager[index].device_name);
+			disk_manager[index].used = 1;
+			if (p_scene->usb_plug_in == EPDK_TRUE) {
+				ret = ioctl(fd, USB_SLAVE_MSC_PART_PLUGIN, disk_manager[index].part_path);
+				disk_manager[index].plug_status = 1;
+			}
+			break;
+		} else if (0 == strncmp(disk_manager[index].part_path, path, strlen(path))) {
+			eLIBs_printf("%s %d %s part_path:%s\n", __FILE__, __LINE__, __func__, disk_manager[index].part_path);
+			eLIBs_printf("%s %d %s device_name:%s\n", __FILE__, __LINE__, __func__, disk_manager[index].device_name);
+			break;
+		}
+	}
+	close(fd);
+	if (index == sizeof(disk_manager)/sizeof(disk_manager[0])) {
+		eLIBs_printf("%s %d %s fail\n", __FILE__, __LINE__, __func__);
+		return -1;
+	}
+	return 0;
+}
+static int disk_manager_plugout_del_info(unsigned char *path, __gui_msg_t *msg)
+{
+	int index = 0, ret = 0, fd = -1;
+	__init_ctl_t *init_ctr = (__init_ctl_t *)GUI_WinGetAttr(msg->h_deswin);
+	init_scene_t *p_scene;
+
+	p_scene = (init_scene_t *)GUI_WinGetAddData(msg->h_deswin);
+	fd = open("/dev/msc", O_RDWR);
+	if (fd < 0) {
+		eLIBs_printf("can not find device:%s\n", "/dev/msc");
+		return EPDK_FAIL;
+	}
+	for (index = 0; index < sizeof(disk_manager)/sizeof(disk_manager[0]); index++) {
+		if (disk_manager[index].used == 1 && !eLIBs_strcmp(disk_manager[index].part_path, path)) {
+			eLIBs_printf("%s %d %s device_name:%s\n", __FILE__, __LINE__, __func__, disk_manager[index].device_name);
+			eLIBs_printf("%s %d %s part_path:%s\n", __FILE__, __LINE__, __func__, disk_manager[index].part_path);
+			if (device_file_isexist(&disk_manager[index]) == 0) {
+				eLIBs_memset(&disk_manager[index], 0x00, sizeof(disk_manager_t));
+			}
+		}
+	}
+	close(fd);
+	return 0;
+}
+
+void usbd_plugout_all_disk(void)
+{
+   int index = 0;
+   int fd = -1, ret = 0;
+
+   fd = open("/dev/msc", O_RDWR);
+   if (fd < 0) {
+       eLIBs_printf("can not find device:%s\n", "/dev/msc");
+       return EPDK_FAIL;
+   }
+
+   for (index = 0; index < sizeof(disk_manager)/sizeof(disk_manager[0]); index++) {
+       if (disk_manager[index].used == 1 && disk_manager[index].plug_status == 1) {
+		   eLIBs_printf("%s %d %s \n", __FILE__, __LINE__, __func__);
+           ret = ioctl(fd, USB_SLAVE_MSC_PART_PLUGOUT, disk_manager[index].part_path);
+           disk_manager[index].plug_status = 0;
+       }
+   }
+   close(fd);
+}
+
+#endif
+void usbd_plugin_all_disk(void)
+{
+	int index = 0;
+	int fd = -1, ret = 0;
+
+	fd = open("/dev/msc", O_RDWR);
+	if (fd < 0) {
+		eLIBs_printf("can not find device:%s\n", "/dev/msc");
+		return EPDK_FAIL;
+	}
+	
+	{
+		__u8 diskArray[MAX_DISK_LETTER_LEN] = {0};
+		int i = 0, index = 0;
+		eLIBs_GetDiskArray(diskArray);
+
+		eLIBs_memset(disk_manager, 0x00, sizeof(disk_manager));
+#ifdef CONFIG_DRIVERS_USB_GADGET_MSC_MAPP_E_DISK
+		for (i = 4, index = 0; i < MAX_DISK_LETTER_LEN && index < sizeof(disk_manager)/sizeof(disk_manager[0]); i++, index++) 
+#else
+		for (i = 5, index = 0; i < MAX_DISK_LETTER_LEN && index < sizeof(disk_manager)/sizeof(disk_manager[0]); i++, index++)
+#endif
+		{
+			if (diskArray[i] != '\0') {
+				//printf("%s %d %s %c:\\\n", __FILE__, __LINE__, __func__, diskArray[i]);
+				eLIBs_sprintf(disk_manager[index].part_path, "%c:\\", diskArray[i]);
+				eLIBs_GetPTName(disk_manager[index].part_path, disk_manager[index].device_name);
+				disk_manager[index].used = 1;
+			}
+		}
+	}
+	//eLIBs_printf("%s %d %s \n", __FILE__, __LINE__, __func__);
+	for (index = 0; index < sizeof(disk_manager)/sizeof(disk_manager[0]); index++) {
+		//eLIBs_printf("%s %d %s disk_manager[%d].used:%d\n", __FILE__, __LINE__, __func__, index, disk_manager[index].used);
+		//eLIBs_printf("%s %d %s disk_manager[%d].plug_status:%d\n", __FILE__, __LINE__, __func__, index, disk_manager[index].plug_status);
+		if (disk_manager[index].used == 1 && disk_manager[index].plug_status == 0) {
+			ret = ioctl(fd, USB_SLAVE_MSC_PART_PLUGIN, disk_manager[index].part_path);
+			disk_manager[index].plug_status = 1;
+		}
+	}
+	//eLIBs_printf("%s %d %s \n", __FILE__, __LINE__, __func__);
+	close(fd);
+}
+
+#endif
+
 static __s32 init_mainwin_cb(__gui_msg_t *msg)
 {
     switch (msg->id)
@@ -2224,12 +2406,12 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
             __wrn("init_ctr->autooff_timeout:%d",   init_ctr->autooff_timeout);
             __wrn("Init_reg_para->close_screen:%d", Init_reg_para->backlightoff);
             __wrn("init_ctr->closescn_timeout:%d",  init_ctr->closescn_timeout);
-            /* ¥¥Ω® timer */
+            /* ÂàõÂª∫ timer */
             //GUI_SetTimer(msg->h_deswin, init_ctr->low_power_check_time_id, init_ctr->low_power_check_timeout, NULL);
 #if OPEN_CURSOR
             GUI_SetTimer(msg->h_deswin, init_ctr->cursor_time_id, init_ctr->cursor_timeout, NULL);
 #endif
-            /* ¥¥Ω®–≈∫≈¡ø */
+            /* ÂàõÂª∫‰ø°Âè∑Èáè */
             init_ctr->state_sem         = esKRNL_SemCreate(1);
             init_ctr->usb_connect       = EPDK_FALSE;
             init_ctr->screen_close_done = EPDK_FALSE;
@@ -2247,10 +2429,26 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
             //create hbar,bgd,dialog
             init_scene_create(msg);
 
-            //∫ÛÃ®œﬂ≥Ã¥¶¿Ì∫ƒ ±≤Ÿ◊˜
+            //ÂêéÂè∞Á∫øÁ®ãÂ§ÑÁêÜËÄóÊó∂Êìç‰Ωú
             sys_msg_handle_init(msg);
             dsk_amplifier_onoff(0);
             dsk_hp_det_pin_det();
+			if (1)
+			{
+			       int fd = 0;
+			       fd = open("/dev/hwsc", O_RDONLY);
+
+			       if (fd > 0)
+			       {
+			           ioctl(fd, DEV_IOC_USR_HWSC_ENABLE_MONITOR, 0);
+			           close(fd);
+			           __log(".start device monitor .......................................");
+			       }
+			       else
+			       {
+			           __log("try to open /dev/hwsc failed!");
+			       }
+			}
             break;
         }
 
@@ -2311,11 +2509,11 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
             init_ctr        = (__init_ctl_t *)GUI_WinGetAttr(msg->h_deswin);
             p_scene         = (init_scene_t *)GUI_WinGetAddData(msg->h_deswin);
 
-            if (msg->dwAddData1 == init_ctr->cursor_time_id) //π‚±Í¥Ê‘⁄ ±º‰
+            if (msg->dwAddData1 == init_ctr->cursor_time_id) //ÂÖâÊ†áÂ≠òÂú®Êó∂Èó¥
             {
                 GUI_CursorHide();
             }
-            else if (msg->dwAddData1 == init_ctr->low_power_check_time_id) //µÕµÁºÏ≤È
+            else if (msg->dwAddData1 == init_ctr->low_power_check_time_id) //‰ΩéÁîµÊ£ÄÊü•
             {
                 if (0) //112350
                 {
@@ -2330,7 +2528,7 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
 
                 dsk_hp_det_pin_det();
 
-                if (dsk_power_is_low() == EPDK_TRUE) //µÕµÁ
+                if (dsk_power_is_low() == EPDK_TRUE) //‰ΩéÁîµ
                 {
                     __msg("****************low power...****************");
                     GUI_KillTimer(msg->h_deswin, init_ctr->low_power_check_time_id);
@@ -2343,19 +2541,19 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
 
                 init_voltage_check(msg);
             }
-            else if (msg->dwAddData1 == LOW_POWER_DIALOG_TIME_ID) //µÕµÁ∂‘ª∞øÚ¥Ê‘⁄ ±º‰
+            else if (msg->dwAddData1 == LOW_POWER_DIALOG_TIME_ID) //‰ΩéÁîµÂØπËØùÊ°ÜÂ≠òÂú®Êó∂Èó¥
             {
                 p_scene->low_power = EPDK_FALSE;
                 GUI_KillTimer(msg->h_deswin, LOW_POWER_DIALOG_TIME_ID);
                 scene_on_dialog(msg);
             }
-            else if (msg->dwAddData1 == POWER_OFF_DIALOG_TIME_ID) //πÿª˙∂‘ª∞øÚ¥Ê‘⁄ ±º‰
+            else if (msg->dwAddData1 == POWER_OFF_DIALOG_TIME_ID) //ÂÖ≥Êú∫ÂØπËØùÊ°ÜÂ≠òÂú®Êó∂Èó¥
             {
                 p_scene->power_off = EPDK_FALSE;
                 GUI_KillTimer(msg->h_deswin, POWER_OFF_DIALOG_TIME_ID);
                 scene_on_dialog(msg);
             }
-            else if (msg->dwAddData1 == ORCHID_UPDATE_DIALOG_TIME_ID) //√ΩÃÂø‚…˝º∂∂‘ª∞øÚ¥Ê‘⁄ ±º‰
+            else if (msg->dwAddData1 == ORCHID_UPDATE_DIALOG_TIME_ID) //Â™í‰ΩìÂ∫ìÂçáÁ∫ßÂØπËØùÊ°ÜÂ≠òÂú®Êó∂Èó¥
             {
                 if (p_scene->orchid_update == EPDK_FALSE)
                 {
@@ -2363,13 +2561,13 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
                     scene_on_dialog(msg);
                 }
             }
-            else if (msg->dwAddData1 == init_ctr->close_scn_time_id) //◊‘∂Øπÿ∆¡ ±º‰
+            else if (msg->dwAddData1 == init_ctr->close_scn_time_id) //Ëá™Âä®ÂÖ≥Â±èÊó∂Èó¥
             {
                 __wrn("send DSK_MSG_SCREEN_CLOSE msg ");
                 __wrn("init_ctr->closescn_timeout:%d", init_ctr->closescn_timeout);
                 SEND_MSG(DSK_MSG_SCREEN_CLOSE, NULL, msg->h_deswin, 0, 0); //112350
             }
-            else if (msg->dwAddData1 == init_ctr->auto_off_time_id)//◊‘∂Øπÿª˙ ±º‰
+            else if (msg->dwAddData1 == init_ctr->auto_off_time_id)//Ëá™Âä®ÂÖ≥Êú∫Êó∂Èó¥
             {
                 __wrn("send DSK_MSG_POWER_OFF msg ");
                 __wrn("init_ctr->autooff_timeout:%d", init_ctr->autooff_timeout);
@@ -2395,7 +2593,7 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
                 __err("There:%s %d fail", __FILE__, __LINE__);
             }
 
-            //÷ÿ–¬…Ë÷√πÿ∆¡∂® ±∆˜
+            //ÈáçÊñ∞ËÆæÁΩÆÂÖ≥Â±èÂÆöÊó∂Âô®
             exist = GUI_IsTimerInstalled(msg->h_deswin, init_ctr->close_scn_time_id);
 
             if (exist == EPDK_TRUE)
@@ -2403,7 +2601,7 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
                 GUI_ResetTimer(msg->h_deswin, init_ctr->close_scn_time_id, init_ctr->closescn_timeout, NULL);
             }
 
-            //÷ÿ–¬…Ë÷√πÿª˙∂® ±∆˜
+            //ÈáçÊñ∞ËÆæÁΩÆÂÖ≥Êú∫ÂÆöÊó∂Âô®
             exist = GUI_IsTimerInstalled(msg->h_deswin, init_ctr->auto_off_time_id);
 
             if (exist == EPDK_TRUE)
@@ -2446,7 +2644,7 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
             __pos_t pos;
             __init_ctl_t *init_ctr = (__init_ctl_t *)GUI_WinGetAttr(msg->h_deswin);
             __wrn("1");
-            //÷ÿ–¬…Ë÷√πÿ∆¡∂® ±∆˜
+            //ÈáçÊñ∞ËÆæÁΩÆÂÖ≥Â±èÂÆöÊó∂Âô®
             exist = GUI_IsTimerInstalled(msg->h_deswin, init_ctr->close_scn_time_id);
 
             if (exist == EPDK_TRUE)
@@ -2456,7 +2654,7 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
             }
 
             __wrn("3");
-            //÷ÿ–¬…Ë÷√πÿª˙∂® ±∆˜
+            //ÈáçÊñ∞ËÆæÁΩÆÂÖ≥Êú∫ÂÆöÊó∂Âô®
             exist = GUI_IsTimerInstalled(msg->h_deswin, init_ctr->auto_off_time_id);
 
             if (exist == EPDK_TRUE)
@@ -2534,13 +2732,13 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
 			{
 	            __init_ctl_t *init_ctr = (__init_ctl_t *)GUI_WinGetAttr(msg->h_deswin);
 	            init_scene_t *p_scene;
-	            __bool        other_dlg_exist;//¡¨Ω”usb ±£¨ «∑Ò¥Ê‘⁄∆‰À¸ƒ£ ΩøÚ
+	            __bool        other_dlg_exist;//ËøûÊé•usbÊó∂ÔºåÊòØÂê¶Â≠òÂú®ÂÖ∂ÂÆÉÊ®°ÂºèÊ°Ü
 	            p_scene = (init_scene_t *)GUI_WinGetAddData(msg->h_deswin);
-	            //Ã·«∞…Ë÷√usb¡¨Ω”±Í÷æ£¨∑¿÷πusb¡¨Ω” ±£¨µÕµÁªÚ’ﬂπÿª˙∂‘ª∞øÚ±ª«ø÷∆πÿ±’∫Û≥Ã–ÚªπÕ˘œ¬≈‹£¨µº÷¬”¶”√±ªΩ· ¯
+	            //ÊèêÂâçËÆæÁΩÆusbËøûÊé•Ê†áÂøóÔºåÈò≤Ê≠¢usbËøûÊé•Êó∂Ôºå‰ΩéÁîµÊàñËÄÖÂÖ≥Êú∫ÂØπËØùÊ°ÜË¢´Âº∫Âà∂ÂÖ≥Èó≠ÂêéÁ®ãÂ∫èËøòÂæÄ‰∏ãË∑ëÔºåÂØºËá¥Â∫îÁî®Ë¢´ÁªìÊùü
 	            p_scene->usb_plug_in = EPDK_TRUE;
 	            //__here__;
 	            other_dlg_exist = EPDK_FALSE;
-	            //¡¨Ω”usbµƒ ±∫ÚΩ˚÷π◊‘∂Øπÿ∆¡∫Õπÿª˙
+	            //ËøûÊé•usbÁöÑÊó∂ÂÄôÁ¶ÅÊ≠¢Ëá™Âä®ÂÖ≥Â±èÂíåÂÖ≥Êú∫
 	            init_ctr->autooff_timer_exist = GUI_IsTimerInstalled(msg->h_deswin, init_ctr->auto_off_time_id);
 
 	            if (EPDK_TRUE == init_ctr->autooff_timer_exist)
@@ -2555,11 +2753,11 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
 	                GUI_KillTimer(msg->h_deswin, init_ctr->close_scn_time_id);
 	            }
 
-	            // Ω˚÷πœ˚œ¢œÏ”¶
+	            // Á¶ÅÊ≠¢Ê∂àÊÅØÂìçÂ∫î
 	            init_ctr->tp_msg_enble = EPDK_FALSE;
 	            //__here__;
-	            //USB¡¨Ω”µΩ¿¥µƒ ±∫Úø…ƒ‹¥À ±Ã· æ’˝‘⁄πÿª˙ªÚ’ﬂµÕµÁ∂‘ª∞øÚ£¨œ»Ω· ¯µÙÀ˚√«
-	            //≤¢«“…Ë÷√±Íº«≤ª»√À¸Õ˘œ¬≈‹£¨¥”∂¯≤ªπÿª˙°£
+	            //USBËøûÊé•Âà∞Êù•ÁöÑÊó∂ÂÄôÂèØËÉΩÊ≠§Êó∂ÊèêÁ§∫Ê≠£Âú®ÂÖ≥Êú∫ÊàñËÄÖ‰ΩéÁîµÂØπËØùÊ°ÜÔºåÂÖàÁªìÊùüÊéâ‰ªñ‰ª¨
+	            //Âπ∂‰∏îËÆæÁΩÆÊ†áËÆ∞‰∏çËÆ©ÂÆÉÂæÄ‰∏ãË∑ëÔºå‰ªéËÄå‰∏çÂÖ≥Êú∫„ÄÇ
 	            __msg("p_scene->power_off=%d", p_scene->power_off);
 
 	            if (p_scene->power_off == EPDK_TRUE)
@@ -2592,8 +2790,8 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
 	                }
 	            }
 
-	            //»Áπ˚¡¨Ω”usb ±£¨¥Ê‘⁄∆‰À¸ƒ£ ΩøÚ£¨‘Ú±ÿ–ÎÕ∂µ›œ˚œ¢µƒ∑Ω ΩÕ®÷™usb¡¨Ω”£¨
-	            //∑Ò‘Úπÿ±’∆‰À¸∂‘ª∞øÚ∫Û£¨∂‘ª∞øÚœ˚œ¢—≠ª∑Œ¥Ω· ¯£¨ª·‘Ï≥…À¿À¯
+	            //Â¶ÇÊûúËøûÊé•usbÊó∂ÔºåÂ≠òÂú®ÂÖ∂ÂÆÉÊ®°ÂºèÊ°ÜÔºåÂàôÂøÖÈ°ªÊäïÈÄíÊ∂àÊÅØÁöÑÊñπÂºèÈÄöÁü•usbËøûÊé•Ôºå
+	            //Âê¶ÂàôÂÖ≥Èó≠ÂÖ∂ÂÆÉÂØπËØùÊ°ÜÂêéÔºåÂØπËØùÊ°ÜÊ∂àÊÅØÂæ™ÁéØÊú™ÁªìÊùüÔºå‰ºöÈÄ†ÊàêÊ≠ªÈîÅ
 	            if (EPDK_TRUE == other_dlg_exist)
 	            {
 	                __gui_msg_t set_msg;
@@ -2602,11 +2800,8 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
 	            }
 	            else
 	            {
-	                //__here__;
 	                init_usb_device_plugin_proc(msg);
-	                //__here__;
 	                NOTIFY_MSG(DSK_MSG_ORCHID_UPDATE_START, NULL, msg->h_deswin, 0, 0);
-	                //__here__;
 	            }
 			}
 #endif			
@@ -2650,9 +2845,9 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
 	            init_ctr->tp_msg_enble = EPDK_TRUE;
 
 	            //__here__;
-	            //usb¡¨Ω”∞Œ≥ˆ∫Û£¨–Ë÷ÿ÷√µÕµÁ≤È—Ø∂® ±∆˜£¨“ÚŒ™ø…ƒ‹µÕµÁ
+	            //usbËøûÊé•ÊãîÂá∫ÂêéÔºåÈúÄÈáçÁΩÆ‰ΩéÁîµÊü•ËØ¢ÂÆöÊó∂Âô®ÔºåÂõ†‰∏∫ÂèØËÉΩ‰ΩéÁîµ
 	            GUI_ResetTimer(msg->h_deswin, init_ctr->low_power_check_time_id, init_ctr->low_power_check_timeout, NULL);
-	            //usb¡¨Ω”∞Œ≥ˆ∫Û£¨÷ÿ÷√◊‘∂Øπÿª˙∫Õ◊‘∂Øπÿ∆¡∂® ±∆˜
+	            //usbËøûÊé•ÊãîÂá∫ÂêéÔºåÈáçÁΩÆËá™Âä®ÂÖ≥Êú∫ÂíåËá™Âä®ÂÖ≥Â±èÂÆöÊó∂Âô®
 	            __wrn("init_ctr->autooff_timer_exist=%d", init_ctr->autooff_timer_exist);
 	            __wrn("init_ctr->autooff_timeout=%d", init_ctr->autooff_timeout);
 
@@ -2683,8 +2878,8 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
 	                }
 	            }
 
-	            //µÕµÁÃ· æøÚµØ≥ˆ∫Û≤Â»Îusb£¨÷ÿ–¬∞Œ≥ˆ∫Û
-	            //∏√∂® ±∆˜“—±ª…æ≥˝£¨–Ë÷ÿ÷√“ªœ¬
+	            //‰ΩéÁîµÊèêÁ§∫Ê°ÜÂºπÂá∫ÂêéÊèíÂÖ•usbÔºåÈáçÊñ∞ÊãîÂá∫Âêé
+	            //ËØ•ÂÆöÊó∂Âô®Â∑≤Ë¢´Âà†Èô§ÔºåÈúÄÈáçÁΩÆ‰∏Ä‰∏ã
 	            if (!GUI_IsTimerInstalled(msg->h_deswin, init_ctr->low_power_check_time_id))
 	            {
 	                GUI_SetTimer(msg->h_deswin, init_ctr->low_power_check_time_id, init_ctr->low_power_check_timeout, NULL);
@@ -2800,7 +2995,7 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
             activity_notify_top(&msgex);
         }
 		break;
-        case DSK_MSG_SCREEN_OPEN:               /* ø™∆¡ */
+        case DSK_MSG_SCREEN_OPEN:               /* ÂºÄÂ±è */
             __wrn("DSK_MSG_SCREEN_OPEN");
             init_open_screen(msg);
             break;
@@ -2819,7 +3014,7 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
             init_low_power_proc(msg);
             //__here__;
             init_low_power_off_proc(msg);
-            /* µ˜”√œ‘ æ«˝∂Ø, πÿ∆¡ */
+            /* Ë∞ÉÁî®ÊòæÁ§∫È©±Âä®, ÂÖ≥Â±è */
             dsk_display_lcd_off();
             init_ctr->power_off = 0;
             //__here__;
@@ -2870,14 +3065,14 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
 	                init_close_screen(msg, 1);
 	                init_ctr->power_off = EPDK_FALSE;
 
-	                if (init_ctr->autooff_timeout != 0)/* ¥”–¬…Ë÷√∂® ±∆˜*/
+	                if (init_ctr->autooff_timeout != 0)/* ‰ªéÊñ∞ËÆæÁΩÆÂÆöÊó∂Âô®*/
 	                {
 	                    dsk_set_auto_off_time(init_ctr->autooff_timeout);
 	                }
 				}
 				else
 				{
-                    //πÿ∆¡º∆ ±ø™ º
+                    //ÂÖ≥Â±èËÆ°Êó∂ÂºÄÂßã
                     init_restart_close_scn(msg);
                     __wrn("test power off 2");
                     init_power_off_proc(msg);
@@ -2910,7 +3105,7 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
         {
             __msg("************DSK_MSG_TVDAC_PLUGOUT/DSK_MSG_HDMI_PLUGOUT*****************");
 
-            //«–∆¡
+            //ÂàáÂ±è
             if (dsk_display_get_output_type() != DISP_OUTPUT_TYPE_LCD)
             {
                 __gui_msg_t msgex;
@@ -2933,20 +3128,20 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
             __init_ctl_t *init_ctr;
             init_ctr = (__init_ctl_t *)GUI_WinGetAttr(msg->h_deswin);
 
-            if (msg->dwAddData1 == LION_DISP_LCD)       // «–ªªµΩLCD£¨¥Úø™¥•√˛∆¡œ˚œ¢
+            if (msg->dwAddData1 == LION_DISP_LCD)       // ÂàáÊç¢Âà∞LCDÔºåÊâìÂºÄËß¶Êë∏Â±èÊ∂àÊÅØ
             {
                 init_lock(msg);
                 init_ctr->tp_msg_enble = EPDK_TRUE;
                 init_unlock(msg);
             }
-            else                                            // «–ªªµΩtv , πÿ±’¥•√˛∆¡œ˚œ¢
+            else                                            // ÂàáÊç¢Âà∞tv , ÂÖ≥Èó≠Ëß¶Êë∏Â±èÊ∂àÊÅØ
             {
                 init_lock(msg);
                 init_ctr->tp_msg_enble = EPDK_FALSE;
                 init_unlock(msg);
             }
 
-            //÷ÿ–¬¥¥Ω®≥°æ∞
+            //ÈáçÊñ∞ÂàõÂª∫Âú∫ÊôØ
             //init_scene_destroy(msg);
             //init_scene_create(msg);
             break;
@@ -2960,7 +3155,7 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
             //__here__
             if(!p_scene->assistant_win)
             {
-                //¥¥Ω®∏®∆¡≥°æ∞
+                //ÂàõÂª∫ËæÖÂ±èÂú∫ÊôØ
                 GUI_SetScnNo(1);
                 p_scene->assistant_win = assistant_scene_create(msg->h_deswin);
 
@@ -3081,7 +3276,7 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
             /* delay */
             esKRNL_TimeDly(200);
             __msg("********dsk_fw_update*******");
-            /* ÷¥––…˝º∂π˝≥Ã */
+            /* ÊâßË°åÂçáÁ∫ßËøáÁ®ã */
             dsk_fw_update();
             //__here__;
             esKRNL_TimeDly(200);
@@ -3089,7 +3284,7 @@ static __s32 init_mainwin_cb(__gui_msg_t *msg)
             break;
         }
 
-        case DSK_MSG_FW_START_UPDATE: //…˝º∂πÃº˛
+        case DSK_MSG_FW_START_UPDATE: //ÂçáÁ∫ßÂõ∫‰ª∂
         {
             __init_ctl_t *init_ctr = (__init_ctl_t *)GUI_WinGetAttr(msg->h_deswin);
             __wrn("msg->dwAddData1=%s", msg->dwAddData1);

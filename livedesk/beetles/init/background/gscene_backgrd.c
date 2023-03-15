@@ -1,21 +1,34 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : gscene_backgrd.c
-* By        : Andy.zhang
-* Func      : desktop toolbar control interface
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-20 8:51:52  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "mod_init_i.h"
 #include "./fb_lib/backlayer_lib.h"
 #include "./fb_lib/fb_file.h"
@@ -24,19 +37,19 @@
 
 #define BG_MAX_CHAR_LEN     768
 
-#define BG_DEFAULT_PATH     BEETLES_APP_ROOT"res\\"
-
+#define BG_DEFAULT_PATH_JPG     BEETLES_APP_ROOT"res\\"
+#define BG_DEFAULT_PATH_BGD     BEETLES_APP_ROOT"apps\\"
 
 typedef struct tag_bgd_com
 {
     __mp     *de_hdle;               // display driver
     FB          fb;                     // FB
-    __u8        *buffer;                // FB ¶ÔÓ¦µÄ buffer
+    __u8        *buffer;                // FB å¯¹åº”çš„ buffer
     __s32       len;                    // buffer length;
-    unsigned long       layer_hdle;             // Í¼²ã¾ä±ú
-    bgd_status_t status;                // Í¼²ã×´Ì¬
-    SIZE        screen_size;            // Í¼²ã³ß´ç
-    char        filename[BG_MAX_CHAR_LEN];  // ±³¾°Í¼Æ¬ÎÄ¼þÃû³Æ
+    unsigned long       layer_hdle;             // å›¾å±‚å¥æŸ„
+    bgd_status_t status;                // å›¾å±‚çŠ¶æ€
+    SIZE        screen_size;            // å›¾å±‚å°ºå¯¸
+    char        filename[BG_MAX_CHAR_LEN];  // èƒŒæ™¯å›¾ç‰‡æ–‡ä»¶åç§°
 } bgd_com_t;
 
 static bgd_com_t *bgd_com = NULL;
@@ -51,9 +64,9 @@ static __s32 gscene_bgd_set_setting_file(char *filename);
 static __s32 gscene_bgd_update_filename(void);
 
 
-/*»ñµÃÏÔÊ¾Ä¬ÈÏ±³¾°»¹ÊÇÓÃ»§ÉèÖÃµÄ±³¾°µÄ±ê¼Ç
- flag : EPDK_TRUE : Ä¬ÈÏ±³¾°Í¼Æ¬
-      : EPDK_FALSE: ÉèÖÃ±³¾°Í¼Æ¬
+/*èŽ·å¾—æ˜¾ç¤ºé»˜è®¤èƒŒæ™¯è¿˜æ˜¯ç”¨æˆ·è®¾ç½®çš„èƒŒæ™¯çš„æ ‡è®°
+ flag : EPDK_TRUE : é»˜è®¤èƒŒæ™¯å›¾ç‰‡
+      : EPDK_FALSE: è®¾ç½®èƒŒæ™¯å›¾ç‰‡
  */
 __bool gscene_bgd_get_flag(void)
 {
@@ -74,9 +87,9 @@ __bool gscene_bgd_get_flag(void)
     return ret;
 }
 
-/*ÉèÖÃÏÔÊ¾Ä¬ÈÏ±³¾°»¹ÊÇÓÃ»§ÉèÖÃµÄ±³¾°µÄ±ê¼Ç
- flag : EPDK_TRUE : Ä¬ÈÏ±³¾°Í¼Æ¬
-      : EPDK_FALSE: ÉèÖÃ±³¾°Í¼Æ¬
+/*è®¾ç½®æ˜¾ç¤ºé»˜è®¤èƒŒæ™¯è¿˜æ˜¯ç”¨æˆ·è®¾ç½®çš„èƒŒæ™¯çš„æ ‡è®°
+ flag : EPDK_TRUE : é»˜è®¤èƒŒæ™¯å›¾ç‰‡
+      : EPDK_FALSE: è®¾ç½®èƒŒæ™¯å›¾ç‰‡
  */
 void gscene_bgd_set_flag(__bool flag)
 {
@@ -157,9 +170,9 @@ static void gscene_bgd_set_status_show(void)
 
     gscene_bgd_update_filename();
 
-    if ((!bgd_com->buffer) && (get_logo_mode() == BMP_MODE))
+    if ((!bgd_com->buffer) && ((get_logo_mode() == BMP_MODE) || (get_logo_mode() == YUV_MODE))) 
     {
-        bgd_com->buffer     = esMEMS_Palloc(bgd_com->len + 1, 0);
+        bgd_com->buffer = esMEMS_Palloc(bgd_com->len + 1, 0);
         get_fb_from_file(&(bgd_com->fb), bgd_com->buffer, &(bgd_com->screen_size), BACKLAYER_MOD_RATIO, (__u8 *)bgd_com->filename);
     }
 
@@ -345,7 +358,7 @@ __err(".........gscene_bgd_refresh");
         return ;
     }
 
-    //Èç¹ûÃ»ÉêÇëÄÚ´æ£¬ÔòÉêÇëÄÚ´æ
+    //å¦‚æžœæ²¡ç”³è¯·å†…å­˜ï¼Œåˆ™ç”³è¯·å†…å­˜
     if( !bgd_com->buffer )
     {
         bgd_com->buffer = esMEMS_Palloc( bgd_com->len + 1, 0 );
@@ -356,7 +369,7 @@ __err(".........gscene_bgd_refresh");
         }
     }
 
-    //Èç¹ûÃ»ÉêÇëÏÔÊ¾Í¼²ã£¬ÔòÉêÇëÏÔÊ¾Í¼²ã
+    //å¦‚æžœæ²¡ç”³è¯·æ˜¾ç¤ºå›¾å±‚ï¼Œåˆ™ç”³è¯·æ˜¾ç¤ºå›¾å±‚
     if( !bgd_com->layer_hdle )
     {
         bgd_com->layer_hdle = backlayer_create_layer(bgd_com->de_hdle);
@@ -368,7 +381,7 @@ __err(".........gscene_bgd_refresh");
     }
     backlayer_set_bottom(bgd_com->de_hdle, bgd_com->layer_hdle);
 
-    //ÉêÇëbuffer£¬Ë«buffer±ÜÃâÉÁÆÁºÍºÚÆÁ
+    //ç”³è¯·bufferï¼ŒåŒbufferé¿å…é—ªå±å’Œé»‘å±
     {
         ptmp_buf = esMEMS_Palloc( bgd_com->len + 1, 0 );
         if(!ptmp_buf)
@@ -462,7 +475,7 @@ int32_t gscene_bgd_get_default_bg_index(void)
 int32_t gscene_bgd_set_default_bg_index(__u32 index)
 {
     //__here__;
-    if (EPDK_TRUE != gscene_bgd_get_flag()) //²»Ê¹ÓÃÄ¬ÈÏ±³¾°
+    if (EPDK_TRUE != gscene_bgd_get_flag()) //ä¸ä½¿ç”¨é»˜è®¤èƒŒæ™¯
     {
         __msg("not using default background...");
         return EPDK_FAIL;
@@ -523,11 +536,11 @@ static int32_t gscene_bgd_get_default_file(char *filename)
     index   = gscene_bgd_get_default_bg_index();
     if (get_logo_mode() == JPG_MODE)
     {
-        eLIBs_sprintf(path, "%sbg_default%d.jpg", BG_DEFAULT_PATH, index);
+        eLIBs_sprintf(path, "%sbg_default%d.jpg", BG_DEFAULT_PATH_JPG, index);
     }
     else
     {
-        eLIBs_sprintf(path, "%sbg_default%d.bgd", BG_DEFAULT_PATH, index);
+        eLIBs_sprintf(path, "%sbg_default%d.bgd", BG_DEFAULT_PATH_BGD, index);
     }
 
     if (EPDK_TRUE == gscene_bgd_is_file_exist(path))
@@ -541,11 +554,11 @@ static int32_t gscene_bgd_get_default_file(char *filename)
 
         if (get_logo_mode() == JPG_MODE)
         {
-            eLIBs_sprintf(path, "%sbg_default%d.jpg", BG_DEFAULT_PATH, 0);
+            eLIBs_sprintf(path, "%sbg_default%d.jpg", BG_DEFAULT_PATH_JPG, 0);
         }
         else
         {
-            eLIBs_sprintf(path, "%sbg_default%d.bgd", BG_DEFAULT_PATH, 0);
+            eLIBs_sprintf(path, "%sbg_default%d.bgd", BG_DEFAULT_PATH_BGD, 0);
         }
 
         if (EPDK_TRUE == gscene_bgd_is_file_exist(path))
@@ -638,7 +651,7 @@ static int32_t gscene_bgd_update_filename(void)
     {
         int32_t ret;
 
-        ret     = gscene_bgd_get_default_file(bgd_com->filename);
+        ret  = gscene_bgd_get_default_file(bgd_com->filename);
         if (EPDK_OK != ret)
         {
             __err("gscene_bgd_get_default_file fail...");
@@ -649,7 +662,7 @@ static int32_t gscene_bgd_update_filename(void)
     {
         int32_t ret;
 
-        ret     = gscene_bgd_get_setting_file(bgd_com->filename);
+        ret = gscene_bgd_get_setting_file(bgd_com->filename);
 
         if (EPDK_OK != ret)
         {

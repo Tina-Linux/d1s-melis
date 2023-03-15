@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : sub.c
-* By        :
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011-05-05  Bayden.chen  create this file
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "sub_show.h"
@@ -28,14 +42,14 @@ typedef struct
 
 typedef struct
 {
-    // ‰»Î≤Œ ˝
+    //ËæìÂÖ•ÂèÇÊï∞
     H_WIN hparent;
     __s32 scene_id;
     __u32 sub_pos;
     __u32 sub_color;
     __u32 sub_size;
 
-    //ƒ⁄≤ø≤Œ ˝
+    //ÂÜÖÈÉ®ÂèÇÊï∞
     H_LYR hlyr;
     H_WIN hfrm;
     __u16 sub_update_timmer_id;
@@ -58,7 +72,7 @@ static __u32  custom_palette[4] = { 0x00FFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFF0000
 
 
 /***********************************************************************************************************
-    Ω®¡¢Õº≤„
+    Âª∫Á´ãÂõæÂ±Ç
 ************************************************************************************************************/
 static H_LYR __sub_show_8bpp_layer_create(RECT *rect, __s32 pipe)
 {
@@ -156,7 +170,7 @@ static __s32 __sub_show_install_sub_show_update_timmer(movie_sub_show_scene_t *s
     if (!GUI_IsTimerInstalled(scene_para->hfrm, scene_para->sub_update_timmer_id))
     {
         GUI_SetTimer(scene_para->hfrm, scene_para->sub_update_timmer_id
-                     , 100, NULL);//0.25√Î
+                     , 100, NULL);//0.25Áßí
     }
     else
     {
@@ -429,7 +443,7 @@ static __s32 __sub_show_update_subtitle(movie_sub_show_scene_t *scene_para)
     GUI_LyrWinGetScnWindow(scene_para->hlyr, &lyr_rect);
     ret = robin_subtitle_exist();
 
-    if (-1 == ret) //Œﬁ◊÷ƒª
+    if (-1 == ret) //Êó†Â≠óÂπï
     {
         __wrn("robin_subtitle_exist ret fail...");
         GUI_LyrWinSel(scene_para->hlyr);
@@ -444,7 +458,7 @@ static __s32 __sub_show_update_subtitle(movie_sub_show_scene_t *scene_para)
     ret = robin_get_subtitle_item(time, scene_para->sub_inf.sub_item);
 
     //    __here__;
-    if (-1 == ret) //Œﬁ◊÷ƒª
+    if (-1 == ret) //Êó†Â≠óÂπï
     {
         GUI_LyrWinSel(scene_para->hlyr);
         GUI_SetBkColor(0x0);
@@ -454,7 +468,7 @@ static __s32 __sub_show_update_subtitle(movie_sub_show_scene_t *scene_para)
 
     __wrn("********robin_get_subtitle_item ok*******");
 
-    if (start_time == scene_para->sub_inf.sub_item->uPts) //◊÷ƒª∫Õ‘≠¿¥œ‡Õ¨
+    if (start_time == scene_para->sub_inf.sub_item->uPts) //Â≠óÂπïÂíåÂéüÊù•Áõ∏Âêå
     {
         __wrn("start_time == scene_para->sub_inf.sub_item->uPts");
         return EPDK_FAIL;
@@ -561,7 +575,7 @@ static __s32 __sub_show_update_subtitle(movie_sub_show_scene_t *scene_para)
             return EPDK_TRUE;
         }
 
-        //»Áπ˚Õº≤„÷√∂•£¨‘Ú…Ë÷√top Ù–‘
+        //Â¶ÇÊûúÂõæÂ±ÇÁΩÆÈ°∂ÔºåÂàôËÆæÁΩÆtopÂ±ûÊÄß
         LIST_ItemBitmapConvert(scene_para->sub_inf.sub_item, sub_buffer, &buffer_size, &valid_size, valid_pallete
                                , sub_type, 2 == scene_para->sub_pos);
         gui_rect.x0 = 0;
@@ -592,7 +606,7 @@ static __s32 __sub_show_update_subtitle(movie_sub_show_scene_t *scene_para)
         gui_rect.y1 = lyr_rect.height - 1;
         __wrn("(char*)scene_para->sub_inf.sub_item->pSubtitle=%s", (char *)scene_para->sub_inf.sub_item->pSubtitle);
 
-        /*»Áπ˚∆Ù”√¡À∂¿¡¢◊÷ƒªÕº≤„£¨≤¢«“‘⁄…œ√Êœ‘ æ£¨‘Ú…Ë÷√TOPµƒ Ù–‘*/
+        /*Â¶ÇÊûúÂêØÁî®‰∫ÜÁã¨Á´ãÂ≠óÂπïÂõæÂ±ÇÔºåÂπ∂‰∏îÂú®‰∏äÈù¢ÊòæÁ§∫ÔºåÂàôËÆæÁΩÆTOPÁöÑÂ±ûÊÄß*/
         if (2 == scene_para->sub_pos)
         {
             GUI_DispStringInRectWrap((char *)scene_para->sub_inf.sub_item->pSubtitle, &gui_rect, GUI_TA_TOP | GUI_TA_HCENTER, GUI_WRAPMODE_WORD);
@@ -632,7 +646,7 @@ static __s32 __sub_show_proc(__gui_msg_t *msg)
                 return EPDK_FAIL;
             }
 
-            scene_para->hfrm = msg->h_deswin;//±ÿ–Î‘⁄¥À≥ı ºªØ£¨“ÚŒ™¥∞ø⁄¥¥Ω®Œ¥∑µªÿ£¨∑Ò‘Ú∏√÷µ»‘»ª «ø’
+            scene_para->hfrm = msg->h_deswin;//ÂøÖÈ°ªÂú®Ê≠§ÂàùÂßãÂåñÔºåÂõ†‰∏∫Á™óÂè£ÂàõÂª∫Êú™ËøîÂõûÔºåÂê¶ÂàôËØ•ÂÄº‰ªçÁÑ∂ÊòØÁ©∫
             __sub_show_init(scene_para);
             __sub_show_install_sub_show_update_timmer(scene_para);
             __msg("__sub_show_proc GUI_MSG_CREATE end");
@@ -713,12 +727,12 @@ static __s32 __sub_show_proc(__gui_msg_t *msg)
 
             //            __msg("__sub_show_proc GUI_MSG_TIMER end");
 
-            if (-1 == ret)//Œ¥¥¶¿Ì£¨Ωª∏¯◊”≥°æ∞¥¶¿Ì
+            if (-1 == ret)//Êú™Â§ÑÁêÜÔºå‰∫§ÁªôÂ≠êÂú∫ÊôØÂ§ÑÁêÜ
             {
                 //   __here__;
                 break;
             }
-            else//“—¥¶¿Ì
+            else//Â∑≤Â§ÑÁêÜ
             {
                 //   __here__;
                 return EPDK_OK;
@@ -860,8 +874,7 @@ __s32 movie_sub_show_scene_delete(void *handle)
     }
 
     GUI_LyrWinDelete(scene_para->hlyr);
-    eLIBs_memset(scene_para, 0, sizeof(movie_sub_show_scene_t));//∑¿÷π÷ÿ∏¥ Õ∑≈
+    eLIBs_memset(scene_para, 0, sizeof(movie_sub_show_scene_t));//Èò≤Ê≠¢ÈáçÂ§çÈáäÊîæ
     esMEMS_Mfree(0, scene_para);
     return EPDK_OK;
 }
-

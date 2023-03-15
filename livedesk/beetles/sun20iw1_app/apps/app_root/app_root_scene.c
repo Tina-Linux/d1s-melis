@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File          : app_root_win_scene.c
-* By            : Bayden
-* Func      : app_root applets plugin interface define
-* Version   : v1.0
-* ============================================================================================================
-* 2010-9-28 17:11:20  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "beetles_app.h"
@@ -96,7 +110,7 @@ typedef __s32(*p_app_root_fun)(void *arg);
 #define APP_COM_FLUSH_ID         (APP_ROOT_ID+2)
 
 
-//œÚhwin∑¢ÀÕ“Ï≤Ωœ˚œ¢£¨÷¥––pfun∫Ø ˝
+//ÂêëhwinÂèëÈÄÅÂºÇÊ≠•Ê∂àÊÅØÔºåÊâßË°åpfunÂáΩÊï∞
 static __s32 __app_do_async(H_WIN hwin, __u32 msg_id, p_app_root_fun pfun, void *arg)
 {
     if (0 == hwin)
@@ -120,7 +134,7 @@ static __s32 __app_do_async(H_WIN hwin, __u32 msg_id, p_app_root_fun pfun, void 
     return EPDK_OK;
 }
 
-//œÚhwin∑¢ÀÕsetfocusœ˚œ¢£¨syn Œ™1¥˙±Ì–Ë“™÷±Ω”µ˜”√GUI_WinSetFocusChild°£
+//ÂêëhwinÂèëÈÄÅsetfocusÊ∂àÊÅØÔºåsyn ‰∏∫1‰ª£Ë°®ÈúÄË¶ÅÁõ¥Êé•Ë∞ÉÁî®GUI_WinSetFocusChild„ÄÇ
 static void __app_set_focus_child(H_WIN hwin, __s32 syn)
 {
     if (0 == hwin)
@@ -337,7 +351,7 @@ static void __app_root_create_bg_music(__gui_msg_t *msg)
 }
 
 
-//Ω¯»Î”¶”√÷Æ«∞∞—±≥æ∞…Ë÷√Œ™ƒ¨»œ±≥æ∞
+//ËøõÂÖ•Â∫îÁî®‰πãÂâçÊääËÉåÊôØËÆæÁΩÆ‰∏∫ÈªòËÆ§ËÉåÊôØ
 static void __app_root_change_to_default_bg(void)
 {
     reg_init_para_t *para;
@@ -347,10 +361,10 @@ static void __app_root_change_to_default_bg(void)
     if (para)
     {
         para->bgd_flag_in_main  = gscene_bgd_get_flag();
-        if (EPDK_TRUE == para->bgd_flag_in_main) //µ±«∞ «ƒ¨»œ±≥æ∞£¨‘Ú≤ª◊ˆ»Œ∫Œ ¬«È
+        if (EPDK_TRUE == para->bgd_flag_in_main) //ÂΩìÂâçÊòØÈªòËÆ§ËÉåÊôØÔºåÂàô‰∏çÂÅö‰ªª‰Ωï‰∫ãÊÉÖ
         {
         }
-        else//µ±«∞≤ª «ƒ¨»œ±≥æ∞£¨–ﬁ∏ƒŒ™ƒ¨»œ±≥æ∞
+        else//ÂΩìÂâç‰∏çÊòØÈªòËÆ§ËÉåÊôØÔºå‰øÆÊîπ‰∏∫ÈªòËÆ§ËÉåÊôØ
         {
             gscene_bgd_set_flag(EPDK_TRUE);
             gscene_bgd_refresh();
@@ -422,7 +436,7 @@ static int32_t app_root_command_proc(__gui_msg_t *msg)
                         {
                             gscene_hbar_set_state(HBAR_ST_HIDE);
                             __app_root_change_to_default_bg();
-                            //…æ≥˝∫ÛÃ®“Ù¿÷
+                            //Âà†Èô§ÂêéÂè∞Èü≥‰πê
                             __app_root_delete_bg_music(msg);
                             __log("**********enter fm**********");
                             root_ctrl->root_para->h_parent = msg->h_deswin;
@@ -485,7 +499,7 @@ static int32_t app_root_command_proc(__gui_msg_t *msg)
                             exist = __app_root_is_bg_music_exist(msg, &hmusic);
                             __log("exist = %d",exist);
 
-                            if (1 == exist) //÷ÿΩ®∫ÛÃ®“Ù¿÷
+                            if (1 == exist) //ÈáçÂª∫ÂêéÂè∞Èü≥‰πê
                             {
                                 //ret = app_music_restore(hmusic, root_para->root_type);
                                 ret = app_music_restore(hmusic, root_para);
@@ -535,11 +549,11 @@ static int32_t app_root_command_proc(__gui_msg_t *msg)
                         {
                             gscene_hbar_set_state(HBAR_ST_HIDE);
                             __app_root_change_to_default_bg();
-                            //…æ≥˝∫ÛÃ®“Ù¿÷
+                            //Âà†Èô§ÂêéÂè∞Èü≥‰πê
                             __app_root_delete_bg_music(msg);
                             __log("**********ID_HOME_RECORD**********");
-                            root_ctrl->root_para->root_type = msg->dwReserved;//RAT_USBªÚ’ﬂRAT_TF
-                            root_ctrl->root_para->record_opt = 0;//’˝≥£¬º“Ù
+                            root_ctrl->root_para->root_type = msg->dwReserved;//RAT_USBÊàñËÄÖRAT_TF
+                            root_ctrl->root_para->record_opt = 0;//Ê≠£Â∏∏ÂΩïÈü≥
                             root_ctrl->root_para->h_parent = GUI_WinGetHandFromName(APP_ROOT);
                             root_ctrl->h_app_record =  app_record_create(root_para);
                             GUI_WinSetFocusChild(root_ctrl->h_app_record);
@@ -551,13 +565,13 @@ static int32_t app_root_command_proc(__gui_msg_t *msg)
                         {
                             
                             gscene_hbar_set_state(HBAR_ST_HIDE);
-                            //…æ≥˝∫ÛÃ®“Ù¿÷
+                            //Âà†Èô§ÂêéÂè∞Èü≥‰πê
                             //__app_root_delete_bg_music(msg);
                             __log("**********enter other apps**********");
                             {
                                 __app_root_change_to_default_bg();
                                 __log("**********enter setting**********");
-                                root_ctrl->root_para->setting_opt = 0;//Õ®”√…Ë÷√
+                                root_ctrl->root_para->setting_opt = 0;//ÈÄöÁî®ËÆæÁΩÆ
                                 root_ctrl->root_para->h_parent = GUI_WinGetHandFromName(APP_ROOT);
                                 root_ctrl->h_app_setting =  app_setting_create(root_para);
                                 GUI_WinSetFocusChild(root_ctrl->h_app_setting);
@@ -567,7 +581,7 @@ static int32_t app_root_command_proc(__gui_msg_t *msg)
 
                         case ID_MOVIE_SHORTCUT:
                         {
-                            __app_root_delete_bg_music(msg);//…æ≥˝∫ÛÃ®“Ù¿÷
+                            __app_root_delete_bg_music(msg);//Âà†Èô§ÂêéÂè∞Èü≥‰πê
                             root_para->root_type = msg->dwReserved;
                             root_para->explr_root = msg->dwReserved;
                             root_para->data = 0;
@@ -589,7 +603,7 @@ static int32_t app_root_command_proc(__gui_msg_t *msg)
                             root_para->return_to_explorer_file_list = 0 ;
                             exist = __app_root_is_bg_music_exist(msg, &hmusic);
 
-                            if (1 == exist) //÷ÿΩ®∫ÛÃ®“Ù¿÷
+                            if (1 == exist) //ÈáçÂª∫ÂêéÂè∞Èü≥‰πê
                             {
                                 ret = app_music_get_root_type(hmusic, &root_para->root_type);
 
@@ -768,7 +782,7 @@ static int32_t app_root_command_proc(__gui_msg_t *msg)
 
                         case EXPLR_SW_TO_MOVIE:
                         {
-                            //…æ≥˝∫ÛÃ®“Ù¿÷
+                            //Âà†Èô§ÂêéÂè∞Èü≥‰πê
                             __app_root_delete_bg_music(msg);
                             __log("**********explorer to movie**********");
                             //root_para->root_type = msg->dwReserved;
@@ -781,7 +795,7 @@ static int32_t app_root_command_proc(__gui_msg_t *msg)
 
                         case EXPLR_SW_TO_PHOTO:
                         {
-                            //…æ≥˝∫ÛÃ®“Ù¿÷
+                            //Âà†Èô§ÂêéÂè∞Èü≥‰πê
                             //__app_root_delete_bg_music(msg);
                             __log("**********explorer to photo**********");
                             //root_para->root_type = msg->dwReserved;
@@ -809,7 +823,7 @@ static int32_t app_root_command_proc(__gui_msg_t *msg)
                             root_ctrl->root_para->h_parent = GUI_WinGetHandFromName(APP_ROOT);
                             exist = __app_root_is_bg_music_exist(msg, &hmusic);
 
-                            if (1 == exist) //÷ÿΩ®∫ÛÃ®“Ù¿÷
+                            if (1 == exist) //ÈáçÂª∫ÂêéÂè∞Èü≥‰πê
                             {
                                 //ret = app_music_restore(hmusic, root_para->root_type);
                                 ret = app_music_restore(hmusic, root_para);
@@ -844,7 +858,7 @@ static int32_t app_root_command_proc(__gui_msg_t *msg)
 
                         case EXPLR_SW_TO_EBOOK:
                         {
-                            //…æ≥˝∫ÛÃ®“Ù¿÷
+                            //Âà†Èô§ÂêéÂè∞Èü≥‰πê
                             //__app_root_delete_bg_music(msg);
                             __log("**********explorer to ebook**********");
                             //root_para->root_type = msg->dwReserved;
@@ -864,7 +878,7 @@ static int32_t app_root_command_proc(__gui_msg_t *msg)
                         break;
                     }
 
-                    root_ctrl->h_app_explorer = NULL;//‰Ø¿¿∆˜“—◊‘º∫…æ≥˝
+                    root_ctrl->h_app_explorer = NULL;//ÊµèËßàÂô®Â∑≤Ëá™Â∑±Âà†Èô§
                 }
                 break;
 
@@ -925,7 +939,7 @@ static int32_t app_root_command_proc(__gui_msg_t *msg)
                 {
 #if 0
 
-                    if (MUSICPLAYER_BACKGROUND == msg->dwReserved) //“Ù¿÷∫ÛÃ®£¨≤ª…æ≥˝“Ù¿÷
+                    if (MUSICPLAYER_BACKGROUND == msg->dwReserved) //Èü≥‰πêÂêéÂè∞Ôºå‰∏çÂà†Èô§Èü≥‰πê
                     {
                         __log("music background...");
                     }
@@ -968,12 +982,12 @@ static int32_t app_root_command_proc(__gui_msg_t *msg)
             {
                 case SWITCH_TO_EXPLORER:
                 {
-                    //…æ≥˝∫ÛÃ®“Ù¿÷
+                    //Âà†Èô§ÂêéÂè∞Èü≥‰πê
                     // __app_root_delete_bg_music(msg);
                     __log("**********photo to explorer**********");
                     GUI_ManWinDelete(root_ctrl->h_app_photo);
                     root_ctrl->h_app_photo = 0;
-                    gscene_bgd_set_flag(EPDK_TRUE);
+                    //gscene_bgd_set_flag(EPDK_TRUE);
                     //gscene_bgd_refresh();
                     //__here__;
                     root_para->root_type = root_para->explr_root;
@@ -1020,7 +1034,7 @@ static int32_t app_root_command_proc(__gui_msg_t *msg)
             {
                 case SWITCH_TO_EXPLORER:
                 {
-                    //…æ≥˝∫ÛÃ®“Ù¿÷
+                    //Âà†Èô§ÂêéÂè∞Èü≥‰πê
                     //__app_root_delete_bg_music(msg);
                     __log("**********ebook to explorer**********");
                     GUI_ManWinDelete(root_ctrl->h_app_ebook);
@@ -1075,7 +1089,7 @@ static int32_t app_root_command_proc(__gui_msg_t *msg)
                     root_ctrl->h_app_fm = 0;
                     __app_home_restore(msg);
                     {
-                        //÷ÿ–¬≥ı ºªØ∞¥º¸“Ù
+                        //ÈáçÊñ∞ÂàùÂßãÂåñÊåâÈîÆÈü≥
                         __set_keytone_t state;
                         dsk_keytone_get_state(&state);
                         dsk_keytone_exit();
@@ -1094,15 +1108,15 @@ static int32_t app_root_command_proc(__gui_msg_t *msg)
                             //__here__;
                             GUI_ManWinDelete(root_ctrl->h_app_fm);
                             root_ctrl->h_app_fm = 0;
-                            //__app_root_change_to_default_bg();//’‚¿Ô≤ª «Õ®π˝÷˜ΩÁ√ÊΩ¯»Îµƒ£¨≤ªº«¬ºΩ¯»Îap÷Æ«∞±≥æ∞µƒ◊¥Ã¨°£
+                            //__app_root_change_to_default_bg();//ËøôÈáå‰∏çÊòØÈÄöËøá‰∏ªÁïåÈù¢ËøõÂÖ•ÁöÑÔºå‰∏çËÆ∞ÂΩïËøõÂÖ•ap‰πãÂâçËÉåÊôØÁöÑÁä∂ÊÄÅ„ÄÇ
                             __log("**********FM_SW_TO_RECORD**********");
-                            root_ctrl->root_para->root_type = HIWORD(msg->dwAddData2);//RAT_USBªÚ’ﬂRAT_TF
-                            root_ctrl->root_para->record_opt = 1;//fm¬º“Ù
+                            root_ctrl->root_para->root_type = HIWORD(msg->dwAddData2);//RAT_USBÊàñËÄÖRAT_TF
+                            root_ctrl->root_para->record_opt = 1;//fmÂΩïÈü≥
                             root_ctrl->root_para->h_parent = GUI_WinGetHandFromName(APP_ROOT);
                             root_ctrl->h_app_record =  app_record_create(root_para);
                             GUI_WinSetFocusChild(root_ctrl->h_app_record);
                             {
-                                //÷ÿ–¬≥ı ºªØ∞¥º¸“Ù
+                                //ÈáçÊñ∞ÂàùÂßãÂåñÊåâÈîÆÈü≥
                                 __set_keytone_t state;
                                 dsk_keytone_get_state(&state);
                                 dsk_keytone_exit();
@@ -1148,7 +1162,7 @@ static int32_t app_root_command_proc(__gui_msg_t *msg)
                         case RECORD_SW_TO_FM:
                         {
                             //__here__;
-                            //__app_root_change_to_default_bg();//’‚¿Ô≤ª «Õ®π˝÷˜ΩÁ√ÊΩ¯»Îµƒ£¨≤ªº«¬ºΩ¯»Îap÷Æ«∞±≥æ∞µƒ◊¥Ã¨°£
+                            //__app_root_change_to_default_bg();//ËøôÈáå‰∏çÊòØÈÄöËøá‰∏ªÁïåÈù¢ËøõÂÖ•ÁöÑÔºå‰∏çËÆ∞ÂΩïËøõÂÖ•ap‰πãÂâçËÉåÊôØÁöÑÁä∂ÊÄÅ„ÄÇ
                             GUI_ManWinDelete(root_ctrl->h_app_record);
                             root_ctrl->h_app_record = 0;
                             __log("**********FM_SW_TO_RECORD**********");
@@ -1484,21 +1498,21 @@ static int32_t __app_root_to_audio(root_ctrl_t *para, int32_t rat_root_type)
         return EPDK_FAIL;
     }
 
-    //≤ª“™…æ≥˝∫ÛÃ®“Ù¿÷
+    //‰∏çË¶ÅÂà†Èô§ÂêéÂè∞Èü≥‰πê
     // if(NULL != para->h_app_music
     //    && para->root_para->root_type == rat_root_type)
     //{
     //    __wrn("music alreadly running...");
     //    return EPDK_FAIL;
     //}
-    //Õ‚≤ø“—æ≠À—À˜≤¢…Ë÷√≤•∑≈¡–±Ì
+    //Â§ñÈÉ®Â∑≤ÁªèÊêúÁ¥¢Âπ∂ËÆæÁΩÆÊí≠ÊîæÂàóË°®
     //ret = __app_root_set_playfile(para->quick_root_type);
     //if(EPDK_FAIL == ret)
     //{
     //    __wrn("no media file...");
-    //    return -2;//√ª”–√ΩÃÂŒƒº˛
+    //    return -2;//Ê≤°ÊúâÂ™í‰ΩìÊñá‰ª∂
     //}
-    //»Áπ˚“Ù¿÷¥Ê‘⁄£¨≤¢«“–Ë“™≤•∑≈µƒ≈ÃŒ™µ±«∞≤•∑≈≈Ã£¨‘Ú≤ª“™…æ≥˝∫ÛÃ®“Ù¿÷
+    //Â¶ÇÊûúÈü≥‰πêÂ≠òÂú®ÔºåÂπ∂‰∏îÈúÄË¶ÅÊí≠ÊîæÁöÑÁõò‰∏∫ÂΩìÂâçÊí≠ÊîæÁõòÔºåÂàô‰∏çË¶ÅÂà†Èô§ÂêéÂè∞Èü≥‰πê
     {
         __bool to_delete_music_first;
         to_delete_music_first = EPDK_TRUE;
@@ -1576,22 +1590,22 @@ static int32_t __app_root_to_setting(root_ctrl_t *para)
     if (para->h_app_music)
     {
         para->root_para->multimedia_to_setting = EPDK_TRUE;
-        para->root_para->media_type = 0;//“Ù∆µ
+        para->root_para->media_type = 0;//Èü≥È¢ë
     }
     else if (para->h_app_movie)
     {
         para->root_para->multimedia_to_setting = EPDK_TRUE;
-        para->root_para->media_type = 1;// ”∆µ
+        para->root_para->media_type = 1;//ËßÜÈ¢ë
     }
     else if (para->h_app_ebook)
     {
         para->root_para->multimedia_to_setting = EPDK_TRUE;
-        para->root_para->media_type = 2;//µÁ◊” È
+        para->root_para->media_type = 2;//ÁîµÂ≠ê‰π¶
     }
     else if (para->h_app_photo)
     {
         para->root_para->multimedia_to_setting = EPDK_TRUE;
-        para->root_para->media_type = 3;//Õº∆¨
+        para->root_para->media_type = 3;//ÂõæÁâá
     }
     else
     {
@@ -1815,7 +1829,7 @@ static __bool __app_root_has_external_disk(__u32 type)
 
         if (target.debugenable == EPDK_TRUE)
         {
-            return EPDK_TRUE;  //112350 »Áπ˚ «µ˜ ‘£¨‘Úƒ¨»œŒ™”–Õ‚…Ë
+            return EPDK_TRUE;  //112350 Â¶ÇÊûúÊòØË∞ÉËØïÔºåÂàôÈªòËÆ§‰∏∫ÊúâÂ§ñËÆæ
         }
     }
     #endif
@@ -1895,8 +1909,8 @@ static int32_t  __app_root_get_search_path(rat_type_t rat_root_type, char *searc
     return ret;
 }
 
-//return EPDK_OK, ±Ì æ≥…π¶,
-//return EPDK_FAIL,±Ì æ≈Ã∑˚÷–√ª”– ”∆µ\“Ù∆µŒƒº˛,‘Ú∑µªÿµΩ‰Ø¿¿∆˜,∏Ê÷™øÕªß√ª”–Œƒº˛
+//return EPDK_OK, Ë°®Á§∫ÊàêÂäü,
+//return EPDK_FAIL,Ë°®Á§∫ÁõòÁ¨¶‰∏≠Ê≤°ÊúâËßÜÈ¢ë\Èü≥È¢ëÊñá‰ª∂,ÂàôËøîÂõûÂà∞ÊµèËßàÂô®,ÂëäÁü•ÂÆ¢Êà∑Ê≤°ÊúâÊñá‰ª∂
 static int32_t __app_root_set_playfile(rat_type_t rat_root_type, rat_media_type_t rat_media_type)
 {
     char        file_path[RAT_MAX_FULL_PATH_LEN];
@@ -2009,14 +2023,14 @@ static int32_t __app_root_set_playfile(rat_type_t rat_root_type, rat_media_type_
 
         ret     = eLIBs_strcmp(file_path, last_file_path);
 
-        if (ret == 0)       //œ‡µ»,‘Ú≤•∑≈…œ“ª¥ŒµƒŒƒº˛
+        if (ret == 0)       //Áõ∏Á≠â,ÂàôÊí≠Êîæ‰∏ä‰∏ÄÊ¨°ÁöÑÊñá‰ª∂
         {
             rat_set_file_for_play(hrat, last_file_path);
             return EPDK_OK;
         }
     }
 
-    ret = rat_get_item_info_by_index(hrat, 0, &ItemInfo);   //÷±Ω”≤•∑≈µ⁄“ª ◊
+    ret = rat_get_item_info_by_index(hrat, 0, &ItemInfo);   //Áõ¥Êé•Êí≠ÊîæÁ¨¨‰∏ÄÈ¶ñ
 
     if (ret == EPDK_OK)
     {
@@ -2096,7 +2110,7 @@ static rat_media_type_t __app_root_get_rat_media_type(int32_t reg_media_type)
 }
 
 
-//∏˘æ›≈Ã∑˚ªÒ»°∑÷«¯√˚
+//Ê†πÊçÆÁõòÁ¨¶Ëé∑ÂèñÂàÜÂå∫Âêç
 int32_t __app_root_get_reg_storage_type(unsigned char root)
 {
     int32_t     i;
@@ -2123,7 +2137,7 @@ int32_t __app_root_get_reg_storage_type(unsigned char root)
 
             if (0 == eLIBs_strnicmp(disk_name[i], cur_disk_name, 1))
             {
-                return 0; //SD ø®
+                return 0; //SD Âç°
             }
 
             i++;
@@ -2148,7 +2162,7 @@ int32_t __app_root_get_reg_storage_type(unsigned char root)
 
             if (0 == eLIBs_strnicmp(disk_name[i], cur_disk_name, 1))
             {
-                return 1; //U ≈Ã
+                return 1; //U Áõò
             }
 
             i++;
@@ -2163,11 +2177,11 @@ int32_t __app_root_get_reg_storage_type(unsigned char root)
 }
 
 
-//√ΩÃÂÃΩ≤‚
-//init_media_type:”√”⁄¥Ê∑≈ÃΩ≤‚µ√µΩµƒ√ΩÃÂ¿‡–Õ0:“Ù¿÷ 1: ”∆µ
-//init_storage_type:”√”⁄¥Ê∑≈ÃΩ≤‚µ√µΩµƒ√ΩÃÂΩÈ÷ ¿‡–Õ0:ø® 1:u≈Ã
-//intent:ÃΩ≤‚∑Ω Ω
-//∑µªÿ:EPDK_OK£¨ÃΩ≤‚≥…π¶£¨EPDK_FAIL£¨ÃΩ≤‚ ß∞‹£¨*err_code¥Ê∑≈¥ÌŒÛ¥˙∫≈
+//Â™í‰ΩìÊé¢Êµã
+//init_media_type:Áî®‰∫éÂ≠òÊîæÊé¢ÊµãÂæóÂà∞ÁöÑÂ™í‰ΩìÁ±ªÂûã0:Èü≥‰πê 1:ËßÜÈ¢ë
+//init_storage_type:Áî®‰∫éÂ≠òÊîæÊé¢ÊµãÂæóÂà∞ÁöÑÂ™í‰Ωì‰ªãË¥®Á±ªÂûã0:Âç° 1:uÁõò
+//intent:Êé¢ÊµãÊñπÂºè
+//ËøîÂõû:EPDK_OKÔºåÊé¢ÊµãÊàêÂäüÔºåEPDK_FAILÔºåÊé¢ÊµãÂ§±Ë¥•Ôºå*err_codeÂ≠òÊîæÈîôËØØ‰ª£Âè∑
 static int32_t app_root_prob_media_file_for_play(root_ctrl_t *root_ctrl
         , int32_t *init_media_type
         , int32_t *init_storage_type
@@ -2244,7 +2258,7 @@ static int32_t app_root_prob_media_file_for_play(root_ctrl_t *root_ctrl
 
         ret = __app_root_get_search_path(rat_root_type, path);
 
-        if (EPDK_FAIL == ret) //Œﬁ¥≈≈Ã
+        if (EPDK_FAIL == ret) //Êó†Á£ÅÁõò
         {
             __wrn("no such disk, reg_storage_type=%d", reg_storage_type);
 
@@ -2316,7 +2330,7 @@ static int32_t app_root_prob_media_file_for_play(root_ctrl_t *root_ctrl
             }
         }
 
-        //ÃΩ≤‚≥…π¶
+        //Êé¢ÊµãÊàêÂäü
         __wrn("search media file success, media_cnt=%d", media_cnt);
         break;
 next_storage:
@@ -2329,7 +2343,7 @@ next_storage:
             reg_storage_type = 0;
         }
 
-        //º∆À„µ±«∞≤•∑≈≈Ã∑˚£¨≈Ã∑˚«–ªª≤ªª·«–ªªµΩµ±«∞≈Ã∑˚
+        //ËÆ°ÁÆóÂΩìÂâçÊí≠ÊîæÁõòÁ¨¶ÔºåÁõòÁ¨¶ÂàáÊç¢‰∏ç‰ºöÂàáÊç¢Âà∞ÂΩìÂâçÁõòÁ¨¶
         cur_reg_root_type = para->cur_play_storage;
         __wrn("reg_storage_type=%d", reg_storage_type);
         __wrn("cur_reg_root_type=%d", cur_reg_root_type);
@@ -2385,7 +2399,7 @@ next_media_type:
             if (EPDK_FALSE == bhas_disk)
             {
                 __wrn("EPDK_FALSE == bhas_disk, may not run here...");
-                goto no_storage;//“ª∞„≤ªª·≈‹µΩ’‚¿Ô
+                goto no_storage;//‰∏ÄËà¨‰∏ç‰ºöË∑ëÂà∞ËøôÈáå
             }
             else
             {
@@ -2504,10 +2518,10 @@ static __s32 app_root_show_dlg(H_WIN hwin, __s32 text_id, __s32 title_id, __s32 
     return 0;
 }
 
-//œ‘ æ¥ÌŒÛ–≈œ¢
+//ÊòæÁ§∫ÈîôËØØ‰ø°ÊÅØ
 //bypass_flag :
-//          1 => œ‘ æ"USB “Ù∆µ" "SD  ”∆µ"µ»µØ≥ˆ∂‘ª∞øÚ
-//          0 => ≤ªœ‘ æµØ≥ˆ∂‘ª∞øÚ
+//          1 => ÊòæÁ§∫"USB Èü≥È¢ë" "SD ËßÜÈ¢ë"Á≠âÂºπÂá∫ÂØπËØùÊ°Ü
+//          0 => ‰∏çÊòæÁ§∫ÂºπÂá∫ÂØπËØùÊ°Ü
 static int32_t app_root_show_err_info(root_ctrl_t *root_ctrl
                                     , int32_t init_media_type
                                     , int32_t init_storage_type
@@ -2930,11 +2944,11 @@ static int32_t __app_root_get_reg_storage_type2(rat_type_t rat_root_type)
     return reg_root_type;
 }
 
-//≈Ã∑˚ÃΩ≤‚
-//init_media_type:”√”⁄¥Ê∑≈ÃΩ≤‚µ√µΩµƒ√ΩÃÂ¿‡–Õ
-//init_storage_type:”√”⁄¥Ê∑≈ÃΩ≤‚µ√µΩµƒ√ΩÃÂΩÈ÷ ¿‡–Õ
-//intent:ÃΩ≤‚∑Ω Ω
-//∑µªÿ:EPDK_OK£¨ÃΩ≤‚≥…π¶£¨EPDK_FAIL£¨ÃΩ≤‚ ß∞‹£¨*err_code¥Ê∑≈¥ÌŒÛ¥˙∫≈
+//ÁõòÁ¨¶Êé¢Êµã
+//init_media_type:Áî®‰∫éÂ≠òÊîæÊé¢ÊµãÂæóÂà∞ÁöÑÂ™í‰ΩìÁ±ªÂûã
+//init_storage_type:Áî®‰∫éÂ≠òÊîæÊé¢ÊµãÂæóÂà∞ÁöÑÂ™í‰Ωì‰ªãË¥®Á±ªÂûã
+//intent:Êé¢ÊµãÊñπÂºè
+//ËøîÂõû:EPDK_OKÔºåÊé¢ÊµãÊàêÂäüÔºåEPDK_FAILÔºåÊé¢ÊµãÂ§±Ë¥•Ôºå*err_codeÂ≠òÊîæÈîôËØØ‰ª£Âè∑
 static int32_t app_root_prob_storage_type_for_play(root_ctrl_t *root_ctrl
         , int32_t *init_media_type
         , int32_t *init_storage_type
@@ -2998,7 +3012,7 @@ static int32_t app_root_prob_storage_type_for_play(root_ctrl_t *root_ctrl
                 int32_t     ret;
                 char        disk_name[RAT_MAX_PARTITION][4];
 
-                if (0 == (*init_storage_type))  //±ªº«“‰µƒ√ΩÃÂΩÈ÷  «TF
+                if (0 == (*init_storage_type))  //Ë¢´ËÆ∞ÂøÜÁöÑÂ™í‰Ωì‰ªãË¥®ÊòØTF
                 {
                     __wrn("*init_storage_type = sd ");
 
@@ -3007,13 +3021,13 @@ static int32_t app_root_prob_storage_type_for_play(root_ctrl_t *root_ctrl
                         if (disk_name[0][0])
                         {
                         }
-                        else  //TF  ≤ª¥Ê‘⁄
+                        else  //TF  ‰∏çÂ≠òÂú®
                         {
                             __wrn("sd no plugin ");
 
                             if (EPDK_OK == rat_get_partition_name(RAT_USB_DISK, disk_name, 0))
                             {
-                                if (disk_name[0][0]) //USB  ¥Ê‘⁄
+                                if (disk_name[0][0]) //USB  Â≠òÂú®
                                 {
                                     __wrn("usb plugin ");
                                     *init_storage_type = 1;
@@ -3021,13 +3035,13 @@ static int32_t app_root_prob_storage_type_for_play(root_ctrl_t *root_ctrl
                             }
                         }
                     }
-                    else  //TF  ≤ª¥Ê‘⁄
+                    else  //TF  ‰∏çÂ≠òÂú®
                     {
                         __wrn("sd no plugin ");
 
                         if (EPDK_OK == rat_get_partition_name(RAT_USB_DISK, disk_name, 0))
                         {
-                            if (disk_name[0][0]) //USB  ¥Ê‘⁄
+                            if (disk_name[0][0]) //USB  Â≠òÂú®
                             {
                                 __wrn("usb plugin ");
                                 *init_storage_type = 1;
@@ -3035,7 +3049,7 @@ static int32_t app_root_prob_storage_type_for_play(root_ctrl_t *root_ctrl
                         }
                     }
                 }
-                else if (1 == (*init_storage_type))   //±ªº«“‰µƒ√ΩÃÂΩÈ÷  «USB
+                else if (1 == (*init_storage_type))   //Ë¢´ËÆ∞ÂøÜÁöÑÂ™í‰Ωì‰ªãË¥®ÊòØUSB
                 {
                     __wrn("*init_storage_type = usb ");
 
@@ -3044,13 +3058,13 @@ static int32_t app_root_prob_storage_type_for_play(root_ctrl_t *root_ctrl
                         if (disk_name[0][0])
                         {
                         }
-                        else  //USB  ≤ª¥Ê‘⁄
+                        else  //USB  ‰∏çÂ≠òÂú®
                         {
                             __wrn("usb not plugin ");
 
                             if (EPDK_OK == rat_get_partition_name(RAT_SD_CARD, disk_name, 0))
                             {
-                                if (disk_name[0][0]) //TF  ¥Ê‘⁄
+                                if (disk_name[0][0]) //TF  Â≠òÂú®
                                 {
                                     __wrn("sd plugin ");
                                     *init_storage_type = 0;
@@ -3064,7 +3078,7 @@ static int32_t app_root_prob_storage_type_for_play(root_ctrl_t *root_ctrl
 
                         if (EPDK_OK == rat_get_partition_name(RAT_SD_CARD, disk_name, 0))
                         {
-                            if (disk_name[0][0]) //TF  ¥Ê‘⁄
+                            if (disk_name[0][0]) //TF  Â≠òÂú®
                             {
                                 __wrn("sd plugin ");
                                 *init_storage_type = 0;
@@ -3085,9 +3099,9 @@ static int32_t app_root_prob_storage_type_for_play(root_ctrl_t *root_ctrl
 
         switch (*init_media_type)
         {
-            case 0://“Ù∆µ
+            case 0://Èü≥È¢ë
             {
-                //music“—æ≠‘À––
+                //musicÂ∑≤ÁªèËøêË°å
                 if (root_ctrl->h_app_music)
                 {
                     __wrn("music alreadly running");
@@ -3099,7 +3113,7 @@ static int32_t app_root_prob_storage_type_for_play(root_ctrl_t *root_ctrl
                 break;
             }
 
-            case 1:// ”∆µ
+            case 1://ËßÜÈ¢ë
             {
                 if (root_ctrl->h_app_movie)
                 {
@@ -3112,7 +3126,7 @@ static int32_t app_root_prob_storage_type_for_play(root_ctrl_t *root_ctrl
                 break;
             }
 
-            case 2://µÁ◊” È
+            case 2://ÁîµÂ≠ê‰π¶
             {
                 if (root_ctrl->h_app_ebook)
                 {
@@ -3125,7 +3139,7 @@ static int32_t app_root_prob_storage_type_for_play(root_ctrl_t *root_ctrl
                 break;
             }
 
-            case 3://Õº∆¨
+            case 3://ÂõæÁâá
             {
                 if (root_ctrl->h_app_photo)
                 {
@@ -3152,9 +3166,9 @@ static int32_t app_root_prob_storage_type_for_play(root_ctrl_t *root_ctrl
 
         switch (*init_media_type)
         {
-            case 0://“Ù∆µ
+            case 0://Èü≥È¢ë
             {
-                //music…–Œ¥‘À––
+                //musicÂ∞öÊú™ËøêË°å
                 if (!root_ctrl->h_app_music)
                 {
                     __wrn("music not running");
@@ -3166,9 +3180,9 @@ static int32_t app_root_prob_storage_type_for_play(root_ctrl_t *root_ctrl
                 break;
             }
 
-            case 1:// ”∆µ
+            case 1://ËßÜÈ¢ë
             {
-                // ”∆µ…–Œ¥‘À––
+                //ËßÜÈ¢ëÂ∞öÊú™ËøêË°å
                 if (!root_ctrl->h_app_movie)
                 {
                     __wrn("movie not running");
@@ -3180,9 +3194,9 @@ static int32_t app_root_prob_storage_type_for_play(root_ctrl_t *root_ctrl
                 break;
             }
 
-            case 2://µÁ◊” È
+            case 2://ÁîµÂ≠ê‰π¶
             {
-                //µÁ◊” È…–Œ¥‘À––
+                //ÁîµÂ≠ê‰π¶Â∞öÊú™ËøêË°å
                 if (!root_ctrl->h_app_ebook)
                 {
                     __wrn("ebook not running");
@@ -3194,9 +3208,9 @@ static int32_t app_root_prob_storage_type_for_play(root_ctrl_t *root_ctrl
                 break;
             }
 
-            case 3://Õº∆¨
+            case 3://ÂõæÁâá
             {
-                //Õº∆¨…–Œ¥‘À––
+                //ÂõæÁâáÂ∞öÊú™ËøêË°å
                 if (!root_ctrl->h_app_photo)
                 {
                     __wrn("photo not running");
@@ -3253,7 +3267,7 @@ from_next_storage:
 
     __wrn("app_root_prob_storage_type_for_play: from_next_storage");
     {
-        //«–ªª≈Ã∑˚
+        //ÂàáÊç¢ÁõòÁ¨¶
         int32_t             ret;
         HRAT                hrat;
         char                path[RAT_MAX_FULL_PATH_LEN];
@@ -3311,7 +3325,7 @@ from_next_storage:
 
         ret = __app_root_get_search_path(rat_root_type, path);
 
-        if (EPDK_FAIL == ret) //Œﬁ¥≈≈Ã
+        if (EPDK_FAIL == ret) //Êó†Á£ÅÁõò
         {
             __wrn("no such reg root type:%d", to_root_type);
             goto no_storage;
@@ -3346,10 +3360,10 @@ from_nearest_storage:
     ;
     __wrn("app_root_prob_storage_type_for_play: from_nearest_storage");
     {
-        //ªÒ»°µ±«∞≤•∑≈≈Ã
+        //Ëé∑ÂèñÂΩìÂâçÊí≠ÊîæÁõò
         __wrn("try to get current playing root type");
 
-        if (-1 != para->cur_play_storage) //»Áπ˚µ±«∞”–≈Ã∑˚’˝‘⁄≤•∑≈
+        if (-1 != para->cur_play_storage) //Â¶ÇÊûúÂΩìÂâçÊúâÁõòÁ¨¶Ê≠£Âú®Êí≠Êîæ
         {
             if (init_storage_type)
             {
@@ -3360,7 +3374,7 @@ from_nearest_storage:
             __wrn("current playing reg root type is:%d", para->cur_play_storage);
             goto ok;
         }
-        else//ªÒ»°◊ÓΩ¸≤•∑≈∏√apµƒ≈Ã
+        else//Ëé∑ÂèñÊúÄËøëÊí≠ÊîæËØ•apÁöÑÁõò
         {
             __wrn("current playing root type is empty...");
 
@@ -3454,10 +3468,10 @@ fail:
 
 
 //************************************************************************
-//bHideHBar:  1 => “˛≤ÿ∂•≤ø◊¥Ã¨¿∏,  0=>œ‘ æ∂•≤ø◊¥Ã¨¿∏
+//bHideHBar:  1 => ÈöêËóèÈ°∂ÈÉ®Áä∂ÊÄÅÊ†è,  0=>ÊòæÁ§∫È°∂ÈÉ®Áä∂ÊÄÅÊ†è
 //showdlg_bypass_flag :
-//                      1 => œ‘ æ"USB “Ù∆µ" "SD  ”∆µ"µ»µØ≥ˆ∂‘ª∞øÚ
-//                      0 => ≤ªœ‘ æµØ≥ˆ∂‘ª∞øÚ
+//                      1 => ÊòæÁ§∫"USB Èü≥È¢ë" "SD ËßÜÈ¢ë"Á≠âÂºπÂá∫ÂØπËØùÊ°Ü
+//                      0 => ‰∏çÊòæÁ§∫ÂºπÂá∫ÂØπËØùÊ°Ü
 //************************************************************************
 static int32_t app_root_shortcut_process(root_ctrl_t *root_ctrl, app_root_prob_intent_t intent, int32_t reg_media_type, int32_t reg_storage_type, __bool bHideHBar, __s32 showdlg_bypass_flag)
 {
@@ -3476,7 +3490,7 @@ static int32_t app_root_shortcut_process(root_ctrl_t *root_ctrl, app_root_prob_i
     __wrn("***********app_root_shortcut_process, intent=%d, reg_media_type=%d, reg_storage_type=%d***********", intent, reg_media_type, reg_storage_type);
     __log("===app_root_shortcut_process===");
 
-    //ºÏ≤È¥¶¿Ì¿‡–Õ
+    //Ê£ÄÊü•Â§ÑÁêÜÁ±ªÂûã
     if (intent >= app_root_prob_intent_max)
     {
         __wrn("intent type error...");
@@ -3484,7 +3498,7 @@ static int32_t app_root_shortcut_process(root_ctrl_t *root_ctrl, app_root_prob_i
     }
 
     {
-        //»Áπ˚¿‡–Õ’˝»∑£¨‘ÚΩ¯––≈Ã∑˚ÃΩ≤‚
+        //Â¶ÇÊûúÁ±ªÂûãÊ≠£Á°ÆÔºåÂàôËøõË°åÁõòÁ¨¶Êé¢Êµã
         ret = app_root_prob_storage_type_for_play(root_ctrl, &reg_media_type, &reg_storage_type, intent, &err_code);
 
         //reg_root_para->cur_storage  = reg_storage_type; // 30234384
@@ -3493,11 +3507,11 @@ static int32_t app_root_shortcut_process(root_ctrl_t *root_ctrl, app_root_prob_i
 
         //eLIBs_printf("(%s)L%d: root_type = %d",__FILE__,__LINE__,reg_storage_type);
 
-        if (1) //≈Ã∑˚ÃΩ≤‚∫Ûµƒ‘§¥¶¿Ì
+        if (1) //ÁõòÁ¨¶Êé¢ÊµãÂêéÁöÑÈ¢ÑÂ§ÑÁêÜ
         {
             if (app_root_prob_already_running == err_code)
             {
-                if (0 == reg_media_type) //»Áπ˚ «∫ÛÃ®“Ù¿÷£¨‘Ú÷±Ω”ª÷∏¥≤•∑≈
+                if (0 == reg_media_type) //Â¶ÇÊûúÊòØÂêéÂè∞Èü≥‰πêÔºåÂàôÁõ¥Êé•ÊÅ¢Â§çÊí≠Êîæ
                 {
                     if (root_ctrl->h_app_music)
                     {
@@ -3505,7 +3519,7 @@ static int32_t app_root_shortcut_process(root_ctrl_t *root_ctrl, app_root_prob_i
 
                         mode    = app_music_get_mode(root_ctrl->h_app_music);
 
-                        if (-1 == reg_storage_type) //»Áπ˚µ⁄“ª¥ŒÃΩ≤‚≈Ã∑˚ ß∞‹£¨‘ÚªÒ»°µ±«∞≤•∑≈≈Ã∑˚
+                        if (-1 == reg_storage_type) //Â¶ÇÊûúÁ¨¨‰∏ÄÊ¨°Êé¢ÊµãÁõòÁ¨¶Â§±Ë¥•ÔºåÂàôËé∑ÂèñÂΩìÂâçÊí≠ÊîæÁõòÁ¨¶
                         {
                             int32_t     ret;
                             unsigned long    rat_root_type;
@@ -3532,15 +3546,15 @@ static int32_t app_root_shortcut_process(root_ctrl_t *root_ctrl, app_root_prob_i
         __wrn("***********after app_root_prob_storage_type_for_play, intent=%d, reg_media_type=%d, reg_storage_type=%d, err_code=%d***********", 
                 intent, reg_media_type, reg_storage_type, err_code);
 
-        if (EPDK_OK != ret) //Œﬁœ‡Õ¨¿‡–Õ√ΩÃÂ, «–ªª∆‰À˚¿‡–Õ
+        if (EPDK_OK != ret) //Êó†Áõ∏ÂêåÁ±ªÂûãÂ™í‰Ωì, ÂàáÊç¢ÂÖ∂‰ªñÁ±ªÂûã
         {
-            if (app_root_prob_no_correspond_storage != err_code)    //Œﬁ≈ÃŒﬁ–Ë÷¥––
+            if (app_root_prob_no_correspond_storage != err_code)    //Êó†ÁõòÊó†ÈúÄÊâßË°å
             {
                 if (app_root_prob_intent_switch_storage == intent && (app_root_prob_no_meida_file == err_code || app_root_prob_not_running == err_code))
                 {
                     intent = app_root_prob_intent_plugin_for_play;
 
-                    if (app_root_prob_not_running == err_code)  //not run◊¥Ã¨œ¬,√ª”–«–ªª¥Ê¥¢¿‡–Õ
+                    if (app_root_prob_not_running == err_code)  //not runÁä∂ÊÄÅ‰∏ã,Ê≤°ÊúâÂàáÊç¢Â≠òÂÇ®Á±ªÂûã
                     {
                         if (0 == reg_storage_type)
                         {
@@ -3576,7 +3590,7 @@ static int32_t app_root_shortcut_process(root_ctrl_t *root_ctrl, app_root_prob_i
             goto err;
         }
 
-        //ÃΩ≤‚≥…π¶£¨ºÃ–¯Ω¯––√ΩÃÂÃΩ≤‚
+        //Êé¢ÊµãÊàêÂäüÔºåÁªßÁª≠ËøõË°åÂ™í‰ΩìÊé¢Êµã
         ret = app_root_prob_media_file_for_play(root_ctrl, &reg_media_type, &reg_storage_type, intent, &err_code);
 
         __wrn("***********after app_root_prob_media_file_for_play, intent=%d, reg_media_type=%d, reg_storage_type=%d, err_code=%d, ret=%d***********",
@@ -3601,7 +3615,7 @@ static int32_t app_root_shortcut_process(root_ctrl_t *root_ctrl, app_root_prob_i
 set_play_file:
         ;
         {
-            //ÃΩ≤‚≥…π¶£¨…Ë÷√≤•∑≈¡–±Ì
+            //Êé¢ÊµãÊàêÂäüÔºåËÆæÁΩÆÊí≠ÊîæÂàóË°®
             int32_t             ret;
             rat_type_t          rat_root_type;
             rat_media_type_t    rat_media_type;
@@ -3634,7 +3648,7 @@ set_play_file:
             __wrn("set file for play success...");
         }
         //begin_play:;
-        //ÃΩ≤‚≥…π¶£¨‘Úø™ º≤•∑≈
+        //Êé¢ÊµãÊàêÂäüÔºåÂàôÂºÄÂßãÊí≠Êîæ
         {
             rat_type_t      rat_root_type;
 
@@ -3687,7 +3701,7 @@ err:
 
 static int32_t app_root_check_volume_key(__gui_msg_t *msg)
 {
-    int32_t         bok;// ∞¥º¸œ˚œ¢ «∑Ò“—¥¶¿ÌÕÍ±œ£¨-1¥˙±ÌÕ˘œ¬¥´£¨∑Ò‘Ú÷±Ω”¿πΩÿ
+    int32_t         bok;// ÊåâÈîÆÊ∂àÊÅØÊòØÂê¶Â∑≤Â§ÑÁêÜÂÆåÊØïÔºå-1‰ª£Ë°®ÂæÄ‰∏ã‰º†ÔºåÂê¶ÂàôÁõ¥Êé•Êã¶Êà™
     static int32_t  longdown_cnt = 0;
     static int32_t  last_key = -1;
     root_ctrl_t     *root_ctrl = NULL;
@@ -3716,7 +3730,7 @@ static int32_t app_root_check_volume_key(__gui_msg_t *msg)
                )
             {
                 gscene_hbar_update_text(HBAR_VOLUME_PAINT);
-                gscene_hbar_set_state(HBAR_ST_SHOW); //(HBAR_ST_SHOW_WIDTH_VOLUME); //‘⁄karaoke÷–≤ª»√œ‘ æ“Ù¡øÃı
+                gscene_hbar_set_state(HBAR_ST_SHOW); //(HBAR_ST_SHOW_WIDTH_VOLUME); //Âú®karaoke‰∏≠‰∏çËÆ©ÊòæÁ§∫Èü≥ÈáèÊù°
             }
         }
         else if (GUI_MSG_KEY_VDEC == msg->dwAddData1 || GUI_MSG_KEY_LONGVDEC == msg->dwAddData1)
@@ -3740,7 +3754,7 @@ static int32_t app_root_check_volume_key(__gui_msg_t *msg)
         }
     }
 
-    //   end:;//øÏΩ›≤Ÿ◊˜¥¶¿ÌÕÍ±œ
+    //   end:;//Âø´Êç∑Êìç‰ΩúÂ§ÑÁêÜÂÆåÊØï
     if (KEY_UP_ACTION == msg->dwAddData2)
     {
         last_key = -1;
@@ -3751,7 +3765,7 @@ static int32_t app_root_check_volume_key(__gui_msg_t *msg)
         last_key = msg->dwAddData1;
     }
 
-    //≈–∂œ «∑Ò–Ë“™π˝¬ÀøÏΩ›º¸
+    //Âà§Êñ≠ÊòØÂê¶ÈúÄË¶ÅËøáÊª§Âø´Êç∑ÈîÆ
     bok = EPDK_FAIL;
 
     switch (msg->dwAddData1)
@@ -3812,7 +3826,7 @@ static __bool _app_root_has_tow_disk(void)
 
 static int32_t app_root_check_short_key(__gui_msg_t *msg)
 {
-    int32_t         bok;// ∞¥º¸œ˚œ¢ «∑Ò“—¥¶¿ÌÕÍ±œ£¨-1¥˙±ÌÕ˘œ¬¥´£¨∑Ò‘Ú÷±Ω”¿πΩÿ
+    int32_t         bok;// ÊåâÈîÆÊ∂àÊÅØÊòØÂê¶Â∑≤Â§ÑÁêÜÂÆåÊØïÔºå-1‰ª£Ë°®ÂæÄ‰∏ã‰º†ÔºåÂê¶ÂàôÁõ¥Êé•Êã¶Êà™
     int32_t         ret;
     static int32_t  last_key = -1;
     root_ctrl_t     *root_ctrl;
@@ -3828,7 +3842,7 @@ static int32_t app_root_check_short_key(__gui_msg_t *msg)
     if (ret == EPDK_OK)
     {
     	__inf("return EPDK_FAIL");
-        return EPDK_FAIL;//Õ˘œ¬¥´£¨µÁ”∞°¢µÁ ”–Ë“™œ˚“˛headbar
+        return EPDK_FAIL;//ÂæÄ‰∏ã‰º†ÔºåÁîµÂΩ±„ÄÅÁîµËßÜÈúÄË¶ÅÊ∂àÈöêheadbar
     }
 
     para    = (reg_root_para_t *)dsk_reg_get_para_by_app(REG_APP_ROOT);
@@ -3844,7 +3858,7 @@ static int32_t app_root_check_short_key(__gui_msg_t *msg)
         return EPDK_FAIL;
     }
 
-    //¥¶¿Ìpower∞¥º¸ªÿµΩ÷˜ΩÁ√ÊΩ¯»Îstandbyƒ£ Ω
+    //Â§ÑÁêÜpowerÊåâÈîÆÂõûÂà∞‰∏ªÁïåÈù¢ËøõÂÖ•standbyÊ®°Âºè
     if (KEY_UP_ACTION == msg->dwAddData2)
     {
 
@@ -3898,7 +3912,7 @@ static int32_t app_root_check_short_key(__gui_msg_t *msg)
 	if (KEY_DOWN_ACTION == msg->dwAddData2)
 	{
 
-		if (GUI_MSG_KEY_TF_USB == msg->dwAddData1)//«ø––«–ªª≈Ã∑˚
+		if (GUI_MSG_KEY_TF_USB == msg->dwAddData1)//Âº∫Ë°åÂàáÊç¢ÁõòÁ¨¶
 		{
 			__u32 ret1;
 			__u32 dev_type;
@@ -3954,7 +3968,7 @@ static int32_t app_root_check_short_key(__gui_msg_t *msg)
 		}
 	}
 #endif
-    //¥¶¿ÌFMøÏΩ›
+    //Â§ÑÁêÜFMÂø´Êç∑
     if (KEY_DOWN_ACTION == msg->dwAddData2)
     {
 
@@ -3985,9 +3999,9 @@ static int32_t app_root_check_short_key(__gui_msg_t *msg)
         }
     }
 
-    //¥¶¿Ì“Ù∆µ∫Õ ”∆µøÏΩ›
+    //Â§ÑÁêÜÈü≥È¢ëÂíåËßÜÈ¢ëÂø´Êç∑
     {
-        //µ√µΩ√ΩÃÂ¿‡–Õ∫Õ¥¶¿Ì∑Ω Ω
+        //ÂæóÂà∞Â™í‰ΩìÁ±ªÂûãÂíåÂ§ÑÁêÜÊñπÂºè
         intent          = app_root_prob_intent_unknown;
         media_type      = -1;
         storage_type    = -1;
@@ -3998,22 +4012,22 @@ static int32_t app_root_check_short_key(__gui_msg_t *msg)
             {
                 __log("===GUI_MSG_KEY_AUDIO===");
                 intent      = app_root_prob_intent_switch_media;
-                media_type  = 0;//“Ù∆µ
+                media_type  = 0;//Èü≥È¢ë
             }
             else if (GUI_MSG_KEY_EBOOK == msg->dwAddData1)
             {
                 intent      = app_root_prob_intent_switch_media;
-                media_type  = 2;//µÁ◊” È
+                media_type  = 2;//ÁîµÂ≠ê‰π¶
             }
             else if (GUI_MSG_KEY_VIDEO == msg->dwAddData1)
             {
                 intent      = app_root_prob_intent_switch_media;
-                media_type  = 1;// ”∆µ
+                media_type  = 1;//ËßÜÈ¢ë
             }
             else if (GUI_MSG_KEY_PHOTO == msg->dwAddData1)
             {
                 intent      = app_root_prob_intent_switch_media;
-                media_type  = 3;//Õº∆¨
+                media_type  = 3;//ÂõæÁâá
             }
         }
     }
@@ -4032,7 +4046,7 @@ static int32_t app_root_check_short_key(__gui_msg_t *msg)
         }
     }
 
-end:;//øÏΩ›≤Ÿ◊˜¥¶¿ÌÕÍ±œ
+end:;//Âø´Êç∑Êìç‰ΩúÂ§ÑÁêÜÂÆåÊØï
 
     if (KEY_UP_ACTION == msg->dwAddData2)
     {
@@ -4044,7 +4058,7 @@ end:;//øÏΩ›≤Ÿ◊˜¥¶¿ÌÕÍ±œ
         last_key        = msg->dwAddData1;
     }
 
-    //≈–∂œ «∑Ò–Ë“™π˝¬ÀøÏΩ›º¸
+    //Âà§Êñ≠ÊòØÂê¶ÈúÄË¶ÅËøáÊª§Âø´Êç∑ÈîÆ
     bok     = EPDK_FAIL;
 
     switch (msg->dwAddData1)
@@ -4269,7 +4283,7 @@ int32_t app_root_win_proc(__gui_msg_t *msg)
             reg_root_para   = (reg_root_para_t *)dsk_reg_get_para_by_app(REG_APP_ROOT);
 
 #if defined(CONFIG_SUNXI_QA_TEST)
-			return EPDK_OK;//qa≤‚ ‘≤ª“™ø™ª˙◊‘∂Ø≤•∑≈
+			return EPDK_OK;//qaÊµãËØï‰∏çË¶ÅÂºÄÊú∫Ëá™Âä®Êí≠Êîæ
 			
 #endif
 
@@ -4370,7 +4384,7 @@ int32_t app_root_win_proc(__gui_msg_t *msg)
 
 
 
-/* ¥¥Ω®∏˘¥∞ø⁄ */
+/* ÂàõÂª∫Ê†πÁ™óÂè£ */
 H_WIN app_root_wincreate(Activity *activity)
 {
     H_WIN                       hManWin;
@@ -4394,4 +4408,3 @@ H_WIN app_root_wincreate(Activity *activity)
 
     return hManWin;
 }
-

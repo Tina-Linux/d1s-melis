@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : dtv_setting_antenna_general.c
-* By        : hot.lee
-* Func      : desk main thread
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-20 8:51:52  hot.lee  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY鈥橲 TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS鈥橲DK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY鈥橲 TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "dtv_setting_antenna.h"
@@ -203,7 +217,7 @@ static void dtv_setting_antenna_LISTBAR_init(__gui_msg_t *msg)
 
 
 /*
-    申请资源
+    鐢宠璧勬簮
 */
 static void dtv_setting_res_init(dtv_setting_antenna_attr_t *attr)
 {
@@ -250,7 +264,7 @@ static __s32 _dtv_setting_antenna_LISTBAR_key_proc(__gui_msg_t *msg)
     attr = (dtv_setting_antenna_attr_t *)GUI_WinGetAddData(msg->h_deswin);
     __wrn("_dvt_setting_antenna_LISTBAR_key_proc() : msg->dwAddData1 = %d, msg->dwAddData2 = %d\n", msg->dwAddData1, msg->dwAddData2);
 
-    // 过滤不完整的按键
+    // 杩囨护涓嶅畬鏁寸殑鎸夐敭
     if (msg->dwAddData2 == KEY_DOWN_ACTION)
     {
         active_key = msg->dwAddData1;
@@ -315,7 +329,7 @@ static __s32 _dtv_setting_antenna_LISTBAR_key_proc(__gui_msg_t *msg)
 
                 if (attr->new_focus >= 0 && attr->new_focus < 2)
                 {
-                    //h:拉杆天线 L: 外接天线
+                    //h:鎷夋潌澶╃嚎 L: 澶栨帴澶╃嚎
                     maple_set_antenna_mode(attr->new_focus);
                     dtv_setting_send_cmd_to_parent(msg, GUI_MSG_COMMAND, DTV_SETTING_BACK2LIST, 0);
                 }
@@ -454,7 +468,7 @@ static __s32 dtv_setting_get_cur_index(void)
 
 
 /*
-    回调
+    鍥炶皟
 */
 static __s32 _dtv_setting_antenna_Proc(__gui_msg_t *msg)
 {
@@ -533,7 +547,7 @@ static __s32 _dtv_setting_antenna_Proc(__gui_msg_t *msg)
 
             attr->h_LISTBAR = NULL;
             _dtv_setting_antenna_res_uninit(attr);
-            //dsk_reg_flush();  //写进文件里面
+            //dsk_reg_flush();  //鍐欒繘鏂囦欢閲岄潰
             para = attr->para;
 
             if (para)
@@ -628,4 +642,3 @@ __s32 dtv_setting_antenna_win_delete(H_WIN antenna_win)
     GUI_FrmWinDelete(antenna_win);
     return EPDK_OK;
 }
-

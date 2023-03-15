@@ -1,21 +1,34 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : dsk_volume.c
-* By        : Andy.zhang
-* Func      : voice control
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-8 10:02:17  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "functions_i.h"
 #include <kconfig.h>
 #include "dfs_posix.h"
@@ -162,7 +175,7 @@ void pull_down_gpio(uint32_t port, uint32_t port_num)
     uint32_t            tmp1;
     uint32_t            tmp2;
 
-    //ÉèÖÃÎªÊä³ö
+    //è®¾ç½®ä¸ºè¾“å‡º
     tmp1        = (port_num - ((port_num >> 3) << 3)) << 2;
     tmp_addr    = PIO_REG_CFG(port, (port_num >> 3));
     tmp_data    = *tmp_addr;
@@ -170,7 +183,7 @@ void pull_down_gpio(uint32_t port, uint32_t port_num)
     tmp_data    |= (0x01 << tmp1);
     *tmp_addr   = tmp_data;
 
-    //ÉèÖÃÎªÏÂÀ­
+    //è®¾ç½®ä¸ºä¸‹æ‹‰
     tmp2        = (port_num - ((port_num >> 4) << 4)) << 1;
     tmp_addr    = PIO_REG_PULL(port, (port_num >> 4));
     tmp_data    = *tmp_addr;
@@ -178,7 +191,7 @@ void pull_down_gpio(uint32_t port, uint32_t port_num)
     tmp_data    |= (0x02 << tmp2);
     *tmp_addr   = tmp_data;
 
-    //Êä³öµÍµçÆ½
+    //è¾“å‡ºä½Žç”µå¹³
     tmp_addr    = PIO_REG_DATA(port);
     tmp_data    = *tmp_addr;
     tmp_data    &= ~(1 << port_num);
@@ -193,7 +206,7 @@ void pull_up_gpio(uint32_t port, uint32_t port_num)
     uint32_t                tmp1;
     uint32_t                tmp2;
 
-    //ÉèÖÃÎªÊä³ö
+    //è®¾ç½®ä¸ºè¾“å‡º
     tmp1        = (port_num - ((port_num >> 3) << 3)) << 2;
     tmp_addr    = PIO_REG_CFG(port, (port_num >> 3));
     tmp_data    = *tmp_addr;
@@ -201,7 +214,7 @@ void pull_up_gpio(uint32_t port, uint32_t port_num)
     tmp_data    |= (0x01 << tmp1);
     *tmp_addr   = tmp_data;
 
-    //ÉèÖÃÎªÉÏÀ­
+    //è®¾ç½®ä¸ºä¸Šæ‹‰
     tmp2        = (port_num - ((port_num >> 4) << 4)) << 1;
     tmp_addr    = PIO_REG_PULL(port, (port_num >> 4));
     tmp_data    = *tmp_addr;
@@ -209,7 +222,7 @@ void pull_up_gpio(uint32_t port, uint32_t port_num)
     tmp_data    |= (0x01 << tmp2);
     *tmp_addr   = tmp_data;
 
-    //Êä³ö¸ßµçÆ½
+    //è¾“å‡ºé«˜ç”µå¹³
     tmp_addr    = PIO_REG_DATA(port);
     tmp_data    = *tmp_addr;
     tmp_data    &= ~(1 << port_num);
@@ -229,7 +242,7 @@ void pull_up_gpio(uint32_t port, uint32_t port_num)
 *Other       :
 ****************************************************************************************************
 */
-int32_t dsk_volume_set(int32_t volume)  // ÉèÖÃµ±Ç°ÒôÁ¿
+int32_t dsk_volume_set(int32_t volume)  // è®¾ç½®å½“å‰éŸ³é‡
 {
     int32_t     ret;
 
@@ -270,7 +283,7 @@ int32_t dsk_volume_set(int32_t volume)  // ÉèÖÃµ±Ç°ÒôÁ¿
 *Other       :
 ****************************************************************************************************
 */
-int32_t dsk_volume_get(void)      // µ±Ç°ÒôÁ¿´óÐ¡
+int32_t dsk_volume_get(void)      // å½“å‰éŸ³é‡å¤§å°
 {
     if (!dsk_volume_gate_on)
     {
@@ -292,7 +305,7 @@ int32_t dsk_volume_get(void)      // µ±Ç°ÒôÁ¿´óÐ¡
 *Other       :
 ****************************************************************************************************
 */
-int32_t dsk_volume_inc(void)      // Ôö´óÒôÁ¿
+int32_t dsk_volume_inc(void)      // å¢žå¤§éŸ³é‡
 {
     int32_t     volume;
     int32_t     ret;
@@ -355,7 +368,7 @@ int32_t dsk_volume_inc(void)      // Ôö´óÒôÁ¿
 *Other       :
 ****************************************************************************************************
 */
-int32_t dsk_volume_dec(void)      // ¼õÐ¡ÒôÁ¿
+int32_t dsk_volume_dec(void)      // å‡å°éŸ³é‡
 {
     int32_t     volume;
     int32_t     ret;
@@ -485,7 +498,7 @@ int32_t dsk_volume_app_line_in(__bool app_line_in)
 static int32_t _set_volume(__s32 volume)
 {
     int audio_fd = -1;
-    unsigned long         args[4]={0};    
+    unsigned long         args[4]={0};
     int32_t     ret;
 
     if (volume < AUDIO_DEVICE_VOLUME_MIN || volume > AUDIO_DEVICE_VOLUME_MAX)
@@ -509,7 +522,7 @@ static int32_t _set_volume(__s32 volume)
 
     if (AUDIO_DEVICE_VOLUME_MIN == volume)
     {
-        /////pull_up_gpio(7, 6);//¹Ø±Õ¹¦·Å
+        /////pull_up_gpio(7, 6);//å…³é—­åŠŸæ”¾
         if (g_pa_hdl)
         {
             esPINS_WritePinData(g_pa_hdl, 1, "PA_SHDN");
@@ -519,7 +532,7 @@ static int32_t _set_volume(__s32 volume)
     {
         if (g_amplifier_status == 0)
         {
-            //pull_up_gpio(7, 6);//¹Ø±Õ¹¦·Å
+            //pull_up_gpio(7, 6);//å…³é—­åŠŸæ”¾
             if (g_pa_hdl)
             {
                 esPINS_WritePinData(g_pa_hdl, 1, "PA_SHDN");
@@ -527,7 +540,7 @@ static int32_t _set_volume(__s32 volume)
         }
         else
         {
-            //pull_down_gpio(7, 6);//´ò¿ª¹¦·Å
+            //pull_down_gpio(7, 6);//æ‰“å¼€åŠŸæ”¾
             if (g_pa_hdl)
             {
                 esPINS_WritePinData(g_pa_hdl, 0, "PA_SHDN");
@@ -562,7 +575,7 @@ static int32_t _get_volume(void)
     int audio_fd  = -1;
     int32_t     volume;
 
-    if (1) //ÒôÁ¿ÏÞÖÆÎª28×î¸ßºó£¬Ö±½Ó×¢²á±í¶ÁÈ¡
+    if (1) //éŸ³é‡é™åˆ¶ä¸º28æœ€é«˜åŽï¼Œç›´æŽ¥æ³¨å†Œè¡¨è¯»å–
     {
         reg_system_para_t *para;
 
@@ -588,7 +601,7 @@ static int32_t _get_volume(void)
     return volume;
 }
 
-int32_t dsk_amplifier_onoff(int32_t flag)//ÉèÖÃ¹¦·Å¿ª¹Ø
+int32_t dsk_amplifier_onoff(int32_t flag)//è®¾ç½®åŠŸæ”¾å¼€å…³
 {
     g_amplifier_status = flag;
 
@@ -599,16 +612,20 @@ int32_t dsk_amplifier_onoff(int32_t flag)//ÉèÖÃ¹¦·Å¿ª¹Ø
 
     if (0 == flag)
     {
-        //pull_up_gpio(7, 6);//¹Ø±Õ¹¦·Å
+        //pull_up_gpio(7, 6);//å…³é—­åŠŸæ”¾
         if (g_pa_hdl)
         {
             esPINS_WritePinData(g_pa_hdl, 1, "PA_SHDN");
         }
 
-        if (1 == esPINS_ReadPinData(g_hp_det_hdl, "HP_DET")) //not in
+        if(g_hp_det_hdl)
         {
-            g_open_amp = EPDK_FALSE;
+            if (1 == esPINS_ReadPinData(g_hp_det_hdl, "HP_DET")) //not in
+            {
+                g_open_amp = EPDK_FALSE;
+            }
         }
+
     }
     else
     {
@@ -620,7 +637,7 @@ int32_t dsk_amplifier_onoff(int32_t flag)//ÉèÖÃ¹¦·Å¿ª¹Ø
 
             if (para && AUDIO_DEVICE_VOLUME_MIN == para->volume)
             {
-                //pull_up_gpio(7, 6);//¹Ø±Õ¹¦·Å
+                //pull_up_gpio(7, 6);//å…³é—­åŠŸæ”¾
                 if (g_pa_hdl)
                 {
                     esPINS_WritePinData(g_pa_hdl, 1, "PA_SHDN");
@@ -628,8 +645,8 @@ int32_t dsk_amplifier_onoff(int32_t flag)//ÉèÖÃ¹¦·Å¿ª¹Ø
             }
             else
             {
-                //pull_down_gpio(7, 6);//´ò¿ª¹¦·Å
-                if (g_pa_hdl)
+                //pull_down_gpio(7, 6);//æ‰“å¼€åŠŸæ”¾
+                if (g_pa_hdl && g_hp_det_hdl)
                 {
                     if (1 == esPINS_ReadPinData(g_hp_det_hdl, "HP_DET"))
                     {
@@ -645,7 +662,7 @@ int32_t dsk_amplifier_onoff(int32_t flag)//ÉèÖÃ¹¦·Å¿ª¹Ø
     return EPDK_OK;
 }
 
-__bool dsk_amplifier_is_on(void)//²éÑ¯¹¦·Å¿ª¹Ø
+__bool dsk_amplifier_is_on(void)//æŸ¥è¯¢åŠŸæ”¾å¼€å…³
 {
     if (1 == g_amplifier_status)
     {

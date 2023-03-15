@@ -1,32 +1,34 @@
 /*
-*******************************************************************************************************************
-*                                                           Graphic Library
-*                                                   the graphic library support module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2008, SoftWinners Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name:       ListLayer.h
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
-*Author:          William Wang
 *
-*Version :        1.1.0
-*
-*Date:            2008-10-20
-*
-*Description :    ListLayer head definition
-*
-*Others :         None at present.
-*
-* History :
-*
-* <Author>          <time>              <version>     <description>
-*
-* William Wang     2008-10-20    1.1.0          Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef __LIST_LAYER__H____
 #define __LIST_LAYER__H____
 
@@ -43,8 +45,8 @@ struct tag_LISTMENU_DATA;
 #define   TOUCH_FOCUS   1
 
 #define   NO_FOUCS     0
-#define   REAL_FOUCS   1     /*Êµ¼ÊÉèÖÃ½¹µã*/
-#define   VAR_FOUCS    2     /*ĞéÄâÉèÖÃ½¹µã(¿ìËÙ»¬¶¯Ê±ÉèÖÃ)*/
+#define   REAL_FOUCS   1     /*å®é™…è®¾ç½®ç„¦ç‚¹*/
+#define   VAR_FOUCS    2     /*è™šæ‹Ÿè®¾ç½®ç„¦ç‚¹(å¿«é€Ÿæ»‘åŠ¨æ—¶è®¾ç½®)*/
 
 #define   WAIT_LOAD    0x01
 
@@ -56,43 +58,43 @@ struct tag_LISTMENU_DATA;
 //------------------------------------------------------------------------------------------------------------
 typedef struct tag_LIST_LAYER_MAN
 {
-    __u32                       LoadTID;        /*item¼ÓÔØÏß³ÌµÄid*/
-    __u32                       LoadPrio;       /*item¼ÓÔØÏß³ÌµÄ*/
+    __u32                       LoadTID;        /*itemåŠ è½½çº¿ç¨‹çš„id*/
+    __u32                       LoadPrio;       /*itemåŠ è½½çº¿ç¨‹çš„*/
     __u32                       FoucsTID;
     __u32                       FoucsPrio;
     __s8                        fillup;         /*only used by linear mode*/
     __u8                        filldown;       /*only used by linear mode*/
     __u8                        rollspeed;
     __u8                        mode;
-    __u8                        scnnum;         /*Êµ¼ÊÊıÁ¿*/
+    __u8                        scnnum;         /*å®é™…æ•°é‡*/
     __u8                        fb_depth;
-    __u8                        upcount;        /*ÆğÊ¼Î»ÖÃĞèÒªÌî³äµÄitemÊıÁ¿*/
-    __u8                        downcount;      /*½áÊøÎ»ÖÃĞèÒªÌî³äµÄitemÊıÁ¿*/
+    __u8                        upcount;        /*èµ·å§‹ä½ç½®éœ€è¦å¡«å……çš„itemæ•°é‡*/
+    __u8                        downcount;      /*ç»“æŸä½ç½®éœ€è¦å¡«å……çš„itemæ•°é‡*/
     __bool                      adjust_wm;
     H_LYR                       layer;
     SIZE                        lyr_size;
-    __u32                       msgupcount;      /*ÏûÏ¢ÊıÁ¿*/
-    __u32                       msgdowncount;      /*ÏûÏ¢ÊıÁ¿*/
+    __u32                       msgupcount;      /*æ¶ˆæ¯æ•°é‡*/
+    __u32                       msgdowncount;      /*æ¶ˆæ¯æ•°é‡*/
     __u32                       bk_color;
     __u32                       dir;
     __u32                       msgcount;
-    __u8                        cursteps;      /*Ã¿ÔËĞĞÒ»¸öitemµ±Ç°µÄ²½Êı*/
-    __u8                        nextsteps;     /*Ã¿ÔËĞĞÒ»¸öitemÏÂÒ»¸ö²½Êı*/
-    __u16                       scn_width;     /*µ±Ç°listmenuËùÔÚÆÁÄ»µÄ¿í¶È*/
-    __u16                       scn_height;     /*µ±Ç°listmenuËùÔÚÆÁÄ»µÄ¸ß¶È*/
+    __u8                        cursteps;      /*æ¯è¿è¡Œä¸€ä¸ªitemå½“å‰çš„æ­¥æ•°*/
+    __u8                        nextsteps;     /*æ¯è¿è¡Œä¸€ä¸ªitemä¸‹ä¸€ä¸ªæ­¥æ•°*/
+    __u16                       scn_width;     /*å½“å‰listmenuæ‰€åœ¨å±å¹•çš„å®½åº¦*/
+    __u16                       scn_height;     /*å½“å‰listmenuæ‰€åœ¨å±å¹•çš„é«˜åº¦*/
     __bool                      msgflush;
     __u8                        setfoucs;
     __rect_t                    scnrect;
     __rect_t                    userscnrect;
     __rect_t                    viewrect;
-    __pos_t                     head_pos;       /*¶Ôfixed¶øÑÔ£¬´ú±íÆğÊ¼Ê±ÔÚÆÁÄ»ÖĞµÄÎ»ÖÃ
-                                                  ¶Ôvariable¶øÑÔ,´ú±íºóÌ¨¼ÓÔØµÄÆğÊ¼Î»ÖÃ*/
-    __pos_t                     tail_pos;       /*¶Ôfixed¶øÑÔ£¬´ú±í½áÊøÊ±ÔÚÆÁÄ»ÖĞµÄÎ»ÖÃ
-                                                  ¶Ôvariable¶øÑÔ,´ú±íºóÌ¨¼ÓÔØµÄ½áÊøÎ»ÖÃ*/
-    __pos_t                     headlyr_pos;       /*¶Ôfixed¶øÑÔ£¬´ú±íÆğÊ¼Ê±ÔÚÆÁÄ»ÖĞµÄÎ»ÖÃ
-                                                  ¶Ôvariable¶øÑÔ,´ú±íºóÌ¨¼ÓÔØµÄÆğÊ¼Î»ÖÃ*/
-    __pos_t                     taillyr_pos;       /*¶Ôfixed¶øÑÔ£¬´ú±í½áÊøÊ±ÔÚÆÁÄ»ÖĞµÄÎ»ÖÃ
-                                                  ¶Ôvariable¶øÑÔ,´ú±íºóÌ¨¼ÓÔØµÄ½áÊøÎ»ÖÃ*/
+    __pos_t                     head_pos;       /*å¯¹fixedè€Œè¨€ï¼Œä»£è¡¨èµ·å§‹æ—¶åœ¨å±å¹•ä¸­çš„ä½ç½®
+                                                  å¯¹variableè€Œè¨€,ä»£è¡¨åå°åŠ è½½çš„èµ·å§‹ä½ç½®*/
+    __pos_t                     tail_pos;       /*å¯¹fixedè€Œè¨€ï¼Œä»£è¡¨ç»“æŸæ—¶åœ¨å±å¹•ä¸­çš„ä½ç½®
+                                                  å¯¹variableè€Œè¨€,ä»£è¡¨åå°åŠ è½½çš„ç»“æŸä½ç½®*/
+    __pos_t                     headlyr_pos;       /*å¯¹fixedè€Œè¨€ï¼Œä»£è¡¨èµ·å§‹æ—¶åœ¨å±å¹•ä¸­çš„ä½ç½®
+                                                  å¯¹variableè€Œè¨€,ä»£è¡¨åå°åŠ è½½çš„èµ·å§‹ä½ç½®*/
+    __pos_t                     taillyr_pos;       /*å¯¹fixedè€Œè¨€ï¼Œä»£è¡¨ç»“æŸæ—¶åœ¨å±å¹•ä¸­çš„ä½ç½®
+                                                  å¯¹variableè€Œè¨€,ä»£è¡¨åå°åŠ è½½çš„ç»“æŸä½ç½®*/
     __pos_t                     foucs_pos;
     __pos_t                     unfoucs_pos;
     LIST_BUFFER_MAN_t          *listbuffer;
@@ -118,8 +120,3 @@ __u32          ListLayer_OnDraw(LIST_LAYER_MAN_t *listlayer);
 __u32          ListLayer_SetWinFoucs(LIST_LAYER_MAN_t *listlayer);
 __u32          ListLayer_SetWinUnFoucs(LIST_LAYER_MAN_t    *listlayer);
 #endif //__LIST_LAYER__H____
-
-
-
-
-

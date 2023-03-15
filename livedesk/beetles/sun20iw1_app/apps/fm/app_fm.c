@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2011, CHIPHD, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : app_fm.c
-* By        : CQQ
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011/07/24 22:51  create this file, implements the fundamental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "app_fm_i.h"
@@ -24,7 +38,7 @@
 /************************************************************************/
 H_WIN g_FMManWnd = NULL;
 //////////////////////////////////////////////////////////////////////////
-// ½¨Á¢Í¼²ã
+// å»ºç«‹å›¾å±‚
 #define fm_layer_create(_lyr, _prt, _name)   app_fm_layer_create_default(_lyr, _prt, _name)
 
 //////////////////////////////////////////////////////////////////////////
@@ -36,15 +50,15 @@ static __s32 fmplay_finetune(__gui_msg_t *msg, __u8 ucChMod, __u8  playmode);
 typedef void *H_PARSER;
 
 //////////////////////////////////////////////////////////////////////////
-//µ±Ç°ÕÒµ½Ò»¸öÓĞĞ§ÆµÂÊ
+//å½“å‰æ‰¾åˆ°ä¸€ä¸ªæœ‰æ•ˆé¢‘ç‡
 static void on_fm_test_freq_ok(FM_CTRLDATA_T *fm_ctrl)
 {
-    if (fm_ctrl->search_mode == SRHMODE_MANUAL) //ÊÖ¶¯ËÑË÷
+    if (fm_ctrl->search_mode == SRHMODE_MANUAL) //æ‰‹åŠ¨æœç´¢
     {
         dsk_radio_rcv_get_cur_freq(&fm_ctrl->cur_freq);//by cky
         __wrn("draw:fm_ctrl->cur_freq = %d", fm_ctrl->cur_freq);
     }
-    else//SRHMODE_AUTO  ×Ô¶¯ËÑË÷
+    else//SRHMODE_AUTO  è‡ªåŠ¨æœç´¢
     {
         if (dsk_radio_rcv_get_search_result_vn() != 0)
         {
@@ -61,15 +75,15 @@ static void on_fm_test_freq_ok(FM_CTRLDATA_T *fm_ctrl)
     }
 }
 
-//µ±Ç°ÕÒµ½µÄÊÇÎŞĞ§ÆµÂÊ
+//å½“å‰æ‰¾åˆ°çš„æ˜¯æ— æ•ˆé¢‘ç‡
 static void on_fm_test_freq_fail(FM_CTRLDATA_T *fm_ctrl)
 {
-    if (fm_ctrl->search_mode == SRHMODE_MANUAL) //ÊÖ¶¯ËÑË÷
+    if (fm_ctrl->search_mode == SRHMODE_MANUAL) //æ‰‹åŠ¨æœç´¢
     {
         dsk_radio_rcv_get_cur_freq(&fm_ctrl->cur_freq);
         __wrn("draw:fm_ctrl->cur_freq = %d", fm_ctrl->cur_freq);
     }
-    else//SRHMODE_AUTO  ×Ô¶¯ËÑË÷
+    else//SRHMODE_AUTO  è‡ªåŠ¨æœç´¢
     {
         dsk_radio_rcv_get_cur_freq(&fm_ctrl->cur_freq);
         __wrn("fm_ctrl->cur_freq = %d", fm_ctrl->cur_freq);
@@ -77,19 +91,19 @@ static void on_fm_test_freq_fail(FM_CTRLDATA_T *fm_ctrl)
 }
 
 
-//ËÑË÷½áÊø
+//æœç´¢ç»“æŸ
 static void on_fm_test_freq_end(FM_CTRLDATA_T *fm_ctrl)
 {
     dsk_radio_chan_t chan_info;
 
-    if (fm_ctrl->search_mode == SRHMODE_MANUAL) //ÊÖ¶¯ËÑË÷
+    if (fm_ctrl->search_mode == SRHMODE_MANUAL) //æ‰‹åŠ¨æœç´¢
     {
         dsk_radio_rcv_get_cur_freq(&fm_ctrl->cur_freq); //by cky modify
         //dsk_radio_rcv_get_search_result_chaninfo(fm_ctrl->channel_id, &chan_info);
         //fm_ctrl->cur_freq = chan_info.freq;
         __wrn("fm_ctrl->channel_id = %d,fm_ctrl->cur_freq = %d", fm_ctrl->channel_id, fm_ctrl->cur_freq);
     }
-    else//SRHMODE_AUTO  ×Ô¶¯ËÑË÷
+    else//SRHMODE_AUTO  è‡ªåŠ¨æœç´¢
     {
         fm_ctrl->channel_id = 0;
 
@@ -109,7 +123,7 @@ static void on_fm_test_freq_end(FM_CTRLDATA_T *fm_ctrl)
     }
 
     //////////////////////////////////////////////////////////////////////////
-    //¸üĞÂÁĞ±í
+    //æ›´æ–°åˆ—è¡¨
     {
         reg_fm_para_t *para;
         get_reg_pointer(para, reg_fm_para_t, REG_APP_FM);
@@ -208,7 +222,7 @@ __s32 cb_srhch_over(void *arg_p)
 }
 
 /************************************************************************/
-//Í¨Öª¹Ø±Õfm
+//é€šçŸ¥å…³é—­fm
 /************************************************************************/
 __s32 notify_to_close_fm(H_WIN hwnd, __s32 id, __s32 para)
 {
@@ -279,7 +293,7 @@ static __u32 fm_check_disk(void)
     return disk;
 }
 /************************************************************************/
-// ½øÈëÂ¼Òô
+// è¿›å…¥å½•éŸ³
 /************************************************************************/
 static __s32 fm_call_record_app(H_WIN hwnd, __s32 root_type)
 {
@@ -323,8 +337,8 @@ static __s32 fm_call_record_app(H_WIN hwnd, __s32 root_type)
 }
 
 /************************************************************************/
-// Ñ¡ÔñÄ³¸öÆµµÀ
-//ÒòÎªÔö¼ÓÁËÍË³öÒ»Ïî£¬ËùÒÔsel_idÒª¼õ1
+// é€‰æ‹©æŸä¸ªé¢‘é“
+//å› ä¸ºå¢åŠ äº†é€€å‡ºä¸€é¡¹ï¼Œæ‰€ä»¥sel_idè¦å‡1
 /************************************************************************/
 static __s32 fm_change_channelno(FM_CTRLDATA_T *fm_ctrl, __s32 sel_id)
 {
@@ -380,13 +394,13 @@ static __s32 fm_change_channelno(FM_CTRLDATA_T *fm_ctrl, __s32 sel_id)
     return EPDK_OK;
 }
 
-//ÊÖ¶¯ËÑË÷
+//æ‰‹åŠ¨æœç´¢
 static __s32 fm_manual_search_start(FM_CTRLDATA_T *fm_ctrl, __s32 way)
 {
     __u32 search_flag;
     dsk_radio_get_search_flag(&search_flag) ;
 
-    if (1 == search_flag) //ÕıÔÚËÑË÷¹ı³ÌÖĞ²»ÔÊĞíÖĞ¶Ï£¬±ØĞëµÃËÑË÷Íêºó²ÅÄÜ½øĞĞ
+    if (1 == search_flag) //æ­£åœ¨æœç´¢è¿‡ç¨‹ä¸­ä¸å…è®¸ä¸­æ–­ï¼Œå¿…é¡»å¾—æœç´¢å®Œåæ‰èƒ½è¿›è¡Œ
     {
         __wrn("fm_manual_search_start:return");
         return EPDK_OK;
@@ -405,13 +419,13 @@ static __s32 fm_manual_search_start(FM_CTRLDATA_T *fm_ctrl, __s32 way)
     }
 }
 
-//×Ô¶¯ËÑË÷
+//è‡ªåŠ¨æœç´¢
 static __s32 fm_auto_search_start(FM_CTRLDATA_T *fm_ctrl)
 {
     __u32 search_flag;
     dsk_radio_get_search_flag(&search_flag) ;
 
-    if (1 == search_flag) //ÕıÔÚËÑË÷¹ı³ÌÖĞ²»ÔÊĞíÖĞ¶Ï£¬±ØĞëµÃËÑË÷Íêºó²ÅÄÜ½øĞĞ
+    if (1 == search_flag) //æ­£åœ¨æœç´¢è¿‡ç¨‹ä¸­ä¸å…è®¸ä¸­æ–­ï¼Œå¿…é¡»å¾—æœç´¢å®Œåæ‰èƒ½è¿›è¡Œ
     {
         __wrn("fm_auto_search_start:return");
         return EPDK_OK;
@@ -429,7 +443,7 @@ static __s32 fm_auto_search_start(FM_CTRLDATA_T *fm_ctrl)
     }
 }
 
-//³õÊ¼»¯Ïà¹ØÊı¾İ
+//åˆå§‹åŒ–ç›¸å…³æ•°æ®
 static __s32 fm_init_data(FM_CTRLDATA_T *fm_ctrl)
 {
     fm_ctrl->search_mode = SRHMODE_IDLE;
@@ -450,10 +464,10 @@ static __s32 fm_init_data(FM_CTRLDATA_T *fm_ctrl)
             fm_ctrl->channel_id = 0;
             fm_ctrl->cur_freq = MIN_CHANNEL_FREQ;
             fm_ctrl->channel_count = 0;
-            //³õÊ¼»¯reg_fm_para_t
+            //åˆå§‹åŒ–reg_fm_para_t
             ZeroMemory(para, sizeof(reg_fm_para_t));
             fm_reg_set_sel_channel_id(para, 0);
-            //          fm_reg_set_channel_(para, 0, fm_ctrl->cur_freq); //ÉèÖÃÄ¬ÈÏÒ»¸öÆµµÀÆµÂÊ
+            //          fm_reg_set_channel_(para, 0, fm_ctrl->cur_freq); //è®¾ç½®é»˜è®¤ä¸€ä¸ªé¢‘é“é¢‘ç‡
             //          fm_reg_set_channel_count(para, fm_ctrl->channel_count);
             dsk_radio_rcv_get_search_result(para);
         }
@@ -464,7 +478,7 @@ static __s32 fm_init_data(FM_CTRLDATA_T *fm_ctrl)
                 && fm_reg_get_channel_count(para) == 1 && fm_ctrl->channel_count == 1
                 && fm_reg_get_channel_(para, 0) == MIN_CHANNEL_FREQ)
             {
-                //Ôø¾­ÓĞÊÖ¶¯ÉèÖÃÆµÂÊ(Ã»ËÑË÷¹ı)
+                //æ›¾ç»æœ‰æ‰‹åŠ¨è®¾ç½®é¢‘ç‡(æ²¡æœç´¢è¿‡)
                 fm_ctrl->cur_freq = fm_reg_get_curfreq(para);
                 __wrn("fm_init:fm_ctrl->cur_freq = %d", fm_ctrl->cur_freq);
                 __wrn("fm_init:fm_ctrl->channel_count  = %d", fm_ctrl->channel_count);
@@ -475,7 +489,7 @@ static __s32 fm_init_data(FM_CTRLDATA_T *fm_ctrl)
                 }
                 else
                 {
-                    if (87500 == MIN_CHANNEL_FREQ)//Ö»Õë¶Ô4702£¬FM play3´ÎÉùÒô²Å×îÇåÎú
+                    if (87500 == MIN_CHANNEL_FREQ)//åªé’ˆå¯¹4702ï¼ŒFM play3æ¬¡å£°éŸ³æ‰æœ€æ¸…æ™°
                     {
                         dsk_radio_rcv_set_freq_play(fm_ctrl->cur_freq + 100);
                         dsk_radio_rcv_set_freq_play(fm_ctrl->cur_freq - 100);
@@ -511,10 +525,10 @@ static __s32 fm_init_data(FM_CTRLDATA_T *fm_ctrl)
                 if ((fm_ctrl->cur_freq < MIN_CHANNEL_FREQ) && (fm_ctrl->cur_freq > MIN_CHANNEL_FREQ))
                 {
                     return EPDK_FAIL;
-                }//FM play3´ÎÉùÒô²Å×îÇåÎú
+                }//FM play3æ¬¡å£°éŸ³æ‰æœ€æ¸…æ™°
                 else
                 {
-                    if (87500 == MIN_CHANNEL_FREQ)//Ö»Õë¶Ô4702£¬FM play3´ÎÉùÒô²Å×îÇåÎú
+                    if (87500 == MIN_CHANNEL_FREQ)//åªé’ˆå¯¹4702ï¼ŒFM play3æ¬¡å£°éŸ³æ‰æœ€æ¸…æ™°
                     {
                         dsk_radio_rcv_set_freq_play(fm_ctrl->cur_freq + 100);
                         dsk_radio_rcv_set_freq_play(fm_ctrl->cur_freq - 100);
@@ -533,7 +547,7 @@ static __s32 fm_init_data(FM_CTRLDATA_T *fm_ctrl)
     return EPDK_OK;
 }
 
-//³õÊ¼»¯Ä£¿é
+//åˆå§‹åŒ–æ¨¡å—
 static __s32 fm_init_module(void *cb_arg, FM_CTRLDATA_T *fm_ctrl)
 {
     __s32 ret = EPDK_FAIL;
@@ -590,7 +604,7 @@ static __s32 fm_init_module(void *cb_arg, FM_CTRLDATA_T *fm_ctrl)
 }
 
 /************************************************************************/
-// fm ²Ù×÷Í¨Öª
+// fm æ“ä½œé€šçŸ¥
 /************************************************************************/
 #define IsOPFunc(_op, _opFun)  ((_op) == (signed long)_opFun)
 static __s32 _fm_op_notify(signed long op_function)
@@ -620,8 +634,8 @@ static __s32 _fm_op_notify(signed long op_function)
 
 
 //////////////////////////////////////////////////////////////////////////
-//°´¼üÏûÏ¢´¦Àí,Ö÷ÒªÒòÎªÔÚssetÆğÀ´ÒÔºóFM µÄfrmÃ»ÊÕµ½°´¼üÏûÏ¢
-//·µ»Øtrue Îª²»ĞèÒªÏòÏÂ·¢¡¢·ñÔòĞèÒª
+//æŒ‰é”®æ¶ˆæ¯å¤„ç†,ä¸»è¦å› ä¸ºåœ¨ssetèµ·æ¥ä»¥åFM çš„frmæ²¡æ”¶åˆ°æŒ‰é”®æ¶ˆæ¯
+//è¿”å›true ä¸ºä¸éœ€è¦å‘ä¸‹å‘ã€å¦åˆ™éœ€è¦
 //////////////////////////////////////////////////////////////////////////
 static __bool fm_key_proc(__gui_msg_t *msg)
 {
@@ -688,7 +702,7 @@ static __bool fm_key_proc(__gui_msg_t *msg)
 }
 
 /************************************************************************/
-// ´¦ÀíssetÃüÁî
+// å¤„ç†ssetå‘½ä»¤
 /************************************************************************/
 static __s32 on_fm_sset_cmd(H_WIN hwnd, __s32 id, __s32 value, __gui_msg_t *msg)
 {
@@ -712,7 +726,7 @@ static __s32 on_fm_sset_cmd(H_WIN hwnd, __s32 id, __s32 value, __gui_msg_t *msg)
 
         case FM_SSET_NC_CHANNEL:
         {
-            //sset×Ô¼º´¦Àí
+            //ssetè‡ªå·±å¤„ç†
         }
         break;
 
@@ -757,7 +771,7 @@ static __s32 on_fm_sset_cmd(H_WIN hwnd, __s32 id, __s32 value, __gui_msg_t *msg)
             ASSERT(value == DSK_RADIO_AUDIO_STEREO || value == DSK_RADIO_AUDIO_MONO
                    || value == DSK_RADIO_AUDIO_EXIT);
 
-            if (value < 3) //ÖØË¢Í¼ĞÎ£¬ÇĞ»»ÏÔÊ¾"mono"£¬"stereo"
+            if (value < 3) //é‡åˆ·å›¾å½¢ï¼Œåˆ‡æ¢æ˜¾ç¤º"mono"ï¼Œ"stereo"
             {
                 __wrn("value = %d", value);
                 dsk_radio_set_audio_mode(value);
@@ -765,7 +779,7 @@ static __s32 on_fm_sset_cmd(H_WIN hwnd, __s32 id, __s32 value, __gui_msg_t *msg)
                 mymsg.id = GUI_MSG_PAINT;
                 GUI_SendNotifyMessage(&mymsg);
             }
-            else //ÍË³ö
+            else //é€€å‡º
             {
                 NOTIFY_MSG(FM_COMMAND, NULL, hwnd, ID_FM_CMD_DESTROY_SSET, 0);
             }
@@ -783,7 +797,7 @@ static __s32 on_fm_sset_cmd(H_WIN hwnd, __s32 id, __s32 value, __gui_msg_t *msg)
             __wrn("wnd_para->fm_ctrl.cur_freq = %d, para->channel_id=%d", wnd_para->fm_ctrl.cur_freq, para->channel_id);
             wnd_para->fm_ctrl.channel_id = para->channel_id;
             __wrn("wnd_para->fm_ctrl.channel_id=%d", wnd_para->fm_ctrl.channel_id);
-            //ÖØË¢FMÖ÷½çÃæÍ¼²ã£¬¸üĞÂ±£´æÊÖ¶¯ËÑË÷µÄÌ¨Êı
+            //é‡åˆ·FMä¸»ç•Œé¢å›¾å±‚ï¼Œæ›´æ–°ä¿å­˜æ‰‹åŠ¨æœç´¢çš„å°æ•°
             mymsg.h_deswin = wnd_para->h_main_wnd ;
             mymsg.id = GUI_MSG_PAINT;
             GUI_SendNotifyMessage(&mymsg);
@@ -810,7 +824,7 @@ static __s32 on_fm_sset_cmd(H_WIN hwnd, __s32 id, __s32 value, __gui_msg_t *msg)
 }
 
 /************************************************************************/
-// ´¦ÀídialogÃüÁî
+// å¤„ç†dialogå‘½ä»¤
 /************************************************************************/
 static __s32 on_fm_auto_search_dlg_cmd(H_WIN hwnd, __s32 id, __s32 para)
 {
@@ -844,7 +858,7 @@ static __s32 on_fm_auto_search_dlg_cmd(H_WIN hwnd, __s32 id, __s32 para)
 }
 
 //////////////////////////////////////////////////////////////////////////
-//ÃüÁîÏûÏ¢´¦Àí FM_COMMAND
+//å‘½ä»¤æ¶ˆæ¯å¤„ç† FM_COMMAND
 //////////////////////////////////////////////////////////////////////////
 static __s32 on_fm_command(__gui_msg_t *msg)
 {
@@ -867,7 +881,7 @@ static __s32 on_fm_command(__gui_msg_t *msg)
 
                 if (wnd_para->sset_create_para)
                 {
-                    //´´½¨sset
+                    //åˆ›å»ºsset
                     wnd_para->h_sset = SSET_Create(wnd_para->sset_create_para);
                     SSET_Set_Nodelist("fm", NODELIST_ON);
                     __msg("sset created ");
@@ -918,36 +932,36 @@ static __s32 fmplay_finetune(__gui_msg_t *msg, __u8 ucChMod, __u8  playmode)
     FM_GetWndPara(wnd_para, FM_WND_T, msg->h_deswin);
     __wrn("..........uFreq 0= %d", uFreq);
 
-    if (1 == ucChMod) //    1:¼õ
+    if (1 == ucChMod) //    1:å‡
     {
         uFreq = wnd_para->fm_ctrl.cur_freq - LARK_SEARCH_STEP_US;
 
         if (uFreq < FM_SEARCH_CHN_MIN_FREQ)
         {
-            if (playmode == 1) // Ñ­»·
+            if (playmode == 1) // å¾ªç¯
             {
                 uFreq = FM_SEARCH_CHN_MAX_FREQ;
                 __wrn("..........uFreq 1= %d", uFreq);
             }
-            else            //²»Ñ­»·
+            else            //ä¸å¾ªç¯
             {
                 uFreq = FM_SEARCH_CHN_MIN_FREQ;
                 __wrn("..........uFreq 2= %d", uFreq);
             }
         }
     }
-    else            //0: ¼Ó
+    else            //0: åŠ 
     {
         uFreq = wnd_para->fm_ctrl.cur_freq + LARK_SEARCH_STEP_US;
 
         if (uFreq > FM_SEARCH_CHN_MAX_FREQ)
         {
-            if (playmode == 1) // Ñ­»·
+            if (playmode == 1) // å¾ªç¯
             {
                 uFreq = FM_SEARCH_CHN_MIN_FREQ;
                 __wrn("..........uFreq 3= %d", uFreq);
             }
-            else            //²»Ñ­»·
+            else            //ä¸å¾ªç¯
             {
                 uFreq = FM_SEARCH_CHN_MAX_FREQ;
                 __wrn("..........uFreq 4= %d", uFreq);
@@ -968,7 +982,7 @@ static __s32 fmplay_finetune(__gui_msg_t *msg, __u8 ucChMod, __u8  playmode)
 
 
 //////////////////////////////////////////////////////////////////////////
-//ÃüÁîÏûÏ¢´¦Àí
+//å‘½ä»¤æ¶ˆæ¯å¤„ç†
 //////////////////////////////////////////////////////////////////////////
 static __s32 on_fm_manwnd_command(__gui_msg_t *msg)
 {
@@ -1025,7 +1039,7 @@ static __s32 on_fm_manwnd_command(__gui_msg_t *msg)
                             __wrn("wnd_para->fm_ctrl.cur_freq = %d, para->channel_id=%d", wnd_para->fm_ctrl.cur_freq, para->channel_id);
                             wnd_para->fm_ctrl.channel_id = para->channel_id;
                             __wrn("wnd_para->fm_ctrl.channel_id=%d", wnd_para->fm_ctrl.channel_id);
-                            //ÖØË¢FMÖ÷½çÃæÍ¼²ã£¬¸üĞÂ±£´æÊÖ¶¯ËÑË÷µÄÌ¨Êı
+                            //é‡åˆ·FMä¸»ç•Œé¢å›¾å±‚ï¼Œæ›´æ–°ä¿å­˜æ‰‹åŠ¨æœç´¢çš„å°æ•°
                             mymsg.h_deswin = wnd_para->h_main_wnd ;
                             mymsg.id = GUI_MSG_PAINT;
                             GUI_SendNotifyMessage(&mymsg);
@@ -1212,16 +1226,16 @@ static __s32 on_fm_manwnd_command(__gui_msg_t *msg)
 }
 
 //////////////////////////////////////////////////////////////////////////
-//Ö÷´°¿ÚÏú»Ù´¦Àí
+//ä¸»çª—å£é”€æ¯å¤„ç†
 //////////////////////////////////////////////////////////////////////////
 static __s32 on_fm_destory(__gui_msg_t *msg)
 {
     FM_WND_T *wnd_para;
     FM_GetWndPara(wnd_para, FM_WND_T, msg->h_deswin);
-    //ÔÊĞí×Ô¶¯¹ØÆÁ
+    //å…è®¸è‡ªåŠ¨å…³å±
     //g_enable_close_scn();
     {
-        //»Ö¸´ÏµÍ³×Ô¶¯¹ØÆÁÊ±¼ä
+        //æ¢å¤ç³»ç»Ÿè‡ªåŠ¨å…³å±æ—¶é—´
         reg_system_para_t *para;
         para = (reg_system_para_t *)dsk_reg_get_para_by_app(REG_APP_SYSTEM);
 
@@ -1242,7 +1256,7 @@ static __s32 on_fm_destory(__gui_msg_t *msg)
         fm_reg_set_curfreq(para, wnd_para->fm_ctrl.cur_freq);
         __msg("cur_freq = %d, channel_count = %d", fm_reg_get_curfreq(para), fm_reg_get_channel_count(para));
     }
-    //Ë¢ĞÂ×¢²á±íÊı¾İ
+    //åˆ·æ–°æ³¨å†Œè¡¨æ•°æ®
     //update_to_reg();
 
     if (! wnd_para->fm_ctrl.is_record)
@@ -1344,7 +1358,7 @@ static __s32 get_auto_close_scn_time_fm(void)
 }
 
 //////////////////////////////////////////////////////////////////////////
-//Ö÷´°¿Ú´´½¨´¦Àí
+//ä¸»çª—å£åˆ›å»ºå¤„ç†
 //////////////////////////////////////////////////////////////////////////
 static __s32 on_fm_create(__gui_msg_t *msg)
 {
@@ -1354,15 +1368,15 @@ static __s32 on_fm_create(__gui_msg_t *msg)
     __s32 ret = EPDK_FAIL;
     //__here__;
     FM_GetWndPara(wnd_para, FM_WND_T, msg->h_deswin);
-    //²»ÏÔÊ¾headbar
+    //ä¸æ˜¾ç¤ºheadbar
     //gscene_hbar_set_state(HBAR_ST_HIDE);
-    //½ûÖ¹×Ô¶¯¹ØÆÁ
+    //ç¦æ­¢è‡ªåŠ¨å…³å±
     //  g_disable_close_scn();
     //__here__;
     g_disable_standby();
-    //ÉèÖÃµ÷É«°å
+    //è®¾ç½®è°ƒè‰²æ¿
     //com_set_palette_by_id(ID_FM_COLOURTABLE_BMP);
-    //³õÊ¼»¯radio
+    //åˆå§‹åŒ–radio
     ret = fm_init_module((void *)msg->h_deswin, &wnd_para->fm_ctrl);
 
     if (ret == EPDK_FAIL)
@@ -1388,16 +1402,16 @@ static __s32 on_fm_create(__gui_msg_t *msg)
     GUI_LyrWinSetTop(wnd_para->h_main_lyr);
     //auto_close_scn_time = get_auto_close_scn_time_fm();
     __wrn("auto_close_scn_time=%d", auto_close_scn_time);
-    //if (auto_close_scn_time > 0) //ÉèÖÃFMµÄ×Ô¶¯¹ØÆÁÊ±¼ä
+    //if (auto_close_scn_time > 0) //è®¾ç½®FMçš„è‡ªåŠ¨å…³å±æ—¶é—´
     {
         //    g_set_close_scn_time(auto_close_scn_time);
     }
-    //¹Ø±³¾°
+    //å…³èƒŒæ™¯
     //gscene_bgd_set_state(BGD_STATUS_HIDE);
     return 0;
 }
 
-//Ö÷ÏûÏ¢´¦Àíº¯Êı
+//ä¸»æ¶ˆæ¯å¤„ç†å‡½æ•°
 static __s32 _app_fm_Proc(__gui_msg_t *msg)
 {
     APP_DEBUG_CBMSGEx;
@@ -1406,10 +1420,10 @@ static __s32 _app_fm_Proc(__gui_msg_t *msg)
     {
         case GUI_MSG_CREATE:
         {
-            esPWRMAN_LockCpuFreq();//½ûÖ¹CPU×Ô¶¯µ÷½ÚÆµÂÊ£¬·ÀÖ¹FMÔÓÒô
+            esPWRMAN_LockCpuFreq();//ç¦æ­¢CPUè‡ªåŠ¨è°ƒèŠ‚é¢‘ç‡ï¼Œé˜²æ­¢FMæ‚éŸ³
             dsk_set_auto_off_time(0);
             //__here__;
-            dsk_amplifier_onoff(1);//´ò¿ª¹¦·Å
+            dsk_amplifier_onoff(1);//æ‰“å¼€åŠŸæ”¾
             //__here__;
             g_FMManWnd = msg->h_deswin;
             return on_fm_create(msg);
@@ -1417,7 +1431,7 @@ static __s32 _app_fm_Proc(__gui_msg_t *msg)
 
         case GUI_MSG_DESTROY:
         {
-            esPWRMAN_UnlockCpuFreq();//ÔÊĞíCPU×Ô¶¯µ÷½ÚÆµÂÊ
+            esPWRMAN_UnlockCpuFreq();//å…è®¸CPUè‡ªåŠ¨è°ƒèŠ‚é¢‘ç‡
             {
                 reg_system_para_t *para;
                 para = (reg_system_para_t *)dsk_reg_get_para_by_app(REG_APP_SYSTEM);
@@ -1428,7 +1442,7 @@ static __s32 _app_fm_Proc(__gui_msg_t *msg)
                     __wrn("para->poweroff=%d", para->poweroff);
                 }
             }
-            dsk_amplifier_onoff(0);//¹Ø±Õ¹¦·Å
+            dsk_amplifier_onoff(0);//å…³é—­åŠŸæ”¾
             return on_fm_destory(msg);
         }
 
@@ -1502,7 +1516,7 @@ static __s32 _app_fm_Proc(__gui_msg_t *msg)
 
             __wrn("@@ALARM_MSG_CLOSE begin");
             GUI_WinSetFocusChild(msg->h_deswin);
-            dsk_amplifier_onoff(1);//ÄÖÖÓ¹Ø±Õºó»á¹Ø¹¦·Å£¬ÕâÀï°ÑËü´ò¿ª
+            dsk_amplifier_onoff(1);//é—¹é’Ÿå…³é—­åä¼šå…³åŠŸæ”¾ï¼Œè¿™é‡ŒæŠŠå®ƒæ‰“å¼€
             __wrn("@@ALARM_MSG_CLOSE end");
             return EPDK_OK ;
         }
@@ -1551,4 +1565,3 @@ __s32 app_fm_notify_delete_sub_scene(H_WIN hmanwin)
     SEND_MSG(FM_COMMAND, NULL, hmanwin, ID_FM_CMD_DESTROY_SSET, 0);
     return EPDK_OK;
 }
-

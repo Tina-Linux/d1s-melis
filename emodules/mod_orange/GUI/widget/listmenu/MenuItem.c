@@ -1,30 +1,33 @@
 /*
-*******************************************************************************************************************
-*                                                           display driver
-*                                                   the display dirver support module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2008, SoftWinners Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name£∫      MenuItem.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
 *
-*Author£∫         William Wang
 *
-*Version :        1.1.0
-*
-*Date:            2008-11-24
-*
-*Description :    menuitem implement definition
-*
-*Others :         None at present.
-*
-* History :
-*
-* <Author>          <time>          <version>     <description>
-*
-* William Wang     2008-11-24         1.1.0        Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __MENU_ITEM__C____
 #define __MENU_ITEM__C____
@@ -32,7 +35,7 @@
 #include "MenuItem.h"
 
 //------------------------------------------------------------------------------------------------------------
-// ¥¥Ω®menuitem
+// ÂàõÂª∫menuitem
 
 //==================================================================
 //function name:    MenuItem_Create
@@ -99,7 +102,7 @@ MENUITEM_t *MenuItem_Create(__rectsz_t   *rectsz, __lstm_item_attr_t *item_attr,
             create_info.spCaption           = NULL;
             create_info.dwStyle             = item_attr->ctrls[count].dwStyle & (~(WS_VISIBLE | WS_LYRWIN));
             create_info.dwExStyle           = item_attr->ctrls[count].dwExStyle;
-            /*‘›≤ª¥¶¿Ì¥∞ø⁄‘ΩΩÁµƒ«Èøˆwilliam 2009-10-28*/
+            /*ÊöÇ‰∏çÂ§ÑÁêÜÁ™óÂè£Ë∂äÁïåÁöÑÊÉÖÂÜµwilliam 2009-10-28*/
             create_info.ctl_rect.x          = item_attr->ctrls[count].ctl_rect.x;
             create_info.ctl_rect.y          = item_attr->ctrls[count].ctl_rect.y;
             create_info.ctl_rect.width      = item_attr->ctrls[count].ctl_rect.width;
@@ -129,7 +132,7 @@ MENUITEM_t *MenuItem_Create(__rectsz_t   *rectsz, __lstm_item_attr_t *item_attr,
             newitem->child[count].win_rect.width    = create_info.ctl_rect.width;
             newitem->child[count].win_rect.height   = create_info.ctl_rect.height;
             newitem->nctrls++;
-            /*øÿº˛¥∞ø⁄µƒÀΩ”–øÿ÷∆–≈œ¢¿Ô√Ê±£¥ÊMENUITEMµƒæ‰±˙*/
+            /*Êéß‰ª∂Á™óÂè£ÁöÑÁßÅÊúâÊéßÂà∂‰ø°ÊÅØÈáåÈù¢‰øùÂ≠òMENUITEMÁöÑÂè•ÊüÑ*/
             GUI_WinSetAddData(newitem->child[count].hWnd, (unsigned long)((H_ITEM)newitem));
         }
     }
@@ -156,7 +159,7 @@ error:
 
 
 //------------------------------------------------------------------------------------------------------------
-//œ˙ªŸmenuItem
+//ÈîÄÊØÅmenuItem
 
 //==================================================================
 //function name:    MenuItem_Destroy
@@ -193,7 +196,7 @@ __u32    MenuItem_Destroy(MENUITEM_t *menuitem)
 }
 
 //------------------------------------------------------------------------------------------------------------
-//»°µ√…œ“ª∏ˆmenuitem
+//ÂèñÂæó‰∏ä‰∏Ä‰∏™menuitem
 
 //==================================================================
 //function name:    MenuItem_GetPrev
@@ -220,7 +223,7 @@ MENUITEM_t *MenuItem_GetPrev(MENUITEM_t *menuitem)
 
 
 //------------------------------------------------------------------------------------------------------------
-//»°µ√œ¬“ª∏ˆmenuitem
+//ÂèñÂæó‰∏ã‰∏Ä‰∏™menuitem
 
 //==================================================================
 //function name:    Menuitem_GetNext
@@ -250,5 +253,3 @@ MENUITEM_t *Menuitem_GetNext(MENUITEM_t *menuitem)
 //------------------------------------------------------------------------------------------------------------
 
 #endif //__MENU_ITEM__C____
-
-

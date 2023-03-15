@@ -1,9 +1,0 @@
-target remote 127.0.0.1:3333
-
-set confirm off
-set height 0
-
-file c906_basic_c.out
-load
-disp /i $pc
-c

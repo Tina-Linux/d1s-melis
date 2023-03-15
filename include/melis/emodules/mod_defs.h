@@ -164,7 +164,7 @@
 
 #define EMDO_TYPE_MOD_DISPLAY           (EMOD_TYPE_EXTERNAL_MODS + 0xa)
 #define EMDO_TYPE_MOD_MIXTURE           (EMOD_TYPE_EXTERNAL_MODS + 0xb)
-
+#define EMOD_TYPE_WILLOW_SHOW           (EMOD_TYPE_EXTERNAL_MODS + 0xc)
 
 
 /* reserved driver, can't been used by anyone   */

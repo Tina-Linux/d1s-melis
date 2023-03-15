@@ -1,26 +1,39 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : program_preview_frmgeneral.c
-* By        : Hot.lee
-* Func      : desk main thread
-* Version   : v1.0
-* ============================================================================================================
-* 2013-3-30 8:51:52  Hot.lee  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include <log.h>
 #include "program_preview_uipara.h"
 #include "program_preview_list.h"
 
-#define     LISTBAR_ITEM_NUM   10 //ÓÃ»§ÔÚµ±Ç°½çÃæÐèÒª »­µÄlistbar¸öÊý
+#define     LISTBAR_ITEM_NUM   10 //ç”¨æˆ·åœ¨å½“å‰ç•Œé¢éœ€è¦ ç”»çš„listbarä¸ªæ•°
 #define     LISTBAR_ITEM_ICON_HEIGHT    21
 #define     LISTBAR_ITEM_ICON_WIDTH 25
 typedef struct tag_program_preview_frmfocus_item_id
@@ -66,8 +79,8 @@ static void __draw_entpy_listbar(program_preview_frmattr_t *gattr);
 
 static __s32 preview_play_program(__s32 index)
 {
-    //ÏÖÔÚ²¥·ÅÈ«²¿ÓÉÏß³Ì²¥·Å
-    //ËùÒÔËõÂÔÍ¼µÄ×ø±êÇëÔÚdtv_uipara.cÖÐÐÞ¸Ä
+    //çŽ°åœ¨æ’­æ”¾å…¨éƒ¨ç”±çº¿ç¨‹æ’­æ”¾
+    //æ‰€ä»¥ç¼©ç•¥å›¾çš„åæ ‡è¯·åœ¨dtv_uipara.cä¸­ä¿®æ”¹
 #if 0
     RECT  rect;
     program_preview_uipara_t *uipara = NULL;
@@ -77,7 +90,7 @@ static __s32 preview_play_program(__s32 index)
     rect.width = uipara->program_pre.width;
     rect.height = uipara->program_pre.height;
     //maple_stop_program();
-    maple_play_program_ex(&rect, index); //ÏÖÔÚ²¥·ÅÈ«²¿ÓÉÏß³Ì²¥·Å
+    maple_play_program_ex(&rect, index); //çŽ°åœ¨æ’­æ”¾å…¨éƒ¨ç”±çº¿ç¨‹æ’­æ”¾
     //maple_epg_search();
 #endif
     return 0;
@@ -88,7 +101,7 @@ static void program_preview_update_topview(program_preview_frmattr_t *gattr)
     GUI_RECT gui_rect;
     program_preview_uipara_t *uipara = NULL;
     uipara = program_preview_get_uipara();
-    //¶¥²¿¸üÐÂ
+    //é¡¶éƒ¨æ›´æ–°
     GUI_BMP_Draw(dsk_theme_hdl2buf(gattr->h_title_bmp), 0, 0);
 #if 1
     gui_rect.x0 = 0;
@@ -98,7 +111,7 @@ static void program_preview_update_topview(program_preview_frmattr_t *gattr)
     dsk_langres_get_menu_text(STRING_DTV_PROGRAM_PREVIEW, tmp, sizeof(tmp));
     GUI_SetColor(GUI_BLACK);
     GUI_DispStringInRect(tmp, &gui_rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
-    //´Ë´¦»¹ÓÐ½ÚÄ¿Êý
+    //æ­¤å¤„è¿˜æœ‰èŠ‚ç›®æ•°
 #endif
     //program_preview_update_bottom_view(gattr);
 }
@@ -111,7 +124,7 @@ static __s32 program_preview_update_bottom_view(program_preview_frmattr_t *gattr
     program_preview_uipara_t *uipara = NULL;
     uipara = program_preview_get_uipara();
     maple_sepg_search();
-    //µ×²¿µçÊÓ½ÚÄ¿
+    //åº•éƒ¨ç”µè§†èŠ‚ç›®
     cur = maple_get_channel_of_curprogramname();
     next = maple_get_channel_of_nextprogramname();
     __msg("gattr->curprogramname = %s, cur = %s\n", gattr->curprogramname, cur);
@@ -194,12 +207,12 @@ static __s32 program_preview_frmitem_paint_ex(__lbar_draw_para_t *draw_param)
     GUI_LyrWinCacheOn();
     //draw_mem = GUI_MEMDEV_Create(draw_param->rect.x, draw_param->rect.y,draw_param->rect.width,draw_param->rect.height);
     //GUI_MEMDEV_Select(draw_mem);
-    //»ñÈ¡½ÚÄ¿Ãû³Æ
+    //èŽ·å–èŠ‚ç›®åç§°
     tmp = maple_get_name_of_channel(draw_param->index);
     servType = maple_get_server_type_of_channel(draw_param->index);
     cafree = maple_get_cafree_status_of_channel(draw_param->index);
 
-    //½ÚÄ¿Ãû³Æ¶ÔÆëÏÔÊ¾
+    //èŠ‚ç›®åç§°å¯¹é½æ˜¾ç¤º
     if (draw_param->index < (10 - 1)) //index from 0
     {
         eLIBs_sprintf(server_name, "   %d    %s", draw_param->index + 1, tmp);
@@ -342,7 +355,7 @@ static void program_preview_frmlistbar_init(__gui_msg_t *msg)
 
 
 /*
-    ÉêÇë×ÊÔ´
+    ç”³è¯·èµ„æº
 */
 static void _program_preview_frmres_init(program_preview_frmattr_t *attr)
 {
@@ -614,7 +627,7 @@ static __s32  program_preview_frmtouch_proc(__gui_msg_t *msg)
 }
 
 
-//listbar²»×ãLISTBAR_ITEM_NUMÊ±£¬ÔÚÆäºó»­unfocusÍ¼Æ¬
+//listbarä¸è¶³LISTBAR_ITEM_NUMæ—¶ï¼Œåœ¨å…¶åŽç”»unfocuså›¾ç‰‡
 static void __draw_entpy_listbar(program_preview_frmattr_t *gattr)
 {
     __s32 i;
@@ -643,7 +656,7 @@ static void __draw_entpy_listbar(program_preview_frmattr_t *gattr)
 static __s32 create_flag = 0;
 
 /*
-    »Øµ÷
+    å›žè°ƒ
 */
 static __s32 _program_preview_frmProc(__gui_msg_t *msg)
 {
@@ -746,7 +759,7 @@ static __s32 _program_preview_frmProc(__gui_msg_t *msg)
 
             attr->h_listbar = NULL;
             _program_preview_frmres_uninit(attr);
-            //dsk_reg_flush();  //Ð´½øÎÄ¼þÀïÃæ
+            //dsk_reg_flush();  //å†™è¿›æ–‡ä»¶é‡Œé¢
             para = attr->para;
 
             if (para)
@@ -842,4 +855,3 @@ __s32 program_preview_frmwin_delete(H_WIN list_win)
     GUI_FrmWinDelete(list_win);
     return EPDK_OK;
 }
-

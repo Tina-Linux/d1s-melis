@@ -1,16 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                   eMOD
-*                                  the Easy Portable/Player Operation System
-*                                              mod_willow sub-system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                               (c) Copyright 2006-2009, ALLWINNERME, China
-*                                           All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File   : backlayer_lib.c
-* Version: V1.0
-* By     : xiechuanrong
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "mod_init_i.h"
 #include "backlayer_lib.h"
@@ -19,6 +36,7 @@
 #include <kconfig.h>
 #include "mod_codec_cmd.h"
 #include "mod_mixture.h"
+#include <libc/eLIBs_az100.h>
 
 #define ALIGN_TO_16B(x)   ((((x) + (1 <<  4) - 1) >>  4) <<  4)
 #define ALIGN_TO_32B(x)   ((((x) + (1 <<  5) - 1) >>  5) <<  5)
@@ -76,12 +94,12 @@ static __s32 get_jpg_size(JPG_SIZE *size, __hdle fh)
 }
 /************************************************************************
 * Function: backlayer_create_layer
-* Description: ¥¥Ω®±≥æ∞Õº≤„
+* Description: ÂàõÂª∫ËÉåÊôØÂõæÂ±Ç
 * Input:
 * Output:
 * Return:
 *     > 0: backlayer_handle
-*     0:  ß∞‹
+*     0: Â§±Ë¥•
 *************************************************************************/
 int32_t backlayer_create_layer(__mp *de_hdle)
 {
@@ -107,9 +125,9 @@ int32_t backlayer_create_layer(__mp *de_hdle)
 
 /************************************************************************
 * Function: backlayer_delete_layer
-* Description: …æ≥˝±≥æ∞Õº≤„
+* Description: Âà†Èô§ËÉåÊôØÂõæÂ±Ç
 * Input:
-    uint32_t layer_handle: ±≥æ∞Õº≤„æ‰±˙
+    uint32_t layer_handle: ËÉåÊôØÂõæÂ±ÇÂè•ÊüÑ
 * Output:
 * Return:
 *************************************************************************/
@@ -144,23 +162,70 @@ void backlayer_delete_layer(__mp *de_hdle, unsigned long layer_handle)
         jpeg_info = NULL;
     }
     
-    esKRNL_TimeDly(3);//add by bayden, —” ±30ms£¨µ»¥˝œ‘ æ«˝∂ØV÷–∂œµΩ¥Ô
+    esKRNL_TimeDly(3);//add by bayden, Âª∂Êó∂30msÔºåÁ≠âÂæÖÊòæÁ§∫È©±Âä®V‰∏≠Êñ≠Âà∞Ëææ
 
     return;
 }
 
 /************************************************************************
-* Function: backlayer_set_fb
-* Description: …Ë÷√±≥æ∞Õº≤„frame buffer
+* Function: backlayer_set_fb_yuv
+* Description: ËÆæÁΩÆyuvÊï∞ÊçÆÁöÑËÉåÊôØÂõæÂ±Çframe buffer
 * Input:
-*     uint32_t layer_handle: ±≥æ∞Õº≤„æ‰±˙
-*     FB *fb: ¥˝…Ë÷√µƒ±≥æ∞frame buffer
+*     uint32_t layer_handle: ËÉåÊôØÂõæÂ±ÇÂè•ÊüÑ
+*     FB *fb: ÂæÖËÆæÁΩÆÁöÑËÉåÊôØframe buffer
+* Output:
+* Return:
+*************************************************************************/
+void  backlayer_set_fb_yuv(__mp *de_hdle, unsigned long layer_handle, char *fname, FB *fb, __u8 mod)
+{
+    __u64 arg[3];
+    __disp_layer_info_t layer;
+
+    esMEMS_CleanFlushDCacheRegion((void *)fb->addr[0], fb->size.height * fb->size.width *3/2);
+
+    layer.fb.format        = DISP_FORMAT_YUV420_P;
+    layer.fb.seq           = DISP_SEQ_UVUV;
+    layer.fb.mode          = DISP_MOD_NON_MB_PLANAR;
+    layer.fb.br_swap       = 0;
+    layer.fb.cs_mode      = DISP_BT601;
+    layer.mode = MOD_DISP_LAYER_WORK_MODE_SCALER;
+    layer.pipe             = 0;
+    layer.prio             = 1;
+    layer.alpha_en         = 0;
+    layer.alpha_val        = 0;
+    layer.ck_enable        = 0;
+    layer.src_win.x        = 0;
+    layer.src_win.y        = 0;
+    layer.src_win.width    = fb->size.width;
+    layer.src_win.height   = fb->size.height;
+    layer.scn_win.x        = 0;
+    layer.scn_win.y        = 0;
+    layer.scn_win.width    = esMODS_MIoctrl(de_hdle, MOD_DISP_GET_SCN_WIDTH, 0, 0);
+    layer.scn_win.height   = esMODS_MIoctrl(de_hdle, MOD_DISP_GET_SCN_HEIGHT, 0, 0);
+    layer.fb.addr[0]       = (__u32)(fb->addr[0]);
+    layer.fb.addr[1]       = (__u32)(fb->addr[1]);
+    layer.fb.addr[2]       = (__u32)(fb->addr[2]);
+    layer.fb.size.width = fb->size.width;
+    layer.fb.size.height = fb->size.height;
+
+    arg[0] = layer_handle;
+    arg[1] = (__u32)&layer;
+    arg[2] = 0;
+    esMODS_MIoctrl(de_hdle, MOD_DISP_CMD_LAYER_SET_PARA, 0, (void *)arg);
+}
+
+/************************************************************************
+* Function: backlayer_set_fb
+* Description: ËÆæÁΩÆËÉåÊôØÂõæÂ±Çframe buffer
+* Input:
+*     uint32_t layer_handle: ËÉåÊôØÂõæÂ±ÇÂè•ÊüÑ
+*     FB *fb: ÂæÖËÆæÁΩÆÁöÑËÉåÊôØframe buffer
 * Output:
 * Return:
 *************************************************************************/
 void  backlayer_set_fb_jpg(__mp *de_hdle, unsigned long layer_handle, char *fname, FB *fb, __u8 mod) //JPG mode
 {
-     __u32 mid_vcoder;
+    __u32 mid_vcoder;
     __s32 *mp_vcoder = NULL;
     __u64 arg[3];
     JPG_SIZE jpg_size;
@@ -386,11 +451,15 @@ void  backlayer_set_fb(__mp *de_hdle, unsigned long layer_handle, char *fname, F
 	}
     if (bk_mode == JPG_MODE)
     {
-        backlayer_set_fb_jpg(de_hdle, layer_handle, fname, NULL, mod);
+        backlayer_set_fb_jpg(de_hdle, layer_handle, fname, 0, mod);
     }
-    else
+    else if (bk_mode == BMP_MODE)
     {
         backlayer_set_fb_bmp(de_hdle, layer_handle, NULL, fb, mod);
+    }
+	else if (bk_mode == YUV_MODE)
+    {
+        backlayer_set_fb_yuv(de_hdle, layer_handle, fname, fb, mod);
     }
 #else
     backlayer_set_fb_bmp(de_hdle, layer_handle, NULL, fb, mod);
@@ -398,9 +467,9 @@ void  backlayer_set_fb(__mp *de_hdle, unsigned long layer_handle, char *fname, F
 }
 /************************************************************************
 * Function: backlayer_set_top
-* Description: …Ë÷√±≥æ∞Õº≤„Œ™top
+* Description: ËÆæÁΩÆËÉåÊôØÂõæÂ±Ç‰∏∫top
 * Input:
-*     uint32_t layer_handle: ±≥æ∞Õº≤„æ‰±˙
+*     uint32_t layer_handle: ËÉåÊôØÂõæÂ±ÇÂè•ÊüÑ
 * Output:
 * Return:
 *************************************************************************/
@@ -417,9 +486,9 @@ void  backlayer_set_top(__mp *de_hdle, unsigned long layer_handle)
 
 /************************************************************************
 * Function: backlayer_set_bottom
-* Description: …Ë÷√±≥æ∞Õº≤„Œ™bottom
+* Description: ËÆæÁΩÆËÉåÊôØÂõæÂ±Ç‰∏∫bottom
 * Input:
-*     uint32_t layer_handle: ±≥æ∞Õº≤„æ‰±˙
+*     uint32_t layer_handle: ËÉåÊôØÂõæÂ±ÇÂè•ÊüÑ
 * Output:
 * Return:
 *************************************************************************/
@@ -435,7 +504,7 @@ void  backlayer_set_bottom(__mp *de_hdle, unsigned long layer_handle)
 
 uint32_t get_logo_mode(void)
 {
-    if (esCFG_GetKeyValue("backlayer", "backlayer_mode", &bk_mode, 1) != EPDK_OK)
+    if (esCFG_GetKeyValue("backlayer", "backlayer_mode", &bk_mode, 1) != EPDK_OK)  //ÈÖçÁΩÆÊñá‰ª∂Ôºösys_config_nor.fex
     {
         bk_mode = 0;
         __err("get_logo_mode err!");

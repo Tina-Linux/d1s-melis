@@ -1,37 +1,68 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #ifndef __COM_ECHO_H__
 #define __COM_ECHO_H__
 
 #include "apps.h"
 
 //type:AUDIO_REC_USR_MIC/AUDIO_REC_USR_FM....
-//auto_clean_buf:0´ú±í²»»á×Ô¶¯Çå¿Õbuffer(Â¼ÒôÓ¦ÓÃ)£¬Îª1´ú±í×Ô¶¯Çå¿Õbuffer(·ÇÂ¼ÒôµÄÓ¦ÓÃ)
-//ÏêÏ¸µ÷ÓÃ·½·¨²Î¼ûSDKµÄapp_root_scene.cºÍrecord_view_doc.c
+//auto_clean_buf:0ä»£è¡¨ä¸ä¼šè‡ªåŠ¨æ¸…ç©ºbuffer(å½•éŸ³åº”ç”¨)ï¼Œä¸º1ä»£è¡¨è‡ªåŠ¨æ¸…ç©ºbuffer(éžå½•éŸ³çš„åº”ç”¨)
+//è¯¦ç»†è°ƒç”¨æ–¹æ³•å‚è§SDKçš„app_root_scene.cå’Œrecord_view_doc.c
 __s32 com_audio_echo_open(__audio_rec_user_t type, __s32 auto_clean_buf);
 
-//ÏêÏ¸µ÷ÓÃ·½·¨²Î¼ûSDKµÄapp_root_scene.cºÍrecord_view_doc.c
+//è¯¦ç»†è°ƒç”¨æ–¹æ³•å‚è§SDKçš„app_root_scene.cå’Œrecord_view_doc.c
 __s32 com_audio_echo_close(void);
 
-//¸Ãº¯ÊýÒ»°ã²»Òªµ÷ÓÃ£¬°´ÕÕÄ¬ÈÏµÄ¾ÍÐÐÁË
+//è¯¥å‡½æ•°ä¸€èˆ¬ä¸è¦è°ƒç”¨ï¼ŒæŒ‰ç…§é»˜è®¤çš„å°±è¡Œäº†
 //0<= pre_gain <= 3
 __s32 com_audio_echo_set_mic_pre_gain(__s32 pre_gain);
 
-//¸Ãº¯ÊýÒ»°ã²»Òªµ÷ÓÃ£¬°´ÕÕÄ¬ÈÏµÄ¾ÍÐÐÁË
+//è¯¥å‡½æ•°ä¸€èˆ¬ä¸è¦è°ƒç”¨ï¼ŒæŒ‰ç…§é»˜è®¤çš„å°±è¡Œäº†
 //0<= gain <= 7
 __s32 com_audio_echo_set_mic_gain(__s32 gain);
 
-//Ôö¼ÓmicÒôÁ¿£¬-32µ½32£¬¿ÉÒÔµ÷½ÚmicÒôÁ¿
+//å¢žåŠ micéŸ³é‡ï¼Œ-32åˆ°32ï¼Œå¯ä»¥è°ƒèŠ‚micéŸ³é‡
 __s32 com_audio_echo_gain_incr(void);
 
-//¼õÐ¡micÒôÁ¿ -32µ½32£¬¿ÉÒÔµ÷½ÚmicÒôÁ¿
+//å‡å°micéŸ³é‡ -32åˆ°32ï¼Œå¯ä»¥è°ƒèŠ‚micéŸ³é‡
 __s32 com_audio_echo_gain_decr(void);
 
-//¸Ãº¯Êý²»µ÷ÓÃ£¬µ÷ÊÔÓÃ
+//è¯¥å‡½æ•°ä¸è°ƒç”¨ï¼Œè°ƒè¯•ç”¨
 __s32 com_audio_echo_pt_regs(__u32 start, __u32 end);
 
-/*aux: 0<= aux <= 10 ÉèÖÃ»ìÏìÑÓÊ±´ÎÊý£¬Ä¬ÈÏÎª3*/
+/*aux: 0<= aux <= 10 è®¾ç½®æ··å“å»¶æ—¶æ¬¡æ•°ï¼Œé»˜è®¤ä¸º3*/
 __s32 com_audio_echo_set_delay_num(__s32 aux);
 
-/*aux:10<= aux <= 3000,Ä¬ÈÏÎª100£¬ÒÔºÁÃëÎªµ¥Î»*/
+/*aux:10<= aux <= 3000,é»˜è®¤ä¸º100ï¼Œä»¥æ¯«ç§’ä¸ºå•ä½*/
 __s32 com_audio_echo_set_delay_time(__s32 aux);
 
 

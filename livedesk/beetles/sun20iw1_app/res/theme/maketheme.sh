@@ -36,7 +36,12 @@ rm -fr */*.script
 mv config/touchthemehdr config/touchthemehdr.script
 
 echo "##########################make script begin###########################"
-progname=./MakeScript 
+
+if [ $(getconf WORD_BIT) = '32' ] && [ $(getconf LONG_BIT) = '64' ] ; then
+	progname=./MakeScript
+else
+	progname=./MakeScript_32
+fi
 
 $progname  ./init       1       1000 >/dev/null
 $progname  ./home       1001    2000 >/dev/null
@@ -79,7 +84,12 @@ cat ./config/touchthemehdr.script   \
     
 echo "###########################make theme begin###########################"
 
-progname=./facebuildercmd 
+if [ $(getconf WORD_BIT) = '32' ] && [ $(getconf LONG_BIT) = '64' ] ; then
+	progname=./facebuildercmd
+else
+	progname=./facebuildercmd
+fi
+
 $progname ./config/config.ini > /dev/null & 
 
 while test $(pgrep -P $$ | wc -l) -ne 1

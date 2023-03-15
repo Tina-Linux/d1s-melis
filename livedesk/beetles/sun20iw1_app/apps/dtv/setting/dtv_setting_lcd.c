@@ -1,21 +1,34 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : dtv_setting_lcd_general.c
-* By        : hot.lee
-* Func      : desk main thread
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-20 8:51:52  hot.lee  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include <log.h>
 #include "dtv_setting_uipara.h"
 #include "dtv_setting_lcd.h"
@@ -24,14 +37,14 @@
 
 
 
-static __s32 content_backlight_level_id[][2] = //ITEM1 (±³¹âÁÁ¶È)
+static __s32 content_backlight_level_id[][2] = //ITEM1 (èƒŒå…‰äº®åº¦)
 {
-    {STRING_DTV_POWER_BGT_LEVEL1_CON,      LION_BRIGHT_LEVEL1,},       //* ²»¹ØÐÄÍ¼Æ¬ÏÔÊ¾±ÈÀý£¬ÒÔµ±Ç°ÉèÖÃµÄ±ÈÀý
-    {STRING_DTV_POWER_BGT_LEVEL2_CON,      LION_BRIGHT_LEVEL2,    },           //* ÒÔÍ¼Æ¬Ô­Ê¼´óÐ¡ÔÚ´°¿ÚÄÚÏÔÊ¾£¬²»ÄÜÒç³ö´°¿Ú
-    {STRING_DTV_POWER_BGT_LEVEL3_CON,      LION_BRIGHT_LEVEL3,    },           //* ÒÔÍ¼Æ¬±¾ÉíµÄ±ÈÀýËõ·ÅÖÁÂú´°¿ÚÏÔÊ¾£¬Í¼Æ¬²»±äÐÎ
-    {STRING_DTV_POWER_BGT_LEVEL4_CON,      LION_BRIGHT_LEVEL4,   },            //* ÒÔ´°¿ÚµÄ±ÈÀýËõ·ÅÍ¼Æ¬ÖÁÂú´°¿ÚÏÔÊ¾£¬¿ÉÄÜ»á±äÐÎ
-    {STRING_DTV_POWER_BGT_LEVEL5_CON,      LION_BRIGHT_LEVEL5,    },           //* Ç¿ÖÆÒÔ4:3µÄÄ£Ê½ÂúÆÁÏÔÊ¾ÊÓÆµÍ¼Ïñ£¬Í¼Ïñ»á±äÐÎ
-    {STRING_DTV_POWER_BGT_LEVEL6_CON,      LION_BRIGHT_LEVEL6,    },           //* Ç¿ÖÆÒÔ16:9µÄÄ£Ê½ÂúÆÁÏÔÊ¾ÊÓÆµÍ¼Ïñ£¬Í¼Ïñ»á±äÐÎ
+    {STRING_DTV_POWER_BGT_LEVEL1_CON,      LION_BRIGHT_LEVEL1,},       //* ä¸å…³å¿ƒå›¾ç‰‡æ˜¾ç¤ºæ¯”ä¾‹ï¼Œä»¥å½“å‰è®¾ç½®çš„æ¯”ä¾‹
+    {STRING_DTV_POWER_BGT_LEVEL2_CON,      LION_BRIGHT_LEVEL2,    },           //* ä»¥å›¾ç‰‡åŽŸå§‹å¤§å°åœ¨çª—å£å†…æ˜¾ç¤ºï¼Œä¸èƒ½æº¢å‡ºçª—å£
+    {STRING_DTV_POWER_BGT_LEVEL3_CON,      LION_BRIGHT_LEVEL3,    },           //* ä»¥å›¾ç‰‡æœ¬èº«çš„æ¯”ä¾‹ç¼©æ”¾è‡³æ»¡çª—å£æ˜¾ç¤ºï¼Œå›¾ç‰‡ä¸å˜å½¢
+    {STRING_DTV_POWER_BGT_LEVEL4_CON,      LION_BRIGHT_LEVEL4,   },            //* ä»¥çª—å£çš„æ¯”ä¾‹ç¼©æ”¾å›¾ç‰‡è‡³æ»¡çª—å£æ˜¾ç¤ºï¼Œå¯èƒ½ä¼šå˜å½¢
+    {STRING_DTV_POWER_BGT_LEVEL5_CON,      LION_BRIGHT_LEVEL5,    },           //* å¼ºåˆ¶ä»¥4:3çš„æ¨¡å¼æ»¡å±æ˜¾ç¤ºè§†é¢‘å›¾åƒï¼Œå›¾åƒä¼šå˜å½¢
+    {STRING_DTV_POWER_BGT_LEVEL6_CON,      LION_BRIGHT_LEVEL6,    },           //* å¼ºåˆ¶ä»¥16:9çš„æ¨¡å¼æ»¡å±æ˜¾ç¤ºè§†é¢‘å›¾åƒï¼Œå›¾åƒä¼šå˜å½¢
     {STRING_DTV_POWER_BGT_LEVEL7_CON,     LION_BRIGHT_LEVEL7,  },
     {STRING_DTV_POWER_BGT_LEVEL8_CON,     LION_BRIGHT_LEVEL8,  },
     //      {STRING_DTV_POWER_BGT_LEVEL9_CON,       LION_BRIGHT_LEVEL9,  },
@@ -203,7 +216,7 @@ static void dtv_setting_lcd_listbar_init(__gui_msg_t *msg)
 
 
 /*
-    ÉêÇë×ÊÔ´
+    ç”³è¯·èµ„æº
 */
 static void _dtv_setting_lcd_res_init(dtv_setting_lcd_attr_t *attr)
 {
@@ -442,7 +455,7 @@ static __s32 dtv_setting_get_cur_index(void)
 static __s32 create_flag = 0;
 
 /*
-    »Øµ÷
+    å›žè°ƒ
 */
 static __s32 _dtv_setting_lcd_Proc(__gui_msg_t *msg)
 {
@@ -531,7 +544,7 @@ static __s32 _dtv_setting_lcd_Proc(__gui_msg_t *msg)
 
             attr->h_listbar = NULL;
             _dtv_setting_lcd_res_uninit(attr);
-            //dsk_reg_flush();  //Ð´½øÎÄ¼þÀïÃæ
+            //dsk_reg_flush();  //å†™è¿›æ–‡ä»¶é‡Œé¢
             para = attr->para;
 
             if (para)
@@ -628,4 +641,3 @@ __s32 dtv_setting_lcd_win_delete(H_WIN list_win)
     GUI_FrmWinDelete(list_win);
     return EPDK_OK;
 }
-

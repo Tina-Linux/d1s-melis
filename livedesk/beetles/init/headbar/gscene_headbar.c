@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : gscene_headbar.c
-* By        : Andy.zhang
-* Func      : headbar manage
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-20 8:51:52  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "mod_init_i.h"
@@ -36,7 +50,7 @@ typedef struct
     H_LYR           hbar_lyr;
     H_WIN           hbar_frm;
     void            *hbar_progbar;
-    int32_t         kill_hbar_on_volume_timmout;//hbarÒôÁ¿ÌõtimeoutµÄÊ±ºòÊÇ·ñÒþ²Øhbar
+    int32_t         kill_hbar_on_volume_timmout;//hbaréŸ³é‡æ¡timeoutçš„æ—¶å€™æ˜¯å¦éšè—hbar
 } __shbar_ctrl_t;
 
 static H_LYR __hbar_layer_create(__hbar_format_t format)
@@ -215,7 +229,7 @@ static int32_t __hbar_prog_scene_delete(H_WIN hManwin)
     return EPDK_OK;
 }
 
-//ÅÐ¶Ïhbar manwinÊÇ·ñÓÐÖ¸¶¨µÄ×Ó³¡¾°Ö®Ò»
+//åˆ¤æ–­hbar manwinæ˜¯å¦æœ‰æŒ‡å®šçš„å­åœºæ™¯ä¹‹ä¸€
 static int32_t __hbar_has_sub_scene(H_WIN hManwin, uint32_t sub_id)
 {
     H_WIN           child;
@@ -245,7 +259,7 @@ static int32_t __hbar_has_sub_scene(H_WIN hManwin, uint32_t sub_id)
     return EPDK_FALSE;
 }
 
-//É¾³ýhbarµÄ×Ó³¡¾°
+//åˆ é™¤hbarçš„å­åœºæ™¯
 static int32_t __hbar_delete_subscene_by_id(H_WIN hManwin, uint32_t sub_id)
 {
     H_WIN       child, next_child;
@@ -267,7 +281,7 @@ static int32_t __hbar_delete_subscene_by_id(H_WIN hManwin, uint32_t sub_id)
         next_child = GUI_WinGetNextBro(child);
         child_id = GUI_WinGetItemId(child);
 
-        if ((child_id & sub_id))//ÐèÒªÉ¾³ý
+        if ((child_id & sub_id))//éœ€è¦åˆ é™¤
         {
             __msg("begin delete hbar sub scene, winname = %s ", winname);
 
@@ -332,7 +346,7 @@ static int32_t cb_shbar_mwin(__gui_msg_t *msg)
 
             headbar_init_uipara(format);
 
-            /*  ´´½¨ headbar frmwin */
+            /*  åˆ›å»º headbar frmwin */
             scene->hbar_lyr     = __hbar_layer_create(format);
             scene->hbar_frm     = headbar_frm_create(msg->h_deswin, scene->hbar_lyr);
         }
@@ -495,7 +509,7 @@ static int32_t cb_shbar_mwin(__gui_msg_t *msg)
                                 tmp_msg.p_arg       = NULL;
                                 GUI_SendMessage(&tmp_msg);
                             }
-                            else//ÒôÁ¿ÌõtimmoutÊ±£¬Í¬Ê±Òþ²Øheadbar
+                            else//éŸ³é‡æ¡timmoutæ—¶ï¼ŒåŒæ—¶éšè—headbar
                             {
                                 gscene_hbar_set_state(HBAR_ST_HIDE);
                             }
@@ -684,7 +698,7 @@ int32_t gscene_hbar_set_state(HBarState state)
             GUI_LyrWinSetSta(hbar_layer, GUI_LYRWIN_STA_ON);
             GUI_LyrWinSetTop(hbar_layer);
 
-            if (HBAR_ST_HIDE == hbar_sta) //Èç¹ûÏÈÇ°hbarÊÇÒþ²Ø×´Ì¬£¬ÔòÒôÁ¿ÌõtimeoutºóÒªÒþ²Øhbar
+            if (HBAR_ST_HIDE == hbar_sta) //å¦‚æžœå…ˆå‰hbaræ˜¯éšè—çŠ¶æ€ï¼Œåˆ™éŸ³é‡æ¡timeoutåŽè¦éšè—hbar
             {
                 pscene->kill_hbar_on_volume_timmout = EPDK_TRUE;
             }
@@ -744,7 +758,7 @@ int32_t gscene_hbar_get_state(HBarState *p_state)
     return 0;
 }
 
-/* title Îªutf8±àÂë¸ñÊ½×Ö·û´®£¬len<=32 ,ÉèÖÃhbar title ÇøÓò×Ö·û´®*/
+/* title ä¸ºutf8ç¼–ç æ ¼å¼å­—ç¬¦ä¸²ï¼Œlen<=32 ,è®¾ç½®hbar title åŒºåŸŸå­—ç¬¦ä¸²*/
 int32_t gscene_hbar_set_title(char *title, uint32_t len)
 {
     __gui_msg_t     msgex;

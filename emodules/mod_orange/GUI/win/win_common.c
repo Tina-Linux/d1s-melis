@@ -1,30 +1,33 @@
 /*
-*******************************************************************************************************************
-*                                                           Mod orange
-*                                                   the embedded graphic support module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2008, Softwinner Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name£∫    win_common.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
 *
-*Author£∫       William Wang
 *
-*Version :      1.1.0
-*
-*Date:          2009-8-6
-*
-*Description :  windows common function definition
-*
-*Others :       None at present.
-*
-* History :
-*
-* <Author>          <time>        <version>     <description>
-*
-* William Wang     2009-8-6         1.1.0          Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "win_i.h"
 #include <mod_display.h>
@@ -110,7 +113,7 @@ static void remove_window(__gui_zorderinfo_t *zorder, pguiwin pWin)
 *
 * date:             2009-8-2
 *
-* Description:      ÃÌº”Õº≤„µΩœ‘ æ¡–±Ì÷–
+* Description:      Ê∑ªÂä†ÂõæÂ±ÇÂà∞ÊòæÁ§∫ÂàóË°®‰∏≠
 *
 * parameters:
 *
@@ -145,7 +148,7 @@ static __s32  LyrWin_AttachToVisableList(__gui_lyrwin_t *pLayer)
 
             if (prio1 < prio2)
             {
-                /*◊Ó∂•Õº≤„µƒ”≈œ»º∂–°”⁄µ±«∞Õº≤„µƒ”≈œ»º∂*/
+                /*ÊúÄÈ°∂ÂõæÂ±ÇÁöÑ‰ºòÂÖàÁ∫ßÂ∞è‰∫éÂΩìÂâçÂõæÂ±ÇÁöÑ‰ºòÂÖàÁ∫ß*/
                 if (pCur == sg_VisiLayerList)
                 {
                     sg_VisiLayerList       = pLayer;
@@ -155,7 +158,7 @@ static __s32  LyrWin_AttachToVisableList(__gui_lyrwin_t *pLayer)
                 }
             }
 
-            /*∑≈‘⁄Ω· ¯Œª÷√*/
+            /*ÊîæÂú®ÁªìÊùü‰ΩçÁΩÆ*/
             if (pNext == NULL)
             {
                 pCur->Next      = pLayer;
@@ -164,7 +167,7 @@ static __s32  LyrWin_AttachToVisableList(__gui_lyrwin_t *pLayer)
                 return ORANGE_OK;
             }
 
-            /*±»Ωœnext∫Õ–¬º”Õº≤„µƒ”≈œ»º∂*/
+            /*ÊØîËæÉnextÂíåÊñ∞Âä†ÂõæÂ±ÇÁöÑ‰ºòÂÖàÁ∫ß*/
             prio1 = GUI_LyrGetPrio(GUI_LyrP2H(pNext));
 
             if (prio1 < prio2)
@@ -192,7 +195,7 @@ static __s32  LyrWin_AttachToVisableList(__gui_lyrwin_t *pLayer)
 *
 * date:             2009-8-2
 *
-* Description:      ¥”ø…º˚Õº≤„¡¥±Ì÷–…æ≥˝Õº≤„
+* Description:      ‰ªéÂèØËßÅÂõæÂ±ÇÈìæË°®‰∏≠Âà†Èô§ÂõæÂ±Ç
 *
 * parameters:
 *
@@ -250,7 +253,7 @@ static __s32  LyrWin_DeattachFromVisList(__gui_lyrwin_t *pLayer)
 *
 * date:             2009-8-2
 *
-* Description:      œÚ≤ªø…º˚Õº≤„¡¥±Ì÷–ÃÌº”Õº≤„
+* Description:      Âêë‰∏çÂèØËßÅÂõæÂ±ÇÈìæË°®‰∏≠Ê∑ªÂä†ÂõæÂ±Ç
 *
 * parameters:
 *
@@ -288,7 +291,7 @@ static __s32 LyrWin_AttachToInVisList(__gui_lyrwin_t *pLayer)
 *
 * date:             2009-8-2
 *
-* Description:      ¥”≤ªø…º˚Õº≤„¡¥±Ì÷–…æ≥˝Õº≤„
+* Description:      ‰ªé‰∏çÂèØËßÅÂõæÂ±ÇÈìæË°®‰∏≠Âà†Èô§ÂõæÂ±Ç
 *
 * parameters:
 *
@@ -350,7 +353,7 @@ static __s32 LyrWin_DeAttachFromInVisList(__gui_lyrwin_t *pLayer)
 *
 * date:             2009-8-2
 *
-* Description:      Õº≤„÷√∂•
+* Description:      ÂõæÂ±ÇÁΩÆÈ°∂
 *
 * parameters:
 *
@@ -411,7 +414,7 @@ static __s32 LyrWin_ListSetTop(__gui_lyrwin_t *pLayer)
 *
 * date:             2009-8-2
 *
-* Description:      …Ë÷√Õº≤„÷√µ◊
+* Description:      ËÆæÁΩÆÂõæÂ±ÇÁΩÆÂ∫ï
 *
 * parameters:
 *
@@ -454,7 +457,7 @@ static __s32 LyrWin_ListSetBottom(__gui_lyrwin_t *pLayer)
             }
             else
             {
-                /*¡¥±ÌŒ≤º¥Œ™∏√Õº≤„Ω⁄µ„*/
+                /*ÈìæË°®Â∞æÂç≥‰∏∫ËØ•ÂõæÂ±ÇËäÇÁÇπ*/
                 GUI_WinUnlock();
                 return ORANGE_OK;
             }
@@ -489,14 +492,14 @@ static __s32 LyrWin_ListSetBottom(__gui_lyrwin_t *pLayer)
         return ORANGE_OK;
     }
 
-    /*¡¥±ÌŒ≤º¥Œ™∏√Õº≤„Ω⁄µ„*/
+    /*ÈìæË°®Â∞æÂç≥‰∏∫ËØ•ÂõæÂ±ÇËäÇÁÇπ*/
     if (pCur == pLayer)
     {
         GUI_WinUnlock();
         return ORANGE_OK;
     }
 
-    /*’“≤ªµΩ∏√Ω⁄µ„*/
+    /*Êâæ‰∏çÂà∞ËØ•ËäÇÁÇπ*/
     GUI_WinUnlock();
     return ORANGE_FAIL;
 }
@@ -510,7 +513,7 @@ static __s32 LyrWin_ListSetBottom(__gui_lyrwin_t *pLayer)
 *
 * date:             2009-8-2
 *
-* Description:      ÃÌº”Õº≤„µΩœ‘ æ¡–±Ì÷–
+* Description:      Ê∑ªÂä†ÂõæÂ±ÇÂà∞ÊòæÁ§∫ÂàóË°®‰∏≠
 *
 * parameters:
 *
@@ -545,7 +548,7 @@ static __s32  Sprite_AttachToVisableList(__gui_lyrwin_t *pLayer)
 
             if (prio1 < prio2)
             {
-                /*◊Ó∂•Õº≤„µƒ”≈œ»º∂–°”⁄µ±«∞Õº≤„µƒ”≈œ»º∂*/
+                /*ÊúÄÈ°∂ÂõæÂ±ÇÁöÑ‰ºòÂÖàÁ∫ßÂ∞è‰∫éÂΩìÂâçÂõæÂ±ÇÁöÑ‰ºòÂÖàÁ∫ß*/
                 if (pCur == sg_VisiSpriteList)
                 {
                     sg_VisiSpriteList       = pLayer;
@@ -555,7 +558,7 @@ static __s32  Sprite_AttachToVisableList(__gui_lyrwin_t *pLayer)
                 }
             }
 
-            /*∑≈‘⁄Ω· ¯Œª÷√*/
+            /*ÊîæÂú®ÁªìÊùü‰ΩçÁΩÆ*/
             if (pNext == NULL)
             {
                 pCur->Next      = pLayer;
@@ -564,7 +567,7 @@ static __s32  Sprite_AttachToVisableList(__gui_lyrwin_t *pLayer)
                 return ORANGE_OK;
             }
 
-            /*±»Ωœnext∫Õ–¬º”Õº≤„µƒ”≈œ»º∂*/
+            /*ÊØîËæÉnextÂíåÊñ∞Âä†ÂõæÂ±ÇÁöÑ‰ºòÂÖàÁ∫ß*/
             prio1 = GUI_LyrGetPrio(GUI_LyrP2H(pNext));
 
             if (prio1 < prio2)
@@ -592,7 +595,7 @@ static __s32  Sprite_AttachToVisableList(__gui_lyrwin_t *pLayer)
 *
 * date:             2009-8-2
 *
-* Description:      ¥”ø…º˚Õº≤„¡¥±Ì÷–…æ≥˝Õº≤„
+* Description:      ‰ªéÂèØËßÅÂõæÂ±ÇÈìæË°®‰∏≠Âà†Èô§ÂõæÂ±Ç
 *
 * parameters:
 *
@@ -650,7 +653,7 @@ static __s32  Sprite_DeattachFromVisList(__gui_lyrwin_t *pLayer)
 *
 * date:             2009-8-2
 *
-* Description:      œÚ≤ªø…º˚Õº≤„¡¥±Ì÷–ÃÌº”Õº≤„
+* Description:      Âêë‰∏çÂèØËßÅÂõæÂ±ÇÈìæË°®‰∏≠Ê∑ªÂä†ÂõæÂ±Ç
 *
 * parameters:
 *
@@ -688,7 +691,7 @@ static __s32 Sprite_AttachToInVisList(__gui_lyrwin_t *pLayer)
 *
 * date:             2009-8-2
 *
-* Description:      ¥”≤ªø…º˚Õº≤„¡¥±Ì÷–…æ≥˝Õº≤„
+* Description:      ‰ªé‰∏çÂèØËßÅÂõæÂ±ÇÈìæË°®‰∏≠Âà†Èô§ÂõæÂ±Ç
 *
 * parameters:
 *
@@ -750,7 +753,7 @@ static __s32 Sprite_DeAttachFromInVisList(__gui_lyrwin_t *pLayer)
 *
 * date:             2009-8-2
 *
-* Description:      Õº≤„÷√∂•
+* Description:      ÂõæÂ±ÇÁΩÆÈ°∂
 *
 * parameters:
 *
@@ -811,7 +814,7 @@ static __s32 Sprite_ListSetTop(__gui_lyrwin_t *pLayer)
 *
 * date:             2009-8-2
 *
-* Description:      …Ë÷√Õº≤„÷√µ◊
+* Description:      ËÆæÁΩÆÂõæÂ±ÇÁΩÆÂ∫ï
 *
 * parameters:
 *
@@ -854,7 +857,7 @@ static __s32 Sprite_ListSetBottom(__gui_lyrwin_t *pLayer)
             }
             else
             {
-                /*¡¥±ÌŒ≤º¥Œ™∏√Õº≤„Ω⁄µ„*/
+                /*ÈìæË°®Â∞æÂç≥‰∏∫ËØ•ÂõæÂ±ÇËäÇÁÇπ*/
                 GUI_WinUnlock();
                 return ORANGE_OK;
             }
@@ -889,14 +892,14 @@ static __s32 Sprite_ListSetBottom(__gui_lyrwin_t *pLayer)
         return ORANGE_OK;
     }
 
-    /*¡¥±ÌŒ≤º¥Œ™∏√Õº≤„Ω⁄µ„*/
+    /*ÈìæË°®Â∞æÂç≥‰∏∫ËØ•ÂõæÂ±ÇËäÇÁÇπ*/
     if (pCur == pLayer)
     {
         GUI_WinUnlock();
         return ORANGE_OK;
     }
 
-    /*’“≤ªµΩ∏√Ω⁄µ„*/
+    /*Êâæ‰∏çÂà∞ËØ•ËäÇÁÇπ*/
     GUI_WinUnlock();
     return ORANGE_FAIL;
 }
@@ -914,7 +917,7 @@ static __s32 Sprite_ListSetBottom(__gui_lyrwin_t *pLayer)
 *
 * date:             2009-8-2
 *
-* Description:      ªÒ»°”≤º˛Õº≤„µƒ”≈œ»º∂ (ƒ⁄≤ø π”√)
+* Description:      Ëé∑ÂèñÁ°¨‰ª∂ÂõæÂ±ÇÁöÑ‰ºòÂÖàÁ∫ß (ÂÜÖÈÉ®‰ΩøÁî®)
 *
 * parameters:
 *
@@ -1231,7 +1234,7 @@ __s32 Layer_ListSetBottom(H_LYR hLyr)
 *
 * date:             2009-8-29
 *
-* Description:      ‘ˆº”–¬µƒHosted÷˜¥∞ø⁄
+* Description:      Â¢ûÂä†Êñ∞ÁöÑHosted‰∏ªÁ™óÂè£
 *
 * parameters:
 *
@@ -1304,7 +1307,7 @@ void GUI_WinAddNewHostedWin(__gui_win_t *pHosting, __gui_win_t *pHosted)
 *
 * date:             2009-8-31
 *
-* Description:      …æ≥˝hosted¥∞ø⁄
+* Description:      Âà†Èô§hostedÁ™óÂè£
 *
 * parameters:
 *
@@ -1653,7 +1656,7 @@ void Win_DeattachFromZorder(__gui_win_t *pWin)
 *
 * date:             2009-8-4
 *
-* Description:      framewin¥∞ø⁄«¯”Ú◊™ªØ≥…∆¡ƒª«¯”Ú
+* Description:      framewinÁ™óÂè£Âå∫ÂüüËΩ¨ÂåñÊàêÂ±èÂπïÂå∫Âüü
 *
 * parameters:
 *
@@ -1683,7 +1686,7 @@ void GUI_FrameWinToScreen(H_WIN hWnd, __gui_rect_t *screct)
         screct->left   = (__s32)(pFramewin->base_win.win_rect.left - pLayer->lyrpara.src_win.x
                                  + pLayer->lyrpara.scn_win.x);
 
-        /*∆¡ƒª◊Û◊¯±Í≥¨≥ˆÕº≤„œ‘ æ∑∂Œß*/
+        /*Â±èÂπïÂ∑¶ÂùêÊ†áË∂ÖÂá∫ÂõæÂ±ÇÊòæÁ§∫ËåÉÂõ¥*/
         if (screct->left >= (__s32)(pLayer->lyrpara.scn_win.x + pLayer->lyrpara.scn_win.width))
         {
             screct->left    = 0;
@@ -1696,7 +1699,7 @@ void GUI_FrameWinToScreen(H_WIN hWnd, __gui_rect_t *screct)
         screct->top    = (__s32)(pFramewin->base_win.win_rect.top - pLayer->lyrpara.src_win.y
                                  + pLayer->lyrpara.scn_win.y);
 
-        /*∆¡ƒª…œ◊¯±Í≥¨≥ˆÕº≤„÷ÆÕ‚*/
+        /*Â±èÂπï‰∏äÂùêÊ†áË∂ÖÂá∫ÂõæÂ±Ç‰πãÂ§ñ*/
         if (screct->top >= (__s32)(pLayer->lyrpara.scn_win.y + pLayer->lyrpara.scn_win.height))
         {
             screct->left    = 0;
@@ -1709,7 +1712,7 @@ void GUI_FrameWinToScreen(H_WIN hWnd, __gui_rect_t *screct)
         screct->right  = (__s32)(screct->left  + pFramewin->base_win.win_rect.right -
                                  pFramewin->base_win.win_rect.left);
 
-        /*∆¡ƒª”“◊¯±Í≥¨≥ˆÕº≤„÷ÆÕ‚*/
+        /*Â±èÂπïÂè≥ÂùêÊ†áË∂ÖÂá∫ÂõæÂ±Ç‰πãÂ§ñ*/
         if (screct->right >= (__s32)(pLayer->lyrpara.scn_win.x + pLayer->lyrpara.scn_win.width))
         {
             screct->right = (__s32)(pLayer->lyrpara.scn_win.x + pLayer->lyrpara.scn_win.width);
@@ -1717,7 +1720,7 @@ void GUI_FrameWinToScreen(H_WIN hWnd, __gui_rect_t *screct)
 
         screct->bottom = (__s32)(screct->top + pFramewin->base_win.win_rect.bottom - pFramewin->base_win.win_rect.top);
 
-        /*∆¡ƒªœ¬◊¯±Í≥¨≥ˆÕº≤„÷ÆÕ‚*/
+        /*Â±èÂπï‰∏ãÂùêÊ†áË∂ÖÂá∫ÂõæÂ±Ç‰πãÂ§ñ*/
         if (screct->bottom >= (__s32)(pLayer->lyrpara.scn_win.y + pLayer->lyrpara.scn_win.height))
         {
             screct->bottom = (__s32)(pLayer->lyrpara.scn_win.y + pLayer->lyrpara.scn_win.height);
@@ -1742,7 +1745,7 @@ void GUI_FrameWinToScreen(H_WIN hWnd, __gui_rect_t *screct)
 *
 * date:             2009-8-4
 *
-* Description:      framewin”––ßøÕªß«¯◊™ªª≥…∆¡ƒª«¯”Ú
+* Description:      framewinÊúâÊïàÂÆ¢Êà∑Âå∫ËΩ¨Êç¢ÊàêÂ±èÂπïÂå∫Âüü
 *
 * parameters:
 *
@@ -1772,7 +1775,7 @@ void GUI_FrameClentToScreen(H_WIN hWnd, __gui_rect_t *screct)
         screct->left   = (__s32)(pFramewin->base_win.client_rect.left - pLayer->lyrpara.src_win.x
                                  + pLayer->lyrpara.scn_win.x);
 
-        /*∆¡ƒª◊Û◊¯±Í≥¨≥ˆÕº≤„œ‘ æ∑∂Œß*/
+        /*Â±èÂπïÂ∑¶ÂùêÊ†áË∂ÖÂá∫ÂõæÂ±ÇÊòæÁ§∫ËåÉÂõ¥*/
         if (screct->left >= (__s32)(pLayer->lyrpara.scn_win.x + pLayer->lyrpara.scn_win.width))
         {
             screct->left    = 0;
@@ -1785,7 +1788,7 @@ void GUI_FrameClentToScreen(H_WIN hWnd, __gui_rect_t *screct)
         screct->top    = (__s32)(pFramewin->base_win.client_rect.top - pLayer->lyrpara.src_win.y
                                  + pLayer->lyrpara.scn_win.y);
 
-        /*∆¡ƒª…œ◊¯±Í≥¨≥ˆÕº≤„÷ÆÕ‚*/
+        /*Â±èÂπï‰∏äÂùêÊ†áË∂ÖÂá∫ÂõæÂ±Ç‰πãÂ§ñ*/
         if (screct->top >= (__s32)(pLayer->lyrpara.scn_win.y + pLayer->lyrpara.scn_win.height))
         {
             screct->left    = 0;
@@ -1798,7 +1801,7 @@ void GUI_FrameClentToScreen(H_WIN hWnd, __gui_rect_t *screct)
         screct->right  = (__s32)(screct->left  + pFramewin->base_win.client_rect.right -
                                  pFramewin->base_win.client_rect.left);
 
-        /*∆¡ƒª”“◊¯±Í≥¨≥ˆÕº≤„÷ÆÕ‚*/
+        /*Â±èÂπïÂè≥ÂùêÊ†áË∂ÖÂá∫ÂõæÂ±Ç‰πãÂ§ñ*/
         if (screct->right >= (__s32)(pLayer->lyrpara.scn_win.x + pLayer->lyrpara.scn_win.width))
         {
             screct->right = (__s32)(pLayer->lyrpara.scn_win.x + pLayer->lyrpara.scn_win.width);
@@ -1806,7 +1809,7 @@ void GUI_FrameClentToScreen(H_WIN hWnd, __gui_rect_t *screct)
 
         screct->bottom = (__s32)(screct->top + pFramewin->base_win.client_rect.bottom - pFramewin->base_win.client_rect.top);
 
-        /*∆¡ƒªœ¬◊¯±Í≥¨≥ˆÕº≤„÷ÆÕ‚*/
+        /*Â±èÂπï‰∏ãÂùêÊ†áË∂ÖÂá∫ÂõæÂ±Ç‰πãÂ§ñ*/
         if (screct->bottom >= (__s32)(pLayer->lyrpara.scn_win.y + pLayer->lyrpara.scn_win.height))
         {
             screct->bottom = (__s32)(pLayer->lyrpara.scn_win.y + pLayer->lyrpara.scn_win.height);
@@ -1831,7 +1834,7 @@ void GUI_FrameClentToScreen(H_WIN hWnd, __gui_rect_t *screct)
 *
 * date:             2009-8-4
 *
-* Description:      ∆¡ƒª«¯”Ú◊™ªª≥…framewin«¯”Ú
+* Description:      Â±èÂπïÂå∫ÂüüËΩ¨Êç¢ÊàêframewinÂå∫Âüü
 *
 * parameters:
 *
@@ -1864,7 +1867,7 @@ void GUI_ScreenToFrameWin(H_WIN hWnd, __gui_rect_t *screct, __gui_rect_t *win_re
                                    - pLayer->lyrpara.scn_win.y);
         win_rect->right  = (__s32)(win_rect->left  + screct->right - screct->left);
 
-        /*∆¡ƒª”“◊¯±Í≥¨≥ˆÕº≤„÷ÆÕ‚*/
+        /*Â±èÂπïÂè≥ÂùêÊ†áË∂ÖÂá∫ÂõæÂ±Ç‰πãÂ§ñ*/
         if (win_rect->right >= (__s32)(pLayer->lyrpara.scn_win.x + pLayer->lyrpara.scn_win.width))
         {
             win_rect->right = (__s32)(pLayer->lyrpara.scn_win.x + pLayer->lyrpara.scn_win.width);
@@ -1872,7 +1875,7 @@ void GUI_ScreenToFrameWin(H_WIN hWnd, __gui_rect_t *screct, __gui_rect_t *win_re
 
         win_rect->bottom = (__s32)(win_rect->top + screct->bottom - screct->top);
 
-        /*∆¡ƒªœ¬◊¯±Í≥¨≥ˆÕº≤„÷ÆÕ‚*/
+        /*Â±èÂπï‰∏ãÂùêÊ†áË∂ÖÂá∫ÂõæÂ±Ç‰πãÂ§ñ*/
         if (win_rect->bottom >= (__s32)(pLayer->lyrpara.scn_win.y + pLayer->lyrpara.scn_win.height))
         {
             win_rect->bottom = (__s32)(pLayer->lyrpara.scn_win.y + pLayer->lyrpara.scn_win.height);
@@ -1897,7 +1900,7 @@ void GUI_ScreenToFrameWin(H_WIN hWnd, __gui_rect_t *screct, __gui_rect_t *win_re
 *
 * date:             2009-8-4
 *
-* Description:      widget¿‡µƒ¥∞ø⁄«¯”Ú◊™ªª≥…∆¡ƒª«¯”Ú
+* Description:      widgetÁ±ªÁöÑÁ™óÂè£Âå∫ÂüüËΩ¨Êç¢ÊàêÂ±èÂπïÂå∫Âüü
 *
 * parameters:
 *
@@ -1934,7 +1937,7 @@ void GUI_WidgetToScreen(H_WIN hWnd, __gui_rect_t *screct)
             screct->left += (__s32)(Parent->client_rect.left);
         }
 
-        /*∆¡ƒª◊Û◊¯±Í≥¨≥ˆÕº≤„œ‘ æ∑∂Œß*/
+        /*Â±èÂπïÂ∑¶ÂùêÊ†áË∂ÖÂá∫ÂõæÂ±ÇÊòæÁ§∫ËåÉÂõ¥*/
         if (screct->left >= (__s32)(pLayer->lyrpara.scn_win.x + pLayer->lyrpara.scn_win.width))
         {
             screct->left    = 0;
@@ -1952,7 +1955,7 @@ void GUI_WidgetToScreen(H_WIN hWnd, __gui_rect_t *screct)
             screct->top += (__s32)(Parent->client_rect.top);
         }
 
-        /*∆¡ƒª…œ◊¯±Í≥¨≥ˆÕº≤„÷ÆÕ‚*/
+        /*Â±èÂπï‰∏äÂùêÊ†áË∂ÖÂá∫ÂõæÂ±Ç‰πãÂ§ñ*/
         if (screct->top >= (__s32)(pLayer->lyrpara.scn_win.y + pLayer->lyrpara.scn_win.height))
         {
             screct->left    = 0;
@@ -1965,7 +1968,7 @@ void GUI_WidgetToScreen(H_WIN hWnd, __gui_rect_t *screct)
         screct->right  = (__s32)(screct->left  + pWidget->base_win.win_rect.right -
                                  pWidget->base_win.win_rect.left);
 
-        /*∆¡ƒª”“◊¯±Í≥¨≥ˆÕº≤„÷ÆÕ‚*/
+        /*Â±èÂπïÂè≥ÂùêÊ†áË∂ÖÂá∫ÂõæÂ±Ç‰πãÂ§ñ*/
         if (screct->right >= (__s32)(pLayer->lyrpara.scn_win.x + pLayer->lyrpara.scn_win.width))
         {
             screct->right = (__s32)(pLayer->lyrpara.scn_win.x + pLayer->lyrpara.scn_win.width);
@@ -1974,7 +1977,7 @@ void GUI_WidgetToScreen(H_WIN hWnd, __gui_rect_t *screct)
         screct->bottom = (__s32)(screct->top + pWidget->base_win.win_rect.bottom -
                                  pWidget->base_win.win_rect.top);
 
-        /*∆¡ƒªœ¬◊¯±Í≥¨≥ˆÕº≤„÷ÆÕ‚*/
+        /*Â±èÂπï‰∏ãÂùêÊ†áË∂ÖÂá∫ÂõæÂ±Ç‰πãÂ§ñ*/
         if (screct->bottom >= (__s32)(pLayer->lyrpara.scn_win.y + pLayer->lyrpara.scn_win.height))
         {
             screct->bottom = (__s32)(pLayer->lyrpara.scn_win.y + pLayer->lyrpara.scn_win.height);
@@ -1999,7 +2002,7 @@ void GUI_WidgetToScreen(H_WIN hWnd, __gui_rect_t *screct)
 *
 * date:             2009-8-4
 *
-* Description:      ¥∞ø⁄µƒøÕªß«¯”Ú◊™ªª≥…∆¡ƒªµƒæÿ–Œ«¯”Ú
+* Description:      Á™óÂè£ÁöÑÂÆ¢Êà∑Âå∫ÂüüËΩ¨Êç¢ÊàêÂ±èÂπïÁöÑÁü©ÂΩ¢Âå∫Âüü
 *
 * parameters:
 *
@@ -2027,7 +2030,7 @@ void GUI_ClientToScreen(H_WIN hWnd, __pos_t *client_pos, __pos_t *sc_pos)
     tmp_pos.x   = (__s32)(client_pos->x + pWin->client_rect.left);
     tmp_pos.y   = (__s32)(client_pos->y + pWin->client_rect.top);
 
-    /*◊™ªª¥∞ø⁄øÕªß«¯◊¯±Í÷¡FB◊¯±Í*/
+    /*ËΩ¨Êç¢Á™óÂè£ÂÆ¢Êà∑Âå∫ÂùêÊ†áËá≥FBÂùêÊ†á*/
     while (Parent->WinType != TYPE_MANWIN)
     {
         tmp_pos.y += (__s32)(Parent->client_rect.top);
@@ -2035,7 +2038,7 @@ void GUI_ClientToScreen(H_WIN hWnd, __pos_t *client_pos, __pos_t *sc_pos)
         Parent = Parent->Parent;
     }
 
-    /*◊™ªªFB◊¯±Í÷¡∆¡ƒª◊¯±Í*/
+    /*ËΩ¨Êç¢FBÂùêÊ†áËá≥Â±èÂπïÂùêÊ†á*/
     sc_pos->x = (__s32)(tmp_pos.x - pLayer->lyrpara.src_win.x + pLayer->lyrpara.scn_win.x);
 
     if (sc_pos->x >= (__s32)(pLayer->lyrpara.scn_win.x + pLayer->lyrpara.scn_win.width))
@@ -2065,8 +2068,8 @@ void GUI_ClientToScreen(H_WIN hWnd, __pos_t *client_pos, __pos_t *sc_pos)
 *
 * date:             2009-8-4
 *
-* Description:      ∆¡ƒªµƒ◊¯±Íµ„◊™ªª≥…¥∞ø⁄µƒøÕªß«¯◊¯±Íµ„
-*                   «∞Ã·Ãıº˛ «∏√◊¯±Íµ„Œª”⁄¥∞ø⁄÷Æƒ⁄
+* Description:      Â±èÂπïÁöÑÂùêÊ†áÁÇπËΩ¨Êç¢ÊàêÁ™óÂè£ÁöÑÂÆ¢Êà∑Âå∫ÂùêÊ†áÁÇπ
+*                   ÂâçÊèêÊù°‰ª∂ÊòØËØ•ÂùêÊ†áÁÇπ‰Ωç‰∫éÁ™óÂè£‰πãÂÜÖ
 * parameters:
 *
 * return:           if success return ERDK_OK
@@ -2089,13 +2092,13 @@ void GUI_ScreenToClient(H_WIN hWnd, __pos_t *sc_pos, __pos_t *client_pos)
     }
 
 #endif
-    /*◊™ªª∆¡ƒª◊¯±Í÷¡FB◊¯±Í*/
+    /*ËΩ¨Êç¢Â±èÂπïÂùêÊ†áËá≥FBÂùêÊ†á*/
     tmp_pos.x = (__s32)(sc_pos->x + pLayer->lyrpara.src_win.x - pLayer->lyrpara.scn_win.x);
     tmp_pos.y = (__s32)(sc_pos->y + pLayer->lyrpara.src_win.y - pLayer->lyrpara.scn_win.y);
     client_pos->x   = (__s32)(tmp_pos.x - pWin->client_rect.left);
     client_pos->y   = (__s32)(tmp_pos.x - pWin->client_rect.top);
 
-    /*◊™ªªFB◊¯±Í÷¡¥∞ø⁄øÕªß«¯◊¯±Í*/
+    /*ËΩ¨Êç¢FBÂùêÊ†áËá≥Á™óÂè£ÂÆ¢Êà∑Âå∫ÂùêÊ†á*/
     while (Parent->WinType != TYPE_MANWIN)
     {
         client_pos->x -= (__s32)(Parent->client_rect.left);
@@ -2114,7 +2117,7 @@ void GUI_ScreenToClient(H_WIN hWnd, __pos_t *sc_pos, __pos_t *client_pos)
 *
 * date:             2009-8-4
 *
-* Description:      ¥∞ø⁄µƒ◊¯±Í◊™ªª≥…∆¡ƒªµƒæÿ–Œ«¯”Ú
+* Description:      Á™óÂè£ÁöÑÂùêÊ†áËΩ¨Êç¢ÊàêÂ±èÂπïÁöÑÁü©ÂΩ¢Âå∫Âüü
 *
 * parameters:
 *
@@ -2142,7 +2145,7 @@ void GUI_WindowToScreen(H_WIN hWnd, __pos_t *win_pos, __pos_t *sc_pos)
     tmp_pos.x   = (__s32)(win_pos->x + pWin->win_rect.left);
     tmp_pos.y   = (__s32)(win_pos->y + pWin->win_rect.top);
 
-    /*◊™ªª¥∞ø⁄øÕªß«¯◊¯±Í÷¡FB◊¯±Í*/
+    /*ËΩ¨Êç¢Á™óÂè£ÂÆ¢Êà∑Âå∫ÂùêÊ†áËá≥FBÂùêÊ†á*/
     while (Parent->WinType != TYPE_MANWIN)
     {
         tmp_pos.y += (__s32)(Parent->win_rect.top);
@@ -2150,7 +2153,7 @@ void GUI_WindowToScreen(H_WIN hWnd, __pos_t *win_pos, __pos_t *sc_pos)
         Parent = Parent->Parent;
     }
 
-    /*◊™ªªFB◊¯±Í÷¡∆¡ƒª◊¯±Í*/
+    /*ËΩ¨Êç¢FBÂùêÊ†áËá≥Â±èÂπïÂùêÊ†á*/
     sc_pos->x = (__s32)(tmp_pos.x - pLayer->lyrpara.src_win.x + pLayer->lyrpara.scn_win.x);
     sc_pos->y = (__s32)(tmp_pos.y - pLayer->lyrpara.src_win.y + pLayer->lyrpara.scn_win.y);
     return ;
@@ -2164,8 +2167,8 @@ void GUI_WindowToScreen(H_WIN hWnd, __pos_t *win_pos, __pos_t *sc_pos)
 *
 * date:             2009-8-4
 *
-* Description:      ∆¡ƒªµƒ◊¯±Íµ„◊™ªª≥…¥∞ø⁄µƒ◊¯±Íµ„
-*                   «∞Ã·Ãıº˛ «∏√◊¯±Íµ„Œª”⁄¥∞ø⁄÷Æƒ⁄
+* Description:      Â±èÂπïÁöÑÂùêÊ†áÁÇπËΩ¨Êç¢ÊàêÁ™óÂè£ÁöÑÂùêÊ†áÁÇπ
+*                   ÂâçÊèêÊù°‰ª∂ÊòØËØ•ÂùêÊ†áÁÇπ‰Ωç‰∫éÁ™óÂè£‰πãÂÜÖ
 * parameters:
 *
 * return:           if success return ERDK_OK
@@ -2189,13 +2192,13 @@ void GUI_ScreenToWindow(H_WIN hWnd, __pos_t *sc_pos, __pos_t *win_pos)
     }
 
 #endif
-    /*◊™ªª∆¡ƒª◊¯±Í÷¡FB◊¯±Í*/
+    /*ËΩ¨Êç¢Â±èÂπïÂùêÊ†áËá≥FBÂùêÊ†á*/
     tmp_pos.x = (__s32)(sc_pos->x + pLayer->lyrpara.src_win.x - pLayer->lyrpara.scn_win.x);
     tmp_pos.y = (__s32)(sc_pos->y + pLayer->lyrpara.src_win.y - pLayer->lyrpara.scn_win.y);
     win_pos->x  = (__s32)(tmp_pos.x - pWin->win_rect.left);
     win_pos->y  = (__s32)(tmp_pos.y - pWin->win_rect.top);
 
-    /*◊™ªªFB◊¯±Í÷¡¥∞ø⁄◊¯±Í*/
+    /*ËΩ¨Êç¢FBÂùêÊ†áËá≥Á™óÂè£ÂùêÊ†á*/
     while (Parent->WinType != TYPE_MANWIN)
     {
         win_pos->x -= (__s32)(Parent->win_rect.left);
@@ -2214,7 +2217,7 @@ void GUI_ScreenToWindow(H_WIN hWnd, __pos_t *sc_pos, __pos_t *win_pos)
 *
 * date:             2009-8-4
 *
-* Description:      ¥∞ø⁄µƒ◊¯±Í◊™ªª≥…∆¡ƒªµƒæÿ–Œ«¯”Ú
+* Description:      Á™óÂè£ÁöÑÂùêÊ†áËΩ¨Êç¢ÊàêÂ±èÂπïÁöÑÁü©ÂΩ¢Âå∫Âüü
 *
 * parameters:
 *
@@ -2241,7 +2244,7 @@ void GUI_FBToScreen(H_WIN hWnd, __pos_t *fb_pos, __pos_t *sc_pos)
     sc_pos->x   = (__s32)(fb_pos->x + pWin->win_rect.left);
     sc_pos->y   = (__s32)(fb_pos->y + pWin->win_rect.top);
 
-    /*◊™ªª¥∞ø⁄øÕªß«¯◊¯±Í÷¡FB◊¯±Í*/
+    /*ËΩ¨Êç¢Á™óÂè£ÂÆ¢Êà∑Âå∫ÂùêÊ†áËá≥FBÂùêÊ†á*/
     while (Parent->WinType != TYPE_MANWIN)
     {
         sc_pos->y += (__s32)(Parent->win_rect.top);
@@ -2260,8 +2263,8 @@ void GUI_FBToScreen(H_WIN hWnd, __pos_t *fb_pos, __pos_t *sc_pos)
 *
 * date:             2009-8-4
 *
-* Description:      ∆¡ƒªµƒ◊¯±Íµ„◊™ªª≥…¥∞ø⁄µƒ◊¯±Íµ„
-*                   «∞Ã·Ãıº˛ «∏√◊¯±Íµ„Œª”⁄¥∞ø⁄÷Æƒ⁄
+* Description:      Â±èÂπïÁöÑÂùêÊ†áÁÇπËΩ¨Êç¢ÊàêÁ™óÂè£ÁöÑÂùêÊ†áÁÇπ
+*                   ÂâçÊèêÊù°‰ª∂ÊòØËØ•ÂùêÊ†áÁÇπ‰Ωç‰∫éÁ™óÂè£‰πãÂÜÖ
 * parameters:
 *
 * return:           if success return ERDK_OK
@@ -2284,7 +2287,7 @@ void GUI_ScreenToFB(H_WIN hWnd, __pos_t *sc_pos, __pos_t *fb_pos)
     }
 
 #endif
-    /*◊™ªª∆¡ƒª◊¯±Í÷¡FB◊¯±Í*/
+    /*ËΩ¨Êç¢Â±èÂπïÂùêÊ†áËá≥FBÂùêÊ†á*/
     fb_pos->x = (__s32)(sc_pos->x + pLayer->lyrpara.src_win.x - pLayer->lyrpara.scn_win.x);
     fb_pos->y = (__s32)(sc_pos->y + pLayer->lyrpara.src_win.y - pLayer->lyrpara.scn_win.y);
     return ;
@@ -2298,7 +2301,7 @@ void GUI_ScreenToFB(H_WIN hWnd, __pos_t *sc_pos, __pos_t *fb_pos)
 *
 * date:             2009-8-14
 *
-* Description:      ªÒ»°GUIøÕªß«¯‘⁄FB÷–µƒæÿ–Œ«¯”Ú
+* Description:      Ëé∑ÂèñGUIÂÆ¢Êà∑Âå∫Âú®FB‰∏≠ÁöÑÁü©ÂΩ¢Âå∫Âüü
 *
 * parameters:
 *
@@ -2344,7 +2347,7 @@ void GUI_WinGetClientFBRect(H_WIN hWnd, RECT *fb_rect)
 *
 * date:             2009-9-16
 *
-* Description:      framebuffer«¯”Ú◊™ªª≥…¥∞ø⁄µƒøÕªß«¯”Ú
+* Description:      framebufferÂå∫ÂüüËΩ¨Êç¢ÊàêÁ™óÂè£ÁöÑÂÆ¢Êà∑Âå∫Âüü
 *
 * parameters:
 *
@@ -2412,7 +2415,7 @@ void GUI_WinFBToClient(H_WIN hWnd, const __gui_rect_t *rcFB, __gui_rect_t *rcCli
 *
 * date:             2009-8-14
 *
-* Description:      ªÒ»°GUI¥∞ø⁄‘⁄FB÷–µƒæÿ–Œ«¯”Ú
+* Description:      Ëé∑ÂèñGUIÁ™óÂè£Âú®FB‰∏≠ÁöÑÁü©ÂΩ¢Âå∫Âüü
 *
 * parameters:
 *
@@ -2458,7 +2461,7 @@ void GUI_WinGetWinFBRect(H_WIN hWnd, RECT *fb_rect)
 *
 * date:             2009-8-1
 *
-* Description:      ¥¥Ω®¥¥Ω®Õ®”√¥∞ø⁄
+* Description:      ÂàõÂª∫ÂàõÂª∫ÈÄöÁî®Á™óÂè£
 *
 * parameters:
 *
@@ -2480,7 +2483,7 @@ H_WIN GUI_WinCreate(__gui_win_t *create_info, __u32 extNums)
     }
 
     orange_memset(pWin, 0, sizeof(__gui_win_t) + extNums);
-    /*≥ı ºªØWin–≈œ¢Ω·ππ*/
+    /*ÂàùÂßãÂåñWin‰ø°ÊÅØÁªìÊûÑ*/
     pWin->ActiveChild       = create_info->ActiveChild;
     pWin->bkColor           = create_info->bkColor;
     pWin->Next              = create_info->Next;
@@ -2508,7 +2511,7 @@ H_WIN GUI_WinCreate(__gui_win_t *create_info, __u32 extNums)
     pWin->WindowProc        = create_info->WindowProc;
     pWin->WinType           = create_info->WinType;
     pWin->Next              = NULL;
-    /*¥”∏∏¥∞ø⁄¡¥±Ì÷–…æ≥˝∏√¥∞ø⁄*/
+    /*‰ªéÁà∂Á™óÂè£ÈìæË°®‰∏≠Âà†Èô§ËØ•Á™óÂè£*/
     GUI_WinLock();
 
     if (pWin->pZOrderNode)
@@ -2563,7 +2566,7 @@ H_WIN GUI_WinCreate(__gui_win_t *create_info, __u32 extNums)
 *
 * date:             2009-8-2
 *
-* Description:      …æ≥˝Õ®”√¥∞ø⁄
+* Description:      Âà†Èô§ÈÄöÁî®Á™óÂè£
 *
 * parameters:
 *
@@ -2616,7 +2619,7 @@ __s32 GUI_WinDelete(H_WIN hWnd)
         __gui_manwin_t *pMain = (__gui_manwin_t *)pWin;
         __gui_frmwin_t  *pFrm  = (__gui_frmwin_t *)pWin;
 
-        // …æ≥˝Àﬁ¥∞ø⁄.
+        // Âà†Èô§ÂÆøÁ™óÂè£.
         if (pWin->WinType == TYPE_MANWIN)
         {
             head = pMain->pFirstHosted;
@@ -2731,7 +2734,7 @@ __s32 GUI_WinDelete(H_WIN hWnd)
         }
     }
 
-    /*»Áπ˚∏√◊”¥∞ø⁄Œ™Ωπµ„◊”¥∞ø⁄*/
+    /*Â¶ÇÊûúËØ•Â≠êÁ™óÂè£‰∏∫ÁÑ¶ÁÇπÂ≠êÁ™óÂè£*/
     /* if (pWin->Parent->ActiveChild == pWin)
      {
          pWin->Parent->ActiveChild = NULL;
@@ -2741,7 +2744,7 @@ __s32 GUI_WinDelete(H_WIN hWnd)
         capture_wnd = NULL;
     }
 
-    /*∑¢œ˚œ¢Õ®÷™∏∏¥∞ø⁄£¨÷ÿ–¬…Ë÷√Ωπµ„÷˜¥∞ø⁄*/
+    /*ÂèëÊ∂àÊÅØÈÄöÁü•Áà∂Á™óÂè£ÔºåÈáçÊñ∞ËÆæÁΩÆÁÑ¶ÁÇπ‰∏ªÁ™óÂè£*/
     {
         __gui_msg_t     newmsg;
         /* notify parent the child is deleted           */
@@ -2751,7 +2754,7 @@ __s32 GUI_WinDelete(H_WIN hWnd)
         //GUI_SendNotifyMessage(&newmsg);
         GUI_SendMessage(&newmsg);
     }
-    /*¥”∏∏¥∞ø⁄¡¥±Ì÷–…æ≥˝∏√¥∞ø⁄*/
+    /*‰ªéÁà∂Á™óÂè£ÈìæË°®‰∏≠Âà†Èô§ËØ•Á™óÂè£*/
     GUI_WinLock();
 
     if (pWin->WinType != TYPE_MANWIN)
@@ -2777,10 +2780,10 @@ __s32 GUI_WinDelete(H_WIN hWnd)
 
     GUI_WinUnlock();
 
-    /*…æ≥˝œ˚œ¢∂”¡–*/
+    /*Âà†Èô§Ê∂àÊÅØÈòüÂàó*/
     if (pWin->WinType == TYPE_CONTROL)
     {
-        /*»”µÙœ˚œ¢∂”¡–÷–”Î∏√¥∞ø⁄œ‡πÿµƒœ˚œ¢*/
+        /*ÊâîÊéâÊ∂àÊÅØÈòüÂàó‰∏≠‰∏éËØ•Á™óÂè£Áõ∏ÂÖ≥ÁöÑÊ∂àÊÅØ*/
         GUI_ThrowAwayMessages(hWnd);
         /* free p_win memory                            */
         orange_mfree((void *)pWin);

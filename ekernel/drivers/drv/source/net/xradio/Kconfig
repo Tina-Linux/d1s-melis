@@ -1,0 +1,39 @@
+menuconfig DRIVERS_XRADIO
+	default n
+	bool "XRADIO driver"
+
+if DRIVERS_XRADIO
+config DRIVERS_XRADIO_CMD
+	bool "Enable xradio test cmd"
+	help
+		this will use xradio test cmd.
+choice XRADIO_CHIP
+	default DRIVER_XR829
+	prompt "Xradio chip"
+	help
+		Specify the xradio chip.
+config DRIVER_XR819
+	bool "Enable xr819 driver"
+	help
+		this will use xr819 chip.
+
+config DRIVER_XR829
+	bool "Enable xr829 driver"
+	help
+		this will use xr829 chip.
+endchoice
+
+config XR829_40M_FW
+	bool "Use Firmware 40M for XR829"
+	depends on DRIVER_XR829
+	default y
+	help
+		this will use xr829 chip
+
+config XRADIO_ETF
+	bool "Enable XRADIO ETF Mode"
+	depends on DRIVER_XR829
+	default n
+	help
+		this will enable etf mode
+endif

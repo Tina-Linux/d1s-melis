@@ -1,21 +1,34 @@
 /*
-************************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : tbar_com.c
-* By        : Andy.zhang
-* Func      : toolbar component
-* Version   : v1.0
-* ============================================================================================================
-* 2009-10-15 15:27:26 andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef __TBAR_COM_H__
 #define __TBAR_COM_H__
 
@@ -31,13 +44,13 @@
 // #define Destroy_BMP_RES_Pt(_p)       dsk_theme_close(_p ## _h)
 /////////////
 
-/* toolbar Õ®÷™¬Î   */
+/* toolbar ÈÄöÁü•Á†Å   */
 #define     TB_PUSHED       0
 #define     TB_SWITCH       1
 #define     TB_UNPUSHED     2
 #define     TB_ESCAPE       3
 
-/* toolbar …Ë÷√¬Î   */
+/* toolbar ËÆæÁΩÆÁ†Å   */
 #define     TB_SET_UPDATE_LANGUAGE  (GUI_MSG_USER_DEF+1)
 
 /**
@@ -45,11 +58,11 @@
  */
 typedef struct tag_tbar_item
 {
-    //  void        *focus_bmp;             // Ωπµ„Õº∆¨
+    //  void        *focus_bmp;             // ÁÑ¶ÁÇπÂõæÁâá
     DECLARE_BMP_RES_Pt(focus_bmp);
-    //  void        *unfocus_bmp;           // ∑«Ωπµ„Õº∆¨
+    //  void        *unfocus_bmp;           // ÈùûÁÑ¶ÁÇπÂõæÁâá
     DECLARE_BMP_RES_Pt(unfocus_bmp);
-    char        text[GUI_TITLE_MAX];    // ±ÍÃ‚ƒ⁄»›
+    char        text[GUI_TITLE_MAX];    // Ê†áÈ¢òÂÜÖÂÆπ
 
     __s32           type;
 } tbar_item_t;
@@ -57,22 +70,22 @@ typedef struct tag_tbar_item
 typedef struct tag_tbar_para
 {
     tbar_item_t *item;              // item info
-    int         item_nr;            // item  ˝ƒø
+    int         item_nr;            // item Êï∞ÁõÆ
 
-    int         focus_item;         // Ωπµ„ item index
-    SIZE        frame_size;         // æÿ–ŒøÚ¥Û–°
-    __pos_t     bmp_pos;            // Õº∆¨Œª÷√(œ‡∂‘æÿ–ŒøÚ)
-    __pos_t     text_pos;           // Œƒ±æŒª÷√(œ‡∂‘æÿ–ŒøÚ)
-    int         scn_width;          // ∆¡ƒªøÌ∂»
+    int         focus_item;         // ÁÑ¶ÁÇπ item index
+    SIZE        frame_size;         // Áü©ÂΩ¢Ê°ÜÂ§ßÂ∞è
+    __pos_t     bmp_pos;            // ÂõæÁâá‰ΩçÁΩÆ(Áõ∏ÂØπÁü©ÂΩ¢Ê°Ü)
+    __pos_t     text_pos;           // ÊñáÊú¨‰ΩçÁΩÆ(Áõ∏ÂØπÁü©ÂΩ¢Ê°Ü)
+    int         scn_width;          // Â±èÂπïÂÆΩÂ∫¶
 
-    __u32       focus_color;        // ±ÍÃ‚focus color
-    __u32       unfocus_color;      // ±ÍÃ‚unfocus color
+    __u32       focus_color;        // Ê†áÈ¢òfocus color
+    __u32       unfocus_color;      // Ê†áÈ¢òunfocus color
     GUI_FONT    *draw_font;         // font
 
-    int         src_start;          // µ⁄“ª∏ˆitemø™ ºœ‘ æŒª÷√
-    void       *bg_bmp;             //±≥æ∞Õº∆¨
-    HTHEME      h_bgbmp;             //±≥æ∞Õº∆¨
-    __u16       h_ssetid;               //À˘ Ù¥∞ø⁄≈–∂œ±Í÷æ
+    int         src_start;          // Á¨¨‰∏Ä‰∏™itemÂºÄÂßãÊòæÁ§∫‰ΩçÁΩÆ
+    void       *bg_bmp;             //ËÉåÊôØÂõæÁâá
+    HTHEME      h_bgbmp;             //ËÉåÊôØÂõæÁâá
+    __u16       h_ssetid;               //ÊâÄÂ±ûÁ™óÂè£Âà§Êñ≠Ê†áÂøó
 } tbar_para_t;
 
 H_WIN tbar_frm_create(H_WIN parent, H_WIN layer, tbar_para_t *tb_para);
@@ -83,5 +96,3 @@ __epdk_charset_enm_e get_language_charset(void);
 
 
 #endif /* __TBAR_COM_H__ */
-
-

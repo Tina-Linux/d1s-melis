@@ -1,11 +1,34 @@
-
-/* eJTTS.h
- *
- * Copyright (C) 1999-2008, SinoVoice Ltd.
- *
- * ¸Ã³ÌÐòÎÄ¼þÊÇInfoQuik TTSµÄÍ·ÎÄ¼þ¡£
- */
-
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #ifndef __SINO_VOICE__EJTTS__H__
 #define __SINO_VOICE__EJTTS__H__
 
@@ -101,24 +124,24 @@ extern "C" {
 #define jtTTS_OUTPUT_DATA_SIZE      4096    // size of output voice data (default)
 
 // marco defines of input text size
-#define jtTTS_INPUT_TEXT_SIZE       1024    // ÊäÈëµÄºÏ³ÉÎÄ±¾µÄ×î´ó³¤¶È
+#define jtTTS_INPUT_TEXT_SIZE       1024    // è¾“å…¥çš„åˆæˆæ–‡æœ¬çš„æœ€å¤§é•¿åº¦
 
 // error return code
 typedef enum
 {
-    jtTTS_ERR_NONE,             //  ÎÞ´íÎó
+    jtTTS_ERR_NONE,             //  æ— é”™è¯¯
 
-    jtTTS_ERR_TIME_EXPIRED,     //  ÊÚÈ¨Ê±¼ä¹ýÆÚ
-    jtTTS_ERR_LICENCE,          //  ÊÚÈ¨´íÎó
+    jtTTS_ERR_TIME_EXPIRED,     //  æŽˆæƒæ—¶é—´è¿‡æœŸ
+    jtTTS_ERR_LICENCE,          //  æŽˆæƒé”™è¯¯
 
-    jtTTS_ERR_INPUT_PARAM,      //  ´«Èë²ÎÊý´íÎó
-    jtTTS_ERR_TOO_MORE_TEXT,    //  ÊäÈëÎÄ±¾Ì«³¤
-    jtTTS_ERR_NOT_INIT,         //  ÒýÇæÃ»ÓÐ³õÊ¼»¯£¬»òÕßÃ»ÓÐÕýÈ·³õÊ¼»¯
-    jtTTS_ERR_OPEN_DATA,        //  ´ò¿ª×ÊÔ´Êý¾Ý´íÎó
-    jtTTS_ERR_NO_INPUT,         //  Ã»ÓÐÊäÈëÎÄ±¾
-    jtTTS_ERR_MORE_TEXT,        //  ÎÄ±¾Ã»ÓÐºÏ³ÉÍê±Ï
-    jtTTS_ERR_INPUT_MODE,       //  ÊäÈë·½Ê½´íÎó
-    jtTTS_ERR_ENGINE_BUSY       //  ÒýÇæÔÚ¹¤×÷ÖÐ
+    jtTTS_ERR_INPUT_PARAM,      //  ä¼ å…¥å‚æ•°é”™è¯¯
+    jtTTS_ERR_TOO_MORE_TEXT,    //  è¾“å…¥æ–‡æœ¬å¤ªé•¿
+    jtTTS_ERR_NOT_INIT,         //  å¼•æ“Žæ²¡æœ‰åˆå§‹åŒ–ï¼Œæˆ–è€…æ²¡æœ‰æ­£ç¡®åˆå§‹åŒ–
+    jtTTS_ERR_OPEN_DATA,        //  æ‰“å¼€èµ„æºæ•°æ®é”™è¯¯
+    jtTTS_ERR_NO_INPUT,         //  æ²¡æœ‰è¾“å…¥æ–‡æœ¬
+    jtTTS_ERR_MORE_TEXT,        //  æ–‡æœ¬æ²¡æœ‰åˆæˆå®Œæ¯•
+    jtTTS_ERR_INPUT_MODE,       //  è¾“å…¥æ–¹å¼é”™è¯¯
+    jtTTS_ERR_ENGINE_BUSY       //  å¼•æ“Žåœ¨å·¥ä½œä¸­
 
 }
 jtErrCode;

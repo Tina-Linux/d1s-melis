@@ -1,30 +1,33 @@
 /*
-************************************************************************************************************************
-*                                                   language resource
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                  Copyright(C), 2006-2010, AllWinner Technology Co., Ltd.
-*                                                  All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File Name   : dsk_theme.c
-*
-* Author      : Gary.Wang
-*
-* Version     : 1.0
-*
-* Date        : 2010.10.29
-*
-* Description :
-*
-* Others      : None at present.
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
 *
 *
-* History     :
-*
-*  <Author>        <time>       <version>      <description>
-*
-* Gary.Wang      2010.10.29        1.0         build the file
-*
-************************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef  __DSK_THEME_C__
 #define  __DSK_THEME_C__
@@ -35,13 +38,13 @@
 #include <kconfig.h>
 
 #define USE_BUFFER  1// 0  
-#define ID2HDL_NUM  19 //1024   //‘⁄Ω¯»Îkaraoke_mainwin     ± ‘§œ»º”‘ÿ¥Û»›¡øµƒÕº∆¨ ˝¡ø
+#define ID2HDL_NUM  19 //1024   //Âú®ËøõÂÖ•karaoke_mainwin    Êó∂ È¢ÑÂÖàÂä†ËΩΩÂ§ßÂÆπÈáèÁöÑÂõæÁâáÊï∞Èáè
 
 typedef struct _theme_t
 {
     __u32   id;
-    __u32   size;//‘≠ ºµƒ¥Û–°
-    __u32   size_com;//¥Ê¥¢µƒ¥Û–°
+    __u32   size;//ÂéüÂßãÁöÑÂ§ßÂ∞è
+    __u32   size_com;//Â≠òÂÇ®ÁöÑÂ§ßÂ∞è
     void    *buf;
 } theme_t, *HTHEME_i;
 
@@ -241,7 +244,7 @@ HTHEME dsk_theme_open(uint32_t theme_id)
     {
         htheme->size = AZ100_GetUncompressSize(pbuf, htheme->size_com);
     }
-    else//Œ¥—πÀı
+    else//Êú™ÂéãÁº©
     {
         htheme->size = htheme->size_com;
     }
@@ -325,7 +328,7 @@ HTHEME dsk_theme_open_ex(__u32 theme_id)
     {
         htheme->size = AZ100_GetUncompressSize(pbuf, htheme->size_com);
     }
-    else//Œ¥—πÀı
+    else//Êú™ÂéãÁº©
     {
         htheme->size = htheme->size_com;
     }
@@ -397,7 +400,7 @@ void  dsk_theme_really_close_ex(HTHEME handle)
     {
 #if  USE_BUFFER
         {
-            //±È¿˙id±Ì£¨¥”id±Ì…æ≥˝
+            //ÈÅçÂéÜidË°®Ôºå‰ªéidË°®Âà†Èô§
             __s32   i;
             __s32   cnt;
 
@@ -418,7 +421,7 @@ void  dsk_theme_really_close_ex(HTHEME handle)
             }
         }
 #endif
-        //√ª”–‘⁄id±Ì¿Ô√Ê£¨÷±Ω”…æ≥˝(¥À ±ø…ƒ‹id±Ì¬˙¡À)
+        //Ê≤°ÊúâÂú®idË°®ÈáåÈù¢ÔºåÁõ¥Êé•Âà†Èô§(Ê≠§Êó∂ÂèØËÉΩidË°®Êª°‰∫Ü)
         __wrn("not found in idlist, handle=0x%x", handle);
         _release_theme_res((HTHEME_i) handle);
     }
@@ -429,7 +432,7 @@ void  dsk_theme_really_close_by_id_ex(__u32 theme_id)
     {
 #if  USE_BUFFER
         {
-            //±È¿˙id±Ì£¨¥”id±Ì…æ≥˝
+            //ÈÅçÂéÜidË°®Ôºå‰ªéidË°®Âà†Èô§
             __s32   i;
             __s32   cnt;
 

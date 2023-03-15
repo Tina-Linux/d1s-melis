@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : setting_general.c
-* By        : Andy.zhang
-* Func      : desk main thread
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-20 8:51:52  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "setting_general.h"
@@ -184,7 +198,7 @@ typedef struct tag_setting_general_attr
     HTHEME h_left_big_setting_icon;
     /* left and right when focus and unfocus bmp*/
     HTHEME h_item_focus_bmp_right, h_item_unfocus_bmp_right;
-    HTHEME h_item_unfocus_bmp_left; //byf  ×ó±ßµÄÌõÄ¿
+    HTHEME h_item_unfocus_bmp_left; //byf  å·¦è¾¹çš„æ¡ç›®
 
     //HTHEME    h_power_setting_uf_bmp, h_power_setting_f_bmp;
     /*triangle icon bmp*/
@@ -220,7 +234,7 @@ extern void  main_cmd2parent(H_WIN hwin, __s32 id, unsigned long data1, unsigned
 
 static reg_system_para_t *setting_reg_para = NULL;
 
-static __s32 content_lang_id[SETTING_LANGUAGE_NUM] = //ITEM1 ( ÉèÖÃÓïÑÔ)
+static __s32 content_lang_id[SETTING_LANGUAGE_NUM] = //ITEM1 ( è®¾ç½®è¯­è¨€)
 {
     STRING_SET_COMMON_LANGUAGE_CHINESES_CON,
 #if 0
@@ -278,14 +292,14 @@ static __s32 content_timing_shutdown_id[SETTING_TIMING_SHUTDOWN_NUM] =
     STRING_SET_45MINUTE,
     STRING_SET_60MINUTE
 };
-static __s32 content_style_id[SETTING_TOPIC_STYLE_NUM] = //ITEM2 (ÉèÖÃÖ÷Ìâ·ç¸ñ)
+static __s32 content_style_id[SETTING_TOPIC_STYLE_NUM] = //ITEM2 (è®¾ç½®ä¸»é¢˜é£Žæ ¼)
 {
     STRING_SET_COMMON_TOPIC_STYLE1_CON,
     STRING_SET_COMMON_TOPIC_STYLE2_CON,
     STRING_SET_COMMON_TOPIC_STYLE3_CON
 };
 
-static __s32 content_keytone_id[SETTING_KETTONE_NUM] = //°´¼üÒô
+static __s32 content_keytone_id[SETTING_KETTONE_NUM] = //æŒ‰é”®éŸ³
 {
     STRING_SET_KEYTONE_OFF_CON,
     STRING_SET_KEYTONE_ON_CON
@@ -363,7 +377,7 @@ static int setting_string_item_detail_prompt[GENERAL_SETTING_NUM] =
     STRING_SET_TIPS_SOFT_VERSION
 };
 
-static __s32 content_output_id[] = //Êä³öÀàÐÍ
+static __s32 content_output_id[] = //è¾“å‡ºç±»åž‹
 {
     STRING_SET_OUTPUT_NTSC_CON,
     STRING_SET_OUTPUT_PAL_CON
@@ -373,7 +387,7 @@ static __s32 content_output_id[] = //Êä³öÀàÐÍ
 #if 0
 
 /*
-    ÉêÇë×ÊÔ´
+    ç”³è¯·èµ„æº
 */
 void _setting_power_get_content_string(setting_item_res_t  *p_item_res, power_setting_t Item_Index)
 {
@@ -514,7 +528,7 @@ __s32 _setting_power_listbar_init(__gui_msg_t *msg)
     config.alpha_status = EPDK_FALSE;
     config.bk_color = 0;
     config.focus_id = 0;
-    config.item_cnt = POWER_SETTING_NUM;//LISTBAR_ITEM_NUM ;//Ò»¹²ÓÐ¼¸¸öÌõÄ¿
+    config.item_cnt = POWER_SETTING_NUM;//LISTBAR_ITEM_NUM ;//ä¸€å…±æœ‰å‡ ä¸ªæ¡ç›®
     config.item_height = uipara->item.h;//106
     config.item_width = uipara->item.w;//490
     config.list_rect.x = uipara->item.x;//800-setting_uipara.item.w;
@@ -594,7 +608,7 @@ static void _setting_general_listbar_init(__gui_msg_t *msg)
     config.alpha_status = EPDK_FALSE;
     config.bk_color = 0;
     config.focus_id = general_attr->new_focus;
-    config.item_cnt = GENERAL_SETTING_NUM;//LISTBAR_ITEM_NUM ;//Ò»¹²ÓÐ¼¸¸öÌõÄ¿
+    config.item_cnt = GENERAL_SETTING_NUM;//LISTBAR_ITEM_NUM ;//ä¸€å…±æœ‰å‡ ä¸ªæ¡ç›®
     config.item_height = uipara->item.h;//106
     config.item_width = uipara->item.w;//490
     config.list_rect.x = uipara->item.x;//800-setting_uipara.item.w;
@@ -608,11 +622,11 @@ static void _setting_general_listbar_init(__gui_msg_t *msg)
     scroll_param.show_rect.x = uipara->scroll_bg_rect.x;
     scroll_param.show_rect.y = uipara->scroll_bg_rect.y;
     scroll_param.show_rect.width = uipara->scroll_bg_rect.width;
-    scroll_param.show_rect.height = uipara->scroll_bg_rect.height;//Õû¸öScoll barÏÔÊ¾ÇøÓò£¬
+    scroll_param.show_rect.height = uipara->scroll_bg_rect.height;//æ•´ä¸ªScoll baræ˜¾ç¤ºåŒºåŸŸï¼Œ
     scroll_param.scroll_rect.x = uipara->scroll_rect.x;
     scroll_param.scroll_rect.y = uipara->scroll_rect.y;
     scroll_param.scroll_rect.width = uipara->scroll_rect.width;
-    scroll_param.scroll_rect.height = uipara->scroll_rect.height;   //¹ö¶¯ÌõÇøÓò(³ýÈ¥head,body,tail)
+    scroll_param.scroll_rect.height = uipara->scroll_rect.height;   //æ»šåŠ¨æ¡åŒºåŸŸ(é™¤åŽ»head,body,tail)
     scroll_param.head_height = uipara->scroll_head_height;
     scroll_param.tail_height = uipara->scroll_tail_height;              //head, tail
     scroll_param.back_bmp = theme_hdl2buf(general_attr->scoll_back_bmp);
@@ -688,21 +702,21 @@ static void setting_restore_default(__gui_msg_t *msg)
 
     if (setting_reg_para)
     {
-        setting_reg_para->tp_adjust_finish_flag = 1 ;   //±ÜÃâ»Ö¸´³ö³§ÉèÖÃºó£¬ÖØÆôÒªÖØÐÂÐ£Õý
-        dsk_langres_set_type(setting_reg_para->language);           //ÓïÑÔ»Ö¸´³ö³§ÉèÖÃ
+        setting_reg_para->tp_adjust_finish_flag = 1 ;   //é¿å…æ¢å¤å‡ºåŽ‚è®¾ç½®åŽï¼Œé‡å¯è¦é‡æ–°æ ¡æ­£
+        dsk_langres_set_type(setting_reg_para->language);           //è¯­è¨€æ¢å¤å‡ºåŽ‚è®¾ç½®
         _setting_set_hbar_title(STRING_SET_TITLE);
-        //gscene_bgd_set_default_bg_index(setting_reg_para->style); //»Ö¸´Ä¬ÈÏ±³¾°Í¼
+        //gscene_bgd_set_default_bg_index(setting_reg_para->style); //æ¢å¤é»˜è®¤èƒŒæ™¯å›¾
         gscene_bgd_refresh();
         __err("defualt setting some API wait to fix..");
         
-        //dsk_keytone_set_state((__set_keytone_t)(setting_reg_para->keytone));//desktopÄ£¿éÀïÃæ1 ±íÊ¾on,2 ±íÊ¾off
+        //dsk_keytone_set_state((__set_keytone_t)(setting_reg_para->keytone));//desktopæ¨¡å—é‡Œé¢1 è¡¨ç¤ºon,2 è¡¨ç¤ºoff
 
         //dsk_keytone_on();
 
-        //dsk_volume_set(setting_reg_para->volume);   //ÒôÁ¿»Ö¸´³ö³§ÉèÖÃ
-        dsk_display_set_lcd_brightness((__lion_bright_t)(setting_reg_para->backlight + 1)); //±³¹âÁÁ¶È
-        g_set_close_scn_time(setting_reg_para->backlightoff);   //×Ô¶¯¹ØÆÁÊ±¼ä
-        dsk_set_auto_off_time(setting_reg_para->poweroff);      //×Ô¶¯¹Ø»úÊ±¼ä
+        //dsk_volume_set(setting_reg_para->volume);   //éŸ³é‡æ¢å¤å‡ºåŽ‚è®¾ç½®
+        dsk_display_set_lcd_brightness((__lion_bright_t)(setting_reg_para->backlight + 1)); //èƒŒå…‰äº®åº¦
+        g_set_close_scn_time(setting_reg_para->backlightoff);   //è‡ªåŠ¨å…³å±æ—¶é—´
+        dsk_set_auto_off_time(setting_reg_para->poweroff);      //è‡ªåŠ¨å…³æœºæ—¶é—´
         dsk_display_set_lcd_bright(setting_reg_para->lcd_bright * 10);
         dsk_display_set_lcd_constract(setting_reg_para->lcd_constract * 10);
         dsk_display_set_lcd_saturation(setting_reg_para->lcd_saturation * 10);
@@ -919,7 +933,7 @@ static void setting_restore_default(__gui_msg_t *msg)
     LISTBAR_ShowPage(general_attr->h_listbar);
 }
 /*
-    ÉêÇë×ÊÔ´
+    ç”³è¯·èµ„æº
 */
 static void _setting_general_get_content_string(setting_item_res_t  *p_item_res, general_setting_t Item_Index)
 {
@@ -1064,16 +1078,16 @@ static void _setting_general_res_init(setting_general_attr_t *general_attr)
     __bool  restore_flag = EPDK_FAIL;
     setting_item_res_t  *p_item_res = NULL;
     /*left general and power setting string*/
-    //get_menu_text(STRING_SET_PROMPT_COMMON, general_attr->general_setting_string_prompt, 128);//set_common(Í¨ÓÃÉèÖÃ)
+    //get_menu_text(STRING_SET_PROMPT_COMMON, general_attr->general_setting_string_prompt, 128);//set_common(é€šç”¨è®¾ç½®)
     //get_menu_text(STRING_SET_PROMPT_POWER_MANAGER, general_attr->power_setting_string_prompt, 128);
     /*left item bmp*/
     //  general_attr->h_power_setting_uf_bmp= theme_open(ID_SETTING_NEW_POWER_FLAG_UF_BMP);//byf
     //  general_attr->h_power_setting_f_bmp= theme_open(ID_SETTING_NEW_POWER_FLAG_F_BMP);//byf
     /* left and right when focus and unfocus bmp*/
     general_attr->h_left_big_setting_icon = theme_open(ID_HOME_NEW_SETTING_UF_BMP);
-    general_attr->h_item_focus_bmp_right = theme_open(ID_SETTING_NEW_ITEM_R_FCS_BMP);   //ÓÒ±ßÌõÄ¿
-    general_attr->h_item_unfocus_bmp_right = theme_open(ID_SETTING_NEW_ITEM_R_UFCS_BMP);//ÓÒ±ßÌõÄ¿
-    general_attr->h_item_unfocus_bmp_left = theme_open(ID_SETTING_NEW_ITEM_L_UFCS_BMP); //byf//×ó±ßÌõÄ¿
+    general_attr->h_item_focus_bmp_right = theme_open(ID_SETTING_NEW_ITEM_R_FCS_BMP);   //å³è¾¹æ¡ç›®
+    general_attr->h_item_unfocus_bmp_right = theme_open(ID_SETTING_NEW_ITEM_R_UFCS_BMP);//å³è¾¹æ¡ç›®
+    general_attr->h_item_unfocus_bmp_left = theme_open(ID_SETTING_NEW_ITEM_L_UFCS_BMP); //byf//å·¦è¾¹æ¡ç›®
     /*scroll bar bmp*/
     //  general_attr->h_scroll_bg= theme_open(ID_SETTING_NEW_SCROLL_BG_BMP);
     //  general_attr->h_scroll_block= theme_open(ID_SETTING_NEW_SCROLL_BLOCK_BMP);//byf
@@ -1112,7 +1126,7 @@ static void _setting_general_string_res_restore(setting_general_attr_t *general_
     //eLIBs_memset(general_attr->general_setting_string_prompt, 0x00, sizeof(general_attr->general_setting_string_prompt));
 
     /*restore left general and power setting string*/
-    //get_menu_text(STRING_SET_PROMPT_COMMON, general_attr->general_setting_string_prompt, 128);//set_common(Í¨ÓÃÉèÖÃ)
+    //get_menu_text(STRING_SET_PROMPT_COMMON, general_attr->general_setting_string_prompt, 128);//set_common(é€šç”¨è®¾ç½®)
     //get_menu_text(STRING_SET_PROMPT_POWER_MANAGER, general_attr->power_setting_string_prompt, 128);
 
     for (Index = GENERAL_SETTING_LANGUAGE; Index < GENERAL_SETTING_NUM; Index++)
@@ -1184,7 +1198,7 @@ void setting_general_init_content(setting_general_attr_t *general_attr)
         return;
     }
 
-    //ÓïÑÔ
+    //è¯­è¨€
     switch (setting_reg_para->language)
     {
         case EPDK_LANGUAGE_ENM_CHINESES:
@@ -1214,7 +1228,7 @@ void setting_general_init_content(setting_general_attr_t *general_attr)
         break;
     }
 
-    //·ç¸ñ
+    //é£Žæ ¼
     general_attr->res[GENERAL_SETTING_BACKGROUND_STYLE].content_num = setting_reg_para->style;
 
     // set timer to shut down
@@ -1317,7 +1331,7 @@ void setting_general_init_content(setting_general_attr_t *general_attr)
     general_attr->res[GENERAL_SETTING_SET_LCD_ACUTANCE].content_num = setting_reg_para->lcd_hue;
     general_attr->res[GENERAL_SETTING_SET_LCD_DEFINITION].content_num = setting_reg_para->lcd_detail;
     /*LCD SETTING End*/
-    //°´¼üÒô
+    //æŒ‰é”®éŸ³
 #if 0
 
     if (setting_reg_para->keytone == SETTING_KETTONE_OFF)
@@ -1638,7 +1652,7 @@ static __s32 _setting_scene_paint(__gui_msg_t *msg, __bool init)
     GUI_SetFont(general_attr->font);
     GUI_UC_SetEncodeUTF8();
     GUI_SetDrawMode(GUI_DRAWMODE_TRANS);
-    GUI_SetBkColor(0xccffffff); //80%µÄÍ¸Ã÷¶È
+    GUI_SetBkColor(0xccffffff); //80%çš„é€æ˜Žåº¦
     GUI_LyrWinCacheOn();
     com_memdev_create(general_attr->layer);
     uipara = general_attr->uipara;
@@ -1941,7 +1955,7 @@ static void _setting_general_action_button(__gui_msg_t *msg)
         }
         break;
 
-        case GENERAL_SETTING_FACTORY_DEFAULT:           //»Ö¸´³ö³§ÉèÖÃ
+        case GENERAL_SETTING_FACTORY_DEFAULT:           //æ¢å¤å‡ºåŽ‚è®¾ç½®
         {
             LISTBAR_UpdatePage(general_attr->h_listbar);    /////////
             main_cmd2parent(msg->h_deswin, ID_SWITCH_TO_TIPS, TIPS_FACTORY_DEFAULT, 0);
@@ -2069,7 +2083,7 @@ static void _setting_general_action_button(__gui_msg_t *msg)
             setting_reg_para->backlight = p_item_res->content_num;
             _setting_general_get_content_string(p_item_res, GENERAL_SETTING_BACK_LIGHT_BRIGHT);
             LISTBAR_UpdatePage(general_attr->h_listbar);       /////////
-            dsk_display_set_lcd_brightness((__lion_bright_t)(setting_reg_para->backlight + 1)); //±³¹âÁÁ¶È
+            dsk_display_set_lcd_brightness((__lion_bright_t)(setting_reg_para->backlight + 1)); //èƒŒå…‰äº®åº¦
             gscene_hbar_update_text(HBAR_BRIGHT_PAINT);
         }
         break;
@@ -2179,7 +2193,7 @@ static __s32 _setting_general_listbar_key_proc(__gui_msg_t *msg)
 }
 
 /*
-    »Øµ÷
+    å›žè°ƒ
 */
 static __s32 _setting_general_Proc(__gui_msg_t *msg)
 {
@@ -2205,20 +2219,20 @@ static __s32 _setting_general_Proc(__gui_msg_t *msg)
             general_attr->new_focus = general_para->focus_id;
             general_attr->old_focus = general_para->focus_id;
             general_attr->general_para = general_para;
-            setting_general_init_content(general_attr);//³õÊ¼»¯ ÓïÑÔÖÖÀà ·ç¸ñ ÖÆÊ½ °´¼üÒô
-            _setting_general_res_init(general_attr);//»ñµÃÍ¼Æ¬×ÊÔ´
+            setting_general_init_content(general_attr);//åˆå§‹åŒ– è¯­è¨€ç§ç±» é£Žæ ¼ åˆ¶å¼ æŒ‰é”®éŸ³
+            _setting_general_res_init(general_attr);//èŽ·å¾—å›¾ç‰‡èµ„æº
             general_attr->focus_txt_color = SETTING_FOCUS_COLOR;
             general_attr->unfocus_txt_color = SETTING_UNFOCUS_COLOR;
             general_attr->font = general_para->font;
             general_attr->layer = general_para->layer;
-            GUI_WinSetAddData(msg->h_deswin, (unsigned long)general_attr);//°ÑË½ÓÐÊý¾Ý¼Ó½øÈ¥
+            GUI_WinSetAddData(msg->h_deswin, (unsigned long)general_attr);//æŠŠç§æœ‰æ•°æ®åŠ è¿›åŽ»
             GUI_LyrWinSetSta(general_attr->layer, GUI_LYRWIN_STA_SLEEP);
             GUI_LyrWinSetTop(general_attr->layer);
             {
                 __gui_msg_t msgex = {0};
                 msgex.id = GUI_MSG_PAINT;
                 msgex.h_deswin = msg->h_deswin;
-                GUI_SendMessage(&msgex);//Í¬²½ÏûÏ¢
+                GUI_SendMessage(&msgex);//åŒæ­¥æ¶ˆæ¯
             }
         }
 
@@ -2261,7 +2275,7 @@ static __s32 _setting_general_Proc(__gui_msg_t *msg)
 
             general_attr->h_listbar = NULL;
             _setting_general_res_uninit(general_attr);
-            //dsk_reg_flush();  //Ð´½øÎÄ¼þÀïÃæ
+            //dsk_reg_flush();  //å†™è¿›æ–‡ä»¶é‡Œé¢
             general_para = general_attr->general_para;
 
             if (NULL != general_para)
@@ -2390,4 +2404,3 @@ __s32 setting_general_win_delete(H_WIN list_win)
     GUI_FrmWinDelete(list_win);
     return EPDK_OK;
 }
-

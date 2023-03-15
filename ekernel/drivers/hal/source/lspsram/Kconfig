@@ -1,0 +1,21 @@
+menu "LSPSRAM Devices"
+
+config DRIVERS_LSPSRAM
+    bool "enable lspsram driver"
+	default y
+
+choice
+prompt "PSRAM_CHIP_TYPE"
+default PSRAM_CHIP_OPI_APS64
+
+config PSRAM_CHIP_OPI_APS64
+        depends on DRIVERS_LSPSRAM
+        bool "enable lspsram ops aps64"
+
+config PSRAM_CHIP_OPI_APS32
+        depends on DRIVERS_LSPSRAM
+        bool "enable lspsram ops aps32"
+
+endchoice
+
+endmenu

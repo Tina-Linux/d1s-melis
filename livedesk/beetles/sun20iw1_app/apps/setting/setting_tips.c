@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : msgbox.c
-* By        : Andy.zhang
-* Func      : desk main thread
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-20 8:51:52  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "setting_tips.h"
@@ -40,7 +54,7 @@ typedef struct tag_tips_ctrl
 } tips_ctrl_t;
 
 /***********************************************************************************************************
-    Ω®¡¢Õº≤„
+    Âª∫Á´ãÂõæÂ±Ç
 ************************************************************************************************************/
 H_LYR setting_tips_layer_create()
 {
@@ -199,9 +213,9 @@ void setting_tips_get_volume_size(__gui_msg_t *msg)
     //  }
     //  else
     //  {
-    gnum = (size * 100) >> 30;//œ»≥À100£¨”√”⁄»°.GB ∫Û√Ê¡ΩŒª–° ˝
-    snum = (gnum % 100);        //»•–° ˝µ„∫Û√Êµƒ ˝÷µ
-    gnum = (gnum / 100);        //»°–° ˝µ„«∞√Êµƒ ˝÷µ
+    gnum = (size * 100) >> 30;//ÂÖà‰πò100ÔºåÁî®‰∫éÂèñ.GB ÂêéÈù¢‰∏§‰ΩçÂ∞èÊï∞
+    snum = (gnum % 100);        //ÂéªÂ∞èÊï∞ÁÇπÂêéÈù¢ÁöÑÊï∞ÂÄº
+    gnum = (gnum / 100);        //ÂèñÂ∞èÊï∞ÁÇπÂâçÈù¢ÁöÑÊï∞ÂÄº
     //  }
     __wrn("gnum = %ud snum = %ud \n", gnum, snum);
     eLIBs_uint2str_dec(gnum, numstr);
@@ -348,11 +362,11 @@ static __s32  setting_tips_key_proc(__gui_msg_t *msg)
     {
         switch (msg->dwAddData1)
         {
-            case GUI_MSG_KEY_LEFT:      //”≥…‰Œ™up
+            case GUI_MSG_KEY_LEFT:      //Êò†Â∞Ñ‰∏∫up
             case GUI_MSG_KEY_LONGLEFT:
                 break;
 
-            case GUI_MSG_KEY_RIGHT:     //”≥…‰Œ™down
+            case GUI_MSG_KEY_RIGHT:     //Êò†Â∞Ñ‰∏∫down
             case GUI_MSG_KEY_LONGRIGHT:
                 break;
 
@@ -430,7 +444,7 @@ static __s32  tips_touch_proc(__gui_msg_t *msg)
 }
 
 /*
-    ªÿµ˜
+    ÂõûË∞É
 */
 static __s32 _setting_tips_proc(__gui_msg_t *msg)
 {
@@ -466,7 +480,7 @@ static __s32 _setting_tips_proc(__gui_msg_t *msg)
         case DSK_MSG_FS_PART_PLUGOUT:
         {
             setting_tips_get_volume_size(msg);
-            setting_tips_paint(msg);     //÷ÿ–¬ªÒ»°¥≈≈Ãµƒ»›¡ø
+            setting_tips_paint(msg);     //ÈáçÊñ∞Ëé∑ÂèñÁ£ÅÁõòÁöÑÂÆπÈáè
             //__here__;
         }
 
@@ -539,7 +553,7 @@ static __s32 _setting_tips_proc(__gui_msg_t *msg)
 }
 
 /*
-    Ω®¡¢¥∞ø⁄
+    Âª∫Á´ãÁ™óÂè£
 */
 H_WIN setting_tips_win_create(H_WIN h_parent, setting_tip_para_t *para)
 {
@@ -601,4 +615,3 @@ __s32  setting_tips_win_delete(H_WIN tips_win)
     h_lyr = 0 ;
     return EPDK_OK ;
 }
-

@@ -16,7 +16,7 @@ enum dev_notify_type {
 
 struct dev_pm;
 
-#ifdef CONFIG_STANDBY
+#if defined(CONFIG_STANDBY) && !defined(CONFIG_STANDBY_MSGBOX)
 
 int standby_enter(int level);
 
@@ -28,6 +28,10 @@ extern void (*arch_enter_standby)(int);
 extern void (*arch_core_suspend)(void);
 extern void (*arch_core_resume)(void);
 
+#elif defined(CONFIG_STANDBY_MSGBOX)
+struct dev_pm *register_pm_dev_notify(int (*suspend)(void *),
+				      int (*resume)(void *), void *d);
+void unregister_pm_dev_notify(struct dev_pm *pm);
 #else
 
 int inline standby_enter(int level)

@@ -1,21 +1,34 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : gscene_backgrd.c
-* By        : Andy.zhang
-* Func      : desktop toolbar control interface
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-20 8:51:52  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef __GSCENE_BACKGRD_H__
 #define __GSCENE_BACKGRD_H__
 
@@ -27,26 +40,26 @@ typedef enum
     BGD_STATUS_HIDE
 } bgd_status_t;
 
-/*»ñµÃÏÔÊ¾Ä¬ÈÏ±³¾°»¹ÊÇÓÃ»§ÉèÖÃµÄ±³¾°µÄ±ê¼Ç
- flag : EPDK_TRUE : Ä¬ÈÏ±³¾°Í¼Æ¬
-      : EPDK_FALSE: ÉèÖÃ±³¾°Í¼Æ¬
+/*è·å¾—æ˜¾ç¤ºé»˜è®¤èƒŒæ™¯è¿˜æ˜¯ç”¨æˆ·è®¾ç½®çš„èƒŒæ™¯çš„æ ‡è®°
+ flag : EPDK_TRUE : é»˜è®¤èƒŒæ™¯å›¾ç‰‡
+      : EPDK_FALSE: è®¾ç½®èƒŒæ™¯å›¾ç‰‡
  */
 __bool gscene_bgd_get_flag(void);
 
 
-/*ÉèÖÃÏÔÊ¾Ä¬ÈÏ±³¾°»¹ÊÇÓÃ»§ÉèÖÃµÄ±³¾°µÄ±ê¼Ç
- flag : EPDK_TRUE : Ä¬ÈÏ±³¾°Í¼Æ¬
-      : EPDK_FALSE: ÉèÖÃ±³¾°Í¼Æ¬
+/*è®¾ç½®æ˜¾ç¤ºé»˜è®¤èƒŒæ™¯è¿˜æ˜¯ç”¨æˆ·è®¾ç½®çš„èƒŒæ™¯çš„æ ‡è®°
+ flag : EPDK_TRUE : é»˜è®¤èƒŒæ™¯å›¾ç‰‡
+      : EPDK_FALSE: è®¾ç½®èƒŒæ™¯å›¾ç‰‡
  */
 void gscene_bgd_set_flag(__bool flag);
 
 
-/*»ñµÃÄ¬ÈÏ±³¾°Í¼Æ¬µÄ±àºÅ index:0-BG_MAX_NUM-1
+/*è·å¾—é»˜è®¤èƒŒæ™¯å›¾ç‰‡çš„ç¼–å· index:0-BG_MAX_NUM-1
  */
 __s32 gscene_bgd_get_default_bg_index(void);
 
 
-/*ÉèÖÃÄ¬ÈÏ±³¾°Í¼Æ¬µÄ±àºÅ index:0-BG_MAX_NUM-1
+/*è®¾ç½®é»˜è®¤èƒŒæ™¯å›¾ç‰‡çš„ç¼–å· index:0-BG_MAX_NUM-1
  */
 __s32 gscene_bgd_set_default_bg_index(__u32 index);
 
@@ -56,11 +69,11 @@ __s32 gscene_bgd_set_default_bg_index(__u32 index);
 /***************************************************************************************************
 *Name        : gscene_bgd_init
 *Prototype   : __s32 gscene_bgd_init(SIZE *p_size, bgd_status_t status, __fb_type_t ftype);
-*Arguments   : p_size   £º±³¾°³ß´ç
-               status   : ³õÊ¼»¯±³¾°ÊÇ·ñÏÔÊ¾
-               ftype    : ±³¾°Í¼²ã¸ñÊ½ FB_TYPE_RGB¡¢ FB_TYPE_YUV(½ÚÔ¼´ø¿í£©
+*Arguments   : p_size   ï¼šèƒŒæ™¯å°ºå¯¸
+               status   : åˆå§‹åŒ–èƒŒæ™¯æ˜¯å¦æ˜¾ç¤º
+               ftype    : èƒŒæ™¯å›¾å±‚æ ¼å¼ FB_TYPE_RGBã€ FB_TYPE_YUV(èŠ‚çº¦å¸¦å®½ï¼‰
 *Return      :
-*Description : ³õÊ¼»¯±³¾°Í¼²ã(mainÓ¦ÓÃ³ÌĞòµ÷ÓÃ£©
+*Description : åˆå§‹åŒ–èƒŒæ™¯å›¾å±‚(mainåº”ç”¨ç¨‹åºè°ƒç”¨ï¼‰
 *Other       :
 ***************************************************************************************************/
 __s32        gscene_bgd_init(SIZE *p_size, bgd_status_t status, __fb_type_t ftype);
@@ -70,7 +83,7 @@ __s32        gscene_bgd_init(SIZE *p_size, bgd_status_t status, __fb_type_t ftyp
 *Prototype   : void gscene_bgd_set_state(bgd_status_t status);
 *Arguments   :
 *Return      :
-*Description : ÉèÖÃ±³¾°×´Ì¬
+*Description : è®¾ç½®èƒŒæ™¯çŠ¶æ€
 *Other       :
 ***************************************************************************************************/
 void         gscene_bgd_set_state(bgd_status_t status);
@@ -80,7 +93,7 @@ void         gscene_bgd_set_state(bgd_status_t status);
 *Prototype   : bgd_status_t gscene_bgd_get_state(void);
 *Arguments   :
 *Return      :
-*Description : ²éÑ¯±³¾°×´Ì¬
+*Description : æŸ¥è¯¢èƒŒæ™¯çŠ¶æ€
 *Other       :
 ***************************************************************************************************/
 bgd_status_t gscene_bgd_get_state(void);
@@ -90,7 +103,7 @@ bgd_status_t gscene_bgd_get_state(void);
 *Prototype   : void gscene_bgd_set_top(void);
 *Arguments   :
 *Return      :
-*Description : ±³¾°Í¼²ãÓÅÏÈ¼¶ÖÃ¶¥
+*Description : èƒŒæ™¯å›¾å±‚ä¼˜å…ˆçº§ç½®é¡¶
 *Other       :
 ***************************************************************************************************/
 void         gscene_bgd_set_top(void);
@@ -100,7 +113,7 @@ void         gscene_bgd_set_top(void);
 *Prototype   : void gscene_bgd_set_bottom(void);
 *Arguments   :
 *Return      :
-*Description : ±³¾°Í¼²ãÓÅÏÈ¼¶ÖÃµ×
+*Description : èƒŒæ™¯å›¾å±‚ä¼˜å…ˆçº§ç½®åº•
 *Other       :
 ***************************************************************************************************/
 void         gscene_bgd_set_bottom(void);
@@ -110,7 +123,7 @@ void         gscene_bgd_set_bottom(void);
 *Prototype   : __s32 gscene_bgd_save_fb(FB *fb, char* path);
 *Arguments   :
 *Return      :
-*Description : ±£´æ±³¾°Í¼Æ¬
+*Description : ä¿å­˜èƒŒæ™¯å›¾ç‰‡
 *Other       :
 ***************************************************************************************************/
 __s32        gscene_bgd_save_fb(FB *fb, char *path);
@@ -120,7 +133,7 @@ __s32        gscene_bgd_save_fb(FB *fb, char *path);
 *Prototype   : __s32 gscene_set_load_arg(char *app_name, void *p_arg, __u32 size);
 *Arguments   :
 *Return      :
-*Description : ÉèÖÃ±³¾°Í¼²ã¸ñÊ½
+*Description : è®¾ç½®èƒŒæ™¯å›¾å±‚æ ¼å¼
 *Other       :
 ***************************************************************************************************/
 void         gscene_bgd_set_fb_type(__fb_type_t ftype);
@@ -130,7 +143,7 @@ void         gscene_bgd_set_fb_type(__fb_type_t ftype);
 *Prototype   : void gscene_bgd_refresh(void);
 *Arguments   :
 *Return      :
-*Description : Ë¢ĞÂ±³¾°Í¼²ã£¬´ÓĞÂ»æÖÆ±³¾°Í¼Æ¬
+*Description : åˆ·æ–°èƒŒæ™¯å›¾å±‚ï¼Œä»æ–°ç»˜åˆ¶èƒŒæ™¯å›¾ç‰‡
 *Other       :
 ***************************************************************************************************/
 void         gscene_bgd_refresh(void);
@@ -140,7 +153,7 @@ void         gscene_bgd_refresh(void);
 *Prototype   : void gscene_bgd_refresh(void);
 *Arguments   :
 *Return      :
-*Description : »Ö¸´Ä¬ÈÏ±³¾°Í¼
+*Description : æ¢å¤é»˜è®¤èƒŒæ™¯å›¾
 *Other       :
 ***************************************************************************************************/
 void         gscene_bgd_restore(void);
@@ -149,11 +162,10 @@ void         gscene_bgd_restore(void);
 *Prototype   : __s32 gscene_bgd_deinit(void);
 *Arguments   :
 *Return      :
-*Description : main Ó¦ÓÃ³ÌĞòµ÷ÓÃ
+*Description : main åº”ç”¨ç¨‹åºè°ƒç”¨
 *Other       :
 ***************************************************************************************************/
 __s32        gscene_bgd_deinit(void);
 
 
 #endif /* __GSCENE_BACKGRD_H__ */
-

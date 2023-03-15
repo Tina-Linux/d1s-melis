@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 #include <log.h>
 #include "setting_alarm.h"
@@ -6,33 +37,33 @@
 #define listbar_num 7
 const static __s32 setting_alarm_item_string[SET_ALARM_MAX] =
 {
-    STRING_SET_ALARMSTATE,          //ÄÖÖÓ×´Ì¬
-    STRING_SET_ALARMTIME,           //ÄÖÖÓÊ±¼ä
-    STRING_SET_ALARM_REPEATTIME,    //ÖØ¸´´ÎÊý
-    STRING_SET_ALARM_RING,          //ÄÖÁå
-    STRING_SET_ALARM_VOL,           //ÄÖÁåÒôÁ¿
-    STRING_SET_ALARM_RUNTIME,       //ÄÖÁå³ÖÐøÊ±¼ä
-    STRING_SET_ALARM_DELAY          //ÄÖÁåÌ°Ë¯Ê±¼ä
+    STRING_SET_ALARMSTATE,          //é—¹é’ŸçŠ¶æ€
+    STRING_SET_ALARMTIME,           //é—¹é’Ÿæ—¶é—´
+    STRING_SET_ALARM_REPEATTIME,    //é‡å¤æ¬¡æ•°
+    STRING_SET_ALARM_RING,          //é—¹é“ƒ
+    STRING_SET_ALARM_VOL,           //é—¹é“ƒéŸ³é‡
+    STRING_SET_ALARM_RUNTIME,       //é—¹é“ƒæŒç»­æ—¶é—´
+    STRING_SET_ALARM_DELAY          //é—¹é“ƒè´ªç¡æ—¶é—´
 };
 const static __s32 setting_alarm_item_titile_string[SET_ALARM_MAX] =
 {
-    STRING_SET_ALARMSTATE_EX1,          //ÄÖÖÓ×´Ì¬
-    STRING_SET_ALARMTIME_EX1,           //ÄÖÖÓÊ±¼ä
-    STRING_SET_ALARM_REPEATTIME_EX1,    //ÖØ¸´´ÎÊý
-    STRING_SET_ALARM_RING_EX1,          //ÄÖÁå
-    STRING_SET_ALARM_VOL_EX1,           //ÄÖÁåÒôÁ¿
-    STRING_SET_ALARM_RUNTIME_EX1,       //ÄÖÁå³ÖÐøÊ±¼ä
-    STRING_SET_ALARM_DELAY_EX1          //ÄÖÁåÌ°Ë¯Ê±¼ä
+    STRING_SET_ALARMSTATE_EX1,          //é—¹é’ŸçŠ¶æ€
+    STRING_SET_ALARMTIME_EX1,           //é—¹é’Ÿæ—¶é—´
+    STRING_SET_ALARM_REPEATTIME_EX1,    //é‡å¤æ¬¡æ•°
+    STRING_SET_ALARM_RING_EX1,          //é—¹é“ƒ
+    STRING_SET_ALARM_VOL_EX1,           //é—¹é“ƒéŸ³é‡
+    STRING_SET_ALARM_RUNTIME_EX1,       //é—¹é“ƒæŒç»­æ—¶é—´
+    STRING_SET_ALARM_DELAY_EX1          //é—¹é“ƒè´ªç¡æ—¶é—´
 };
 const static __s32 setting_alarm_item_describe_string[SET_ALARM_MAX] =
 {
-    STRING_SET_ALARMSTATE_EX2,          //ÄÖÖÓ×´Ì¬
-    0,                                  //ÄÖÖÓÊ±¼ä
-    STRING_SET_ALARM_REPEATTIME_EX2,    //ÖØ¸´´ÎÊý
-    STRING_SET_ALARM_RING_EX2,          //ÄÖÁå
-    STRING_SET_ALARM_VOL_EX2,           //ÄÖÁåÒôÁ¿
-    STRING_SET_ALARM_RUNTIME_EX2,       //ÄÖÁå³ÖÐøÊ±¼ä
-    STRING_SET_ALARM_DELAY_EX2          //ÄÖÁåÌ°Ë¯Ê±¼ä
+    STRING_SET_ALARMSTATE_EX2,          //é—¹é’ŸçŠ¶æ€
+    0,                                  //é—¹é’Ÿæ—¶é—´
+    STRING_SET_ALARM_REPEATTIME_EX2,    //é‡å¤æ¬¡æ•°
+    STRING_SET_ALARM_RING_EX2,          //é—¹é“ƒ
+    STRING_SET_ALARM_VOL_EX2,           //é—¹é“ƒéŸ³é‡
+    STRING_SET_ALARM_RUNTIME_EX2,       //é—¹é“ƒæŒç»­æ—¶é—´
+    STRING_SET_ALARM_DELAY_EX2          //é—¹é“ƒè´ªç¡æ—¶é—´
 };
 
 static __s32 setting_alarm_item_paint(__lbar_draw_para_t *draw_param);
@@ -103,7 +134,7 @@ __s32 setting_alarm_long_string_roll(setting_alarm_attr_t *alarm_attr, char *str
         show_info.fontColor = GUI_BLUE;
         show_info.align = GUI_TA_LEFT | GUI_TA_VCENTER;
         show_info.bmp = theme_hdl2buf(alarm_attr->h_bmp_setting_alarm[SETTING_ALARM_LONG_STRING_BG]);
-        show_info.bmp_pos.x = 0 ;   //Ïà¶ÔÓÚ³¤×Ö·û´®ÏÔÊ¾ÇøÓò
+        show_info.bmp_pos.x = 0 ;   //ç›¸å¯¹äºŽé•¿å­—ç¬¦ä¸²æ˜¾ç¤ºåŒºåŸŸ
         show_info.bmp_pos.y = 0 ;
         GUI_LongStringStop(alarm_attr->long_str_handle);
         GUI_LongStringReset(alarm_attr->long_str_handle, &show_info);
@@ -205,7 +236,7 @@ static __s32 setting_alarm_paint(__gui_msg_t *msg, __s32 index, setting_alarm_vi
     GUI_SetFont(alarm_attr->font);
     GUI_UC_SetEncodeUTF8();
     GUI_SetDrawMode(GUI_DRAWMODE_NORMAL);
-    GUI_SetBkColor(0xccffffff); //80%µÄÍ¸Ã÷¶È
+    GUI_SetBkColor(0xccffffff); //80%çš„é€æ˜Žåº¦
     GUI_SetColor(SETTING_UNFOCUS_COLOR);
     GUI_BMP_Draw(theme_hdl2buf(alarm_attr->h_bmp_setting_alarm[NEW_ALARM_SCROLL_BG_BMP]), 300, 0);
     GUI_BMP_Draw(theme_hdl2buf(alarm_attr->h_bmp_setting_alarm[NEW_ALARM_SCROLL_BLOCK_BMP]), 300, 0);
@@ -371,7 +402,7 @@ static __s32 setting_alarm_change_paint(__gui_msg_t *msg)
     GUI_SetFont(alarm_attr->font);
     GUI_UC_SetEncodeUTF8();
     GUI_SetDrawMode(GUI_DRAWMODE_NORMAL);
-    GUI_SetBkColor(0xccffffff); //80%µÄÍ¸Ã÷¶È
+    GUI_SetBkColor(0xccffffff); //80%çš„é€æ˜Žåº¦
     GUI_SetColor(SETTING_UNFOCUS_COLOR);
     gui_rect.x0 = uipara->string_detail_pos_ex.x;
     gui_rect.y0 = uipara->string_detail_pos_ex.y;
@@ -477,7 +508,7 @@ static __s32 setting_alarm_item_content_paint(setting_alarm_attr_t *alarm_attr, 
 
     switch (index)
     {
-        case 0:         //ÄÖÖÓ×´Ì¬
+        case 0:         //é—¹é’ŸçŠ¶æ€
         {
             if (alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_status)
             {
@@ -492,7 +523,7 @@ static __s32 setting_alarm_item_content_paint(setting_alarm_attr_t *alarm_attr, 
         }
         break;
 
-        case 1:         //ÄÖÖÓÊ±¼ä
+        case 1:         //é—¹é’Ÿæ—¶é—´
         {
             eLIBs_sprintf(str, "%02d:%02d", alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_time.hour
                           , alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_time.minute);
@@ -500,14 +531,14 @@ static __s32 setting_alarm_item_content_paint(setting_alarm_attr_t *alarm_attr, 
         }
         break;
 
-        case 2:         //ÖØ¸´´ÎÊý
+        case 2:         //é‡å¤æ¬¡æ•°
         {
             dsk_langres_get_menu_text(STRING_SET_EVERYDAY + alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_repeat, str, GUI_NAME_MAX);
             GUI_DispStringInRect(str, rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
         }
         break;
 
-        case 3:         //ÄÖÁå
+        case 3:         //é—¹é“ƒ
         {
             char *nameMusic = NULL;
             nameMusic = eLIBs_strchrlast(alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_music_path, '\\') + 1 ;
@@ -524,21 +555,21 @@ static __s32 setting_alarm_item_content_paint(setting_alarm_attr_t *alarm_attr, 
         }
         break;
 
-        case 4:         //ÄÖÁåÒôÁ¿
+        case 4:         //é—¹é“ƒéŸ³é‡
         {
             eLIBs_sprintf(str, "%d", alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_volume);
             GUI_DispStringInRect(str, rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
         }
         break;
 
-        case 5:         //ÄÖÁå³ÖÐøÊ±¼ä
+        case 5:         //é—¹é“ƒæŒç»­æ—¶é—´
         {
             dsk_langres_get_menu_text(STRING_SET_20SECOND + alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_runtime, str, GUI_NAME_MAX);
             GUI_DispStringInRect(str, rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
         }
         break;
 
-        case 6:         //ÄÖÁåÌ°Ë¯Ê±¼ä
+        case 6:         //é—¹é“ƒè´ªç¡æ—¶é—´
         {
             dsk_langres_get_menu_text(STRING_SET_5MINUTE + alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_delay, str, GUI_NAME_MAX);
             GUI_DispStringInRect(str, rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
@@ -581,7 +612,7 @@ static __s32 setting_alarm_item_paint(__lbar_draw_para_t *draw_param)
             __msg("LBAR_MODE_NORMAL \n");
             GUI_BMP_Draw(theme_hdl2buf(alarm_attr->h_bmp_setting_alarm[NEW_ALARM_ITEM_R_UFCS_BMP]), draw_param->rect.x, draw_param->rect.y);
 
-            if (3 !=  draw_param->index && 1 !=  draw_param->index)  //µÚ1,3¸öitem
+            if (3 !=  draw_param->index && 1 !=  draw_param->index)  //ç¬¬1,3ä¸ªitem
             {
                 if (2 ==  draw_param->index)
                 {
@@ -602,7 +633,7 @@ static __s32 setting_alarm_item_paint(__lbar_draw_para_t *draw_param)
             dsk_langres_get_menu_text(setting_alarm_item_string[draw_param->index], str, GUI_NAME_MAX);
             GUI_DispStringInRect(str, &gui_rect, GUI_TA_LEFT | GUI_TA_VCENTER);
 
-            if (3 ==  draw_param->index)     // µÚ1¸öitem £¬
+            if (3 ==  draw_param->index)     // ç¬¬1ä¸ªitem ï¼Œ
             {
                 gui_rect.x0 = uipara->long_string_area.x + draw_param->rect.x;
                 gui_rect.y0 = uipara->long_string_area.y + draw_param->rect.y;
@@ -637,7 +668,7 @@ static __s32 setting_alarm_item_paint(__lbar_draw_para_t *draw_param)
             GUI_BMP_Draw(theme_hdl2buf(alarm_attr->h_bmp_setting_alarm[NEW_ALARM_ITEM_R_FCS_BMP]), draw_param->rect.x, draw_param->rect.y);
 
             //GUI_BMP_Draw(theme_hdl2buf(alarm_attr->h_bmp_setting_alarm[SETTING_ALARM_ITEM_F]),draw_param->rect.x,draw_param->rect.y+45);
-            if (3 !=  draw_param->index && 1 !=  draw_param->index)  //µÚ1,3¸öitem
+            if (3 !=  draw_param->index && 1 !=  draw_param->index)  //ç¬¬1,3ä¸ªitem
             {
                 if (2 ==  draw_param->index)
                 {
@@ -662,7 +693,7 @@ static __s32 setting_alarm_item_paint(__lbar_draw_para_t *draw_param)
             gui_rect.x1 = gui_rect.x0 + uipara->item_content_pos.w;
             gui_rect.y1 = gui_rect.y0 + uipara->item_content_pos.h;
 
-            if (3 ==  draw_param->index)     // µÚÈý¸öitem £¬¼´ÄÖÖÓÁåÉù£¬
+            if (3 ==  draw_param->index)     // ç¬¬ä¸‰ä¸ªitem ï¼Œå³é—¹é’Ÿé“ƒå£°ï¼Œ
             {
                 gui_rect.x0 = uipara->long_string_area.x + draw_param->rect.x;
                 gui_rect.y0 = uipara->long_string_area.y + draw_param->rect.y;
@@ -686,7 +717,7 @@ static __s32 setting_alarm_item_paint(__lbar_draw_para_t *draw_param)
 
             setting_alarm_item_content_paint(alarm_attr, draw_param->index, &gui_rect);
 
-            if (3 ==  draw_param->index)     // µÚÈý¸öitem £¬¼´ÄÖÖÓÁåÉù£¬
+            if (3 ==  draw_param->index)     // ç¬¬ä¸‰ä¸ªitem ï¼Œå³é—¹é’Ÿé“ƒå£°ï¼Œ
             {
                 char *nameMusic = NULL;
                 nameMusic = eLIBs_strchrlast(alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_music_path, '\\') + 1 ;
@@ -769,42 +800,42 @@ __s32 setting_alarm_on_left_button(__gui_msg_t *msg)
 
     switch (alarm_attr->focus_id)
     {
-        case 0:         //ÄÖÖÓ×´Ì¬
+        case 0:         //é—¹é’ŸçŠ¶æ€
         {
             alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_status = !alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_status;
         }
         break;
 
-        case 1:         //ÄÖÖÓÊ±¼ä
+        case 1:         //é—¹é’Ÿæ—¶é—´
         {
             ;
         }
         break;
 
-        case 2:         //ÖØ¸´´ÎÊý
+        case 2:         //é‡å¤æ¬¡æ•°
         {
             alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_repeat = (alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_repeat + REG_ALARM_REPEAT_MAX - 1) % REG_ALARM_REPEAT_MAX;
         }
         break;
 
-        case 3:         //ÄÖÁå
+        case 3:         //é—¹é“ƒ
         {
         }
         break;
 
-        case 4:         //ÄÖÁåÒôÁ¿
+        case 4:         //é—¹é“ƒéŸ³é‡
         {
             alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_volume = (alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_volume + (AUDIO_DEVICE_VOLUME_MAX + 1) - 1) % (AUDIO_DEVICE_VOLUME_MAX + 1);
         }
         break;
 
-        case 5:         //ÄÖÁå³ÖÐøÊ±¼ä
+        case 5:         //é—¹é“ƒæŒç»­æ—¶é—´
         {
             alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_runtime = (alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_runtime + REG_ALARM_RUNTIME_MAX - 1) % REG_ALARM_RUNTIME_MAX;
         }
         break;
 
-        case 6:         //ÄÖÁåÌ°Ë¯Ê±¼ä
+        case 6:         //é—¹é“ƒè´ªç¡æ—¶é—´
         {
             alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_delay = (alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_delay + REG_ALARM_DELAY_MAX - 1) % REG_ALARM_DELAY_MAX;
         }
@@ -829,44 +860,44 @@ __s32 setting_alarm_on_right_button(__gui_msg_t *msg)
 
     switch (alarm_attr->focus_id)
     {
-        case 0:         //ÄÖÖÓ×´Ì¬
+        case 0:         //é—¹é’ŸçŠ¶æ€
         {
             alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_status = !alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_status;
         }
         break;
 
-        case 1:         //ÄÖÖÓÊ±¼ä
+        case 1:         //é—¹é’Ÿæ—¶é—´
         {
             main_cmd2parent(msg->h_deswin, ID_SWITCH_TO_ALARM_CLOCK_WIN, (unsigned long)&alarm_attr->reg_sys->alarm[alarm_attr->alarm_index], 0);
         }
         break;
 
-        case 2:         //ÖØ¸´´ÎÊý
+        case 2:         //é‡å¤æ¬¡æ•°
         {
             alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_repeat = (alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_repeat + 1) % REG_ALARM_REPEAT_MAX;
         }
         break;
 
-        case 3:         //ÄÖÁå
+        case 3:         //é—¹é“ƒ
         {
             setting_alarm_long_string_stop_roll(alarm_attr);
             main_cmd2parent(msg->h_deswin, ID_SWITCH_TO_ALARM_SELECT_SONG_WIN, 0, 0);
         }
         break;
 
-        case 4:         //ÄÖÁåÒôÁ¿
+        case 4:         //é—¹é“ƒéŸ³é‡
         {
             alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_volume = (alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_volume + 1) % (AUDIO_DEVICE_VOLUME_MAX + 1);
         }
         break;
 
-        case 5:         //ÄÖÁå³ÖÐøÊ±¼ä
+        case 5:         //é—¹é“ƒæŒç»­æ—¶é—´
         {
             alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_runtime = (alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_runtime + 1) % REG_ALARM_RUNTIME_MAX;
         }
         break;
 
-        case 6:         //ÄÖÁåÌ°Ë¯Ê±¼ä
+        case 6:         //é—¹é“ƒè´ªç¡æ—¶é—´
         {
             alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_delay = (alarm_attr->reg_sys->alarm[alarm_attr->alarm_index].alarm_delay + 1) % REG_ALARM_DELAY_MAX;
         }
@@ -913,7 +944,7 @@ static __s32 _setting_alarm_listbar_key_proc(__gui_msg_t *msg)
                     //LISTBAR_ResumePage(alarm_attr->h_listbar);
                     LISTBAR_ShowPage(alarm_attr->h_listbar);
                     LISTBAR_LostFocus(alarm_attr->h_listbar);
-                    setting_alarm_long_string_init(alarm_attr); // ÇÐ»»µ½ÄÖÖÓÉèÖÃ´°¿ÚÊ±£¬Æô¶¯³¤ÎÄ¼þÃû¹ö¶¯
+                    setting_alarm_long_string_init(alarm_attr); // åˆ‡æ¢åˆ°é—¹é’Ÿè®¾ç½®çª—å£æ—¶ï¼Œå¯åŠ¨é•¿æ–‡ä»¶åæ»šåŠ¨
                     //setting_alarm_change_paint(msg);
                 }
                 else if (alarm_attr->view == SETTING_ALARM_SETTING_VIEW)
@@ -956,7 +987,7 @@ static __s32 _setting_alarm_listbar_key_proc(__gui_msg_t *msg)
                     //..LISTBAR_SetFocusItem(alarm_attr->h_listbar, 0);
                     LISTBAR_ShowPage(alarm_attr->h_listbar);
                     LISTBAR_LostFocus(alarm_attr->h_listbar);
-                    setting_alarm_long_string_init(alarm_attr); // ÇÐ»»µ½ÄÖÖÓÉèÖÃ´°¿ÚÊ±£¬Æô¶¯³¤ÎÄ¼þÃû¹ö¶¯
+                    setting_alarm_long_string_init(alarm_attr); // åˆ‡æ¢åˆ°é—¹é’Ÿè®¾ç½®çª—å£æ—¶ï¼Œå¯åŠ¨é•¿æ–‡ä»¶åæ»šåŠ¨
                     __log("======GUI_MSG_KEY_RIGHT======= alarm_attr->alarm_index=%d\n", alarm_attr->alarm_index);
                 }
                 else if (alarm_attr->view == SETTING_ALARM_SETTING_VIEW)
@@ -1014,7 +1045,7 @@ static __s32 _setting_alarm_listbar_key_proc(__gui_msg_t *msg)
                     alarm_attr->alarm_index = alarm_attr->focus_id;
                     setting_alarm_paint(msg, alarm_attr->alarm_index);
                     LISTBAR_ShowPage(alarm_attr->h_listbar);
-                    setting_alarm_long_string_init(alarm_attr); // ÇÐ»»µ½ÄÖÖÓÉèÖÃ´°¿ÚÊ±£¬Æô¶¯³¤ÎÄ¼þÃû¹ö¶¯
+                    setting_alarm_long_string_init(alarm_attr); // åˆ‡æ¢åˆ°é—¹é’Ÿè®¾ç½®çª—å£æ—¶ï¼Œå¯åŠ¨é•¿æ–‡ä»¶åæ»šåŠ¨
                 }
                 else if (alarm_attr->view == SETTING_ALARM_SETTING_VIEW)
                 {
@@ -1268,7 +1299,7 @@ static __s32 _setting_alarm_touch_ItemIndex(__gui_msg_t *msg)
     }
     else
     {
-        return EPDK_FAIL;   //²»ÔÚitemÇøÓò
+        return EPDK_FAIL;   //ä¸åœ¨itemåŒºåŸŸ
     }
 }
 
@@ -1302,7 +1333,7 @@ static __s32  setting_alarm_touch_proc(__gui_msg_t *msg)
             }
             else if (alarm_attr->view == SETTING_ALARM_SETTING_VIEW)
             {
-                setting_alarm_long_string_uninit(alarm_attr);   //ÇÐ»»µ½ÄÖÖÓÑ¡Ôñ½çÃæÊ±£¬Í£µô³¤×Ö·û´®¹ö¶¯
+                setting_alarm_long_string_uninit(alarm_attr);   //åˆ‡æ¢åˆ°é—¹é’Ÿé€‰æ‹©ç•Œé¢æ—¶ï¼ŒåœæŽ‰é•¿å­—ç¬¦ä¸²æ»šåŠ¨
                 alarm_attr->view = SETTING_ALARM_SELECT_VIEW;
                 LISTBAR_SuspendPage(alarm_attr->h_listbar);
                 alarm_attr->focus_id = alarm_attr->alarm_index;
@@ -1331,7 +1362,7 @@ static __s32  setting_alarm_touch_proc(__gui_msg_t *msg)
             LISTBAR_SetFocusItem(alarm_attr->h_listbar, 0);
             //LISTBAR_ResumePage(alarm_attr->h_listbar);
             LISTBAR_ShowPage(alarm_attr->h_listbar);
-            setting_alarm_long_string_init(alarm_attr); // ÇÐ»»µ½ÄÖÖÓÉèÖÃ´°¿ÚÊ±£¬Æô¶¯³¤ÎÄ¼þÃû¹ö¶¯
+            setting_alarm_long_string_init(alarm_attr); // åˆ‡æ¢åˆ°é—¹é’Ÿè®¾ç½®çª—å£æ—¶ï¼Œå¯åŠ¨é•¿æ–‡ä»¶åæ»šåŠ¨
         }
         else //if( alarm_attr->view == SETTING_ALARM_SETTING_VIEW )
         {

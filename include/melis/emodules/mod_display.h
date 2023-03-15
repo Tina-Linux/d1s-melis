@@ -21,6 +21,7 @@
 #define CHN_NUM 2
 #define RET_FAIL -1
 #define RET_OK 0
+
 #define SCREEN_0 0
 #define SCREEN_1 1
 
@@ -141,17 +142,17 @@ typedef enum
 
 typedef enum
 {
-    DISP_MOD_INTERLEAVED        = 0x1,  //interleaved,1¸öµØÖ·
-    DISP_MOD_NON_MB_PLANAR      = 0x0,  //ÎÞºê¿éÆ½ÃæÄ£Ê½,3¸öµØÖ·,RGB/YUVÃ¿¸öchannel·Ö±ð´æ·Å
-    DISP_MOD_NON_MB_UV_COMBINED = 0x2,  //ÎÞºê¿éUV´ò°üÄ£Ê½,2¸öµØÖ·,YºÍUV·Ö±ð´æ·Å
-    DISP_MOD_MB_PLANAR          = 0x4,  //ºê¿éÆ½ÃæÄ£Ê½,3¸öµØÖ·,RGB/YUVÃ¿¸öchannel·Ö±ð´æ·Å
-    DISP_MOD_MB_UV_COMBINED     = 0x6,  //ºê¿éUV´ò°üÄ£Ê½ ,2¸öµØÖ·,YºÍUV·Ö±ð´æ·Å
+    DISP_MOD_INTERLEAVED        = 0x1,  //interleaved,1ï¿½ï¿½ï¿½ï¿½Ö·
+    DISP_MOD_NON_MB_PLANAR      = 0x0,  //ï¿½Þºï¿½ï¿½Æ½ï¿½ï¿½Ä£Ê½,3ï¿½ï¿½ï¿½ï¿½Ö·,RGB/YUVÃ¿ï¿½ï¿½channelï¿½Ö±ï¿½ï¿½ï¿½
+    DISP_MOD_NON_MB_UV_COMBINED = 0x2,  //ï¿½Þºï¿½ï¿½UVï¿½ï¿½ï¿½Ä£Ê½,2ï¿½ï¿½ï¿½ï¿½Ö·,Yï¿½ï¿½UVï¿½Ö±ï¿½ï¿½ï¿½
+    DISP_MOD_MB_PLANAR          = 0x4,  //ï¿½ï¿½ï¿½Æ½ï¿½ï¿½Ä£Ê½,3ï¿½ï¿½ï¿½ï¿½Ö·,RGB/YUVÃ¿ï¿½ï¿½channelï¿½Ö±ï¿½ï¿½ï¿½
+    DISP_MOD_MB_UV_COMBINED     = 0x6,  //ï¿½ï¿½ï¿½UVï¿½ï¿½ï¿½Ä£Ê½ ,2ï¿½ï¿½ï¿½ï¿½Ö·,Yï¿½ï¿½UVï¿½Ö±ï¿½ï¿½ï¿½
 } __disp_pixel_mod_t;
 
 typedef enum
 {
     //for interleave argb8888
-    DISP_SEQ_ARGB   = 0x0, //AÔÚ¸ßÎ»
+    DISP_SEQ_ARGB   = 0x0, //Aï¿½Ú¸ï¿½Î»
     DISP_SEQ_BGRA   = 0x2,
 
     //for nterleaved yuv422
@@ -169,12 +170,12 @@ typedef enum
     DISP_SEQ_VUVU   = 0xa,
 
     //for 16bpp rgb
-    DISP_SEQ_P10    = 0xd,//p1ÔÚ¸ßÎ»
-    DISP_SEQ_P01    = 0xe,//p0ÔÚ¸ßÎ»
+    DISP_SEQ_P10    = 0xd,//p1ï¿½Ú¸ï¿½Î»
+    DISP_SEQ_P01    = 0xe,//p0ï¿½Ú¸ï¿½Î»
 
     //for planar format or 8bpp rgb
-    DISP_SEQ_P3210  = 0xf,//p3ÔÚ¸ßÎ»
-    DISP_SEQ_P0123  = 0x10,//p0ÔÚ¸ßÎ»
+    DISP_SEQ_P3210  = 0xf,//p3ï¿½Ú¸ï¿½Î»
+    DISP_SEQ_P0123  = 0x10,//p0ï¿½Ú¸ï¿½Î»
 
     //for 4bpp rgb
     DISP_SEQ_P76543210  = 0x11,
@@ -222,8 +223,8 @@ typedef struct
 
 typedef struct
 {
-    unsigned long               addr[3];    // frame bufferµÄÄÚÈÝµØÖ·£¬¶ÔÓÚrgbÀàÐÍ£¬Ö»ÓÐaddr[0]ÓÐÐ§
-    __disp_rectsz_t     size;//µ¥Î»ÊÇpixel
+    unsigned long               addr[3];    // frame bufferï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½rgbï¿½ï¿½ï¿½Í£ï¿½Ö»ï¿½ï¿½addr[0]ï¿½ï¿½Ð§
+    __disp_rectsz_t     size;//ï¿½ï¿½Î»ï¿½ï¿½pixel
     enum disp_pixel_format  format;
     __disp_pixel_seq_t  seq;
     __disp_pixel_mod_t  mode;
@@ -314,10 +315,8 @@ enum sunxi_tag_DISP_CMD
 	MOD_DISP_ENHANCE_SET_CONTRAST,
 	MOD_DISP_ENHANCE_GET_CONTRAST,
 	MOD_DISP_ENHANCE_SET_SATURATION,
-	MOD_DISP_ENHANCE_GET_SATURATION,    
-	MOD_DISP_SMBL_ENABLE,
-	MOD_DISP_SMBL_DISABLE,
-	MOD_DISP_SMBL_SET_WINDOW,
+	MOD_DISP_ENHANCE_GET_SATURATION,
+
 	/* ---capture -- */
 	MOD_DISP_CAPTURE_START,
 	MOD_DISP_CAPTURE_STOP,
@@ -334,7 +333,7 @@ typedef struct
     __bool  interlace;
     __bool  top_field_first;
     __bool  discontinous;
-    __u32   frame_rate; // *FRAME_RATE_BASE(ÏÖÔÚ¶¨Îª1000)
+    __u32   frame_rate; // *FRAME_RATE_BASE(ï¿½ï¿½ï¿½Ú¶ï¿½Îª1000)
     unsigned long   flag_addr;//dit maf flag address
     __u32   flag_stride;//dit maf flag line stride
     __bool  maf_valid;

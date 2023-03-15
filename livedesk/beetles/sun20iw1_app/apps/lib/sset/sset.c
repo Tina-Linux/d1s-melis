@@ -1,44 +1,61 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              calendar app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2006-2009, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : sset.c
-* By      :lyn
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "sset_i.h"
 
 typedef struct  tag_SCENE_DATA
 {
-    H_WIN               sset_mwin;              /*SSET¹ÜÀí´°¿Ú¾ä±ú*/
+    H_WIN               sset_mwin;              /*SSETç®¡ç†çª—å£å¥æŸ„*/
 
-    H_WIN               menu_lwin[MENU_CNT];    /*×Ó²Ëµ¥´°¿Úlayer´°¿Ú¾ä±ú*/
-    H_WIN               menu_fwin[MENU_CNT];    /*×Ó²Ëµ¥´°¿Úframe´°¿Ú¾ä±ú*/
-    __sset_menu_type_e  menu_type[MENU_CNT];    /*×Ó²Ëµ¥´°¿Úframe´°¿Ú¾ä±ú*/
+    H_WIN               menu_lwin[MENU_CNT];    /*å­èœå•çª—å£layerçª—å£å¥æŸ„*/
+    H_WIN               menu_fwin[MENU_CNT];    /*å­èœå•çª—å£frameçª—å£å¥æŸ„*/
+    __sset_menu_type_e  menu_type[MENU_CNT];    /*å­èœå•çª—å£frameçª—å£å¥æŸ„*/
 
-    H_WIN               info_lwin;              /*ĞÅÏ¢À¸´°¿Úlayer´°¿Ú¾ä±ú*/
-    H_WIN               info_fwin;              /*ĞÅÏ¢À¸´°¿Úframe´°¿Ú¾ä±ú*/
+    H_WIN               info_lwin;              /*ä¿¡æ¯æ çª—å£layerçª—å£å¥æŸ„*/
+    H_WIN               info_fwin;              /*ä¿¡æ¯æ çª—å£frameçª—å£å¥æŸ„*/
 
-    __sset_item_t       *phead;                 /*ÄÚ²¿Êı¾İÍ·Ö¸Õë*/
-    __sset_item_t       *pmenu;                 /*Ö÷²Ëµ¥½ÚµãÖ¸Õë*/
-    __sset_uipara_t     *puipara;               /*SSETµÄlayoutÊı¾İÖ¸Õë*/
-    __s32               menu_cnt;               /*×Ó²Ëµ¥µ±Ç°ËùÔÚ¼¶Êı*/
+    __sset_item_t       *phead;                 /*å†…éƒ¨æ•°æ®å¤´æŒ‡é’ˆ*/
+    __sset_item_t       *pmenu;                 /*ä¸»èœå•èŠ‚ç‚¹æŒ‡é’ˆ*/
+    __sset_uipara_t     *puipara;               /*SSETçš„layoutæ•°æ®æŒ‡é’ˆ*/
+    __s32               menu_cnt;               /*å­èœå•å½“å‰æ‰€åœ¨çº§æ•°*/
 
-    __u8                time_sta;               /*GUI TIME ÊÇ·ñÓĞĞ§ 1ÓĞĞ§ 0ÎŞĞ§*/
-    __u8                time_enable;            /*ÊÇ·ñ·¢ËÍGUI_TIMEÏûÏ¢ 1·¢ 0²»·¢*/
+    __u8                time_sta;               /*GUI TIME æ˜¯å¦æœ‰æ•ˆ 1æœ‰æ•ˆ 0æ— æ•ˆ*/
+    __u8                time_enable;            /*æ˜¯å¦å‘é€GUI_TIMEæ¶ˆæ¯ 1å‘ 0ä¸å‘*/
     __u32               time_id;                /*GUI TIME ID*/
 
-    __u32               sset_sta;               /*SSET³¡¾°ÊÇ·ñÍË³ö 1ÍË³ö 0Î´ÍË³ö*/
-    __u32               last_key;               /*±£´æÉÏÒ»´Î°´¼ü*/
+    __u32               sset_sta;               /*SSETåœºæ™¯æ˜¯å¦é€€å‡º 1é€€å‡º 0æœªé€€å‡º*/
+    __u32               last_key;               /*ä¿å­˜ä¸Šä¸€æ¬¡æŒ‰é”®*/
 
-    __bool              tbar_has_hide;          /*tbarÊÇ·ñÊÇÒş²Ø1ÎªÒş²Ø£¬0ÎªÏÔÊ¾*/
+    __bool              tbar_has_hide;          /*tbaræ˜¯å¦æ˜¯éšè—1ä¸ºéšè—ï¼Œ0ä¸ºæ˜¾ç¤º*/
 
 } sset_scene_data_t;
 
@@ -52,7 +69,7 @@ __sset_item_t *_sset_menu_get_pmenu(void)//..
 ************************************************************************************************************************
 *                                       calendar_main
 *
-*Description: ´´½¨Ò»¸öLYR WIN
+*Description: åˆ›å»ºä¸€ä¸ªLYR WIN
 *
 *Arguments  :
 *
@@ -253,7 +270,7 @@ static H_WIN _sset_Tbarlyr_create(__sset_uipara_layer_t *layer)
 ************************************************************************************************************************
 *                                       _show_win
 *
-*Description: ´ò¿ªÍ¼²ãÏÔÊ¾
+*Description: æ‰“å¼€å›¾å±‚æ˜¾ç¤º
 *
 *Arguments  :
 *
@@ -272,7 +289,7 @@ static void _show_win(__s32 menu_cnt)
     //eLIBs_printf("sset_data.menu_type[menu_cnt]=%d \n",sset_data.menu_type[menu_cnt]);
     if (sset_data.menu_type[menu_cnt] == MENU_TYPE_TBAR)
     {
-#if 0   //ÂıÂıµ­³öÓĞÎÊÌâ£¬ÓëDE2¡£0ÏÔÊ¾·½Ê½ÓĞ¹Ø£¬´ı²é
+#if 0   //æ…¢æ…¢æ·¡å‡ºæœ‰é—®é¢˜ï¼Œä¸DE2ã€‚0æ˜¾ç¤ºæ–¹å¼æœ‰å…³ï¼Œå¾…æŸ¥
         GUI_LyrWinGetScnWindow(sset_data.menu_lwin[menu_cnt], &scnrect);
         eLIBs_printf("x=%d y=%d width=%d height=%d \n", scnrect.x, scnrect.y, scnrect.width, scnrect.height);
         scn_height = scnrect.height / 10 * 10;
@@ -358,7 +375,7 @@ static void _show_win(__s32 menu_cnt)
 ************************************************************************************************************************
 *                                       _hide_win
 *
-*Description: ´ò¿ªÍ¼²ãÏÔÊ¾
+*Description: æ‰“å¼€å›¾å±‚æ˜¾ç¤º
 *
 *Arguments  :
 *
@@ -449,7 +466,7 @@ static void _hide_win(__s32 menu_cnt)
 ************************************************************************************************************************
 *                                       _sset_menu_setfcs
 *
-*Description: ÉèÖÃtbar×´Ì¬
+*Description: è®¾ç½®tbarçŠ¶æ€
 *
 *Arguments  :
 *
@@ -485,7 +502,7 @@ static void _sset_menu_setfcs(__u32 fcs_id)
 ************************************************************************************************************************
 *                                       SSET_SubMenuDestroyAll
 *
-*Description: Ïú»ÙËùÓĞ×Ó²Ëµ¥submenu
+*Description: é”€æ¯æ‰€æœ‰å­èœå•submenu
 *
 *Arguments  :
 *
@@ -605,7 +622,7 @@ static void _sset_menu_create(__u32 fcs_id, __sset_menu_type_e type)
 ************************************************************************************************************************
 *                                       SSET_SubMenuDestroyAll
 *
-*Description: Ïú»ÙËùÓĞ×Ó²Ëµ¥submenu
+*Description: é”€æ¯æ‰€æœ‰å­èœå•submenu
 *
 *Arguments  :
 *
@@ -657,7 +674,7 @@ static void _sset_menu_destroy(__s32 menu_cnt)
 ************************************************************************************************************************
 *                                       _sset_menu_sleep
 *
-*Description: Ïú»ÙËùÓĞ×Ó²Ëµ¥submenu
+*Description: é”€æ¯æ‰€æœ‰å­èœå•submenu
 *
 *Arguments  :
 *
@@ -684,9 +701,9 @@ static void _sset_menu_sleep(__s32 menu_cnt)
 ************************************************************************************************************************
 *                                       SSET_SubMenuSleep
 *
-*Description: ½øÈëÒ»ÏÂ¼¶²Ëµ¥
+*Description: è¿›å…¥ä¸€ä¸‹çº§èœå•
 *
-*Arguments  : hparent ¸¸´°¿Ú
+*Arguments  : hparent çˆ¶çª—å£
 *
 *Return     :
 *
@@ -701,7 +718,7 @@ static void _sset_menu_next(__u32 fcs_id, __sset_menu_type_e type)
 ************************************************************************************************************************
 *                                       _sset_submenuprev
 *
-*Description: ·µ»ØÉÏÒ»¼¶²Ëµ¥
+*Description: è¿”å›ä¸Šä¸€çº§èœå•
 *
 *Arguments  :
 *
@@ -731,7 +748,7 @@ static void _sset_menu_prev(void)
 ************************************************************************************************************************
 *                                       _sset_keyproc
 *
-*Description: SSET °´¼ü´¦Àí
+*Description: SSET æŒ‰é”®å¤„ç†
 *
 *Arguments  :
 *
@@ -794,7 +811,7 @@ static __s32 _sset_keyproc(__gui_msg_t *msg)
     return GUI_ManWinDefaultProc(msg);
 }
 
-/*ÅĞ¶Ïsset tbar µÄÍ¼²ãÊÇ·ñÊÇÒş²Ø»¹ÊÇÏÖÊµ×´Ì¬×´Ì¬*/
+/*åˆ¤æ–­sset tbar çš„å›¾å±‚æ˜¯å¦æ˜¯éšè—è¿˜æ˜¯ç°å®çŠ¶æ€çŠ¶æ€*/
 __bool SSET_tbar_is_show(void)
 {
     if (sset_data.tbar_has_hide == EPDK_FALSE)
@@ -807,7 +824,7 @@ __bool SSET_tbar_is_show(void)
     }
 }
 
-/*ÅĞ¶Ïµ±Ç°SSET ÊÇ·ñÊÇTBAR  ×´Ì¬£¬1ÎªÊÇ£¬0Îª²»ÊÇ*/
+/*åˆ¤æ–­å½“å‰SSET æ˜¯å¦æ˜¯TBAR  çŠ¶æ€ï¼Œ1ä¸ºæ˜¯ï¼Œ0ä¸ºä¸æ˜¯*/
 __bool SSET_court_is_tbar(void)
 {
     if (sset_data.menu_cnt == 0)
@@ -819,7 +836,7 @@ __bool SSET_court_is_tbar(void)
         return EPDK_FALSE;
     }
 }
-/*°Ñtbar show ³öÀ´*/
+/*æŠŠtbar show å‡ºæ¥*/
 void SSET_show_tbar(void)
 {
     _show_win(0);
@@ -859,13 +876,13 @@ static __s32 _sset_touchproc(__gui_msg_t *msg)
             __sset_create_para_t        *psset;
             psset = (__sset_create_para_t *)GUI_WinGetAttr(msg->h_deswin);
 
-            if (sset_data.menu_cnt == 0 && sset_data.tbar_has_hide == EPDK_FALSE)       /*µ±ÊÇtbar ²¢ÇÒËûµÄ×´Ì¬ÊÇshowÏÂÒş²ØËü*/
+            if (sset_data.menu_cnt == 0 && sset_data.tbar_has_hide == EPDK_FALSE)       /*å½“æ˜¯tbar å¹¶ä¸”ä»–çš„çŠ¶æ€æ˜¯showä¸‹éšè—å®ƒ*/
             {
                 if (sset_data.menu_lwin[0])
                 {
                     _hide_win(sset_data.menu_cnt);
                     sset_data.tbar_has_hide = EPDK_TRUE;
-                    /*Ëã±ã°ÑÍ¼²ã¸øÉè³ÉOFF*/
+                    /*ç®—ä¾¿æŠŠå›¾å±‚ç»™è®¾æˆOFF*/
                     GUI_LyrWinSetSta(sset_data.menu_lwin[0], GUI_LYRWIN_STA_SLEEP);
                 }
             }
@@ -895,7 +912,7 @@ static __s32 _sset_touchproc(__gui_msg_t *msg)
                 return EPDK_FAIL;
             }
 
-            if (sset_data.menu_cnt != 0) /*·Çtbar µÄÇé¿öÏÂ*/
+            if (sset_data.menu_cnt != 0) /*étbar çš„æƒ…å†µä¸‹*/
             {
                 _sset_menu_prev();
             }
@@ -914,7 +931,7 @@ static __s32 _sset_touchproc(__gui_msg_t *msg)
 ************************************************************************************************************************
 *                                       _sset_command
 *
-*Description: SSET COMMAND´¦Àí
+*Description: SSET COMMANDå¤„ç†
 *
 *Arguments  :
 *
@@ -933,10 +950,10 @@ static __s32 _sset_command(__gui_msg_t *msg)
         __wrn("aaaaa test menulist longdown 6\n");
         psset = (__sset_create_para_t *)GUI_WinGetAttr(msg->h_deswin);
         user_para = (__sset_item_t *)msg->dwReserved;
-        sset_data.pmenu = user_para;                        /*½«psubmenuÖ¸Ïò½¹µã½Úµã*/
+        sset_data.pmenu = user_para;                        /*å°†psubmenuæŒ‡å‘ç„¦ç‚¹èŠ‚ç‚¹*/
         usermsg = &user_para->item_msg;
         {
-            /*½«±»µã»÷µÄ²Ëµ¥ÏîËù¶ÔÓ¦µÄÍ¨ÖªÂë»Ø´«*/
+            /*å°†è¢«ç‚¹å‡»çš„èœå•é¡¹æ‰€å¯¹åº”çš„é€šçŸ¥ç å›ä¼ */
             __gui_msg_t         ntymsg;
             ntymsg.id           =  GUI_MSG_COMMAND;
             ntymsg.h_srcwin     =  msg->h_deswin;
@@ -987,7 +1004,7 @@ static __s32 _sset_command(__gui_msg_t *msg)
         if (user_para->childlst)
         {
             __wrn("aaaaa test menulist longdown 7\n");
-            /*×Ó½Úµã·Ç¿Õ£¬½øÈëÏÂÒ»¼¶×Ó²Ëµ¥*/
+            /*å­èŠ‚ç‚¹éç©ºï¼Œè¿›å…¥ä¸‹ä¸€çº§å­èœå•*/
             _sset_menu_next(0, MENU_TYPE_LSTM);
         }
     }
@@ -1073,7 +1090,7 @@ static __s32 _sset_command(__gui_msg_t *msg)
 
                     if (user_para->childlst)
                     {
-                        /*×Ó½Úµã·Ç¿Õ£¬½øÈëµÚÒ»¼¶×Ó²Ëµ¥*/
+                        /*å­èŠ‚ç‚¹éç©ºï¼Œè¿›å…¥ç¬¬ä¸€çº§å­èœå•*/
                         __wrn("aaaaa test menulist longdown 9\n");
                         _sset_menu_next(0, MENU_TYPE_LSTM);
                     }
@@ -1131,7 +1148,7 @@ static void key_msg_map(__gui_msg_t *msg)
 ************************************************************************************************************************
 *                                       _sset_manage_proc
 *
-*Description: SSET ÏûÏ¢´¦Àíº¯Êı(»Øµò)
+*Description: SSET æ¶ˆæ¯å¤„ç†å‡½æ•°(å›å‡‹)
 *
 *Arguments  :
 *
@@ -1152,7 +1169,7 @@ static int _sset_manage_proc(__gui_msg_t *msg)
         {
             if (GUI_LyrWinGetSta(sset_data.menu_lwin[sset_data.menu_cnt]) != GUI_LYRWIN_STA_ON)
             {
-                /*µ±Í¼²ãÊÇÒş²Ø×´Ì¬ÏÂ ¾Í²»½ÓÊÜKEY ÏûÏ¢*/
+                /*å½“å›¾å±‚æ˜¯éšè—çŠ¶æ€ä¸‹ å°±ä¸æ¥å—KEY æ¶ˆæ¯*/
                 return EPDK_OK;
             }
 
@@ -1273,7 +1290,7 @@ static int _sset_manage_proc(__gui_msg_t *msg)
                 return EPDK_FAIL;
             }
 
-            if (sset_data.menu_cnt != 0) /*·Çtbar µÄÇé¿öÏÂ*/
+            if (sset_data.menu_cnt != 0) /*étbar çš„æƒ…å†µä¸‹*/
             {
                 _sset_menu_prev();
             }
@@ -1298,7 +1315,7 @@ static int _sset_manage_proc(__gui_msg_t *msg)
 
         return EPDK_OK;
 
-        case SSET_APP2SSET_TO_TBAR: /*Ó¦ÓÃ·¢¹ıÀ´ÈÃSSET ÍË³öµ½tbar¼¶*/
+        case SSET_APP2SSET_TO_TBAR: /*åº”ç”¨å‘è¿‡æ¥è®©SSET é€€å‡ºåˆ°tbarçº§*/
         {
             __s32                       ret;
             __sset_create_para_t        *psset;
@@ -1314,7 +1331,7 @@ static int _sset_manage_proc(__gui_msg_t *msg)
                     return EPDK_FAIL;
                 }
 
-                if (sset_data.menu_cnt != 0) /*·Çtbar µÄÇé¿öÏÂ*/
+                if (sset_data.menu_cnt != 0) /*étbar çš„æƒ…å†µä¸‹*/
                 {
                     _sset_menu_prev();
                 }
@@ -1391,9 +1408,9 @@ static int _sset_manage_proc(__gui_msg_t *msg)
 ************************************************************************************************************************
 *                                       SSET_Create
 *
-*Description: SSET ³¡¾°´´½¨º¯Êı
+*Description: SSET åœºæ™¯åˆ›å»ºå‡½æ•°
 *
-*Arguments  : para      ³¡¾°´´½¨²ÎÊıÖ¸Õë
+*Arguments  : para      åœºæ™¯åˆ›å»ºå‚æ•°æŒ‡é’ˆ
 *
 *Return     :
 *
@@ -1464,7 +1481,7 @@ H_WIN SSET_Create(__sset_create_para_t  *para)
 ************************************************************************************************************************
 *                                       SSET_Destroy
 *
-*Description: SSET ³¡¾°Ïú»Ùº¯Êı
+*Description: SSET åœºæ™¯é”€æ¯å‡½æ•°
 *
 *Arguments  :
 *
@@ -1488,7 +1505,7 @@ __s32 SSET_Destroy(H_WIN h_win)
 ************************************************************************************************************************
 *                                       SSET_ItemAttr_Search
 *
-*Description: ÊÍ·ÅÓÃ»§Êı¾İËùÕ¼ÄÚ´æ
+*Description: é‡Šæ”¾ç”¨æˆ·æ•°æ®æ‰€å å†…å­˜
 *
 *Arguments  :
 *
@@ -1514,7 +1531,7 @@ __s32 SSET_EnnableNode(char *name)
 ************************************************************************************************************************
 *                                       SSET_ItemAttr_Search
 *
-*Description: ÊÍ·ÅÓÃ»§Êı¾İËùÕ¼ÄÚ´æ
+*Description: é‡Šæ”¾ç”¨æˆ·æ•°æ®æ‰€å å†…å­˜
 *
 *Arguments  :
 *
@@ -1540,7 +1557,7 @@ __s32 SSET_DisableNode(char *name)
 ************************************************************************************************************************
 *                                       SSET_ItemAttr_Search
 *
-*Description: ÊÍ·ÅÓÃ»§Êı¾İËùÕ¼ÄÚ´æ
+*Description: é‡Šæ”¾ç”¨æˆ·æ•°æ®æ‰€å å†…å­˜
 *
 *Arguments  :
 *
@@ -1566,7 +1583,7 @@ __s32 SSET_SetAttr(char *name, __sset_item_attr_t *attr)
 ************************************************************************************************************************
 *                                       SSET_ItemAttr_Search
 *
-*Description: ÊÍ·ÅÓÃ»§Êı¾İËùÕ¼ÄÚ´æ
+*Description: é‡Šæ”¾ç”¨æˆ·æ•°æ®æ‰€å å†…å­˜
 *
 *Arguments  :
 *
@@ -1727,11 +1744,11 @@ __s32 SSET_Set_Nodelist(char *name, __sset_nodelist_sta_e sta)
 *************************************************************************************
 *                                       SSET_UserPara_Insert
 *
-*Description: ²åÈëÒ»×éÌõÄ¿
+*Description: æ’å…¥ä¸€ç»„æ¡ç›®
 *
-*Arguments  : pitem Òª²åÈëÌõÄ¿µÄ²åÈë½ÚµãÖ¸Õë
-*             para  ²åÈëÌõÄ¿µÄÍ·Ö¸Õë
-*             num   ²åÈëµÄÌõÄ¿Êı
+*Arguments  : pitem è¦æ’å…¥æ¡ç›®çš„æ’å…¥èŠ‚ç‚¹æŒ‡é’ˆ
+*             para  æ’å…¥æ¡ç›®çš„å¤´æŒ‡é’ˆ
+*             num   æ’å…¥çš„æ¡ç›®æ•°
 *
 *Return     : NULL
 *
@@ -1756,10 +1773,10 @@ __s32 SSET_Insert(char *name, __sset_item_para_t *para, __u32 num, __sset_item_i
 ************************************************************************************
 *                                       SSET_UserPara_Delete
 *
-*Description: É¾³ıÒ»×éÌõÄ¿
+*Description: åˆ é™¤ä¸€ç»„æ¡ç›®
 *
-*Arguments  : pitem É¾³ıÌõÄ¿Ëù¹ÒÔØµÄ½ÚµãÖ¸Õë
-*             mode  É¾³ı·½Ê½
+*Arguments  : pitem åˆ é™¤æ¡ç›®æ‰€æŒ‚è½½çš„èŠ‚ç‚¹æŒ‡é’ˆ
+*             mode  åˆ é™¤æ–¹å¼
 *
 *Return     : NULL
 *
@@ -1778,4 +1795,3 @@ __s32 SSET_Delete(char *name, __sset_item_delete_mode_e mode)
     SSET_ItemAttr_Delete(p_item, mode);
     return EPDK_OK;
 }
-

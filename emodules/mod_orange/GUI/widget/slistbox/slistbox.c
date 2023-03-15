@@ -1,37 +1,40 @@
 /*
-*******************************************************************************************************************
-*                                                           Mod orange
-*                                                   the embedded graphic support module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2008, SoftWinners Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name£º     listbox.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
-*Author£º        William Wang
 *
-*Version :       1.1.0
-*
-*Date:           2008-8-21
-*
-*Description :   listbox main function implement
-*
-*Others :        None at present.
-*
-* History :
-*
-* <Author>          <time>      <version>     <description>
-*
-* William Wang     2008-8-21      1.1.0          Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __SLISTBOX__C____
 #define __SLISTBOX__C____
 
 #include "slistbox_i.h"
 
-/*¶¨ÒåÉ¾³ýÊ±ÊÇÖØ»­ÉÏ°ë²¿£¬»¹ÊÇÖØ»­ÏÂ°ë²¿,»òÕßÖ±½ÓÇå¿Õ(±íÊ¾×îºóÒ»ÏîÊ±)*/
+/*å®šä¹‰åˆ é™¤æ—¶æ˜¯é‡ç”»ä¸ŠåŠéƒ¨ï¼Œè¿˜æ˜¯é‡ç”»ä¸‹åŠéƒ¨,æˆ–è€…ç›´æŽ¥æ¸…ç©º(è¡¨ç¤ºæœ€åŽä¸€é¡¹æ—¶)*/
 #define  DEL_DELMOVEDOWN   0
 #define  DEL_DELMOVEUP     1
 #define  DEL_DELTAIL       2
@@ -96,7 +99,7 @@ __bool  UnRegisterListBoxControl(void)
 *
 * date:             2010-5-22
 *
-* Description:      ÅÐ¶ÏÄ³Ò»¸öindexÊÇ·ñÔÚÏÔÊ¾ÁÐ±íÖÐ
+* Description:      åˆ¤æ–­æŸä¸€ä¸ªindexæ˜¯å¦åœ¨æ˜¾ç¤ºåˆ—è¡¨ä¸­
 *
 * parameters:
 *
@@ -786,12 +789,12 @@ __s32 SListbox_UpdateUp(__slistbox_data_t *plistbox)
     cur_item    = psitem->menuitem;
     prev_item   = SMenuList_FindPrevEnable(plistbox->menulist, cur_item);
     head_item   = plistbox->menulist->HeadItem;
-    /*ÉèÖÃÆðÊ¼item£¬²¢·µ»Øµ±Ç°itemºÍÆðÊ¼itemµÄÆ«²îÖµ*/
+    /*è®¾ç½®èµ·å§‹itemï¼Œå¹¶è¿”å›žå½“å‰itemå’Œèµ·å§‹itemçš„åå·®å€¼*/
     index = SMenuList_SetHeadItemFromItem(plistbox->menulist, prev_item);
 
     if (plistbox->menulist->HeadItem == head_item)
     {
-        /*½«ÒÔÇ°µÄ»æÖÆ×´Ì¬È¥½¹*/
+        /*å°†ä»¥å‰çš„ç»˜åˆ¶çŠ¶æ€åŽ»ç„¦*/
         psitem = (__listbox_sitem_t *)plistbox->sitem_array[plistbox->cur_index];
 
         if (psitem->menuitem->enable == EPDK_FALSE)
@@ -803,7 +806,7 @@ __s32 SListbox_UpdateUp(__slistbox_data_t *plistbox)
             SListbox_DrawMenuItem(plistbox, psitem, EPDK_TRUE);
         }
 
-        /*ÖØÐÂÉèÖÃ½¹µã×´Ì¬*/
+        /*é‡æ–°è®¾ç½®ç„¦ç‚¹çŠ¶æ€*/
         psitem = (__listbox_sitem_t *)plistbox->sitem_array[index];
         SListbox_FocusMenuItem(plistbox, psitem, EPDK_TRUE);
         plistbox->cur_index = index;
@@ -874,12 +877,12 @@ __s32 SListbox_UpdateDown(__slistbox_data_t *plistbox)
     cur_item    = psitem->menuitem;
     next_item   = SMenuList_FindNextEnable(plistbox->menulist, cur_item);
     head_item   = plistbox->menulist->HeadItem;
-    /*ÉèÖÃÆðÊ¼item£¬²¢·µ»Øµ±Ç°itemºÍÆðÊ¼itemµÄÆ«²îÖµ*/
+    /*è®¾ç½®èµ·å§‹itemï¼Œå¹¶è¿”å›žå½“å‰itemå’Œèµ·å§‹itemçš„åå·®å€¼*/
     index = SMenuList_SetHeadItemFromItem(plistbox->menulist, next_item);
 
     if (plistbox->menulist->HeadItem == head_item)
     {
-        /*½«ÒÔÇ°µÄ»æÖÆ×´Ì¬È¥½¹*/
+        /*å°†ä»¥å‰çš„ç»˜åˆ¶çŠ¶æ€åŽ»ç„¦*/
         psitem = (__listbox_sitem_t *)plistbox->sitem_array[plistbox->cur_index];
 
         if (psitem->menuitem->enable == EPDK_FALSE)
@@ -891,7 +894,7 @@ __s32 SListbox_UpdateDown(__slistbox_data_t *plistbox)
             SListbox_DrawMenuItem(plistbox, psitem, EPDK_TRUE);
         }
 
-        /*ÖØÐÂÉèÖÃ½¹µã×´Ì¬*/
+        /*é‡æ–°è®¾ç½®ç„¦ç‚¹çŠ¶æ€*/
         psitem = (__listbox_sitem_t *)plistbox->sitem_array[index];
         SListbox_FocusMenuItem(plistbox, psitem, EPDK_TRUE);
         plistbox->cur_index = index;
@@ -1148,7 +1151,7 @@ static  __s32 SListbox_DelSetHeadItem(__slistbox_data_t *plistbox, __listbox_men
     __listbox_menuitem_t         *cur_item;
     HeadItem     = plistbox->menulist->HeadItem;
 
-    /*»ñÈ¡Ç°Ò»¸öÍ·Ö¸Õë*/
+    /*èŽ·å–å‰ä¸€ä¸ªå¤´æŒ‡é’ˆ*/
     if (plistbox->menulist->ItemCount == 1)
     {
         headprev = NULL;
@@ -1179,7 +1182,7 @@ static  __s32 SListbox_DelSetHeadItem(__slistbox_data_t *plistbox, __listbox_men
 
     if (plistbox->cur_index == 0)
     {
-        /*ÏÈÉè¶¨headitemÎªÏÂ¸öitem*/
+        /*å…ˆè®¾å®šheaditemä¸ºä¸‹ä¸ªitem*/
         tmpItem = headnext;
 
         if (tmpItem != NULL)
@@ -1209,10 +1212,10 @@ static  __s32 SListbox_DelSetHeadItem(__slistbox_data_t *plistbox, __listbox_men
         {
             ret = DEL_DELTAIL;
         }
-    }/*É¾³ý×îºóÒ»¸ö*/
+    }/*åˆ é™¤æœ€åŽä¸€ä¸ª*/
     else if (plistbox->cur_index == plistbox->valid_num - 1)
     {
-        /*ÏÈÉè¶¨headitemÎªµ±Ç°*/
+        /*å…ˆè®¾å®šheaditemä¸ºå½“å‰*/
         tmpItem = HeadItem;
         count   = plistbox->menulist->ItemCount - tmpItem->itemno;
 
@@ -1243,7 +1246,7 @@ static  __s32 SListbox_DelSetHeadItem(__slistbox_data_t *plistbox, __listbox_men
     }
     else
     {
-        /*ÏÈÉè¶¨headitemÎªµ±Ç°*/
+        /*å…ˆè®¾å®šheaditemä¸ºå½“å‰*/
         tmpItem = HeadItem;
         count   = plistbox->menulist->ItemCount - tmpItem->itemno;
 
@@ -1760,7 +1763,7 @@ __slistbox_data_t *SListbox_PrivCreate(H_WIN hlistbox)
             break;
     }
 
-    /*³õÊ¼»¯listbox×´Ì¬*/
+    /*åˆå§‹åŒ–listboxçŠ¶æ€*/
     plistbox->status                  = 0;
     return plistbox;
 error:
@@ -1778,7 +1781,7 @@ error:
     return NULL;
 }
 //------------------------------------------------------------------------------------------------------------
-//È¡µÃµ±Ç°item
+//å–å¾—å½“å‰item
 
 //==================================================================
 //function name:    SListbox_GetCurItem
@@ -1911,7 +1914,7 @@ __s32   SListbox_GetItemRect(h_listboxitem hitem, RECT *rect)
 }
 
 //------------------------------------------------------------------------------------------------------------
-//È¡µÃitemµÄÊýÄ¿
+//å–å¾—itemçš„æ•°ç›®
 
 //==================================================================
 //function name:    SListbox_GetItemCount
@@ -1934,7 +1937,7 @@ __u32 SListbox_GetItemCount(H_WIN lstm)
         return __LINE__;
     }
 
-    /*»ñÈ¡listbox±äÁ¿*/
+    /*èŽ·å–listboxå˜é‡*/
     plistbox = (__slistbox_data_t *)GUI_CtrlWinGetAddData(lstm);
 
     if (plistbox == NULL)
@@ -2140,7 +2143,7 @@ __s32 SListbox_SetCurItem(H_WIN  hlistbox, __u32 cur_index)
         }
     }
 
-    /*½«ÒÔÇ°µÄ»æÖÆ×´Ì¬È¥½¹*/
+    /*å°†ä»¥å‰çš„ç»˜åˆ¶çŠ¶æ€åŽ»ç„¦*/
     if (cur_sitem->menuitem->enable == EPDK_FALSE)
     {
         SListbox_DisableMenuItem(plistbox, cur_sitem, EPDK_TRUE);
@@ -2245,7 +2248,7 @@ __u32 SListbox_Destroy(H_WIN hlistbox)
         return EPDK_OK;
     }
 
-    /*»ñÈ¡listbox±äÁ¿*/
+    /*èŽ·å–listboxå˜é‡*/
     plistbox = (__slistbox_data_t *)GUI_CtrlWinGetAddData(hlistbox);
     SMenuList_Destroy(plistbox->menulist);
 
@@ -2538,7 +2541,7 @@ static __s32 SListboxCtrlProc(__gui_msg_t *msg)
 
             if (!(pData->status & LISTBOX_FOCUS))
             {
-                /*´¦ÀíÉèÖÃ½¹µãÏûÏ¢*/
+                /*å¤„ç†è®¾ç½®ç„¦ç‚¹æ¶ˆæ¯*/
                 ret = SListbox_SetFoucs(pData);
 
                 if (ret != EPDK_OK)
@@ -2560,7 +2563,7 @@ static __s32 SListboxCtrlProc(__gui_msg_t *msg)
 
             if (pData->status & LISTBOX_FOCUS)
             {
-                /*´¦ÀíÉèÖÃ½¹µãÏûÏ¢*/
+                /*å¤„ç†è®¾ç½®ç„¦ç‚¹æ¶ˆæ¯*/
                 ret = SListbox_SetUnFoucs(pData);
 
                 if (ret != EPDK_OK)
@@ -2577,7 +2580,7 @@ static __s32 SListboxCtrlProc(__gui_msg_t *msg)
 
         case  GUI_MSG_PAINT:
         {
-            /*´¦Àí»æÖÆÏûÏ¢*/
+            /*å¤„ç†ç»˜åˆ¶æ¶ˆæ¯*/
             ret = SListbox_Ondraw(msg->h_deswin);
 
             if (ret != EPDK_OK)
@@ -2594,7 +2597,7 @@ static __s32 SListboxCtrlProc(__gui_msg_t *msg)
             __slistbox_data_t   *pData;
             pData = (__slistbox_data_t *)GUI_CtrlWinGetAddData(msg->h_deswin);
 
-            /*»ñÈ¡¼üÅÌIDÖµ*/
+            /*èŽ·å–é”®ç›˜IDå€¼*/
             switch (msg->dwAddData1)
             {
                 case GUI_MSG_KEY_UP    :
@@ -2690,12 +2693,12 @@ static __s32 SListboxCtrlProc(__gui_msg_t *msg)
 
         return EPDK_OK;
 
-        /*menuitemÉÏµÄ×Ó¿Ø¼þÍ¨ÖªÏûÏ¢µÄ´¦Àíº¯Êý*/
+        /*menuitemä¸Šçš„å­æŽ§ä»¶é€šçŸ¥æ¶ˆæ¯çš„å¤„ç†å‡½æ•°*/
         case GUI_MSG_COMMAND:
         {
             __gui_msg_t     notifymsg;
-            /*Ö±½Ó½«×Ó¿Ø¼þµÄÍ¨ÖªÂëÍùlistbox¿Ø¼þµÄ¸¸´°¿Ú´«µÝ
-            ´«µÝµÄÍ¨ÖªÂëºÍid±£³Ö²»±ä£¬ÕâÐèÒªÓ¦ÓÃ³ÌÐò±£Ö¤ÔÚlistboxÖÐËùÓÐµÄ¿Ø¼þµÄid£¬Î¨Ò»*/
+            /*ç›´æŽ¥å°†å­æŽ§ä»¶çš„é€šçŸ¥ç å¾€listboxæŽ§ä»¶çš„çˆ¶çª—å£ä¼ é€’
+            ä¼ é€’çš„é€šçŸ¥ç å’Œidä¿æŒä¸å˜ï¼Œè¿™éœ€è¦åº”ç”¨ç¨‹åºä¿è¯åœ¨listboxä¸­æ‰€æœ‰çš„æŽ§ä»¶çš„idï¼Œå”¯ä¸€*/
             notifymsg.h_srcwin  = msg->h_deswin;
             notifymsg.h_deswin  = GUI_WinGetParent(msg->h_deswin);
             notifymsg.id        = GUI_MSG_COMMAND;

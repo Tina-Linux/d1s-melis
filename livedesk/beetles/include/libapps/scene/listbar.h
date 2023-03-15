@@ -1,17 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              FM app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2006-2010, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : listbar.h
-* By      : lyn
-* Version : V1.00
-* time    : 2009-8-14
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __LISTBAR_H__
 #define __LISTBAR_H__
@@ -28,54 +44,54 @@ typedef enum tag_LBAR_STATE
 
 typedef enum tag_LBAR_DRAM_MODE
 {
-    LBAR_MODE_NORMAL    = 0,                    // ÆÕÍ¨ÌõÄ¿»æÖÆ
-    LBAR_MODE_FOCUS,                            // ½¹µãÌõÄ¿»æÖÆ
-    LBAR_MODE_INVALID,                          // ÎŞĞ§ÌõÄ¿»æÖÆ
-    LBAR_MODE_VACANT,                           // ¿Õ°×ÌõÄ¿»æÖÆ
-    LBAR_MODE_DIFFUSE,                          // À©É¢ÌõÄ¿»æÖÆ
-    LBAR_MODE_MINIATURE,                        // »­ËõÂÔÍ¼
+    LBAR_MODE_NORMAL    = 0,                    // æ™®é€šæ¡ç›®ç»˜åˆ¶
+    LBAR_MODE_FOCUS,                            // ç„¦ç‚¹æ¡ç›®ç»˜åˆ¶
+    LBAR_MODE_INVALID,                          // æ— æ•ˆæ¡ç›®ç»˜åˆ¶
+    LBAR_MODE_VACANT,                           // ç©ºç™½æ¡ç›®ç»˜åˆ¶
+    LBAR_MODE_DIFFUSE,                          // æ‰©æ•£æ¡ç›®ç»˜åˆ¶
+    LBAR_MODE_MINIATURE,                        // ç”»ç¼©ç•¥å›¾
 } __lbar_draw_mode_e;
 
 typedef struct tag_LBAR_DRAW_PARA
 {
-    __lbar_draw_mode_e  mode;                   // »æÖÆµÄÄ£Ê½
-    __s32               index;                  // »æÖÆÌõÄ¿µÄ±àºÅ
-    RECT                rect;                   // »æÖÆÌõÄ¿µÄÇøÓò
-    void               *attr;                   // Ó¦ÓÃµÄ´«ÈëµÄË½ÓĞÊı¾İ
+    __lbar_draw_mode_e  mode;                   // ç»˜åˆ¶çš„æ¨¡å¼
+    __s32               index;                  // ç»˜åˆ¶æ¡ç›®çš„ç¼–å·
+    RECT                rect;                   // ç»˜åˆ¶æ¡ç›®çš„åŒºåŸŸ
+    void               *attr;                   // åº”ç”¨çš„ä¼ å…¥çš„ç§æœ‰æ•°æ®
 } __lbar_draw_para_t;
 
 typedef struct tag_LISTBAR_SCENE
 {
-    __s32                   start_id;           // Ò³ÃæµÄÆğÊ¼Î»ÖÃÌõÄ¿
-    __s32                   focus_id;           // Ò³ÃæµÄ½¹µãÌõÄ¿
+    __s32                   start_id;           // é¡µé¢çš„èµ·å§‹ä½ç½®æ¡ç›®
+    __s32                   focus_id;           // é¡µé¢çš„ç„¦ç‚¹æ¡ç›®
 } __listbar_scene_t;
 
 typedef struct tag_SCROLL_BAR
 {
-    RECT                    show_rect;          // ÏÔÊ¾ÇøÓò
-    RECT                    scroll_rect;        // SCROLLÇøÓò
-    __u32                   head_height;        // HEADÍ¼±ê¸ß¶È
-    __u32                   tail_height;        // TAILÍ¼±ê¸ß¶È
+    RECT                    show_rect;          // æ˜¾ç¤ºåŒºåŸŸ
+    RECT                    scroll_rect;        // SCROLLåŒºåŸŸ
+    __u32                   head_height;        // HEADå›¾æ ‡é«˜åº¦
+    __u32                   tail_height;        // TAILå›¾æ ‡é«˜åº¦
 
-    void                   *back_bmp;           // BACKÍ¼±ê
-    void                   *head_bmp;           // HEADÍ¼±ê
-    void                   *body_bmp;           // BODYÍ¼±ê(¸ßÎªÒ»¸öÏñËØ)
-    void                   *tail_bmp;           // TAILÍ¼±ê
+    void                   *back_bmp;           // BACKå›¾æ ‡
+    void                   *head_bmp;           // HEADå›¾æ ‡
+    void                   *body_bmp;           // BODYå›¾æ ‡(é«˜ä¸ºä¸€ä¸ªåƒç´ )
+    void                   *tail_bmp;           // TAILå›¾æ ‡
 } __scroll_bar_t;
 
 typedef struct tag_LISTBAR_CONFIG
 {
-    RECT                    list_rect;          // listbarËùÔÚÍ¼²ãµÄÇøÓò
-    __s32                   item_width;         // listbarÌõÄ¿µÄ¿í
-    __s32                   item_height;        // listbarÌõÄ¿µÄ¸ß
+    RECT                    list_rect;          // listbaræ‰€åœ¨å›¾å±‚çš„åŒºåŸŸ
+    __s32                   item_width;         // listbaræ¡ç›®çš„å®½
+    __s32                   item_height;        // listbaræ¡ç›®çš„é«˜
 
-    __s32                   start_id;           // Ò³ÃæµÄÆğÊ¼Î»ÖÃÌõÄ¿
-    __s32                   focus_id;           // Ò³ÃæµÄ½¹µãÌõÄ¿
-    __u32                   bk_color;           // ±³¾°É«
-    __s32                   alpha_status;       // Alpha¿ª¹Ø
+    __s32                   start_id;           // é¡µé¢çš„èµ·å§‹ä½ç½®æ¡ç›®
+    __s32                   focus_id;           // é¡µé¢çš„ç„¦ç‚¹æ¡ç›®
+    __u32                   bk_color;           // èƒŒæ™¯è‰²
+    __s32                   alpha_status;       // Alphaå¼€å…³
 
-    __u32                   item_cnt;           // item µÄÌõÄ¿×ÜÊı
-    void                   *list_attr;          // listbarÓÃ»§Êı¾İ
+    __u32                   item_cnt;           // item çš„æ¡ç›®æ€»æ•°
+    void                   *list_attr;          // listbarç”¨æˆ·æ•°æ®
 } __listbar_config_t;
 
 
@@ -83,9 +99,9 @@ typedef struct tag_LISTBAR_CONFIG
 **********************************************************************************************************************
 *
 *
-* Description: Ã¿¸öÌõÄ¿µÄ»æÖÆ»Øµ÷
+* Description: æ¯ä¸ªæ¡ç›®çš„ç»˜åˆ¶å›è°ƒ
 *
-* Arguments  : para: »æÖÆµÄ²ÎÊı
+* Arguments  : para: ç»˜åˆ¶çš„å‚æ•°
 *
 *
 **********************************************************************************************************************
@@ -97,12 +113,12 @@ typedef __s32(* __draw_item)(__lbar_draw_para_t *para);
 **********************************************************************************************************************
 *                                               LISTBAR_Create
 *
-* Description: ´´½¨Ò»¸ö¿ØÖÆ²Ù×÷¾ä±ú
+* Description: åˆ›å»ºä¸€ä¸ªæ§åˆ¶æ“ä½œå¥æŸ„
 *
-* Arguments  : hwin : listbarËùÔÚµÄ´°¿Ú¾ä±ú
+* Arguments  : hwin : listbaræ‰€åœ¨çš„çª—å£å¥æŸ„
 *
-*Return     : EPDK_OK: ·µ»ØÒ»¸ö²Ù×÷¾ä±ú
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: è¿”å›ä¸€ä¸ªæ“ä½œå¥æŸ„
+*             EPDK_FAIL: å¤±è´¥
 *
 **********************************************************************************************************************
 */
@@ -112,12 +128,12 @@ H_LBAR  LISTBAR_Create(H_WIN hwin);
 **********************************************************************************************************************
 *                                               LISTBAR_Config
 *
-* Description: ÅäÖÃlistbarÏà¹ØÊôĞÔ
+* Description: é…ç½®listbarç›¸å…³å±æ€§
 *
-* Arguments  : hdle: ²Ù×÷¾ä±ú£¬ draw_cb£º»æÖÆ»Øµ÷£¬ config£ºÅäÖÃlistbarÏà¹ØĞÅÏ¢£¬¾ßÌå¼ûÊı¾İ½á¹¹ËµÃ÷
+* Arguments  : hdle: æ“ä½œå¥æŸ„ï¼Œ draw_cbï¼šç»˜åˆ¶å›è°ƒï¼Œ configï¼šé…ç½®listbarç›¸å…³ä¿¡æ¯ï¼Œå…·ä½“è§æ•°æ®ç»“æ„è¯´æ˜
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 **********************************************************************************************************************
 */
@@ -127,12 +143,12 @@ __s32   LISTBAR_Config(H_LBAR hdle, __draw_item draw_cb, __listbar_config_t *con
 **********************************************************************************************************************
 *                                               LISTBAR_ScrollConfig
 *
-* Description: ÅäÖÃscrollÏà¹ØÊôĞÔ
+* Description: é…ç½®scrollç›¸å…³å±æ€§
 *
-* Arguments  : hdle: ²Ù×÷¾ä±ú£¬ scroll_para£ºÅäÖÃscrollÏà¹ØĞÅÏ¢£¬¾ßÌå¼ûÊı¾İ½á¹¹ËµÃ÷
+* Arguments  : hdle: æ“ä½œå¥æŸ„ï¼Œ scroll_paraï¼šé…ç½®scrollç›¸å…³ä¿¡æ¯ï¼Œå…·ä½“è§æ•°æ®ç»“æ„è¯´æ˜
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 **********************************************************************************************************************
 */
@@ -142,13 +158,13 @@ __s32   LISTBAR_ScrollConfig(H_LBAR hdle, __scroll_bar_t *scroll_para);
 ************************************************************************************************************************
 *                                       LISTBAR_ShowPage
 *
-*Description: ÏÔÊ¾µ±Ç°Ò³Ãæ
+*Description: æ˜¾ç¤ºå½“å‰é¡µé¢
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú
+*Arguments  : hdle: æ“ä½œå¥æŸ„
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -158,13 +174,13 @@ __s32   LISTBAR_ShowPage(H_LBAR hdle);
 ************************************************************************************************************************
 *                                       LISTBAR_NextPage
 *
-*Description: ÏòÏÂ·­Ò»Ò³
+*Description: å‘ä¸‹ç¿»ä¸€é¡µ
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú
+*Arguments  : hdle: æ“ä½œå¥æŸ„
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -174,13 +190,13 @@ __s32   LISTBAR_NextPage(H_LBAR hdle);
 ************************************************************************************************************************
 *                                       LISTBAR_PrevPage
 *
-*Description: ÏòÉÏ·­Ò»Ò³
+*Description: å‘ä¸Šç¿»ä¸€é¡µ
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú
+*Arguments  : hdle: æ“ä½œå¥æŸ„
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -190,13 +206,13 @@ __s32   LISTBAR_PrevPage(H_LBAR hdle);
 ************************************************************************************************************************
 *                                       LISTBAR_NextItem
 *
-*Description: ÏÂÒÆ¸öÌõÄ¿
+*Description: ä¸‹ç§»ä¸ªæ¡ç›®
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú
+*Arguments  : hdle: æ“ä½œå¥æŸ„
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -206,13 +222,13 @@ __s32   LISTBAR_NextItem(H_LBAR hdle);
 ************************************************************************************************************************
 *                                       LISTBAR_PrevItem
 *
-*Description: ÉÏÒÆ¸öÌõÄ¿
+*Description: ä¸Šç§»ä¸ªæ¡ç›®
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú
+*Arguments  : hdle: æ“ä½œå¥æŸ„
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -224,13 +240,13 @@ __s32   LISTBAR_UpdateFocusItem(H_LBAR hdle);
 ************************************************************************************************************************
 *                                       LISTBAR_NextRow
 *
-*Description: ÏòÏÂÒÆ¶¯(Ò»ĞĞ)
+*Description: å‘ä¸‹ç§»åŠ¨(ä¸€è¡Œ)
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú
+*Arguments  : hdle: æ“ä½œå¥æŸ„
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -240,13 +256,13 @@ __s32   LISTBAR_NextRow(H_LBAR hdle);
 ************************************************************************************************************************
 *                                       LISTBAR_PrevRow
 *
-*Description: ÏòÉÏÒÆ¶¯(Ò»ĞĞ)
+*Description: å‘ä¸Šç§»åŠ¨(ä¸€è¡Œ)
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú
+*Arguments  : hdle: æ“ä½œå¥æŸ„
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -256,13 +272,13 @@ __s32   LISTBAR_PrevRow(H_LBAR hdle);
 ************************************************************************************************************************
 *                                       LISTBAR_TouchDown
 *
-*Description: ´¥Ãş°´ÏÂ
+*Description: è§¦æ‘¸æŒ‰ä¸‹
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú£¬ x: Xµã×ø±ê£¬ y£ºYµã×ø±ê
+*Arguments  : hdle: æ“ä½œå¥æŸ„ï¼Œ x: Xç‚¹åæ ‡ï¼Œ yï¼šYç‚¹åæ ‡
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -272,13 +288,13 @@ __s32   LISTBAR_TouchDown(H_LBAR hdle, __s32 x, __s32 y, __s32 direct, __s32 spe
 ************************************************************************************************************************
 *                                       LISTBAR_TouchMove
 *
-*Description: ´¥ÃşÒÆ¶¯
+*Description: è§¦æ‘¸ç§»åŠ¨
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú£¬ x: Xµã×ø±ê£¬ y£ºYµã×ø±ê
+*Arguments  : hdle: æ“ä½œå¥æŸ„ï¼Œ x: Xç‚¹åæ ‡ï¼Œ yï¼šYç‚¹åæ ‡
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -288,13 +304,13 @@ __s32   LISTBAR_TouchMove(H_LBAR hdle, __s32 x, __s32 y, __s32 direct, __s32 spe
 ************************************************************************************************************************
 *                                       LISTBAR_TouchUp
 *
-*Description: ´¥ÃşÌ§Æğ
+*Description: è§¦æ‘¸æŠ¬èµ·
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú£¬ x: Xµã×ø±ê£¬ y£ºYµã×ø±ê
+*Arguments  : hdle: æ“ä½œå¥æŸ„ï¼Œ x: Xç‚¹åæ ‡ï¼Œ yï¼šYç‚¹åæ ‡
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -304,12 +320,12 @@ __s32   LISTBAR_TouchUp(H_LBAR hdle, __s32 x, __s32 y, __s32 direct, __s32 speed
 ************************************************************************************************************************
 *                                       LISTBAR_GetTotalItem
 *
-*Description: »ñÈ¡µ±Ç°½¹µãÌõÄ¿
+*Description: è·å–å½“å‰ç„¦ç‚¹æ¡ç›®
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú
+*Arguments  : hdle: æ“ä½œå¥æŸ„
 *
 *
-*Return     : ·µ»Ø×Ü±àºÅ£¨Ê§°Ü·µ»Ø-1£©
+*Return     : è¿”å›æ€»ç¼–å·ï¼ˆå¤±è´¥è¿”å›-1ï¼‰
 *
 *
 ************************************************************************************************************************
@@ -320,12 +336,12 @@ __s32   LISTBAR_GetTotalItem(H_LBAR hdle);
 ************************************************************************************************************************
 *                                       LISTBAR_GetListAttr
 *
-*Description: »ñÈ¡listbarË½ÓĞÊı¾İ
+*Description: è·å–listbarç§æœ‰æ•°æ®
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú
+*Arguments  : hdle: æ“ä½œå¥æŸ„
 *
 *
-*Return     : ·µ»ØlistË½ÓĞÊı¾İ£¨Ê§°Ü·µ»ØNULL£©
+*Return     : è¿”å›listç§æœ‰æ•°æ®ï¼ˆå¤±è´¥è¿”å›NULLï¼‰
 *
 *
 ************************************************************************************************************************
@@ -336,12 +352,12 @@ void   *LISTBAR_GetListAttr(H_LBAR hdle);
 ************************************************************************************************************************
 *                                       LISTBAR_GetFocusItem
 *
-*Description: »ñÈ¡µ±Ç°½¹µãÌõÄ¿
+*Description: è·å–å½“å‰ç„¦ç‚¹æ¡ç›®
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú
+*Arguments  : hdle: æ“ä½œå¥æŸ„
 *
 *
-*Return     : ·µ»Ø½¹µãÌõÄ¿±àºÅ£¨Ê§°Ü·µ»Ø-1£©
+*Return     : è¿”å›ç„¦ç‚¹æ¡ç›®ç¼–å·ï¼ˆå¤±è´¥è¿”å›-1ï¼‰
 *
 *
 ************************************************************************************************************************
@@ -352,13 +368,13 @@ __s32   LISTBAR_GetFocusItem(H_LBAR hdle);
 ************************************************************************************************************************
 *                                       LISTBAR_GetItemRect
 *
-*Description: »ñÈ¡Ö¸¶¨ÌõÄ¿µÄRECT(Ö»ÄÜÊÇÆÁÉÏÏÔÊ¾µÄÌõÄ¿ºÅ)¡£
+*Description: è·å–æŒ‡å®šæ¡ç›®çš„RECT(åªèƒ½æ˜¯å±ä¸Šæ˜¾ç¤ºçš„æ¡ç›®å·)ã€‚
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú£¬item£ºÒª»ñÈ¡µÄÌõÄ¿ºÅ£¬rect£º»ñÈ¡ºóµÄÇøÓò
+*Arguments  : hdle: æ“ä½œå¥æŸ„ï¼Œitemï¼šè¦è·å–çš„æ¡ç›®å·ï¼Œrectï¼šè·å–åçš„åŒºåŸŸ
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -368,13 +384,13 @@ __s32   LISTBAR_GetItemRect(H_LBAR hdle, __s32 item, RECT *rect);
 ************************************************************************************************************************
 *                                       LISTBAR_SetFocusItem
 *
-*Description: ÉèÖÃÒ»¸öÌõÄ¿½¹µãÌõÄ¿
+*Description: è®¾ç½®ä¸€ä¸ªæ¡ç›®ç„¦ç‚¹æ¡ç›®
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú£¬ item£ºÌõÄ¿±àºÅ
+*Arguments  : hdle: æ“ä½œå¥æŸ„ï¼Œ itemï¼šæ¡ç›®ç¼–å·
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -384,13 +400,13 @@ __s32   LISTBAR_SetFocusItem(H_LBAR hdle, __s32 item);
 ************************************************************************************************************************
 *                                       LISTBAR_SetFocusItem
 *
-*Description: ÉèÖÃÒ»¸öÌõÄ¿½¹µãÌõÄ¿
+*Description: è®¾ç½®ä¸€ä¸ªæ¡ç›®ç„¦ç‚¹æ¡ç›®
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú£¬ item£ºÌõÄ¿±àºÅ
+*Arguments  : hdle: æ“ä½œå¥æŸ„ï¼Œ itemï¼šæ¡ç›®ç¼–å·
 *
-*author     : libaiao, Ã»ÓĞÏÔÊ¾£¬Ö»ÉèÖÃfocus item
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*author     : libaiao, æ²¡æœ‰æ˜¾ç¤ºï¼Œåªè®¾ç½®focus item
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -403,13 +419,13 @@ extern void LISTBAR_LostFocus(H_LBAR *hdle);
 ************************************************************************************************************************
 *                                       LISTBAR_SetNormalItem
 *
-*Description: »ñµÃÒ»¸öÌõÄ¿ÎªÆÕÍ¨ÌõÄ¿
+*Description: è·å¾—ä¸€ä¸ªæ¡ç›®ä¸ºæ™®é€šæ¡ç›®
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú£¬ item£ºÌõÄ¿±àºÅ
+*Arguments  : hdle: æ“ä½œå¥æŸ„ï¼Œ itemï¼šæ¡ç›®ç¼–å·
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -419,13 +435,13 @@ __s32   LISTBAR_SetNormalItem(H_LBAR hdle, __s32 item);
 ************************************************************************************************************************
 *                                       LISTBAR_SetInvalidItem
 *
-*Description: »ñµÃÒ»¸öÌõÄ¿ÎªÎŞĞ§ÌõÄ¿
+*Description: è·å¾—ä¸€ä¸ªæ¡ç›®ä¸ºæ— æ•ˆæ¡ç›®
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú£¬ item£ºÌõÄ¿±àºÅ
+*Arguments  : hdle: æ“ä½œå¥æŸ„ï¼Œ itemï¼šæ¡ç›®ç¼–å·
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -435,13 +451,13 @@ __s32   LISTBAR_SetInvalidItem(H_LBAR hdle, __s32 item);
 ************************************************************************************************************************
 *                                       LISTBAR_SetTotalItem
 *
-*Description: ÉèÖÃ×ÜµÄÌõÄ¿Êı
+*Description: è®¾ç½®æ€»çš„æ¡ç›®æ•°
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú£¬ num£ºÌõÄ¿×ÜÊı
+*Arguments  : hdle: æ“ä½œå¥æŸ„ï¼Œ numï¼šæ¡ç›®æ€»æ•°
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -451,13 +467,13 @@ __s32   LISTBAR_SetTotalItem(H_LBAR hdle, __u32 num);
 ************************************************************************************************************************
 *                                       LISTBAR_GetListAttr
 *
-*Description: »ñÈ¡listbarË½ÓĞÊı¾İ
+*Description: è·å–listbarç§æœ‰æ•°æ®
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú£¬attr£ºÓÃ»§Ë½ÓĞÊı¾İ
+*Arguments  : hdle: æ“ä½œå¥æŸ„ï¼Œattrï¼šç”¨æˆ·ç§æœ‰æ•°æ®
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -467,13 +483,13 @@ __s32   LISTBAR_SetListAttr(H_LBAR hdle, void *attr);
 ************************************************************************************************************************
 *                                       LISTBAR_ChangeMode
 *
-*Description: ¸Ä±äµ±Ç°ÏÔÊ¾·½Ê½
+*Description: æ”¹å˜å½“å‰æ˜¾ç¤ºæ–¹å¼
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú£¬item_widht£ºÌõÄ¿µÄ¿í¶È£¬item_height£ºÌõÄ¿µÄ¸ß¶È
+*Arguments  : hdle: æ“ä½œå¥æŸ„ï¼Œitem_widhtï¼šæ¡ç›®çš„å®½åº¦ï¼Œitem_heightï¼šæ¡ç›®çš„é«˜åº¦
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -483,13 +499,13 @@ __s32   LISTBAR_ChangeMode(H_LBAR hdle, __s32 item_width, __s32 item_height);
 ************************************************************************************************************************
 *                                       LISTBAR_SuspendPage
 *
-*Description: ¹ÒÆğµ±Ç°ÏÔÊ¾½çÃæ
+*Description: æŒ‚èµ·å½“å‰æ˜¾ç¤ºç•Œé¢
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú
+*Arguments  : hdle: æ“ä½œå¥æŸ„
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -499,13 +515,13 @@ __s32   LISTBAR_SuspendPage(H_LBAR hdle);
 ************************************************************************************************************************
 *                                       LISTBAR_ResumePage
 *
-*Description: »Ö¸´µ±Ç°ÏÔÊ¾½çÃæ
+*Description: æ¢å¤å½“å‰æ˜¾ç¤ºç•Œé¢
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú
+*Arguments  : hdle: æ“ä½œå¥æŸ„
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -515,13 +531,13 @@ __s32   LISTBAR_ResumePage(H_LBAR hdle);
 ************************************************************************************************************************
 *                                       LISTBAR_UpdatePage
 *
-*Description: ¸üĞÂµ±Ç°ÏÔÊ¾½çÃæ
+*Description: æ›´æ–°å½“å‰æ˜¾ç¤ºç•Œé¢
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú
+*Arguments  : hdle: æ“ä½œå¥æŸ„
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -531,13 +547,13 @@ __s32   LISTBAR_UpdatePage(H_LBAR hdle);
 ************************************************************************************************************************
 *                                       LISTBAR_SetScene
 *
-*Description: ÉèÖÃlistbarÄÚ²¿ÏÖ³¡
+*Description: è®¾ç½®listbarå†…éƒ¨ç°åœº
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú£¬ scene£ºÏÖ³¡Êı¾İ
+*Arguments  : hdle: æ“ä½œå¥æŸ„ï¼Œ sceneï¼šç°åœºæ•°æ®
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -547,13 +563,13 @@ __s32   LISTBAR_SetScene(H_LBAR hdle, __listbar_scene_t *scene);
 ************************************************************************************************************************
 *                                       LISTBAR_GetScene
 *
-*Description: »ñÈ¡listbarÄÚ²¿ÏÖ³¡
+*Description: è·å–listbarå†…éƒ¨ç°åœº
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú£¬ scene£ºÏÖ³¡Êı¾İ
+*Arguments  : hdle: æ“ä½œå¥æŸ„ï¼Œ sceneï¼šç°åœºæ•°æ®
 *
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */
@@ -563,12 +579,12 @@ __s32   LISTBAR_GetScene(H_LBAR hdle, __listbar_scene_t *scene);
 **********************************************************************************************************************
 *                                               LISTBAR_Delete
 *
-* Description: É¾³ılistbar²Ù×÷¾ä±ú
+* Description: åˆ é™¤listbaræ“ä½œå¥æŸ„
 *
-* Arguments  : hdle£º²Ù×÷¾ä±ú
+* Arguments  : hdleï¼šæ“ä½œå¥æŸ„
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 **********************************************************************************************************************
 */
@@ -578,12 +594,12 @@ __s32   LISTBAR_Delete(H_LBAR hdle);
 **********************************************************************************************************************
 *                                               LISTBAR_GetState
 *
-* Description: É¾³ılistbar²Ù×÷¾ä±ú
+* Description: åˆ é™¤listbaræ“ä½œå¥æŸ„
 *
-* Arguments  : hdle£º²Ù×÷¾ä±ú
+* Arguments  : hdleï¼šæ“ä½œå¥æŸ„
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 **********************************************************************************************************************
 */
@@ -593,12 +609,12 @@ __lbar_state_e   LISTBAR_GetState(H_LBAR hdle);
 **********************************************************************************************************************
 *                                               LISTBAR_GetItemNo
 *
-* Description: »ñÈ¡Ö¸¶¨Î»ÖÃµÄÌõÄ¿ºÅ
+* Description: è·å–æŒ‡å®šä½ç½®çš„æ¡ç›®å·
 *
-* Arguments  : hdle£º²Ù×÷¾ä±ú
+* Arguments  : hdleï¼šæ“ä½œå¥æŸ„
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 **********************************************************************************************************************
 */
@@ -609,12 +625,12 @@ __s32   LISTBAR_GetItemNo(H_LBAR hdle, __pos_t pos);
 **********************************************************************************************************************
 *                                               LISTBAR_GetPageItemCount
 *
-* Description   : »ñµÃÃ¿Ò³ÓĞ¶àÉÙ¸öÌõÄ¿
+* Description   : è·å¾—æ¯é¡µæœ‰å¤šå°‘ä¸ªæ¡ç›®
 *
-* Arguments  : hdle£º²Ù×÷¾ä±ú
+* Arguments  : hdleï¼šæ“ä½œå¥æŸ„
 *
-*Return         :ÌõÄ¿Êı
-*             EPDK_FAIL: Ê§°Ü
+*Return         :æ¡ç›®æ•°
+*             EPDK_FAIL: å¤±è´¥
 *
 *Author     : add by Libaiao, 2011.04.21
 **********************************************************************************************************************
@@ -626,20 +642,20 @@ __s32 LISTBAR_GetPageItemCount(H_LBAR handle);
 **********************************************************************************************************************
 *                                               LISTBAR_GetRowItemCount
 *
-* Description   : »ñµÃÃ¿ĞĞÓĞ¶àÉÙ¸öÌõÄ¿
+* Description   : è·å¾—æ¯è¡Œæœ‰å¤šå°‘ä¸ªæ¡ç›®
 *
-* Arguments  : hdle£º²Ù×÷¾ä±ú
+* Arguments  : hdleï¼šæ“ä½œå¥æŸ„
 *
-*Return         : ÌõÄ¿Êı
-*             EPDK_FAIL: Ê§°Ü
+*Return         : æ¡ç›®æ•°
+*             EPDK_FAIL: å¤±è´¥
 *
 *Author     : add by Libaiao, 2011.04.21
 **********************************************************************************************************************
 */
 __s32 LISTBAR_GetRowItemCount(H_LBAR handle);
 
-__s32 LISTBAR_Suspend_dif_task(H_LBAR handle);  //¹ÒÆğdiffuse Ïß³Ì
+__s32 LISTBAR_Suspend_dif_task(H_LBAR handle);  //æŒ‚èµ·diffuse çº¿ç¨‹
 
-__s32 LISTBAR_Resume_dif_task(H_LBAR handle);   // diffuse ½â¹Ò
+__s32 LISTBAR_Resume_dif_task(H_LBAR handle);   // diffuse è§£æŒ‚
 
 #endif /* __LISTBAR_H__ */

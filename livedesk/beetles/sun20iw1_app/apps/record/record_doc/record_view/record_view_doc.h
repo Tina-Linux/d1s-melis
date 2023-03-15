@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #ifndef __RECORD_VIEW_DOC_H__
 #define __RECORD_VIEW_DOC_H__
 
@@ -39,29 +70,29 @@ typedef struct tag_record_doc
     char            curSearchPath[1024];
     char            curSearchDisk[10];
 
-    __u32           fileSize;               //µ•ŒªKB
-    __u32           diskFreeTime;           //µ•Œª√Î
+    __u32           fileSize;               //Âçï‰ΩçKB
+    __u32           diskFreeTime;           //Âçï‰ΩçÁßí
     __u64           diskFreeSize;
 
-    RECORD_STATE    recState;               //¬º“Ù◊¥Ã¨
-    __u32           recordMaxTimes;         //◊Ó¥Ûø…¬º“Ù ±º‰
-    __u32           recordCurTimes;         //µ±«∞¬º“Ù ±º‰
+    RECORD_STATE    recState;               //ÂΩïÈü≥Áä∂ÊÄÅ
+    __u32           recordMaxTimes;         //ÊúÄÂ§ßÂèØÂΩïÈü≥Êó∂Èó¥
+    __u32           recordCurTimes;         //ÂΩìÂâçÂΩïÈü≥Êó∂Èó¥
 
     char    recordSrc[10];
-    char    recordName[25];                 //¬º“ÙŒƒº˛√˚
-    char    recordFilePath[1024];               //¬º“ÙŒƒº˛¬∑æ∂
+    char    recordName[25];                 //ÂΩïÈü≥Êñá‰ª∂Âêç
+    char    recordFilePath[1024];               //ÂΩïÈü≥Êñá‰ª∂Ë∑ØÂæÑ
 
-    __u32                   mid_ginkgo;     //ƒ£øÈ
-    __mp                    *mod_ginkgo;    //ƒ£øÈ
-    __krnl_event_t          *msg_queue;     // ∑µ¿°œ˚œ¢∂”¡–
-    __u16                   oldSpctrmLevel[RECORD_SPCTRM_LEVEL];//¬º“Ù∆µ∆◊
-    __u16                   spctrmLevel[RECORD_SPCTRM_LEVEL];   //¬º“Ù∆µ∆◊
-    __ginkgo_media_file_inf media_file;     // ¬º÷∆Œƒº˛–≈œ¢
+    __u32                   mid_ginkgo;     //Ê®°Âùó
+    __mp                    *mod_ginkgo;    //Ê®°Âùó
+    __krnl_event_t          *msg_queue;     // ËøîÈ¶àÊ∂àÊÅØÈòüÂàó
+    __u16                   oldSpctrmLevel[RECORD_SPCTRM_LEVEL];//ÂΩïÈü≥È¢ëË∞±
+    __u16                   spctrmLevel[RECORD_SPCTRM_LEVEL];   //ÂΩïÈü≥È¢ëË∞±
+    __ginkgo_media_file_inf media_file;     // ÂΩïÂà∂Êñá‰ª∂‰ø°ÊÅØ
     RECORD_AUDIO_TYPE       audioType;      //.mp3 or wav
-    RECORD_AUDIO_TYPE       audioTypeTemp;  //¡Ÿ ±±£¥Ê.mp3 or wav
+    RECORD_AUDIO_TYPE       audioTypeTemp;  //‰∏¥Êó∂‰øùÂ≠ò.mp3 or wav
     RECORD_TYPE             recordType;     //mic or FM
-    QUALITY_STATE           recQuality;     //¬º“Ù÷ ¡ø
-    QUALITY_STATE           recQualityTemp; //¡Ÿ ±±£¥Ê¬º“Ù÷ ¡ø
+    QUALITY_STATE           recQuality;     //ÂΩïÈü≥Ë¥®Èáè
+    QUALITY_STATE           recQualityTemp; //‰∏¥Êó∂‰øùÂ≠òÂΩïÈü≥Ë¥®Èáè
 
     __u32           timeCnt;
     __u32           existFileCnt;

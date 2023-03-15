@@ -1,32 +1,34 @@
 /*
-*******************************************************************************************************************
-*                                                           Listmenu  Framework
-*                                                   the display dirver support module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2008, SoftWinners Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name£∫        MenuList.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
 *
-*Author£∫           William Wang
 *
-*Version :          1.1.0
-*
-*Date:              2008-12-13
-*
-*Description :      menulist implement function definition
-*
-*Others :           None at present.
-*
-* History :
-*
-* <Author>          <time>          <version>     <description>
-*
-* William Wang     2008-12-13         1.1.0          Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef __MENU_LIST__C____
 #define __MENU_LIST__C____
 
@@ -36,7 +38,7 @@
 
 
 //------------------------------------------------------------------------------------------------------------
-//¥¥Ω®MenuList
+//ÂàõÂª∫MenuList
 
 //==================================================================
 //function name:    MenuList_Create
@@ -78,7 +80,7 @@ MENULIST_t  *MenuList_Create()
 }
 
 //------------------------------------------------------------------------------------------------------------
-//≤Â»Îitem
+//ÊèíÂÖ•item
 
 //==================================================================
 //function name:    MenuList_InsertAfter
@@ -132,7 +134,7 @@ __u32 MenuList_InsertAfter(MENULIST_t *menulist, MENUITEM_t *after, MENUITEM_t *
 
 
 //------------------------------------------------------------------------------------------------------------
-//…æ≥˝item
+//Âà†Èô§item
 
 //==================================================================
 //function name:    MenuList_DelItem
@@ -233,7 +235,7 @@ __u32    MenuList_DelItem(MENULIST_t *menulist, MENUITEM_t *menuitem)
 
 
 //------------------------------------------------------------------------------------------------------------
-// …æ≥˝»´≤øitem
+// Âà†Èô§ÂÖ®ÈÉ®item
 
 //==================================================================
 //function name:    MenuList_DelAll
@@ -281,7 +283,7 @@ __u32    MenuList_DelAll(MENULIST_t *menulist)
 
 
 //------------------------------------------------------------------------------------------------------------
-//ÃÌº”µΩŒ≤≤ø
+//Ê∑ªÂä†Âà∞Â∞æÈÉ®
 
 //==================================================================
 //function name:    MenuList_AddTail
@@ -326,7 +328,7 @@ __u32    MenuList_AddTail(MENULIST_t *menulist,  MENUITEM_t *menuitem)
 
 
 //------------------------------------------------------------------------------------------------------------
-// ÃÌº”µΩÕ∑≤ø
+// Ê∑ªÂä†Âà∞Â§¥ÈÉ®
 
 //==================================================================
 //function name:    MenuList_AddHead
@@ -381,7 +383,7 @@ __u32    MenuList_AddHead(MENULIST_t *menulist, MENUITEM_t *menuitem)
 
 
 //------------------------------------------------------------------------------------------------------------
-//»°µ√Õ∑itemµƒ÷∏’Î
+//ÂèñÂæóÂ§¥itemÁöÑÊåáÈíà
 
 //==================================================================
 //function name:    MenuList_GetHead
@@ -406,7 +408,7 @@ MENUITEM_t *MenuList_GetHead(MENULIST_t *menulist)
 
 
 //------------------------------------------------------------------------------------------------------------
-//»°µ√µ±«∞item
+//ÂèñÂæóÂΩìÂâçitem
 
 //==================================================================
 //function name:    MenuList_GetCurItem
@@ -431,7 +433,7 @@ H_WIN MenuList_GetCurItem(MENULIST_t *menulist)
 
 
 //------------------------------------------------------------------------------------------------------------
-//…Ë÷√µ±«∞item
+//ËÆæÁΩÆÂΩìÂâçitem
 
 //==================================================================
 //function name:    MenuList_SetCurItem
@@ -458,7 +460,7 @@ __u32 MenuList_SetCurItem(MENULIST_t *menulist, MENUITEM_t *menuitem)
 
 
 //------------------------------------------------------------------------------------------------------------
-//»°µ√Œ≤itemµƒ÷∏’Î
+//ÂèñÂæóÂ∞æitemÁöÑÊåáÈíà
 
 //==================================================================
 //function name:    MenuList_GetTail
@@ -484,7 +486,7 @@ MENUITEM_t *MenuList_GetTail(MENULIST_t *menulist)
 
 
 //------------------------------------------------------------------------------------------------------------
-//»°µ√itemµƒ ˝ƒø
+//ÂèñÂæóitemÁöÑÊï∞ÁõÆ
 
 //==================================================================
 //function name:    MenuList_GetItemCount
@@ -511,7 +513,7 @@ __u32    MenuList_GetItemCount(MENULIST_t *menulist)
 }
 
 //------------------------------------------------------------------------------------------------------------
-//œ˙ªŸMenuList
+//ÈîÄÊØÅMenuList
 
 //==================================================================
 //function name:    MenuList_Destroy
@@ -548,5 +550,3 @@ __u32   MenuList_Destroy(MENULIST_t *menulist)
 
 
 #endif //__MENU_LIST__C____
-
-

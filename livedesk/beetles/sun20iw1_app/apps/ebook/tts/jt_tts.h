@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : mnpl.h
-* By        : Andy.zhang
-* Func      : now play list
-* Version   : v1.0
-* ============================================================================================================
-* 2009-11-3 9:39:42  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __JT_TTS_H__
 #define __JT_TTS_H__
@@ -24,13 +38,13 @@
 
 
 #define MAX_PAGE_CHAR                   4096
-#define MAX_WORD_COUNT      1500    //Ò»Ò³»­ÃæÖĞ°üº¬¶Ï¾äµÄÊıÁ¿(ÒÔ",",".","?","!"Îª·Ö½çµã)
+#define MAX_WORD_COUNT      1500    //ä¸€é¡µç”»é¢ä¸­åŒ…å«æ–­å¥çš„æ•°é‡(ä»¥",",".","?","!"ä¸ºåˆ†ç•Œç‚¹)
 
 
 extern  int f_audiodev;
 
 
-/* ±àÂë¸ñÊ½ */
+/* ç¼–ç æ ¼å¼ */
 typedef enum
 {
     MK_CHAR_ENCODE_UNKNOWN = 0,
@@ -40,11 +54,11 @@ typedef enum
     MK_CHAR_ENCODE_UNICODE_BIG
 } MkEncode_jt_tts;
 
-typedef struct TTS_THREAD_ARGMEN            /*´«¸øÏß³ÌµÄ²ÎÊıµÄ½á¹¹Ìå*/
+typedef struct TTS_THREAD_ARGMEN            /*ä¼ ç»™çº¿ç¨‹çš„å‚æ•°çš„ç»“æ„ä½“*/
 {
     unsigned long   woner_win;
     char *data_add;
-    __s32 char_num;                     /*ÄÚÈİµÄ×Ö½ÚÊı*/
+    __s32 char_num;                     /*å†…å®¹çš„å­—èŠ‚æ•°*/
 } __tts_thread_argmen_t;
 
 
@@ -55,16 +69,16 @@ typedef struct   tag_TTS_PLAY_ST
 {
     ES_FILE  *fd;
 
-    __u32    tts_thread;        // TTS  ÓïÒôÀÊ¶ÁÒıÇæ¾ä±ú
-    __krnl_event_t     *tts_sem;  //TTSÓïÒôÀÊ¶ÁÒıÇæĞÅºÅÁ¿
-    unsigned long  jt_hTTS;    // ºÏ³ÉÒıÇæ¾ä±ú
+    __u32    tts_thread;        // TTS  è¯­éŸ³æœ—è¯»å¼•æ“å¥æŸ„
+    __krnl_event_t     *tts_sem;  //TTSè¯­éŸ³æœ—è¯»å¼•æ“ä¿¡å·é‡
+    unsigned long  jt_hTTS;    // åˆæˆå¼•æ“å¥æŸ„
 
 
     /****and by gan****/
-    char   *tts_text_curt_statr;   /*µ±Ç°Ò³Êı¾İµÄÆğÊ¼µØÖ·*/
-    char   *tts_text_line_add; /*µ±Ç°Ò³·ÖÎöµ½µÄÒ»¾ä»°µÄµØÖ·*/
-    __s32  tts_page_leave_char;    /*µ±Ç°Ò³Ê£ÓàµÄ×Ö½ÚÊı*/
-    __bool  tts_from_page_stat;    /*ÊÇ·ñÊÇÖØµ±Ç°Ò³µÄÖØÍ·¶Á£¬0 ±íÊ¾ÊÇ£¬·ñÔò´Ó·ÖÎöµ½µÄ¾ä¶Á*/
+    char   *tts_text_curt_statr;   /*å½“å‰é¡µæ•°æ®çš„èµ·å§‹åœ°å€*/
+    char   *tts_text_line_add; /*å½“å‰é¡µåˆ†æåˆ°çš„ä¸€å¥è¯çš„åœ°å€*/
+    __s32  tts_page_leave_char;    /*å½“å‰é¡µå‰©ä½™çš„å­—èŠ‚æ•°*/
+    __bool  tts_from_page_stat;    /*æ˜¯å¦æ˜¯é‡å½“å‰é¡µçš„é‡å¤´è¯»ï¼Œ0 è¡¨ç¤ºæ˜¯ï¼Œå¦åˆ™ä»åˆ†æåˆ°çš„å¥è¯»*/
     /****************/
 
 
@@ -73,12 +87,12 @@ typedef struct   tag_TTS_PLAY_ST
 
 } tts_char_parser_play;
 
-typedef struct tagUserData                // »Øµ÷ÓÃ»§Êı¾İ¶¨Òå
+typedef struct tagUserData                // å›è°ƒç”¨æˆ·æ•°æ®å®šä¹‰
 
 {
-    ES_FILE    *pInputFile;     // ÎÄ±¾ÊäÈëÎÄ¼ş
-    ES_FILE    *pOutputFile;    // ºÏ³ÉÓïÒôÊı¾İÊä³öÎÄ¼ş
-    unsigned long   hTTS;   // ºÏ³ÉÒıÇæ¾ä±ú
+    ES_FILE    *pInputFile;     // æ–‡æœ¬è¾“å…¥æ–‡ä»¶
+    ES_FILE    *pOutputFile;    // åˆæˆè¯­éŸ³æ•°æ®è¾“å‡ºæ–‡ä»¶
+    unsigned long   hTTS;   // åˆæˆå¼•æ“å¥æŸ„
 } jtUserData;
 
 //define wave header, for decode pcm data
@@ -122,5 +136,3 @@ jtErrCode tts_speaker_deint(void);
 
 
 #endif /* __JT_TTS_H__ */
-
-

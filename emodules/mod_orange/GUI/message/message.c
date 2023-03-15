@@ -1,32 +1,34 @@
 /*
-*******************************************************************************************************************
-*                                                           ePDK livetouch
-*                                                               mod_orange
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2009, Softwinner Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name£º    message.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
-*Author£º       William Wang
 *
-*Version :      1.1.0
-*
-*Date:          2009-7-21
-*
-*Description :  gui message function implement
-*
-*Others :       None at present.
-*
-* History :
-*
-* <Author>          <time>         <version>     <description>
-*
-* William Wang     2009-7-21         1.1.0          Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "message_i.h"
 
 static      mem_blocklink_t     qmsg_blk;
@@ -88,7 +90,7 @@ __bool DestroyFreeQMSGList(void)
 *
 * date:             2009-11-2
 *
-* Description:      Í¨ÖªÏàÓ¦µÄÏûÏ¢¶ÓÁÐ£¬ÓÐÏûÏ¢À´µ½
+* Description:      é€šçŸ¥ç›¸åº”çš„æ¶ˆæ¯é˜Ÿåˆ—ï¼Œæœ‰æ¶ˆæ¯æ¥åˆ°
 *
 * parameters:
 *
@@ -117,7 +119,7 @@ void GUI_NotifyMSGQ(__win_msgqueue_t *qmsg)
 *
 * date:             2009-11-12
 *
-* Description:      ÅÐ¶ÏÊÇ·ñÊÇ×îºóÒ»¸öÕâÑùµÄÏûÏ¢
+* Description:      åˆ¤æ–­æ˜¯å¦æ˜¯æœ€åŽä¸€ä¸ªè¿™æ ·çš„æ¶ˆæ¯
 *
 * parameters:
 *
@@ -169,7 +171,7 @@ static __bool  GUI_IsLastThisMsg(__win_msgqueue_t   *pMsgQueue, __u32 id, __u32 
 *
 * date:             2009-11-12
 *
-* Description:      ÅÐ¶ÏÊÇ·ñÊÇ×îºóÒ»¸öÕâÑùµÄÏûÏ¢
+* Description:      åˆ¤æ–­æ˜¯å¦æ˜¯æœ€åŽä¸€ä¸ªè¿™æ ·çš„æ¶ˆæ¯
 *
 * parameters:
 *
@@ -221,7 +223,7 @@ static __bool  GUI_IsLastThisKeyMsg(__win_msgqueue_t   *pMsgQueue, __u32 id, __u
 *
 * date:             2009-11-20
 *
-* Description:      Çå³þÏûÏ¢¶ÓÁÐÏûÏ¢
+* Description:      æ¸…æ¥šæ¶ˆæ¯é˜Ÿåˆ—æ¶ˆæ¯
 *
 * parameters:
 *
@@ -289,7 +291,7 @@ void GUI_ClearBeforeMsg(__win_msgqueue_t *pMsgQueue, __u32 id, __u32 childid)
 *
 * date:             2009-11-12
 *
-* Description:      ´¦ÀíRISEÏûÏ¢£¬²ÉÑù²¢È¡³ö×îºóÒ»¸öRISE
+* Description:      å¤„ç†RISEæ¶ˆæ¯ï¼Œé‡‡æ ·å¹¶å–å‡ºæœ€åŽä¸€ä¸ªRISE
 *
 * parameters:
 *
@@ -313,20 +315,20 @@ static __bool  GUI_ProcMsgRise(__win_msgqueue_t   *pMsgQueue, __u32 id, __u32 ch
 
     writepos    = pMsgQueue->writepos;
 
-    /*ÔÚÕÒµ½×îºóÒ»¸öRISE¼üÊ±£¬·¢ËÍµÚÒ»¸öRISEÏûÏ¢¸øÏàÓ¦µÄÄ¿±ê´°¿Ú*/
+    /*åœ¨æ‰¾åˆ°æœ€åŽä¸€ä¸ªRISEé”®æ—¶ï¼Œå‘é€ç¬¬ä¸€ä¸ªRISEæ¶ˆæ¯ç»™ç›¸åº”çš„ç›®æ ‡çª—å£*/
     if (first == ORANGE_TRUE)
     {
-        /*ÕÒµ½µÚÒ»¸öRISEÊ±£¬½«ÏûÏ¢¶ÓÁÐÀïÃæµÄÄÚÈÝÈ¡³ö¸³Öµ¸ømsg½á¹¹*/
+        /*æ‰¾åˆ°ç¬¬ä¸€ä¸ªRISEæ—¶ï¼Œå°†æ¶ˆæ¯é˜Ÿåˆ—é‡Œé¢çš„å†…å®¹å–å‡ºèµ‹å€¼ç»™msgç»“æž„*/
         *msg        = pMsgQueue->pAsyncMsg[pMsgQueue->readpos];
         msg->p_arg  = NULL;
     }
 
-    /*ÅÐ¶ÏÊÇ·ñÊÇ¸Ã´Î²ÉÑùµÄ×îºóÒ»¸öRISE¼ü*/
+    /*åˆ¤æ–­æ˜¯å¦æ˜¯è¯¥æ¬¡é‡‡æ ·çš„æœ€åŽä¸€ä¸ªRISEé”®*/
     last        = GUI_IsLastThisMsg(pMsgQueue, id, childid);
 
     if (last == ORANGE_TRUE)
     {
-        /*ÊÇ×îºóÒ»¸öRISE¼ü£¬Ö±½Ó·µ»Ø*/
+        /*æ˜¯æœ€åŽä¸€ä¸ªRISEé”®ï¼Œç›´æŽ¥è¿”å›ž*/
         pMsgQueue->readpos++;
 
         if (pMsgQueue->readpos >= pMsgQueue->len)
@@ -339,7 +341,7 @@ static __bool  GUI_ProcMsgRise(__win_msgqueue_t   *pMsgQueue, __u32 id, __u32 ch
     }
     else
     {
-        /*²»ÊÇ×îºóÒ»¸öRISE¼ü£¬Ôò¼ÌÐøÍùÏÂÑ°ÕÒ×îºóÒ»¸öRISE¼ü*/
+        /*ä¸æ˜¯æœ€åŽä¸€ä¸ªRISEé”®ï¼Œåˆ™ç»§ç»­å¾€ä¸‹å¯»æ‰¾æœ€åŽä¸€ä¸ªRISEé”®*/
         pMsgQueue->readpos = readpos;
 
         while (readpos != writepos)
@@ -371,7 +373,7 @@ static __bool  GUI_ProcMsgRise(__win_msgqueue_t   *pMsgQueue, __u32 id, __u32 ch
 *
 * date:             2009-11-12
 *
-* Description:      ´¦ÀíKEY_UP_ACTIONÏûÏ¢£¬²ÉÑù²¢È¡³ö×îºóÒ»¸öKEY_UP_ACTION
+* Description:      å¤„ç†KEY_UP_ACTIONæ¶ˆæ¯ï¼Œé‡‡æ ·å¹¶å–å‡ºæœ€åŽä¸€ä¸ªKEY_UP_ACTION
 *
 * parameters:
 *
@@ -395,20 +397,20 @@ static __bool  GUI_ProcMsgKeyRise(__win_msgqueue_t   *pMsgQueue, __u32 id, __u32
 
     writepos    = pMsgQueue->writepos;
 
-    /*ÔÚÕÒµ½×îºóÒ»¸öRISE¼üÊ±£¬·¢ËÍµÚÒ»¸öRISEÏûÏ¢¸øÏàÓ¦µÄÄ¿±ê´°¿Ú*/
+    /*åœ¨æ‰¾åˆ°æœ€åŽä¸€ä¸ªRISEé”®æ—¶ï¼Œå‘é€ç¬¬ä¸€ä¸ªRISEæ¶ˆæ¯ç»™ç›¸åº”çš„ç›®æ ‡çª—å£*/
     if (first == ORANGE_TRUE)
     {
-        /*ÕÒµ½µÚÒ»¸öRISEÊ±£¬½«ÏûÏ¢¶ÓÁÐÀïÃæµÄÄÚÈÝÈ¡³ö¸³Öµ¸ømsg½á¹¹*/
+        /*æ‰¾åˆ°ç¬¬ä¸€ä¸ªRISEæ—¶ï¼Œå°†æ¶ˆæ¯é˜Ÿåˆ—é‡Œé¢çš„å†…å®¹å–å‡ºèµ‹å€¼ç»™msgç»“æž„*/
         *msg        = pMsgQueue->pAsyncMsg[pMsgQueue->readpos];
         msg->p_arg  = NULL;
     }
 
-    /*ÅÐ¶ÏÊÇ·ñÊÇ¸Ã´Î²ÉÑùµÄ×îºóÒ»¸öRISE¼ü*/
+    /*åˆ¤æ–­æ˜¯å¦æ˜¯è¯¥æ¬¡é‡‡æ ·çš„æœ€åŽä¸€ä¸ªRISEé”®*/
     last        = GUI_IsLastThisKeyMsg(pMsgQueue, id, actionid);
 
     if (last == ORANGE_TRUE)
     {
-        /*ÊÇ×îºóÒ»¸öRISE¼ü£¬Ö±½Ó·µ»Ø*/
+        /*æ˜¯æœ€åŽä¸€ä¸ªRISEé”®ï¼Œç›´æŽ¥è¿”å›ž*/
         pMsgQueue->readpos++;
 
         if (pMsgQueue->readpos >= pMsgQueue->len)
@@ -421,7 +423,7 @@ static __bool  GUI_ProcMsgKeyRise(__win_msgqueue_t   *pMsgQueue, __u32 id, __u32
     }
     else
     {
-        /*²»ÊÇ×îºóÒ»¸öRISE¼ü£¬Ôò¼ÌÐøÍùÏÂÑ°ÕÒ×îºóÒ»¸öRISE¼ü*/
+        /*ä¸æ˜¯æœ€åŽä¸€ä¸ªRISEé”®ï¼Œåˆ™ç»§ç»­å¾€ä¸‹å¯»æ‰¾æœ€åŽä¸€ä¸ªRISEé”®*/
         pMsgQueue->readpos = readpos;
 
         while (readpos != writepos)
@@ -453,12 +455,12 @@ static __bool  GUI_ProcMsgKeyRise(__win_msgqueue_t   *pMsgQueue, __u32 id, __u32
 *
 * date:             2009-11-21
 *
-* Description:      µÃµ½µÚÒ»¸öidºÅÎªid£¬×ÓidºÅÎªchildidµÄÏûÏ¢£¬²¢Çå³ýÖ®Ç°µÄÏûÏ¢
+* Description:      å¾—åˆ°ç¬¬ä¸€ä¸ªidå·ä¸ºidï¼Œå­idå·ä¸ºchildidçš„æ¶ˆæ¯ï¼Œå¹¶æ¸…é™¤ä¹‹å‰çš„æ¶ˆæ¯
 *
 * parameters:
 *
-* return:           if ÕÒµ½ return ORANGE_TRUE
-*                   if Ã»ÕÒµ½ ·µ»Ø ORANGE_FALSE
+* return:           if æ‰¾åˆ° return ORANGE_TRUE
+*                   if æ²¡æ‰¾åˆ° è¿”å›ž ORANGE_FALSE
 * modify history:
 **********************************************************************************************************************
 */
@@ -500,12 +502,12 @@ static __bool GUI_GetFirstPostMsg(__win_msgqueue_t   *pMsgQueue,
 *
 * date:             2009-11-21
 *
-* Description:      µÃµ½µÚÒ»¸öidºÅÎªid£¬×ÓidºÅÎªactionidµÄÏûÏ¢£¬²¢Çå³ýÖ®Ç°µÄÏûÏ¢
+* Description:      å¾—åˆ°ç¬¬ä¸€ä¸ªidå·ä¸ºidï¼Œå­idå·ä¸ºactionidçš„æ¶ˆæ¯ï¼Œå¹¶æ¸…é™¤ä¹‹å‰çš„æ¶ˆæ¯
 *
 * parameters:
 *
-* return:           if ÕÒµ½ return ORANGE_TRUE
-*                   if Ã»ÕÒµ½ ·µ»Ø ORANGE_FALSE
+* return:           if æ‰¾åˆ° return ORANGE_TRUE
+*                   if æ²¡æ‰¾åˆ° è¿”å›ž ORANGE_FALSE
 * modify history:
 **********************************************************************************************************************
 */
@@ -547,7 +549,7 @@ static __bool GUI_GetFirstPostKeyMsg(__win_msgqueue_t   *pMsgQueue,
 *
 * date:             2009-11-20
 *
-* Description:      »ñÈ¡×îºóÒ»¸öidºÅÎªidµÄÏûÏ¢
+* Description:      èŽ·å–æœ€åŽä¸€ä¸ªidå·ä¸ºidçš„æ¶ˆæ¯
 *
 * parameters:
 *
@@ -591,7 +593,7 @@ static __bool GUI_GetLastPostMsg(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg
 *
 * date:             2009-12-25
 *
-* Description:      »ñÈ¡×îºóÒ»¸öÏûÏ¢idÎªid£¬×ÓÏûÏ¢idÎªchildidµÄÏûÏ¢
+* Description:      èŽ·å–æœ€åŽä¸€ä¸ªæ¶ˆæ¯idä¸ºidï¼Œå­æ¶ˆæ¯idä¸ºchildidçš„æ¶ˆæ¯
 *
 * parameters:
 *
@@ -635,7 +637,7 @@ static __bool GUI_GetLastPostChildMsg(__win_msgqueue_t   *pMsgQueue, __gui_msg_t
 *
 * date:             2009-11-21
 *
-* Description:      »ñÈ¡×îºóÏûÏ¢£¬²¢ºÏ²¢×îºóµÄÏûÏ¢£¬¸üÐÂ¶ÁÖ¸ÕëÈ¥µô¸ÃÏûÏ¢Ö®Ç°µÄÏûÏ¢¡£
+* Description:      èŽ·å–æœ€åŽæ¶ˆæ¯ï¼Œå¹¶åˆå¹¶æœ€åŽçš„æ¶ˆæ¯ï¼Œæ›´æ–°è¯»æŒ‡é’ˆåŽ»æŽ‰è¯¥æ¶ˆæ¯ä¹‹å‰çš„æ¶ˆæ¯ã€‚
 *
 * parameters:
 *
@@ -715,7 +717,7 @@ static __bool GUI_GetBeforePostMsg(__win_msgqueue_t   *pMsgQueue,
 *
 * date:             2009-12-25
 *
-* Description:      »ñÈ¡×îºóµÄÄ³Ò»¸öÏûÏ¢£¬ºÏ²¢Ö®Ç°µÄÏàÍ¬ÏûÏ¢²¢¸üÐÂ¶ÁÐ´Ö¸Õë
+* Description:      èŽ·å–æœ€åŽçš„æŸä¸€ä¸ªæ¶ˆæ¯ï¼Œåˆå¹¶ä¹‹å‰çš„ç›¸åŒæ¶ˆæ¯å¹¶æ›´æ–°è¯»å†™æŒ‡é’ˆ
 *
 * parameters:
 *
@@ -848,11 +850,11 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
         }
         else if (tmp_msg.id == GUI_MSG_KEY)
         {
-            /*´Ë´¦ÐèÒª¿¼ÂÇ´¥ÃþÆÁ»òÊó±êÏÈ±»
-                °´ÏÂÊ±µÄ°´¼ü´¦ÀíÇé¿ö*/
+            /*æ­¤å¤„éœ€è¦è€ƒè™‘è§¦æ‘¸å±æˆ–é¼ æ ‡å…ˆè¢«
+                æŒ‰ä¸‹æ—¶çš„æŒ‰é”®å¤„ç†æƒ…å†µ*/
             if (pMsgQueue->touchdown == ORANGE_TRUE)
             {
-                /*Èç¹û´¥ÃþÆÁ»òÊó±êÃ»ÓÐÊÍ·Å£¬Ö±½ÓÈÓµô°´¼ü*/
+                /*å¦‚æžœè§¦æ‘¸å±æˆ–é¼ æ ‡æ²¡æœ‰é‡Šæ”¾ï¼Œç›´æŽ¥æ‰”æŽ‰æŒ‰é”®*/
                 pMsgQueue->readpos++;
 
                 if (pMsgQueue->readpos >= pMsgQueue->len)
@@ -865,12 +867,12 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
 
             GUI_GetLastPostMsg(pMsgQueue, &last_msg, GUI_MSG_KEY);
 
-            /*Èç¹û×îºóÒ»´ÎÊÇÌ§Æð¼ü£¬ÔòÈÏÎª°´¼ü½áÊø£¬Çå³ý°´¼ü*/
+            /*å¦‚æžœæœ€åŽä¸€æ¬¡æ˜¯æŠ¬èµ·é”®ï¼Œåˆ™è®¤ä¸ºæŒ‰é”®ç»“æŸï¼Œæ¸…é™¤æŒ‰é”®*/
             if (last_msg.dwAddData2 == KEY_UP_ACTION)
             {
                 GUI_ClearPostMsg(pMsgQueue);
 
-                /*ÉÏÒ»´Î²»ÊÇÌ§Æð¼ü£¬Ôò·¢ËÍÌ§Æð¼ü*/
+                /*ä¸Šä¸€æ¬¡ä¸æ˜¯æŠ¬èµ·é”®ï¼Œåˆ™å‘é€æŠ¬èµ·é”®*/
                 if ((pMsgQueue->keyactionvalue != KEY_UP_ACTION))
                 {
                     if (last_msg.dwAddData1 != pMsgQueue->keyvalue)
@@ -891,29 +893,29 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
                 continue;
             }
 
-            /*×îºóÒ»´Î°´¼ü²»ÊÇGUI_MSG_KEY_RISEµÄÇé¿ö*/
-            /*»ñÈ¡µÚÒ»¸ö°´¼üÏûÏ¢*/
+            /*æœ€åŽä¸€æ¬¡æŒ‰é”®ä¸æ˜¯GUI_MSG_KEY_RISEçš„æƒ…å†µ*/
+            /*èŽ·å–ç¬¬ä¸€ä¸ªæŒ‰é”®æ¶ˆæ¯*/
             first_msg        = pMsgQueue->pAsyncMsg[pMsgQueue->readpos];
             first_msg.p_arg  = NULL;
 
             if (pMsgQueue->keycount == 0)
             {
                 pMsgQueue->keycount++;
-                /*´ËÊ±±íÊ¾µÚÒ»´Î»ñÈ¡°´¼üÏûÏ¢£¬×îºóÒ»´Î°´¼üÓÐÐ§*/
+                /*æ­¤æ—¶è¡¨ç¤ºç¬¬ä¸€æ¬¡èŽ·å–æŒ‰é”®æ¶ˆæ¯ï¼Œæœ€åŽä¸€æ¬¡æŒ‰é”®æœ‰æ•ˆ*/
                 pMsgQueue->keyvalue         = last_msg.dwAddData1;
                 pMsgQueue->keyactionvalue   = last_msg.dwAddData2;
-                /*µÚÒ»´Î·¢ËÍ°´¼ü£¬Ö±½Ó´«µÝ¸øÓ¦ÓÃ³ÌÐò*/
+                /*ç¬¬ä¸€æ¬¡å‘é€æŒ‰é”®ï¼Œç›´æŽ¥ä¼ é€’ç»™åº”ç”¨ç¨‹åº*/
                 *msg                = last_msg;
                 msg->p_arg          = NULL;
-                /*¸üÐÂÏûÏ¢¶ÓÁÐ¶ÁÐ´Ö¸Õë*/
+                /*æ›´æ–°æ¶ˆæ¯é˜Ÿåˆ—è¯»å†™æŒ‡é’ˆ*/
                 GUI_GetBeforePostMsg(pMsgQueue, msg->id, msg->dwAddData1, msg->dwAddData2);
                 pMsgQueue->keydown  = ORANGE_TRUE;
                 pthread_mutex_unlock(pMsgQueue->lock);
                 return ORANGE_TRUE;
             }
-            else /*±íÊ¾Ç°ÃæÒÑ¾­ÓÐ°´¼ü±»°´ÏÂ*/
+            else /*è¡¨ç¤ºå‰é¢å·²ç»æœ‰æŒ‰é”®è¢«æŒ‰ä¸‹*/
             {
-                /*ÅÐ¶ÏÏûÏ¢¶ÓÁÐÖÐÊÇ·ñÓÐÌ§Æð¼ü*/
+                /*åˆ¤æ–­æ¶ˆæ¯é˜Ÿåˆ—ä¸­æ˜¯å¦æœ‰æŠ¬èµ·é”®*/
                 ret = GUI_GetFirstPostKeyMsg(pMsgQueue, GUI_MSG_KEY, KEY_UP_ACTION, msg);
 
                 if (ret == ORANGE_TRUE)
@@ -929,14 +931,14 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
 
                     pMsgQueue->keyvalue = msg->dwAddData1;
                     pMsgQueue->keyactionvalue   = msg->dwAddData2;
-                    /*°´¼üÊÇÌ§Æð¼ü£¬´ËÊ±ÐèÒª²ÉÑù¶ªµôÖØ¸´°´¼ü*/
+                    /*æŒ‰é”®æ˜¯æŠ¬èµ·é”®ï¼Œæ­¤æ—¶éœ€è¦é‡‡æ ·ä¸¢æŽ‰é‡å¤æŒ‰é”®*/
                     pthread_mutex_unlock(pMsgQueue->lock);
                     return ret;
                 }
 
                 pMsgQueue->keycount++;
 
-                /*ÎÞÌ§Æð¼ü£¬ÔòÖ±½Ó¼ÆËã³¤°´¼ü*/
+                /*æ— æŠ¬èµ·é”®ï¼Œåˆ™ç›´æŽ¥è®¡ç®—é•¿æŒ‰é”®*/
                 if (pMsgQueue->keydown == ORANGE_TRUE)
                 {
                     pMsgQueue->readpos++;
@@ -946,11 +948,11 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
                         pMsgQueue->readpos = 0;
                     }
 
-                    /*ÉÏÒ»´ÎÊÇ³¤°´¼ü£¬ÔòÖ±½Ó·¢ËÍ³¤°´¼ü*/
+                    /*ä¸Šä¸€æ¬¡æ˜¯é•¿æŒ‰é”®ï¼Œåˆ™ç›´æŽ¥å‘é€é•¿æŒ‰é”®*/
                     if (pMsgQueue->keyvalue >= GUI_MSG_KEY_LONGUP && pMsgQueue->keyvalue <GUI_MSG_KEY_MAX)
                     {
-                        /*Ã»ÓÐÌ§Æð¼ü£¬ÔòÈÏÎª¶ÓÁÐÀïÃæµÄÏûÏ¢ÀàÐÍÒ»ÖÂ£¬
-                        ¹ÊÇå³ýÏûÏ¢¶ÓÁÐ±ÜÃâÏûÏ¢¶ÓÁÐÈ«²¿×°Âú¶ÓÁÐµÄÇé¿ö*/
+                        /*æ²¡æœ‰æŠ¬èµ·é”®ï¼Œåˆ™è®¤ä¸ºé˜Ÿåˆ—é‡Œé¢çš„æ¶ˆæ¯ç±»åž‹ä¸€è‡´ï¼Œ
+                        æ•…æ¸…é™¤æ¶ˆæ¯é˜Ÿåˆ—é¿å…æ¶ˆæ¯é˜Ÿåˆ—å…¨éƒ¨è£…æ»¡é˜Ÿåˆ—çš„æƒ…å†µ*/
                         GUI_ClearPostMsg(pMsgQueue);
                         msg->id         = GUI_MSG_KEY;
                         msg->h_deswin   = first_msg.h_deswin;
@@ -966,7 +968,7 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
                     }
                     else
                     {
-                        /*ÔÚÏûÏ¢ÊýÁ¿ÎªLONGKEY_COUNTÈ·¶¨Îª³¤°´¼ü*/
+                        /*åœ¨æ¶ˆæ¯æ•°é‡ä¸ºLONGKEY_COUNTç¡®å®šä¸ºé•¿æŒ‰é”®*/
                         if (first_msg.dwAddData2 == KEY_REPEAT_ACTION)
                         {
                             msg->id         = GUI_MSG_KEY;
@@ -987,11 +989,11 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
         }
         else if (tmp_msg.id == GUI_MSG_TOUCH)
         {
-            /*´Ë´¦ÐèÒª¿¼ÂÇ°´¼üÏÈ±»°´ÏÂÊ±µÄ
-            ´¥ÃþÆÁ»òÊó±êÏÈµÄ´¦ÀíÇé¿ö*/
+            /*æ­¤å¤„éœ€è¦è€ƒè™‘æŒ‰é”®å…ˆè¢«æŒ‰ä¸‹æ—¶çš„
+            è§¦æ‘¸å±æˆ–é¼ æ ‡å…ˆçš„å¤„ç†æƒ…å†µ*/
             if (pMsgQueue->keydown == ORANGE_TRUE)
             {
-                /*Èç¹û°´¼üÃ»ÓÐÊÍ·Å£¬Ö±½ÓÈÓµô´¥ÃþÆÁ¼ü*/
+                /*å¦‚æžœæŒ‰é”®æ²¡æœ‰é‡Šæ”¾ï¼Œç›´æŽ¥æ‰”æŽ‰è§¦æ‘¸å±é”®*/
                 pMsgQueue->readpos++;
 
                 if (pMsgQueue->readpos >= pMsgQueue->len)
@@ -1006,10 +1008,10 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
             {
                 GUI_GetLastPostMsg(pMsgQueue, &last_msg, GUI_MSG_TOUCH);
 
-                /*Èç¹û×îºóÒ»´ÎÊÇTOUCH OVERUP£¬ÔòÈÏÎªTOUCH½áÊø£¬Çå³ýTOUCHÏûÏ¢*/
+                /*å¦‚æžœæœ€åŽä¸€æ¬¡æ˜¯TOUCH OVERUPï¼Œåˆ™è®¤ä¸ºTOUCHç»“æŸï¼Œæ¸…é™¤TOUCHæ¶ˆæ¯*/
                 if (last_msg.dwAddData1 == GUI_MSG_TOUCH_OVERUP)
                 {
-                    /*ÉÏÒ»´Î²»ÊÇTOUCH OVERUP£¬Ôò·¢ËÍµÚÒ»¸öTOUCH UP*/
+                    /*ä¸Šä¸€æ¬¡ä¸æ˜¯TOUCH OVERUPï¼Œåˆ™å‘é€ç¬¬ä¸€ä¸ªTOUCH UP*/
                     if (pMsgQueue->touchvalue != GUI_MSG_TOUCH_OVERUP)
                     {
                         ret = GUI_GetFirstPostMsg(pMsgQueue, GUI_MSG_TOUCH, GUI_MSG_TOUCH_OVERUP, msg);
@@ -1032,7 +1034,7 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
                     continue;
                 }
 
-                /*×îºóÒ»´ÎTOUCH²»ÊÇGUI_MSG_TOUCH_OVERUPµÄÇé¿ö*/
+                /*æœ€åŽä¸€æ¬¡TOUCHä¸æ˜¯GUI_MSG_TOUCH_OVERUPçš„æƒ…å†µ*/
                 first_msg        = pMsgQueue->pAsyncMsg[pMsgQueue->readpos];
                 first_msg.p_arg  = NULL;
 
@@ -1040,20 +1042,20 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
                 {
                     pMsgQueue->touchcount++;
                     GUI_GetLastPostChildMsg(pMsgQueue, &last_msg, GUI_MSG_TOUCH, GUI_MSG_TOUCH_OVERDOWN);
-                    /*´ËÊ±±íÊ¾µÚÒ»´Î»ñÈ¡TOUCHÏûÏ¢£¬×îºóÒ»´ÎTOUCH DOWNÓÐÐ§*/
+                    /*æ­¤æ—¶è¡¨ç¤ºç¬¬ä¸€æ¬¡èŽ·å–TOUCHæ¶ˆæ¯ï¼Œæœ€åŽä¸€æ¬¡TOUCH DOWNæœ‰æ•ˆ*/
                     pMsgQueue->touchvalue = last_msg.dwAddData1;
-                    /*µÚÒ»´Î·¢ËÍTOUCH£¬Ö±½Ó´«µÝ¸øÓ¦ÓÃ³ÌÐò*/
+                    /*ç¬¬ä¸€æ¬¡å‘é€TOUCHï¼Œç›´æŽ¥ä¼ é€’ç»™åº”ç”¨ç¨‹åº*/
                     *msg                = last_msg;
                     msg->p_arg          = NULL;
-                    /*¸üÐÂÏûÏ¢¶ÓÁÐ¶ÁÐ´Ö¸Õë*/
+                    /*æ›´æ–°æ¶ˆæ¯é˜Ÿåˆ—è¯»å†™æŒ‡é’ˆ*/
                     GUI_GetLastBeforePostMsg(pMsgQueue, msg->id, msg->dwAddData1);
                     pMsgQueue->touchdown  = ORANGE_TRUE;
                     pthread_mutex_unlock(pMsgQueue->lock);
                     return ORANGE_TRUE;
                 }
-                else /*±íÊ¾Ç°ÃæÒÑ¾­ÓÐtouchµã±»°´ÏÂ*/
+                else /*è¡¨ç¤ºå‰é¢å·²ç»æœ‰touchç‚¹è¢«æŒ‰ä¸‹*/
                 {
-                    /*ÅÐ¶ÏÏûÏ¢¶ÓÁÐÖÐÊÇ·ñÓÐGUI_MSG_TOUCH_UP*/
+                    /*åˆ¤æ–­æ¶ˆæ¯é˜Ÿåˆ—ä¸­æ˜¯å¦æœ‰GUI_MSG_TOUCH_UP*/
                     ret = GUI_GetFirstPostMsg(pMsgQueue, GUI_MSG_TOUCH, GUI_MSG_TOUCH_OVERUP, msg);
 
                     if (ret == ORANGE_TRUE)
@@ -1062,7 +1064,7 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
                         pMsgQueue->touchdown  = ORANGE_FALSE;
                         pMsgQueue->touchcount = 0;
                         pMsgQueue->touchvalue = tmp_msg.dwAddData1;
-                        /*°´¼üÊÇÌ§Æð¼ü£¬´ËÊ±ÐèÒª²ÉÑù¶ªµôÖØ¸´°´¼ü*/
+                        /*æŒ‰é”®æ˜¯æŠ¬èµ·é”®ï¼Œæ­¤æ—¶éœ€è¦é‡‡æ ·ä¸¢æŽ‰é‡å¤æŒ‰é”®*/
                         tmp_ret = GUI_ProcMsgRise(pMsgQueue, GUI_MSG_TOUCH, GUI_MSG_TOUCH_OVERUP, msg, ORANGE_TRUE);
                         pthread_mutex_unlock(pMsgQueue->lock);
                         return tmp_ret;
@@ -1074,7 +1076,7 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
 
                         if (pMsgQueue->touchcount == 1)
                         {
-                            /*µÚÒ»´Î·¢ËÍtouch down£¬Ö±½Ó´«µÝ¸øÓ¦ÓÃ³ÌÐò*/
+                            /*ç¬¬ä¸€æ¬¡å‘é€touch downï¼Œç›´æŽ¥ä¼ é€’ç»™åº”ç”¨ç¨‹åº*/
                             *msg = pMsgQueue->pAsyncMsg[pMsgQueue->readpos];
                             msg->p_arg = NULL;
                             pMsgQueue->readpos++;
@@ -1090,7 +1092,7 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
                         }
                         else
                         {
-                            /*µÚ¶þ´Î»òÒÔÉÏ·¢ËÍ,Ö±½ÓÅÐ¶Ï³¤°´¼ü*/
+                            /*ç¬¬äºŒæ¬¡æˆ–ä»¥ä¸Šå‘é€,ç›´æŽ¥åˆ¤æ–­é•¿æŒ‰é”®*/
                             if (pMsgQueue->touchdown == ORANGE_TRUE)
                             {
                                 pMsgQueue->readpos++;
@@ -1100,11 +1102,11 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
                                     pMsgQueue->readpos = 0;
                                 }
 
-                                /*ÉÏÒ»´ÎÊÇ³¤°´¼ü£¬ÔòÖ±½Ó·¢ËÍ³¤°´¼ü*/
+                                /*ä¸Šä¸€æ¬¡æ˜¯é•¿æŒ‰é”®ï¼Œåˆ™ç›´æŽ¥å‘é€é•¿æŒ‰é”®*/
                                 if (pMsgQueue->touchvalue == GUI_MSG_TOUCH_OVERLONGDOWN)
                                 {
-                                    /*Ã»ÓÐÌ§Æð¼ü£¬ÔòÈÏÎª¶ÓÁÐÀïÃæµÄÏûÏ¢ÀàÐÍÒ»ÖÂ£¬
-                                    ¹ÊÇå³ýÏûÏ¢¶ÓÁÐ±ÜÃâÏûÏ¢¶ÓÁÐÈ«²¿×°Âú¶ÓÁÐµÄÇé¿ö*/
+                                    /*æ²¡æœ‰æŠ¬èµ·é”®ï¼Œåˆ™è®¤ä¸ºé˜Ÿåˆ—é‡Œé¢çš„æ¶ˆæ¯ç±»åž‹ä¸€è‡´ï¼Œ
+                                    æ•…æ¸…é™¤æ¶ˆæ¯é˜Ÿåˆ—é¿å…æ¶ˆæ¯é˜Ÿåˆ—å…¨éƒ¨è£…æ»¡é˜Ÿåˆ—çš„æƒ…å†µ*/
                                     GUI_ClearPostMsg(pMsgQueue);
                                     msg->id         = GUI_MSG_TOUCH;
                                     msg->h_deswin   = first_msg.h_deswin;
@@ -1119,7 +1121,7 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
                                 }
                                 else
                                 {
-                                    /*ÔÚÏûÏ¢ÊýÁ¿ÎªLONGKEY_COUNTÈ·¶¨Îª³¤°´¼ü*/
+                                    /*åœ¨æ¶ˆæ¯æ•°é‡ä¸ºLONGKEY_COUNTç¡®å®šä¸ºé•¿æŒ‰é”®*/
                                     if (pMsgQueue->touchcount % pMsgQueue->longcount == 0)
                                     {
                                         msg->id         = GUI_MSG_TOUCH;
@@ -1147,14 +1149,14 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
 
                         if (tmp_msg.dwAddData1 == GUI_MSG_TOUCH_OVERMOVE)
                         {
-                            /*ÊÇMOVEÏûÏ¢È¡³ö×îºóÒ»¸ömoveÏûÏ¢·¢¸øÏàÓ¦µÄ´°¿Ú*/
+                            /*æ˜¯MOVEæ¶ˆæ¯å–å‡ºæœ€åŽä¸€ä¸ªmoveæ¶ˆæ¯å‘ç»™ç›¸åº”çš„çª—å£*/
                             GUI_GetLastPostChildMsg(pMsgQueue, &last_msg, GUI_MSG_TOUCH, GUI_MSG_TOUCH_OVERMOVE);
-                            /*´ËÊ±±íÊ¾µÚÒ»´Î»ñÈ¡TOUCHÏûÏ¢£¬×îºóÒ»´ÎTOUCH MOVEÓÐÐ§*/
+                            /*æ­¤æ—¶è¡¨ç¤ºç¬¬ä¸€æ¬¡èŽ·å–TOUCHæ¶ˆæ¯ï¼Œæœ€åŽä¸€æ¬¡TOUCH MOVEæœ‰æ•ˆ*/
                             pMsgQueue->touchvalue = last_msg.dwAddData1;
-                            /*µÚÒ»´Î·¢ËÍTOUCH£¬Ö±½Ó´«µÝ¸øÓ¦ÓÃ³ÌÐò*/
+                            /*ç¬¬ä¸€æ¬¡å‘é€TOUCHï¼Œç›´æŽ¥ä¼ é€’ç»™åº”ç”¨ç¨‹åº*/
                             *msg                = last_msg;
                             msg->p_arg          = NULL;
-                            /*¸üÐÂÏûÏ¢¶ÓÁÐ¶ÁÐ´Ö¸Õë*/
+                            /*æ›´æ–°æ¶ˆæ¯é˜Ÿåˆ—è¯»å†™æŒ‡é’ˆ*/
                             GUI_GetLastBeforePostMsg(pMsgQueue, msg->id, msg->dwAddData1);
                             pMsgQueue->touchdown  = ORANGE_TRUE;
                             pMsgQueue->readpos++;
@@ -1170,14 +1172,14 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
 
                         if (tmp_msg.dwAddData1 == GUI_MSG_TOUCH_OVERZOOMIN)
                         {
-                            /*ÊÇOVERZOOMINÏûÏ¢È¡³ö×îºóÒ»¸öOVERZOOMINÏûÏ¢·¢¸øÏàÓ¦µÄ´°¿Ú*/
+                            /*æ˜¯OVERZOOMINæ¶ˆæ¯å–å‡ºæœ€åŽä¸€ä¸ªOVERZOOMINæ¶ˆæ¯å‘ç»™ç›¸åº”çš„çª—å£*/
                             GUI_GetLastPostChildMsg(pMsgQueue, &last_msg, GUI_MSG_TOUCH, GUI_MSG_TOUCH_OVERZOOMIN);
-                            /*´ËÊ±±íÊ¾µÚÒ»´Î»ñÈ¡TOUCHÏûÏ¢£¬×îºóÒ»´ÎTOUCH OVERZOOMINÓÐÐ§*/
+                            /*æ­¤æ—¶è¡¨ç¤ºç¬¬ä¸€æ¬¡èŽ·å–TOUCHæ¶ˆæ¯ï¼Œæœ€åŽä¸€æ¬¡TOUCH OVERZOOMINæœ‰æ•ˆ*/
                             pMsgQueue->touchvalue = last_msg.dwAddData1;
-                            /*µÚÒ»´Î·¢ËÍTOUCH£¬Ö±½Ó´«µÝ¸øÓ¦ÓÃ³ÌÐò*/
+                            /*ç¬¬ä¸€æ¬¡å‘é€TOUCHï¼Œç›´æŽ¥ä¼ é€’ç»™åº”ç”¨ç¨‹åº*/
                             *msg                = last_msg;
                             msg->p_arg          = NULL;
-                            /*¸üÐÂÏûÏ¢¶ÓÁÐ¶ÁÐ´Ö¸Õë*/
+                            /*æ›´æ–°æ¶ˆæ¯é˜Ÿåˆ—è¯»å†™æŒ‡é’ˆ*/
                             GUI_GetLastBeforePostMsg(pMsgQueue, msg->id, msg->dwAddData1);
                             pMsgQueue->touchdown  = ORANGE_TRUE;
                             pMsgQueue->readpos++;
@@ -1193,14 +1195,14 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
 
                         if (tmp_msg.dwAddData1 == GUI_MSG_TOUCH_OVERZOOMOUT)
                         {
-                            /*ÊÇOVERZOOMOUTÏûÏ¢È¡³ö×îºóÒ»¸öOVERZOOMOUTÏûÏ¢·¢¸øÏàÓ¦µÄ´°¿Ú*/
+                            /*æ˜¯OVERZOOMOUTæ¶ˆæ¯å–å‡ºæœ€åŽä¸€ä¸ªOVERZOOMOUTæ¶ˆæ¯å‘ç»™ç›¸åº”çš„çª—å£*/
                             GUI_GetLastPostChildMsg(pMsgQueue, &last_msg, GUI_MSG_TOUCH, GUI_MSG_TOUCH_OVERZOOMOUT);
-                            /*´ËÊ±±íÊ¾µÚÒ»´Î»ñÈ¡TOUCHÏûÏ¢£¬×îºóÒ»´ÎTOUCH OVERZOOMOUTÓÐÐ§*/
+                            /*æ­¤æ—¶è¡¨ç¤ºç¬¬ä¸€æ¬¡èŽ·å–TOUCHæ¶ˆæ¯ï¼Œæœ€åŽä¸€æ¬¡TOUCH OVERZOOMOUTæœ‰æ•ˆ*/
                             pMsgQueue->touchvalue = last_msg.dwAddData1;
-                            /*µÚÒ»´Î·¢ËÍTOUCH£¬Ö±½Ó´«µÝ¸øÓ¦ÓÃ³ÌÐò*/
+                            /*ç¬¬ä¸€æ¬¡å‘é€TOUCHï¼Œç›´æŽ¥ä¼ é€’ç»™åº”ç”¨ç¨‹åº*/
                             *msg                = last_msg;
                             msg->p_arg          = NULL;
-                            /*¸üÐÂÏûÏ¢¶ÓÁÐ¶ÁÐ´Ö¸Õë*/
+                            /*æ›´æ–°æ¶ˆæ¯é˜Ÿåˆ—è¯»å†™æŒ‡é’ˆ*/
                             GUI_GetLastBeforePostMsg(pMsgQueue, msg->id, msg->dwAddData1);
                             pMsgQueue->touchdown  = ORANGE_TRUE;
                             pMsgQueue->readpos++;
@@ -1219,10 +1221,10 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
 
             GUI_GetLastPostMsg(pMsgQueue, &last_msg, GUI_MSG_TOUCH);
 
-            /*Èç¹û×îºóÒ»´ÎÊÇTOUCH UP£¬ÔòÈÏÎªTOUCH½áÊø£¬Çå³ýTOUCHÏûÏ¢*/
+            /*å¦‚æžœæœ€åŽä¸€æ¬¡æ˜¯TOUCH UPï¼Œåˆ™è®¤ä¸ºTOUCHç»“æŸï¼Œæ¸…é™¤TOUCHæ¶ˆæ¯*/
             if (last_msg.dwAddData1 == GUI_MSG_TOUCH_UP)
             {
-                /*ÉÏÒ»´Î²»ÊÇTOUCH UP£¬Ôò·¢ËÍµÚÒ»¸öTOUCH UP*/
+                /*ä¸Šä¸€æ¬¡ä¸æ˜¯TOUCH UPï¼Œåˆ™å‘é€ç¬¬ä¸€ä¸ªTOUCH UP*/
                 if (pMsgQueue->touchvalue != GUI_MSG_TOUCH_UP)
                 {
                     ret = GUI_GetFirstPostMsg(pMsgQueue, GUI_MSG_TOUCH, GUI_MSG_TOUCH_UP, msg);
@@ -1245,7 +1247,7 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
                 continue;
             }
 
-            /*×îºóÒ»´ÎTOUCH²»ÊÇGUI_MSG_TOUCH_UPµÄÇé¿ö*/
+            /*æœ€åŽä¸€æ¬¡TOUCHä¸æ˜¯GUI_MSG_TOUCH_UPçš„æƒ…å†µ*/
             first_msg        = pMsgQueue->pAsyncMsg[pMsgQueue->readpos];
             first_msg.p_arg  = NULL;
 
@@ -1253,20 +1255,20 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
             {
                 pMsgQueue->touchcount++;
                 GUI_GetLastPostChildMsg(pMsgQueue, &last_msg, GUI_MSG_TOUCH, GUI_MSG_TOUCH_DOWN);
-                /*´ËÊ±±íÊ¾µÚÒ»´Î»ñÈ¡TOUCHÏûÏ¢£¬×îºóÒ»´ÎTOUCH DOWNÓÐÐ§*/
+                /*æ­¤æ—¶è¡¨ç¤ºç¬¬ä¸€æ¬¡èŽ·å–TOUCHæ¶ˆæ¯ï¼Œæœ€åŽä¸€æ¬¡TOUCH DOWNæœ‰æ•ˆ*/
                 pMsgQueue->touchvalue = last_msg.dwAddData1;
-                /*µÚÒ»´Î·¢ËÍTOUCH£¬Ö±½Ó´«µÝ¸øÓ¦ÓÃ³ÌÐò*/
+                /*ç¬¬ä¸€æ¬¡å‘é€TOUCHï¼Œç›´æŽ¥ä¼ é€’ç»™åº”ç”¨ç¨‹åº*/
                 *msg                = last_msg;
                 msg->p_arg          = NULL;
-                /*¸üÐÂÏûÏ¢¶ÓÁÐ¶ÁÐ´Ö¸Õë*/
+                /*æ›´æ–°æ¶ˆæ¯é˜Ÿåˆ—è¯»å†™æŒ‡é’ˆ*/
                 GUI_GetLastBeforePostMsg(pMsgQueue, msg->id, msg->dwAddData1);
                 pMsgQueue->touchdown  = ORANGE_TRUE;
                 pthread_mutex_unlock(pMsgQueue->lock);
                 return ORANGE_TRUE;
             }
-            else /*±íÊ¾Ç°ÃæÒÑ¾­ÓÐtouchµã±»°´ÏÂ*/
+            else /*è¡¨ç¤ºå‰é¢å·²ç»æœ‰touchç‚¹è¢«æŒ‰ä¸‹*/
             {
-                /*ÅÐ¶ÏÏûÏ¢¶ÓÁÐÖÐÊÇ·ñÓÐGUI_MSG_TOUCH_UP*/
+                /*åˆ¤æ–­æ¶ˆæ¯é˜Ÿåˆ—ä¸­æ˜¯å¦æœ‰GUI_MSG_TOUCH_UP*/
                 ret = GUI_GetFirstPostMsg(pMsgQueue, GUI_MSG_TOUCH, GUI_MSG_TOUCH_UP, msg);
 
                 if (ret == ORANGE_TRUE)
@@ -1275,7 +1277,7 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
                     pMsgQueue->touchdown  = ORANGE_FALSE;
                     pMsgQueue->touchcount = 0;
                     pMsgQueue->touchvalue = tmp_msg.dwAddData1;
-                    /*°´¼üÊÇÌ§Æð¼ü£¬´ËÊ±ÐèÒª²ÉÑù¶ªµôÖØ¸´°´¼ü*/
+                    /*æŒ‰é”®æ˜¯æŠ¬èµ·é”®ï¼Œæ­¤æ—¶éœ€è¦é‡‡æ ·ä¸¢æŽ‰é‡å¤æŒ‰é”®*/
                     tmp_ret = GUI_ProcMsgRise(pMsgQueue, GUI_MSG_TOUCH, GUI_MSG_TOUCH_UP, msg, ORANGE_TRUE);
                     pthread_mutex_unlock(pMsgQueue->lock);
                     return tmp_ret;
@@ -1287,7 +1289,7 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
 
                     if (pMsgQueue->touchcount == 1)
                     {
-                        /*µÚÒ»´Î·¢ËÍtouch down£¬Ö±½Ó´«µÝ¸øÓ¦ÓÃ³ÌÐò*/
+                        /*ç¬¬ä¸€æ¬¡å‘é€touch downï¼Œç›´æŽ¥ä¼ é€’ç»™åº”ç”¨ç¨‹åº*/
                         *msg = pMsgQueue->pAsyncMsg[pMsgQueue->readpos];
                         msg->p_arg = NULL;
                         pMsgQueue->readpos++;
@@ -1303,7 +1305,7 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
                     }
                     else
                     {
-                        /*µÚ¶þ´Î»òÒÔÉÏ·¢ËÍ,Ö±½ÓÅÐ¶Ï³¤°´¼ü*/
+                        /*ç¬¬äºŒæ¬¡æˆ–ä»¥ä¸Šå‘é€,ç›´æŽ¥åˆ¤æ–­é•¿æŒ‰é”®*/
                         if (pMsgQueue->touchdown == ORANGE_TRUE)
                         {
                             pMsgQueue->readpos++;
@@ -1313,11 +1315,11 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
                                 pMsgQueue->readpos = 0;
                             }
 
-                            /*ÉÏÒ»´ÎÊÇ³¤°´¼ü£¬ÔòÖ±½Ó·¢ËÍ³¤°´¼ü*/
+                            /*ä¸Šä¸€æ¬¡æ˜¯é•¿æŒ‰é”®ï¼Œåˆ™ç›´æŽ¥å‘é€é•¿æŒ‰é”®*/
                             if (pMsgQueue->touchvalue == GUI_MSG_TOUCH_LONGDOWN)
                             {
-                                /*Ã»ÓÐÌ§Æð¼ü£¬ÔòÈÏÎª¶ÓÁÐÀïÃæµÄÏûÏ¢ÀàÐÍÒ»ÖÂ£¬
-                                ¹ÊÇå³ýÏûÏ¢¶ÓÁÐ±ÜÃâÏûÏ¢¶ÓÁÐÈ«²¿×°Âú¶ÓÁÐµÄÇé¿ö*/
+                                /*æ²¡æœ‰æŠ¬èµ·é”®ï¼Œåˆ™è®¤ä¸ºé˜Ÿåˆ—é‡Œé¢çš„æ¶ˆæ¯ç±»åž‹ä¸€è‡´ï¼Œ
+                                æ•…æ¸…é™¤æ¶ˆæ¯é˜Ÿåˆ—é¿å…æ¶ˆæ¯é˜Ÿåˆ—å…¨éƒ¨è£…æ»¡é˜Ÿåˆ—çš„æƒ…å†µ*/
                                 GUI_ClearPostMsg(pMsgQueue);
                                 msg->id         = GUI_MSG_TOUCH;
                                 msg->h_deswin   = tmp_msg.h_deswin;
@@ -1332,7 +1334,7 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
                             }
                             else
                             {
-                                /*ÔÚÏûÏ¢ÊýÁ¿ÎªLONGKEY_COUNTÈ·¶¨Îª³¤°´¼ü*/
+                                /*åœ¨æ¶ˆæ¯æ•°é‡ä¸ºLONGKEY_COUNTç¡®å®šä¸ºé•¿æŒ‰é”®*/
                                 if (pMsgQueue->touchcount % pMsgQueue->longcount == 0)
                                 {
                                     msg->id         = GUI_MSG_TOUCH;
@@ -1360,14 +1362,14 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
 
                     if (tmp_msg.dwAddData1 == GUI_MSG_TOUCH_MOVE)
                     {
-                        /*ÊÇMOVEÏûÏ¢È¡³ö×îºóÒ»¸ömoveÏûÏ¢·¢¸øÏàÓ¦µÄ´°¿Ú*/
+                        /*æ˜¯MOVEæ¶ˆæ¯å–å‡ºæœ€åŽä¸€ä¸ªmoveæ¶ˆæ¯å‘ç»™ç›¸åº”çš„çª—å£*/
                         GUI_GetLastPostChildMsg(pMsgQueue, &last_msg, GUI_MSG_TOUCH, GUI_MSG_TOUCH_MOVE);
-                        /*´ËÊ±±íÊ¾µÚÒ»´Î»ñÈ¡TOUCHÏûÏ¢£¬×îºóÒ»´ÎTOUCH MOVEÓÐÐ§*/
+                        /*æ­¤æ—¶è¡¨ç¤ºç¬¬ä¸€æ¬¡èŽ·å–TOUCHæ¶ˆæ¯ï¼Œæœ€åŽä¸€æ¬¡TOUCH MOVEæœ‰æ•ˆ*/
                         pMsgQueue->touchvalue = last_msg.dwAddData1;
-                        /*µÚÒ»´Î·¢ËÍTOUCH£¬Ö±½Ó´«µÝ¸øÓ¦ÓÃ³ÌÐò*/
+                        /*ç¬¬ä¸€æ¬¡å‘é€TOUCHï¼Œç›´æŽ¥ä¼ é€’ç»™åº”ç”¨ç¨‹åº*/
                         *msg                = last_msg;
                         msg->p_arg          = NULL;
-                        /*¸üÐÂÏûÏ¢¶ÓÁÐ¶ÁÐ´Ö¸Õë*/
+                        /*æ›´æ–°æ¶ˆæ¯é˜Ÿåˆ—è¯»å†™æŒ‡é’ˆ*/
                         GUI_GetLastBeforePostMsg(pMsgQueue, msg->id, msg->dwAddData1);
                         pMsgQueue->touchdown  = ORANGE_TRUE;
                         pMsgQueue->readpos++;
@@ -1383,14 +1385,14 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
 
                     if (tmp_msg.dwAddData1 == GUI_MSG_TOUCH_ZOOMIN)
                     {
-                        /*ÊÇZOOMINÏûÏ¢È¡³ö×îºóÒ»¸öZOOMINÏûÏ¢·¢¸øÏàÓ¦µÄ´°¿Ú*/
+                        /*æ˜¯ZOOMINæ¶ˆæ¯å–å‡ºæœ€åŽä¸€ä¸ªZOOMINæ¶ˆæ¯å‘ç»™ç›¸åº”çš„çª—å£*/
                         GUI_GetLastPostChildMsg(pMsgQueue, &last_msg, GUI_MSG_TOUCH, GUI_MSG_TOUCH_ZOOMIN);
-                        /*´ËÊ±±íÊ¾µÚÒ»´Î»ñÈ¡TOUCHÏûÏ¢£¬×îºóÒ»´ÎTOUCH ZOOMINÓÐÐ§*/
+                        /*æ­¤æ—¶è¡¨ç¤ºç¬¬ä¸€æ¬¡èŽ·å–TOUCHæ¶ˆæ¯ï¼Œæœ€åŽä¸€æ¬¡TOUCH ZOOMINæœ‰æ•ˆ*/
                         pMsgQueue->touchvalue = last_msg.dwAddData1;
-                        /*µÚÒ»´Î·¢ËÍTOUCH£¬Ö±½Ó´«µÝ¸øÓ¦ÓÃ³ÌÐò*/
+                        /*ç¬¬ä¸€æ¬¡å‘é€TOUCHï¼Œç›´æŽ¥ä¼ é€’ç»™åº”ç”¨ç¨‹åº*/
                         *msg                = last_msg;
                         msg->p_arg          = NULL;
-                        /*¸üÐÂÏûÏ¢¶ÓÁÐ¶ÁÐ´Ö¸Õë*/
+                        /*æ›´æ–°æ¶ˆæ¯é˜Ÿåˆ—è¯»å†™æŒ‡é’ˆ*/
                         GUI_GetLastBeforePostMsg(pMsgQueue, msg->id, msg->dwAddData1);
                         pMsgQueue->touchdown  = ORANGE_TRUE;
                         pMsgQueue->readpos++;
@@ -1406,14 +1408,14 @@ __bool GUI_PostMsgHandle(__win_msgqueue_t   *pMsgQueue, __gui_msg_t *msg)
 
                     if (tmp_msg.dwAddData1 == GUI_MSG_TOUCH_ZOOMOUT)
                     {
-                        /*ÊÇZOOMOUTÏûÏ¢È¡³ö×îºóÒ»¸öZOOMOUTÏûÏ¢·¢¸øÏàÓ¦µÄ´°¿Ú*/
+                        /*æ˜¯ZOOMOUTæ¶ˆæ¯å–å‡ºæœ€åŽä¸€ä¸ªZOOMOUTæ¶ˆæ¯å‘ç»™ç›¸åº”çš„çª—å£*/
                         GUI_GetLastPostChildMsg(pMsgQueue, &last_msg, GUI_MSG_TOUCH, GUI_MSG_TOUCH_ZOOMOUT);
-                        /*´ËÊ±±íÊ¾µÚÒ»´Î»ñÈ¡TOUCHÏûÏ¢£¬×îºóÒ»´ÎTOUCH ZOOMOUTÓÐÐ§*/
+                        /*æ­¤æ—¶è¡¨ç¤ºç¬¬ä¸€æ¬¡èŽ·å–TOUCHæ¶ˆæ¯ï¼Œæœ€åŽä¸€æ¬¡TOUCH ZOOMOUTæœ‰æ•ˆ*/
                         pMsgQueue->touchvalue = last_msg.dwAddData1;
-                        /*µÚÒ»´Î·¢ËÍTOUCH£¬Ö±½Ó´«µÝ¸øÓ¦ÓÃ³ÌÐò*/
+                        /*ç¬¬ä¸€æ¬¡å‘é€TOUCHï¼Œç›´æŽ¥ä¼ é€’ç»™åº”ç”¨ç¨‹åº*/
                         *msg                = last_msg;
                         msg->p_arg          = NULL;
-                        /*¸üÐÂÏûÏ¢¶ÓÁÐ¶ÁÐ´Ö¸Õë*/
+                        /*æ›´æ–°æ¶ˆæ¯é˜Ÿåˆ—è¯»å†™æŒ‡é’ˆ*/
                         GUI_GetLastBeforePostMsg(pMsgQueue, msg->id, msg->dwAddData1);
                         pMsgQueue->touchdown  = ORANGE_TRUE;
                         pMsgQueue->readpos++;
@@ -1643,7 +1645,7 @@ void DestroyMsgQueue(__win_msgqueue_t *qmsg)
 *
 * date:             2009-7-23
 *
-* Description:      ÅÐ¶ÏÊÇ·ñÓÐÏûÏ¢½øÈëÏûÏ¢¶ÓÁÐ
+* Description:      åˆ¤æ–­æ˜¯å¦æœ‰æ¶ˆæ¯è¿›å…¥æ¶ˆæ¯é˜Ÿåˆ—
 *
 * parameters:
 *
@@ -1937,7 +1939,7 @@ __s32 GUI_PostSyncMessage(__gui_msg_t *pmsg)
 
     pMsgQueue->dwState |= QS_SYNCMSG;
     pthread_mutex_unlock(pMsgQueue->lock);
-    /*Í¨ÖªÏµÍ³ÏûÏ¢ÒÑ¾­µ½´ïÏàÓ¦µÄÏûÏ¢¶ÓÁÐ*/
+    /*é€šçŸ¥ç³»ç»Ÿæ¶ˆæ¯å·²ç»åˆ°è¾¾ç›¸åº”çš„æ¶ˆæ¯é˜Ÿåˆ—*/
     GUI_NotifyMSGQ(pMsgQueue);
     // suspend until the message been handled.
     pthread_mutex_lock(SyncMsg.sem_handle);
@@ -2349,9 +2351,9 @@ checkagain:
         {
             if (pMsgQueue->quit_win[i])
             {
-                /*ÅÐ¶ÏÐèÒªÍË³öÏûÏ¢Ñ­»·µÄ´°¿Ú£¬ÊÇ²»ÊÇÕýÔÚÑ­»·µÄ´°¿Ú
-                  ¶Ôfrmwin¶øÑÔ£¬ÏûÏ¢¶ÓÁÐ¼ÄÉúÔÚmainwinÉÏ,¿ÉÒÔÓÐ×Ô¼ºµÄÏûÏ¢Ñ­»·
-                  Ò²¿ÉÒÔÃ»ÓÐ£¬¶ÔÏûÏ¢Ñ­»·frmwin¶øÑÔ£¬´ËÊ±ÍË³öÏûÏ¢Ñ­»·,·ñÔòÇå³þ´°¿ÚÐÅÏ¢*/
+                /*åˆ¤æ–­éœ€è¦é€€å‡ºæ¶ˆæ¯å¾ªçŽ¯çš„çª—å£ï¼Œæ˜¯ä¸æ˜¯æ­£åœ¨å¾ªçŽ¯çš„çª—å£
+                  å¯¹frmwinè€Œè¨€ï¼Œæ¶ˆæ¯é˜Ÿåˆ—å¯„ç”Ÿåœ¨mainwinä¸Š,å¯ä»¥æœ‰è‡ªå·±çš„æ¶ˆæ¯å¾ªçŽ¯
+                  ä¹Ÿå¯ä»¥æ²¡æœ‰ï¼Œå¯¹æ¶ˆæ¯å¾ªçŽ¯frmwinè€Œè¨€ï¼Œæ­¤æ—¶é€€å‡ºæ¶ˆæ¯å¾ªçŽ¯,å¦åˆ™æ¸…æ¥šçª—å£ä¿¡æ¯*/
                 if (hManWin == pMsgQueue->quit_win[i])
                 {
                     msg->h_deswin   = hManWin;
@@ -2464,12 +2466,12 @@ checkagain:
         {
             __bool isChild;
             *msg = pMsgQueue->pAsyncMsg[pMsgQueue->readpos];
-            /*ÅÐ¶Ïµ±Ç°ÕÒµ½µÄfrmwinÊÇ·ñÔÚÏûÏ¢Ñ­»·´°¿ÚµÄ×ÓËï´°¿ÚÖÐ*/
+            /*åˆ¤æ–­å½“å‰æ‰¾åˆ°çš„frmwinæ˜¯å¦åœ¨æ¶ˆæ¯å¾ªçŽ¯çª—å£çš„å­å­™çª—å£ä¸­*/
             isChild = GUI_WinIsAncestor(msg->h_deswin, GUI_WinP2H(pMainWin->Primitive));
 
             if (isChild)
             {
-                /*ÐÞ¸ÄÍâ²¿ÏûÏ¢Ä¿±ê´°¿Ú£¬Ö±½Ó´«¸øÏûÏ¢Ñ­»·´°¿Ú*/
+                /*ä¿®æ”¹å¤–éƒ¨æ¶ˆæ¯ç›®æ ‡çª—å£ï¼Œç›´æŽ¥ä¼ ç»™æ¶ˆæ¯å¾ªçŽ¯çª—å£*/
                 msg->h_deswin = GUI_WinP2H(pMainWin->Primitive);
             }
 
@@ -2542,7 +2544,7 @@ checkagain:
         __s32           slot;
         __gui_timer_t    *timer;
         pthread_mutex_lock(pMsgQueue->lock);
-        /* »ñÈ¡µÚÒ»¸ö¹ýÆÚµÄtimer */
+        /* èŽ·å–ç¬¬ä¸€ä¸ªè¿‡æœŸçš„timer */
         slot = pMsgQueue->FirstTimerSlot;
 
         do
@@ -2678,9 +2680,9 @@ checkagain:
         {
             if (pMsgQueue->quit_win[i])
             {
-                /*ÅÐ¶ÏÐèÒªÍË³öÏûÏ¢Ñ­»·µÄ´°¿Ú£¬ÊÇ²»ÊÇÕýÔÚÑ­»·µÄ´°¿Ú
-                  ¶Ôfrmwin¶øÑÔ£¬ÏûÏ¢¶ÓÁÐ¼ÄÉúÔÚmainwinÉÏ,¿ÉÒÔÓÐ×Ô¼ºµÄÏûÏ¢Ñ­»·
-                  Ò²¿ÉÒÔÃ»ÓÐ£¬¶ÔÏûÏ¢Ñ­»·frmwin¶øÑÔ£¬´ËÊ±ÍË³öÏûÏ¢Ñ­»·,·ñÔòÇå³þ´°¿ÚÐÅÏ¢*/
+                /*åˆ¤æ–­éœ€è¦é€€å‡ºæ¶ˆæ¯å¾ªçŽ¯çš„çª—å£ï¼Œæ˜¯ä¸æ˜¯æ­£åœ¨å¾ªçŽ¯çš„çª—å£
+                  å¯¹frmwinè€Œè¨€ï¼Œæ¶ˆæ¯é˜Ÿåˆ—å¯„ç”Ÿåœ¨mainwinä¸Š,å¯ä»¥æœ‰è‡ªå·±çš„æ¶ˆæ¯å¾ªçŽ¯
+                  ä¹Ÿå¯ä»¥æ²¡æœ‰ï¼Œå¯¹æ¶ˆæ¯å¾ªçŽ¯frmwinè€Œè¨€ï¼Œæ­¤æ—¶é€€å‡ºæ¶ˆæ¯å¾ªçŽ¯,å¦åˆ™æ¸…æ¥šçª—å£ä¿¡æ¯*/
                 if (hManWin == pMsgQueue->quit_win[i])
                 {
                     msg->h_deswin   = hManWin;
@@ -2793,12 +2795,12 @@ checkagain:
 
         if (ret == ORANGE_TRUE)
         {
-            /*ÅÐ¶Ïµ±Ç°ÕÒµ½µÄfrmwinÊÇ·ñÔÚÏûÏ¢Ñ­»·´°¿ÚµÄ×ÓËï´°¿ÚÖÐ*/
+            /*åˆ¤æ–­å½“å‰æ‰¾åˆ°çš„frmwinæ˜¯å¦åœ¨æ¶ˆæ¯å¾ªçŽ¯çª—å£çš„å­å­™çª—å£ä¸­*/
             isChild = GUI_WinIsAncestor(msg->h_deswin, GUI_WinP2H(pMainWin->Primitive));
 
             if (isChild)
             {
-                /*ÐÞ¸ÄÍâ²¿ÏûÏ¢Ä¿±ê´°¿Ú£¬Ö±½Ó´«¸øÏûÏ¢Ñ­»·´°¿Ú*/
+                /*ä¿®æ”¹å¤–éƒ¨æ¶ˆæ¯ç›®æ ‡çª—å£ï¼Œç›´æŽ¥ä¼ ç»™æ¶ˆæ¯å¾ªçŽ¯çª—å£*/
                 msg->h_deswin = GUI_WinP2H(pMainWin->Primitive);
             }
 
@@ -2856,7 +2858,7 @@ checkagain:
         __s32           slot;
         __gui_timer_t    *timer;
         pthread_mutex_lock(pMsgQueue->lock);
-        /* »ñÈ¡µÚÒ»¸ö¹ýÈ¥µÄtimer */
+        /* èŽ·å–ç¬¬ä¸€ä¸ªè¿‡åŽ»çš„timer */
         slot = pMsgQueue->FirstTimerSlot;
 
         do
@@ -3170,7 +3172,7 @@ __s32 GUI_DispatchMessage(__gui_msg_t *msg)
 
     if (msg->id == GUI_MSG_TOUCH)
     {
-        /*ºáÊúÆÁ×ø±ê·½Ïò×ª»»*/
+        /*æ¨ªç«–å±åæ ‡æ–¹å‘è½¬æ¢*/
         if ((msg->dwAddData1 == GUI_MSG_TOUCH_UP)
             || (msg->dwAddData1 == GUI_MSG_TOUCH_OVERUP))
         {
@@ -3259,8 +3261,8 @@ __s32 GUI_PostQuitMessage(H_WIN  hWnd)
 *
 * date:             2009-7-22
 *
-* Description:      ·¢ËÍÏûÏ¢(²»¹Ü·¢ËÍ½ÓÊÕÊÇ·ñÔÚÍ¬Ò»¸öÏß³Ì£¬¶¼Ö±½ÓÖ´ÐÐcallbackº¯Êý
-                    ÓÃÀ´Ìá¹©ÌØ±ðµÄÏµÍ³·þÎñ)
+* Description:      å‘é€æ¶ˆæ¯(ä¸ç®¡å‘é€æŽ¥æ”¶æ˜¯å¦åœ¨åŒä¸€ä¸ªçº¿ç¨‹ï¼Œéƒ½ç›´æŽ¥æ‰§è¡Œcallbackå‡½æ•°
+                    ç”¨æ¥æä¾›ç‰¹åˆ«çš„ç³»ç»ŸæœåŠ¡)
 *
 * parameters:
 *
@@ -3510,9 +3512,9 @@ checkagain:
         {
             if (pMsgQueue->quit_win[i])
             {
-                /*ÅÐ¶ÏÐèÒªÍË³öÏûÏ¢Ñ­»·µÄ´°¿Ú£¬ÊÇ²»ÊÇÕýÔÚÑ­»·µÄ´°¿Ú
-                  ¶Ôfrmwin¶øÑÔ£¬ÏûÏ¢¶ÓÁÐ¼ÄÉúÔÚmainwinÉÏ,¿ÉÒÔÓÐ×Ô¼ºµÄÏûÏ¢Ñ­»·
-                  Ò²¿ÉÒÔÃ»ÓÐ£¬¶ÔÏûÏ¢Ñ­»·frmwin¶øÑÔ£¬´ËÊ±ÍË³öÏûÏ¢Ñ­»·,·ñÔòÇå³þ´°¿ÚÐÅÏ¢*/
+                /*åˆ¤æ–­éœ€è¦é€€å‡ºæ¶ˆæ¯å¾ªçŽ¯çš„çª—å£ï¼Œæ˜¯ä¸æ˜¯æ­£åœ¨å¾ªçŽ¯çš„çª—å£
+                  å¯¹frmwinè€Œè¨€ï¼Œæ¶ˆæ¯é˜Ÿåˆ—å¯„ç”Ÿåœ¨mainwinä¸Š,å¯ä»¥æœ‰è‡ªå·±çš„æ¶ˆæ¯å¾ªçŽ¯
+                  ä¹Ÿå¯ä»¥æ²¡æœ‰ï¼Œå¯¹æ¶ˆæ¯å¾ªçŽ¯frmwinè€Œè¨€ï¼Œæ­¤æ—¶é€€å‡ºæ¶ˆæ¯å¾ªçŽ¯,å¦åˆ™æ¸…æ¥šçª—å£ä¿¡æ¯*/
                 if (hWnd == pMsgQueue->quit_win[i])
                 {
                     msg->h_deswin   = hWnd;
@@ -3783,4 +3785,3 @@ checkagain:
     return FALSE;
 }
 #endif
-

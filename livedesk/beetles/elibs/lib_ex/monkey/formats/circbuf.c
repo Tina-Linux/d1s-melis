@@ -1,21 +1,34 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : circbuf.c
-* By        : Andy.zhang
-* Func      : »·ĞÎ¶ÓÁĞ»º³å»úÖÆ
-* Version   : v1.0
-* ============================================================================================================
-* 2009-11-3 9:39:42  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "monkey_i.h"
 #include "circbuf.h"
 
@@ -23,17 +36,17 @@
 #define CACHE_MAX_LINE      10
 
 /***********************************************************************************************************************
-    slot[0]->CbSlot->CbSlot->CbSlot (·ÖĞĞĞÅÏ¢)
-    slot[1]->CbSlot->CbSlot->CbSlot (·ÖĞĞĞÅÏ¢)
+    slot[0]->CbSlot->CbSlot->CbSlot (åˆ†è¡Œä¿¡æ¯)
+    slot[1]->CbSlot->CbSlot->CbSlot (åˆ†è¡Œä¿¡æ¯)
     |
     |
     |
     |
-    slot[CB_MAX_SLOT-1]->CbSlot->CbSlot->CbSlot (·ÖĞĞĞÅÏ¢)
+    slot[CB_MAX_SLOT-1]->CbSlot->CbSlot->CbSlot (åˆ†è¡Œä¿¡æ¯)
 
-    1. »·ĞÎ¶ÓÁĞ»º³å CB_MAX_SLOT ¶ÎµÄ·ÖĞĞĞÅÏ¢;
-    2. Ã¿¶ÎÄÚ°üº¬µÄ·ÖĞĞĞÅÏ¢ÊÇ¿¿¶ÁÈ¡¹Ì¶¨»º³åÇøÊı¾İ·ÖĞĞµÃµ½, Ã¿¶Î°üº¬µÄĞĞÊı²»¹Ì¶¨, ËùÒÔ²ÉÓÃ·Ö¿éÁ´±íµÄ·½Ê½×é³É;
-    3. ËùÓĞµÄslot ×é³ÉÒ»¸ö»·ĞÎ¶ÓÁĞ;
+    1. ç¯å½¢é˜Ÿåˆ—ç¼“å†² CB_MAX_SLOT æ®µçš„åˆ†è¡Œä¿¡æ¯;
+    2. æ¯æ®µå†…åŒ…å«çš„åˆ†è¡Œä¿¡æ¯æ˜¯é è¯»å–å›ºå®šç¼“å†²åŒºæ•°æ®åˆ†è¡Œå¾—åˆ°, æ¯æ®µåŒ…å«çš„è¡Œæ•°ä¸å›ºå®š, æ‰€ä»¥é‡‡ç”¨åˆ†å—é“¾è¡¨çš„æ–¹å¼ç»„æˆ;
+    3. æ‰€æœ‰çš„slot ç»„æˆä¸€ä¸ªç¯å½¢é˜Ÿåˆ—;
 ***********************************************************************************************************************/
 
 /**********************************************************************************************************************/
@@ -44,7 +57,7 @@ typedef struct tag_CbSlot
     struct tag_CbSlot *next;
 } CbSlot;
 /**********************************************************************************************************************/
-/** ´´½¨Ò»¸ö slot */
+/** åˆ›å»ºä¸€ä¸ª slot */
 static CbSlot *cbslot_create(void)
 {
     CbSlot *slot;
@@ -60,13 +73,13 @@ static CbSlot *cbslot_create(void)
     return slot;
 }
 
-/** ¸´Î»slot , Çå³ıÀïÃæÊı¾İ£¬µ«ÊÇ²»ÊÍ·ÅÄÚ´æ */
+/** å¤ä½slot , æ¸…é™¤é‡Œé¢æ•°æ®ï¼Œä½†æ˜¯ä¸é‡Šæ”¾å†…å­˜ */
 static void cbslot_flush(CbSlot *slot)
 {
     CbSlot *tmp;
     tmp = slot;
 
-    while (tmp != NULL)         //×¢Òâ£¬»º³åÇø²»ÒªÊÍ·Å£¬×îºóÔÚfree_txt_lineÖĞÊÍ·Å·ÖÅäµÄ»º³å
+    while (tmp != NULL)         //æ³¨æ„ï¼Œç¼“å†²åŒºä¸è¦é‡Šæ”¾ï¼Œæœ€ååœ¨free_txt_lineä¸­é‡Šæ”¾åˆ†é…çš„ç¼“å†²
     {
         tmp->count = 0;
         g_memset(tmp->line, 0, sizeof(MkLine)*CACHE_MAX_LINE);
@@ -76,7 +89,7 @@ static void cbslot_flush(CbSlot *slot)
     return;
 }
 
-/** É¾³ı slot, ÊÍ·ÅÄÚ´æ */
+/** åˆ é™¤ slot, é‡Šæ”¾å†…å­˜ */
 static void cbslot_delete(CbSlot *slot)
 {
     CbSlot *tmp1, *tmp2;
@@ -93,7 +106,7 @@ static void cbslot_delete(CbSlot *slot)
     return;
 }
 
-///** ÉèÖÃslot index ´¦Êı¾İ */
+///** è®¾ç½®slot index å¤„æ•°æ® */
 //static void cbslot_setValue( CbSlot *slot, int index, MkLine *line)
 //{
 //  CbSlot *tmp = slot;
@@ -114,7 +127,7 @@ static void cbslot_delete(CbSlot *slot)
 //  tmp->count = index;
 //}
 
-/* ²éÏÂ slot index ´¦Êı¾İ*/
+/* æŸ¥ä¸‹ slot index å¤„æ•°æ®*/
 static MkLine *cbslot_getValue(CbSlot *slot, int index)
 {
     CbSlot *tmp = slot;
@@ -133,7 +146,7 @@ static MkLine *cbslot_getValue(CbSlot *slot, int index)
     return &(tmp->line[index]);
 }
 
-/** ÏòslotÎ²²¿Ìí¼ÓÊı¾İ*/
+/** å‘slotå°¾éƒ¨æ·»åŠ æ•°æ®*/
 static __s32 cbslot_pushValue(CbSlot *slot, MkLine *line)
 {
     int index;
@@ -159,7 +172,7 @@ static __s32 cbslot_pushValue(CbSlot *slot, MkLine *line)
     return EPDK_OK;
 }
 
-/** slot ÄÚ²¿°üº¬µÄitem ÊıÄ¿ */
+/** slot å†…éƒ¨åŒ…å«çš„item æ•°ç›® */
 static __s32 cbslot_getSize(CbSlot *slot)
 {
     CbSlot *tmp = slot;
@@ -174,13 +187,13 @@ static __s32 cbslot_getSize(CbSlot *slot)
     return count;
 }
 
-/** slot µÄÆğÊ¼Æ«ÒÆÁ¿ */
+/** slot çš„èµ·å§‹åç§»é‡ */
 static __s32 cbslot_getStartOffset(CbSlot *slot)
 {
     return slot->line[0].start;
 }
 
-/** slot µÄÎ²²¿Æ«ÒÆÁ¿ */
+/** slot çš„å°¾éƒ¨åç§»é‡ */
 static __s32 cbslot_getEndOffset(CbSlot *slot)
 {
     CbSlot *tmp1, *tmp2;
@@ -209,25 +222,25 @@ static __s32 cbslot_getEndOffset(CbSlot *slot)
 }
 
 /**********************************************************************************************************************/
-/*  »·ĞÎ»º³åÇø */
+/*  ç¯å½¢ç¼“å†²åŒº */
 struct tag_CircularBuff
 {
     CbSlot             *slot[CB_MAX_SLOT];
-    int                 qin, qout;                  /* »·ĞÎ»º³åÇø in, out */
-    //  __s32               status;                     /* »·ĞÎ¶ÓÁĞ×´Ì¬, ÃâËø */
-    __bool              startFlag,  endFlag;        /* qin ÊÇ·ñÒÑµ½ÎÄµµ×îÇ°Ãæ£¬ qout ÊÇ·ñÒÑµ½ÎÄµµ×îºóÃæ */
+    int                 qin, qout;                  /* ç¯å½¢ç¼“å†²åŒº in, out */
+    //  __s32               status;                     /* ç¯å½¢é˜Ÿåˆ—çŠ¶æ€, å…é” */
+    __bool              startFlag,  endFlag;        /* qin æ˜¯å¦å·²åˆ°æ–‡æ¡£æœ€å‰é¢ï¼Œ qout æ˜¯å¦å·²åˆ°æ–‡æ¡£æœ€åé¢ */
 
-    __s32               startQIndex, startLIndex;   /* µ±Ç°ÏÔÊ¾Ò³¶ÏĞĞĞÅÏ¢ */
+    __s32               startQIndex, startLIndex;   /* å½“å‰æ˜¾ç¤ºé¡µæ–­è¡Œä¿¡æ¯ */
     __s32               endQIndex,   endLIndex;
     //__s32             startOffset, endOffset;
 
     __u32               seekoffset;
 
-    //__krnl_event_t        *cacheMbox;                 /* ÏûÏ¢ÓÊÏä, ·¢ËÍÃüÁî   */
+    //__krnl_event_t        *cacheMbox;                 /* æ¶ˆæ¯é‚®ç®±, å‘é€å‘½ä»¤   */
     __krnl_event_t      *cacheQ;
-    __krnl_event_t      *respMbox;                  /* »ØÓ¦ÓÊÏä, »ØÓ¦ÃüÁî   */
-    __u32                tid;                       /* ºóÌ¨·ÖÎöÏß³Ì id      */
-    txtEncodeParser     *plugin;                    /* ²å¼ş                 */
+    __krnl_event_t      *respMbox;                  /* å›åº”é‚®ç®±, å›åº”å‘½ä»¤   */
+    __u32                tid;                       /* åå°åˆ†æçº¿ç¨‹ id      */
+    txtEncodeParser     *plugin;                    /* æ’ä»¶                 */
     LineConfig           config;
 };
 
@@ -261,14 +274,14 @@ static ParserPluginArray pluginArray[] =
 static void qcache_thread(void *p_arg);
 
 /**********************************************************************************************************************/
-/* ´´½¨»·ĞÎ»º³åÇø */
+/* åˆ›å»ºç¯å½¢ç¼“å†²åŒº */
 CircularBuff *circbuf_create(LineConfig *para)
 {
     CircularBuff *cb;
     QCacheCmd   recev;
     int i;
     __u8 err;
-    /* ·ÖÅä¾ä±úÄÚ´æ */
+    /* åˆ†é…å¥æŸ„å†…å­˜ */
     cb = (CircularBuff *)g_malloc(sizeof(CircularBuff));
 
     if (!cb)
@@ -279,7 +292,7 @@ CircularBuff *circbuf_create(LineConfig *para)
 
     g_memset(cb, 0, sizeof(CircularBuff));
 
-    /* ×°ÔØ½âÂë²å¼ş*/
+    /* è£…è½½è§£ç æ’ä»¶*/
     for (i = 0; i < sizeof(pluginArray) / sizeof(pluginArray[0]); i++)
     {
         if (pluginArray[i].encodeType == para->encodeType)
@@ -289,9 +302,9 @@ CircularBuff *circbuf_create(LineConfig *para)
         }
     }
 
-    /* ÅäÖÃ²å¼ş */
+    /* é…ç½®æ’ä»¶ */
     cb->plugin->config(cb->plugin, para);
-    /* ³õÊ¼»¯»·ĞÎ¶ÓÁĞ */
+    /* åˆå§‹åŒ–ç¯å½¢é˜Ÿåˆ— */
     cb->qin = cb->qout = 0;
 
     for (i = 0; i < CB_MAX_SLOT; i++)
@@ -301,7 +314,7 @@ CircularBuff *circbuf_create(LineConfig *para)
 
     cb->startQIndex = cb->endQIndex = 0;
     cb->startLIndex = cb->endLIndex = 0;
-    /* ´´½¨Í¨ĞÅÓÊÏä */
+    /* åˆ›å»ºé€šä¿¡é‚®ç®± */
     cb->respMbox  = (__krnl_event_t *)esKRNL_MboxCreate(NULL);
 
     if (!cb->respMbox)
@@ -318,7 +331,7 @@ CircularBuff *circbuf_create(LineConfig *para)
         return NULL;
     }
 
-    /* ´´½¨cacheÏß³Ì */
+    /* åˆ›å»ºcacheçº¿ç¨‹ */
     cb->tid = esKRNL_TCreate(qcache_thread, (void *)cb, 0x500, KRNL_priolevel5);
 
     if (!cb->tid)
@@ -327,7 +340,7 @@ CircularBuff *circbuf_create(LineConfig *para)
         return NULL;
     }
 
-    /* Í¨ÖªÏß³Ì */
+    /* é€šçŸ¥çº¿ç¨‹ */
     //esKRNL_MboxPost( cb->cacheMbox, (void *)QCACHE_CMD_REFRESH);
     esKRNL_QPost(cb->cacheQ, (unsigned long)QCACHE_CMD_REFRESH);
 
@@ -344,7 +357,7 @@ CircularBuff *circbuf_create(LineConfig *para)
     return cb;
 }
 
-/* Çå¿Õ¸´Î»»·ĞÎ¶ÓÁĞ         */
+/* æ¸…ç©ºå¤ä½ç¯å½¢é˜Ÿåˆ—         */
 __s32   circbuf_flush(CircularBuff *cb)
 {
     int i;
@@ -359,19 +372,19 @@ __s32   circbuf_flush(CircularBuff *cb)
 }
 
 
-/* ÉèÖÃ¶ÏĞĞ²ÎÊı */
+/* è®¾ç½®æ–­è¡Œå‚æ•° */
 __s32   circbuf_setting(CircularBuff *cb, LineConfig *para)
 {
     QCacheCmd   recev;
     int  i;
     __u8 err;
-    /* Ë¢ĞÂ»·ĞÎ¶ÓÁĞ */
+    /* åˆ·æ–°ç¯å½¢é˜Ÿåˆ— */
     circbuf_flush(cb);
-    /* Ë¢ĞÂµ±Ç°ÏÔÊ¾Ò³¶ÏĞĞĞÅÏ¢*/
+    /* åˆ·æ–°å½“å‰æ˜¾ç¤ºé¡µæ–­è¡Œä¿¡æ¯*/
     cb->startQIndex = cb->startLIndex = 0;
     cb->endQIndex   = cb->endLIndex   = 0;
 
-    /* ¸üĞÂ²å¼ş */
+    /* æ›´æ–°æ’ä»¶ */
     if (cb->config.encodeType != para->encodeType)
     {
         cb->plugin->destroy(cb->plugin);
@@ -387,11 +400,11 @@ __s32   circbuf_setting(CircularBuff *cb, LineConfig *para)
         }
     }
 
-    /* ÅäÖÃ²å¼ş */
+    /* é…ç½®æ’ä»¶ */
     cb->plugin->config(cb->plugin, para);
-    /* ¸üĞÂÅäÖÃĞÅÏ¢ */
+    /* æ›´æ–°é…ç½®ä¿¡æ¯ */
     g_memcpy(&(cb->config), para, sizeof(LineConfig));
-    /* Í¨ÖªÏß³Ì */
+    /* é€šçŸ¥çº¿ç¨‹ */
     //esKRNL_MboxPost( cb->cacheMbox, (void *)QCACHE_CMD_REFRESH);
     esKRNL_QPost(cb->cacheQ, (unsigned long)QCACHE_CMD_REFRESH);
 
@@ -412,9 +425,9 @@ __s32   circbuf_seek(CircularBuff *cb, __u32 offset)
 {
     QCacheCmd   recev;
     __u8        err;
-    /* Ë¢ĞÂ»·ĞÎ¶ÓÁĞ */
+    /* åˆ·æ–°ç¯å½¢é˜Ÿåˆ— */
     circbuf_flush(cb);
-    /* Ë¢ĞÂµ±Ç°ÏÔÊ¾Ò³¶ÏĞĞĞÅÏ¢*/
+    /* åˆ·æ–°å½“å‰æ˜¾ç¤ºé¡µæ–­è¡Œä¿¡æ¯*/
     cb->startQIndex = cb->startLIndex = 0;
     cb->endQIndex   = cb->endLIndex   = 0;
     cb->seekoffset  = offset;
@@ -495,18 +508,18 @@ __s32   circbuf_getStartLines(CircularBuff *cb, MkLine *line, int num)
         }
     }
 
-    for (i = 0; i < num; i++)                                   //Ğ´lineofpageĞĞ¶ÏĞĞĞÅÏ¢µ½Ò³±íÖĞÈ¥show
+    for (i = 0; i < num; i++)                                   //å†™lineofpageè¡Œæ–­è¡Œä¿¡æ¯åˆ°é¡µè¡¨ä¸­å»show
     {
-        if (curline == size)                                    //µ½ÁËqueue item µÄÄ©¶Ë
+        if (curline == size)                                    //åˆ°äº†queue item çš„æœ«ç«¯
         {
-            if (cb->startQIndex == cb->qout)                    //ÏÂÒ»¸öqueueÊÇ·ñ´æÔÚ
+            if (cb->startQIndex == cb->qout)                    //ä¸‹ä¸€ä¸ªqueueæ˜¯å¦å­˜åœ¨
             {
-                if (cb->endFlag == EPDK_TRUE)                   //Èç¹ûÒÑ¾­µ½ÁËÎÄÕÂÎ²²¿
+                if (cb->endFlag == EPDK_TRUE)                   //å¦‚æœå·²ç»åˆ°äº†æ–‡ç« å°¾éƒ¨
                 {
                     cb->endLIndex = curline - 1;
                     return 0;
                 }
-                else                                            //Èç¹ûÃ»µ½ÎÄÕÂÎ²²¿
+                else                                            //å¦‚æœæ²¡åˆ°æ–‡ç« å°¾éƒ¨
                 {
                     esKRNL_QFlush(cb->cacheQ);
                     esKRNL_QPost(cb->cacheQ, (unsigned long)QCACHE_CMD_NEXT_BUF);
@@ -536,14 +549,14 @@ __s32   circbuf_getStartLines(CircularBuff *cb, MkLine *line, int num)
         curline++;
     }
 
-    /* ¶¨Î»½áÊøÎ»ÖÃ */
+    /* å®šä½ç»“æŸä½ç½® */
     cb->endLIndex = curline - 1;
-    /* Æô¶¯·ÖÒ³Ïß³Ì */
-    esKRNL_QPost(cb->cacheQ, (unsigned long)QCACHE_CMD_NEXT_PAGE);         //Æô¶¯·ÖÒ³Ïß³Ì
+    /* å¯åŠ¨åˆ†é¡µçº¿ç¨‹ */
+    esKRNL_QPost(cb->cacheQ, (unsigned long)QCACHE_CMD_NEXT_PAGE);         //å¯åŠ¨åˆ†é¡µçº¿ç¨‹
     return 0;
 }
 
-/* Ïòºó¶ÁÈ¡ num ĞĞ¶ÏĞĞĞÅÏ¢  */
+/* å‘åè¯»å– num è¡Œæ–­è¡Œä¿¡æ¯  */
 __s32   circbuf_getNextLines(CircularBuff *cb, MkLine *line, int num)
 {
     CbSlot      *slot;
@@ -552,24 +565,24 @@ __s32   circbuf_getNextLines(CircularBuff *cb, MkLine *line, int num)
     int         i, curline, size;
     __u8        err;
     g_memset(line, 0, sizeof(MkLine)*num);
-    /*  ¶¨Î»´ı¶ÁÈ¡Êı¾İÔÚ»·ĞÎ¶ÓÁĞÖĞµÄ¿ªÊ¼Î»ÖÃ */
+    /*  å®šä½å¾…è¯»å–æ•°æ®åœ¨ç¯å½¢é˜Ÿåˆ—ä¸­çš„å¼€å§‹ä½ç½® */
     slot = circbuf_getIndex(cb, cb->endQIndex);
     size = cbslot_getSize(slot);
 
-    if ((cb->endLIndex + 1) < size)                 /* ¿ªÊ¼Î»ÖÃÔÚendQIndex slot */
+    if ((cb->endLIndex + 1) < size)                 /* å¼€å§‹ä½ç½®åœ¨endQIndex slot */
     {
         cb->startQIndex = cb->endQIndex;
         cb->startLIndex = cb->endLIndex + 1;
     }
-    else                                            /* ¿ªÊ¼Î»ÖÃÔÚÏÂÒ»¸öslot */
+    else                                            /* å¼€å§‹ä½ç½®åœ¨ä¸‹ä¸€ä¸ªslot */
     {
-        if (cb->endQIndex == cb->qout)              /* ÏÂÒ»¸öslotÊı¾İ²»ÔÚ»·ĞÎ¶ÓÁĞ */
+        if (cb->endQIndex == cb->qout)              /* ä¸‹ä¸€ä¸ªslotæ•°æ®ä¸åœ¨ç¯å½¢é˜Ÿåˆ— */
         {
-            if (EPDK_TRUE == cb->endFlag)           /* Èç¹û»·ĞÎ¶ÓÁĞÊı¾İÒÑ¾­µ½ÁËÎÄÕÂÎ²²¿ */
+            if (EPDK_TRUE == cb->endFlag)           /* å¦‚æœç¯å½¢é˜Ÿåˆ—æ•°æ®å·²ç»åˆ°äº†æ–‡ç« å°¾éƒ¨ */
             {
-                return -1;                          /* ·µ»Ø-1, ÒÑ¾­µ½ÁËÎÄÕÂÎ²²¿£¬Ã»ÓĞ¶ÏĞĞÊı¾İ */
+                return -1;                          /* è¿”å›-1, å·²ç»åˆ°äº†æ–‡ç« å°¾éƒ¨ï¼Œæ²¡æœ‰æ–­è¡Œæ•°æ® */
             }
-            else                                    /* Í¨ÖªÏß³ÌĞ´Èë»·ĞÎ¶ÓÁĞÏÂÒ»¸öslotÊı¾İ*/
+            else                                    /* é€šçŸ¥çº¿ç¨‹å†™å…¥ç¯å½¢é˜Ÿåˆ—ä¸‹ä¸€ä¸ªslotæ•°æ®*/
             {
                 esKRNL_QFlush(cb->cacheQ);
                 esKRNL_QPost(cb->cacheQ, (unsigned long)QCACHE_CMD_NEXT_BUF);
@@ -595,19 +608,19 @@ __s32   circbuf_getNextLines(CircularBuff *cb, MkLine *line, int num)
     cb->endQIndex   = cb->startQIndex;
     curline         = cb->startLIndex;
 
-    /* ¶ÁÈ¡numĞĞ¶ÏĞĞĞÅÏ¢ */
+    /* è¯»å–numè¡Œæ–­è¡Œä¿¡æ¯ */
     for (i = 0; i < num; i++)
     {
-        if (curline == size)                                /* µ½ÁËstartQIndex slot µÄÄ©¶Ë */
+        if (curline == size)                                /* åˆ°äº†startQIndex slot çš„æœ«ç«¯ */
         {
-            if (cb->startQIndex == cb->qout)                /* ÏÂÒ»¸öslot²»ÔÚ¶ÓÁĞÄÚ, ĞèÆô¶¯Ïß³ÌĞ´Êı¾İ */
+            if (cb->startQIndex == cb->qout)                /* ä¸‹ä¸€ä¸ªslotä¸åœ¨é˜Ÿåˆ—å†…, éœ€å¯åŠ¨çº¿ç¨‹å†™æ•°æ® */
             {
-                if (cb->endFlag == EPDK_TRUE)               /* Èç¹û»·ĞÎ¶ÓÁĞÊı¾İÒÑ¾­µ½ÁËÎÄÕÂÎ²²¿ */
+                if (cb->endFlag == EPDK_TRUE)               /* å¦‚æœç¯å½¢é˜Ÿåˆ—æ•°æ®å·²ç»åˆ°äº†æ–‡ç« å°¾éƒ¨ */
                 {
                     cb->endLIndex = curline - 1;
                     return 0;
                 }
-                else                                        /* Èç¹ûÃ»µ½ÎÄÕÂÎ²²¿, Í¨ÖªÏß³ÌĞ´Èë»·ĞÎ¶ÓÁĞÏÂÒ»¸öslotÊı¾İ*/
+                else                                        /* å¦‚æœæ²¡åˆ°æ–‡ç« å°¾éƒ¨, é€šçŸ¥çº¿ç¨‹å†™å…¥ç¯å½¢é˜Ÿåˆ—ä¸‹ä¸€ä¸ªslotæ•°æ®*/
                 {
                     esKRNL_QFlush(cb->cacheQ);
                     esKRNL_QPost(cb->cacheQ, (unsigned long)QCACHE_CMD_NEXT_BUF);
@@ -629,7 +642,7 @@ __s32   circbuf_getNextLines(CircularBuff *cb, MkLine *line, int num)
             slot = circbuf_getIndex(cb, cb->endQIndex);
             size = cbslot_getSize(slot);
 
-            /* Æô¶¯·ÖÒ³Ïß³Ì */
+            /* å¯åŠ¨åˆ†é¡µçº¿ç¨‹ */
             if ((cb->startQIndex - cb->qout + CB_MAX_SLOT) % CB_MAX_SLOT > CB_MAX_SLOT / 2)
             {
                 esKRNL_QFlush(cb->cacheQ);
@@ -637,21 +650,21 @@ __s32   circbuf_getNextLines(CircularBuff *cb, MkLine *line, int num)
             }
         }
 
-        // ¸´ÖÆ¶ÏĞĞÊı¾İ
+        // å¤åˆ¶æ–­è¡Œæ•°æ®
         tmpline = cbslot_getValue(slot, curline);
         g_memcpy(line + i, tmpline, sizeof(MkLine));
         curline++;
     }
 
-    /* ¶¨Î»½áÊøÎ»ÖÃ */
+    /* å®šä½ç»“æŸä½ç½® */
     cb->endLIndex = curline - 1;
     __msg(" size = %d , startq = %d , startl = %d , endq = %d , endl = %d  ", size, cb->startQIndex, cb->startLIndex, cb->endQIndex, cb->endLIndex);
-    /* Æô¶¯·ÖÒ³Ïß³Ì */
-    esKRNL_QPost(cb->cacheQ, (unsigned long)QCACHE_CMD_NEXT_PAGE);         //Æô¶¯·ÖÒ³Ïß³Ì
+    /* å¯åŠ¨åˆ†é¡µçº¿ç¨‹ */
+    esKRNL_QPost(cb->cacheQ, (unsigned long)QCACHE_CMD_NEXT_PAGE);         //å¯åŠ¨åˆ†é¡µçº¿ç¨‹
     return 0;
 }
 
-/* ÏòÇ°¶ÁÈ¡ num ĞĞ¶ÏĞĞĞÅÏ¢  */
+/* å‘å‰è¯»å– num è¡Œæ–­è¡Œä¿¡æ¯  */
 __s32   circbuf_getPrevLines(CircularBuff *cb, MkLine *line, int num)
 {
     CbSlot          *slot;
@@ -660,24 +673,24 @@ __s32   circbuf_getPrevLines(CircularBuff *cb, MkLine *line, int num)
     int             i, curline, size;
     __u8            err;
     g_memset(line, 0, sizeof(MkLine)*num);
-    /* ¶¨Î»½áÊøÎ»ÖÃ */
+    /* å®šä½ç»“æŸä½ç½® */
     slot    = circbuf_getIndex(cb, cb->startQIndex);
     size    = cbslot_getSize(slot);
 
-    if (cb->startLIndex > 0)                        /* ½áÊøÎ»ÖÃÔÚ startQIndex slot */
+    if (cb->startLIndex > 0)                        /* ç»“æŸä½ç½®åœ¨ startQIndex slot */
     {
         cb->endQIndex       = cb->startQIndex;
         cb->endLIndex       = cb->startLIndex - 1;
     }
-    else                                            /* ½áÊøÎ»ÖÃÔÚ ÔÚÉÏÒ»¸ö slot */
+    else                                            /* ç»“æŸä½ç½®åœ¨ åœ¨ä¸Šä¸€ä¸ª slot */
     {
-        if (cb->startQIndex == cb->qin)             /* ÉÏÒ»¸öslotÊı¾İ²»ÔÚ»·ĞÎ¶ÓÁĞ */
+        if (cb->startQIndex == cb->qin)             /* ä¸Šä¸€ä¸ªslotæ•°æ®ä¸åœ¨ç¯å½¢é˜Ÿåˆ— */
         {
-            if (cb->startFlag == EPDK_TRUE)         /* Èç¹û»·ĞÎ¶ÓÁĞÊı¾İÒÑ¾­µ½ÁËÎÄÕÂÊ×²¿ */
+            if (cb->startFlag == EPDK_TRUE)         /* å¦‚æœç¯å½¢é˜Ÿåˆ—æ•°æ®å·²ç»åˆ°äº†æ–‡ç« é¦–éƒ¨ */
             {
-                return -1;                          /* ·µ»Ø-1, ÒÑ¾­µ½ÁËÎÄÕÂÊ×²¿£¬Ã»ÓĞ¶ÏĞĞÊı¾İ */
+                return -1;                          /* è¿”å›-1, å·²ç»åˆ°äº†æ–‡ç« é¦–éƒ¨ï¼Œæ²¡æœ‰æ–­è¡Œæ•°æ® */
             }
-            else                                    /* Í¨ÖªÏß³ÌĞ´Èë»·ĞÎ¶ÓÁĞÉÏÒ»¸öslotÊı¾İ*/
+            else                                    /* é€šçŸ¥çº¿ç¨‹å†™å…¥ç¯å½¢é˜Ÿåˆ—ä¸Šä¸€ä¸ªslotæ•°æ®*/
             {
                 esKRNL_QFlush(cb->cacheQ);
                 esKRNL_QPost(cb->cacheQ, (unsigned long)QCACHE_CMD_PREV_BUF);
@@ -705,15 +718,15 @@ __s32   circbuf_getPrevLines(CircularBuff *cb, MkLine *line, int num)
 
     for (i = num - 1; i >= 0; i--)
     {
-        if (curline < 0)                                                /* µ½ÁË endQIndex slot µÄÊ×¶Ë */
+        if (curline < 0)                                                /* åˆ°äº† endQIndex slot çš„é¦–ç«¯ */
         {
-            if (cb->endQIndex == cb->qin)                               /* ÉÏÒ»¸öslot²»ÔÚ¶ÓÁĞÖĞ£¬ĞèÆô¶¯Ïß³ÌÈ¥Ğ´ */
+            if (cb->endQIndex == cb->qin)                               /* ä¸Šä¸€ä¸ªslotä¸åœ¨é˜Ÿåˆ—ä¸­ï¼Œéœ€å¯åŠ¨çº¿ç¨‹å»å†™ */
             {
-                if (cb->startFlag == EPDK_TRUE)                         /* Èç¹û»·ĞÎ¶ÓÁĞÊı¾İÒÑ¾­µ½ÁËÎÄÕÂÊ×²¿ */
+                if (cb->startFlag == EPDK_TRUE)                         /* å¦‚æœç¯å½¢é˜Ÿåˆ—æ•°æ®å·²ç»åˆ°äº†æ–‡ç« é¦–éƒ¨ */
                 {
                     break;
                 }
-                else                                        /* Èç¹ûÃ»µ½ÎÄÕÂÊ×²¿, Í¨ÖªÏß³ÌĞ´Èë»·ĞÎ¶ÓÁĞÉÏÒ»¸öslotÊı¾İ*/
+                else                                        /* å¦‚æœæ²¡åˆ°æ–‡ç« é¦–éƒ¨, é€šçŸ¥çº¿ç¨‹å†™å…¥ç¯å½¢é˜Ÿåˆ—ä¸Šä¸€ä¸ªslotæ•°æ®*/
                 {
                     esKRNL_QFlush(cb->cacheQ);
                     esKRNL_QPost(cb->cacheQ, (unsigned long)QCACHE_CMD_PREV_BUF);
@@ -746,7 +759,7 @@ __s32   circbuf_getPrevLines(CircularBuff *cb, MkLine *line, int num)
 
     cb->startLIndex = curline + 1;
 
-    if (i >= 0)     // ÉÏÒ»Ò³Êı¾İ²»¹»
+    if (i >= 0)     // ä¸Šä¸€é¡µæ•°æ®ä¸å¤Ÿ
     {
         int j;
         //__getc();
@@ -763,7 +776,7 @@ __s32   circbuf_getPrevLines(CircularBuff *cb, MkLine *line, int num)
                 size = cbslot_getSize(slot);
             }
 
-            // ¸´ÖÆ¶ÏĞĞÊı¾İ
+            // å¤åˆ¶æ–­è¡Œæ•°æ®
             tmpline = cbslot_getValue(slot, curline);
             g_memcpy(line + j, tmpline, sizeof(MkLine));
             curline++;
@@ -777,13 +790,13 @@ __s32   circbuf_getPrevLines(CircularBuff *cb, MkLine *line, int num)
     return 0;
 }
 
-/* É¾³ı»·ĞÎ»º³åÇø           */
+/* åˆ é™¤ç¯å½¢ç¼“å†²åŒº           */
 __s32   circbuf_delete(CircularBuff *cb)
 {
     __u8            err;
     int             i;
     QCacheCmd       recev;
-    /* É¾³ıÏß³Ì */
+    /* åˆ é™¤çº¿ç¨‹ */
     esKRNL_QFlush(cb->cacheQ);
     esKRNL_QPost(cb->cacheQ, (unsigned long)QCACHE_CMD_EXIT);
 
@@ -797,19 +810,19 @@ __s32   circbuf_delete(CircularBuff *cb)
         }
     }
 
-    /* É¾³ıÓÊÏä */
+    /* åˆ é™¤é‚®ç®± */
     esKRNL_MboxDel(cb->respMbox, 0, &err);
     esKRNL_QDel(cb->cacheQ, 0, &err);
 
-    /* ÊÍ·Å»·ĞÎ¶ÓÁĞ */
+    /* é‡Šæ”¾ç¯å½¢é˜Ÿåˆ— */
     for (i = 0; i < CB_MAX_SLOT; i++)
     {
         cbslot_delete(cb->slot[i]);
     }
 
-    /* Ğ¶ÔØ²å¼ş */
+    /* å¸è½½æ’ä»¶ */
     cb->plugin->destroy(cb->plugin);
-    /* ÊÍ·Å¾ä±ú*/
+    /* é‡Šæ”¾å¥æŸ„*/
     g_free(cb);
     return EPDK_OK;
 }
@@ -831,7 +844,7 @@ __s32   circbuf_delete(CircularBuff *cb)
 //      g_memset(&line, 0, sizeof(MkLine));
 //
 //      ret = parser->analysis(parser, &line);
-//      if( ret< 0)         // ·ÖÎöÍê³É
+//      if( ret< 0)         // åˆ†æå®Œæˆ
 //          break;
 //      cbslot_pushValue(slot, &line);
 //  }
@@ -841,7 +854,7 @@ __s32   circbuf_delete(CircularBuff *cb)
 //  return ;
 //}
 
-/** Çå»º³åÇø£¬´ÓĞÂ¶ÏĞĞ£¬µ«ÊÇ²»ĞèÒª´ÓĞÂ¶¨Î»¿ªÊ¼Î»ÖÃ */
+/** æ¸…ç¼“å†²åŒºï¼Œä»æ–°æ–­è¡Œï¼Œä½†æ˜¯ä¸éœ€è¦ä»æ–°å®šä½å¼€å§‹ä½ç½® */
 static void qcache_onCmdRefresh(CircularBuff *cb)
 {
     txtEncodeParser  *parser;
@@ -856,14 +869,14 @@ static void qcache_onCmdRefresh(CircularBuff *cb)
     while (1)
     {
         g_memset(&line, 0, sizeof(MkLine));
-        ret = parser->analysis(parser, &line);  //·ÖÎöÒ»ĞĞÊı¾İ
+        ret = parser->analysis(parser, &line);  //åˆ†æä¸€è¡Œæ•°æ®
 
-        //      cbslot_pushValue( slot, &line );        //½«·ÖÎöµÃµ½µÄÊı¾İĞ´Èë circbuf
+        //      cbslot_pushValue( slot, &line );        //å°†åˆ†æå¾—åˆ°çš„æ•°æ®å†™å…¥ circbuf
         //      if( ret< 0)
         //          break;
         if (ret == -2)
         {
-            cbslot_pushValue(slot, &line);      //½«·ÖÎöµÃµ½µÄÊı¾İĞ´Èë circbuf
+            cbslot_pushValue(slot, &line);      //å°†åˆ†æå¾—åˆ°çš„æ•°æ®å†™å…¥ circbuf
             break;
         }
         else if (ret == -1)
@@ -872,7 +885,7 @@ static void qcache_onCmdRefresh(CircularBuff *cb)
         }
         else
         {
-            cbslot_pushValue(slot, &line);          //½«·ÖÎöµÃµ½µÄÊı¾İĞ´Èë circbuf
+            cbslot_pushValue(slot, &line);          //å°†åˆ†æå¾—åˆ°çš„æ•°æ®å†™å…¥ circbuf
         }
     }
 
@@ -881,7 +894,7 @@ static void qcache_onCmdRefresh(CircularBuff *cb)
     return;
 }
 
-/** Çå»º³åÇø£¬´ÓĞÂ¶ÏĞĞ£¬Ìø×ªµ½Ò»¸öÆ«ÒÆÁ¿, ĞèÒª´ÓĞÂ¶¨Î»¿ªÊ¼Î»ÖÃ */
+/** æ¸…ç¼“å†²åŒºï¼Œä»æ–°æ–­è¡Œï¼Œè·³è½¬åˆ°ä¸€ä¸ªåç§»é‡, éœ€è¦ä»æ–°å®šä½å¼€å§‹ä½ç½® */
 static void qcache_onCmdSeek(CircularBuff *cb)
 {
     txtEncodeParser  *parser;
@@ -897,14 +910,14 @@ static void qcache_onCmdSeek(CircularBuff *cb)
     while (1)
     {
         g_memset(&line, 0, sizeof(MkLine));
-        ret = parser->analysis(parser, &line);  //·ÖÎöÒ»ĞĞÊı¾İ
+        ret = parser->analysis(parser, &line);  //åˆ†æä¸€è¡Œæ•°æ®
 
-        //      cbslot_pushValue( slot, &line );        //½«·ÖÎöµÃµ½µÄÊı¾İĞ´Èë circbuf
+        //      cbslot_pushValue( slot, &line );        //å°†åˆ†æå¾—åˆ°çš„æ•°æ®å†™å…¥ circbuf
         //      if( ret< 0)
         //          break;
         if (ret == -2)
         {
-            cbslot_pushValue(slot, &line);      //½«·ÖÎöµÃµ½µÄÊı¾İĞ´Èë circbuf
+            cbslot_pushValue(slot, &line);      //å°†åˆ†æå¾—åˆ°çš„æ•°æ®å†™å…¥ circbuf
             break;
         }
         else if (ret == -1)
@@ -913,7 +926,7 @@ static void qcache_onCmdSeek(CircularBuff *cb)
         }
         else
         {
-            cbslot_pushValue(slot, &line);          //½«·ÖÎöµÃµ½µÄÊı¾İĞ´Èë circbuf
+            cbslot_pushValue(slot, &line);          //å°†åˆ†æå¾—åˆ°çš„æ•°æ®å†™å…¥ circbuf
         }
     }
 
@@ -944,14 +957,14 @@ static void qcache_onCmdNextPage(CircularBuff *cb)
         while (1)
         {
             g_memset(&line, 0, sizeof(MkLine));
-            ret = parser->analysis(parser, &line);  //·ÖÎöÒ»ĞĞÊı¾İ
+            ret = parser->analysis(parser, &line);  //åˆ†æä¸€è¡Œæ•°æ®
 
-            //          cbslot_pushValue( slot, &line );        //½«·ÖÎöµÃµ½µÄÊı¾İĞ´Èë circbuf
+            //          cbslot_pushValue( slot, &line );        //å°†åˆ†æå¾—åˆ°çš„æ•°æ®å†™å…¥ circbuf
             //          if( ret< 0)
             //              break;
             if (ret == -2)
             {
-                cbslot_pushValue(slot, &line);      //½«·ÖÎöµÃµ½µÄÊı¾İĞ´Èë circbuf
+                cbslot_pushValue(slot, &line);      //å°†åˆ†æå¾—åˆ°çš„æ•°æ®å†™å…¥ circbuf
                 break;
             }
             else if (ret == -1)
@@ -960,7 +973,7 @@ static void qcache_onCmdNextPage(CircularBuff *cb)
             }
             else
             {
-                cbslot_pushValue(slot, &line);          //½«·ÖÎöµÃµ½µÄÊı¾İĞ´Èë circbuf
+                cbslot_pushValue(slot, &line);          //å°†åˆ†æå¾—åˆ°çš„æ•°æ®å†™å…¥ circbuf
             }
         }
 
@@ -991,11 +1004,11 @@ static void qcache_onCmdPrevPage(CircularBuff *cb)
         while (1)
         {
             g_memset(&line, 0, sizeof(MkLine));
-            ret = parser->analysis(parser, &line);  //·ÖÎöÒ»ĞĞÊı¾İ
+            ret = parser->analysis(parser, &line);  //åˆ†æä¸€è¡Œæ•°æ®
 
             if (ret == -2)
             {
-                cbslot_pushValue(slot, &line);      //½«·ÖÎöµÃµ½µÄÊı¾İĞ´Èë circbuf
+                cbslot_pushValue(slot, &line);      //å°†åˆ†æå¾—åˆ°çš„æ•°æ®å†™å…¥ circbuf
                 break;
             }
             else if (ret == -1)
@@ -1004,7 +1017,7 @@ static void qcache_onCmdPrevPage(CircularBuff *cb)
             }
             else
             {
-                cbslot_pushValue(slot, &line);          //½«·ÖÎöµÃµ½µÄÊı¾İĞ´Èë circbuf
+                cbslot_pushValue(slot, &line);          //å°†åˆ†æå¾—åˆ°çš„æ•°æ®å†™å…¥ circbuf
             }
         }
 
@@ -1042,15 +1055,15 @@ static void qcache_onCmdNext(CircularBuff *cb)
         while (1)
         {
             g_memset(&line, 0, sizeof(MkLine));
-            ret = parser->analysis(parser, &line);  //·ÖÎöÒ»ĞĞÊı¾İ
+            ret = parser->analysis(parser, &line);  //åˆ†æä¸€è¡Œæ•°æ®
 
-            //          cbslot_pushValue( slot, &line );        //½«·ÖÎöµÃµ½µÄÊı¾İĞ´Èë circbuf
+            //          cbslot_pushValue( slot, &line );        //å°†åˆ†æå¾—åˆ°çš„æ•°æ®å†™å…¥ circbuf
             //
             //          if( ret< 0)
             //              break;
             if (ret == -2)
             {
-                cbslot_pushValue(slot, &line);      //½«·ÖÎöµÃµ½µÄÊı¾İĞ´Èë circbuf
+                cbslot_pushValue(slot, &line);      //å°†åˆ†æå¾—åˆ°çš„æ•°æ®å†™å…¥ circbuf
                 break;
             }
             else if (ret == -1)
@@ -1059,7 +1072,7 @@ static void qcache_onCmdNext(CircularBuff *cb)
             }
             else
             {
-                cbslot_pushValue(slot, &line);          //½«·ÖÎöµÃµ½µÄÊı¾İĞ´Èë circbuf
+                cbslot_pushValue(slot, &line);          //å°†åˆ†æå¾—åˆ°çš„æ•°æ®å†™å…¥ circbuf
             }
         }
 
@@ -1099,14 +1112,14 @@ static void qcache_onCmdPrev(CircularBuff *cb)
         while (1)
         {
             g_memset(&line, 0, sizeof(MkLine));
-            ret = parser->analysis(parser, &line);  //·ÖÎöÒ»ĞĞÊı¾İ
+            ret = parser->analysis(parser, &line);  //åˆ†æä¸€è¡Œæ•°æ®
 
-            //          cbslot_pushValue( slot, &line );        //½«·ÖÎöµÃµ½µÄÊı¾İĞ´Èë circbuf
+            //          cbslot_pushValue( slot, &line );        //å°†åˆ†æå¾—åˆ°çš„æ•°æ®å†™å…¥ circbuf
             //          if( ret< 0)
             //              break;
             if (ret == -2)
             {
-                cbslot_pushValue(slot, &line);      //½«·ÖÎöµÃµ½µÄÊı¾İĞ´Èë circbuf
+                cbslot_pushValue(slot, &line);      //å°†åˆ†æå¾—åˆ°çš„æ•°æ®å†™å…¥ circbuf
                 break;
             }
             else if (ret == -1)
@@ -1115,7 +1128,7 @@ static void qcache_onCmdPrev(CircularBuff *cb)
             }
             else
             {
-                cbslot_pushValue(slot, &line);          //½«·ÖÎöµÃµ½µÄÊı¾İĞ´Èë circbuf
+                cbslot_pushValue(slot, &line);          //å°†åˆ†æå¾—åˆ°çš„æ•°æ®å†™å…¥ circbuf
             }
         }
 
@@ -1126,7 +1139,7 @@ static void qcache_onCmdPrev(CircularBuff *cb)
     return;
 }
 
-/* Ğ´»·ĞÎ»º³åÇøÏß³Ì (ÓÅÏÈ¼¶±È¶ÁÏß³ÌµÍ)*/
+/* å†™ç¯å½¢ç¼“å†²åŒºçº¿ç¨‹ (ä¼˜å…ˆçº§æ¯”è¯»çº¿ç¨‹ä½)*/
 static void qcache_thread(void *p_arg)
 {
     CircularBuff *cb = (CircularBuff *)p_arg;
@@ -1141,52 +1154,52 @@ static void qcache_thread(void *p_arg)
 
         switch (cmd)
         {
-            case QCACHE_CMD_PREV_BUF:           /* ·ÖÎöÉÏÒ»¸öcache buffer */
+            case QCACHE_CMD_PREV_BUF:           /* åˆ†æä¸Šä¸€ä¸ªcache buffer */
                 qcache_onCmdPrev(cb);
                 esKRNL_MboxQuery(cb->respMbox, &mbox_data);
 
-                if (mbox_data.OSEventGrp != 0)                      // ÓĞÈÎÎñµÈ´ı, Ôò»ØÓ¦Í¬²½ÏûÏ¢
+                if (mbox_data.OSEventGrp != 0)                      // æœ‰ä»»åŠ¡ç­‰å¾…, åˆ™å›åº”åŒæ­¥æ¶ˆæ¯
                 {
                     esKRNL_MboxPost(cb->respMbox, (void *)QCACHE_CMD_PREV_BUF);
                 }
 
                 break;
 
-            case QCACHE_CMD_NEXT_BUF:           /* ·ÖÎöÏÂÒ»¸öcache buffer */
+            case QCACHE_CMD_NEXT_BUF:           /* åˆ†æä¸‹ä¸€ä¸ªcache buffer */
                 qcache_onCmdNext(cb);
                 esKRNL_MboxQuery(cb->respMbox, &mbox_data);
 
-                if (mbox_data.OSEventGrp != 0)                      // ÓĞÈÎÎñµÈ´ı, Ôò»ØÓ¦Í¬²½ÏûÏ¢
+                if (mbox_data.OSEventGrp != 0)                      // æœ‰ä»»åŠ¡ç­‰å¾…, åˆ™å›åº”åŒæ­¥æ¶ˆæ¯
                 {
                     esKRNL_MboxPost(cb->respMbox, (void *)QCACHE_CMD_NEXT_BUF);
                 }
 
                 break;
 
-            case QCACHE_CMD_NEXT_PAGE:      /* Èç¹û»·ĞÎ¶ÓÁĞÃ»Âú, Ôò·ÖÎöÉÏÒ»¸öcache buffer */
+            case QCACHE_CMD_NEXT_PAGE:      /* å¦‚æœç¯å½¢é˜Ÿåˆ—æ²¡æ»¡, åˆ™åˆ†æä¸Šä¸€ä¸ªcache buffer */
                 qcache_onCmdNextPage(cb);
                 break;
 
-            case QCACHE_CMD_PREV_PAGE:      /* Èç¹û»·ĞÎ¶ÓÁĞÃ»Âú, Ôò·ÖÎöÏÂÒ»¸öcache buffer */
+            case QCACHE_CMD_PREV_PAGE:      /* å¦‚æœç¯å½¢é˜Ÿåˆ—æ²¡æ»¡, åˆ™åˆ†æä¸‹ä¸€ä¸ªcache buffer */
                 qcache_onCmdPrevPage(cb);
                 break;
 
-            case QCACHE_CMD_SEEK:           /* Ìø×ª¹¦ÄÜ£¬ĞèÒªÏÈÕÒµ½ÆğÊ¼Î»ÖÃ£¬ */
+            case QCACHE_CMD_SEEK:           /* è·³è½¬åŠŸèƒ½ï¼Œéœ€è¦å…ˆæ‰¾åˆ°èµ·å§‹ä½ç½®ï¼Œ */
                 qcache_onCmdSeek(cb);
                 esKRNL_MboxQuery(cb->respMbox, &mbox_data);
 
-                if (mbox_data.OSEventGrp != 0)                      // ÓĞÈÎÎñµÈ´ı, Ôò»ØÓ¦Í¬²½ÏûÏ¢
+                if (mbox_data.OSEventGrp != 0)                      // æœ‰ä»»åŠ¡ç­‰å¾…, åˆ™å›åº”åŒæ­¥æ¶ˆæ¯
                 {
                     esKRNL_MboxPost(cb->respMbox, (void *)QCACHE_CMD_SEEK);
                 }
 
                 break;
 
-            case QCACHE_CMD_REFRESH:        /* ¸üĞÂÅäÖÃĞÅÏ¢ */
+            case QCACHE_CMD_REFRESH:        /* æ›´æ–°é…ç½®ä¿¡æ¯ */
                 qcache_onCmdRefresh(cb);
                 esKRNL_MboxQuery(cb->respMbox, &mbox_data);
 
-                if (mbox_data.OSEventGrp != 0)                      // ÓĞÈÎÎñµÈ´ı, Ôò»ØÓ¦Í¬²½ÏûÏ¢
+                if (mbox_data.OSEventGrp != 0)                      // æœ‰ä»»åŠ¡ç­‰å¾…, åˆ™å›åº”åŒæ­¥æ¶ˆæ¯
                 {
                     esKRNL_MboxPost(cb->respMbox, (void *)QCACHE_CMD_REFRESH);
                 }
@@ -1203,6 +1216,3 @@ static void qcache_thread(void *p_arg)
         }
     }
 }
-
-
-

@@ -1,25 +1,39 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2011, CHIPHD, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : fm_ScaleBar.c
-* By        : CQQ
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011/08/19 15:27  create this file, implements the fundamental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "fm_ScaleBar.h"
 #include "fm_main.h"
 //////////////////////////////////////////////////////////////////////////
-#if 0 //(Œ™¡À¥Ú”°ºÚµ•, ø…∞—œ¬√Ê÷ÿ∂®“ÂµƒGUI∫Í¡Ÿ ±øΩµΩ”––Ë“™µƒCŒƒº˛÷– π”√)
+#if 0 //(‰∏∫‰∫ÜÊâìÂç∞ÁÆÄÂçï, ÂèØÊää‰∏ãÈù¢ÈáçÂÆö‰πâÁöÑGUIÂÆè‰∏¥Êó∂Êã∑Âà∞ÊúâÈúÄË¶ÅÁöÑCÊñá‰ª∂‰∏≠‰ΩøÁî®)
 //re define GUI_BMP_Draw
 #ifdef GUI_BMP_Draw
 #define MY_GUI_BMP_DRAW                      (ORANGEMOD_FUNC_ENTRY->ptr_GUI_BMP_Draw            )
@@ -55,12 +69,12 @@
 
 #endif
 //////////////////////////////////////////////////////////////////////////
-//‘¥∑∂Œß÷–µƒ÷µ_src_val”≥…‰µΩƒø±Í∑∂Œß÷–
+//Ê∫êËåÉÂõ¥‰∏≠ÁöÑÂÄº_src_valÊò†Â∞ÑÂà∞ÁõÆÊ†áËåÉÂõ¥‰∏≠
 #define RANGE_MAPPING(_dst_min, _dst_max, _src_min, _src_max, _src_val)  \
     (((_src_val) - (_src_min)) * ((_dst_max) - (_dst_min)) / ((_src_max) - (_src_min)) + (_dst_min))
 
 /************************************************************************/
-//º”‘ÿ◊ ‘¥
+//Âä†ËΩΩËµÑÊ∫ê
 /************************************************************************/
 __s32 fm_freq_scale_create_res(FM_FREQ_SCALE_RES_T *res)
 {
@@ -118,7 +132,7 @@ __s32 fm_freq_scale_create_res(FM_FREQ_SCALE_RES_T *res)
 }
 
 /************************************************************************/
-// Õ∑≈◊ ‘¥
+//ÈáäÊîæËµÑÊ∫ê
 /************************************************************************/
 __s32 fm_freq_scale_destroy_res(FM_FREQ_SCALE_RES_T *res)
 {
@@ -181,7 +195,7 @@ __s32 fm_auto_search_cb(FM_WND_T *fmplay_menu_attr)
     return EPDK_OK;
 }
 /************************************************************************/
-// ª≠∆µµ¿±Ìº∞µ±«∞∆µµ¿”Œ±Í
+// ÁîªÈ¢ëÈÅìË°®ÂèäÂΩìÂâçÈ¢ëÈÅìÊ∏∏Ê†á
 /************************************************************************/
 
 __s32 draw_currentfreq_scale(H_WIN hwnd, H_LYR layer, FM_UI_MAINWND *ui)
@@ -203,17 +217,17 @@ __s32 draw_currentfreq_scale(H_WIN hwnd, H_LYR layer, FM_UI_MAINWND *ui)
     fm_ctrl = wnd_para->fm_ctrl;
     x = RANGE_MAPPING(ui->scale.d0, ui->scale.d1,
                       fm_ctrl->cur_min_freq, fm_ctrl->cur_max_freq, fm_ctrl->cur_freq);
-    //ª≠±≥æ∞
+    //ÁîªËÉåÊôØ
     GUI_BMP_RES_Draw(res->bmp_update_bg, 90, 279);
     GUI_BMP_RES_Draw(res->bmp_update_bg, 373, 279);
-    //ª≠±Í≥ﬂ(±≥æ∞)
+    //ÁîªÊ†áÂ∞∫(ËÉåÊôØ)
     GUI_BMP_RES_Draw(res->bmp_scale, ui->scale_bg.x, ui->scale_bg.y);
-    //ª≠”Œ±Í
+    //ÁîªÊ∏∏Ê†á
     //x = RANGE_MAPPING(ui->scale.d0, ui->scale.d1,
     //  fm_ctrl->cur_min_freq, fm_ctrl->cur_max_freq, fm_ctrl->cur_freq);
     GUI_BMP_RES_Draw(res->bmp_cursor_sel, x, ui->scale_bg.y - ui->cursor_y);
-    //µ±«∞∆µµ¿:
-    //µ±«∞∆µµ¿
+    //ÂΩìÂâçÈ¢ëÈÅì:
+    //ÂΩìÂâçÈ¢ëÈÅì
     GUI_CharSetToEncode(EPDK_CHARSET_ENM_UTF8);
     GUI_SetFont(SWFFont);
     GUI_SetDrawMode(GUI_DRAWMODE_NORMAL);
@@ -232,16 +246,16 @@ __s32 draw_currentfreq_scale(H_WIN hwnd, H_LYR layer, FM_UI_MAINWND *ui)
         b = fm_ctrl->channel_id ;
     }
 
-    //∆µµ¿◊‹ ˝
+    //È¢ëÈÅìÊÄªÊï∞
     c = fm_ctrl->channel_count;
     GUI_BMP_RES_Draw(res->bmp_ch, 315, 242);
     app_sprintf(buf, "ch %d/%d", b, c);
     GUI_DispStringInRect(buf, &gui_rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
-    //œ‘ æ÷––ƒŒƒ◊÷
-    //87000 ~ 108000KHZªªÀ„≥…87MHZ ~ 108MHZ
-    //87500 ~ 108000KHZªªÀ„≥…87MHZ ~ 108MHZ
-    //µ±«∞∆µ∂Œ:
-    a = (fm_ctrl->cur_freq)  / 100000;  //œ‘ æUI…œµƒ∞ŸŒª
+    //ÊòæÁ§∫‰∏≠ÂøÉÊñáÂ≠ó
+    //87000 ~ 108000KHZÊç¢ÁÆóÊàê87MHZ ~ 108MHZ
+    //87500 ~ 108000KHZÊç¢ÁÆóÊàê87MHZ ~ 108MHZ
+    //ÂΩìÂâçÈ¢ëÊÆµ:
+    a = (fm_ctrl->cur_freq)  / 100000;  //ÊòæÁ§∫UI‰∏äÁöÑÁôæ‰Ωç
     b = (fm_ctrl->cur_freq) % 100000 / 10000;
     c = (fm_ctrl->cur_freq) % 10000 / 1000;
     d = (fm_ctrl->cur_freq) % 1000 / 100;
@@ -257,23 +271,23 @@ __s32 draw_currentfreq_scale(H_WIN hwnd, H_LYR layer, FM_UI_MAINWND *ui)
 
     if (a > 0)
     {
-        GUI_BMP_RES_Draw(res->bmp_b[a], 210, 172);  // œ‘ æ∞ŸŒª  295,202
+        GUI_BMP_RES_Draw(res->bmp_b[a], 210, 172);  // ÊòæÁ§∫Áôæ‰Ωç  295,202
     }
     else
     {
         GUI_BMP_RES_Draw(res->bmp_update0_bg, 210, 172);
     }
 
-    GUI_BMP_RES_Draw(res->bmp_b[b], 260, 172);      //œ‘ æ ÆŒª   330,202
-    GUI_BMP_RES_Draw(res->bmp_b[c], 318, 172);      //œ‘ æ∏ˆŒª   373,202
-    GUI_BMP_RES_Draw(res->bmp_point, 375, 172);     //œ‘ æ–° ˝µ„ 415,202
-    GUI_BMP_RES_Draw(res->bmp_b[d], 399, 172);      //œ‘ æ–° ˝µ„∫Û“ªŒª    424,202
-    //..GUI_BMP_RES_Draw(res->bmp_MHZ, 460,171);        //œ‘ æ"MHZ"  470,201
+    GUI_BMP_RES_Draw(res->bmp_b[b], 260, 172);      //ÊòæÁ§∫ÂçÅ‰Ωç   330,202
+    GUI_BMP_RES_Draw(res->bmp_b[c], 318, 172);      //ÊòæÁ§∫‰∏™‰Ωç   373,202
+    GUI_BMP_RES_Draw(res->bmp_point, 375, 172);     //ÊòæÁ§∫Â∞èÊï∞ÁÇπ 415,202
+    GUI_BMP_RES_Draw(res->bmp_b[d], 399, 172);      //ÊòæÁ§∫Â∞èÊï∞ÁÇπÂêé‰∏Ä‰Ωç    424,202
+    //..GUI_BMP_RES_Draw(res->bmp_MHZ, 460,171);        //ÊòæÁ§∫"MHZ"  470,201
     return EPDK_OK;
 }
 
 /************************************************************************/
-// ª≠∆µµ¿±Ìº∞∆µµ¿”Œ±Í
+// ÁîªÈ¢ëÈÅìË°®ÂèäÈ¢ëÈÅìÊ∏∏Ê†á
 /************************************************************************/
 
 __s32 draw_freq_scale(H_WIN hwnd, H_LYR layer, FM_UI_MAINWND *ui)
@@ -309,15 +323,15 @@ __s32 draw_freq_scale(H_WIN hwnd, H_LYR layer, FM_UI_MAINWND *ui)
         __msg("draw:audiomode = %d ",audiomode); //cky
     }
     */
-    //ª≠±≥æ∞
+    //ÁîªËÉåÊôØ
     GUI_BMP_RES_Draw(res->bmp_l[0], 0, 0);
-    //ª≠±Í≥ﬂ(±≥æ∞)
+    //ÁîªÊ†áÂ∞∫(ËÉåÊôØ)
     GUI_BMP_RES_Draw(res->bmp_scale, ui->scale_bg.x, ui->scale_bg.y);
-    //ª≠”Œ±Í
+    //ÁîªÊ∏∏Ê†á
     x = RANGE_MAPPING(ui->scale.d0, ui->scale.d1,
                       fm_ctrl->cur_min_freq, fm_ctrl->cur_max_freq, fm_ctrl->cur_freq);
     GUI_BMP_RES_Draw(res->bmp_cursor_sel, x, ui->scale_bg.y - ui->cursor_y);
-    //ª≠∞¥≈•
+    //ÁîªÊåâÈíÆ
 # if 0 //..
 
     if (IsFmShowThumbBtn(fm_ctrl->thumb_show))
@@ -335,10 +349,10 @@ __s32 draw_freq_scale(H_WIN hwnd, H_LYR layer, FM_UI_MAINWND *ui)
     }
 
 #endif
-    //a:∞ŸŒª£ªb: ÆŒª£ªc:∏ˆŒª£ªd:–° ˝µ„∫Û“ªŒª °£
-    //œ‘ æ◊Û…œΩ«Œƒ◊÷
-    //µ±«∞∆µµ¿:
-    //µ±«∞∆µµ¿
+    //a:Áôæ‰ΩçÔºõb:ÂçÅ‰ΩçÔºõc:‰∏™‰ΩçÔºõd:Â∞èÊï∞ÁÇπÂêé‰∏Ä‰Ωç „ÄÇ
+    //ÊòæÁ§∫Â∑¶‰∏äËßíÊñáÂ≠ó
+    //ÂΩìÂâçÈ¢ëÈÅì:
+    //ÂΩìÂâçÈ¢ëÈÅì
     GUI_CharSetToEncode(EPDK_CHARSET_ENM_UTF8);
     GUI_SetFont(SWFFont);
     GUI_SetDrawMode(GUI_DRAWMODE_NORMAL);
@@ -357,12 +371,12 @@ __s32 draw_freq_scale(H_WIN hwnd, H_LYR layer, FM_UI_MAINWND *ui)
         b = fm_ctrl->channel_id ;
     }
 
-    //∆µµ¿◊‹ ˝
+    //È¢ëÈÅìÊÄªÊï∞
     c = fm_ctrl->channel_count;
     app_sprintf(buf, "ch %d/%d", b, c);
     GUI_DispStringInRect(buf, &gui_rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
 #if 0
-    GUI_BMP_RES_Draw(res->bmp_ch, 195, 142);//œ‘ æ"ch"    35, 38
+    GUI_BMP_RES_Draw(res->bmp_ch, 195, 142);//ÊòæÁ§∫"ch"    35, 38
 
     if (fm_ctrl->channel_count > 0)
     {
@@ -375,17 +389,17 @@ __s32 draw_freq_scale(H_WIN hwnd, H_LYR layer, FM_UI_MAINWND *ui)
         c = (fm_ctrl->channel_id) % 10;
     }
 
-    GUI_BMP_RES_Draw(res->bmp_l[b], 230, 142);//œ‘ æ ÆŒª    70, 38
-    GUI_BMP_RES_Draw(res->bmp_l[c], 242, 142);//œ‘ æ∏ˆŒª    82, 38
-    //∆µµ¿◊‹ ˝:
-    GUI_BMP_RES_Draw(res->bmp_slash, 250, 142);  //œ‘ æ–±∏‹"/"  90, 38
+    GUI_BMP_RES_Draw(res->bmp_l[b], 230, 142);//ÊòæÁ§∫ÂçÅ‰Ωç    70, 38
+    GUI_BMP_RES_Draw(res->bmp_l[c], 242, 142);//ÊòæÁ§∫‰∏™‰Ωç    82, 38
+    //È¢ëÈÅìÊÄªÊï∞:
+    GUI_BMP_RES_Draw(res->bmp_slash, 250, 142);  //ÊòæÁ§∫ÊñúÊù†"/"  90, 38
     b = fm_ctrl->channel_count / 10;
     c = fm_ctrl->channel_count % 10;
-    GUI_BMP_RES_Draw(res->bmp_l[b], 262, 142);//œ‘ æ ÆŒª   102, 38
-    GUI_BMP_RES_Draw(res->bmp_l[c], 274, 142);//œ‘ æ∏ˆŒª    114, 38
-    //œ‘ æ”“…œΩ«Œƒ◊÷
-    //µ±«∞∆µµ¿:
-    GUI_BMP_RES_Draw(res->bmp_preset, 485, 140);//œ‘ æ"preset"   325, 36
+    GUI_BMP_RES_Draw(res->bmp_l[b], 262, 142);//ÊòæÁ§∫ÂçÅ‰Ωç   102, 38
+    GUI_BMP_RES_Draw(res->bmp_l[c], 274, 142);//ÊòæÁ§∫‰∏™‰Ωç    114, 38
+    //ÊòæÁ§∫Âè≥‰∏äËßíÊñáÂ≠ó
+    //ÂΩìÂâçÈ¢ëÈÅì:
+    GUI_BMP_RES_Draw(res->bmp_preset, 485, 140);//ÊòæÁ§∫"preset"   325, 36
 
     if (fm_ctrl->channel_count > 0)
     {
@@ -398,14 +412,14 @@ __s32 draw_freq_scale(H_WIN hwnd, H_LYR layer, FM_UI_MAINWND *ui)
         c = (fm_ctrl->channel_id) % 10;
     }
 
-    GUI_BMP_RES_Draw(res->bmp_m[b], 565, 142);  //œ‘ æ ÆŒª   405,38
-    GUI_BMP_RES_Draw(res->bmp_m[c], 580, 142);  //œ‘ æ∏ˆŒª       420,38
+    GUI_BMP_RES_Draw(res->bmp_m[b], 565, 142);  //ÊòæÁ§∫ÂçÅ‰Ωç   405,38
+    GUI_BMP_RES_Draw(res->bmp_m[c], 580, 142);  //ÊòæÁ§∫‰∏™‰Ωç       420,38
 #endif
-    //œ‘ æ÷––ƒŒƒ◊÷
-    //87000 ~ 108000KHZªªÀ„≥…87MHZ ~ 108MHZ
-    //87500 ~ 108000KHZªªÀ„≥…87MHZ ~ 108MHZ
-    //µ±«∞∆µ∂Œ:
-    a = (fm_ctrl->cur_freq)  / 100000;  //œ‘ æUI…œµƒ∞ŸŒª
+    //ÊòæÁ§∫‰∏≠ÂøÉÊñáÂ≠ó
+    //87000 ~ 108000KHZÊç¢ÁÆóÊàê87MHZ ~ 108MHZ
+    //87500 ~ 108000KHZÊç¢ÁÆóÊàê87MHZ ~ 108MHZ
+    //ÂΩìÂâçÈ¢ëÊÆµ:
+    a = (fm_ctrl->cur_freq)  / 100000;  //ÊòæÁ§∫UI‰∏äÁöÑÁôæ‰Ωç
     b = (fm_ctrl->cur_freq) % 100000 / 10000;
     c = (fm_ctrl->cur_freq) % 10000 / 1000;
     d = (fm_ctrl->cur_freq) % 1000 / 100;
@@ -421,38 +435,38 @@ __s32 draw_freq_scale(H_WIN hwnd, H_LYR layer, FM_UI_MAINWND *ui)
 
     if (a > 0)
     {
-        GUI_BMP_RES_Draw(res->bmp_b[a], 210, 172);  // œ‘ æ∞ŸŒª  295,202
+        GUI_BMP_RES_Draw(res->bmp_b[a], 210, 172);  // ÊòæÁ§∫Áôæ‰Ωç  295,202
     }
 
-    GUI_BMP_RES_Draw(res->bmp_b[b], 260, 172);      //œ‘ æ ÆŒª   330,202
-    GUI_BMP_RES_Draw(res->bmp_b[c], 318, 172);      //œ‘ æ∏ˆŒª   373,202
-    GUI_BMP_RES_Draw(res->bmp_point, 375, 172);     //œ‘ æ–° ˝µ„ 415,202
-    GUI_BMP_RES_Draw(res->bmp_b[d], 399, 172);      //œ‘ æ–° ˝µ„∫Û“ªŒª    424,202
-    GUI_BMP_RES_Draw(res->bmp_MHZ, 460, 171);       //œ‘ æ"MHZ"  470,201
-    //ø®≥ﬂœ¬∆µ∂ŒŒƒ◊÷
+    GUI_BMP_RES_Draw(res->bmp_b[b], 260, 172);      //ÊòæÁ§∫ÂçÅ‰Ωç   330,202
+    GUI_BMP_RES_Draw(res->bmp_b[c], 318, 172);      //ÊòæÁ§∫‰∏™‰Ωç   373,202
+    GUI_BMP_RES_Draw(res->bmp_point, 375, 172);     //ÊòæÁ§∫Â∞èÊï∞ÁÇπ 415,202
+    GUI_BMP_RES_Draw(res->bmp_b[d], 399, 172);      //ÊòæÁ§∫Â∞èÊï∞ÁÇπÂêé‰∏Ä‰Ωç    424,202
+    GUI_BMP_RES_Draw(res->bmp_MHZ, 460, 171);       //ÊòæÁ§∫"MHZ"  470,201
+    //Âç°Â∞∫‰∏ãÈ¢ëÊÆµÊñáÂ≠ó
 #if  (FM_SEARCH_CHN_MIN_FREQ == 87500)
-    GUI_BMP_RES_Draw(res->bmp_87_5MHZ, 173, 276);       //œ‘ æ"87.5MHZ"   13,172
+    GUI_BMP_RES_Draw(res->bmp_87_5MHZ, 173, 276);       //ÊòæÁ§∫"87.5MHZ"   13,172
 #elif  (FM_SEARCH_CHN_MIN_FREQ == 87000)
-    GUI_BMP_RES_Draw(res->bmp_87MHZ, 14, 331);      //œ‘ æ"87MHZ"   13,172
+    GUI_BMP_RES_Draw(res->bmp_87MHZ, 14, 331);      //ÊòæÁ§∫"87MHZ"   13,172
 #endif
-    GUI_BMP_RES_Draw(res->bmp_108MHZ, 708, 331); //œ‘ æ"108MHZ"   393,172
-    //…˘“Ùƒ£ ΩŒƒ◊÷
+    GUI_BMP_RES_Draw(res->bmp_108MHZ, 708, 331); //ÊòæÁ§∫"108MHZ"   393,172
+    //Â£∞Èü≥Ê®°ÂºèÊñáÂ≠ó
 #if 0
     dsk_radio_get_audio_mode(&fm_ctrl->audio_mode);
     __wrn("fm_ctrl->audio_mode = %d", fm_ctrl->audio_mode);
 
     if (fm_ctrl->audio_mode == 1)
     {
-        GUI_BMP_RES_Draw(res->bmp_mono, 369, 276);      //œ‘ æ"mono" 209,172
+        GUI_BMP_RES_Draw(res->bmp_mono, 369, 276);      //ÊòæÁ§∫"mono" 209,172
     }
     else if (fm_ctrl->audio_mode == 2)
     {
-        GUI_BMP_RES_Draw(res->bmp_stereo, 369, 276);    //œ‘ æ"stereo" 209,172
+        GUI_BMP_RES_Draw(res->bmp_stereo, 369, 276);    //ÊòæÁ§∫"stereo" 209,172
     }
 
 #endif
     /*
-        //œ‘ æŒƒ◊÷
+        //ÊòæÁ§∫ÊñáÂ≠ó
         GUI_SetFont(SWFFont);
         GUI_UC_SetEncodeUTF8();
         GUI_SetColor(ui->clr_txt_n);
@@ -496,7 +510,7 @@ static __s32 scale_set_freq(H_WIN hwnd, __s16 x, __s16 y, __s32 action)
         thumb_show = fm_ctrl->thumb_show;
 
         //__here__;
-        if (action != GUI_MSG_TOUCH_DOWN)//down ±≤ª…Ë÷√freq
+        if (action != GUI_MSG_TOUCH_DOWN)//downÊó∂‰∏çËÆæÁΩÆfreq
         {
             //__here__;
             if (x < ui->scale.d0)
@@ -525,7 +539,7 @@ static __s32 scale_set_freq(H_WIN hwnd, __s16 x, __s16 y, __s32 action)
             }
             break;
 
-            case GUI_MSG_TOUCH_MOVE://move ±≤ª…Ë÷√∆µ¬ 
+            case GUI_MSG_TOUCH_MOVE://moveÊó∂‰∏çËÆæÁΩÆÈ¢ëÁéá
                 //          {
                 //              if (IsFmFocusThumbBtn(fm_ctrl->thumb_show))
                 //              {
@@ -563,7 +577,7 @@ static __s32 scale_set_freq(H_WIN hwnd, __s16 x, __s16 y, __s32 action)
     return EPDK_FAIL;
 }
 
-//≤‚ ‘ «∑Òµ„ª˜µΩ∞¥≈•,∑µªÿTOUCH_UI_INVALID_ID, *pFlagŒ™÷–µ„µΩxµƒŒª“∆
+//ÊµãËØïÊòØÂê¶ÁÇπÂáªÂà∞ÊåâÈíÆ,ËøîÂõûTOUCH_UI_INVALID_ID, *pFlag‰∏∫‰∏≠ÁÇπÂà∞xÁöÑ‰ΩçÁßª
 static __s32 hit_test_scale_set_freq_btn(H_WIN hwnd, __s16 x, __s16 y, __s32 *pFlag)
 {
     FM_CTRLDATA_T   *fm_ctrl;
@@ -582,7 +596,7 @@ static __s32 hit_test_scale_set_freq_btn(H_WIN hwnd, __s16 x, __s16 y, __s32 *pF
             btn_rt.width  = ui->btn_thumb.width;
             btn_rt.height = ui->btn_thumb.height;
             btn_rt.x = RANGE_MAPPING(ui->scale.d0, ui->scale.d1,
-                                     fm_ctrl->cur_min_freq, fm_ctrl->cur_max_freq, fm_ctrl->cur_freq); //÷–µ„
+                                     fm_ctrl->cur_min_freq, fm_ctrl->cur_max_freq, fm_ctrl->cur_freq); //‰∏≠ÁÇπ
 
             if (pFlag)
             {
@@ -604,9 +618,9 @@ static __s32 hit_test_scale_set_freq_btn(H_WIN hwnd, __s16 x, __s16 y, __s32 *pF
 
 
 /************************************************************************/
-// Œ¢µ˜fm≤•∑≈∆µ¬ 
-// step -- ∆µ¬ Œª“∆,
-// return value -- 1:≤•∑≈∆µ¬ ∏ƒ±‰, 0:≤•∑≈∆µ¬ ≤ª±‰
+// ÂæÆË∞ÉfmÊí≠ÊîæÈ¢ëÁéá
+// step -- È¢ëÁéá‰ΩçÁßª,
+// return value -- 1:Êí≠ÊîæÈ¢ëÁéáÊîπÂèò, 0:Êí≠ÊîæÈ¢ëÁéá‰∏çÂèò
 /************************************************************************/
 __s32 fm_freq_inching(FM_CTRLDATA_T *fm_ctrl, __s32 step)
 {
@@ -645,7 +659,7 @@ __s32 fm_freq_inching(FM_CTRLDATA_T *fm_ctrl, __s32 step)
 }
 
 /************************************************************************/
-// ¥•√˛¥¶¿Ì
+// Ëß¶Êë∏Â§ÑÁêÜ
 /************************************************************************/
 __s32 on_freq_scale_touch(H_WIN hwnd, __s16 x, __s16 y, __s32 touch_action)
 {
@@ -667,7 +681,7 @@ __s32 on_freq_scale_touch(H_WIN hwnd, __s16 x, __s16 y, __s32 touch_action)
     id = hit_test_scale_set_freq_btn(hwnd, x, y, &flag);
     __msg("hit_test_scale_set_freq_btn = %d, focus = %d", id, fm_ctrl->thumb_show);
 
-    //‘⁄∆µ±Ì∑∂Œßƒ⁄
+    //Âú®È¢ëË°®ËåÉÂõ¥ÂÜÖ
     if (ValueInRange(ui->scale_bg.y - ui->btn_thumb.height - 30, y, ui->scale_bg.y + ui->scale_bg.height + 30))
     {
         ret = 1;

@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 #include "lyrwin_i.h"
 #include <mod_display.h>
@@ -11,18 +42,18 @@ extern __gui_rect_zoom gui_zoom_rect;
 
 
 //==================================================================
-//function name£º   GUI_LogicToPhysicalConvert
-//author£º      danling
-//date£º            2010-03-30
-//description£º   Âß¼­´°¿Úµ½ÎïÀí´°¿ÚµÄ×ª»»
-//parameters£º   dir: ·½Ïò
-//              rect_logic: Âß¼­´°¿ÚÖ¸Õë
-//              rect_phy: ÎïÀí´°¿ÚÖ¸Õë
-//              width: (LCD/TV)ÆÁÄ»»òframebufferµÄ¿í¶È
-//              height: (LCD/TV)ÆÁÄ»»òframebufferµÄ¸ß¶È
-//return£º          success returns EPDK_OK
+//function nameï¼š   GUI_LogicToPhysicalConvert
+//authorï¼š      danling
+//dateï¼š            2010-03-30
+//descriptionï¼š   é€»è¾‘çª—å£åˆ°ç‰©ç†çª—å£çš„è½¬æ¢
+//parametersï¼š   dir: æ–¹å‘
+//              rect_logic: é€»è¾‘çª—å£æŒ‡é’ˆ
+//              rect_phy: ç‰©ç†çª—å£æŒ‡é’ˆ
+//              width: (LCD/TV)å±å¹•æˆ–framebufferçš„å®½åº¦
+//              height: (LCD/TV)å±å¹•æˆ–framebufferçš„é«˜åº¦
+//returnï¼š          success returns EPDK_OK
 //                      fail  returns the number of failed
-//modify history£º
+//modify historyï¼š
 //==================================================================
 static __s32 GUI_LogicToPhysicalConvert(__u8 dir, __rect_t *rect_logic, __rect_t *rect_phy, __u32 width, __u32 height)
 {
@@ -70,18 +101,18 @@ static __s32 GUI_LogicToPhysicalConvert(__u8 dir, __rect_t *rect_logic, __rect_t
 
 
 //==================================================================
-//function name£º   GUI_PhysicalToLogicConvert
-//author£º      danling
-//date£º            2010-03-30
-//description£º   ÎïÀí´°¿Úµ½Âß¼­´°¿ÚµÄ×ª»»
-//parameters£º   dir: ·½Ïò
-//              rect_logic: Âß¼­´°¿ÚÖ¸Õë
-//              rect_phy: ÎïÀí´°¿ÚÖ¸Õë
-//              width: (LCD/TV)ÆÁÄ»»òframebufferµÄ¿í¶È
-//              height: (LCD/TV)ÆÁÄ»»òframebufferµÄ¸ß¶È
-//return£º          success returns EPDK_OK
+//function nameï¼š   GUI_PhysicalToLogicConvert
+//authorï¼š      danling
+//dateï¼š            2010-03-30
+//descriptionï¼š   ç‰©ç†çª—å£åˆ°é€»è¾‘çª—å£çš„è½¬æ¢
+//parametersï¼š   dir: æ–¹å‘
+//              rect_logic: é€»è¾‘çª—å£æŒ‡é’ˆ
+//              rect_phy: ç‰©ç†çª—å£æŒ‡é’ˆ
+//              width: (LCD/TV)å±å¹•æˆ–framebufferçš„å®½åº¦
+//              height: (LCD/TV)å±å¹•æˆ–framebufferçš„é«˜åº¦
+//returnï¼š          success returns EPDK_OK
 //                      fail  returns the number of failed
-//modify history£º
+//modify historyï¼š
 //==================================================================
 static __s32 GUI_PhysicalToLogicConvert(__u8 dir, __rect_t *rect_logic, __rect_t *rect_phy, __u32 width, __u32 height)
 {
@@ -129,18 +160,19 @@ static __s32 GUI_PhysicalToLogicConvert(__u8 dir, __rect_t *rect_logic, __rect_t
 
 
 //==================================================================
-//function name£º   GUI_LogicLayerSetScnWin
-//author£º      danling
-//date£º            2010-03-30
-//description£º   ½«Âß¼­ÉÏµÄÉèÖÃÆÁÄ»´°¿Ú×ª»»³ÉÏàÓ¦µÄÎïÀí²Ù×÷
-//parameters£º   dir: ·½Ïò
-//              disp_handle: ÏÔÊ¾Çı¶¯ÎÄ¼şÖ¸Õë
-//              hlayer: Í¼²ã¾ä±ú
-//              rect: Âß¼­ÆÁÄ»´°¿Ú
-//return£º          success returns EPDK_OK
+//function nameï¼š   GUI_LogicLayerSetScnWin
+//authorï¼š      danling
+//dateï¼š            2010-03-30
+//descriptionï¼š   å°†é€»è¾‘ä¸Šçš„è®¾ç½®å±å¹•çª—å£è½¬æ¢æˆç›¸åº”çš„ç‰©ç†æ“ä½œ
+//parametersï¼š   dir: æ–¹å‘
+//              disp_handle: æ˜¾ç¤ºé©±åŠ¨æ–‡ä»¶æŒ‡é’ˆ
+//              hlayer: å›¾å±‚å¥æŸ„
+//              rect: é€»è¾‘å±å¹•çª—å£
+//returnï¼š          success returns EPDK_OK
 //                      fail  returns the number of failed
-//modify history£º
+//modify historyï¼š
 //==================================================================
+#if 0
 __s32 GUI_LogicLayerSetScnWin(__u8 dir, __mp *disp_handle, __hdle hlayer, __rect_t *rect)
 {
     __u32 ret = 0;
@@ -158,8 +190,12 @@ __s32 GUI_LogicLayerSetScnWin(__u8 dir, __mp *disp_handle, __hdle hlayer, __rect
     pdispbuffer[2] = 0;
     esMODS_MIoctrl(disp_handle, MOD_DISP_CMD_LAYER_GET_SRC_WINDOW, SEL_SCREEN, (void *)pdispbuffer);
 
+	__err("rect: %d  %d  %d  %d",rect->x,rect->y,rect->width,rect->height);
+	__err("src:  %d  %d  %d  %d",src_rect.x,src_rect.y,src_rect.width,src_rect.height);
+	
 	if(rect->width != src_rect.width || rect->height != src_rect.height)
 	{
+		__err("return here!");
 		return EPDK_FAIL;
 	}
 
@@ -171,7 +207,7 @@ __s32 GUI_LogicLayerSetScnWin(__u8 dir, __mp *disp_handle, __hdle hlayer, __rect
     pdispbuffer[0] = (__u32)hlayer;
     pdispbuffer[1] = (__u32)&disp_src_lyr;
     pdispbuffer[2] = 0;
-    eLIBs_fioctrl(disp_handle, DISP_CMD_LAYER_GET_PARA, SEL_SCREEN, (void *)pdispbuffer);
+    esMODS_MIoctrl(disp_handle, DISP_CMD_LAYER_GET_PARA, SEL_SCREEN, (void *)pdispbuffer);
     GUI_DispLyr2LogicLyr(&cur_player, &disp_src_lyr); //end modified
 
     if (cur_player.mode != MOD_DISP_LAYER_WORK_MODE_SCALER)
@@ -236,7 +272,7 @@ __s32 GUI_LogicLayerSetScnWin(__u8 dir, __mp *disp_handle, __hdle hlayer, __rect
 
 	__log("\nx = %d  y = %d  w = %d  h = %d \n",scn_rect_phy.x,scn_rect_phy.y,scn_rect_phy.width,scn_rect_phy.height);
 
-    //ret |= eLIBs_fioctrl(disp_handle, DISP_CMD_LAYER_SET_PARA, SEL_SCREEN, (void *)pdispbuffer); //end modified
+    //ret |= esMODS_MIoctrl(disp_handle, DISP_CMD_LAYER_SET_PARA, SEL_SCREEN, (void *)pdispbuffer); //end modified
     ret |= esMODS_MIoctrl(disp_handle, MOD_DISP_CMD_LAYER_SET_SCN_WINDOW, SEL_SCREEN,(void *)pdispbuffer); //end modified
 
     if (ret != EPDK_OK)
@@ -246,20 +282,104 @@ __s32 GUI_LogicLayerSetScnWin(__u8 dir, __mp *disp_handle, __hdle hlayer, __rect
 
     return EPDK_OK;
 }
+#else
+__s32 GUI_LogicLayerSetScnWin(__u8 dir, __mp *disp_handle, __hdle hlayer, __rect_t *rect)
+{
+    __u32 ret = 0;
+    __u32 scn_width = 0, scn_height = 0;
+    __rect_t scn_rect_phy;
+    __disp_layer_para_t cur_player;
+    FB fb;
+    //modified by Derek,2010-12-9 17:30:49
+    __disp_layer_info_t disp_lyr, disp_src_lyr;
+    eLIBs_memset(&disp_src_lyr, 0x00, sizeof(__disp_layer_info_t));
+    eLIBs_memset(&disp_lyr, 0x00, sizeof(__disp_layer_info_t));
+    __u64 pdispbuffer[3];
+    
+    scn_width = esMODS_MIoctrl(disp_handle, MOD_DISP_GET_SCN_WIDTH, SEL_SCREEN, 0);
+    scn_height = esMODS_MIoctrl(disp_handle, MOD_DISP_GET_SCN_HEIGHT, SEL_SCREEN, 0);
+    cur_player.fb = &fb;
+    pdispbuffer[0] = hlayer;
+    pdispbuffer[1] = &disp_src_lyr;
+    pdispbuffer[2] = 0;
+    esMODS_MIoctrl(disp_handle, MOD_DISP_CMD_LAYER_GET_PARA, SEL_SCREEN, (void *)pdispbuffer);
+    GUI_DispLyr2LogicLyr(&cur_player, &disp_src_lyr); //end modified
+    if (cur_player.mode != MOD_DISP_LAYER_WORK_MODE_SCALER)
+    {
+        __u32 fb_width = 0, fb_height = 0;
+        __rect_t src_rect_logic, src_rect_phy;
+        src_rect_logic.width = rect->width;
+        src_rect_logic.height = rect->height;
+        fb_width = cur_player.fb->size.width;
+        fb_height = cur_player.fb->size.height;
 
+        switch (dir)
+        {
+            case DIR_CLOCKWISE_0:
+                src_rect_logic.x = cur_player.src_win.x;
+                src_rect_logic.y = cur_player.src_win.y;
+                break;
+
+            case DIR_CLOCKWISE_90:
+                src_rect_logic.x = fb_height - cur_player.scn_win.height - cur_player.src_win.y;
+                src_rect_logic.y = cur_player.src_win.x;
+                break;
+
+            case DIR_CLOCKWISE_180:
+                src_rect_logic.x = fb_width - cur_player.scn_win.width - cur_player.src_win.x;
+                src_rect_logic.y = fb_height - cur_player.scn_win.height - cur_player.src_win.y;
+                break;
+
+            case DIR_CLOCKWISE_270:
+                src_rect_logic.x = cur_player.src_win.y;
+                src_rect_logic.y = fb_width - cur_player.scn_win.width - cur_player.src_win.x;
+                break;
+
+            default:
+                break;
+        }
+
+        GUI_LogicToPhysicalConvert(dir, &src_rect_logic, &src_rect_phy, fb_width, fb_height);
+        cur_player.src_win.x = src_rect_phy.x;
+        cur_player.src_win.y = src_rect_phy.y;
+        cur_player.src_win.width = src_rect_phy.width;
+        cur_player.src_win.height = src_rect_phy.height;
+    }
+    GUI_LogicToPhysicalConvert(dir, rect, &scn_rect_phy, scn_width, scn_height);
+    cur_player.scn_win.x = scn_rect_phy.x;
+    cur_player.scn_win.y = scn_rect_phy.y;
+    cur_player.scn_win.width = scn_rect_phy.width;
+    cur_player.scn_win.height = scn_rect_phy.height;
+    GUI_LogicLyr2DispLyr(&cur_player, &disp_lyr); //modified by Derek,2010-12-9 17:07:38
+    pdispbuffer[0] = hlayer;
+    pdispbuffer[1] = &disp_lyr;
+    pdispbuffer[2] = 0;
+    __inf("disp_lyr scn: %d %d %d %d\n",disp_lyr.scn_win.x,disp_lyr.scn_win.y,disp_lyr.scn_win.width,disp_lyr.scn_win.height);
+    __inf("disp_lyr src: %d %d %d %d\n",disp_lyr.src_win.x,disp_lyr.src_win.y,disp_lyr.src_win.width,disp_lyr.src_win.height);
+
+    ret |= esMODS_MIoctrl(disp_handle, MOD_DISP_CMD_LAYER_SET_PARA, SEL_SCREEN, (void *)pdispbuffer);
+
+    if (ret != EPDK_OK)
+    {
+        return EPDK_FAIL;
+    }
+
+    return EPDK_OK;
+}
+#endif
 
 //==================================================================
-//function name£º   GUI_LogicLayerGetScnWin
-//author£º      danling
-//date£º            2010-03-30
-//description£º  »ñÈ¡Âß¼­ÉÏµÄÆÁÄ»´°¿Ú
-//parameters£º   dir: ·½Ïò
-//              disp_handle: ÏÔÊ¾Çı¶¯ÎÄ¼şÖ¸Õë
-//              hlayer: Í¼²ã¾ä±ú
-//              rect: Âß¼­ÆÁÄ»´°¿Ú
-//return£º          success returns EPDK_OK
+//function nameï¼š   GUI_LogicLayerGetScnWin
+//authorï¼š      danling
+//dateï¼š            2010-03-30
+//descriptionï¼š  è·å–é€»è¾‘ä¸Šçš„å±å¹•çª—å£
+//parametersï¼š   dir: æ–¹å‘
+//              disp_handle: æ˜¾ç¤ºé©±åŠ¨æ–‡ä»¶æŒ‡é’ˆ
+//              hlayer: å›¾å±‚å¥æŸ„
+//              rect: é€»è¾‘å±å¹•çª—å£
+//returnï¼š          success returns EPDK_OK
 //                      fail  returns the number of failed
-//modify history£º
+//modify historyï¼š
 //==================================================================
 
 __s32 GUI_LogicLayerGetScnWin(__u8 dir, __mp *disp_handle, __hdle hlayer, __rect_t *rect)
@@ -279,17 +399,17 @@ __s32 GUI_LogicLayerGetScnWin(__u8 dir, __mp *disp_handle, __hdle hlayer, __rect
 
 
 //==================================================================
-//function name£º   GUI_LogicLayerSetSrcWin
-//author£º      danling
-//date£º            2010-03-30
-//description£º   ½«Âß¼­ÉÏµÄÉèÖÃÔ´´°¿Ú×ª»»³ÉÏàÓ¦µÄÎïÀí²Ù×÷
-//parameters£º   dir: ·½Ïò
-//              disp_handle: ÏÔÊ¾Çı¶¯ÎÄ¼şÖ¸Õë
-//              hlayer: Í¼²ã¾ä±ú
-//              rect: Âß¼­Ô´´°¿Ú
-//return£º          success returns EPDK_OK
+//function nameï¼š   GUI_LogicLayerSetSrcWin
+//authorï¼š      danling
+//dateï¼š            2010-03-30
+//descriptionï¼š   å°†é€»è¾‘ä¸Šçš„è®¾ç½®æºçª—å£è½¬æ¢æˆç›¸åº”çš„ç‰©ç†æ“ä½œ
+//parametersï¼š   dir: æ–¹å‘
+//              disp_handle: æ˜¾ç¤ºé©±åŠ¨æ–‡ä»¶æŒ‡é’ˆ
+//              hlayer: å›¾å±‚å¥æŸ„
+//              rect: é€»è¾‘æºçª—å£
+//returnï¼š          success returns EPDK_OK
 //                      fail  returns the number of failed
-//modify history£º
+//modify historyï¼š
 //==================================================================
 
 __s32 GUI_LogicLayerSetSrcWin(__u8 dir, __mp *disp_handle, __hdle hlayer, __rect_t *rect)
@@ -341,17 +461,17 @@ __s32 GUI_LogicLayerSetSrcWin(__u8 dir, __mp *disp_handle, __hdle hlayer, __rect
 }
 
 //==================================================================
-//function name£º   GUI_LogicLayerGetSrcWin
-//author£º      danling
-//date£º            2010-03-30
-//description£º  »ñÈ¡Âß¼­ÉÏµÄÔ´´°¿Ú
-//parameters£º   dir: ·½Ïò
-//              disp_handle: ÏÔÊ¾Çı¶¯ÎÄ¼şÖ¸Õë
-//              hlayer: Í¼²ã¾ä±ú
-//              rect: Âß¼­Ô´´°¿Ú
-//return£º          success returns EPDK_OK
+//function nameï¼š   GUI_LogicLayerGetSrcWin
+//authorï¼š      danling
+//dateï¼š            2010-03-30
+//descriptionï¼š  è·å–é€»è¾‘ä¸Šçš„æºçª—å£
+//parametersï¼š   dir: æ–¹å‘
+//              disp_handle: æ˜¾ç¤ºé©±åŠ¨æ–‡ä»¶æŒ‡é’ˆ
+//              hlayer: å›¾å±‚å¥æŸ„
+//              rect: é€»è¾‘æºçª—å£
+//returnï¼š          success returns EPDK_OK
 //                      fail  returns the number of failed
-//modify history£º
+//modify historyï¼š
 //==================================================================
 
 __s32 GUI_LogicLayerGetSrcWin(__u8 dir, __mp *disp_handle, __hdle hlayer, __rect_t *rect)
@@ -388,17 +508,17 @@ __s32 GUI_LogicLayerGetSrcWin(__u8 dir, __mp *disp_handle, __hdle hlayer, __rect
 }
 
 //==================================================================
-//function name£º   GUI_LogicLayerSetPara
-//author£º      danling
-//date£º            2010-03-30
-//description£º   ½«Âß¼­ÉÏµÄÉèÖÃÍ¼²ã²ÎÊı×ª»»³ÉÏàÓ¦µÄÎïÀí²Ù×÷
-//parameters£º   dir: ·½Ïò
-//              disp_handle: ÏÔÊ¾Çı¶¯ÎÄ¼şÖ¸Õë
-//              hlayer: Í¼²ã¾ä±ú
-//              player: Âß¼­Í¼²ã²ÎÊı
-//return£º          success returns EPDK_OK
+//function nameï¼š   GUI_LogicLayerSetPara
+//authorï¼š      danling
+//dateï¼š            2010-03-30
+//descriptionï¼š   å°†é€»è¾‘ä¸Šçš„è®¾ç½®å›¾å±‚å‚æ•°è½¬æ¢æˆç›¸åº”çš„ç‰©ç†æ“ä½œ
+//parametersï¼š   dir: æ–¹å‘
+//              disp_handle: æ˜¾ç¤ºé©±åŠ¨æ–‡ä»¶æŒ‡é’ˆ
+//              hlayer: å›¾å±‚å¥æŸ„
+//              player: é€»è¾‘å›¾å±‚å‚æ•°
+//returnï¼š          success returns EPDK_OK
 //                      fail  returns the number of failed
-//modify history£º
+//modify historyï¼š
 //==================================================================
 __s32 GUI_LogicLayerSetPara(__u8 dir, __mp *disp_handle, __hdle hlayer, __disp_layer_para_t *player)
 {
@@ -452,17 +572,17 @@ __s32 GUI_LogicLayerSetPara(__u8 dir, __mp *disp_handle, __hdle hlayer, __disp_l
 }
 
 //==================================================================
-//function name£º   GUI_LogicLayerGetPara
-//author£º      danling
-//date£º            2010-03-30
-//description£º   »ñÈ¡Âß¼­ÉÏµÄÍ¼²ã²ÎÊı
-//parameters£º   dir: ·½Ïò
-//              disp_handle: ÏÔÊ¾Çı¶¯ÎÄ¼şÖ¸Õë
-//              hlayer: Í¼²ã¾ä±ú
-//              player: Âß¼­Í¼²ã²ÎÊı,Êä³ö
-//return£º          success returns EPDK_OK
+//function nameï¼š   GUI_LogicLayerGetPara
+//authorï¼š      danling
+//dateï¼š            2010-03-30
+//descriptionï¼š   è·å–é€»è¾‘ä¸Šçš„å›¾å±‚å‚æ•°
+//parametersï¼š   dir: æ–¹å‘
+//              disp_handle: æ˜¾ç¤ºé©±åŠ¨æ–‡ä»¶æŒ‡é’ˆ
+//              hlayer: å›¾å±‚å¥æŸ„
+//              player: é€»è¾‘å›¾å±‚å‚æ•°,è¾“å‡º
+//returnï¼š          success returns EPDK_OK
 //                      fail  returns the number of failed
-//modify history£º
+//modify historyï¼š
 //==================================================================
 __s32 GUI_LogicLayerGetPara(__u8 dir, __mp *disp_handle, __hdle hlayer, __disp_layer_para_t *player)
 {
@@ -507,17 +627,17 @@ __s32 GUI_LogicLayerGetPara(__u8 dir, __mp *disp_handle, __hdle hlayer, __disp_l
 }
 
 //==================================================================
-//function name£º   GUI_LogicLayerRequest
-//author£º      danling
-//date£º            2010-03-30
-//description£º   ½«Âß¼­ÉÏµÄÉêÇëÍ¼²ã×ª»»³ÉÏàÓ¦µÄÎïÀí²Ù×÷
-//parameters£º   dir: ·½Ïò
-//              disp_handle: ÏÔÊ¾Çı¶¯ÎÄ¼şÖ¸Õë
-//              hlayer: Í¼²ã¾ä±ú
-//              player: ÉêÇëÍ¼²ãµÄÂß¼­²ÎÊı
-//return£º          success returns EPDK_OK
+//function nameï¼š   GUI_LogicLayerRequest
+//authorï¼š      danling
+//dateï¼š            2010-03-30
+//descriptionï¼š   å°†é€»è¾‘ä¸Šçš„ç”³è¯·å›¾å±‚è½¬æ¢æˆç›¸åº”çš„ç‰©ç†æ“ä½œ
+//parametersï¼š   dir: æ–¹å‘
+//              disp_handle: æ˜¾ç¤ºé©±åŠ¨æ–‡ä»¶æŒ‡é’ˆ
+//              hlayer: å›¾å±‚å¥æŸ„
+//              player: ç”³è¯·å›¾å±‚çš„é€»è¾‘å‚æ•°
+//returnï¼š          success returns EPDK_OK
 //                      fail  returns the number of failed
-//modify history£º
+//modify historyï¼š
 //==================================================================
 __s32 GUI_LogicLayerRequest(__u8 dir, __mp *disp_handle, __hdle hlayer, __disp_layer_para_t *player)
 {
@@ -608,17 +728,17 @@ __s32 GUI_LogicLayerRequest(__u8 dir, __mp *disp_handle, __hdle hlayer, __disp_l
 
 
 //==================================================================
-//function name£º   GUI_LogicLayerSetFb
-//author£º      danling
-//date£º            2010-03-30
-//description£º   ½«Âß¼­ÉÏµÄÉèÖÃframebuffer ×ª»»³ÉÏàÓ¦µÄÎïÀí²Ù×÷
-//parameters£º   dir: ·½Ïò
-//              disp_handle: ÏÔÊ¾Çı¶¯ÎÄ¼şÖ¸Õë
-//              hlayer: Í¼²ã¾ä±ú
-//              pfb: Âß¼­ÉÏµÄframebuffer²ÎÊı
-//return£º          success returns EPDK_OK
+//function nameï¼š   GUI_LogicLayerSetFb
+//authorï¼š      danling
+//dateï¼š            2010-03-30
+//descriptionï¼š   å°†é€»è¾‘ä¸Šçš„è®¾ç½®framebuffer è½¬æ¢æˆç›¸åº”çš„ç‰©ç†æ“ä½œ
+//parametersï¼š   dir: æ–¹å‘
+//              disp_handle: æ˜¾ç¤ºé©±åŠ¨æ–‡ä»¶æŒ‡é’ˆ
+//              hlayer: å›¾å±‚å¥æŸ„
+//              pfb: é€»è¾‘ä¸Šçš„framebufferå‚æ•°
+//returnï¼š          success returns EPDK_OK
 //                      fail  returns the number of failed
-//modify history£º
+//modify historyï¼š
 //==================================================================
 __s32 GUI_LogicLayerSetFb(__u8 dir, __mp *disp_handle, __hdle hlayer, FB *pfb)
 {
@@ -655,17 +775,17 @@ __s32 GUI_LogicLayerSetFb(__u8 dir, __mp *disp_handle, __hdle hlayer, FB *pfb)
 }
 
 //==================================================================
-//function name£º   GUI_LogicLayerGetFb
-//author£º      danling
-//date£º            2010-04-01
-//description£º   »ñÈ¡Âß¼­ÉÏµÄframebufferĞÅÏ¢
-//parameters£º   dir: ·½Ïò
-//              disp_handle: ÏÔÊ¾Çı¶¯ÎÄ¼şÖ¸Õë
-//              hlayer: Í¼²ã¾ä±ú
-//              pfb: Âß¼­ÉÏµÄframebuffer²ÎÊı,Êä³ö
-//return£º          success returns EPDK_OK
+//function nameï¼š   GUI_LogicLayerGetFb
+//authorï¼š      danling
+//dateï¼š            2010-04-01
+//descriptionï¼š   è·å–é€»è¾‘ä¸Šçš„framebufferä¿¡æ¯
+//parametersï¼š   dir: æ–¹å‘
+//              disp_handle: æ˜¾ç¤ºé©±åŠ¨æ–‡ä»¶æŒ‡é’ˆ
+//              hlayer: å›¾å±‚å¥æŸ„
+//              pfb: é€»è¾‘ä¸Šçš„framebufferå‚æ•°,è¾“å‡º
+//returnï¼š          success returns EPDK_OK
 //                      fail  returns the number of failed
-//modify history£º
+//modify historyï¼š
 //==================================================================
 __s32 GUI_LogicLayerGetFb(__u8 dir, __mp *disp_handle, __hdle hlayer, FB *pfb)
 {

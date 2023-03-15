@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : setting_handle.c
-* By        : Andy.zhang
-* Func      : desk main thread
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-20 8:51:52  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "apps.h"
 #if (BEETLES_GAME_FLAG == 1)
@@ -115,8 +129,8 @@ static handle_item_id_t setting_handle_res_id[] =
     {STRING_SET_GAME_HANDLE_DOWN, NULL, STRING_SET_GAME_HANDLE_DOWN},   // 1
     {STRING_SET_GAME_HANDLE_LEFT, NULL, STRING_SET_GAME_HANDLE_LEFT},       // 2
     {STRING_SET_GAME_HANDLE_RIGHT, NULL, STRING_SET_GAME_HANDLE_RIGHT}, // 5
-    {STRING_SET_GAME_HANDLE_A, NULL, STRING_SET_GAME_HANDLE_A}, // Êä³ö
-    {STRING_SET_GAME_HANDLE_B, NULL, STRING_SET_GAME_HANDLE_B}, // °´¼üÒô
+    {STRING_SET_GAME_HANDLE_A, NULL, STRING_SET_GAME_HANDLE_A}, // è¾“å‡º
+    {STRING_SET_GAME_HANDLE_B, NULL, STRING_SET_GAME_HANDLE_B}, // æŒ‰é”®éŸ³
     {STRING_SET_GAME_HANDLE_C, NULL, STRING_SET_GAME_HANDLE_C},
     {STRING_SET_GAME_HANDLE_D, NULL, STRING_SET_GAME_HANDLE_D},
     {STRING_SET_GAME_HANDLE_LSHOOT, NULL, STRING_SET_GAME_HANDLE_LSHOOT},
@@ -169,7 +183,7 @@ static void gbxgame_handle_adjust_thread_cb(void *parg)
             para->handle[i][0] = handle_key_map[i];
         }
 
-        for (i = 1; i < 10; i++) //³õÊ¼»¯buttomµÈÇ°¶à´ÎĞ£Ñé
+        for (i = 1; i < 10; i++) //åˆå§‹åŒ–buttomç­‰å‰å¤šæ¬¡æ ¡éªŒ
         {
             joystickRead((void *)arg, &buttom, &stickX, &stickY, &reserve);
 
@@ -190,7 +204,7 @@ static void gbxgame_handle_adjust_thread_cb(void *parg)
                     oldbuttom = buttom;
                     oldstickX = stickX;
                     oldstickY = stickY;
-                    i = 0;//Ã»¿ªÊ¼Ğ£Ñé¾ÍÓĞ°´¼ü°´ÏÂ
+                    i = 0;//æ²¡å¼€å§‹æ ¡éªŒå°±æœ‰æŒ‰é”®æŒ‰ä¸‹
                     esKRNL_TimeDly(10);
                 }
             }
@@ -221,7 +235,7 @@ static void gbxgame_handle_adjust_thread_cb(void *parg)
     {
         if (HANDLE_ADJUST_WAIT == handle_attr->handle_adjust_status)
         {
-            //Ğ£ÑéÍê³ÉÌáÊ¾
+            //æ ¡éªŒå®Œæˆæç¤º
             H_WIN  h_dialog;
             __s32 lang_id[] = {STRING_MOVIE_TIPS, STRING_SET_GAME_HANDLE_ADJUST_DONE };
             __wrn("1.......................\n");
@@ -303,7 +317,7 @@ static void gbxgame_handle_adjust_thread_cb(void *parg)
 
                 if (i >= 2)
                 {
-                    //×éºÏ¼ü,ÌáÊ¾ÓÃ»§
+                    //ç»„åˆé”®,æç¤ºç”¨æˆ·
                     __wrn(".....................7 handle_attr->new_focus = %d\n", handle_attr->new_focus);
                 }
                 else if (EPDK_FALSE == handle_attr->res[handle_attr->new_focus].handle_adjust_flag)
@@ -416,7 +430,7 @@ static __bool position_in_rect(RECT *rect, __s32 x, __s32 y)
 }
 
 /*
-    ÉêÇë×ÊÔ´
+    ç”³è¯·èµ„æº
 */
 static void _setting_handle_res_init(setting_handle_attr_t *handle_attr)
 {
@@ -467,7 +481,7 @@ void setting_handle_on_set_content_num(setting_handle_attr_t *handle_attr)
 {
     if( setting_reg_para == NULL )
         return;
-    //ÓïÑÔ
+    //è¯­è¨€
     if( setting_reg_para->language == EPDK_LANGUAGE_ENM_CHINESES )
         handle_attr->res_up.content_num = 0;
     else if( setting_reg_para->language == EPDK_LANGUAGE_ENM_CHINESET )
@@ -704,10 +718,10 @@ static __s32 setting_handle_paint(__gui_msg_t *msg)
     GUI_SetFont(handle_attr->font);
     GUI_UC_SetEncodeUTF8();
     GUI_SetDrawMode(GUI_DRAWMODE_TRANS);
-    GUI_SetBkColor(0xccffffff); //80%µÄÍ¸Ã÷¶È
+    GUI_SetBkColor(0xccffffff); //80%çš„é€æ˜åº¦
     GUI_SetColor(handle_attr->unfocus_txt_color);
     //GUI_LyrWinCacheOn();
-    get_menu_text(STRING_SET_GAME_HANDLE_ADJUST_SET, handle_attr->string_prompt, 128);//set_common(Í¨ÓÃÉèÖÃ)
+    get_menu_text(STRING_SET_GAME_HANDLE_ADJUST_SET, handle_attr->string_prompt, 128);//set_common(é€šç”¨è®¾ç½®)
     get_menu_text(setting_handle_res_id[handle_attr->new_focus].id_string_detail_prompt, handle_attr->string_detail_prompt, 128);
     get_menu_text(setting_handle_res_id[handle_attr->new_focus].id_string_detail_prompt_ex, handle_attr->string_detail_prompt_ex, 128);
     //GUI_DispStringAt(handle_attr->string_prompt, handle_attr->handle_uipara->string_prompt_pos.x, handle_attr->handle_uipara->string_prompt_pos.y);
@@ -849,7 +863,7 @@ static __s32 _setting_handle_listbar_key_proc(__gui_msg_t *msg)
 }
 
 /*
-    »Øµ÷
+    å›è°ƒ
 */
 static __s32 _setting_handle_Proc(__gui_msg_t *msg)
 {
@@ -901,14 +915,14 @@ static __s32 _setting_handle_Proc(__gui_msg_t *msg)
             GUI_LyrWinSel(handle_attr->layer);
             //..GUI_Clear();//..
             {
-                //..»­×ó²àÁĞ±í
+                //..ç”»å·¦ä¾§åˆ—è¡¨
                 uipara = (setting_uipara_t *)setting_get_uipara();
                 GUI_BMP_Draw(theme_hdl2buf(handle_attr->h_left_bg_bmp), 0, 0);
                 GUI_BMP_Draw(theme_hdl2buf(handle_attr->h_left_bg_bmp), 0, 1 * uipara->item.h);
                 GUI_BMP_Draw(theme_hdl2buf(handle_attr->h_left_bg_bmp), 0, 2 * uipara->item.h);
                 GUI_BMP_Draw(theme_hdl2buf(handle_attr->h_left_bg_bmp), 0, 3 * uipara->item.h);
                 GUI_BMP_Draw(theme_hdl2buf(handle_attr->h_game_item), 1, 20);
-                get_menu_text(STRING_SET_GAME_HANDLE_ADJUST, handle_adjust_string, 128);//set_common(Í¨ÓÃÉèÖÃ)
+                get_menu_text(STRING_SET_GAME_HANDLE_ADJUST, handle_adjust_string, 128);//set_common(é€šç”¨è®¾ç½®)
                 gui_rect.x0 = 0;
                 gui_rect.y0 = 0;
                 gui_rect.x1 = 300;
@@ -974,7 +988,7 @@ static __s32 _setting_handle_Proc(__gui_msg_t *msg)
 
             handle_attr->h_listbar = NULL;
             _setting_handle_res_uninit(handle_attr);
-            //dsk_reg_flush();  //Ğ´½øÎÄ¼şÀïÃæ
+            //dsk_reg_flush();  //å†™è¿›æ–‡ä»¶é‡Œé¢
             handle_para = handle_attr->handle_para;
 
             if (handle_para && (!handle_para->call_status))
@@ -1059,7 +1073,7 @@ H_WIN setting_handle_win_create(H_WIN h_parent, setting_handle_para_t *para)
 
     if (EPDK_FAIL == ret)
     {
-        //ÎŞÊÖ±úÌáÊ¾
+        //æ— æ‰‹æŸ„æç¤º
         H_WIN  h_dialog;
         __s32 lang_id[] = {STRING_MOVIE_TIPS, STRING_SET_GAME_NO_HANDLE };
         //__wrn("1.......................\n");

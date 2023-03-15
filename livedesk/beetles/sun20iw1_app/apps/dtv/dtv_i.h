@@ -1,16 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              willow app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                               (c) Copyright 2006-2007, JOHN, China
-*                                           All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : movie_i.h
-* By      : john.fu
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef _DVBPLAY_I_H_
 #define _DVBPLAY_I_H_
@@ -70,16 +87,16 @@ extern __s32 g_is_programme_list_selected;
 
 #include "dtv_uipara.h"
 
-#define SUBMENU_DVB_SCAN            "SCAN SUB MENU"        //����
+#define SUBMENU_DVB_SCAN            "SCAN SUB MENU"        //搜索
 
-#define SUBMENU_DVB_SCHUDULE        "SCHUDULE  MENU"    // ��Ŀ����
+#define SUBMENU_DVB_SCHUDULE        "SCHUDULE  MENU"    // 节目安排
 #define SUBMENU_DVB_SCHUDULE_LST        "SCHUDULE SUB MENU LIST"    // 
 
-#define SUBMENU_DVB_PREVIEW        "PREVIEW  MENU"    // Ԥ��
+#define SUBMENU_DVB_PREVIEW        "PREVIEW  MENU"    // 预览
 #define SUBMENU_DVB_PREVIEW_LST        "PREVIEW SUB MENU LIST"    //
 
 
-#define SUBMENU_DVB_SETTING        "SETTING MENU"    //���ò˵�
+#define SUBMENU_DVB_SETTING        "SETTING MENU"    //设置菜单
 #define SUBMENU_DVB_SETTING_LST        "SETTING SUB MENU LIST"
 #define SUBMENU_DVB_SETTING_DISP        "SETTING SUB MENU DISP"
 #define SUBMENU_DVB_SETTING_LCD        "SETTING SUB MENU LCD"
@@ -122,7 +139,7 @@ extern __s32 g_is_programme_list_selected;
 #define SUBMENU_DVB_SETTING_DLG_ID     (SUBMENU_DVB_SETTING_ID + 0x05)
 
 #define SUBMENU_DVB_SINGAL_ID     (APP_DTV_ID + 0x50)
-#define DVB_SINGAL_TIMER_ID     (SUBMENU_DVB_SINGAL_ID + 0x01)//�ź�״̬��ʱ��������Ƶ�����š����ź�ʱ�Ĵ���
+#define DVB_SINGAL_TIMER_ID     (SUBMENU_DVB_SINGAL_ID + 0x01)//信号状态定时器，控制频道播放、弱信号时的处理
 #define DVB_VOL_TIMER_ID        (SUBMENU_DVB_SINGAL_ID + 0x02)
 #define DVB_AUTH_TIMER_ID       (SUBMENU_DVB_SINGAL_ID + 0x03)
 #define DVB_LOADING_TIMER_ID        (SUBMENU_DVB_SINGAL_ID + 0x04)
@@ -152,8 +169,8 @@ extern __s32 g_is_programme_list_selected;
 
 #define DTV_ROLLING_TEXT_ID     (APP_DTV_ID + 0xA1)
 
-#define  DVB_LOADING_ID         (DTV_TVOUT_ID+1)      //�������ض�����ʱ��
-#define  DVB_SPIC_CHANNEL_ID    (DTV_TVOUT_ID+2)      //���ּ���̨��ʱ�������ڶ�ʱ���ؿ�
+#define  DVB_LOADING_ID         (DTV_TVOUT_ID+1)      //启动加载动画定时器
+#define  DVB_SPIC_CHANNEL_ID    (DTV_TVOUT_ID+2)      //数字键切台定时器，用于定时隐藏框
 #define  DVB_PROT_DIALOG_ID     (DTV_TVOUT_ID+3)      //no use any more
 #define  DVB_BATTERY_TIMER_ID   (DTV_TVOUT_ID+4)
 #define  DVB_TVOUT_TIMER_ID     (DTV_TVOUT_ID+5)
@@ -171,25 +188,25 @@ extern __s32 g_is_programme_list_selected;
 
 enum
 {
-    DTV_RESEARCH_SERVICE_LIST = GUI_MSG_USER_DEF + 0x2000, //������̨
+    DTV_RESEARCH_SERVICE_LIST = GUI_MSG_USER_DEF + 0x2000, //重新搜台
 #ifdef DTV_AUTO_SEARCH_ENABLE
     DTV_AUTO_RESEARCH_SERVICE_LIST,
 #endif
-    DTV_PREVIEW_SERVICE_LIST,        //��Ԥ������
-    DTV_BACK2PLAY_PROGRAM,          //�ع���������״̬
+    DTV_PREVIEW_SERVICE_LIST,        //进预览界面
+    DTV_BACK2PLAY_PROGRAM,          //回归正常播放状态
 
-    DTV_MENU_RESEARCH,//�ֶ���̨
+    DTV_MENU_RESEARCH,//手动搜台
     DTV_2_EPG,
 
 
-    CMD_TO_UPDATE_SINGAL_STATUS, //�����ź�״̬
-    CMD_TO_UPDATE_VOLUME, //��������������
-    CMD_TO_UPDATE_SYSTIME, //����ϵͳʱ��
+    CMD_TO_UPDATE_SINGAL_STATUS, //更新信号状态
+    CMD_TO_UPDATE_VOLUME, //更新音量进度条
+    CMD_TO_UPDATE_SYSTIME, //更新系统时间
 
-    CMD_TO_DELETE_SEARCH_THREAD, //ɾ����̨�߳�
+    CMD_TO_DELETE_SEARCH_THREAD, //删除搜台线程
 
 
-    CMD_SWITCH_TVOUT_MODE,//�л�TVOUT
+    CMD_SWITCH_TVOUT_MODE,//切换TVOUT
     DTV_CA_MSG_DISPLAY,
     DTV_CA_MSG_RESUME,
     CMD_CREATE_ROLLING_TXT,
@@ -198,9 +215,9 @@ enum
 
 enum
 {
-    DTV_SIGNAL_LAYER_OFF = 0,       // ��ȫ�ر��ź�״̬��
-    DTV_SIGNAL_BATTERY,             // ����ʾ���״̬
-    DTV_SIGNAL_BAR,                 // ���ź�״̬ʾ�͵��״̬
+    DTV_SIGNAL_LAYER_OFF = 0,       // 完全关闭信号状态条
+    DTV_SIGNAL_BATTERY,             // 仅显示电池状态
+    DTV_SIGNAL_BAR,                 // 显信号状态示和电池状态
     DTV_SIGNAL_UPDATE
 };
 
@@ -215,4 +232,3 @@ extern  H_WIN dtv_com_layer_create(RECT *rect, char *layer_name);
 extern void dtv_delete_all_menu(__u32 exp);
 extern __s32 dtv_show_signal_status(__bool en);
 #endif/*_MOVIE_I_H_*/
-

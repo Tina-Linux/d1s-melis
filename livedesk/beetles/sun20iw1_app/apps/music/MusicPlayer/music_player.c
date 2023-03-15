@@ -1,17 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-* File      :   music_player.h
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* By        :   Libaiao
-* Func  :
-* Version   :   v1.0
-* ============================================================================================================
-* 2010-5-3 15:24:52  Libaiao  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "beetles_app.h"
 #include "music.h"
@@ -31,7 +47,7 @@ void  npl_delete(void);
 static __u32 MusicTimerId = 0x01;
 static __u32 Music_FF_RR_TimerId = 0x05;
 static __u32 MusicSysTimerId = 0x10;
-static __u32 MusicCheckFocusTimerId = 0x10;             //¼ì²âµ±Ç°ÌõÄ¿ÊÇ·ñÓëÊµ¼Ê²¥·ÅÌõÄ¿ÏàÍ¬
+static __u32 MusicCheckFocusTimerId = 0x10;             //æ£€æµ‹å½“å‰æ¡ç›®æ˜¯å¦ä¸Žå®žé™…æ’­æ”¾æ¡ç›®ç›¸åŒ
 
 #define NAME_MUSIC_BKPOINT                 "MUSICINF"
 
@@ -45,7 +61,7 @@ static __u32 MusicCheckFocusTimerId = 0x10;             //¼ì²âµ±Ç°ÌõÄ¿ÊÇ·ñÓëÊµ¼Ê
 H_WIN           music_player_win_create(H_WIN h_parent, music_player_ctrl_t *para);
 static __s32    _music_player_win_cb(__gui_msg_t *msg);
 static __s32    music_player_win_key_proc(__gui_msg_t *msg);
-static __s32    music_player_scene_create(H_WIN  music_frame_win);                              //´´½¨³¡¾°
+static __s32    music_player_scene_create(H_WIN  music_frame_win);                              //åˆ›å»ºåœºæ™¯
 static __s32    music_player_win_on_close(__gui_msg_t *msg);
 static __s32    music_player_win_on_destroy(__gui_msg_t *msg);
 static __s32    music_player_win_on_paint(H_WIN  music_frame_win);
@@ -53,8 +69,8 @@ static __s32    music_player_win_on_paint(H_WIN  music_frame_win);
 
 static __s32    music_play_file(music_player_ctrl_t *player_ctrl, char *filename, __bool breakplay);
 
-static __s32    music_player_device_init(music_player_ctrl_t *player_ctrl); //²¥·ÅÒôÆµÉè±¸³õÊ¼»¯
-static __s32    music_player_device_uninit(music_player_ctrl_t *player_ctrl);//¹Ø±ÕÒôÆµÉè±¸
+static __s32    music_player_device_init(music_player_ctrl_t *player_ctrl); //æ’­æ”¾éŸ³é¢‘è®¾å¤‡åˆå§‹åŒ–
+static __s32    music_player_device_uninit(music_player_ctrl_t *player_ctrl);//å…³é—­éŸ³é¢‘è®¾å¤‡
 
 static __s32    music_player_win_on_timer(__gui_msg_t *msg);
 
@@ -74,7 +90,7 @@ __s32 music_player_win_on_sys_timer(music_player_ctrl_t *this);
 
 __s32 music_restore_play_file_info(music_player_ctrl_t *this);
 
-//reg_root_type£¬0:sd 1:uÅÌ
+//reg_root_typeï¼Œ0:sd 1:uç›˜
 static __s32 music_player_switch_disk(music_player_ctrl_t *this, __u32 reg_root_type);
 static __s32 music_explorer_on_enter_key(__gui_msg_t *msg);
 
@@ -108,7 +124,7 @@ static __s32 AiTalkGetStr(char str[AITALK_MAX_STR][AITALK_MAX_STR_SIZE]);
 ************************************************************************************************************************
 *Function   :          H_WIN music_player_win_create(H_WIN h_parent, music_player_ctrl_t *para)
 *
-*Description    :       ´´½¨MusicPlayer framewin
+*Description    :       åˆ›å»ºMusicPlayer framewin
 *
 *Arguments      :
 *
@@ -137,7 +153,7 @@ H_WIN music_player_win_create(H_WIN h_parent, music_player_ctrl_t *para)
     music_player_ctrl->music_layer = para->music_layer;
     music_player_ctrl->media_type = para->media_type;       //photo, music, movie
     music_player_ctrl->root_type = para->root_type;                         //SD or USB device
-    music_player_ctrl->visiable = para->visiable;               //ÊÇ·ñ±³¾°²¥·Å
+    music_player_ctrl->visiable = para->visiable;               //æ˜¯å¦èƒŒæ™¯æ’­æ”¾
     music_player_ctrl->explorer_play_music = para->explorer_play_music;
     music_player_ctrl->music_file_name = para->music_file_name;
     music_player_ctrl->AB_mode = para->AB_mode;
@@ -168,8 +184,8 @@ H_WIN music_player_win_create(H_WIN h_parent, music_player_ctrl_t *para)
     framewin_para.BkColor.green = 255;
     framewin_para.BkColor.blue = 0;
     framewin_para.attr = (void *)music_player_ctrl;
-    framewin_para.hLayer = music_player_ctrl->music_layer;          //»á±»listbarµ÷ÓÃ
-    return (GUI_FrmWinCreate(&framewin_para));                      //ÔÚframewin µÄcreateÏûÏ¢ÖÐ½«handle,´«ËÍ¸ømusic_player_ctrl->h_framewin
+    framewin_para.hLayer = music_player_ctrl->music_layer;          //ä¼šè¢«listbarè°ƒç”¨
+    return (GUI_FrmWinCreate(&framewin_para));                      //åœ¨framewin çš„createæ¶ˆæ¯ä¸­å°†handle,ä¼ é€ç»™music_player_ctrl->h_framewin
 }
 
 __s32 music_player_on_power_charge(__gui_msg_t *msg)
@@ -482,13 +498,13 @@ static __s32 music_player_bottom_touch(__gui_msg_t *msg, __u32 keyState, __u16 x
         {
 #if 0
 
-            if (robin_get_fsm_status() != CEDAR_STAT_PLAY)          //¹Ø±ÕÒôÀÖ
+            if (robin_get_fsm_status() != CEDAR_STAT_PLAY)          //å…³é—­éŸ³ä¹
             {
                 music_send_command(msg->h_deswin, GUI_MSG_COMMAND, SWITCH_TO_EXPLORER, 0);
             }
             else
             {
-                //ÍË³öÊ±£¬ÕýÔÚ²¥·ÅÔò½øÈë±³¾°²¥·Å×´?
+                //é€€å‡ºæ—¶ï¼Œæ­£åœ¨æ’­æ”¾åˆ™è¿›å…¥èƒŒæ™¯æ’­æ”¾çŠ¶?
                 //__wait__;
                 //music_send_command(msg->h_deswin, GUI_MSG_COMMAND, EXPLR_SW_TO_MAIN, MUSICPLAYER_BACKGROUND);
                 {
@@ -497,7 +513,7 @@ static __s32 music_player_bottom_touch(__gui_msg_t *msg, __u32 keyState, __u16 x
                     my_msg.h_deswin = msg->h_deswin;
                     my_msg.h_srcwin = msg->h_deswin;
                     my_msg.id = GUI_MSG_COMMAND;
-                    my_msg.dwAddData1 = MUSICPLAYER_BACKGROUND;//·¢ËÍÏûÏ¢¸øÒôÀÖAPÒª½øÈë±³¾°²¥·Å×´Ì¬£¬ÊÍ·Å³¡¾°
+                    my_msg.dwAddData1 = MUSICPLAYER_BACKGROUND;//å‘é€æ¶ˆæ¯ç»™éŸ³ä¹APè¦è¿›å…¥èƒŒæ™¯æ’­æ”¾çŠ¶æ€ï¼Œé‡Šæ”¾åœºæ™¯
                     //GUI_SendNotifyMessage(&msg);
                     GUI_SendMessage(&my_msg);
                 }
@@ -558,7 +574,7 @@ static __s32 music_player_bottom_touch(__gui_msg_t *msg, __u32 keyState, __u16 x
             clear.y0 = 37;
             clear.x1 = 459;
             clear.y1 = 130;
-            player_ctrl->showMode = (player_ctrl->showMode + 1) % MUSIC_LYRICS_MAX; //0-2Ò»Ö±Ñ­»·¡£
+            player_ctrl->showMode = (player_ctrl->showMode + 1) % MUSIC_LYRICS_MAX; //0-2ä¸€ç›´å¾ªçŽ¯ã€‚
 
             if (player_ctrl->showMode == MUSIC_LYRICS)
             {
@@ -675,7 +691,7 @@ __s32 music_player_win_on_command(__gui_msg_t *msg)
         }
         break;
 
-        case MUSICPLAYER_BACKGROUND_HOME://Çë×¢Òâ£¬¸ÃÏûÏ¢Ã»ÓÐreturn ok£¬»áÍù¸¸´°¿Ú´«£¬¸¸´°¿Ú»á¼ÌÐøÏìÓ¦
+        case MUSICPLAYER_BACKGROUND_HOME://è¯·æ³¨æ„ï¼Œè¯¥æ¶ˆæ¯æ²¡æœ‰return okï¼Œä¼šå¾€çˆ¶çª—å£ä¼ ï¼Œçˆ¶çª—å£ä¼šç»§ç»­å“åº”
         {
             __wrn("music player:MUSICPLAYER_BACKGROUND_HOME");
             music_player_scene_delete(msg->h_deswin);
@@ -715,7 +731,7 @@ static void DrawMusic_playing(GUI_FONT *font)
 
     memset(&gui_rect2, 0x00, sizeof(GUI_RECT));
 
-    MusicSetTransColor();//ÉèÖÃÑÕÉ«µÈ
+    MusicSetTransColor();//è®¾ç½®é¢œè‰²ç­‰
     GUI_SetFont(font);
     GUI_UC_SetEncodeUTF8();
 
@@ -724,12 +740,12 @@ static void DrawMusic_playing(GUI_FONT *font)
     gui_rect2.x1 = gui_rect2.x0+85;
     gui_rect2.y1 = gui_rect2.y0+22;
 
-    GUI_ClearRectEx(&gui_rect2);//Çå³ýÇøÓò
+    GUI_ClearRectEx(&gui_rect2);//æ¸…é™¤åŒºåŸŸ
 
-    dsk_langres_get_menu_text(lang_id_2, item_str, GUI_TITLE_MAX);//ÏÔÊ¾ÕýÔÚ²¥·Å
+    dsk_langres_get_menu_text(lang_id_2, item_str, GUI_TITLE_MAX);//æ˜¾ç¤ºæ­£åœ¨æ’­æ”¾
     GUI_DispStringInRect((const char *)item_str, &gui_rect2, GUI_TA_HCENTER|GUI_TA_VCENTER);
 
-    index = robin_npl_get_cur()+1;//ÏÔÊ¾ÕýÔÚ²¥·ÅÊý×Ö
+    index = robin_npl_get_cur()+1;//æ˜¾ç¤ºæ­£åœ¨æ’­æ”¾æ•°å­—
     eLIBs_sprintf(ucStringBuf, "%d", index);
 
     gui_rect2.x0 = x1+85;
@@ -737,7 +753,7 @@ static void DrawMusic_playing(GUI_FONT *font)
     gui_rect2.x1 = gui_rect2.x0+80;
     gui_rect2.y1 = gui_rect2.y0+22;
 
-    GUI_ClearRectEx(&gui_rect2);//Çå³ýÇøÓò
+    GUI_ClearRectEx(&gui_rect2);//æ¸…é™¤åŒºåŸŸ
     GUI_DispStringInRect(ucStringBuf, &gui_rect2, GUI_TA_LEFT|GUI_TA_VCENTER);
     */
 }
@@ -1043,7 +1059,7 @@ __s32 music_player_delete_digit_layer(H_WIN       music_frame_win)
 ************************************************************************************************************************
 *Function   :          static __s32 _music_player_win_cb(__gui_msg_t *msg)
 *
-*Description    :       framewin ÏûÏ¢´¦Àíº¯Êý
+*Description    :       framewin æ¶ˆæ¯å¤„ç†å‡½æ•°
 *
 *Arguments      :
 *
@@ -1210,7 +1226,7 @@ static __s32 _music_player_win_cb(__gui_msg_t *msg)
         case GUI_MSG_KEY:
 
             //          //__here__;
-            if (this->visiable)     //ÓÐ½çÃæÏÔÊ¾²Å»á°´¼ü²Ù×÷
+            if (this->visiable)     //æœ‰ç•Œé¢æ˜¾ç¤ºæ‰ä¼šæŒ‰é”®æ“ä½œ
             {
                 //  //__here__;
                 return music_player_win_key_proc(msg);
@@ -1223,7 +1239,7 @@ static __s32 _music_player_win_cb(__gui_msg_t *msg)
             return EPDK_OK;
 
         case GUI_MSG_TIMER:
-            if (MusicSysTimerId == msg->dwAddData1) //¶¨Ê±È¥¸üÐÂ²¥·Å×´Ì¬)
+            if (MusicSysTimerId == msg->dwAddData1) //å®šæ—¶åŽ»æ›´æ–°æ’­æ”¾çŠ¶æ€)
             {
                 music_player_win_on_sys_timer(this);
             }
@@ -1260,7 +1276,7 @@ static __s32 _music_player_win_cb(__gui_msg_t *msg)
     return GUI_FrmWinDefaultProc(msg);
 }
 
-//NextKey´¦Àíº¯Êý
+//NextKeyå¤„ç†å‡½æ•°
 static __s32 music_explorer_on_next_key(__gui_msg_t *msg)
 {
     music_player_ctrl_t *player_ctrl = NULL;
@@ -1292,7 +1308,7 @@ static __s32 music_explorer_on_next_key(__gui_msg_t *msg)
     __msg("listbar get scene focusid = %d, start id = %d", scene.focus_id, scene.start_id);
     //show_music_list(ListCtrl);
     //get_music_list_focus_item_full_filename(ListCtrl, filename);
-    player_ctrl->CheckFocusItemCnt = 0;     //ÓÐ°´¼üÇå³ý¼ì²â½¹µãÌõÄ¿¶¨Ê±¼ÆÊýÆ÷
+    player_ctrl->CheckFocusItemCnt = 0;     //æœ‰æŒ‰é”®æ¸…é™¤æ£€æµ‹ç„¦ç‚¹æ¡ç›®å®šæ—¶è®¡æ•°å™¨
     return EPDK_OK;
 }
 
@@ -1339,7 +1355,7 @@ static __s32 music_explorer_on_next_key_and_play(__gui_msg_t *msg) //add by chen
     __msg("listbar get scene focusid = %d, start id = %d", scene.focus_id, scene.start_id);
     //show_music_list(ListCtrl);
     //get_music_list_focus_item_full_filename(ListCtrl, filename);
-    player_ctrl->CheckFocusItemCnt = 0;     //ÓÐ°´¼üÇå³ý¼ì²â½¹µãÌõÄ¿¶¨Ê±¼ÆÊýÆ÷
+    player_ctrl->CheckFocusItemCnt = 0;     //æœ‰æŒ‰é”®æ¸…é™¤æ£€æµ‹ç„¦ç‚¹æ¡ç›®å®šæ—¶è®¡æ•°å™¨
     ret = get_music_list_focus_item_full_filename(ListCtrl, filename);
     __msg("filename = %s ", filename);
 
@@ -1355,7 +1371,7 @@ static __s32 music_explorer_on_next_key_and_play(__gui_msg_t *msg) //add by chen
 
     __log(".....layer = %08x", player_ctrl->list_ctrl->layer);
     {
-        //´¦Àíµ±Ç°¸èÇúµÄÔÝÍ£²¥·Å
+        //å¤„ç†å½“å‰æ­Œæ›²çš„æš‚åœæ’­æ”¾
         char cur_playing_file[RAT_MAX_FULL_PATH_LEN];
         //music_player_ctrl_t *player_ctrl;
         //player_ctrl = (music_player_ctrl_t *)GUI_WinGetAttr(msg->h_deswin);
@@ -1413,7 +1429,7 @@ static __s32 music_explorer_on_next_key_and_play(__gui_msg_t *msg) //add by chen
 
 
 
-//NextKey´¦Àíº¯Êý
+//NextKeyå¤„ç†å‡½æ•°
 static __s32 music_explorer_on_previous_key(__gui_msg_t *msg)
 {
     music_player_ctrl_t *player_ctrl;
@@ -1438,7 +1454,7 @@ static __s32 music_explorer_on_previous_key(__gui_msg_t *msg)
 #if HT_1628_LED_EX
     SetMusicNum(APP_MUSIC_ID, ((LISTBAR_GetFocusItem(player_ctrl->list_ctrl->listbar_handle) + 1) & 0x0fff) | 0x2000);
 #endif
-    player_ctrl->CheckFocusItemCnt = 0;     //ÓÐ°´¼üÇå³ý¼ì²â½¹µãÌõÄ¿¶¨Ê±¼ÆÊýÆ÷
+    player_ctrl->CheckFocusItemCnt = 0;     //æœ‰æŒ‰é”®æ¸…é™¤æ£€æµ‹ç„¦ç‚¹æ¡ç›®å®šæ—¶è®¡æ•°å™¨
     return EPDK_OK;
 }
 
@@ -1477,7 +1493,7 @@ static __s32 music_explorer_on_previous_key_and_play(__gui_msg_t *msg) //add by 
 #if HT_1628_LED_EX
     SetMusicNum(APP_MUSIC_ID, ((LISTBAR_GetFocusItem(player_ctrl->list_ctrl->listbar_handle) + 1) & 0x0fff) | 0x2000);
 #endif
-    player_ctrl->CheckFocusItemCnt = 0;     //ÓÐ°´¼üÇå³ý¼ì²â½¹µãÌõÄ¿¶¨Ê±¼ÆÊýÆ÷
+    player_ctrl->CheckFocusItemCnt = 0;     //æœ‰æŒ‰é”®æ¸…é™¤æ£€æµ‹ç„¦ç‚¹æ¡ç›®å®šæ—¶è®¡æ•°å™¨
     ret = get_music_list_focus_item_full_filename(ListCtrl, filename);
     __msg("filename = %s ", filename);
 
@@ -1493,7 +1509,7 @@ static __s32 music_explorer_on_previous_key_and_play(__gui_msg_t *msg) //add by 
 
     __log(".....layer = %08x", player_ctrl->list_ctrl->layer);
     {
-        //´¦Àíµ±Ç°¸èÇúµÄÔÝÍ£²¥·Å
+        //å¤„ç†å½“å‰æ­Œæ›²çš„æš‚åœæ’­æ”¾
         char cur_playing_file[RAT_MAX_FULL_PATH_LEN];
         //music_player_ctrl_t *player_ctrl;
         //player_ctrl = (music_player_ctrl_t *)GUI_WinGetAttr(msg->h_deswin);
@@ -1570,7 +1586,7 @@ static __s32 music_explorer_on_menu_key(__gui_msg_t *msg)
 
             this->menu_mode = MUSIC_SET_PLAYER_MODE;
 
-            GUI_UC_SetEncodeUTF8();             //UTF8×ÖÌåÏÔÊ¾
+            GUI_UC_SetEncodeUTF8();             //UTF8å­—ä½“æ˜¾ç¤º
 
             //GUI_LyrWinCacheOn();
 
@@ -1751,7 +1767,7 @@ static __s32 music_explorer_on_enter_key(__gui_msg_t *msg)
 
             __log(".....layer = %08x", This->list_ctrl->layer);
             {
-                //´¦Àíµ±Ç°¸èÇúµÄÔÝÍ£²¥·Å
+                //å¤„ç†å½“å‰æ­Œæ›²çš„æš‚åœæ’­æ”¾
                 char cur_playing_file[RAT_MAX_FULL_PATH_LEN] = {0};
                 music_player_ctrl_t *player_ctrl = NULL;
                 player_ctrl = (music_player_ctrl_t *)GUI_WinGetAttr(msg->h_deswin);
@@ -1950,7 +1966,7 @@ static __s32 music_explorer_on_enter_key_really(__gui_msg_t *msg) //by chenguofe
 
         __wrn(".....layer = %08x", This->list_ctrl->layer);
         {
-            //´¦Àíµ±Ç°¸èÇúµÄÔÝÍ£²¥·Å
+            //å¤„ç†å½“å‰æ­Œæ›²çš„æš‚åœæ’­æ”¾
             char cur_playing_file[RAT_MAX_FULL_PATH_LEN];
             music_player_ctrl_t *player_ctrl;
             player_ctrl = (music_player_ctrl_t *)GUI_WinGetAttr(msg->h_deswin);
@@ -2200,11 +2216,11 @@ static __s32 music_explorer_key_proc(__gui_msg_t *msg)
             case GUI_MSG_KEY_PLAY_PAUSE:
             {
                 //__here__;
-                if (msg->dwReserved == 0) //Ãæ°å×öenter¼ü
+                if (msg->dwReserved == 0) //é¢æ¿åšenteré”®
                 {
                     return music_explorer_on_enter_key(msg);
                 }
-                else if (msg->dwReserved == 1) //IR µ±play pause
+                else if (msg->dwReserved == 1) //IR å½“play pause
                 {
                     __cedar_status_t sta;
                     //__here__;
@@ -2443,7 +2459,7 @@ static __s32 music_explorer_key_proc(__gui_msg_t *msg)
                                 if(last_key == GUI_MSG_KEY_MENU)
                                 {
 
-                                    #if 1//ÓïÒôÊ¶±ðµã¸è
+                                    #if 1//è¯­éŸ³è¯†åˆ«ç‚¹æ­Œ
                                         //StartReconize(AiTalkGetStr);
                                         __wrn("StartReconize...");
                                     #else
@@ -2541,7 +2557,7 @@ static __s32 music_explorer_key_proc(__gui_msg_t *msg)
             }
 
             //===========================================================
-            //´¦ÀíÊý×Öµã¸è
+            //å¤„ç†æ•°å­—ç‚¹æ­Œ
             case GUI_MSG_KEY_NUM0:
             case GUI_MSG_KEY_NUM1:
             case GUI_MSG_KEY_NUM2:
@@ -2874,7 +2890,7 @@ static __s32 music_explorer_key_proc(__gui_msg_t *msg)
 }
 
 
-//¼ì²â²¥·Å×´Ì¬,²¢¸ù¾Ýplaymode»ñµÃÏà¹ØµÄÎÄ¼þ,Æô¶¯²¥·ÅÆ÷
+//æ£€æµ‹æ’­æ”¾çŠ¶æ€,å¹¶æ ¹æ®playmodeèŽ·å¾—ç›¸å…³çš„æ–‡ä»¶,å¯åŠ¨æ’­æ”¾å™¨
 static __s32 music_player_check_play_status_on_timer(music_player_ctrl_t *this)
 {
     __s32 index = 0;
@@ -2897,7 +2913,7 @@ static __s32 music_player_check_play_status_on_timer(music_player_ctrl_t *this)
                 }
                 else
                 {
-                    SPCTRM_Clear(0);        //ÏÔÊ¾×î´óÖµ
+                    SPCTRM_Clear(0);        //æ˜¾ç¤ºæœ€å¤§å€¼
                 }
             }
 
@@ -2939,7 +2955,7 @@ static __s32 music_player_check_play_status_on_timer(music_player_ctrl_t *this)
                 return EPDK_OK;
             }
 
-            if (this->visiable)     //±³¾°²¥·ÅÔò²»ÏÔÊ¾listbar
+            if (this->visiable)     //èƒŒæ™¯æ’­æ”¾åˆ™ä¸æ˜¾ç¤ºlistbar
             {
                 if ((this->play_mode == RAT_PLAY_MODE_ROTATE_ALL)
                     || (this->play_mode == RAT_PLAY_MODE_SEQUENCE))
@@ -3024,7 +3040,7 @@ static __s32 music_player_check_play_status_on_timer(music_player_ctrl_t *this)
                 return EPDK_OK;
             }
 
-            if (this->visiable)     //±³¾°²¥·ÅÔò²»ÏÔÊ¾listbar
+            if (this->visiable)     //èƒŒæ™¯æ’­æ”¾åˆ™ä¸æ˜¾ç¤ºlistbar
             {
                 if ((this->play_mode == RAT_PLAY_MODE_ROTATE_ALL)
                     || (this->play_mode == RAT_PLAY_MODE_SEQUENCE))
@@ -3070,7 +3086,7 @@ __s32 music_player_get_last_para(music_player_ctrl_t *This)
     //__wait__;
     music_last_para = dsk_reg_get_para_by_app(REG_APP_MUSIC);
     system_last_para = dsk_reg_get_para_by_app(REG_APP_SYSTEM);
-    //This->play_index = music_last_para->play_index;       //»ñµÃÊµ¼Ê²¥·ÅµÄË÷ÒýºÅ
+    //This->play_index = music_last_para->play_index;       //èŽ·å¾—å®žé™…æ’­æ”¾çš„ç´¢å¼•å·
     This->EQ_mode = music_last_para->EQ_mode;
     This->play_mode = music_last_para->play_mode;
     __wrn("music_last_para->play_mode:%d", music_last_para->play_mode);
@@ -3150,7 +3166,7 @@ __s32 music_player_get_last_para(music_player_ctrl_t *This)
     return EPDK_OK;
 }
 
-//±£´æ×¢²á±íÐÅÏ¢Ö±½Ó²Ù×÷½á¹¹Ìå
+//ä¿å­˜æ³¨å†Œè¡¨ä¿¡æ¯ç›´æŽ¥æ“ä½œç»“æž„ä½“
 __s32 music_player_save_last_para(music_player_ctrl_t *This)
 {
     __s32 ret = 0;
@@ -3440,7 +3456,7 @@ static __s32 music_player_set_BL_time(music_player_ctrl_t *this)
     DrawMusicBLTimeButton(this->BL_time, PRESSED);
 #if BEETLES_RTC_EXIST
 #else
-    DrawMusicBLLastTimeStatus(this->BL_time);           //RTC ²»´æÔÚÏÔÊ¾±³¹âÊ±¼ä
+    DrawMusicBLLastTimeStatus(this->BL_time);           //RTC ä¸å­˜åœ¨æ˜¾ç¤ºèƒŒå…‰æ—¶é—´
 #endif
     return EPDK_OK;
 }
@@ -3583,7 +3599,7 @@ static __s32 music_player_set_play_next(music_player_ctrl_t *this)
     return EPDK_OK;
 }
 
-//reg_root_type£¬0:sd 1:uÅÌ
+//reg_root_typeï¼Œ0:sd 1:uç›˜
 static __s32 music_player_switch_disk(music_player_ctrl_t *this, __u32 reg_root_type)
 {
     __s32 ret;
@@ -3621,7 +3637,7 @@ static __s32 music_player_set_play_pause(music_player_ctrl_t *this, music_btn_st
     return EPDK_OK;
 }
 
-//²»¹ÜÔÚÊ²Ã´Ä£Ê½£¬¶ÔÊÇ·ñ´æÔÚ¸è´Ê½øÐÐ¼ì²â
+//ä¸ç®¡åœ¨ä»€ä¹ˆæ¨¡å¼ï¼Œå¯¹æ˜¯å¦å­˜åœ¨æ­Œè¯è¿›è¡Œæ£€æµ‹
 __s32  music_player_check_lyrics(music_player_ctrl_t *this, __bool bUpdate)
 {
     if (this == NULL)
@@ -3631,9 +3647,9 @@ __s32  music_player_check_lyrics(music_player_ctrl_t *this, __bool bUpdate)
 
     delete_music_lyrics_scene(this);
     {
-        if (music_lyrics_exist())       //¼ì²éÊÇ·ñÓÐ¸è´Ê
+        if (music_lyrics_exist())       //æ£€æŸ¥æ˜¯å¦æœ‰æ­Œè¯
         {
-            //ÓÐ¸è´ÊÔò²»ÏÔÊ¾ÆµÆ×
+            //æœ‰æ­Œè¯åˆ™ä¸æ˜¾ç¤ºé¢‘è°±
             if (create_music_lyrics_scene(this) != EPDK_FAIL)
             {
                 __msg("---------------create music lyrics scene successfully!");
@@ -3658,7 +3674,7 @@ __s32  music_player_check_lyrics(music_player_ctrl_t *this, __bool bUpdate)
             {
                 __wrn("GUI_LYRWIN_STA_ON == GUI_LyrWinGetSta(this->music_layer)");
                 {
-                    //»Ö¸´ÏµÍ³×Ô¶¯¹ØÆÁÊ±¼ä
+                    //æ¢å¤ç³»ç»Ÿè‡ªåŠ¨å…³å±æ—¶é—´
                     reg_system_para_t *para;
                     para = (reg_system_para_t *)dsk_reg_get_para_by_app(REG_APP_SYSTEM);
 
@@ -3686,7 +3702,7 @@ static __s32 music_player_set_play_backward(music_player_ctrl_t *this)
 
     if (play_status == CEDAR_STAT_PAUSE)
     {
-        robin_set_cmd_play();           //ºóÍËÊ§°Ü,Ôò¼ÌÐø²¥·Å
+        robin_set_cmd_play();           //åŽé€€å¤±è´¥,åˆ™ç»§ç»­æ’­æ”¾
         music_player_check_lyrics(this, EPDK_FALSE);
         cur_time = robin_get_cur_time();
 
@@ -3705,8 +3721,8 @@ static __s32 music_player_set_play_backward(music_player_ctrl_t *this)
         //__here__;
         this->CheckFocusItemCnt = 0;
         __msg("2------------check focus item on timer");
-        music_player_win_check_focus_on_timer(this);    //¼ì²âµ±Ç°½¹µãÊÇ·ñ²¥·ÅÌõÄ¿
-        robin_set_cmd_play();           //ºóÍËÊ§°Ü,Ôò¼ÌÐø²¥·Å
+        music_player_win_check_focus_on_timer(this);    //æ£€æµ‹å½“å‰ç„¦ç‚¹æ˜¯å¦æ’­æ”¾æ¡ç›®
+        robin_set_cmd_play();           //åŽé€€å¤±è´¥,åˆ™ç»§ç»­æ’­æ”¾
         music_player_check_lyrics(this, EPDK_FALSE);
         cur_time = robin_get_cur_time();
 
@@ -3740,7 +3756,7 @@ static __s32 music_player_set_play_backward(music_player_ctrl_t *this)
 
     if (ret == -1)
     {
-        robin_set_cmd_play();           //ºóÍËÊ§°Ü,Ôò¼ÌÐø²¥·Å
+        robin_set_cmd_play();           //åŽé€€å¤±è´¥,åˆ™ç»§ç»­æ’­æ”¾
         music_player_check_lyrics(this, EPDK_FALSE);
         DrawMusicProgressBar(0, 0);
         GUI_ResetTimer(this->h_framewin, MusicTimerId, MUSIC_TIMER_INTERVAL, NULL);
@@ -3795,7 +3811,7 @@ static __s32 music_player_set_play_forward(music_player_ctrl_t *this)
         robin_set_cmd_stop();
         this->CheckFocusItemCnt = 0;
         __msg("2------------check focus item on timer");
-        music_player_win_check_focus_on_timer(this);    //¼ì²âµ±Ç°½¹µãÊÇ·ñ²¥·ÅÌõÄ¿
+        music_player_win_check_focus_on_timer(this);    //æ£€æµ‹å½“å‰ç„¦ç‚¹æ˜¯å¦æ’­æ”¾æ¡ç›®
         music_player_check_lyrics(this, EPDK_FALSE);
         cur_time = robin_get_cur_time();
 
@@ -3832,7 +3848,7 @@ static __s32 music_player_set_play_forward(music_player_ctrl_t *this)
     //__here__;
     if (ret == -1)
     {
-        robin_set_cmd_play();           //ºóÍËÊ§°Ü,Ôò¼ÌÐø²¥·Å
+        robin_set_cmd_play();           //åŽé€€å¤±è´¥,åˆ™ç»§ç»­æ’­æ”¾
         music_player_check_lyrics(this, EPDK_FALSE);
         DrawMusicProgressBar(total_time, total_time);
         GUI_ResetTimer(this->h_framewin, MusicTimerId, MUSIC_TIMER_INTERVAL, NULL);
@@ -3921,7 +3937,7 @@ static __s32 music_player_on_setting_touch(music_player_ctrl_t *this)
 
     return EPDK_OK;
 }
-//ÉèÖÃ²¥·ÅÆ÷°´¼ü´¦Àíº¯Êý
+//è®¾ç½®æ’­æ”¾å™¨æŒ‰é”®å¤„ç†å‡½æ•°
 static __s32 music_setting_player_key_proc(__gui_msg_t *msg)
 {
     static __u32 last_key = 0;
@@ -4083,7 +4099,7 @@ static __s32 music_setting_player_key_proc(__gui_msg_t *msg)
                         {
                             SPCTRM_Clear(0);
                             SPCTRM_Update((H_WIN)(this->h_framewin));
-                            //draw spectrum();//»­ÆµÆ×Í¼
+                            //draw spectrum();//ç”»é¢‘è°±å›¾
                         }
 
                         this->menu_mode = MUSIC_EXPLORER_MODE;
@@ -4101,7 +4117,7 @@ static __s32 music_setting_player_key_proc(__gui_msg_t *msg)
                 if (last_key == GUI_MSG_KEY_ENTER)
                 {
 #if 0
-                    DrawMusicPlayerContrlButtonByID(this, this->menu_id, FOCUSED);  //¶Ì°´¼üÌ§Æð
+                    DrawMusicPlayerContrlButtonByID(this, this->menu_id, FOCUSED);  //çŸ­æŒ‰é”®æŠ¬èµ·
 #else
                     __log(".....layer = %8x", this->list_ctrl->layer);
                     com_memdev_create(this->music_layer);
@@ -4120,7 +4136,7 @@ static __s32 music_setting_player_key_proc(__gui_msg_t *msg)
     return EPDK_OK;
 }
 
-//°´¼üÏûÏ¢´¦Àíº¯Êý
+//æŒ‰é”®æ¶ˆæ¯å¤„ç†å‡½æ•°
 static __s32 music_player_win_key_proc(__gui_msg_t *msg)
 {
     music_player_ctrl_t *this = NULL;
@@ -4131,7 +4147,7 @@ static __s32 music_player_win_key_proc(__gui_msg_t *msg)
     switch (this->menu_mode)
     {
         case MUSIC_EXPLORER_MODE:
-            music_explorer_key_proc(msg);           //ä¯ÀÀÆ÷on key process
+            music_explorer_key_proc(msg);           //æµè§ˆå™¨on key process
             break;
 
         case MUSIC_SET_PLAYER_MODE:
@@ -4182,7 +4198,7 @@ __s32 music_player_win_on_sys_timer(music_player_ctrl_t *this)
 {
 #if BEETLES_RTC_EXIST
     {
-        //¸üÐÂÏµÍ³Ê±¼ä
+        //æ›´æ–°ç³»ç»Ÿæ—¶é—´
         __awos_time_t sys_time = {0, 0, 0};
 
         if (this == NULL)
@@ -4247,7 +4263,7 @@ static __s32 music_player_win_on_timer(__gui_msg_t *msg)
         return EPDK_TRUE;
     }
 
-    //µ±ºóÍË³¬¹ý0Ê±£¬»á½øÈëstop×´Ì¬£¬´ËÊ±Ó¦ÖØÐÂplay
+    //å½“åŽé€€è¶…è¿‡0æ—¶ï¼Œä¼šè¿›å…¥stopçŠ¶æ€ï¼Œæ­¤æ—¶åº”é‡æ–°play
 
     if ((this->setting_status == CEDAR_STAT_FF) || (this->setting_status == CEDAR_STAT_RR))
     {
@@ -4396,7 +4412,7 @@ static __s32 music_player_win_on_timer(__gui_msg_t *msg)
 ************************************************************************************************************************
 *Function   :           static __s32 music_player_win_on_close(__gui_msg_t *msg)
 *
-*Description    :               OnClose´¦Àíº¯Êý£¬ÊÍ·ÅFrameWin
+*Description    :               OnCloseå¤„ç†å‡½æ•°ï¼Œé‡Šæ”¾FrameWin
 *
 *Arguments      :
 *
@@ -4413,7 +4429,7 @@ static __s32 music_player_win_on_close(__gui_msg_t *msg)
 ************************************************************************************************************************
 *Function   :           static __s32  music_player_win_on_destroy(__gui_msg_t *msg)
 *
-*Description    :               OnDestroy´¦Àíº¯Êý£¬ÊÍ·Åframewin ËùÓÐÉêÇëµÄ×ÊÔ´
+*Description    :               OnDestroyå¤„ç†å‡½æ•°ï¼Œé‡Šæ”¾framewin æ‰€æœ‰ç”³è¯·çš„èµ„æº
 *
 *Arguments      :
 *
@@ -4483,7 +4499,7 @@ static __s32  music_player_win_on_destroy(__gui_msg_t *msg)
 ************************************************************************************************************************
 *Function   :          static __s32 music_player_scene_create(H_WIN  music_frame_win)
 *
-*Description    :       music player ³¡¾°´´½¨
+*Description    :       music player åœºæ™¯åˆ›å»º
 *
 *Arguments      :
 *
@@ -4497,7 +4513,7 @@ static __s32 music_player_scene_create(H_WIN  music_frame_win)
     music_list_para_t list_para;
     __bool ret = 0;
     this = (music_player_ctrl_t *)GUI_WinGetAttr(music_frame_win);
-    this->h_framewin = music_frame_win;                                     //±£´æ´°¿Ú¾ä±ú
+    this->h_framewin = music_frame_win;                                     //ä¿å­˜çª—å£å¥æŸ„
     __wrn("music player is initializing!");
     list_para.framewin = this->h_framewin;
     list_para.layer = this->music_layer;
@@ -4586,7 +4602,7 @@ static __s32 music_player_scene_create(H_WIN  music_frame_win)
 
     if (this->visiable)
     {
-        ret = GUI_SetTimer(music_frame_win, MusicSysTimerId, MUSIC_SYSTIMER_INTERVAL, NULL);                        //ÏµÍ³Ê±¼äË¢ÐÂ¶¨Ê±Æ÷
+        ret = GUI_SetTimer(music_frame_win, MusicSysTimerId, MUSIC_SYSTIMER_INTERVAL, NULL);                        //ç³»ç»Ÿæ—¶é—´åˆ·æ–°å®šæ—¶å™¨
 
         if (!ret)
         {
@@ -4598,7 +4614,7 @@ static __s32 music_player_scene_create(H_WIN  music_frame_win)
         }
 
         /*
-        ret = GUI_SetTimer(music_frame_win, MusicCheckFocusTimerId, MUSIC_CHECK_FOCUS_TIMER_INTERVAL, NULL);        //¼ì²âÊÇ·ñfoucus item Óëµ±Ç°²¥·ÅindexÒ»ÖÂ
+        ret = GUI_SetTimer(music_frame_win, MusicCheckFocusTimerId, MUSIC_CHECK_FOCUS_TIMER_INTERVAL, NULL);        //æ£€æµ‹æ˜¯å¦foucus item ä¸Žå½“å‰æ’­æ”¾indexä¸€è‡´
         if(!ret)
         {
             __wrn("creat timer for check focus item failed");
@@ -4715,7 +4731,7 @@ static __s32 music_player_win_on_paint(H_WIN  music_frame_win)
 
 #if 0
                 {
-                    //ºóÌ¨»Ö¸´ºó£¬ÖØÉèµ±Ç°½¹µã
+                    //åŽå°æ¢å¤åŽï¼Œé‡è®¾å½“å‰ç„¦ç‚¹
                     music_list_ctrl_t *ListCtrl = NULL;
                     __listbar_scene_t scene;
                     __s32 index;
@@ -4748,7 +4764,7 @@ static __s32 music_player_win_on_paint(H_WIN  music_frame_win)
         }
 #ifdef C_MUSIC_DEBUG
 #else
-        GUI_SetTimer(music_frame_win, MusicTimerId, MUSIC_TIMER_INTERVAL, NULL);//playÖ®ºó²Å¿ÉÒÔ´ò¿ªtimer
+        GUI_SetTimer(music_frame_win, MusicTimerId, MUSIC_TIMER_INTERVAL, NULL);//playä¹‹åŽæ‰å¯ä»¥æ‰“å¼€timer
 #endif
     }
     //app_print_memory_usage("player is playing", NULL);
@@ -4921,7 +4937,7 @@ __s32 music_player_restore(H_WIN  music_frame_win, __s32 root_type)
     __msg("this->music_file_name = %s", this->music_file_name);
     __msg("this->play_file_info.filename = %s", this->play_file_info.filename);
 
-    if (this->list_ctrl != NULL)                //ÏÈÉ¾³ýÁÐ±í£¬·ÀÖ¹ÉÁË¸
+    if (this->list_ctrl != NULL)                //å…ˆåˆ é™¤åˆ—è¡¨ï¼Œé˜²æ­¢é—ªçƒ
     {
         //__here__;
         delete_music_list(this->list_ctrl);
@@ -4979,7 +4995,7 @@ __s32 music_player_restore(H_WIN  music_frame_win, __s32 root_type)
         list_para.root_type = this->root_type;
         list_para.media_type = this->media_type;
         list_para.font = this->font;
-        //¸³Öµ£¬ÓÃÓÚ´´½¨listÊ±¼ì²âÊÇ·ñ´ÓÎÄ¼þ¹ÜÀí»Ö¸´ºóÌ¨²¥·Å
+        //èµ‹å€¼ï¼Œç”¨äºŽåˆ›å»ºlistæ—¶æ£€æµ‹æ˜¯å¦ä»Žæ–‡ä»¶ç®¡ç†æ¢å¤åŽå°æ’­æ”¾
         list_para.explorer_play_music = this->explorer_play_music;
         list_para.music_file_name = this->music_file_name;
         __msg("list_para.explorer_play_music = %d", list_para.explorer_play_music);
@@ -5019,7 +5035,7 @@ __s32 music_player_restore(H_WIN  music_frame_win, __s32 root_type)
 
         if (!GUI_IsTimerInstalled(this->h_framewin, MusicSysTimerId))
         {
-            timer_ret = GUI_SetTimer(this->h_framewin, MusicSysTimerId, MUSIC_SYSTIMER_INTERVAL, NULL);                     //ÏµÍ³Ê±¼äË¢ÐÂ¶¨Ê±Æ÷
+            timer_ret = GUI_SetTimer(this->h_framewin, MusicSysTimerId, MUSIC_SYSTIMER_INTERVAL, NULL);                     //ç³»ç»Ÿæ—¶é—´åˆ·æ–°å®šæ—¶å™¨
 
             if (!timer_ret)
             {
@@ -5034,7 +5050,7 @@ __s32 music_player_restore(H_WIN  music_frame_win, __s32 root_type)
         /*
         if(!GUI_IsTimerInstalled(this->h_framewin, MusicCheckFocusTimerId))
         {
-            timer_ret = GUI_SetTimer(this->h_framewin, MusicCheckFocusTimerId, MUSIC_CHECK_FOCUS_TIMER_INTERVAL, NULL);     //¼ì²âÊÇ·ñfoucus item Óëµ±Ç°²¥·ÅindexÒ»ÖÂ
+            timer_ret = GUI_SetTimer(this->h_framewin, MusicCheckFocusTimerId, MUSIC_CHECK_FOCUS_TIMER_INTERVAL, NULL);     //æ£€æµ‹æ˜¯å¦foucus item ä¸Žå½“å‰æ’­æ”¾indexä¸€è‡´
             if(!timer_ret)
             {
                 __wrn("creat timer for check focus item failed");
@@ -5054,7 +5070,7 @@ __s32 music_player_restore(H_WIN  music_frame_win, __s32 root_type)
     else
     {
         {
-            //»Ö¸´ÏµÍ³×Ô¶¯¹ØÆÁÊ±¼ä
+            //æ¢å¤ç³»ç»Ÿè‡ªåŠ¨å…³å±æ—¶é—´
             reg_system_para_t *para;
             para = (reg_system_para_t *)dsk_reg_get_para_by_app(REG_APP_SYSTEM);
 
@@ -5079,7 +5095,7 @@ __s32 music_player_restore(H_WIN  music_frame_win, __s32 root_type)
 
 
 
-//»ñµÃÃ½ÌåÎÄ¼þÐÅÏ¢
+//èŽ·å¾—åª’ä½“æ–‡ä»¶ä¿¡æ¯
 static __s32 music_get_audio_file_info(music_player_ctrl_t *this, char *filename)
 {
     robin_audio_info_t audio_file_info;
@@ -5099,7 +5115,7 @@ __s32 __music_load_breakpoint_info(__s32 index, __cedar_tag_inf_t *tag_inf)
     __s32 ret;
     char filename[RAT_MAX_FULL_PATH_LEN] = {0};
 #if defined(CONFIG_SUNXI_QA_TEST)
-	return -1;//qa²âÊÔ²»Ê¹ÓÃ¶Ïµã²¥·Å?
+	return -1;//qaæµ‹è¯•ä¸ä½¿ç”¨æ–­ç‚¹æ’­æ”¾?
 #endif
     ret = robin_npl_index2file(index, filename);
 
@@ -5203,13 +5219,13 @@ static __s32 music_play_file(music_player_ctrl_t *this, char *filename, __bool b
                 //DrawMusicPlayingTime(0);
                 //CleanMusicTotalTime();
                 //DrawMusicTotalTime(0);
-                //DrawMusicProgressBar(0, 0);                   //ÏÔÊ¾½ø¶ÈÌõ
+                //DrawMusicProgressBar(0, 0);                   //æ˜¾ç¤ºè¿›åº¦æ¡
                 //eLIBs_memset(&(this->play_file_info), 0, sizeof(audio_file_info_t));
-                //DrawMusicPlayerFileInfo(&(this->play_file_info));                 //ÏÔÊ¾ÎÄ¼þÐÅÏ¢
+                //DrawMusicPlayerFileInfo(&(this->play_file_info));                 //æ˜¾ç¤ºæ–‡ä»¶ä¿¡æ¯
                 //DrawMusicPlayStatusButton(MUSIC_PLAYING);
                 //if(this->menu_mode == MUSIC_EXPLORER_MODE)
                 //{
-                //  SPCTRM_Clear((__u32)0x000f);        //ÏÔÊ¾×î´óÖµ
+                //  SPCTRM_Clear((__u32)0x000f);        //æ˜¾ç¤ºæœ€å¤§å€¼
                 //}
             }
 
@@ -5217,12 +5233,12 @@ static __s32 music_play_file(music_player_ctrl_t *this, char *filename, __bool b
         }
     }
 
-    this->CheckFocusItemCnt = 0;        //ÓÐ°´¼üÇå³ý¼ì²â½¹µãÌõÄ¿¶¨Ê±¼ÆÊýÆ÷
+    this->CheckFocusItemCnt = 0;        //æœ‰æŒ‰é”®æ¸…é™¤æ£€æµ‹ç„¦ç‚¹æ¡ç›®å®šæ—¶è®¡æ•°å™¨
     GUI_ResetTimer(this->h_framewin, MusicTimerId, MUSIC_TIMER_INTERVAL, NULL);
 
     if (this->list_ctrl != NULL)
     {
-        music_list_get_item_scene(this->list_ctrl, &(this->list_ctrl->listbar_play_scene));//»ñµÃµ±Ç°listbar³¡¾°
+        music_list_get_item_scene(this->list_ctrl, &(this->list_ctrl->listbar_play_scene));//èŽ·å¾—å½“å‰listbaråœºæ™¯
         //__wrn("this->list_ctrl->listbar_play_scene.focus_id = %d", this->list_ctrl->listbar_play_scene.focus_id);
         //__wrn("this->list_ctrl->listbar_play_scene.start_id = %d", this->list_ctrl->listbar_play_scene.start_id);
         robin_npl_set_cur(this->list_ctrl->play_index);
@@ -5346,9 +5362,9 @@ static __s32 music_play_file(music_player_ctrl_t *this, char *filename, __bool b
         {
             __wrn("music_lyrics_exist() = %d", music_lyrics_exist());
 
-            if (music_lyrics_exist())       //¼ì²éÊÇ·ñÓÐ¸è´Ê
+            if (music_lyrics_exist())       //æ£€æŸ¥æ˜¯å¦æœ‰æ­Œè¯
             {
-                //ÓÐ¸è´ÊÔò²»ÏÔÊ¾ÆµÆ×
+                //æœ‰æ­Œè¯åˆ™ä¸æ˜¾ç¤ºé¢‘è°±
                 if (create_music_lyrics_scene(this) != EPDK_FAIL)
                 {
                     __wrn("this->play_file_info.filename = %s", this->play_file_info.filename);
@@ -5368,7 +5384,7 @@ static __s32 music_play_file(music_player_ctrl_t *this, char *filename, __bool b
             {
                 /*
                 this->showMode = MUSIC_SPECTRUM;
-                SPCTRM_Clear(0);        //ÏÔÊ¾×î´óÖµ
+                SPCTRM_Clear(0);        //æ˜¾ç¤ºæœ€å¤§å€¼
                 SPCTRM_Update((H_WIN)(this->h_framewin));
 
                 //__here__;
@@ -5376,7 +5392,7 @@ static __s32 music_play_file(music_player_ctrl_t *this, char *filename, __bool b
                 {
                     __wrn("GUI_LYRWIN_STA_ON == GUI_LyrWinGetSta(this->music_layer)");
 
-                    {//»Ö¸´ÏµÍ³×Ô¶¯¹ØÆÁÊ±¼ä
+                    {//æ¢å¤ç³»ç»Ÿè‡ªåŠ¨å…³å±æ—¶é—´
                         reg_system_para_t* para;
                         para = (reg_system_para_t*)dsk_reg_get_para_by_app(REG_APP_SYSTEM);
                         if(para)
@@ -5393,12 +5409,12 @@ static __s32 music_play_file(music_player_ctrl_t *this, char *filename, __bool b
 #if 0
         else if (this->menu_mode == MUSIC_SET_PLAYER_MODE)
         {
-            if (music_lyrics_exist())       //¼ì²éÊÇ·ñÓÐ¸è´Ê
+            if (music_lyrics_exist())       //æ£€æŸ¥æ˜¯å¦æœ‰æ­Œè¯
             {
-                //ÓÐ¸è´ÊÔò²»ÏÔÊ¾ÆµÆ×
+                //æœ‰æ­Œè¯åˆ™ä¸æ˜¾ç¤ºé¢‘è°±
                 this->showMode = MUSIC_LYRICS;
 
-                if (create_music_lyrics_scene(this) != EPDK_FAIL)       //Ö»´´½¨£¬²»ÏÔÊ¾
+                if (create_music_lyrics_scene(this) != EPDK_FAIL)       //åªåˆ›å»ºï¼Œä¸æ˜¾ç¤º
                 {
                     //update_music_lyrics(this->h_lyrics);
                     __msg("create lyrics successed!");
@@ -5415,7 +5431,7 @@ static __s32 music_play_file(music_player_ctrl_t *this, char *filename, __bool b
             else
             {
                 this->showMode = MUSIC_SPECTRUM;
-                SPCTRM_Clear(0);        //ÏÔÊ¾×î´óÖµ
+                SPCTRM_Clear(0);        //æ˜¾ç¤ºæœ€å¤§å€¼
                 SPCTRM_Update((H_WIN)(this->h_framewin));
 
                 //__here__;
@@ -5423,7 +5439,7 @@ static __s32 music_play_file(music_player_ctrl_t *this, char *filename, __bool b
                 {
                     __wrn("GUI_LYRWIN_STA_ON == GUI_LyrWinGetSta(this->music_layer)");
                     {
-                        //»Ö¸´ÏµÍ³×Ô¶¯¹ØÆÁÊ±¼ä
+                        //æ¢å¤ç³»ç»Ÿè‡ªåŠ¨å…³å±æ—¶é—´
                         reg_system_para_t *para;
                         para = (reg_system_para_t *)dsk_reg_get_para_by_app(REG_APP_SYSTEM);
 
@@ -5486,9 +5502,9 @@ __s32 music_restore_play_file_info(music_player_ctrl_t *this)
     //CleanMusicTotalTime();
     //DrawMusicTotalTime(total_time);
 
-    //DrawMusicProgressBar(total_time, cur_time);                   //ÏÔÊ¾½ø¶ÈÌõ
+    //DrawMusicProgressBar(total_time, cur_time);                   //æ˜¾ç¤ºè¿›åº¦æ¡
 
-    //DrawMusicPlayerFileInfo(&(this->play_file_info));                 //ÏÔÊ¾ÎÄ¼þÐÅÏ¢
+    //DrawMusicPlayerFileInfo(&(this->play_file_info));                 //æ˜¾ç¤ºæ–‡ä»¶ä¿¡æ¯
     //DrawMusicPlayStatusButton(MUSIC_PLAYING);
     if (this->showMode == MUSIC_ALBUM)
     {
@@ -5532,9 +5548,9 @@ __s32 music_restore_play_file_info(music_player_ctrl_t *this)
         //ClearMusicPlayerContrlButtonBG();
         __msg("music_lyrics_exist() = %d", music_lyrics_exist());
 
-        if (music_lyrics_exist())       //¼ì²éÊÇ·ñÓÐ¸è´Ê
+        if (music_lyrics_exist())       //æ£€æŸ¥æ˜¯å¦æœ‰æ­Œè¯
         {
-            //ÓÐ¸è´ÊÔò²»ÏÔÊ¾ÆµÆ×
+            //æœ‰æ­Œè¯åˆ™ä¸æ˜¾ç¤ºé¢‘è°±
             //__here__;
             if (create_music_lyrics_scene(this) != EPDK_FAIL)
             {
@@ -5552,7 +5568,7 @@ __s32 music_restore_play_file_info(music_player_ctrl_t *this)
         else
         {
             __msg("music lyrics is not exist");
-            /*SPCTRM_Clear(0);      //ÏÔÊ¾×î´óÖµ
+            /*SPCTRM_Clear(0);      //æ˜¾ç¤ºæœ€å¤§å€¼
             SPCTRM_Update((H_WIN)(this->h_framewin));
 
             //__here__;
@@ -5560,7 +5576,7 @@ __s32 music_restore_play_file_info(music_player_ctrl_t *this)
             {
                 __wrn("GUI_LYRWIN_STA_ON == GUI_LyrWinGetSta(this->music_layer)");
 
-                {//»Ö¸´ÏµÍ³×Ô¶¯¹ØÆÁÊ±¼ä
+                {//æ¢å¤ç³»ç»Ÿè‡ªåŠ¨å…³å±æ—¶é—´
                     reg_system_para_t* para;
                     para = (reg_system_para_t*)dsk_reg_get_para_by_app(REG_APP_SYSTEM);
                     if(para)
@@ -5577,7 +5593,7 @@ __s32 music_restore_play_file_info(music_player_ctrl_t *this)
             GUI_ClearRect(this->h_lyrics->UI.area.x, this->h_lyrics->UI.area.y - 14,
                           this->h_lyrics->UI.area.x + this->h_lyrics->UI.area.width,
                           this->h_lyrics->UI.area.y + this->h_lyrics->UI.area.height);
-            SPCTRM_Clear(0);        //ÏÔÊ¾×î´óÖµ
+            SPCTRM_Clear(0);        //æ˜¾ç¤ºæœ€å¤§å€¼
             SPCTRM_Update((H_WIN)(this->h_framewin));
         }
     }
@@ -5585,10 +5601,10 @@ __s32 music_restore_play_file_info(music_player_ctrl_t *this)
 #if 0
     else if (this->menu_mode == MUSIC_SET_PLAYER_MODE)
     {
-        if (music_lyrics_exist())       //¼ì²éÊÇ·ñÓÐ¸è´Ê
+        if (music_lyrics_exist())       //æ£€æŸ¥æ˜¯å¦æœ‰æ­Œè¯
         {
-            //ÓÐ¸è´ÊÔò²»ÏÔÊ¾ÆµÆ×
-            if (create_music_lyrics_scene(this) != EPDK_FAIL)       //Ö»´´½¨£¬²»ÏÔÊ¾
+            //æœ‰æ­Œè¯åˆ™ä¸æ˜¾ç¤ºé¢‘è°±
+            if (create_music_lyrics_scene(this) != EPDK_FAIL)       //åªåˆ›å»ºï¼Œä¸æ˜¾ç¤º
             {
                 //update_music_lyrics(this->h_lyrics);
                 __msg("create lyrics successed!");
@@ -5609,7 +5625,7 @@ __s32 music_restore_play_file_info(music_player_ctrl_t *this)
             {
                 __wrn("GUI_LYRWIN_STA_ON == GUI_LyrWinGetSta(this->music_layer)");
                 {
-                    //»Ö¸´ÏµÍ³×Ô¶¯¹ØÆÁÊ±¼ä
+                    //æ¢å¤ç³»ç»Ÿè‡ªåŠ¨å…³å±æ—¶é—´
                     reg_system_para_t *para;
                     para = (reg_system_para_t *)dsk_reg_get_para_by_app(REG_APP_SYSTEM);
 
@@ -5628,7 +5644,7 @@ __s32 music_restore_play_file_info(music_player_ctrl_t *this)
     return EPDK_OK;
 }
 
-//³õÊ¼»¯ÒôÆµÉè±¸
+//åˆå§‹åŒ–éŸ³é¢‘è®¾å¤‡
 static __s32 music_player_device_init(music_player_ctrl_t *this)
 {
     __s32 ret;
@@ -5651,7 +5667,7 @@ static __s32 music_player_device_init(music_player_ctrl_t *this)
 }
 
 
-//Ð¶ÔØÒôÆµÉè±¸
+//å¸è½½éŸ³é¢‘è®¾å¤‡
 static __s32 music_player_device_uninit(music_player_ctrl_t *player_ctrl)
 {
     //app_print_memory_usage("delete robin ", NULL);
@@ -5688,7 +5704,7 @@ static __s32 music_player_device_uninit(music_player_ctrl_t *player_ctrl)
 //
 
 
-//·¢ËÍÒ»¸öÃüÁî²ÎÊý¸øÖ÷½çÃæ
+//å‘é€ä¸€ä¸ªå‘½ä»¤å‚æ•°ç»™ä¸»ç•Œé¢
 __s32 music_send_command(H_WIN hwin, __s32 id, __s32 data1, __s32 data2)
 {
     __gui_msg_t msg;
@@ -5763,7 +5779,7 @@ __s32 create_music_lyrics_scene(music_player_ctrl_t *This)
 
     //para.area.y = rect.height-74; //35;
     para.area.width = 219 + 150;
-    para.area.height = 74;  //125 - 35;     //ÏÔÊ¾4ÐÐ¸è´Ê
+    para.area.height = 74;  //125 - 35;     //æ˜¾ç¤º4è¡Œæ­Œè¯
     para.font = This->font;
     para.font_color = GUI_WHITE;
     para.hight_light_color = GUI_LIGHTRED;  //BEETLES_GRAY_COLOR;

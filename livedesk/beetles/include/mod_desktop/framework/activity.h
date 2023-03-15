@@ -1,21 +1,34 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                                desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : activity.c
-* By        : Andy.zhang
-* Func      : activity
-* Version   : v1.0
-* ============================================================================================================
-* 2010-9-6 19:43:50  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef __ACTIVITY__
 #define __ACTIVITY__
 
@@ -58,13 +71,13 @@ enum
     APPLET_CMD_
 };
 
-//Activity* activity_create(AppletInfo *info);                  /* ´´½¨Ò»¸ö Activity */
+//Activity* activity_create(AppletInfo *info);                  /* åˆ›å»ºä¸€ä¸ª Activity */
 
-AppletPlugin *activity_get_plugin(Activity *thiz);              /* »ñÈ¡AppletPlugin½Ó¿Ú*/
+AppletPlugin *activity_get_plugin(Activity *thiz);              /* è·å–AppletPluginæ¥å£*/
 
-__s32 activity_set_attr(Activity *thiz, void *attr);            /* ÉèÖÃprivÊôĞÔ      */
+__s32 activity_set_attr(Activity *thiz, void *attr);            /* è®¾ç½®privå±æ€§      */
 
-void *activity_get_attr(Activity *thiz);                        /* »ñÈ¡privÊôĞÔ      */
+void *activity_get_attr(Activity *thiz);                        /* è·å–privå±æ€§      */
 
 int32_t activity_set_load_para(char *app_name, char *src_name, void *p_arg, __u32 size);
 
@@ -74,30 +87,30 @@ __s32 activity_init(void);
 
 __s32 activity_deinit(void);
 
-__s32 activity_load_file(char *filename);       /* ÔËĞĞÒ»¸öÎÄ¼ş      */
+__s32 activity_load_file(char *filename);       /* è¿è¡Œä¸€ä¸ªæ–‡ä»¶      */
 
-__s32 activity_load_app(char *appname);             /* ÔËĞĞÒ»¸öÓ¦ÓÃ³ÌĞò  */
+__s32 activity_load_app(char *appname);             /* è¿è¡Œä¸€ä¸ªåº”ç”¨ç¨‹åº  */
 
-H_WIN activity_get_root_win(Activity *thiz);                    /* Á´½Ó´°¿Ú          */
+H_WIN activity_get_root_win(Activity *thiz);                    /* é“¾æ¥çª—å£          */
 
-__s32 activity_background_top(void);                        /* Ê¹³ÌĞò½øÈëºóÌ¨×´Ì¬*/
+__s32 activity_background_top(void);                        /* ä½¿ç¨‹åºè¿›å…¥åå°çŠ¶æ€*/
 
-__s32 activity_return_home(Activity *thiz);                     /* ·µ»ØÖ÷½çÃæ        */
+__s32 activity_return_home(Activity *thiz);                     /* è¿”å›ä¸»ç•Œé¢        */
 
-void  activity_finish(Activity *thiz);                          /* É±µôActivity      */
+void  activity_finish(Activity *thiz);                          /* æ€æ‰Activity      */
 
-//void activity_kill_backgrd_except_home(void);         /* É±µô³ıhomeÍâµÄËùÓĞActivity    */
+//void activity_kill_backgrd_except_home(void);         /* æ€æ‰é™¤homeå¤–çš„æ‰€æœ‰Activity    */
 
 //void activity_kill_all_backgrd(void);
 void  activity_finish_all(void);
 
-__s32 activity_suspend_top(void);           /* ½«toplevelµÄactivityÖÃÎªsuspend  */
+__s32 activity_suspend_top(void);           /* å°†toplevelçš„activityç½®ä¸ºsuspend  */
 
-__s32 activity_resume_top(void);                    /* »Ö¸´toplevelµÄactivity */
+__s32 activity_resume_top(void);                    /* æ¢å¤toplevelçš„activity */
 
 __s32 activity_notify_top(__gui_msg_t *pmsg);
 
-__s32 activity_all_able_standby(void);      /* ²éÑ¯ÊÇ·ñËùÓĞÔËĞĞµÄactivity¾ùÔÊĞístandby*/
+__s32 activity_all_able_standby(void);      /* æŸ¥è¯¢æ˜¯å¦æ‰€æœ‰è¿è¡Œçš„activityå‡å…è®¸standby*/
 
 
 

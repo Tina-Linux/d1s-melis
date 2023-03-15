@@ -1,54 +1,70 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
 *
 *
-* File      : record_ui.c
-* By        : Kingvan
-* Func      : record view function
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-20 8:51:52  Kingvan  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "record_ui.h"
 #include <log.h>
 
 static GUI_RECT record_touch_rect[RECORD_VIEW_TOUCH_ICON_MAX] =
 {
-    {54, 362, 158, 420},        //¼������
-    {178, 362, 282, 420},   //¼������
-    {302, 362, 502, 420},   //¼����ʼ
-    {522, 362, 626, 420},   //¼������
-    {646, 362, 750, 420},   //¼���б�
-    //..{388,235,475,271},  //¼����ʽ
+    {54, 362, 158, 420},        //录音返回
+    {178, 362, 282, 420},   //录音质量
+    {302, 362, 502, 420},   //录音开始
+    {522, 362, 626, 420},   //录音保存
+    {646, 362, 750, 420},   //录音列表
+    //..{388,235,475,271},  //录音格式
 
-    {662, 290, 772, 321}, //������
-    {662, 245, 772, 280}, //һ������
-    {662, 202, 772, 235}, //������
+    {662, 290, 772, 321}, //低质量
+    {662, 245, 772, 280}, //一般质量
+    {662, 202, 772, 235}, //高质量
 
 
     {410, 142, 490, 165},   //WMA
     {410, 168, 490, 200},   //WAV
     {410, 200, 490, 218},   //MP3
 
-    {360, 250, 427, 300},   //¼�����ŷ���
-    {447, 250, 514, 300},   //¼�����ſ���
-    {534, 250, 601, 300},   //¼��������ͣ
-    {621, 250, 688, 300},   //¼�����ſ��
-    {708, 250, 775, 300},   //¼��ɾ��
+    {360, 250, 427, 300},   //录音播放返回
+    {447, 250, 514, 300},   //录音播放快退
+    {534, 250, 601, 300},   //录音播放暂停
+    {621, 250, 688, 300},   //录音播放快进
+    {708, 250, 775, 300},   //录音删除
 
-    {367, 150, 767, 170},   //¼�����Ž�����
+    {367, 150, 767, 170},   //录音播放进度条
 
 
-    {182, 109, 299, 136},   //USBѡ��
-    {182, 138, 299, 163},   //SDѡ��
+    {182, 109, 299, 136},   //USB选择
+    {182, 138, 299, 163},   //SD选择
 
 };
 
-//ӳ��ͼƬ
+//映射图片
 static const res_mapping_info_t record_res_mapping[MENU_MAX] =
 {
 #if !RECORD_CHANGE_0815
@@ -104,139 +120,139 @@ static GUI_RECT                 record_res_music_mapping_lang_rect[MUSIC_MENU_MA
     {269, 102, 308, 120}, {269, 102, 308, 120}, {269, 102, 308, 120}, {269, 102, 308, 120}, {269, 102, 308, 120}, {269, 102, 308, 120}
 };
 
-//��ͨͼƬ
+//普通图片
 static const __s32              record_res_bmp[MAX_RECORD_BMP_ITEM] =
 {
-    //����ͼƬ
+    //数字图片
     ID_RECORD_0_BMP, ID_RECORD_1_BMP, ID_RECORD_2_BMP, ID_RECORD_3_BMP, ID_RECORD_4_BMP,
     ID_RECORD_5_BMP, ID_RECORD_6_BMP, ID_RECORD_7_BMP, ID_RECORD_8_BMP, ID_RECORD_9_BMP, ID_RECORD_10_BMP,
-    //���ֲ��Ž���
+    //音乐播放进度
     ID_RECORD_66_BMP, ID_RECORD_66_LEFT_BMP, ID_RECORD_66_RIGHT_BMP, ID_RECORD_66_MID_BMP, ID_RECORD_66_FLAG_BMP,
-    //¼������
+    //录音动画
     ID_RECORD_ANI_BG_BMP, ID_RECORD_ANI_0_BMP, ID_RECORD_ANI_1_BMP, ID_RECORD_ANI_2_BMP, ID_RECORD_ANI_3_BMP, ID_RECORD_ANI_4_BMP,
     ID_RECORD_ANI_5_BMP, ID_RECORD_ANI_6_BMP, ID_RECORD_ANI_7_BMP,
-    //�ײ��Ͷ���bar
+    //底部和顶部bar
     ID_RECORD_BAR_BOTTOM_BMP, ID_RECORD_BAR_TOP_BMP,
-    //���״̬
+    //电池状态
     ID_RECORD_BATTERY_0_BMP, ID_RECORD_BATTERY_1_BMP, ID_RECORD_BATTERY_2_BMP, ID_RECORD_BATTERY_3_BMP, ID_RECORD_BATTERY_4_BMP, ID_RECORD_BATTERY_5_BMP,
     ID_RECORD_BATTERY_ADAPTER_BMP, ID_RECORD_BATTERY_ADD_BMP, ID_RECORD_BATTERY_NO_BMP,
-    //�������
+    //音量标记
     ID_RECORD_VOL_OFF_BMP, ID_RECORD_VOL_ON_BMP,
-    //ɾ���Ի���
+    //删除对话框
     ID_RECORD_DEL_BOX_BMP, ID_RECORD_DEL_SEL_0_BMP, ID_RECORD_DEL_SEL_1_BMP,
-    //�����Ի���
+    //质量对话框
     ID_RECORD_QUALITY_BK_BMP, ID_RECORD_QUALITY_FLAG_BMP, ID_RECORD_QUALITY_BK1_BMP,
-    //¼����ʽ
+    //录音格式
     ID_RECORD_FORMAT_BK_BMP,
-    //�����б�����
+    //音乐列表卷轴
     ID_RECORD_MUSIC_PROGRESS_BG_BMP, ID_RECORD_MUSIC_PROGRESS_DOWN_BMP,
     ID_RECORD_MUSIC_PROGRESS_FLAG_BMP, ID_RECORD_MUSIC_PROGRESS_UP_BMP, ID_RECORD_MUSIC_PROGRESS_FOCUS_BMP,
-    //����
+    //乐谱
     ID_RECORD_MUSIC_PARTICLE_BMP, ID_RECORD_MUSIC_BOUY_BMP,
-    //¼��ֹͣ, ¼����ʼ, ¼����ͣ
+    //录音停止, 录音开始, 录音暂停
     ID_RECORD_MENU_RECORD_2_BMP, ID_RECORD_MENU_RECORD_0_BMP, ID_RECORD_MENU_RECORD_1_BMP,
-    //��������
+    //音量调节
     ID_RECORD_VOL_BAR_BG_BMP, ID_RECORD_VOL_BAR_BODY_BMP, ID_RECORD_VOL_LEFT_BMP,
     ID_RECORD_VOL_MID_BMP, ID_RECORD_VOL_RIGHT_BMP, ID_RECORD_VOL_SPEAKER_RIGHT_BMP,
-    //¼�����ű���
+    //录音播放背景
     ID_RECORD_MUSICLIST_BG_BMP, ID_RECORD_MUSICPLAY_BG_BMP,
-    //¼���б�����
+    //录音列表背景
     ID_RECORD_LIST_WIN_BG_BMP, ID_RECORD_LIST_BG_BMP,
-    //¼������
+    //录音背景
     ID_RECORD_BG_BMP, ID_RECORD_BG0_BMP
 
 
 };
 static const GUI_POINT          record_res_bmp_coor[MAX_RECORD_BMP_ITEM] =
 {
-    //����ͼƬ
+    //数字图片
     {250, 168}, {250, 168}, {250, 168}, {250, 168}, {250, 168},
     {250, 168}, {250, 168}, {250, 168}, {250, 168}, {250, 168}, {250, 168},
-    //���ֲ��Ž���
+    //音乐播放进度
     {367, 160}, {367, 160}, {367, 160}, {367, 160}, {367, 160},
-    //¼������
+    //录音动画
     {231, 287}, {231, 287}, {231, 287}, {231, 287}, {231, 287}, {231, 287}, {231, 287}, {231, 287}, {231, 287},
-    //�ײ��Ͷ���bar
+    //底部和顶部bar
     {0, 362}, {0, 0},
-    //���״̬
+    //电池状态
     {348, 4}, {348, 4}, {348, 4}, {348, 4}, {348, 4}, {348, 4},
     {348, 4}, {348, 4}, {348, 4},
-    //�������
+    //音量标记
     {280, 4}, {280, 4},
-    //ɾ���Ի���
+    //删除对话框
     {101, 54}, {158, 124}, {155, 124},
-    //�����Ի���
+    //质量对话框
     {637, 222}, {653, 317}, {637, 222},
-    //¼����ʽ
+    //录音格式
     {361, 168},
-    //�����б�����
+    //音乐列表卷轴
     {158, 33}, {156, 230},
     {158, 33}, {156, 22}, {0, 33},
-    //����
+    //乐谱
     {0, 0}, {0, 0},
-    //¼��ֹͣ, ¼����ʼ, ¼����ͣ
+    //录音停止, 录音开始, 录音暂停
     {174, 235}, {302, 362}, {302, 362}, //..
-    //��������
+    //音量调节
     {0, 219}, {76, 228}, {76, 228},
     {76, 228}, {76, 228}, {335, 222},
-    //¼�����ű���
+    //录音播放背景
     {0, 66}, {367, 150},
-    //¼���б�����
+    //录音列表背景
     {0, 0}, {0, 29},
-    //¼������
+    //录音背景
     {0, 0}, {248, 170}
 };
 static const __s32              record_res_lang[MAX_RECORD_LANG_ITEM] =
 {
-    //����
+    //质量
     STRING_POOR_QUALITY_RC,
     STRING_NORMAL_QUALITY_RC,
     STRING_GOOD_QUALITY_RC,
-    //¼����,���Ż�
+    //录音机,播放机
     STRING_RECORDER_RC,
     STRING_RECORD_PLAYER_RC,
-    //��¼��ʱ��
+    //可录音时间
     STRING_RECORD_TIME_RC,
-    //��ͣ,������..
+    //暂停,播放中..
     STRING_PAUSE_RC,
     STRING_PLAYING_RC,
-    //ֹͣ
+    //停止
     STRING_STOP_RC,
-    //ɾ���Ի���
+    //删除对话框
     STRING_DELETE_RC,
     STRING_MSG4_RC,
     STRING_YES_RC,
     STRING_NO_RC,
-    //¼��ֹͣ, ¼����ʼ, ¼����ͣ
+    //录音停止, 录音开始, 录音暂停
     STRING_STOP_RC, STRING_RECORD_RC, STRING_PAUSE_RC,
-    //��¼���ļ�
+    //无录音文件
     STRING_MSG3_RC
 
 };
 static GUI_RECT                 record_res_lang_rect[MAX_RECORD_LANG_ITEM] =
 {
-    //����
+    //质量
     {662, 313, 772, 341},
     {662, 263, 772, 302},
     {662, 221, 772, 261},
-    //¼����,���Ż�
+    //录音机,播放机
     {0, 0, 70, 18},
     {0, 0, 70, 18},
-    //��¼��ʱ��
+    //可录音时间
     {10, 27, 106, 48},
-    //��ͣ,������..
+    //暂停,播放中..
     {255, 189, 325, 205},
     {255, 189, 325, 205},
-    //ֹͣ
+    //停止
     {255, 189, 325, 205},
-    //ɾ���Ի���
+    //删除对话框
     {170, 58, 205, 76},
     {145, 83, 272, 110},
     {159, 126, 196, 143},
     {230, 125, 266, 144},
-    //¼��ֹͣ, ¼����ʼ, ¼����ͣ
+    //录音停止, 录音开始, 录音暂停
     {145, 215, 198, 240}, {145, 215, 198, 240}, {145, 215, 198, 240},
-    //��¼���ļ�
+    //无录音文件
     {360, 80, 460, 121}
 };
 
@@ -269,14 +285,14 @@ __bool record_is_touch_icon(__u32 iconRectID, __u16 x, __u16 y)
 }
 
 /*
-    ������Դ
+    加载资源
 */
 __s32 init_record_res(precord_ui_t pui)
 {
     __u32   i;
 
     //com_set_palette_by_id(ID_RECORD_WKM_BMP);
-    //Ԥ�ȼ���ӳ��ͼƬ
+    //预先加载映射图片
     for (i = 0; i < MENU_MAX; i++)
     {
         pui->mapping_bmp[i].focus = NULL;
@@ -291,13 +307,13 @@ __s32 init_record_res(precord_ui_t pui)
         pui->music_mapping_lang[i][0] = '\0';
     }
 
-    //��ʼ��һ��ͼƬ
+    //初始化一般图片
     for (i = 0; i < MAX_RECORD_BMP_ITEM; i++)
     {
         pui->bmp[i] = NULL;
     }
 
-    //��ʼ��һ������
+    //初始化一般语言
     for (i = 0; i < MAX_RECORD_LANG_ITEM; i++)
     {
         pui->lang[i][0] = '\0';
@@ -307,13 +323,13 @@ __s32 init_record_res(precord_ui_t pui)
 }
 
 /*
-    ж����Դ
+    卸载资源
 */
 __s32 uninit_record_res(precord_ui_t pui)
 {
     __u32   i;
 
-    //�ͷ�ӳ��ͼƬ
+    //释放映射图片
     for (i = 0; i < MENU_MAX; i++)
     {
         if (pui->mapping_bmp[i].focus)
@@ -348,7 +364,7 @@ __s32 uninit_record_res(precord_ui_t pui)
         pui->music_mapping_lang[i][0] = '\0';
     }
 
-    //�ͷ�һ��ͼƬ
+    //释放一般图片
     for (i = 0; i < MAX_RECORD_BMP_ITEM; i++)
     {
         if (pui->bmp[i])
@@ -358,7 +374,7 @@ __s32 uninit_record_res(precord_ui_t pui)
         }
     }
 
-    //�ͷ�һ������
+    //释放一般语言
     for (i = 0; i < MAX_RECORD_LANG_ITEM; i++)
     {
         pui->lang[i][0] = '\0';
@@ -368,7 +384,7 @@ __s32 uninit_record_res(precord_ui_t pui)
 }
 
 /*
- *  �滭ӳ��ͼƬ
+ *  绘画映射图片
  */
 void draw_record_mapping(precord_ui_t pui, __s32 mappingIndex, FOCUSE_STATE focus, __s16 mappOffset)
 {
@@ -473,7 +489,7 @@ void draw_record_music_mapping(precord_ui_t pui, __s32 mappingIndex, FOCUSE_STAT
     GUI_BMP_Draw(pbmp, record_res_music_mapping_bmp_coor[mappingIndex].x, record_res_music_mapping_bmp_coor[mappingIndex].y);
 }
 /*
- * ���ӳ��ͼƬ
+ * 清除映射图片
  */
 void clean_record_mapping(precord_ui_t pui, __s32 mappingIndex)
 {
@@ -547,7 +563,7 @@ void *get_record_bmp_data(precord_ui_t pui, __s32 index)
     return pbmp;
 }
 /*
- *  �滭��ͨͼƬ���ִ�
+ *  绘画普通图片和字串
  */
 void draw_record_bmp(precord_ui_t pui, __s32 index)
 {
@@ -631,7 +647,7 @@ void draw_record_str(precord_ui_t pui, char *str, __s32 fnt_color, GUI_RECT *rec
     GUI_DispStringInRect(str, rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
 }
 /*
- *  �����ͨͼƬ���ִ�
+ *  清除普通图片和字串
  */
 void clean_record_bmp(precord_ui_t pui, __s32 index)
 {
@@ -665,7 +681,7 @@ __s32 flush_record_res(precord_ui_t pui)
 {
     __u32   i;
 
-    //flushӳ��ͼƬ
+    //flush映射图片
     for (i = 0; i < MENU_MAX; i++)
     {
         clean_record_mapping(pui, i);
@@ -676,13 +692,13 @@ __s32 flush_record_res(precord_ui_t pui)
         clean_record_music_mapping(pui, i);
     }
 
-    //flushһ��ͼƬ
+    //flush一般图片
     for (i = 0; i < MAX_RECORD_BMP_ITEM; i++)
     {
         clean_record_bmp(pui, i);
     }
 
-    //flushһ���ַ�
+    //flush一般字符
     for (i = 0; i < MAX_RECORD_LANG_ITEM; i++)
     {
         clean_record_lang(pui, i);
@@ -690,30 +706,3 @@ __s32 flush_record_res(precord_ui_t pui)
 
     return EPDK_OK;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

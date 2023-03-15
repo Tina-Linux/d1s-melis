@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 
 
@@ -69,8 +100,8 @@ typedef enum explr_list_icon_id_s           //
     ID_EXP_LIST_SCROLL_BODY,
     ID_EXP_LIST_SCROLL_TAIL,
 
-    ID_EXP_FILE_TYPE_FOCUS_ICON_MOVIE,      //´°¿Ú×ó²à£¬ÏÔÊ¾ÎÄ¼şÀàĞÍµÄÍ¼±êÃüÃûÎª:LEFT_LIST_MUSIC_F.png
-    ID_EXP_FILE_TYPE_UNFOCUS_ICON_MOVIE,        //´°¿Ú×ó²à£¬ÏÔÊ¾ÎÄ¼şÀàĞÍµÄÍ¼±êÃüÃûÎª:LEFT_LIST_MUSIC_F.png
+    ID_EXP_FILE_TYPE_FOCUS_ICON_MOVIE,      //çª—å£å·¦ä¾§ï¼Œæ˜¾ç¤ºæ–‡ä»¶ç±»å‹çš„å›¾æ ‡å‘½åä¸º:LEFT_LIST_MUSIC_F.png
+    ID_EXP_FILE_TYPE_UNFOCUS_ICON_MOVIE,        //çª—å£å·¦ä¾§ï¼Œæ˜¾ç¤ºæ–‡ä»¶ç±»å‹çš„å›¾æ ‡å‘½åä¸º:LEFT_LIST_MUSIC_F.png
     ID_EXP_FILE_TYPE_FOCUS_ICON_MUSIC,
     ID_EXP_FILE_TYPE_UNFOCUS_ICON_MUSIC,
     ID_EXP_FILE_TYPE_FOCUS_ICON_PHOTO,
@@ -97,19 +128,19 @@ typedef enum explr_list_icon_id_s           //
     ID_EXP_INFO_BG,
     ID_EXP_ERROR_BMP,
     BROWSER_ICON_MAX,
-} explr_list_icon_id_e;                         //e:´ú±íenum,  s:´ú±ístruct
+} explr_list_icon_id_e;                         //e:ä»£è¡¨enum,  s:ä»£è¡¨struct
 
 typedef struct explorer_layer_ui_param_s
 {
-    __pixel_rgbfmt_t fb_fmt;        //Í¼²ã¸ñÊ½
-    SIZE fb_size;                   //framebuffer´óĞ¡
-    RECT src_rect;                  //srcwinÇøÓò
-    RECT scn_rect;                  //scnwinÇøÓò
-    __u32 reserved[32];             //Ô¤Áô
+    __pixel_rgbfmt_t fb_fmt;        //å›¾å±‚æ ¼å¼
+    SIZE fb_size;                   //framebufferå¤§å°
+    RECT src_rect;                  //srcwinåŒºåŸŸ
+    RECT scn_rect;                  //scnwinåŒºåŸŸ
+    __u32 reserved[32];             //é¢„ç•™
 } explorer_layer_ui_param_t;
 
 
-//ID_MEDIATYPE_MAX È·¶¨×ó±ßlistbarµÄÌõÄ¿
+//ID_MEDIATYPE_MAX ç¡®å®šå·¦è¾¹listbarçš„æ¡ç›®
 enum
 {
     ID_MEDIATYPE_ALL_ITEM = 0,
@@ -138,7 +169,7 @@ typedef struct explorer_mediatype_list_item_ui_param_s
 typedef struct explorer_list_item_ui_param_s
 {
     RECT ListBarArea;                       //list display area in list mode
-    RECT item_rect;                                                     //list item  UI ²ÎÊı
+    RECT item_rect;                                                     //list item  UI å‚æ•°
 
     RECT item_top_line;
     RECT item_bottom_line;
@@ -150,22 +181,22 @@ typedef struct explorer_list_item_ui_param_s
     RECT text_rect;
 
     RECT focus_icon_rect;
-    RECT media_type_rect;           //Ã½ÌåÀàĞÍÍ¼±ê
+    RECT media_type_rect;           //åª’ä½“ç±»å‹å›¾æ ‡
 
     RECT title_rect;
-    RECT file_size_rect;            //ÎÄ¼ş´óĞ¡
+    RECT file_size_rect;            //æ–‡ä»¶å¤§å°
     RECT time_rect;
     RECT number_rect;
-    RECT file_info_area_rect ;      //ÎÄ¼şĞÅÏ¢ÇøÓò
+    RECT file_info_area_rect ;      //æ–‡ä»¶ä¿¡æ¯åŒºåŸŸ
 } explorer_list_item_ui_param_t;
 
 typedef struct explorer_square_item_ui_param_s
 {
     RECT ListBarArea;                       //list display area in square mode
-    RECT item_rect;                         //ÌõÄ¿¿ò
-    RECT focus_rect;                        //½¹µã¿ò
-    RECT icon_rect;                         //Í¼±ê
-    RECT miniature_rect;                    //ËõÂÔÍ¼¿í¸ß
+    RECT item_rect;                         //æ¡ç›®æ¡†
+    RECT focus_rect;                        //ç„¦ç‚¹æ¡†
+    RECT icon_rect;                         //å›¾æ ‡
+    RECT miniature_rect;                    //ç¼©ç•¥å›¾å®½é«˜
     RECT title_rect;
 } explorer_square_item_ui_param_t;
 
@@ -196,19 +227,19 @@ typedef struct file_typ_s
     RECT  file_type_ebook_rect ;
     RECT  file_type_game_rect ;
     RECT  file_type_bg_rect ;
-    RECT  file_type_big_bmp_rect;   //Ïà¶ÔÓÚfile_type_bg_rect ¶øÑÔ
-    RECT  return_bmp_rect;      //Ïà¶ÔÓÚfile_type_bg_rect ¶øÑÔ
+    RECT  file_type_big_bmp_rect;   //ç›¸å¯¹äºfile_type_bg_rect è€Œè¨€
+    RECT  return_bmp_rect;      //ç›¸å¯¹äºfile_type_bg_rect è€Œè¨€
 } file_type_pos_t ;
-typedef struct explorer_left_file_type_s   //×ó²àÏÔÊ¾movie,music,photo,ebookµÈÃ½ÌåÀàĞÍÍ¼±ê
+typedef struct explorer_left_file_type_s   //å·¦ä¾§æ˜¾ç¤ºmovie,music,photo,ebookç­‰åª’ä½“ç±»å‹å›¾æ ‡
 {
-    RECT     file_type_rect ;       //×ó²àÏÔÊ¾ÎÄ¼şÀàĞÍµÄÕû¸ö·½¿ò
+    RECT     file_type_rect ;       //å·¦ä¾§æ˜¾ç¤ºæ–‡ä»¶ç±»å‹çš„æ•´ä¸ªæ–¹æ¡†
     file_type_pos_t    file_type_pos[FILE_TYPE_MAX];
 
-    RECT    file_manage_icon_rect;  //ÎÄ¼ş¹ÜÀíÍ¼±ê
-    RECT    file_type_txt_rect ;            //ÏÔÊ¾ÎÄ¼şÀàĞÍ×Ö·û
-    RECT    delete_file_icon_rect ;     //É¾³ıÎÄ¼ş°´Å¥Î»ÖÃ
-    RECT    return_bmp_rect;    //¼ÇÂ¼·µÈ¥Í¼±ê×ø±êÎ»ÖÃ
-    RECT    pic_miniature_bmp_rect ;    //Í¼Æ¬¶ÔÓ¦µÄËõÂÔÍ¼×ø±ê
+    RECT    file_manage_icon_rect;  //æ–‡ä»¶ç®¡ç†å›¾æ ‡
+    RECT    file_type_txt_rect ;            //æ˜¾ç¤ºæ–‡ä»¶ç±»å‹å­—ç¬¦
+    RECT    delete_file_icon_rect ;     //åˆ é™¤æ–‡ä»¶æŒ‰é’®ä½ç½®
+    RECT    return_bmp_rect;    //è®°å½•è¿”å»å›¾æ ‡åæ ‡ä½ç½®
+    RECT    pic_miniature_bmp_rect ;    //å›¾ç‰‡å¯¹åº”çš„ç¼©ç•¥å›¾åæ ‡
 } explorer_left_file_type_t;
 
 typedef struct explorer_viewer_ui_s
@@ -244,16 +275,16 @@ typedef struct explorer_viewer_ui_s
 
 
 
-//»ñµÃÕû¸öexplorer APÉè¼ÆµÄUI²ÎÊı
+//è·å¾—æ•´ä¸ªexplorer APè®¾è®¡çš„UIå‚æ•°
 extern explorer_viewer_ui_t *explorer_get_viewer_ui_param(void);
 
 extern RECT *explorer_get_listview_ui_param(void);
 
-//»ñµÃlist ÖĞ item Éè¼ÆµÄUI²ÎÊı
+//è·å¾—list ä¸­ item è®¾è®¡çš„UIå‚æ•°
 extern explorer_list_item_ui_param_t *explorer_get_list_item_ui_param(void);
 
 
-//»ñµÃlist ÖĞ square Éè¼ÆµÄUI²ÎÊı
+//è·å¾—list ä¸­ square è®¾è®¡çš„UIå‚æ•°
 extern explorer_square_item_ui_param_t *explorer_get_square_item_ui_param(void);
 
 
@@ -261,12 +292,12 @@ extern void *explorer_get_listview_icon_res(__u32 index);
 extern __s32 explorer_free_listview_icon_res(void);
 
 
-//»ñµÃExplorer Layer rectangle
+//è·å¾—Explorer Layer rectangle
 __s32 explorer_get_screen_rect(RECT *screen_rect);
 
-//ÏÔÊ¾title×Ö·û´®
+//æ˜¾ç¤ºtitleå­—ç¬¦ä¸²
 extern __s32 explorer_draw_file_manager_title(void);
-//»ñµÃËõÂÔÍ¼²ÎÊı(according to the viewmode of list)
+//è·å¾—ç¼©ç•¥å›¾å‚æ•°(according to the viewmode of list)
 #if (EXPLORER_SUPPORT_MINIATURE == 1)
 extern __s32 explorer_get_item_miniature_rect(explr_list_para_t *para, RECT *miniature_rect);
 #endif

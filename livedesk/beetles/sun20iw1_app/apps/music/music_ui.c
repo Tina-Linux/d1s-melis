@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 //libaiao
 #include <log.h>
@@ -59,7 +90,7 @@ static music_ui_t  music_ui_480_640 =
         { 0, 0, 246, 456 },         //scn rect
         { 0 },                      //reserved
     },
-    //list window, ����ļ�
+    //list window, 浏览文件
     {
         //{0, 46, 300, 424},                        //listbar area
         //{0, 0, 300, 106},                     //item rectangle
@@ -89,66 +120,66 @@ static music_ui_t  music_ui_480_640 =
     {
         {640 - 494, 42, 494, 88},                   //headbar background
 #if BEETLES_RTC_EXIST
-        {450, 210, 24, 20},                             //����ģʽ״̬ͼ��
-        {450, 189, 24, 20},                             //EQģʽ״̬ͼ��
-        {226, 5, 26, 16},                               //����ر�ʱ��ͼ��
-        {278, 5, 26, 16},                               //����ͼ��
-        {304, 3, 18, 16},                               //����text
-        {326, 6, 31, 12},                               //���ͼ��
-        {359, 3, 40, 16},                               //ʱ����ʾ����
+        {450, 210, 24, 20},                             //播放模式状态图标
+        {450, 189, 24, 20},                             //EQ模式状态图标
+        {226, 5, 26, 16},                               //背光关闭时间图标
+        {278, 5, 26, 16},                               //音量图标
+        {304, 3, 18, 16},                               //音量text
+        {326, 6, 31, 12},                               //电池图标
+        {359, 3, 40, 16},                               //时间显示区域
 #else
-        {450, 210, 24, 20},                             //����ģʽ״̬ͼ��
-        {450, 189, 24, 20},                             //EQģʽ״̬ͼ��
-        {284, 5, 26, 16},                               //����ر�ʱ��ͼ��
-        {315, 5, 26, 16},                               //����ͼ��
-        {341, 4, 18, 16},                               //����text
-        {364, 6, 31, 12},                               //���ͼ��
-        {0, 0, 0, 16},                                  //ʱ����ʾ����
+        {450, 210, 24, 20},                             //播放模式状态图标
+        {450, 189, 24, 20},                             //EQ模式状态图标
+        {284, 5, 26, 16},                               //背光关闭时间图标
+        {315, 5, 26, 16},                               //音量图标
+        {341, 4, 18, 16},                               //音量text
+        {364, 6, 31, 12},                               //电池图标
+        {0, 0, 0, 16},                                  //时间显示区域
 #endif
     },
     //palyer ui
     {
-        {270,   40, 160,    80},                    //���ư�ť��������()��Ƶ�׹���
-        {230, 120, 150, 16},                            //������ʾ�ַ�����
-        {450, 210, 24, 20},                             //����ģʽ��ť
-        {450, 189, 24, 20},                             //EQģʽ��ť
-        {324, 68, 26, 16},                              // ����ʱ����ư�ť
+        {270,   40, 160,    80},                    //控制按钮背景区域()与频谱共用
+        {230, 120, 150, 16},                            //按键提示字符区域
+        {450, 210, 24, 20},                             //播放模式按钮
+        {450, 189, 24, 20},                             //EQ模式按钮
+        {324, 68, 26, 16},                              // 背光时间控制按钮
 
 #ifndef MUSIC_VIEW_CHANGE_20160811
-        {713, 362, 42, 22},                         //usb disk��ť
-        {713, 329, 42, 22},                         //sd card��ť
+        {713, 362, 42, 22},                         //usb disk按钮
+        {713, 329, 42, 22},                         //sd card按钮
 #else
-        {713, 362 - 80, 42, 22},                        //usb disk��ť
-        {713, 329 - 80, 42, 22},                        //sd card��ť
+        {713, 362 - 80, 42, 22},                        //usb disk按钮
+        {713, 329 - 80, 42, 22},                        //sd card按钮
 #endif
-        {377 + 38, 164, 22, 18},                            //��һ�װ�ť
-        {410 + 38, 164, 22, 18},                            //��һ�װ�ť
-        {271 + 38, 164, 22, 18},                            //������ͣ��ť
-        {307 + 38, 164, 22, 18},                            //���˰�ť
-        {335 + 38, 164, 22, 18},                            //�����ť
+        {377 + 38, 164, 22, 18},                            //上一首按钮
+        {410 + 38, 164, 22, 18},                            //下一首按钮
+        {271 + 38, 164, 22, 18},                            //播放暂停按钮
+        {307 + 38, 164, 22, 18},                            //快退按钮
+        {335 + 38, 164, 22, 18},                            //快进按钮
 
 
-        {271, 164, 22, 18},                         //����״̬ͼ��(��ͣ�򲥷�)
+        {271, 164, 22, 18},                         //播放状态图标(暂停或播放)
 
-        {327, 105, 54 + 40, 20},                        //��ǰ����ʱ��
-        {800 - 100, 105, 54 + 40, 20},                      //��ʱ����ʾ����
+        {327, 105, 54 + 40, 20},                        //当前播放时间
+        {800 - 100, 105, 54 + 40, 20},                      //总时间显示区域
 
-        //������
-        {327, 106, 24, 20},                              //������head
-        {327, 106, 454, 6},                              //������body
-        {327, 76, 2, 9},                                //������point,��head֮����˼�5
-        {327 + 454 - 24, 106, 24, 20},                           //������tail
+        //进度条
+        {327, 106, 24, 20},                              //进度条head
+        {327, 106, 454, 6},                              //进度条body
+        {327, 76, 2, 9},                                //进度条point,从head之后，因此加5
+        {327 + 454 - 24, 106, 24, 20},                           //进度条tail
         {327, 88, 24, 20},                              //flag
 
-        {216,       187, 26, 16},                       //�ݳ���ͼ��
-        {213 + 26,  187, 70 + 20, 16},                      //�ݳ�������
-        {310 + 20,  187, 26, 16},                       //�ļ���Сͼ��
-        {310 + 26 + 20, 187, 70, 16},                       //�ļ���С��ʾ
+        {216,       187, 26, 16},                       //演唱者图标
+        {213 + 26,  187, 70 + 20, 16},                      //演唱者名称
+        {310 + 20,  187, 26, 16},                       //文件大小图标
+        {310 + 26 + 20, 187, 70, 16},                       //文件大小显示
 
-        {216,       211, 26, 16},                       //ר������ͼ��
-        {213 + 26,  211, 70 + 20, 16},                      //ר������
-        {310 + 20,  211, 26, 16},                       //bitrateͼ��
-        {310 + 26 + 20, 211, 70, 16},                       //bitrate��С��ʾ
+        {216,       211, 26, 16},                       //专辑名称图标
+        {213 + 26,  211, 70 + 20, 16},                      //专辑名称
+        {310 + 20,  211, 26, 16},                       //bitrate图标
+        {310 + 26 + 20, 211, 70, 16},                       //bitrate大小显示
 
         //menu
         {326, 150, 93, 58},                   //menu btn
@@ -163,10 +194,10 @@ static music_ui_t  music_ui_480_640 =
 
     //volume bar ui
     {
-        {0, 0, 0, 0},                                   //��������������ʾ����
-        {0, 0, 0, 0},                                   //���speakerͼ����ʾ��������״̬
-        {0, 0, 0, 0},                                   //�м�������ʾ������
-        {0, 0, 0, 0},                                   //�ұ�speakerͼ����ʾ
+        {0, 0, 0, 0},                                   //整个音量控制显示区域
+        {0, 0, 0, 0},                                   //左边speaker图标显示，有两种状态
+        {0, 0, 0, 0},                                   //中间音量显示进度条
+        {0, 0, 0, 0},                                   //右边speaker图标显示
     },
 
     //spectrum
@@ -202,22 +233,22 @@ static music_ui_t  music_ui_480_640 =
     //icon table
     {
         //ID                                                            res handle,     res buffer
-        //���������
+        //音乐浏览器
         { ID_MUSIC_PALETTE_BMP,                     NULL,                NULL },    //
         { NULL,    NULL,                 NULL },    //
         { ID_MUSIC_FILE_UNFOCUSED_BMP,              NULL,                NULL },    //
-        { ID_MUSIC_FILE_UNFOCUSED_BMP,              NULL,                NULL },    //�ļ�ͼ�꣬δ��ѡ��ʱ
-        { ID_MUSIC_FILE_FOCUSED_BMP,                NULL,                NULL },    //�ļ�ͼ�꣬��ѡ��ʱ
-        { ID_MUSIC_LIST_ITEM_FOCUS_BMP,             NULL,                NULL },    //����ѡ���
-        { ID_MUSIC_LIST_ITEM_UNFOCUS_BMP,           NULL,                NULL },    //�ǽ���ѡ���
-        { ID_MUSIC_LONG_STR_SCROLL_BMP,             NULL,                NULL },     //���ļ�������������
+        { ID_MUSIC_FILE_UNFOCUSED_BMP,              NULL,                NULL },    //文件图标，未被选中时
+        { ID_MUSIC_FILE_FOCUSED_BMP,                NULL,                NULL },    //文件图标，被选中时
+        { ID_MUSIC_LIST_ITEM_FOCUS_BMP,             NULL,                NULL },    //焦点选择框
+        { ID_MUSIC_LIST_ITEM_UNFOCUS_BMP,           NULL,                NULL },    //非焦点选择框
+        { ID_MUSIC_LONG_STR_SCROLL_BMP,             NULL,                NULL },     //长文件名滚动背景条
         //header bar
         //play mode
-        { ID_MUSIC_PLAY_ALL_BMP,                    NULL,                NULL },    //  ����ȫ��,���ظ�
-        { ID_MUSIC_PLAY_ONE_BMP,                    NULL,                NULL },    //����һ��
-        { ID_MUSIC_PLAY_RANDOM_BMP,                 NULL,                NULL },    //�漴����
-        { ID_MUSIC_REPEAT_ALL_BMP,                  NULL,                NULL },    //�ظ�����
-        { ID_MUSIC_REPEAT_ONE_BMP,                  NULL,                NULL },    //�ظ�һ��
+        { ID_MUSIC_PLAY_ALL_BMP,                    NULL,                NULL },    //  播放全部,不重复
+        { ID_MUSIC_PLAY_ONE_BMP,                    NULL,                NULL },    //播放一首
+        { ID_MUSIC_PLAY_RANDOM_BMP,                 NULL,                NULL },    //随即播放
+        { ID_MUSIC_REPEAT_ALL_BMP,                  NULL,                NULL },    //重复所有
+        { ID_MUSIC_REPEAT_ONE_BMP,                  NULL,                NULL },    //重复一首
 
         //EQ mode
         { ID_MUSIC_EQ_NORMAL_BMP,                   NULL,                NULL },    //EQ normal
@@ -248,27 +279,27 @@ static music_ui_t  music_ui_480_640 =
         { ID_MUSIC_BETTERY4_BMP,                    NULL,                NULL },    //
         { ID_MUSIC_BETTERY5_BMP,                    NULL,                NULL },    //
 
-        //������
+        //播放器
         //play mode button
-        { ID_MUSIC_PLAY_ALL_BMP,                    NULL,                NULL },        //����ȫ��, unfocused
-        { ID_MUSIC_PLAY_ALL_BTN_FOCUSED_BMP,        NULL,                NULL },        //����ȫ��, focused
-        { ID_MUSIC_PLAY_ALL_BTN_PRESSED_BMP,        NULL,                NULL },        //����ȫ��, pressed
+        { ID_MUSIC_PLAY_ALL_BMP,                    NULL,                NULL },        //播放全部, unfocused
+        { ID_MUSIC_PLAY_ALL_BTN_FOCUSED_BMP,        NULL,                NULL },        //播放全部, focused
+        { ID_MUSIC_PLAY_ALL_BTN_PRESSED_BMP,        NULL,                NULL },        //播放全部, pressed
 
-        { ID_MUSIC_PLAY_ONE_BMP,                    NULL,                NULL },        //����һ��, unfocused
-        { ID_MUSIC_PLAY_ONE_BTN_FOCUSED_BMP,        NULL,                NULL },        //����һ��, focused
-        { ID_MUSIC_PLAY_ONE_BTN_PRESSED_BMP,        NULL,                NULL },        //����һ��, pressed
+        { ID_MUSIC_PLAY_ONE_BMP,                    NULL,                NULL },        //播放一首, unfocused
+        { ID_MUSIC_PLAY_ONE_BTN_FOCUSED_BMP,        NULL,                NULL },        //播放一首, focused
+        { ID_MUSIC_PLAY_ONE_BTN_PRESSED_BMP,        NULL,                NULL },        //播放一首, pressed
 
-        { ID_MUSIC_PLAY_RANDOM_BMP,                 NULL,                NULL },        //�������, unfocused
-        { ID_MUSIC_PLAY_RANDOM_BTN_FOCUSED_BMP,     NULL,                NULL },        //�������, focused
-        { ID_MUSIC_PLAY_RANDOM_BTN_PRESSED_BMP,     NULL,                NULL },        //�������, pressed
+        { ID_MUSIC_PLAY_RANDOM_BMP,                 NULL,                NULL },        //随机播放, unfocused
+        { ID_MUSIC_PLAY_RANDOM_BTN_FOCUSED_BMP,     NULL,                NULL },        //随机播放, focused
+        { ID_MUSIC_PLAY_RANDOM_BTN_PRESSED_BMP,     NULL,                NULL },        //随机播放, pressed
 
-        { ID_MUSIC_REPEAT_ALL_BMP,                  NULL,                NULL },        //�ظ�����ȫ��, unfocused
-        { ID_MUSIC_REPEAT_ALL_BTN_FOCUSED_BMP,      NULL,                NULL },        //�ظ�����ȫ��, focused
-        { ID_MUSIC_REPEAT_ALL_BTN_PRESSED_BMP,      NULL,                NULL },        //�ظ�����ȫ��, pressed
+        { ID_MUSIC_REPEAT_ALL_BMP,                  NULL,                NULL },        //重复播放全部, unfocused
+        { ID_MUSIC_REPEAT_ALL_BTN_FOCUSED_BMP,      NULL,                NULL },        //重复播放全部, focused
+        { ID_MUSIC_REPEAT_ALL_BTN_PRESSED_BMP,      NULL,                NULL },        //重复播放全部, pressed
 
-        { ID_MUSIC_REPEAT_ONE_BMP,                  NULL,                NULL },        //�ظ�����һ��, unfocused
-        { ID_MUSIC_REPEAT_ONE_BTN_FOCUSED_BMP,      NULL,                NULL },        //�ظ�����һ��, focused
-        { ID_MUSIC_REPEAT_ONE_BTN_PRESSED_BMP,      NULL,                NULL },        //�ظ�����һ��, pressed
+        { ID_MUSIC_REPEAT_ONE_BMP,                  NULL,                NULL },        //重复播放一首, unfocused
+        { ID_MUSIC_REPEAT_ONE_BTN_FOCUSED_BMP,      NULL,                NULL },        //重复播放一首, focused
+        { ID_MUSIC_REPEAT_ONE_BTN_PRESSED_BMP,      NULL,                NULL },        //重复播放一首, pressed
 
         //EQ mode button
         { ID_MUSIC_EQ_MODE_BTN_UNFOCUSED_BMP,       NULL,                NULL },        //EQ mode button, unfocused
@@ -280,60 +311,60 @@ static music_ui_t  music_ui_480_640 =
         { ID_MUSIC_BL_TIME_BTN_FOCUSED_BMP,         NULL,                NULL },        //focused
         { ID_MUSIC_BL_TIME_BTN_PRESSED_BMP,         NULL,                NULL },        //pressed
 
-        { ID_MUSIC_USB_UNFOCUSED_BMP,               NULL,                NULL },    //������һ��, unfocused
+        { ID_MUSIC_USB_UNFOCUSED_BMP,               NULL,                NULL },    //播放上一曲, unfocused
         { ID_MUSIC_USB_UNFOCUSED_BMP,                   NULL,                NULL },    //focused
         { ID_MUSIC_USB_FOCUSED_BMP,                 NULL,                NULL },        //pressed
         //play next button
-        { ID_MUSIC_SD_UNFOCUSED_BMP,                NULL,                NULL },    //������һ��, unfocused
+        { ID_MUSIC_SD_UNFOCUSED_BMP,                NULL,                NULL },    //播放下一曲, unfocused
         { ID_MUSIC_SD_UNFOCUSED_BMP,                    NULL,                NULL },    //focused
         { ID_MUSIC_SD_FOCUSED_BMP,                  NULL,                NULL },    //pressed
 
         //play previous button
-        { ID_MUSIC_PLAY_PRE_BTN_UNFOCUSED_BMP,      NULL,                NULL },    //������һ��, unfocused
+        { ID_MUSIC_PLAY_PRE_BTN_UNFOCUSED_BMP,      NULL,                NULL },    //播放上一曲, unfocused
         { ID_MUSIC_PLAY_PRE_BTN_FOCUSED_BMP,        NULL,                NULL },    //focused
         { ID_MUSIC_PLAY_PRE_BTN_FOCUSED_BMP,        NULL,                NULL },        //pressed
         //play next button
-        { ID_MUSIC_PLAY_NEXT_BTN_UNFOCUSED_BMP,     NULL,                NULL },    //������һ��, unfocused
+        { ID_MUSIC_PLAY_NEXT_BTN_UNFOCUSED_BMP,     NULL,                NULL },    //播放下一曲, unfocused
         { ID_MUSIC_PLAY_NEXT_BTN_FOCUSED_BMP,       NULL,                NULL },    //focused
         { ID_MUSIC_PLAY_NEXT_BTN_FOCUSED_BMP,       NULL,                NULL },    //pressed
         //play pause button
-        { ID_MUSIC_PAUSE0_BMP,  NULL,                NULL },    //������ͣ, unfocused
+        { ID_MUSIC_PAUSE0_BMP,  NULL,                NULL },    //播放暂停, unfocused
         { ID_MUSIC_PAUSE0_BMP,      NULL,                NULL },                    //focused
         { ID_MUSIC_PAUSE1_BMP,      NULL,                NULL },                    //pressed
 
         //play backward button
-        { ID_MUSIC_PLAY_BACKWARD_BTN_UNFOCUSED_BMP, NULL,                NULL },    //����, unfocused
+        { ID_MUSIC_PLAY_BACKWARD_BTN_UNFOCUSED_BMP, NULL,                NULL },    //快退, unfocused
         { ID_MUSIC_PLAY_BACKWARD_BTN_FOCUSED_BMP,   NULL,                NULL },    //focused
         { ID_MUSIC_PLAY_BACKWARD_BTN_FOCUSED_BMP,   NULL,                NULL },    //pressed
 
         //play forward button
-        { ID_MUSIC_PLAY_FORWARD_BTN_UNFOCUSED_BMP,  NULL,                NULL },    //���, unfocused
+        { ID_MUSIC_PLAY_FORWARD_BTN_UNFOCUSED_BMP,  NULL,                NULL },    //快进, unfocused
         { ID_MUSIC_PLAY_FORWARD_BTN_FOCUSED_BMP,    NULL,                NULL },    //focused
         { ID_MUSIC_PLAY_FORWARD_BTN_FOCUSED_BMP,    NULL,                NULL },    //pressed
 
         //play status button,
-        { ID_MUSIC_PAUSE0_BMP,              NULL,               NULL },                                 //���ڲ���״̬
-        { ID_MUSIC_PLAY0_BMP,                   NULL,               NULL },                                 //��ͣ״̬
-        { ID_MUSIC_PREVIOUS_STATUS_BMP,             NULL,               NULL },                                 //��һ��״̬
-        { ID_MUSIC_NEXT_STATUS_BMP,                 NULL,               NULL },                                 //��һ��״̬
+        { ID_MUSIC_PAUSE0_BMP,              NULL,               NULL },                                 //正在播放状态
+        { ID_MUSIC_PLAY0_BMP,                   NULL,               NULL },                                 //暂停状态
+        { ID_MUSIC_PREVIOUS_STATUS_BMP,             NULL,               NULL },                                 //上一曲状态
+        { ID_MUSIC_NEXT_STATUS_BMP,                 NULL,               NULL },                                 //下一曲状态
 
         //process bar
-        { ID_MUSIC_PROCESS_BAR_HEAD_BMP,                NULL,               NULL },                                 //process bar ͷ��
+        { ID_MUSIC_PROCESS_BAR_HEAD_BMP,                NULL,               NULL },                                 //process bar 头部
         { ID_MUSIC_PROCESS_BAR_BODY_BMP,                NULL,               NULL },                                 //body
-        { ID_MUSIC_PROCESS_BAR_TAIL_BMP,                NULL,               NULL },                                 //β��
-        { ID_MUSIC_PROCESS_BAR_POINT_BMP,           NULL,               NULL },                                 //���ȵ�
+        { ID_MUSIC_PROCESS_BAR_TAIL_BMP,                NULL,               NULL },                                 //尾部
+        { ID_MUSIC_PROCESS_BAR_POINT_BMP,           NULL,               NULL },                                 //进度点
 
-        //������Ϣͼ��
-        { ID_MUSIC_PERFORMER_NAME_BMP,              NULL,               NULL },                                 //����ͼ��
+        //歌曲信息图标
+        { ID_MUSIC_PERFORMER_NAME_BMP,              NULL,               NULL },                                 //作者图标
         { ID_MUSIC_FILE_SIZE_BMP,                   NULL,               NULL },                                 //
         { ID_MUSIC_ALBUM_NAME_BMP,                  NULL,               NULL },                                 //
         { ID_MUSIC_BIT_RATE_BMP,                        NULL,               NULL },                                 //
 
-        //Ƶ��ͼͼ��
+        //频谱图图标
         { ID_MUSIC_PARTICLE_BMP,                        NULL,               NULL },
         { ID_MUSIC_BOUY_BMP,                            NULL,               NULL },
 
-        //�������������
+        //浏览器，滚动条
         { ID_MUSIC_LIST_SCROLL_BG_BMP,              NULL,               NULL },
         { ID_MUSIC_LIST_SCROLL_HEAD_BMP,                NULL,               NULL },
         { ID_MUSIC_LIST_SCROLL_BODY_BMP,                NULL,               NULL },
@@ -394,7 +425,7 @@ static music_ui_t  music_ui_800_480 =
         { 0, 0, 246, 456 },         //scn rect
         { 0 },                      //reserved
     },
-    //list window, ����ļ�
+    //list window, 浏览文件
     {
         //{0, 46, 300, 424},                        //listbar area
         //{0, 0, 300, 106},                     //item rectangle
@@ -424,66 +455,66 @@ static music_ui_t  music_ui_800_480 =
     {
         {800 - 494, 42, 494, 88},                   //headbar background
 #if BEETLES_RTC_EXIST
-        {450, 210, 24, 20},                             //����ģʽ״̬ͼ��
-        {450, 189, 24, 20},                             //EQģʽ״̬ͼ��
-        {226, 5, 26, 16},                               //����ر�ʱ��ͼ��
-        {278, 5, 26, 16},                               //����ͼ��
-        {304, 3, 18, 16},                               //����text
-        {326, 6, 31, 12},                               //���ͼ��
-        {359, 3, 40, 16},                               //ʱ����ʾ����
+        {450, 210, 24, 20},                             //播放模式状态图标
+        {450, 189, 24, 20},                             //EQ模式状态图标
+        {226, 5, 26, 16},                               //背光关闭时间图标
+        {278, 5, 26, 16},                               //音量图标
+        {304, 3, 18, 16},                               //音量text
+        {326, 6, 31, 12},                               //电池图标
+        {359, 3, 40, 16},                               //时间显示区域
 #else
-        {450, 210, 24, 20},                             //����ģʽ״̬ͼ��
-        {450, 189, 24, 20},                             //EQģʽ״̬ͼ��
-        {284, 5, 26, 16},                               //����ر�ʱ��ͼ��
-        {315, 5, 26, 16},                               //����ͼ��
-        {341, 4, 18, 16},                               //����text
-        {364, 6, 31, 12},                               //���ͼ��
-        {0, 0, 0, 16},                                  //ʱ����ʾ����
+        {450, 210, 24, 20},                             //播放模式状态图标
+        {450, 189, 24, 20},                             //EQ模式状态图标
+        {284, 5, 26, 16},                               //背光关闭时间图标
+        {315, 5, 26, 16},                               //音量图标
+        {341, 4, 18, 16},                               //音量text
+        {364, 6, 31, 12},                               //电池图标
+        {0, 0, 0, 16},                                  //时间显示区域
 #endif
     },
     //palyer ui
     {
-        {270,   40, 160,    80},                    //���ư�ť��������()��Ƶ�׹���
-        {230, 120, 150, 16},                            //������ʾ�ַ�����
-        {450, 210, 24, 20},                             //����ģʽ��ť
-        {450, 189, 24, 20},                             //EQģʽ��ť
-        {324, 68, 26, 16},                              // ����ʱ����ư�ť
+        {270,   40, 160,    80},                    //控制按钮背景区域()与频谱共用
+        {230, 120, 150, 16},                            //按键提示字符区域
+        {450, 210, 24, 20},                             //播放模式按钮
+        {450, 189, 24, 20},                             //EQ模式按钮
+        {324, 68, 26, 16},                              // 背光时间控制按钮
 
 #ifndef MUSIC_VIEW_CHANGE_20160811
-        {713, 362, 42, 22},                         //usb disk��ť
-        {713, 329, 42, 22},                         //sd card��ť
+        {713, 362, 42, 22},                         //usb disk按钮
+        {713, 329, 42, 22},                         //sd card按钮
 #else
-        {713, 362 - 80, 42, 22},                        //usb disk��ť
-        {713, 329 - 80, 42, 22},                        //sd card��ť
+        {713, 362 - 80, 42, 22},                        //usb disk按钮
+        {713, 329 - 80, 42, 22},                        //sd card按钮
 #endif
-        {377 + 38, 164, 22, 18},                            //��һ�װ�ť
-        {410 + 38, 164, 22, 18},                            //��һ�װ�ť
-        {271 + 38, 164, 22, 18},                            //������ͣ��ť
-        {307 + 38, 164, 22, 18},                            //���˰�ť
-        {335 + 38, 164, 22, 18},                            //�����ť
+        {377 + 38, 164, 22, 18},                            //上一首按钮
+        {410 + 38, 164, 22, 18},                            //下一首按钮
+        {271 + 38, 164, 22, 18},                            //播放暂停按钮
+        {307 + 38, 164, 22, 18},                            //快退按钮
+        {335 + 38, 164, 22, 18},                            //快进按钮
 
 
-        {271, 164, 22, 18},                         //����״̬ͼ��(��ͣ�򲥷�)
+        {271, 164, 22, 18},                         //播放状态图标(暂停或播放)
 
-        {327, 105, 54 + 40, 20},                        //��ǰ����ʱ��
-        {800 - 100, 105, 54 + 40, 20},                      //��ʱ����ʾ����
+        {327, 105, 54 + 40, 20},                        //当前播放时间
+        {800 - 100, 105, 54 + 40, 20},                      //总时间显示区域
 
-        //������
-        {327, 76, 24, 20},                              //������head
-        {327, 88, 454, 6},                              //������body
-        {327, 76, 2, 9},                                //������point,��head֮����˼�5
-        {327 + 454 - 24, 76, 24, 20},                           //������tail
+        //进度条
+        {327, 76, 24, 20},                              //进度条head
+        {327, 88, 454, 6},                              //进度条body
+        {327, 76, 2, 9},                                //进度条point,从head之后，因此加5
+        {327 + 454 - 24, 76, 24, 20},                           //进度条tail
         {327, 88, 24, 20},                              //flag
 
-        {216,       187, 26, 16},                       //�ݳ���ͼ��
-        {213 + 26,  187, 70 + 20, 16},                      //�ݳ�������
-        {310 + 20,  187, 26, 16},                       //�ļ���Сͼ��
-        {310 + 26 + 20, 187, 70, 16},                       //�ļ���С��ʾ
+        {216,       187, 26, 16},                       //演唱者图标
+        {213 + 26,  187, 70 + 20, 16},                      //演唱者名称
+        {310 + 20,  187, 26, 16},                       //文件大小图标
+        {310 + 26 + 20, 187, 70, 16},                       //文件大小显示
 
-        {216,       211, 26, 16},                       //ר������ͼ��
-        {213 + 26,  211, 70 + 20, 16},                      //ר������
-        {310 + 20,  211, 26, 16},                       //bitrateͼ��
-        {310 + 26 + 20, 211, 70, 16},                       //bitrate��С��ʾ
+        {216,       211, 26, 16},                       //专辑名称图标
+        {213 + 26,  211, 70 + 20, 16},                      //专辑名称
+        {310 + 20,  211, 26, 16},                       //bitrate图标
+        {310 + 26 + 20, 211, 70, 16},                       //bitrate大小显示
 
         //menu
         {326, 150, 93, 58},                   //menu btn
@@ -498,10 +529,10 @@ static music_ui_t  music_ui_800_480 =
 
     //volume bar ui
     {
-        {0, 0, 0, 0},                                   //��������������ʾ����
-        {0, 0, 0, 0},                                   //���speakerͼ����ʾ��������״̬
-        {0, 0, 0, 0},                                   //�м�������ʾ������
-        {0, 0, 0, 0},                                   //�ұ�speakerͼ����ʾ
+        {0, 0, 0, 0},                                   //整个音量控制显示区域
+        {0, 0, 0, 0},                                   //左边speaker图标显示，有两种状态
+        {0, 0, 0, 0},                                   //中间音量显示进度条
+        {0, 0, 0, 0},                                   //右边speaker图标显示
     },
 
     //spectrum
@@ -537,22 +568,22 @@ static music_ui_t  music_ui_800_480 =
     //icon table
     {
         //ID                                                            res handle,     res buffer
-        //���������
+        //音乐浏览器
         { ID_MUSIC_PALETTE_BMP,                     NULL,                NULL },    //
         { NULL,    NULL,                 NULL },    //
         { ID_MUSIC_FILE_UNFOCUSED_BMP,              NULL,                NULL },    //
-        { ID_MUSIC_FILE_UNFOCUSED_BMP,              NULL,                NULL },    //�ļ�ͼ�꣬δ��ѡ��ʱ
-        { ID_MUSIC_FILE_FOCUSED_BMP,                NULL,                NULL },    //�ļ�ͼ�꣬��ѡ��ʱ
-        { ID_MUSIC_LIST_ITEM_FOCUS_BMP,             NULL,                NULL },    //����ѡ���
-        { ID_MUSIC_LIST_ITEM_UNFOCUS_BMP,           NULL,                NULL },    //�ǽ���ѡ���
-        { ID_MUSIC_LONG_STR_SCROLL_BMP,             NULL,                NULL },     //���ļ�������������
+        { ID_MUSIC_FILE_UNFOCUSED_BMP,              NULL,                NULL },    //文件图标，未被选中时
+        { ID_MUSIC_FILE_FOCUSED_BMP,                NULL,                NULL },    //文件图标，被选中时
+        { ID_MUSIC_LIST_ITEM_FOCUS_BMP,             NULL,                NULL },    //焦点选择框
+        { ID_MUSIC_LIST_ITEM_UNFOCUS_BMP,           NULL,                NULL },    //非焦点选择框
+        { ID_MUSIC_LONG_STR_SCROLL_BMP,             NULL,                NULL },     //长文件名滚动背景条
         //header bar
         //play mode
-        { ID_MUSIC_PLAY_ALL_BMP,                    NULL,                NULL },    //  ����ȫ��,���ظ�
-        { ID_MUSIC_PLAY_ONE_BMP,                    NULL,                NULL },    //����һ��
-        { ID_MUSIC_PLAY_RANDOM_BMP,                 NULL,                NULL },    //�漴����
-        { ID_MUSIC_REPEAT_ALL_BMP,                  NULL,                NULL },    //�ظ�����
-        { ID_MUSIC_REPEAT_ONE_BMP,                  NULL,                NULL },    //�ظ�һ��
+        { ID_MUSIC_PLAY_ALL_BMP,                    NULL,                NULL },    //  播放全部,不重复
+        { ID_MUSIC_PLAY_ONE_BMP,                    NULL,                NULL },    //播放一首
+        { ID_MUSIC_PLAY_RANDOM_BMP,                 NULL,                NULL },    //随即播放
+        { ID_MUSIC_REPEAT_ALL_BMP,                  NULL,                NULL },    //重复所有
+        { ID_MUSIC_REPEAT_ONE_BMP,                  NULL,                NULL },    //重复一首
 
         //EQ mode
         { ID_MUSIC_EQ_NORMAL_BMP,                   NULL,                NULL },    //EQ normal
@@ -583,27 +614,27 @@ static music_ui_t  music_ui_800_480 =
         { ID_MUSIC_BETTERY4_BMP,                    NULL,                NULL },    //
         { ID_MUSIC_BETTERY5_BMP,                    NULL,                NULL },    //
 
-        //������
+        //播放器
         //play mode button
-        { ID_MUSIC_PLAY_ALL_BMP,                    NULL,                NULL },        //����ȫ��, unfocused
-        { ID_MUSIC_PLAY_ALL_BTN_FOCUSED_BMP,        NULL,                NULL },        //����ȫ��, focused
-        { ID_MUSIC_PLAY_ALL_BTN_PRESSED_BMP,        NULL,                NULL },        //����ȫ��, pressed
+        { ID_MUSIC_PLAY_ALL_BMP,                    NULL,                NULL },        //播放全部, unfocused
+        { ID_MUSIC_PLAY_ALL_BTN_FOCUSED_BMP,        NULL,                NULL },        //播放全部, focused
+        { ID_MUSIC_PLAY_ALL_BTN_PRESSED_BMP,        NULL,                NULL },        //播放全部, pressed
 
-        { ID_MUSIC_PLAY_ONE_BMP,                    NULL,                NULL },        //����һ��, unfocused
-        { ID_MUSIC_PLAY_ONE_BTN_FOCUSED_BMP,        NULL,                NULL },        //����һ��, focused
-        { ID_MUSIC_PLAY_ONE_BTN_PRESSED_BMP,        NULL,                NULL },        //����һ��, pressed
+        { ID_MUSIC_PLAY_ONE_BMP,                    NULL,                NULL },        //播放一首, unfocused
+        { ID_MUSIC_PLAY_ONE_BTN_FOCUSED_BMP,        NULL,                NULL },        //播放一首, focused
+        { ID_MUSIC_PLAY_ONE_BTN_PRESSED_BMP,        NULL,                NULL },        //播放一首, pressed
 
-        { ID_MUSIC_PLAY_RANDOM_BMP,                 NULL,                NULL },        //�������, unfocused
-        { ID_MUSIC_PLAY_RANDOM_BTN_FOCUSED_BMP,     NULL,                NULL },        //�������, focused
-        { ID_MUSIC_PLAY_RANDOM_BTN_PRESSED_BMP,     NULL,                NULL },        //�������, pressed
+        { ID_MUSIC_PLAY_RANDOM_BMP,                 NULL,                NULL },        //随机播放, unfocused
+        { ID_MUSIC_PLAY_RANDOM_BTN_FOCUSED_BMP,     NULL,                NULL },        //随机播放, focused
+        { ID_MUSIC_PLAY_RANDOM_BTN_PRESSED_BMP,     NULL,                NULL },        //随机播放, pressed
 
-        { ID_MUSIC_REPEAT_ALL_BMP,                  NULL,                NULL },        //�ظ�����ȫ��, unfocused
-        { ID_MUSIC_REPEAT_ALL_BTN_FOCUSED_BMP,      NULL,                NULL },        //�ظ�����ȫ��, focused
-        { ID_MUSIC_REPEAT_ALL_BTN_PRESSED_BMP,      NULL,                NULL },        //�ظ�����ȫ��, pressed
+        { ID_MUSIC_REPEAT_ALL_BMP,                  NULL,                NULL },        //重复播放全部, unfocused
+        { ID_MUSIC_REPEAT_ALL_BTN_FOCUSED_BMP,      NULL,                NULL },        //重复播放全部, focused
+        { ID_MUSIC_REPEAT_ALL_BTN_PRESSED_BMP,      NULL,                NULL },        //重复播放全部, pressed
 
-        { ID_MUSIC_REPEAT_ONE_BMP,                  NULL,                NULL },        //�ظ�����һ��, unfocused
-        { ID_MUSIC_REPEAT_ONE_BTN_FOCUSED_BMP,      NULL,                NULL },        //�ظ�����һ��, focused
-        { ID_MUSIC_REPEAT_ONE_BTN_PRESSED_BMP,      NULL,                NULL },        //�ظ�����һ��, pressed
+        { ID_MUSIC_REPEAT_ONE_BMP,                  NULL,                NULL },        //重复播放一首, unfocused
+        { ID_MUSIC_REPEAT_ONE_BTN_FOCUSED_BMP,      NULL,                NULL },        //重复播放一首, focused
+        { ID_MUSIC_REPEAT_ONE_BTN_PRESSED_BMP,      NULL,                NULL },        //重复播放一首, pressed
 
         //EQ mode button
         { ID_MUSIC_EQ_MODE_BTN_UNFOCUSED_BMP,       NULL,                NULL },        //EQ mode button, unfocused
@@ -615,60 +646,60 @@ static music_ui_t  music_ui_800_480 =
         { ID_MUSIC_BL_TIME_BTN_FOCUSED_BMP,         NULL,                NULL },        //focused
         { ID_MUSIC_BL_TIME_BTN_PRESSED_BMP,         NULL,                NULL },        //pressed
 
-        { ID_MUSIC_USB_UNFOCUSED_BMP,               NULL,                NULL },    //������һ��, unfocused
+        { ID_MUSIC_USB_UNFOCUSED_BMP,               NULL,                NULL },    //播放上一曲, unfocused
         { ID_MUSIC_USB_UNFOCUSED_BMP,                   NULL,                NULL },    //focused
         { ID_MUSIC_USB_FOCUSED_BMP,                 NULL,                NULL },        //pressed
         //play next button
-        { ID_MUSIC_SD_UNFOCUSED_BMP,                NULL,                NULL },    //������һ��, unfocused
+        { ID_MUSIC_SD_UNFOCUSED_BMP,                NULL,                NULL },    //播放下一曲, unfocused
         { ID_MUSIC_SD_UNFOCUSED_BMP,                    NULL,                NULL },    //focused
         { ID_MUSIC_SD_FOCUSED_BMP,                  NULL,                NULL },    //pressed
 
         //play previous button
-        { ID_MUSIC_PLAY_PRE_BTN_UNFOCUSED_BMP,      NULL,                NULL },    //������һ��, unfocused
+        { ID_MUSIC_PLAY_PRE_BTN_UNFOCUSED_BMP,      NULL,                NULL },    //播放上一曲, unfocused
         { ID_MUSIC_PLAY_PRE_BTN_FOCUSED_BMP,        NULL,                NULL },    //focused
         { ID_MUSIC_PLAY_PRE_BTN_FOCUSED_BMP,        NULL,                NULL },        //pressed
         //play next button
-        { ID_MUSIC_PLAY_NEXT_BTN_UNFOCUSED_BMP,     NULL,                NULL },    //������һ��, unfocused
+        { ID_MUSIC_PLAY_NEXT_BTN_UNFOCUSED_BMP,     NULL,                NULL },    //播放下一曲, unfocused
         { ID_MUSIC_PLAY_NEXT_BTN_FOCUSED_BMP,       NULL,                NULL },    //focused
         { ID_MUSIC_PLAY_NEXT_BTN_FOCUSED_BMP,       NULL,                NULL },    //pressed
         //play pause button
-        { ID_MUSIC_PAUSE0_BMP,  NULL,                NULL },    //������ͣ, unfocused
+        { ID_MUSIC_PAUSE0_BMP,  NULL,                NULL },    //播放暂停, unfocused
         { ID_MUSIC_PAUSE0_BMP,      NULL,                NULL },                    //focused
         { ID_MUSIC_PAUSE1_BMP,      NULL,                NULL },                    //pressed
 
         //play backward button
-        { ID_MUSIC_PLAY_BACKWARD_BTN_UNFOCUSED_BMP, NULL,                NULL },    //����, unfocused
+        { ID_MUSIC_PLAY_BACKWARD_BTN_UNFOCUSED_BMP, NULL,                NULL },    //快退, unfocused
         { ID_MUSIC_PLAY_BACKWARD_BTN_FOCUSED_BMP,   NULL,                NULL },    //focused
         { ID_MUSIC_PLAY_BACKWARD_BTN_FOCUSED_BMP,   NULL,                NULL },    //pressed
 
         //play forward button
-        { ID_MUSIC_PLAY_FORWARD_BTN_UNFOCUSED_BMP,  NULL,                NULL },    //���, unfocused
+        { ID_MUSIC_PLAY_FORWARD_BTN_UNFOCUSED_BMP,  NULL,                NULL },    //快进, unfocused
         { ID_MUSIC_PLAY_FORWARD_BTN_FOCUSED_BMP,    NULL,                NULL },    //focused
         { ID_MUSIC_PLAY_FORWARD_BTN_FOCUSED_BMP,    NULL,                NULL },    //pressed
 
         //play status button,
-        { ID_MUSIC_PAUSE0_BMP,              NULL,               NULL },                                 //���ڲ���״̬
-        { ID_MUSIC_PLAY0_BMP,                   NULL,               NULL },                                 //��ͣ״̬
-        { ID_MUSIC_PREVIOUS_STATUS_BMP,             NULL,               NULL },                                 //��һ��״̬
-        { ID_MUSIC_NEXT_STATUS_BMP,                 NULL,               NULL },                                 //��һ��״̬
+        { ID_MUSIC_PAUSE0_BMP,              NULL,               NULL },                                 //正在播放状态
+        { ID_MUSIC_PLAY0_BMP,                   NULL,               NULL },                                 //暂停状态
+        { ID_MUSIC_PREVIOUS_STATUS_BMP,             NULL,               NULL },                                 //上一曲状态
+        { ID_MUSIC_NEXT_STATUS_BMP,                 NULL,               NULL },                                 //下一曲状态
 
         //process bar
-        { ID_MUSIC_PROCESS_BAR_HEAD_BMP,                NULL,               NULL },                                 //process bar ͷ��
+        { ID_MUSIC_PROCESS_BAR_HEAD_BMP,                NULL,               NULL },                                 //process bar 头部
         { ID_MUSIC_PROCESS_BAR_BODY_BMP,                NULL,               NULL },                                 //body
-        { ID_MUSIC_PROCESS_BAR_TAIL_BMP,                NULL,               NULL },                                 //β��
-        { ID_MUSIC_PROCESS_BAR_POINT_BMP,           NULL,               NULL },                                 //���ȵ�
+        { ID_MUSIC_PROCESS_BAR_TAIL_BMP,                NULL,               NULL },                                 //尾部
+        { ID_MUSIC_PROCESS_BAR_POINT_BMP,           NULL,               NULL },                                 //进度点
 
-        //������Ϣͼ��
-        { ID_MUSIC_PERFORMER_NAME_BMP,              NULL,               NULL },                                 //����ͼ��
+        //歌曲信息图标
+        { ID_MUSIC_PERFORMER_NAME_BMP,              NULL,               NULL },                                 //作者图标
         { ID_MUSIC_FILE_SIZE_BMP,                   NULL,               NULL },                                 //
         { ID_MUSIC_ALBUM_NAME_BMP,                  NULL,               NULL },                                 //
         { ID_MUSIC_BIT_RATE_BMP,                        NULL,               NULL },                                 //
 
-        //Ƶ��ͼͼ��
+        //频谱图图标
         { ID_MUSIC_PARTICLE_BMP,                        NULL,               NULL },
         { ID_MUSIC_BOUY_BMP,                            NULL,               NULL },
 
-        //�������������
+        //浏览器，滚动条
         { ID_MUSIC_LIST_SCROLL_BG_BMP,              NULL,               NULL },
         { ID_MUSIC_LIST_SCROLL_HEAD_BMP,                NULL,               NULL },
         { ID_MUSIC_LIST_SCROLL_BODY_BMP,                NULL,               NULL },
@@ -731,7 +762,7 @@ static music_ui_t  music_ui_720_480 =
         { 0, 0, 220 - 54, 456 },       //scn rect
         { 0 },                      //reserved
     },
-    //list window, ����ļ�
+    //list window, 浏览文件
     {
         //{0, 46, 300, 424},                        //listbar area
         //{0, 0, 300, 106},                     //item rectangle
@@ -756,62 +787,62 @@ static music_ui_t  music_ui_720_480 =
     {
         {720 - 494, 40 + 20, 494 - 10, 88},                 //headbar background
 #if BEETLES_RTC_EXIST
-        {450 - 80, 210, 24, 20},                                //����ģʽ״̬ͼ��
-        {450 - 80, 189, 24, 20},                                //EQģʽ״̬ͼ��
-        {226 - 80, 5, 26, 16},                              //����ر�ʱ��ͼ��
-        {278 - 80, 5, 26, 16},                              //����ͼ��
-        {304 - 80, 3, 18, 16},                              //����text
-        {326 - 80, 6, 31, 12},                              //���ͼ��
-        {359 - 80, 3, 40, 16},                              //ʱ����ʾ����
+        {450 - 80, 210, 24, 20},                                //播放模式状态图标
+        {450 - 80, 189, 24, 20},                                //EQ模式状态图标
+        {226 - 80, 5, 26, 16},                              //背光关闭时间图标
+        {278 - 80, 5, 26, 16},                              //音量图标
+        {304 - 80, 3, 18, 16},                              //音量text
+        {326 - 80, 6, 31, 12},                              //电池图标
+        {359 - 80, 3, 40, 16},                              //时间显示区域
 #else
-        {450 - 80, 210, 24, 20},                                //����ģʽ״̬ͼ��
-        {450 - 80, 189, 24, 20},                                //EQģʽ״̬ͼ��
-        {284 - 80, 5, 26, 16},                              //����ر�ʱ��ͼ��
-        {315 - 80, 5, 26, 16},                              //����ͼ��
-        {341 - 80, 4, 18, 16},                              //����text
-        {364 - 80, 6, 31, 12},                              //���ͼ��
-        {0, 0, 0, 16},                                  //ʱ����ʾ����
+        {450 - 80, 210, 24, 20},                                //播放模式状态图标
+        {450 - 80, 189, 24, 20},                                //EQ模式状态图标
+        {284 - 80, 5, 26, 16},                              //背光关闭时间图标
+        {315 - 80, 5, 26, 16},                              //音量图标
+        {341 - 80, 4, 18, 16},                              //音量text
+        {364 - 80, 6, 31, 12},                              //电池图标
+        {0, 0, 0, 16},                                  //时间显示区域
 #endif
     },
     //palyer ui
     {
-        {270 - 80,  40, 160 - 10,   80},                    //���ư�ť��������()��Ƶ�׹���
-        {230 - 80, 120, 150 - 10, 16},                          //������ʾ�ַ�����
-        {450 - 80, 210, 24, 20},                                //����ģʽ��ť
-        {450 - 80, 189, 24, 20},                                //EQģʽ��ť
-        {324 - 80, 68, 26, 16},                             // ����ʱ����ư�ť
+        {270 - 80,  40, 160 - 10,   80},                    //控制按钮背景区域()与频谱共用
+        {230 - 80, 120, 150 - 10, 16},                          //按键提示字符区域
+        {450 - 80, 210, 24, 20},                                //播放模式按钮
+        {450 - 80, 189, 24, 20},                                //EQ模式按钮
+        {324 - 80, 68, 26, 16},                             // 背光时间控制按钮
 
 
-        {713 - 80, 362, 42, 22},                            //usb disk��ť
-        {713 - 80, 329, 42, 22},                            //sd card��ť
-        {377 + 38 - 80, 164, 22, 18},                           //��һ�װ�ť
-        {410 + 38 - 80, 164, 22, 18},                           //��һ�װ�ť
-        {271 + 38 - 80, 164, 22, 18},                           //������ͣ��ť
-        {307 + 38 - 80, 164, 22, 18},                           //���˰�ť
-        {335 + 38 - 80, 164, 22, 18},                           //�����ť
+        {713 - 80, 362, 42, 22},                            //usb disk按钮
+        {713 - 80, 329, 42, 22},                            //sd card按钮
+        {377 + 38 - 80, 164, 22, 18},                           //上一首按钮
+        {410 + 38 - 80, 164, 22, 18},                           //下一首按钮
+        {271 + 38 - 80, 164, 22, 18},                           //播放暂停按钮
+        {307 + 38 - 80, 164, 22, 18},                           //快退按钮
+        {335 + 38 - 80, 164, 22, 18},                           //快进按钮
 
 
-        {271 - 80, 164, 22, 18},                            //����״̬ͼ��(��ͣ�򲥷�)
+        {271 - 80, 164, 22, 18},                            //播放状态图标(暂停或播放)
 
-        {327 - 80, 120, 54 + 40, 20},                       //��ǰ����ʱ��
-        {720 - 100, 120, 54 + 40, 20},                      //��ʱ����ʾ����
+        {327 - 80, 120, 54 + 40, 20},                       //当前播放时间
+        {720 - 100, 120, 54 + 40, 20},                      //总时间显示区域
 
-        //������  //chengf  80
-        {327 - 90/*80*/, 76, 24, 20},                       //������head
-        {327 - 90/*80*/, 88, 454 - 10 - 10 - 10, 6},                //������body
-        {327 - 90/*80*/, 76, 2, 9},                         //������point,��head֮����˼�5
-        {327 + 454 - 24 - 120/*90*//*80*/ - 10 - 10 - 10, 76, 24, 20},      //������tail  //chengf
+        //进度条  //chengf  80
+        {327 - 90/*80*/, 76, 24, 20},                       //进度条head
+        {327 - 90/*80*/, 88, 454 - 10 - 10 - 10, 6},                //进度条body
+        {327 - 90/*80*/, 76, 2, 9},                         //进度条point,从head之后，因此加5
+        {327 + 454 - 24 - 120/*90*//*80*/ - 10 - 10 - 10, 76, 24, 20},      //进度条tail  //chengf
         {327 - 90/*80*/ - 10, 76, 24, 20},                  //flag
 
-        {216 - 80,      187, 26, 16},                       //�ݳ���ͼ��
-        {213 + 26 - 80, 187, 70 + 20, 16},                      //�ݳ�������
-        {310 + 20 - 80, 187, 26, 16},                       //�ļ���Сͼ��
-        {310 + 26 + 20 - 80,    187, 70, 16},                       //�ļ���С��ʾ
+        {216 - 80,      187, 26, 16},                       //演唱者图标
+        {213 + 26 - 80, 187, 70 + 20, 16},                      //演唱者名称
+        {310 + 20 - 80, 187, 26, 16},                       //文件大小图标
+        {310 + 26 + 20 - 80,    187, 70, 16},                       //文件大小显示
 
-        {216 - 80,      211, 26, 16},                       //ר������ͼ��
-        {213 + 26 - 80, 211, 70 + 20, 16},                      //ר������
-        {310 + 20 - 80, 211, 26, 16},                       //bitrateͼ��
-        {310 + 26 + 20 - 80,    211, 70, 16},                       //bitrate��С��ʾ
+        {216 - 80,      211, 26, 16},                       //专辑名称图标
+        {213 + 26 - 80, 211, 70 + 20, 16},                      //专辑名称
+        {310 + 20 - 80, 211, 26, 16},                       //bitrate图标
+        {310 + 26 + 20 - 80,    211, 70, 16},                       //bitrate大小显示
 
         //menu
         {326 - 80 - 18, 150, 93, 58},               //menu btn              //chengf
@@ -825,10 +856,10 @@ static music_ui_t  music_ui_720_480 =
 
     //volume bar ui
     {
-        {0, 0, 0, 0},                                   //��������������ʾ����
-        {0, 0, 0, 0},                                   //���speakerͼ����ʾ��������״̬
-        {0, 0, 0, 0},                                   //�м�������ʾ������
-        {0, 0, 0, 0},                                   //�ұ�speakerͼ����ʾ
+        {0, 0, 0, 0},                                   //整个音量控制显示区域
+        {0, 0, 0, 0},                                   //左边speaker图标显示，有两种状态
+        {0, 0, 0, 0},                                   //中间音量显示进度条
+        {0, 0, 0, 0},                                   //右边speaker图标显示
     },
 
     //spectrum
@@ -864,22 +895,22 @@ static music_ui_t  music_ui_720_480 =
     //icon table
     {
         //ID                                                            res handle,     res buffer
-        //���������
+        //音乐浏览器
         { ID_MUSIC_PALETTE_BMP,                     NULL,                NULL },    //
         { NULL,             NULL,                NULL },    //
         { ID_MUSIC_FILE_UNFOCUSED_BMP,              NULL,                NULL },    //
-        { ID_MUSIC_FILE_UNFOCUSED_BMP,              NULL,                NULL },    //�ļ�ͼ�꣬δ��ѡ��ʱ
-        { ID_MUSIC_FILE_FOCUSED_BMP,                NULL,                NULL },    //�ļ�ͼ�꣬��ѡ��ʱ
-        { ID_MUSIC_LIST_ITEM_FOCUS0_BMP,                NULL,                NULL },    //����ѡ���
-        { ID_MUSIC_LIST_ITEM_UNFOCUS0_BMP,          NULL,                NULL }, //{ ID_MUSIC_LIST_ITEM_UNFOCUS_BMP,            NULL,                NULL },    //�ǽ���ѡ���
-        { ID_MUSIC_LONG_STR_SCROLL_BMP,             NULL,                NULL },     //���ļ�������������
+        { ID_MUSIC_FILE_UNFOCUSED_BMP,              NULL,                NULL },    //文件图标，未被选中时
+        { ID_MUSIC_FILE_FOCUSED_BMP,                NULL,                NULL },    //文件图标，被选中时
+        { ID_MUSIC_LIST_ITEM_FOCUS0_BMP,                NULL,                NULL },    //焦点选择框
+        { ID_MUSIC_LIST_ITEM_UNFOCUS0_BMP,          NULL,                NULL }, //{ ID_MUSIC_LIST_ITEM_UNFOCUS_BMP,            NULL,                NULL },    //非焦点选择框
+        { ID_MUSIC_LONG_STR_SCROLL_BMP,             NULL,                NULL },     //长文件名滚动背景条
         //header bar
         //play mode
-        { ID_MUSIC_PLAY_ALL_BMP,                    NULL,                NULL },    //  ����ȫ��,���ظ�
-        { ID_MUSIC_PLAY_ONE_BMP,                    NULL,                NULL },    //����һ��
-        { ID_MUSIC_PLAY_RANDOM_BMP,                 NULL,                NULL },    //�漴����
-        { ID_MUSIC_REPEAT_ALL_BMP,                  NULL,                NULL },    //�ظ�����
-        { ID_MUSIC_REPEAT_ONE_BMP,                  NULL,                NULL },    //�ظ�һ��
+        { ID_MUSIC_PLAY_ALL_BMP,                    NULL,                NULL },    //  播放全部,不重复
+        { ID_MUSIC_PLAY_ONE_BMP,                    NULL,                NULL },    //播放一首
+        { ID_MUSIC_PLAY_RANDOM_BMP,                 NULL,                NULL },    //随即播放
+        { ID_MUSIC_REPEAT_ALL_BMP,                  NULL,                NULL },    //重复所有
+        { ID_MUSIC_REPEAT_ONE_BMP,                  NULL,                NULL },    //重复一首
 
         //EQ mode
         { ID_MUSIC_EQ_NORMAL_BMP,                   NULL,                NULL },    //EQ normal
@@ -912,27 +943,27 @@ static music_ui_t  music_ui_720_480 =
         { ID_MUSIC_BETTERY4_BMP,                    NULL,                NULL },    //
         { ID_MUSIC_BETTERY5_BMP,                    NULL,                NULL },    //
 
-        //������
+        //播放器
         //play mode button
-        { ID_MUSIC_PLAY_ALL_BMP,                    NULL,                NULL },        //����ȫ��, unfocused
-        { ID_MUSIC_PLAY_ALL_BTN_FOCUSED_BMP,        NULL,                NULL },        //����ȫ��, focused
-        { ID_MUSIC_PLAY_ALL_BTN_PRESSED_BMP,        NULL,                NULL },        //����ȫ��, pressed
+        { ID_MUSIC_PLAY_ALL_BMP,                    NULL,                NULL },        //播放全部, unfocused
+        { ID_MUSIC_PLAY_ALL_BTN_FOCUSED_BMP,        NULL,                NULL },        //播放全部, focused
+        { ID_MUSIC_PLAY_ALL_BTN_PRESSED_BMP,        NULL,                NULL },        //播放全部, pressed
 
-        { ID_MUSIC_PLAY_ONE_BMP,                    NULL,                NULL },        //����һ��, unfocused
-        { ID_MUSIC_PLAY_ONE_BTN_FOCUSED_BMP,        NULL,                NULL },        //����һ��, focused
-        { ID_MUSIC_PLAY_ONE_BTN_PRESSED_BMP,        NULL,                NULL },        //����һ��, pressed
+        { ID_MUSIC_PLAY_ONE_BMP,                    NULL,                NULL },        //播放一首, unfocused
+        { ID_MUSIC_PLAY_ONE_BTN_FOCUSED_BMP,        NULL,                NULL },        //播放一首, focused
+        { ID_MUSIC_PLAY_ONE_BTN_PRESSED_BMP,        NULL,                NULL },        //播放一首, pressed
 
-        { ID_MUSIC_PLAY_RANDOM_BMP,                 NULL,                NULL },        //�������, unfocused
-        { ID_MUSIC_PLAY_RANDOM_BTN_FOCUSED_BMP,     NULL,                NULL },        //�������, focused
-        { ID_MUSIC_PLAY_RANDOM_BTN_PRESSED_BMP,     NULL,                NULL },        //�������, pressed
+        { ID_MUSIC_PLAY_RANDOM_BMP,                 NULL,                NULL },        //随机播放, unfocused
+        { ID_MUSIC_PLAY_RANDOM_BTN_FOCUSED_BMP,     NULL,                NULL },        //随机播放, focused
+        { ID_MUSIC_PLAY_RANDOM_BTN_PRESSED_BMP,     NULL,                NULL },        //随机播放, pressed
 
-        { ID_MUSIC_REPEAT_ALL_BMP,                  NULL,                NULL },        //�ظ�����ȫ��, unfocused
-        { ID_MUSIC_REPEAT_ALL_BTN_FOCUSED_BMP,      NULL,                NULL },        //�ظ�����ȫ��, focused
-        { ID_MUSIC_REPEAT_ALL_BTN_PRESSED_BMP,      NULL,                NULL },        //�ظ�����ȫ��, pressed
+        { ID_MUSIC_REPEAT_ALL_BMP,                  NULL,                NULL },        //重复播放全部, unfocused
+        { ID_MUSIC_REPEAT_ALL_BTN_FOCUSED_BMP,      NULL,                NULL },        //重复播放全部, focused
+        { ID_MUSIC_REPEAT_ALL_BTN_PRESSED_BMP,      NULL,                NULL },        //重复播放全部, pressed
 
-        { ID_MUSIC_REPEAT_ONE_BMP,                  NULL,                NULL },        //�ظ�����һ��, unfocused
-        { ID_MUSIC_REPEAT_ONE_BTN_FOCUSED_BMP,      NULL,                NULL },        //�ظ�����һ��, focused
-        { ID_MUSIC_REPEAT_ONE_BTN_PRESSED_BMP,      NULL,                NULL },        //�ظ�����һ��, pressed
+        { ID_MUSIC_REPEAT_ONE_BMP,                  NULL,                NULL },        //重复播放一首, unfocused
+        { ID_MUSIC_REPEAT_ONE_BTN_FOCUSED_BMP,      NULL,                NULL },        //重复播放一首, focused
+        { ID_MUSIC_REPEAT_ONE_BTN_PRESSED_BMP,      NULL,                NULL },        //重复播放一首, pressed
 
         //EQ mode button
         { ID_MUSIC_EQ_MODE_BTN_UNFOCUSED_BMP,       NULL,                NULL },        //EQ mode button, unfocused
@@ -945,60 +976,60 @@ static music_ui_t  music_ui_720_480 =
         { ID_MUSIC_BL_TIME_BTN_PRESSED_BMP,         NULL,                NULL },        //pressed
 
 
-        { ID_MUSIC_USB_UNFOCUSED_BMP,               NULL,                NULL },    //������һ��, unfocused
+        { ID_MUSIC_USB_UNFOCUSED_BMP,               NULL,                NULL },    //播放上一曲, unfocused
         { ID_MUSIC_USB_UNFOCUSED_BMP,                   NULL,                NULL },    //focused
         { ID_MUSIC_USB_FOCUSED_BMP,                 NULL,                NULL },        //pressed
         //play next button
-        { ID_MUSIC_SD_UNFOCUSED_BMP,                NULL,                NULL },    //������һ��, unfocused
+        { ID_MUSIC_SD_UNFOCUSED_BMP,                NULL,                NULL },    //播放下一曲, unfocused
         { ID_MUSIC_SD_UNFOCUSED_BMP,                    NULL,                NULL },    //focused
         { ID_MUSIC_SD_FOCUSED_BMP,                  NULL,                NULL },    //pressed
 
         //play previous button
-        { ID_MUSIC_PLAY_PRE_BTN_UNFOCUSED_BMP,      NULL,                NULL },    //������һ��, unfocused
+        { ID_MUSIC_PLAY_PRE_BTN_UNFOCUSED_BMP,      NULL,                NULL },    //播放上一曲, unfocused
         { ID_MUSIC_PLAY_PRE_BTN_FOCUSED_BMP,        NULL,                NULL },    //focused
         { ID_MUSIC_PLAY_PRE_BTN_FOCUSED_BMP,        NULL,                NULL },        //pressed
         //play next button
-        { ID_MUSIC_PLAY_NEXT_BTN_UNFOCUSED_BMP,     NULL,                NULL },    //������һ��, unfocused
+        { ID_MUSIC_PLAY_NEXT_BTN_UNFOCUSED_BMP,     NULL,                NULL },    //播放下一曲, unfocused
         { ID_MUSIC_PLAY_NEXT_BTN_FOCUSED_BMP,       NULL,                NULL },    //focused
         { ID_MUSIC_PLAY_NEXT_BTN_FOCUSED_BMP,       NULL,                NULL },    //pressed
         //play pause button
-        { ID_MUSIC_PAUSE0_BMP,  NULL,                NULL },    //������ͣ, unfocused
+        { ID_MUSIC_PAUSE0_BMP,  NULL,                NULL },    //播放暂停, unfocused
         { ID_MUSIC_PAUSE0_BMP,      NULL,                NULL },                    //focused
         { ID_MUSIC_PAUSE1_BMP,      NULL,                NULL },                    //pressed
 
         //play backward button
-        { ID_MUSIC_PLAY_BACKWARD_BTN_UNFOCUSED_BMP, NULL,                NULL },    //����, unfocused
+        { ID_MUSIC_PLAY_BACKWARD_BTN_UNFOCUSED_BMP, NULL,                NULL },    //快退, unfocused
         { ID_MUSIC_PLAY_BACKWARD_BTN_FOCUSED_BMP,   NULL,                NULL },    //focused
         { ID_MUSIC_PLAY_BACKWARD_BTN_FOCUSED_BMP,   NULL,                NULL },    //pressed
 
         //play forward button
-        { ID_MUSIC_PLAY_FORWARD_BTN_UNFOCUSED_BMP,  NULL,                NULL },    //���, unfocused
+        { ID_MUSIC_PLAY_FORWARD_BTN_UNFOCUSED_BMP,  NULL,                NULL },    //快进, unfocused
         { ID_MUSIC_PLAY_FORWARD_BTN_FOCUSED_BMP,    NULL,                NULL },    //focused
         { ID_MUSIC_PLAY_FORWARD_BTN_FOCUSED_BMP,    NULL,                NULL },    //pressed
 
         //play status button,
-        { ID_MUSIC_PAUSE0_BMP,              NULL,               NULL },                                 //���ڲ���״̬
-        { ID_MUSIC_PLAY0_BMP,                   NULL,               NULL },                                 //��ͣ״̬
-        { ID_MUSIC_PREVIOUS_STATUS_BMP,             NULL,               NULL },                                 //��һ��״̬
-        { ID_MUSIC_NEXT_STATUS_BMP,                 NULL,               NULL },                                 //��һ��״̬
+        { ID_MUSIC_PAUSE0_BMP,              NULL,               NULL },                                 //正在播放状态
+        { ID_MUSIC_PLAY0_BMP,                   NULL,               NULL },                                 //暂停状态
+        { ID_MUSIC_PREVIOUS_STATUS_BMP,             NULL,               NULL },                                 //上一曲状态
+        { ID_MUSIC_NEXT_STATUS_BMP,                 NULL,               NULL },                                 //下一曲状态
 
         //process bar
-        { ID_MUSIC_PROCESS_BAR_HEAD_BMP,                NULL,               NULL },                                 //process bar ͷ��
+        { ID_MUSIC_PROCESS_BAR_HEAD_BMP,                NULL,               NULL },                                 //process bar 头部
         { ID_MUSIC_PROCESS_BAR_BODY0_BMP,           NULL,               NULL },                                 //body
-        { ID_MUSIC_PROCESS_BAR_TAIL_BMP,                NULL,               NULL },                                 //β��
-        { ID_MUSIC_PROCESS_BAR_POINT_BMP,           NULL,               NULL },                                 //���ȵ�
+        { ID_MUSIC_PROCESS_BAR_TAIL_BMP,                NULL,               NULL },                                 //尾部
+        { ID_MUSIC_PROCESS_BAR_POINT_BMP,           NULL,               NULL },                                 //进度点
 
-        //������Ϣͼ��
-        { ID_MUSIC_PERFORMER_NAME_BMP,              NULL,               NULL },                                 //����ͼ��
+        //歌曲信息图标
+        { ID_MUSIC_PERFORMER_NAME_BMP,              NULL,               NULL },                                 //作者图标
         { ID_MUSIC_FILE_SIZE_BMP,                   NULL,               NULL },                                 //
         { ID_MUSIC_ALBUM_NAME_BMP,                  NULL,               NULL },                                 //
         { ID_MUSIC_BIT_RATE_BMP,                        NULL,               NULL },                                 //
 
-        //Ƶ��ͼͼ��
+        //频谱图图标
         { ID_MUSIC_PARTICLE_BMP,                        NULL,               NULL },
         { ID_MUSIC_BOUY_BMP,                            NULL,               NULL },
 
-        //�������������
+        //浏览器，滚动条
         { ID_MUSIC_LIST_SCROLL_BG_BMP,              NULL,               NULL },
         { ID_MUSIC_LIST_SCROLL_HEAD_BMP,                NULL,               NULL },
         { ID_MUSIC_LIST_SCROLL_BODY_BMP,                NULL,               NULL },
@@ -1070,7 +1101,7 @@ __bool music_is_touch_icon(__u32 iconRectID, __u16 x, __u16 y)
     }
 }
 
-//�������explorer AP��Ƶ�UI����
+//获得整个explorer AP设计的UI参数
 music_ui_t *music_get_ui_param(void)
 {
     SIZE screen_size;
@@ -1092,7 +1123,7 @@ music_ui_t *music_get_ui_param(void)
     }
 }
 
-//������������UI����
+//获得音乐浏览器UI参数
 music_list_ui_t *music_get_list_ui_param(void)
 {
     SIZE screen_size;
@@ -1109,7 +1140,7 @@ music_list_ui_t *music_get_list_ui_param(void)
     }
 }
 
-//��ö���HeadbarUI����
+//获得顶部HeadbarUI参数
 music_headbar_ui_t *music_get_headbar_ui_param(void)
 {
     SIZE screen_size;
@@ -1126,7 +1157,7 @@ music_headbar_ui_t *music_get_headbar_ui_param(void)
     }
 }
 
-//��ö���playerUI����
+//获得顶部playerUI参数
 music_palyer_ui_t *music_get_player_ui_param(void)
 {
     SIZE screen_size;
@@ -1143,7 +1174,7 @@ music_palyer_ui_t *music_get_player_ui_param(void)
     }
 }
 
-//���volume barUI����
+//获得volume barUI参数
 music_volume_bar_ui_t *music_get_volume_bar_ui_param(void)
 {
     SIZE screen_size;
@@ -1326,7 +1357,7 @@ __s32 music_free_icon_res(void)
     }
 }
 
-//���Explorer ����layer size
+//获得Explorer 窗口layer size
 __s32 music_get_screen_rect(RECT *screen_rect)
 {
     music_ui_t *ui_param;
@@ -1338,7 +1369,7 @@ __s32 music_get_screen_rect(RECT *screen_rect)
     return EPDK_OK;
 }
 
-//����listbarÿҳ������ʾ����Ŀ����
+//计算listbar每页可以显示的条目数量
 __u32 music_count_listbar_pagenum(void)
 {
     __u32 pagenum = 0;

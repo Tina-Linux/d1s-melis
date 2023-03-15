@@ -1,17 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-* File      :   music_list.c,
-*                               music_list.h
-* By        :   Libaiao
-* Func          :
-* Version       :   v1.0
-* ============================================================================================================
-* 2010-5-3 15:24:52  Libaiao  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "beetles_app.h"
@@ -59,7 +75,7 @@ __s32 music_list_save_last_para(music_list_ctrl_t *This);
 ************************************************************************************************************************
 *Function   :          void  ExplorerListWinGetSearchPath(explr_list_para_t *para)
 *
-*Description    :       ∏˘æ›RootType ªÒµ√Search path
+*Description    :       Ê†πÊçÆRootType Ëé∑ÂæóSearch path
 *
 *Arguments      :
 *
@@ -68,7 +84,7 @@ __s32 music_list_save_last_para(music_list_ctrl_t *This);
 ************************************************************************************************************************
 */
 
-//∏˘æ›root_typeªÒµ√»´≈ÃÀ—À˜¬∑æ∂
+//Ê†πÊçÆroot_typeËé∑ÂæóÂÖ®ÁõòÊêúÁ¥¢Ë∑ØÂæÑ
 __s32  music_rat_get_search_path(music_list_ctrl_t *list_ctrl)
 {
     __s32 ret = 0;
@@ -103,7 +119,7 @@ __s32  music_rat_get_search_path(music_list_ctrl_t *list_ctrl)
     return ret;
 }
 
-//Rat ≥ı ºªØ
+//Rat ÂàùÂßãÂåñ
 static __s32 music_rat_init(music_list_ctrl_t *list_ctrl)
 {
     __s32 ret;
@@ -154,7 +170,7 @@ static __s32 music_rat_init(music_list_ctrl_t *list_ctrl)
         return EPDK_FAIL;
     }
 
-    //rat_start_miniature_decode(); //ø™ ºÀı¬‘Õºœﬂ≥Ã
+    //rat_start_miniature_decode(); //ÂºÄÂßãÁº©Áï•ÂõæÁ∫øÁ®ã
     return EPDK_OK;
 }
 
@@ -173,7 +189,7 @@ static __s32 music_rat_uninit(music_list_ctrl_t *list_ctrl)
 ************************************************************************************************************************
 *Function   :          static __s32 ExtractFileName(char *FileName, char *FilePath)
 *
-*Description    :       ¥”»´¬∑æ∂÷–ªÒ»°Œƒº˛√˚
+*Description    :       ‰ªéÂÖ®Ë∑ØÂæÑ‰∏≠Ëé∑ÂèñÊñá‰ª∂Âêç
 *
 *Arguments      :
 *
@@ -204,7 +220,7 @@ static __s32 MusicExtractFileName(char *FileName, char *FilePath)
 ************************************************************************************************************************
 *Function   :          static __s32 GetListItemFileFullPath(explr_list_para_t *list_para, __s32 ItemIndex, char *FilePath)
 *
-*Description    :       ∏˘æ›À˜“˝∫≈ªÒµ√ÃıƒøŒƒº˛√˚»´¬∑æ∂
+*Description    :       Ê†πÊçÆÁ¥¢ÂºïÂè∑Ëé∑ÂæóÊù°ÁõÆÊñá‰ª∂ÂêçÂÖ®Ë∑ØÂæÑ
 *
 *Arguments      :
 *
@@ -225,7 +241,7 @@ __s32 MusicGetListItemFileFullPath(HRAT rat_handle, __s32 ItemIndex, char *FileP
         return EPDK_FAIL;
     }
 
-    eLIBs_strcpy(FilePath, ItemInfo.Path);          //≤ª»•≤Ÿ◊˜rat ƒ⁄¥Ê
+    eLIBs_strcpy(FilePath, ItemInfo.Path);          //‰∏çÂéªÊìç‰Ωúrat ÂÜÖÂ≠ò
     return EPDK_OK;
 }
 
@@ -233,7 +249,7 @@ __s32 MusicGetListItemFileFullPath(HRAT rat_handle, __s32 ItemIndex, char *FileP
 ************************************************************************************************************************
 *Function   :         static __s32 GetListItemFileName(explr_list_para_t *list_para, __s32 ItemIndex, char *FileName)
 *
-*Description    :       ∏˘æ›À˜“˝∫≈ªÒµ√ÃıƒøŒƒº˛√˚(÷ª”–Œƒº˛√˚£¨π©œ‘ æ)
+*Description    :       Ê†πÊçÆÁ¥¢ÂºïÂè∑Ëé∑ÂæóÊù°ÁõÆÊñá‰ª∂Âêç(Âè™ÊúâÊñá‰ª∂ÂêçÔºå‰æõÊòæÁ§∫)
 *
 *Arguments      :
 *
@@ -267,7 +283,7 @@ static __s32 MusicGetListItemFileName(HRAT rat_handle, __s32 ItemIndex, char *Fi
 
 
 
-//∆’Õ®ÃıƒøÕº±Í
+//ÊôÆÈÄöÊù°ÁõÆÂõæÊ†á
 static __s32 draw_music_list_normal_item_icon(__lbar_draw_para_t *draw_param)
 {
     void *pic_buf;
@@ -280,7 +296,7 @@ static __s32 draw_music_list_normal_item_icon(__lbar_draw_para_t *draw_param)
     GUI_BMP_Draw(pic_buf, picX, picY);
     return EPDK_OK;
 }
-//Ωπµ„ÃıƒøÕº±Í
+//ÁÑ¶ÁÇπÊù°ÁõÆÂõæÊ†á
 static __s32 draw_music_list_focus_item_icon(__lbar_draw_para_t *draw_param)
 {
     void *pic_buf;
@@ -294,7 +310,7 @@ static __s32 draw_music_list_focus_item_icon(__lbar_draw_para_t *draw_param)
     return EPDK_OK;
 }
 
-//ª≠Ωπµ„Ãıƒø±≥æ∞—°‘ÒøÚ
+//ÁîªÁÑ¶ÁÇπÊù°ÁõÆËÉåÊôØÈÄâÊã©Ê°Ü
 static __s32 draw_music_list_focus_item_BG(__lbar_draw_para_t *draw_param)
 {
     void *pic_buf = NULL;
@@ -380,7 +396,7 @@ static __s32 draw_music_list_item_text(__lbar_draw_para_t *draw_param)
     return EPDK_OK;
 }
 
-//draw item in list mode, ≤ª“™‘⁄Listbarµƒªÿµ˜∫Ø ˝÷–—°‘ÒÕº≤„
+//draw item in list mode, ‰∏çË¶ÅÂú®ListbarÁöÑÂõûË∞ÉÂáΩÊï∞‰∏≠ÈÄâÊã©ÂõæÂ±Ç
 static __s32 music_list_normal_item_on_draw(__lbar_draw_para_t *draw_param)
 {
     draw_music_list_focus_item_BG(draw_param);
@@ -421,7 +437,7 @@ static __s32 music_list_focus_item_on_draw(__lbar_draw_para_t *draw_param)
 ************************************************************************************************************************
 *Function   :       static __s32 _music_listbar_on_draw(__lbar_draw_para_t *draw_param)
 *
-*Description    :    ListBarªÊ÷∆œ˚œ¢¥¶¿Ì∫Ø ˝
+*Description    :    ListBarÁªòÂà∂Ê∂àÊÅØÂ§ÑÁêÜÂáΩÊï∞
 *
 *Arguments      :
 *
@@ -619,7 +635,7 @@ static __s32 music_listbar_on_touch_up(void *list_ctrl, __s32 x, __s32 y, __s32 
 }
 
 /*
-//listbar  ß»•Ωπµ„øÿ÷∆
+//listbar Â§±ÂéªÁÑ¶ÁÇπÊéßÂà∂
 static __s32 music_listbar_lost_focus(music_list_ctrl_t *list_ctrl)
 {
     __listbar_scene_t ListBarScene;
@@ -634,7 +650,7 @@ static __s32 music_listbar_lost_focus(music_list_ctrl_t *list_ctrl)
     return EPDK_OK;
 }
 */
-//∑µªÿœ‡”¶µƒÀ˜“˝∫≈
+//ËøîÂõûÁõ∏Â∫îÁöÑÁ¥¢ÂºïÂè∑
 __s32 get_music_list_focus_item_full_filename(music_list_ctrl_t *list_ctrl, char *filename)
 {
     __s32 ret;
@@ -687,7 +703,7 @@ static __s32 music_listbar_init(music_list_ctrl_t *list_ctrl)
     // eLIBs_memset(&scroll_param, 0, sizeof(__scroll_bar_t));
     //if(list_ctrl->view_mode == EXPLR_LIST_MODE)
     {
-        item_width = ui_param->list_ctrl.item_rect.width;                       //∏˘æ›list or squareƒ£ Ω≤ªÕ¨
+        item_width = ui_param->list_ctrl.item_rect.width;                       //Ê†πÊçÆlist or squareÊ®°Âºè‰∏çÂêå
         item_height = ui_param->list_ctrl.item_rect.height;
         config.list_rect.x = ui_param->list_ctrl.listbar_rect.x;            //ui_param->menu == listbar area
         config.list_rect.y = ui_param->list_ctrl.listbar_rect.y;
@@ -702,21 +718,21 @@ static __s32 music_listbar_init(music_list_ctrl_t *list_ctrl)
     config.start_id = list_ctrl->last_start_id;
     config.focus_id = list_ctrl->last_focused_id;
     config.bk_color = 0xFF2B2E36;
-    config.alpha_status = 1;                    //¥Úø™Alphaø™πÿ
+    config.alpha_status = 1;                    //ÊâìÂºÄAlphaÂºÄÂÖ≥
     config.list_attr = (void *)list_ctrl;
-    //list_ctrl->play_index = 0;                        //≥ı ºªØ∆ ºÃıƒø
+    //list_ctrl->play_index = 0;                        //ÂàùÂßãÂåñËµ∑ÂßãÊù°ÁõÆ
     __msg("list_ctrl->total = %d", list_ctrl->total);
-    config.item_cnt = list_ctrl->total;   //Rat.total±ÿ–Î“—æ≠ªÒµ√
+    config.item_cnt = list_ctrl->total;   //Rat.totalÂøÖÈ°ªÂ∑≤ÁªèËé∑Âæó
 #if 0
     scroll_param.show_rect.x = ui_param->scrollbar.BG_rect.x;
     scroll_param.show_rect.y = ui_param->scrollbar.BG_rect.y;
     scroll_param.show_rect.width = ui_param->scrollbar.BG_rect.width;
-    scroll_param.show_rect.height = ui_param->scrollbar.BG_rect.height;     //’˚∏ˆScoll barœ‘ æ«¯”Ú£¨Head, body,tail
-    //πˆ∂ØÃı«¯”Ú(≥˝»•head,body,tail)
+    scroll_param.show_rect.height = ui_param->scrollbar.BG_rect.height;     //Êï¥‰∏™Scoll barÊòæÁ§∫Âå∫ÂüüÔºåHead, body,tail
+    //ÊªöÂä®Êù°Âå∫Âüü(Èô§Âéªhead,body,tail)
     scroll_param.scroll_rect.x = ui_param->scrollbar.scroll_rect.x;
     scroll_param.scroll_rect.y = ui_param->scrollbar.scroll_rect.y;
     scroll_param.scroll_rect.width = ui_param->scrollbar.scroll_rect.width;
-    scroll_param.scroll_rect.height = ui_param->scrollbar.scroll_rect.height - 2;       //πˆ∂ØÃı«¯”Ú(≥˝»•head,body,tail)
+    scroll_param.scroll_rect.height = ui_param->scrollbar.scroll_rect.height - 2;       //ÊªöÂä®Êù°Âå∫Âüü(Èô§Âéªhead,body,tail)
     scroll_param.head_height = ui_param->scrollbar.head_height;
     scroll_param.tail_height = ui_param->scrollbar.tail_height;             //head, tail
     scroll_param.back_bmp = music_get_icon_res(ID_MUSIC_LIST_SCROLL_BG);
@@ -748,12 +764,12 @@ __s32 music_listbar_restore(music_list_ctrl_t *list_ctrl)
     scroll_param.show_rect.x = ui_param->scrollbar.BG_rect.x;
     scroll_param.show_rect.y = ui_param->scrollbar.BG_rect.y;
     scroll_param.show_rect.width = ui_param->scrollbar.BG_rect.width;
-    scroll_param.show_rect.height = ui_param->scrollbar.BG_rect.height;     //’˚∏ˆScoll barœ‘ æ«¯”Ú£¨Head, body,tail
-    //πˆ∂ØÃı«¯”Ú(≥˝»•head,body,tail)
+    scroll_param.show_rect.height = ui_param->scrollbar.BG_rect.height;     //Êï¥‰∏™Scoll barÊòæÁ§∫Âå∫ÂüüÔºåHead, body,tail
+    //ÊªöÂä®Êù°Âå∫Âüü(Èô§Âéªhead,body,tail)
     scroll_param.scroll_rect.x = ui_param->scrollbar.scroll_rect.x;
     scroll_param.scroll_rect.y = ui_param->scrollbar.scroll_rect.y;
     scroll_param.scroll_rect.width = ui_param->scrollbar.scroll_rect.width;
-    scroll_param.scroll_rect.height = ui_param->scrollbar.scroll_rect.height;           //πˆ∂ØÃı«¯”Ú(≥˝»•head,body,tail)
+    scroll_param.scroll_rect.height = ui_param->scrollbar.scroll_rect.height;           //ÊªöÂä®Êù°Âå∫Âüü(Èô§Âéªhead,body,tail)
     scroll_param.head_height = ui_param->scrollbar.head_height;
     scroll_param.tail_height = ui_param->scrollbar.tail_height;             //head, tail
     scroll_param.back_bmp = music_get_icon_res(ID_MUSIC_LIST_SCROLL_BG);
@@ -896,7 +912,7 @@ __s32 music_list_get_last_para(music_list_ctrl_t *This)
     if (This->root_type == RAT_TF)
     {
         This->last_start_id = root_para->last_music_start_index_sd;
-        This->last_focused_id = root_para->last_music_index_sd;     //…œ“ª¥Œ≤•∑≈µƒ–Ú¡–∫≈
+        This->last_focused_id = root_para->last_music_index_sd;     //‰∏ä‰∏ÄÊ¨°Êí≠ÊîæÁöÑÂ∫èÂàóÂè∑
         This->last_filename = root_para->last_music_path_sd;
         __msg(" last_start_id = %d", This->last_start_id);
         __msg(" This->last_focused_id = %d", This->last_focused_id);
@@ -971,7 +987,7 @@ __s32 music_list_get_last_para(music_list_ctrl_t *This)
             return EPDK_FAIL;
         }
     }
-    else            //µ±Œƒº˛±ª…æ≥˝∫Û£¨…œ¥Œº«¬ºµƒstart id ∫Õfocus id ø…ƒ‹ª·¥Û”⁄µ±«∞totalµƒ÷µ
+    else            //ÂΩìÊñá‰ª∂Ë¢´Âà†Èô§ÂêéÔºå‰∏äÊ¨°ËÆ∞ÂΩïÁöÑstart id Âíåfocus id ÂèØËÉΩ‰ºöÂ§ß‰∫éÂΩìÂâçtotalÁöÑÂÄº
     {
         //__here__;
         ret = robin_npl_get_cur();
@@ -1054,7 +1070,7 @@ __s32 music_list_save_last_para(music_list_ctrl_t *This)
 }
 
 
-//¥¥Ω®music list
+//ÂàõÂª∫music list
 __s32 init_bg_music_list(music_list_ctrl_t *list_ctrl, music_list_para_t *list_para)
 {
     eLIBs_memset((void *)list_ctrl, 0, sizeof(music_list_ctrl_t));
@@ -1069,7 +1085,7 @@ __s32 init_bg_music_list(music_list_ctrl_t *list_ctrl, music_list_para_t *list_p
         return EPDK_FAIL;
     }
 
-    if (list_para->explorer_play_music != 0) //≤ªª·Ω¯»Î’‚¿Ô
+    if (list_para->explorer_play_music != 0) //‰∏ç‰ºöËøõÂÖ•ËøôÈáå
     {
         rat_set_file_for_play(list_ctrl->rat_handle, list_para->music_file_name);
         {
@@ -1100,7 +1116,7 @@ __s32 init_bg_music_list(music_list_ctrl_t *list_ctrl, music_list_para_t *list_p
     else
     {
         //__here__;
-        music_list_get_last_para(list_ctrl);        //ªÒµ√…œ“ª¥Œ‰Ø¿¿µƒ≤Œ ˝
+        music_list_get_last_para(list_ctrl);        //Ëé∑Âæó‰∏ä‰∏ÄÊ¨°ÊµèËßàÁöÑÂèÇÊï∞
     }
 
     return EPDK_OK;
@@ -1140,7 +1156,7 @@ music_list_ctrl_t *new_music_list(music_list_para_t *list_para)
 
     if (list_para->explorer_play_music != 0)
     {
-        // «∑ÒŒ™±≥æ∞≤•∑≈Œƒº˛‘⁄restore“—æ≠◊ˆ¡À≈–∂œ
+        //ÊòØÂê¶‰∏∫ËÉåÊôØÊí≠ÊîæÊñá‰ª∂Âú®restoreÂ∑≤ÁªèÂÅö‰∫ÜÂà§Êñ≠
         __wrn("list_para->music_file_name = %s", list_para->music_file_name);
         rat_set_file_for_play(list_ctrl->rat_handle, list_para->music_file_name);
         {
@@ -1222,7 +1238,7 @@ music_list_ctrl_t *new_music_list(music_list_para_t *list_para)
         {
             __s32 ret;
             //__here__;
-            ret = music_list_get_last_para(list_ctrl);      //ªÒµ√…œ“ª¥Œ‰Ø¿¿µƒ≤Œ ˝
+            ret = music_list_get_last_para(list_ctrl);      //Ëé∑Âæó‰∏ä‰∏ÄÊ¨°ÊµèËßàÁöÑÂèÇÊï∞
             __msg("ret = %d", ret);
 
             if (EPDK_FAIL == ret)
@@ -1247,7 +1263,7 @@ music_list_ctrl_t *new_music_list(music_list_para_t *list_para)
     return list_ctrl;
 }
 
-//…æ≥˝music list ,≤¢ Õ∑≈œ‡πÿ◊ ‘¥
+//Âà†Èô§music list ,Âπ∂ÈáäÊîæÁõ∏ÂÖ≥ËµÑÊ∫ê
 __s32 delete_music_list(music_list_ctrl_t *list_ctrl)
 {
     if (list_ctrl == NULL)
@@ -1257,7 +1273,7 @@ __s32 delete_music_list(music_list_ctrl_t *list_ctrl)
 
     __msg("++++++++++++++++++++delete_music_list++++++++++++++++++++++++");
     //app_print_memory_usage("delete music list ", NULL);
-    music_list_save_last_para(list_ctrl);           //±£¥Ê≤Œ ˝
+    music_list_save_last_para(list_ctrl);           //‰øùÂ≠òÂèÇÊï∞
     music_list_long_string_uninit(list_ctrl);
     music_listbar_uninit(list_ctrl);
     //    //__here__;

@@ -1,21 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-* File      :       music_lyrics.c
-*descriptions:      œ‘ æ∏Ë¥ 
-*lib function list: robin_lyric_exist();robin_get_lyric_format();robin_get_lyric_item_count();robin_get_lyric_item_list();
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*               ”√ªß÷∏∂®Õº≤„∫Õœ‘ æ«¯”Ú
-*                   œ‘ æ∑Ω Ω
-* By        :       Libaiao
-* Func  :
-* Version   :       v1.0
-* ============================================================================================================
-* 2010-6-1 15:24:52  Libaiao  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "beetles_app.h"
@@ -81,7 +93,7 @@ static __epdk_charset_enm_e  _EncodingMap(__s32 cedar_encode)
 
         default:
             return EPDK_CHARSET_ENM_GBK;
-            //return SPSC_GetSysDefaultCharset();//dsk_get_isn_charset();//112357Ω”ø⁄∑µªÿ¥ÌŒÛ
+            //return SPSC_GetSysDefaultCharset();//dsk_get_isn_charset();//112357Êé•Âè£ËøîÂõûÈîôËØØ
     }
 }
 
@@ -235,7 +247,7 @@ static __s32  charset_enm2gui(__s32 charset_enm)
 *Description:   get lyric item point
 *Other       :
 ***************************************************************************************************/
-#define  C_BACKWARD_ITEM_COUNT      5           //œÚ∫ÛÀ—À˜ ±√ø¥ŒµπÕÀ5∏ˆÃıƒø
+#define  C_BACKWARD_ITEM_COUNT      5           //ÂêëÂêéÊêúÁ¥¢Êó∂ÊØèÊ¨°ÂÄíÈÄÄ5‰∏™Êù°ÁõÆ
 
 __cedar_subtitle_item_t  *robin_get_lyric_item(__cedar_subtitle_item_t  *lyric_item_list, __u32 item_count, __u32 time)
 {
@@ -458,14 +470,14 @@ H_LYRIC new_music_lyrics(music_lyrics_para_t *para)
 
     if (para != NULL)
     {
-        eLIBs_memcpy((void *)(&(hLyric->UI)), para, sizeof(music_lyrics_para_t));   //UI ≤Œ ˝
+        eLIBs_memcpy((void *)(&(hLyric->UI)), para, sizeof(music_lyrics_para_t));   //UI ÂèÇÊï∞
     }
     else
     {
         __wrn("there is no parametters!\n");
     }
 
-    robin_get_lyric_item_list(hLyric->items, total);            //ªÒµ√À˘”–µƒ∏Ë¥ ¡–±Ì
+    robin_get_lyric_item_list(hLyric->items, total);            //Ëé∑ÂæóÊâÄÊúâÁöÑÊ≠åËØçÂàóË°®
     hLyric->char_code = EPDK_CHARSET_ENM_UNKNOWN;
 
     do
@@ -507,7 +519,7 @@ H_LYRIC new_music_lyrics(music_lyrics_para_t *para)
 
     if (EPDK_CHARSET_ENM_UNKNOWN == hLyric->char_code)
     {
-        hLyric->char_code = _EncodingMap(hLyric->items->uDataType); //ªÒµ√◊÷ÃÂ±‡¬Î
+        hLyric->char_code = _EncodingMap(hLyric->items->uDataType); //Ëé∑ÂæóÂ≠ó‰ΩìÁºñÁ†Å
     }
 
     //GUI_ClearRect(hLyric->UI.area.x,hLyric->UI.area.y,hLyric->UI.area.x + hLyric->UI.area.width, hLyric->UI.area.y + hLyric->UI.area.height);
@@ -568,7 +580,7 @@ __s32 clear_music_lyrics_area(H_LYRIC hLyric)
 }
 
 #if 0
-//∏¸–¬œ‘ æ∏Ë¥ 
+//Êõ¥Êñ∞ÊòæÁ§∫Ê≠åËØç
 __s32 update_music_lyrics(H_LYRIC hLyric)
 {
     __u32 time = 0, width = 0;
@@ -603,7 +615,7 @@ __s32 update_music_lyrics(H_LYRIC hLyric)
         hLyric->last_item = item;
 
         //char text[128];
-        if (hLyric->UI.layer != NULL)               //—°‘Ò”√ªßÕº≤„
+        if (hLyric->UI.layer != NULL)               //ÈÄâÊã©Áî®Êà∑ÂõæÂ±Ç
         {
             //GUI_LyrWinSel(hLyric->UI.layer);
         }
@@ -635,7 +647,7 @@ __s32 update_music_lyrics(H_LYRIC hLyric)
                 width -= 10;
             }
 
-            if (hLyric->hl_count == 0)          //¥”–¬ø™ ºœ‘ æ∏Ë¥ 
+            if (hLyric->hl_count == 0)          //‰ªéÊñ∞ÂºÄÂßãÊòæÁ§∫Ê≠åËØç
             {
                 hLyric->hl_count = 1;
                 i = 0;
@@ -659,7 +671,7 @@ __s32 update_music_lyrics(H_LYRIC hLyric)
                 }
 
                 i = 2;
-                item ++;//ªÒµ√œ¬“ª∏ˆÃıƒø,“™≈–∂œ «∑ÒΩ· ¯
+                item ++;//Ëé∑Âæó‰∏ã‰∏Ä‰∏™Êù°ÁõÆ,Ë¶ÅÂà§Êñ≠ÊòØÂê¶ÁªìÊùü
                 hLyric->last_normal_item = item;
                 //width  = hLyric->UI.area.width;
                 GUI_SetColor(hLyric->UI.font_color);
@@ -679,10 +691,10 @@ __s32 update_music_lyrics(H_LYRIC hLyric)
                     }
                 }
             }
-            else if (hLyric->hl_count == 1)     //normal ”Î focusª•ªª
+            else if (hLyric->hl_count == 1)     //normal ‰∏é focus‰∫íÊç¢
             {
                 i = 0;
-                //focus ±‰≥…normal
+                //focus ÂèòÊàênormal
                 //width  = hLyric->UI.area.width;
                 GUI_SetColor(hLyric->UI.font_color);
                 len = GUI_GetStringByWidth(hLyric->line[i].text, (char *)(hLyric->last_focus_item->pSubtitle), width);
@@ -728,7 +740,7 @@ __s32 update_music_lyrics(H_LYRIC hLyric)
             {
                 hLyric->hl_count = 1;
                 i = 2;
-                //…œ“ª¥ŒµƒΩπµ„±‰Œ™∆’Õ®
+                //‰∏ä‰∏ÄÊ¨°ÁöÑÁÑ¶ÁÇπÂèò‰∏∫ÊôÆÈÄö
                 //GUI_ClearRect(hLyric->line[i].area.x0,hLyric->line[i].area.y0,hLyric->line[i].area.x1, hLyric->line[i].area.y1);
                 //width  = hLyric->UI.area.width;
                 GUI_SetColor(hLyric->UI.font_color);
@@ -781,7 +793,7 @@ __s32 update_music_lyrics(H_LYRIC hLyric)
 }
 #endif
 
-//‘⁄“ª∏ˆæÿ–Œ«¯”Úƒ⁄◊‘∂Øπˆ∂Øœ‘ æÀ˘”–∏Ë¥ 
+//Âú®‰∏Ä‰∏™Áü©ÂΩ¢Âå∫ÂüüÂÜÖËá™Âä®ÊªöÂä®ÊòæÁ§∫ÊâÄÊúâÊ≠åËØç
 __s32 update_music_lyrics(H_LYRIC hLyric)
 {
 #if 1
@@ -807,10 +819,10 @@ __s32 update_music_lyrics(H_LYRIC hLyric)
 
     if (time < 500)
     {
-        return EPDK_OK;                         //«∞500msªÒµ√≤ªµΩ∏Ë¥ 
+        return EPDK_OK;                         //Ââç500msËé∑Âæó‰∏çÂà∞Ê≠åËØç
     }
 
-    item = robin_get_lyric_item(hLyric->items, hLyric->total_item, time);//ªÒµ√∏ﬂ¡¡œ‘ æµƒitem
+    item = robin_get_lyric_item(hLyric->items, hLyric->total_item, time);//Ëé∑ÂæóÈ´ò‰∫ÆÊòæÁ§∫ÁöÑitem
 
     if (item != NULL)
     {
@@ -818,20 +830,20 @@ __s32 update_music_lyrics(H_LYRIC hLyric)
 
         if (item == hLyric->last_item)
         {
-            return EPDK_OK;                     //≤ª–Ë“™∏¸–¬∏Ë¥ 
+            return EPDK_OK;                     //‰∏çÈúÄË¶ÅÊõ¥Êñ∞Ê≠åËØç
         }
 
 #endif
 
         if (item < hLyric->last_item)
         {
-            hLyric->hl_count = 0;               //¥”¡„ø™ ºœ‘ æ
+            hLyric->hl_count = 0;               //‰ªéÈõ∂ÂºÄÂßãÊòæÁ§∫
         }
 
         hLyric->last_item = item;
 
         //char text[128];
-        if (hLyric->UI.layer != NULL)               //—°‘Ò”√ªßÕº≤„
+        if (hLyric->UI.layer != NULL)               //ÈÄâÊã©Áî®Êà∑ÂõæÂ±Ç
         {
             GUI_LyrWinSel(hLyric->UI.layer);
         }
@@ -888,7 +900,7 @@ __s32 update_music_lyrics(H_LYRIC hLyric)
 
                 if (item != (hLyric->items + (hLyric->total_item - 1)))
                 {
-                    item ++;//ªÒµ√œ¬“ª∏ˆÃıƒø,“™≈–∂œ «∑ÒΩ· ¯
+                    item ++;//Ëé∑Âæó‰∏ã‰∏Ä‰∏™Êù°ÁõÆ,Ë¶ÅÂà§Êñ≠ÊòØÂê¶ÁªìÊùü
                     hLyric->last_normal_item = item;
                     GUI_SetColor(hLyric->UI.font_color);
                     len = GUI_GetStringByWidth(hLyric->line[i].text, (char *)(item->pSubtitle), width);
@@ -922,6 +934,3 @@ __s32 update_music_lyrics(H_LYRIC hLyric)
 #endif
     return EPDK_OK;
 }
-
-
-

@@ -1,19 +1,33 @@
 /*
-************************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : tbar_com.c
-* By        : Andy.zhang
-* Func      : tbar component
-* Version   : v1.0
-* ======================================================================================================================
-* 2009-10-15 15:27:26 andy.zhang  create this file, implements the fundemental interface;
-************************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "apps.h"
@@ -25,7 +39,7 @@
 #define     ID_FM_SCENE_SSET               10
 
 //////////////////////////////////////////////////////////////////////////
-#if 0 //(Œ™¡À¥Ú”°ºÚµ•, ø…∞—œ¬√Ê÷ÿ∂®“ÂµƒGUI∫Í¡Ÿ ±øΩµΩ”––Ë“™µƒCŒƒº˛÷– π”√)
+#if 0 //(‰∏∫‰∫ÜÊâìÂç∞ÁÆÄÂçï, ÂèØÊää‰∏ãÈù¢ÈáçÂÆö‰πâÁöÑGUIÂÆè‰∏¥Êó∂Êã∑Âà∞ÊúâÈúÄË¶ÅÁöÑCÊñá‰ª∂‰∏≠‰ΩøÁî®)
 //re define GUI_BMP_Draw
 #ifdef GUI_BMP_Draw
 #define MY_GUI_BMP_DRAW                      (ORANGEMOD_FUNC_ENTRY->ptr_GUI_BMP_Draw            )
@@ -82,30 +96,30 @@ typedef struct tag_tbar_ctrl
 {
     tbar_para_t *data;
 
-    __s32       max_item;       // µ•∆¡◊Ó∂‡œ‘ æ item  ˝ƒø
-    __s32       scn_in;         // µ±«∞∆¡ƒª◊Ó◊Û±ﬂ item index;
-    __s32       scn_out;        // µ±«∞∆¡ƒª◊Ó”“±ﬂ item index;
-    __s32       old_focus;      // æ…µƒΩπµ„index
-    __s32       new_focus;      // –¬µƒΩπµ„index
+    __s32       max_item;       // ÂçïÂ±èÊúÄÂ§öÊòæÁ§∫ item Êï∞ÁõÆ
+    __s32       scn_in;         // ÂΩìÂâçÂ±èÂπïÊúÄÂ∑¶Ëæπ item index;
+    __s32       scn_out;        // ÂΩìÂâçÂ±èÂπïÊúÄÂè≥Ëæπ item index;
+    __s32       old_focus;      // ÊóßÁöÑÁÑ¶ÁÇπindex
+    __s32       new_focus;      // Êñ∞ÁöÑÁÑ¶ÁÇπindex
 
     __bool      init_flag;
-    //  __s32       min_x, max_x;   // Õº≤„x◊¯±Í, ◊Ó¥Û◊Ó–°÷µ
+    //  __s32       min_x, max_x;   // ÂõæÂ±ÇxÂùêÊ†á, ÊúÄÂ§ßÊúÄÂ∞èÂÄº
     __pos_t     win_pos;
     __bool      touch_down;
 
-    /* µØ–‘«˙œﬂ */
-    int         step[STEP_ARRAY];// touch ª¨∂Ø≤Ω≥§ ˝◊È
-    int         len;             //  ˝◊Èƒ⁄”––ß ˝æ›≥§∂»
-    int         index;           // Õº≤„“∆∂Øº∆ ˝
+    /* ÂºπÊÄßÊõ≤Á∫ø */
+    int         step[STEP_ARRAY];// touch ÊªëÂä®Ê≠•ÈïøÊï∞ÁªÑ
+    int         len;             // Êï∞ÁªÑÂÜÖÊúâÊïàÊï∞ÊçÆÈïøÂ∫¶
+    int         index;           // ÂõæÂ±ÇÁßªÂä®ËÆ°Êï∞
 
-    __u32       tid;             // Õº≤„“∆∂Øœﬂ≥Ã
-    __krnl_event_t *sem;         // Õ¨≤Ω–≈∫≈¡ø
-    __pos_t     win_start;       // ∆ ºµ„∂‘”¶µƒ¥∞ø⁄◊¯±Í
+    __u32       tid;             // ÂõæÂ±ÇÁßªÂä®Á∫øÁ®ã
+    __krnl_event_t *sem;         // ÂêåÊ≠•‰ø°Âè∑Èáè
+    __pos_t     win_start;       // Ëµ∑ÂßãÁÇπÂØπÂ∫îÁöÑÁ™óÂè£ÂùêÊ†á
     H_LYR       lyr;
-    __gcuv_para_t gcurv;         // gcurv ≤Œ ˝
+    __gcuv_para_t gcurv;         // gcurv ÂèÇÊï∞
 
-    glide_state_t gstate;        // tbar “∆∂Ø◊¥Ã¨
-    __u16       h_ssetid;               //À˘ Ù¥∞ø⁄≈–∂œ±Í÷æ
+    glide_state_t gstate;        // tbar ÁßªÂä®Áä∂ÊÄÅ
+    __u16       h_ssetid;               //ÊâÄÂ±ûÁ™óÂè£Âà§Êñ≠Ê†áÂøó
 } tbar_ctrl_t;
 
 /**********************************************************************************************************************/
@@ -135,7 +149,7 @@ static __s32 tbar_on_key(__gui_msg_t *msg)
             case GUI_MSG_KEY_ENTER:
                 //          case GUI_MSG_KEY_LONGENTER:
             {
-                __gui_notify_msg_t  notify_msg;                                 // œÚ…œ∑¢Õ®÷™¬Î
+                __gui_notify_msg_t  notify_msg;                                 // Âêë‰∏äÂèëÈÄöÁü•Á†Å
                 last_key = 0xffffffff;
                 notify_msg.hWnd     = msg->h_deswin;
                 notify_msg.id       = GUI_WinGetItemId(msg->h_deswin);
@@ -155,7 +169,7 @@ static __s32 tbar_on_key(__gui_msg_t *msg)
         {
             case GUI_MSG_KEY_ENTER:
             {
-                __gui_notify_msg_t  notify_msg;                                 // œÚ…œ∑¢Õ®÷™¬Î
+                __gui_notify_msg_t  notify_msg;                                 // Âêë‰∏äÂèëÈÄöÁü•Á†Å
                 last_key = GUI_MSG_KEY_ENTER;
                 notify_msg.hWnd     = msg->h_deswin;
                 notify_msg.id       = GUI_WinGetItemId(msg->h_deswin);
@@ -404,7 +418,7 @@ static __s32 tbar_on_touch(__gui_msg_t *msg)
         {
             case GUI_MSG_TOUCH_DOWN:
             {
-                if (GUI_WinGetCaptureWin() != msg->h_deswin)        // …Ë÷√capture
+                if (GUI_WinGetCaptureWin() != msg->h_deswin)        // ËÆæÁΩÆcapture
                 {
                     GUI_WinSetCaptureWin(msg->h_deswin);
                 }
@@ -427,13 +441,13 @@ static __s32 tbar_on_touch(__gui_msg_t *msg)
                     glidecuv_start(scn_pos.x);
                     //__msg("pCtl->gcurv.fb_start = %d \n", pCtl->gcurv.fb_start);
                     //__msg(" glidecuv_start : scn_pos.x = %d \n", scn_pos.x);
-                    /*  ªÊ÷∆Ωπµ„ */
+                    /*  ÁªòÂà∂ÁÑ¶ÁÇπ */
                     pCtl->old_focus = pCtl->new_focus;
                     pCtl->new_focus = item_id - 2;
                     GUI_InvalidateRect(msg->h_deswin, NULL, EPDK_TRUE);
                     pCtl->gstate = GLIDE_START;
                     {
-                        __gui_notify_msg_t  notify_msg;                 // œÚ…œ∑¢Õ®÷™¬Î
+                        __gui_notify_msg_t  notify_msg;                 // Âêë‰∏äÂèëÈÄöÁü•Á†Å
                         notify_msg.hWnd      = msg->h_deswin;
                         notify_msg.id        = GUI_WinGetItemId(msg->h_deswin);
                         notify_msg.msgcode   = TB_PUSHED;
@@ -457,7 +471,7 @@ static __s32 tbar_on_touch(__gui_msg_t *msg)
                 __pos_t scn_start;
                 __u8    err;
 
-                if (GUI_WinGetCaptureWin() == msg->h_deswin)             // …Ë÷√capture
+                if (GUI_WinGetCaptureWin() == msg->h_deswin)             // ËÆæÁΩÆcapture
                 {
                     GUI_WinReleaseCapture();
                 }
@@ -517,7 +531,7 @@ static __s32 tbar_on_touch(__gui_msg_t *msg)
                 __pos_t scn_start;
                 __u8    err;
 
-                if (GUI_WinGetCaptureWin() == msg->h_deswin)             // …Ë÷√capture
+                if (GUI_WinGetCaptureWin() == msg->h_deswin)             // ËÆæÁΩÆcapture
                 {
                     GUI_WinReleaseCapture();
                 }
@@ -563,7 +577,7 @@ static __s32 tbar_on_touch(__gui_msg_t *msg)
                 __pos_t scn_start;
                 __u8    err;
 
-                if (GUI_WinGetCaptureWin() == msg->h_deswin)             // …Ë÷√capture
+                if (GUI_WinGetCaptureWin() == msg->h_deswin)             // ËÆæÁΩÆcapture
                 {
                     GUI_WinReleaseCapture();
                 }
@@ -667,9 +681,9 @@ static __s32 tbar_on_paint(__gui_msg_t *msg)
     GUI_LyrWinSetTop(layer);//add by lihaoyi
 
     ////__here__
-    if (pCtl->init_flag == EPDK_TRUE)       // ≥ı ºªØ ±£¨ªÊ÷∆À˘”–icon
+    if (pCtl->init_flag == EPDK_TRUE)       // ÂàùÂßãÂåñÊó∂ÔºåÁªòÂà∂ÊâÄÊúâicon
     {
-        /* «Â±≥æ∞ */
+        /* Ê∏ÖËÉåÊôØ */
         ////__here__
         //      GUI_SetBkColor(TB_BACKCOLOR);
         //      GUI_ClearRect(0,0,fbrect.width,1);
@@ -695,7 +709,7 @@ static __s32 tbar_on_paint(__gui_msg_t *msg)
             tbar_paint_bg(layer, data->bg_bmp, data->frame_size.width);//..
         }
 
-        //≤Àµ•±≥æ∞
+        //ËèúÂçïËÉåÊôØ
         for (i = 0; i < data->item_nr; i++)
         {
             rcrect.left     = fbrect.x + data->src_start + (i + 2) * (data->frame_size.width);
@@ -781,7 +795,7 @@ static __s32 tbar_on_paint(__gui_msg_t *msg)
     }
     else
     {
-        // ªÊ÷∆ old_focus icon
+        // ÁªòÂà∂ old_focus icon
         rcrect.left     = fbrect.x + data->src_start + (pCtl->old_focus + 2) * (data->frame_size.width);
         rcrect.top      = fbrect.y;
         rcrect.right    = rcrect.left + data->frame_size.width - 1;
@@ -813,7 +827,7 @@ static __s32 tbar_on_paint(__gui_msg_t *msg)
             GUI_DispStringInRect(data->item[pCtl->old_focus].text, &txtrect, GUI_TA_HCENTER | GUI_TA_VCENTER);
         }
 
-        // ªÊ÷∆ new icon
+        // ÁªòÂà∂ new icon
         rcrect.left     = fbrect.x + data->src_start + (pCtl->new_focus + 2) * (data->frame_size.width);
         rcrect.top      = fbrect.y;
         rcrect.right    = rcrect.left + data->frame_size.width - 1;
@@ -855,7 +869,7 @@ static __s32 tbar_on_paint(__gui_msg_t *msg)
 
 
 /*
- * tool bar ¥∞ø⁄œÏ”¶∫Ø ˝
+ * tool bar Á™óÂè£ÂìçÂ∫îÂáΩÊï∞
  */
 static __s32 cb_tbar_frm(__gui_msg_t *msg)
 {
@@ -870,13 +884,13 @@ static __s32 cb_tbar_frm(__gui_msg_t *msg)
             __u8        err;
             p_ctr = (tbar_ctrl_t *)GUI_WinGetAttr(msg->h_deswin);
 
-            /* …æ≥˝œﬂ≥Ã */
+            /* Âà†Èô§Á∫øÁ®ã */
             while (esKRNL_TDelReq(p_ctr->tid) != OS_TASK_NOT_EXIST)
             {
                 esKRNL_TimeDly(2);
             }
 
-            /* …æ≥˝–≈∫≈¡ø*/
+            /* Âà†Èô§‰ø°Âè∑Èáè*/
             esKRNL_SemDel(p_ctr->sem, 0, &err);
             esMEMS_Mfree(0, p_ctr);
         }
@@ -978,7 +992,7 @@ static __s32 cb_tbar_frm(__gui_msg_t *msg)
     return GUI_FrmWinDefaultProc(msg);
 }
 
-/* ¥¥Ω®º§ªÓÃ¨ tool bar */
+/* ÂàõÂª∫ÊøÄÊ¥ªÊÄÅ tool bar */
 H_WIN tbar_frm_create(H_WIN parent, H_WIN layer, tbar_para_t *tbar_para)
 {
     H_WIN                       h_win;
@@ -1046,11 +1060,9 @@ H_WIN tbar_frm_create(H_WIN parent, H_WIN layer, tbar_para_t *tbar_para)
     return h_win;
 }
 
-/* …æ≥˝º§ªÓÃ¨ tool bar */
+/* Âà†Èô§ÊøÄÊ¥ªÊÄÅ tool bar */
 __s32 tbar_frm_delete(H_WIN frmwin)
 {
     GUI_FrmWinDelete(frmwin);
     return EPDK_TRUE;
 }
-
-

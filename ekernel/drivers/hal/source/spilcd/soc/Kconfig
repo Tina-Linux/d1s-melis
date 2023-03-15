@@ -1,0 +1,12 @@
+config KLD2844B_SUPPORT
+	bool "board kld2844b support"
+	default n
+	---help---
+	  board kld2844b support
+
+config KLD35512_SUPPORT
+	bool "board kld35512 support"
+	default n
+	---help---
+	  board kld35512 support
+

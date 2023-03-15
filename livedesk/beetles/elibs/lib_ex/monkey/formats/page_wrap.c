@@ -1,39 +1,53 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : page_wrap.c
-* By        : Andy.zhang
-* Version   : v1.0
-* ============================================================================================================
-* 2009-11-3 9:39:42  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "monkey_i.h"
 #include "page_wrap.h"
 #include "circbuf.h"
 
 struct tag_PageContent
 {
-    /* ¶ÏÒ³ÉÏÏÂÎÄ*/
-    ES_FILE     *fd;                /* ÎÄ¼þ¾ä±ú     */
-    __s32       len;                /* ÎÄ¼þ³¤¶È     */
-    MkEncode    encodeType;         /* ±àÂë¸ñÊ½     */
-    H_LYR       hlyr;               /* Í¼²ã²ÎÊý     */
+    /* æ–­é¡µä¸Šä¸‹æ–‡*/
+    ES_FILE     *fd;                /* æ–‡ä»¶å¥æŸ„     */
+    __s32       len;                /* æ–‡ä»¶é•¿åº¦     */
+    MkEncode    encodeType;         /* ç¼–ç æ ¼å¼     */
+    H_LYR       hlyr;               /* å›¾å±‚å‚æ•°     */
 
-    GUI_FONT    *pFont;             /* Í¼²ã×ÖÌå¾ä±ú */
-    __s32       lineWidth;          /* ÐÐ¿í         */
+    GUI_FONT    *pFont;             /* å›¾å±‚å­—ä½“å¥æŸ„ */
+    __s32       lineWidth;          /* è¡Œå®½         */
 
-    MkLine  *line;                  /* ÐÐÐÅÏ¢±í     */
-    __u32   lineNum;                /* Ò³ÐÐÊý       */
-    __s32   startOffset;            /* Ò³Í·Æ«ÒÆÁ¿   */
-    __s32   endOffset;              /* Ò³Î²Æ«ÒÆÁ¿   */
+    MkLine  *line;                  /* è¡Œä¿¡æ¯è¡¨     */
+    __u32   lineNum;                /* é¡µè¡Œæ•°       */
+    __s32   startOffset;            /* é¡µå¤´åç§»é‡   */
+    __s32   endOffset;              /* é¡µå°¾åç§»é‡   */
 
     CircularBuff *cb;
     /* string show function for different encode type such as  utf_8 , unicode,  gbk*/
@@ -70,12 +84,12 @@ static MkEncode get_txtCharEncodeType(ES_FILE *fd, MkEncode defStyle)
 
 
 
-/* page wrap ¾ä±ú´´½¨ */
+/* page wrap å¥æŸ„åˆ›å»º */
 PageContent *pagewrap_create(PageConfig *para)
 {
     PageContent *content;
     LineConfig   config;
-    /* ´´½¨ PageContent ¾ä±ú */
+    /* åˆ›å»º PageContent å¥æŸ„ */
     content = (PageContent *)g_malloc(sizeof(PageContent));
 
     if (!content)
@@ -101,7 +115,7 @@ PageContent *pagewrap_create(PageConfig *para)
     }
 
     g_memset(content->line, 0, sizeof(MkLine)*content->lineNum);
-    /* ´´½¨ CircularBuff ¾ä±ú */
+    /* åˆ›å»º CircularBuff å¥æŸ„ */
     g_memset(&config, 0, sizeof(LineConfig));
     config.fd   = content->fd;
     config.len  = content->len;
@@ -112,16 +126,16 @@ PageContent *pagewrap_create(PageConfig *para)
     config.hlyr       = para->hlyr;
     config.pFont      = para->pFont;
     content->cb       = circbuf_create(&config);
-    /* È¡µÃº¯ÊýÖ¸Õë */
+    /* å–å¾—å‡½æ•°æŒ‡é’ˆ */
     content->p_dispstr = config.p_dispstr;
     return content;
 }
 
-/* page wrap ÉèÖÃ */
+/* page wrap è®¾ç½® */
 __s32   pagewrap_setting(PageContent *content, PageConfig *para)
 {
     LineConfig   config;
-    /* ÉèÖÃ page wrap ÐÅÏ¢ */
+    /* è®¾ç½® page wrap ä¿¡æ¯ */
     content->fd         = para->fd;
     content->len        = para->len;
     content->encodeType = get_txtCharEncodeType(content->fd, para->defEncodeStyle);
@@ -137,7 +151,7 @@ __s32   pagewrap_setting(PageContent *content, PageConfig *para)
         content->lineNum = para->lineNum;
     }
 
-    /* ÉèÖÃ CircularBuff ÐÅÏ¢*/
+    /* è®¾ç½® CircularBuff ä¿¡æ¯*/
     g_memset(&config, 0, sizeof(LineConfig));
     config.fd   = content->fd;
     config.len  = content->len;
@@ -148,7 +162,7 @@ __s32   pagewrap_setting(PageContent *content, PageConfig *para)
     config.hlyr       = para->hlyr;
     config.pFont      = para->pFont;
     circbuf_setting(content->cb, &config);
-    content->p_dispstr = config.p_dispstr;      // È¡µÃº¯ÊýÖ¸Õë
+    content->p_dispstr = config.p_dispstr;      // å–å¾—å‡½æ•°æŒ‡é’ˆ
     return EPDK_OK;
 }
 
@@ -160,7 +174,7 @@ __s32 pagewrap_start(PageContent *content)
     return ret;
 }
 
-/* ¶ÁÈ¡ÏÂÒ»Ò³ÄÚÈÝ */
+/* è¯»å–ä¸‹ä¸€é¡µå†…å®¹ */
 __s32   pagewrap_next(PageContent *content)
 {
     __s32 ret;
@@ -169,7 +183,7 @@ __s32   pagewrap_next(PageContent *content)
     return ret;
 }
 
-/* ¶ÁÈ¡ÉÏÒ»Ò³ÄÚÈÝ */
+/* è¯»å–ä¸Šä¸€é¡µå†…å®¹ */
 __s32   pagewrap_prev(PageContent *content)
 {
     __s32 ret;
@@ -178,7 +192,7 @@ __s32   pagewrap_prev(PageContent *content)
     return ret;
 }
 
-/* Ìø×ªµ½offset´¦( ½ö½ö¸Ä±äÆ«ÒÆÁ¿ ) */
+/* è·³è½¬åˆ°offsetå¤„( ä»…ä»…æ”¹å˜åç§»é‡ ) */
 __s32   pagewrap_fseek(PageContent *content,  __s32 offset)
 {
     __s32 ret;
@@ -189,25 +203,25 @@ __s32   pagewrap_fseek(PageContent *content,  __s32 offset)
 }
 
 
-/* ²éÑ¯ÐÐÐÅÏ¢±í */
+/* æŸ¥è¯¢è¡Œä¿¡æ¯è¡¨ */
 MkLine *pagewrap_getLine(PageContent *content)
 {
     return content->line;
 }
 
-/* ÏÔÊ¾Ò»ÐÐ×Ö·û*/
+/* æ˜¾ç¤ºä¸€è¡Œå­—ç¬¦*/
 void    pagewrap_displayStr(PageContent *content, char *s, int len, int x, int y)
 {
     content->p_dispstr(s, len, x, y);
 }
 
-/* ²éÑ¯Ò³Í·Æ«ÒÆÁ¿ */
+/* æŸ¥è¯¢é¡µå¤´åç§»é‡ */
 __s32   pagewrap_getStartOffset(PageContent *content)
 {
     return content->line[0].start;
 }
 
-/* ²éÑ¯Ò³Î²Æ«ÒÆÁ¿ */
+/* æŸ¥è¯¢é¡µå°¾åç§»é‡ */
 __s32   pagewrap_getEndOffset(PageContent *content)
 {
     MkLine *line;
@@ -227,7 +241,7 @@ __s32   pagewrap_getEndOffset(PageContent *content)
     return end;
 }
 
-/* ²éÑ¯ÊÇ·ñµ½ÎÄÕÂ×î¿ªÊ¼´¦*/
+/* æŸ¥è¯¢æ˜¯å¦åˆ°æ–‡ç« æœ€å¼€å§‹å¤„*/
 __bool  pagewrap_isHead(PageContent *content)
 {
     int start;
@@ -235,7 +249,7 @@ __bool  pagewrap_isHead(PageContent *content)
     return (start == 0);
 }
 
-/* ²éÑ¯ÊÇ·ñµ½ÎÄÕÂ½áÎ²´¦ */
+/* æŸ¥è¯¢æ˜¯å¦åˆ°æ–‡ç« ç»“å°¾å¤„ */
 __bool  pagewrap_isTail(PageContent *content)
 {
     int end;
@@ -243,7 +257,7 @@ __bool  pagewrap_isTail(PageContent *content)
     return (end == content->len);
 }
 
-/* É¾³ý page wrap ¾ä±ú */
+/* åˆ é™¤ page wrap å¥æŸ„ */
 __s32   pagewrap_delete(PageContent *content)
 {
     circbuf_delete(content->cb);
@@ -251,4 +265,3 @@ __s32   pagewrap_delete(PageContent *content)
     g_free(content);
     return EPDK_OK;
 }
-

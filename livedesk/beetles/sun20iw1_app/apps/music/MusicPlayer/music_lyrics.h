@@ -1,18 +1,49 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #ifndef __MUSIC_LYRICS_H__
 #define __MUSIC_LYRICS_H__
 
 #include "beetles_app.h"
 
-#define     C_LYRICS_LINE_MAX       6           //´ËÖµ´óĞ¡Ó¦¸ù¾İUI²ÎÊıÉè¼Æ,
+#define     C_LYRICS_LINE_MAX       6           //æ­¤å€¼å¤§å°åº”æ ¹æ®UIå‚æ•°è®¾è®¡,
 
 typedef struct music_lyrics_ui_s
 {
-    H_LYR       layer;                  //ÒªÏÔÊ¾µÄÍ¼²ã
-    RECT        area;                   //ÏÔÊ¾ÇøÓò
-    GUI_FONT    *font;                  //×ÖÌå
+    H_LYR       layer;                  //è¦æ˜¾ç¤ºçš„å›¾å±‚
+    RECT        area;                   //æ˜¾ç¤ºåŒºåŸŸ
+    GUI_FONT    *font;                  //å­—ä½“
     __u32       view_mode;
-    GUI_COLOR   font_color;             //×ÖÌåÑÕÉ«
-    GUI_COLOR   hight_light_color;      //¸ßÁÁ×ÖÌåÑÕÉ«
+    GUI_COLOR   font_color;             //å­—ä½“é¢œè‰²
+    GUI_COLOR   hight_light_color;      //é«˜äº®å­—ä½“é¢œè‰²
 
 } music_lyrics_ui_t;
 
@@ -23,27 +54,27 @@ typedef struct lyrics_line_s
 {
     GUI_COLOR  font_color;
     GUI_RECT   area;
-    char       text[128];               //Ã¿ĞĞ×î´óÏÔÊ¾60¸ö×Ö·û
+    char       text[128];               //æ¯è¡Œæœ€å¤§æ˜¾ç¤º60ä¸ªå­—ç¬¦
 } lyrics_line_t;
 
-//¸è´ÊÒÔÌõÄ¿Îªµ¥Î»£¬½øĞĞ·ÃÎÊ
+//æ­Œè¯ä»¥æ¡ç›®ä¸ºå•ä½ï¼Œè¿›è¡Œè®¿é—®
 typedef struct music_lyrics_s
 {
-    music_lyrics_ui_t  UI;                      //UI²ÎÊı
+    music_lyrics_ui_t  UI;                      //UIå‚æ•°
 
 
-    __u32 cur_item;                             //µ±Ç°¸ßÁÁÏÔÊ¾µÄÌõÄ¿ºÅ
-    __u32 total_item;                           //¸è´Ê×ÜÌõÄ¿Êı
-    __cedar_subtitle_item_t *items;             //¸è´ÊÌõÄ¿½á¹¹Ö¸Õë
+    __u32 cur_item;                             //å½“å‰é«˜äº®æ˜¾ç¤ºçš„æ¡ç›®å·
+    __u32 total_item;                           //æ­Œè¯æ€»æ¡ç›®æ•°
+    __cedar_subtitle_item_t *items;             //æ­Œè¯æ¡ç›®ç»“æ„æŒ‡é’ˆ
 
-    __cedar_subtitle_item_t *last_item;         //ÉÏÒ»´Î¼ì²âµ½µÄÌõÄ¿ºÅ,ÓÃÓÚÅĞ¶ÏÊÇ·ñµÃµ½ÁËĞÂµÄÌõÄ¿
-    __cedar_subtitle_item_t *last_focus_item;   //µÚ¶ş¸ö·ÇÁÁµãµÄÌõÄ¿
-    __cedar_subtitle_item_t *last_normal_item;  //µÚ¶ş¸ö·ÇÁÁµãµÄÌõÄ¿
-    __u32 line_count;                           //¸ù¾İUI²ÎÊı¼ÆËã³ö×î´ó¿ÉÒÔÏÔÊ¾¶àÉÙĞĞ
-    __u32 hl_count;                             //high light count ½»ÌæÏÔÊ¾µÄĞĞÊı
+    __cedar_subtitle_item_t *last_item;         //ä¸Šä¸€æ¬¡æ£€æµ‹åˆ°çš„æ¡ç›®å·,ç”¨äºåˆ¤æ–­æ˜¯å¦å¾—åˆ°äº†æ–°çš„æ¡ç›®
+    __cedar_subtitle_item_t *last_focus_item;   //ç¬¬äºŒä¸ªéäº®ç‚¹çš„æ¡ç›®
+    __cedar_subtitle_item_t *last_normal_item;  //ç¬¬äºŒä¸ªéäº®ç‚¹çš„æ¡ç›®
+    __u32 line_count;                           //æ ¹æ®UIå‚æ•°è®¡ç®—å‡ºæœ€å¤§å¯ä»¥æ˜¾ç¤ºå¤šå°‘è¡Œ
+    __u32 hl_count;                             //high light count äº¤æ›¿æ˜¾ç¤ºçš„è¡Œæ•°
     lyrics_line_t  line[C_LYRICS_LINE_MAX];     //
 
-    __epdk_charset_enm_e    char_code;  //×ÖÌå±àÂë
+    __epdk_charset_enm_e    char_code;  //å­—ä½“ç¼–ç 
 } music_lyrics_t;
 typedef  music_lyrics_t *H_LYRIC;
 

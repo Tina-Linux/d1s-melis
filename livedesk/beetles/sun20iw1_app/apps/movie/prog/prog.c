@@ -1,39 +1,53 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : prog.c
-* By        :
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011-05-05  Bayden.chen  create this file
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "beetles_app.h"
 #include "common/common.h"
 #include "prog.h"
 
-//∂®“Âprog◊”≥°æ∞µƒui¿‡–Õ
+//ÂÆö‰πâprogÂ≠êÂú∫ÊôØÁöÑuiÁ±ªÂûã
 #define MOVIE_PROG_UI_TYPE_PROG         0x01
 #define MOVIE_PROG_UI_TYPE_CUR_TIME     0x02
 #define MOVIE_PROG_UI_TYPE_TOTAL_TIME   0x04
 #define MOVIE_PROG_UI_TYPE_BG           0x08
 
 
-//progµƒÀ˘”–ui¿‡–Õ
+//progÁöÑÊâÄÊúâuiÁ±ªÂûã
 #define MOVIE_PROG_UI_TYPE_ALL  (MOVIE_PROG_UI_TYPE_PROG\
                                  |MOVIE_PROG_UI_TYPE_CUR_TIME\
                                  |MOVIE_PROG_UI_TYPE_TOTAL_TIME\
                                  |MOVIE_PROG_UI_TYPE_BG)
 
-//≥˝±≥æ∞Õ‚µƒ∆‰À˚ui¿‡–Õ
+//Èô§ËÉåÊôØÂ§ñÁöÑÂÖ∂‰ªñuiÁ±ªÂûã
 #define MOVIE_PROG_UI_TYPE_OTHER    (MOVIE_PROG_UI_TYPE_ALL&(~MOVIE_PROG_UI_TYPE_BG))
 
 typedef union
@@ -61,22 +75,22 @@ static void __time2time(__u32 ms, prog_cuckoo_time_t *format_time)
 
 typedef struct
 {
-    // ‰»Î≤Œ ˝
+    //ËæìÂÖ•ÂèÇÊï∞
     H_WIN hparent;
     __s32 scene_id;
 
 
-    //ƒ⁄≤ø≤Œ ˝
+    //ÂÜÖÈÉ®ÂèÇÊï∞
     H_LYR hlyr;
     H_WIN hfrm;
-    __s32 cur_time_index;//µ±ª≠µ±«∞ ±º‰ ±¡¡—°µƒŒª÷√£® ±°¢∑÷°¢√Î£©
-    prog_cuckoo_time_t cur_time;// ‰»Îµƒ…Ë÷√ ±º‰
+    __s32 cur_time_index;//ÂΩìÁîªÂΩìÂâçÊó∂Èó¥Êó∂‰∫ÆÈÄâÁöÑ‰ΩçÁΩÆÔºàÊó∂„ÄÅÂàÜ„ÄÅÁßíÔºâ
+    prog_cuckoo_time_t cur_time;//ËæìÂÖ•ÁöÑËÆæÁΩÆÊó∂Èó¥
     __u8 prog_timmer_id;
     __u8 prog_hide_timmer_id;
 } movie_prog_scene_t;
 
 /***********************************************************************************************************
-    Ω®¡¢Õº≤„
+    Âª∫Á´ãÂõæÂ±Ç
 ************************************************************************************************************/
 static H_LYR __prog_32bpp_layer_create(RECT *rect, __s32 pipe)
 {
@@ -89,7 +103,7 @@ static H_LYR __prog_32bpp_layer_create(RECT *rect, __s32 pipe)
     };
     __disp_layer_para_t lstlyr =
     {
-        MOD_DISP_LAYER_WORK_MODE_SCALER,                    /* mode      */
+        MOD_DISP_LAYER_WORK_MODE_NORMAL,                    /* mode      */
         0,                                              /* ck_mode   */
         0,                                              /* alpha_en  */
         0,                                              /* alpha_val */
@@ -217,7 +231,7 @@ static __s32 __prog_draw_progress(movie_prog_rect_t *prog_bg, movie_prog_rect_t 
                                   movie_prog_rect_t *prog_mid, movie_prog_rect_t *prog_cursor,
                                   __s32 min, __s32 max, __s32 cur)
 {
-    //ª≠Ω¯∂»Ãı±≥æ∞
+    //ÁîªËøõÂ∫¶Êù°ËÉåÊôØ
     {
         void *pbmp;
 
@@ -237,7 +251,7 @@ static __s32 __prog_draw_progress(movie_prog_rect_t *prog_bg, movie_prog_rect_t 
 
         GUI_BMP_Draw(pbmp, prog_bg->x, prog_bg->y);
     }
-    //ª≠Ω¯∂»Ãı◊Û±ﬂµƒÕº±Í
+    //ÁîªËøõÂ∫¶Êù°Â∑¶ËæπÁöÑÂõæÊ†á
     {
         void *pbmp;
         __s32 focus;
@@ -260,13 +274,13 @@ static __s32 __prog_draw_progress(movie_prog_rect_t *prog_bg, movie_prog_rect_t 
         GUI_BMP_Draw(pbmp, prog_left->x, prog_left->y);
     }
 
-    //ª≠Ω¯∂»Ãı∫Õcursor
-    if (cur > max) //±£ª§“ªœ¬
+    //ÁîªËøõÂ∫¶Êù°Âíåcursor
+    if (cur > max) //‰øùÊä§‰∏Ä‰∏ã
     {
         cur = max;
     }
 
-    if (cur < min) //±£ª§“ªœ¬
+    if (cur < min) //‰øùÊä§‰∏Ä‰∏ã
     {
         cur = min;
     }
@@ -306,7 +320,7 @@ static __s32 __prog_draw_progress(movie_prog_rect_t *prog_bg, movie_prog_rect_t 
             }
             else
             {
-                //  n = ((prog_bg->w - prog_cursor->w) * (cur - min))/(prog_mid->w * (max - min));//ª·‘Ï≥…“Á≥ˆ£¨∑¥◊™Œ™∏∫÷µ
+                //  n = ((prog_bg->w - prog_cursor->w) * (cur - min))/(prog_mid->w * (max - min));//‰ºöÈÄ†ÊàêÊ∫¢Âá∫ÔºåÂèçËΩ¨‰∏∫Ë¥üÂÄº
                 n = ((prog_bg->w - prog_cursor->w) / prog_mid->w) * (cur - min) / (max - min);
             }
 
@@ -316,7 +330,7 @@ static __s32 __prog_draw_progress(movie_prog_rect_t *prog_bg, movie_prog_rect_t 
             bg_pos = prog_bg->x;
             bg_w = prog_bg->w;
 
-            //∑¿÷π∑«’˚ ˝±∂ ±ª≠≤ª¬˙
+            //Èò≤Ê≠¢ÈùûÊï¥Êï∞ÂÄçÊó∂Áîª‰∏çÊª°
             if (max_mid_w - n * mid_w < mid_w)
             {
                 n++;
@@ -333,7 +347,7 @@ static __s32 __prog_draw_progress(movie_prog_rect_t *prog_bg, movie_prog_rect_t 
                              , prog_mid->y);
             }
 
-            //ª≠cursor
+            //Áîªcursor
             if (!prog_cursor->res_hdl[0])
             {
                 __msg("prog_cursor->res_hdl[0] is null...");
@@ -389,7 +403,7 @@ static __s32 __prog_update_prog_ui(movie_prog_scene_t *scene_para
     //GUI_LyrWinSetSta(scene_para->hlyr, GUI_LYRWIN_STA_SLEEP);
     com_memdev_create(scene_para->hlyr);
 
-    //±≥æ∞
+    //ËÉåÊôØ
     if (ui_type & MOVIE_PROG_UI_TYPE_BG)
     {
         void *pbmp;
@@ -411,7 +425,7 @@ static __s32 __prog_update_prog_ui(movie_prog_scene_t *scene_para
         GUI_BMP_Draw(pbmp, ui_para->uipara_bg.x, ui_para->uipara_bg.y);
     }
 
-    //µ±«∞ ±º‰
+    //ÂΩìÂâçÊó∂Èó¥
     //__here__;
     if (ui_type & MOVIE_PROG_UI_TYPE_CUR_TIME)
     {
@@ -421,12 +435,12 @@ static __s32 __prog_update_prog_ui(movie_prog_scene_t *scene_para
         __u32 cur = 0;
 
         //__here__;
-        if (-1 == scene_para->cur_time_index)//∆’Õ®∏¸–¬£¨¥”robinªÒ»° ±º‰
+        if (-1 == scene_para->cur_time_index)//ÊôÆÈÄöÊõ¥Êñ∞Ôºå‰ªérobinËé∑ÂèñÊó∂Èó¥
         {
             cur = robin_get_cur_time();
             __time2time(cur, &format_time);
         }
-        else if (scene_para->cur_time_index >= 0 && scene_para->cur_time_index < 3) //…Ë÷√ ±º‰£¨¥”Õ‚≤øªÒ»° ±º‰
+        else if (scene_para->cur_time_index >= 0 && scene_para->cur_time_index < 3) //ËÆæÁΩÆÊó∂Èó¥Ôºå‰ªéÂ§ñÈÉ®Ëé∑ÂèñÊó∂Èó¥
         {
             eLIBs_memcpy(&format_time, &scene_para->cur_time, sizeof(prog_cuckoo_time_t));
         }
@@ -456,7 +470,7 @@ static __s32 __prog_update_prog_ui(movie_prog_scene_t *scene_para
             {
                 if (i == scene_para->cur_time_index)
                 {
-                    //GUI_SetBkColor(GUI_BLACK);//¡¡—°∏√ ±º‰Œª÷√
+                    //GUI_SetBkColor(GUI_BLACK);//‰∫ÆÈÄâËØ•Êó∂Èó¥‰ΩçÁΩÆ
                 }
                 else
                 {
@@ -499,7 +513,7 @@ static __s32 __prog_update_prog_ui(movie_prog_scene_t *scene_para
         }
     }
 
-    //◊‹ ±º‰
+    //ÊÄªÊó∂Èó¥
     //__here__;
     if (ui_type & MOVIE_PROG_UI_TYPE_TOTAL_TIME)
     {
@@ -603,7 +617,7 @@ static __s32 __prog_install_prog_timmer(movie_prog_scene_t *scene_para)
 
     if (!GUI_IsTimerInstalled(scene_para->hfrm, scene_para->prog_timmer_id))
     {
-        __wrn("prog hide timmer installed£¨scene_para->prog_timmer_id=0x%x...", scene_para->prog_timmer_id);
+        __wrn("prog hide timmer installedÔºåscene_para->prog_timmer_id=0x%x...", scene_para->prog_timmer_id);
         GUI_SetTimer(scene_para->hfrm, scene_para->prog_timmer_id,
                      100, NULL);
     }
@@ -709,7 +723,7 @@ static __s32 __prog_proc(__gui_msg_t *msg)
                 return EPDK_FAIL;
             }
 
-            scene_para->hfrm = msg->h_deswin;//±ÿ–Î‘⁄¥À≥ı ºªØ£¨“ÚŒ™¥∞ø⁄¥¥Ω®Œ¥∑µªÿ£¨∑Ò‘Ú∏√÷µ»‘»ª «ø’
+            scene_para->hfrm = msg->h_deswin;//ÂøÖÈ°ªÂú®Ê≠§ÂàùÂßãÂåñÔºåÂõ†‰∏∫Á™óÂè£ÂàõÂª∫Êú™ËøîÂõûÔºåÂê¶ÂàôËØ•ÂÄº‰ªçÁÑ∂ÊòØÁ©∫
             __prog_init_internal_para(scene_para);
             __prog_init_ui();
             __prog_update_prog_ui(scene_para, MOVIE_PROG_UI_TYPE_ALL);
@@ -803,7 +817,7 @@ static __s32 __prog_proc(__gui_msg_t *msg)
         {
             __s32 ret;
             movie_prog_scene_t *scene_para;
-            __wrn("__prog_proc GUI_MSG_TIMER begin£¨msg->dwAddData1=0x%x", msg->dwAddData1);
+            __wrn("__prog_proc GUI_MSG_TIMER beginÔºåmsg->dwAddData1=0x%x", msg->dwAddData1);
             scene_para = GUI_WinGetAttr(msg->h_deswin);
             ret = -1;
 
@@ -831,11 +845,11 @@ static __s32 __prog_proc(__gui_msg_t *msg)
 
             __msg("__prog_proc GUI_MSG_TIMER end");
 
-            if (-1 == ret)//Œ¥¥¶¿Ì£¨Ωª∏¯◊”≥°æ∞¥¶¿Ì
+            if (-1 == ret)//Êú™Â§ÑÁêÜÔºå‰∫§ÁªôÂ≠êÂú∫ÊôØÂ§ÑÁêÜ
             {
                 break;
             }
-            else//“—¥¶¿Ì
+            else//Â∑≤Â§ÑÁêÜ
             {
                 return EPDK_OK;
             }
@@ -968,7 +982,7 @@ __s32 movie_prog_scene_delete(void *handle)
     }
 
     GUI_LyrWinDelete(scene_para->hlyr);
-    eLIBs_memset(scene_para, 0, sizeof(movie_prog_scene_t));//∑¿÷π÷ÿ∏¥ Õ∑≈
+    eLIBs_memset(scene_para, 0, sizeof(movie_prog_scene_t));//Èò≤Ê≠¢ÈáçÂ§çÈáäÊîæ
     esMEMS_Mfree(0, scene_para);
     return EPDK_OK;
 }
@@ -1047,4 +1061,3 @@ __s32 movie_prog_scene_update_ui(void *handle)
 
     return __prog_update_prog_ui(scene_para, MOVIE_PROG_UI_TYPE_ALL);
 }
-

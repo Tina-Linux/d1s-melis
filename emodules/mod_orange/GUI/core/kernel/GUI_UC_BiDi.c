@@ -1,30 +1,33 @@
 /*
-************************************************************************************************************************
-*                                                    Charset
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                             Copyright(C), 2006-2009, SoftWinners Microelectronic Co., Ltd.
-*                                                  All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File Name   : sys_charset.h
-*
-* Author      : Derek.Lai
-*
-* Version     : 1.1.0
-*
-* Date        : 2010.10.30
-*
-* Description :
-*
-* Others      : None at present.
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
 *
 *
-* History     :
-*
-*  <Author>        <time>       <version>      <description>
-*
-* Gary.Wang      2009.08.22       1.1.0        build the file
-*
-************************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <stddef.h>           /* needed for definition of NULL */
 #include "gui_core_kernel_private.h"
@@ -1524,7 +1527,7 @@ static __u32 get_ignore_num(__u16 *pinput_string, __u32 string_num)
     __u16 Char, Prevchar = 0, NextChar;
     __u32 i, loop_num, ignore_num = 0;
 
-    loop_num = string_num - 1; //∑¿÷π ˝◊È‘ΩΩÁ
+    loop_num = string_num - 1; //Èò≤Ê≠¢Êï∞ÁªÑË∂äÁïå
 
     for (i = 0; i < loop_num; i++)
     {
@@ -1552,7 +1555,7 @@ static __u32 get_ignore_num(__u16 *pinput_string, __u32 string_num)
         Prevchar = Char;
     }
 
-    if (is_ignore(pinput_string[loop_num - 1], pinput_string[loop_num], 0x0)) //≈–∂œ ‰»Î◊÷∑˚¥Æ◊Ó∫Û“ª∏ˆ◊÷∑˚ «∑Ò”Î«∞“ª∏ˆ◊÷∑˚∫œ≤¢
+    if (is_ignore(pinput_string[loop_num - 1], pinput_string[loop_num], 0x0)) //Âà§Êñ≠ËæìÂÖ•Â≠óÁ¨¶‰∏≤ÊúÄÂêé‰∏Ä‰∏™Â≠óÁ¨¶ÊòØÂê¶‰∏éÂâç‰∏Ä‰∏™Â≠óÁ¨¶ÂêàÂπ∂
     {
         ignore_num++;
     }
@@ -1577,7 +1580,7 @@ static __s32 get_presentation_form(__u16 *pinput_string, __u16 *pout_string, __u
     __u32 i, j = 0, k, loop_num, ignore_num = 0;
     __s32 CharIsArabic, IgnoreNextCharacter = 0;
 
-    loop_num = input_string_num - 1; //∑¿÷π ˝◊È‘ΩΩÁ
+    loop_num = input_string_num - 1; //Èò≤Ê≠¢Êï∞ÁªÑË∂äÁïå
     for (i = 0; i < loop_num; i++)
     {
         if (!PrevChar)
@@ -1658,10 +1661,10 @@ static __s32 get_presentation_form(__u16 *pinput_string, __u16 *pout_string, __u
             continue;
         }
 
-        /* ‘⁄◊÷∑˚¥Æ∑¥◊™µƒ«Èøˆœ¬£¨s_ncucs + 1±Ì æ«∞“ª∏ˆ◊÷∑˚£¨
-         * s_ucs -1±Ì æ∫Û“ª∏ˆ◊÷∑˚£ª
-         * *(s_ucs + 1 ) != 0ºÏ≤È «∑ÒµΩ¡À◊÷∑˚¥Æƒ©Œ≤£ª
-         * s_ucs != s ºÏ≤È «∑Ò «◊÷∑˚¥Æ∆ º*/
+        /* Âú®Â≠óÁ¨¶‰∏≤ÂèçËΩ¨ÁöÑÊÉÖÂÜµ‰∏ãÔºås_ncucs + 1Ë°®Á§∫Ââç‰∏Ä‰∏™Â≠óÁ¨¶Ôºå
+         * s_ucs -1Ë°®Á§∫Âêé‰∏Ä‰∏™Â≠óÁ¨¶Ôºõ
+         * *(s_ucs + 1 ) != 0Ê£ÄÊü•ÊòØÂê¶Âà∞‰∫ÜÂ≠óÁ¨¶‰∏≤Êú´Â∞æÔºõ
+         * s_ucs != s Ê£ÄÊü•ÊòØÂê¶ÊòØÂ≠óÁ¨¶‰∏≤Ëµ∑Âßã*/
         if ((pinput_string[countlen + 1] != 0) && (countlen > 0))
         {
             pout_string[backcnt] = (__u16)GUI__GetPresentationForm(c0,
@@ -1698,7 +1701,7 @@ static __s32 get_presentation_form(__u16 *pinput_string, __u16 *pout_string, __u
 
         if (vowelshift == 1)
         {
-            /*”ˆµΩ…œœ¬±Í ±£¨∂‘µ˜…œœ¬±Í∫Õ÷˜◊÷∑˚µƒ¥Ê¥¢Œª÷√£¨ πµ√œ‘ æ ±…œœ¬±Í∆´“∆’˝»∑*/
+            /*ÈÅáÂà∞‰∏ä‰∏ãÊ†áÊó∂ÔºåÂØπË∞É‰∏ä‰∏ãÊ†áÂíå‰∏ªÂ≠óÁ¨¶ÁöÑÂ≠òÂÇ®‰ΩçÁΩÆÔºå‰ΩøÂæóÊòæÁ§∫Êó∂‰∏ä‰∏ãÊ†áÂÅèÁßªÊ≠£Á°Æ*/
             U16 temp;
             vowelshift = 0;
             temp = pout_string[backcnt];
@@ -2102,4 +2105,3 @@ void gui_disp_bidistring_at(__s32 charset_enm, char *input_s, __s32 x, __s32 y)
     //GUI_UC_DispStringAt(pszInput, x, y);
 
 }
-

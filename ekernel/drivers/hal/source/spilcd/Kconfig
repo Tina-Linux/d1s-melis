@@ -1,0 +1,26 @@
+menu "SPILCD Devices"
+
+config DRIVERS_SPILCD
+	tristate "DISP Driver Support(spi_lcd)"
+	default n
+	---help---
+	  Display driver for spi_lcd based boards.
+
+config HAL_TEST_SPILCD
+    bool "spilcd hal APIs test"
+    depends on DRIVERS_SPILCD
+        default n
+
+menu "LCD_FB panels select"
+	depends on DRIVERS_SPILCD
+
+source "drivers/hal/source/spilcd/lcd_fb/panels/Kconfig"
+endmenu
+
+menu "Board select"
+	depends on DRIVERS_SPILCD
+
+source "drivers/hal/source/spilcd/soc/Kconfig"
+endmenu
+
+endmenu

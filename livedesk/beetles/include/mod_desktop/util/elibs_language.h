@@ -1,30 +1,33 @@
 /*
-************************************************************************************************************************
-*                                                  language definition
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                  Copyright(C), 2006-2010, AllWinner Technology Co., Ltd.
-*                                                  All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File Name   : elibs_language.h
-*
-* Author      : Gary.Wang
-*
-* Version     : 1.0
-*
-* Date        : 2010.08.25
-*
-* Description :
-*
-* Others      : None at present.
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
 *
 *
-* History     :
-*
-*  <Author>        <time>       <version>      <description>
-*
-* Gary.Wang      2010.08.25        1.0         build the file
-*
-************************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef  __ELIBS_LANGUAGE_H__
 #define  __ELIBS_LANGUAGE_H__
@@ -33,53 +36,53 @@
 
 typedef  enum
 {
-    EPDK_LANGUAGE_ENM_ENGLISH    = 0x400,      // ”¢”Ô
-    EPDK_LANGUAGE_ENM_CHINESES   = 0x410,      // ºÚÃÂ÷–Œƒ
-    EPDK_LANGUAGE_ENM_CHINESET   = 0x420,      // ∑±ÃÂ÷–Œƒ
-    EPDK_LANGUAGE_ENM_JAPANESE   = 0x430,      // »’”Ô
-    EPDK_LANGUAGE_ENM_KOREAN     = 0x440,      // ∫´”Ô
-    EPDK_LANGUAGE_ENM_GERMAN     = 0x450,      // µ¬”Ô
-    EPDK_LANGUAGE_ENM_SPANISH    = 0x460,      // Œ˜∞‡—¿”Ô
-    EPDK_LANGUAGE_ENM_FRENCH     = 0x470,      // ∑®”Ô
-    EPDK_LANGUAGE_ENM_ITALIAN    = 0x480,      // “‚¥Û¿˚”Ô
-    EPDK_LANGUAGE_ENM_PORTUGUESE = 0x490,      // ∆œÃ——¿”Ô
-    EPDK_LANGUAGE_ENM_DUTCH      = 0x4a0,      // ∫…¿º”Ô
-    EPDK_LANGUAGE_ENM_RUSSIAN    = 0x4b0,      // ∂Ì”Ô
-    EPDK_LANGUAGE_ENM_POLISH     = 0x4c0,      // ≤®¿º”Ô
-    EPDK_LANGUAGE_ENM_TURKISH    = 0x4d0,      // Õ¡∂˙∆‰”Ô
-    EPDK_LANGUAGE_ENM_CZECH      = 0x4e0,      // Ω›øÀ”Ô
-    EPDK_LANGUAGE_ENM_DANISH     = 0x4f0,      // µ§¬Û”Ô
-    EPDK_LANGUAGE_ENM_HUNGARIAN  = 0x500,      // –Ÿ—¿¿˚”Ô
-    EPDK_LANGUAGE_ENM_SWEDISH    = 0x510,      // »µ‰”Ô
-    EPDK_LANGUAGE_ENM_THAI       = 0x520,      // Ã©”Ô
-    EPDK_LANGUAGE_ENM_HEBREW     = 0x530,      // œ£≤Æ¿¥”Ô
-    EPDK_LANGUAGE_ENM_ARABIC     = 0x540,      // ∞¢¿≠≤Æ”Ô
+    EPDK_LANGUAGE_ENM_ENGLISH    = 0x400,      // Ëã±ËØ≠
+    EPDK_LANGUAGE_ENM_CHINESES   = 0x410,      // ÁÆÄ‰Ωì‰∏≠Êñá
+    EPDK_LANGUAGE_ENM_CHINESET   = 0x420,      // ÁπÅ‰Ωì‰∏≠Êñá
+    EPDK_LANGUAGE_ENM_JAPANESE   = 0x430,      // Êó•ËØ≠
+    EPDK_LANGUAGE_ENM_KOREAN     = 0x440,      // Èü©ËØ≠
+    EPDK_LANGUAGE_ENM_GERMAN     = 0x450,      // Âæ∑ËØ≠
+    EPDK_LANGUAGE_ENM_SPANISH    = 0x460,      // Ë•øÁè≠ÁâôËØ≠
+    EPDK_LANGUAGE_ENM_FRENCH     = 0x470,      // Ê≥ïËØ≠
+    EPDK_LANGUAGE_ENM_ITALIAN    = 0x480,      // ÊÑèÂ§ßÂà©ËØ≠
+    EPDK_LANGUAGE_ENM_PORTUGUESE = 0x490,      // Ëë°ËêÑÁâôËØ≠
+    EPDK_LANGUAGE_ENM_DUTCH      = 0x4a0,      // Ëç∑ÂÖ∞ËØ≠
+    EPDK_LANGUAGE_ENM_RUSSIAN    = 0x4b0,      // ‰øÑËØ≠
+    EPDK_LANGUAGE_ENM_POLISH     = 0x4c0,      // Ê≥¢ÂÖ∞ËØ≠
+    EPDK_LANGUAGE_ENM_TURKISH    = 0x4d0,      // ÂúüËÄ≥ÂÖ∂ËØ≠
+    EPDK_LANGUAGE_ENM_CZECH      = 0x4e0,      // Êç∑ÂÖãËØ≠
+    EPDK_LANGUAGE_ENM_DANISH     = 0x4f0,      // ‰∏πÈ∫¶ËØ≠
+    EPDK_LANGUAGE_ENM_HUNGARIAN  = 0x500,      // ÂåàÁâôÂà©ËØ≠
+    EPDK_LANGUAGE_ENM_SWEDISH    = 0x510,      // ÁëûÂÖ∏ËØ≠
+    EPDK_LANGUAGE_ENM_THAI       = 0x520,      // Ê≥∞ËØ≠
+    EPDK_LANGUAGE_ENM_HEBREW     = 0x530,      // Â∏å‰ºØÊù•ËØ≠
+    EPDK_LANGUAGE_ENM_ARABIC     = 0x540,      // ÈòøÊãâ‰ºØËØ≠
 
     EPDK_LANGUAGE_ENM_UNKNOWN    = -1          // always the last one
 } __epdk_language_enm_e;
 
 
-#define EPDK_LANGUAGE_NAME_ENGLISH       "ENGLISH"      // ”¢”Ô    
-#define EPDK_LANGUAGE_NAME_CHINESES      "CHINESES"     // ºÚÃÂ÷–Œƒ
-#define EPDK_LANGUAGE_NAME_CHINESET      "CHINESET"     // ∑±ÃÂ÷–Œƒ
-#define EPDK_LANGUAGE_NAME_JAPANESE      "JAPANESE"     // »’”Ô    
-#define EPDK_LANGUAGE_NAME_KOREAN        "KOREAN"       // ∫´”Ô    
-#define EPDK_LANGUAGE_NAME_GERMAN        "GERMAN"       // µ¬”Ô    
-#define EPDK_LANGUAGE_NAME_SPANISH       "SPANISH"      // Œ˜∞‡—¿”Ô
-#define EPDK_LANGUAGE_NAME_FRENCH        "FRENCH"       // ∑®”Ô    
-#define EPDK_LANGUAGE_NAME_ITALIAN       "ITALIAN"      // “‚¥Û¿˚”Ô
-#define EPDK_LANGUAGE_NAME_PORTUGUESE    "PORTUGUESE"   // ∆œÃ——¿”Ô
-#define EPDK_LANGUAGE_NAME_DUTCH         "DUTCH"        // ∫…¿º”Ô  
-#define EPDK_LANGUAGE_NAME_RUSSIAN       "RUSSIAN"      // ∂Ì”Ô    
-#define EPDK_LANGUAGE_NAME_POLISH        "POLISH"       // ≤®¿º”Ô  
-#define EPDK_LANGUAGE_NAME_TURKISH       "TURKISH"      // Õ¡∂˙∆‰”Ô
-#define EPDK_LANGUAGE_NAME_CZECH         "CZECH"        // Ω›øÀ”Ô  
-#define EPDK_LANGUAGE_NAME_DANISH        "DANISH"       // µ§¬Û”Ô  
-#define EPDK_LANGUAGE_NAME_HUNGARIAN     "HUNGARIAN"    // –Ÿ—¿¿˚”Ô
-#define EPDK_LANGUAGE_NAME_SWEDISH       "SWEDISH"      // »µ‰”Ô  
-#define EPDK_LANGUAGE_NAME_THAI          "THAI"         // Ã©”Ô    
-#define EPDK_LANGUAGE_NAME_HEBREW        "HEBREW"       // œ£≤Æ¿¥”Ô
-#define EPDK_LANGUAGE_NAME_ARABIC        "ARABIC"       // ∞¢¿≠≤Æ”Ô
+#define EPDK_LANGUAGE_NAME_ENGLISH       "ENGLISH"      // Ëã±ËØ≠    
+#define EPDK_LANGUAGE_NAME_CHINESES      "CHINESES"     // ÁÆÄ‰Ωì‰∏≠Êñá
+#define EPDK_LANGUAGE_NAME_CHINESET      "CHINESET"     // ÁπÅ‰Ωì‰∏≠Êñá
+#define EPDK_LANGUAGE_NAME_JAPANESE      "JAPANESE"     // Êó•ËØ≠    
+#define EPDK_LANGUAGE_NAME_KOREAN        "KOREAN"       // Èü©ËØ≠    
+#define EPDK_LANGUAGE_NAME_GERMAN        "GERMAN"       // Âæ∑ËØ≠    
+#define EPDK_LANGUAGE_NAME_SPANISH       "SPANISH"      // Ë•øÁè≠ÁâôËØ≠
+#define EPDK_LANGUAGE_NAME_FRENCH        "FRENCH"       // Ê≥ïËØ≠    
+#define EPDK_LANGUAGE_NAME_ITALIAN       "ITALIAN"      // ÊÑèÂ§ßÂà©ËØ≠
+#define EPDK_LANGUAGE_NAME_PORTUGUESE    "PORTUGUESE"   // Ëë°ËêÑÁâôËØ≠
+#define EPDK_LANGUAGE_NAME_DUTCH         "DUTCH"        // Ëç∑ÂÖ∞ËØ≠  
+#define EPDK_LANGUAGE_NAME_RUSSIAN       "RUSSIAN"      // ‰øÑËØ≠    
+#define EPDK_LANGUAGE_NAME_POLISH        "POLISH"       // Ê≥¢ÂÖ∞ËØ≠  
+#define EPDK_LANGUAGE_NAME_TURKISH       "TURKISH"      // ÂúüËÄ≥ÂÖ∂ËØ≠
+#define EPDK_LANGUAGE_NAME_CZECH         "CZECH"        // Êç∑ÂÖãËØ≠  
+#define EPDK_LANGUAGE_NAME_DANISH        "DANISH"       // ‰∏πÈ∫¶ËØ≠  
+#define EPDK_LANGUAGE_NAME_HUNGARIAN     "HUNGARIAN"    // ÂåàÁâôÂà©ËØ≠
+#define EPDK_LANGUAGE_NAME_SWEDISH       "SWEDISH"      // ÁëûÂÖ∏ËØ≠  
+#define EPDK_LANGUAGE_NAME_THAI          "THAI"         // Ê≥∞ËØ≠    
+#define EPDK_LANGUAGE_NAME_HEBREW        "HEBREW"       // Â∏å‰ºØÊù•ËØ≠
+#define EPDK_LANGUAGE_NAME_ARABIC        "ARABIC"       // ÈòøÊãâ‰ºØËØ≠
 
 
 #define EPDK_LANGUAGE_NAME_LEN_MAX       31

@@ -32,14 +32,18 @@ ccflags-y   +=  -I${APPS_PATH}/lib                                          \
 				-I${APPS_PATH}/dtv/setting                                  \
 				-I${APPS_PATH}/dtv/subtitle                                 \
 				-I${APPS_PATH}/play                                         \
-				-I$(APPS_PATH)/mtp  \
-				-I$(APPS_PATH)/mtp/Disk  \
+				-I$(APPS_PATH)/mtp                                          \
+				-I$(APPS_PATH)/mtp/Disk                                     \
 				-I${APPS_PATH}/mjpg_decode                                  \
 				-I${APPS_PATH}/video_thumb                                  \
+				-I${srctree}/ekernel/drivers/include/hal/                   \
 				-DEPDK_DEBUG_LEVEL=EPDK_DEBUG_LEVEL_LOG_ALL                 \
 				-fshort-enums                                               \
 				$(SOLUTION_INCLUDE)
-
+ifdef CONFIG_DRIVERS_USB_GADGET_MTP
+ccflags-y   +=	-I$(APPS_PATH)/mtp                                          \
+				-I$(APPS_PATH)/mtp/Disk
+endif
 usrlibs-y +=	-L$(MELIS_BASE)/${elibrary-libs}/   \
 				--start-group                       \
 				-lsyscall   -llzma                  \
@@ -191,22 +195,23 @@ $(MOD_NAME)-objs    +=	./app_root/app_root.o                                   \
                         ./setting/setting_tips.o                                \
                         ./setting/setting_uipara.o                              \
                         ./video_thumb/thumb_dec.o                               \
-						./mtp/mtp_app.o \
-						./mtp/MtpCommon.o \
-						./mtp/MtpDataBase.o \
-						./mtp/mtp_update_tools.o \
-						./mtp/MtpObjectInfo.o \
-						./mtp/MtpPacket.o \
-						./mtp/MtpProperty.o \
-						./mtp/MtpServer.o \
-						./mtp/MtpStorage.o \
-						./mtp/Disk/Dir.o \
-						./mtp/Disk/Disk.o \
-						./mtp/Disk/DiskDebug.o \
-						./mtp/Disk/File.o \
                         ../../elibs/libapps/module_adapter/common_module.o      \
                         ../../elibs/libapps/module_adapter/magic.o
 
 #$(MOD_NAME)-objs += built-in.o
-
+ifdef CONFIG_DRIVERS_USB_GADGET_MTP
+$(MOD_NAME)-objs    += 	./mtp/mtp_app.o \
+					./mtp/MtpCommon.o \
+					./mtp/MtpDataBase.o \
+					./mtp/mtp_update_tools.o \
+					./mtp/MtpObjectInfo.o \
+					./mtp/MtpPacket.o \
+					./mtp/MtpProperty.o \
+					./mtp/MtpServer.o \
+					./mtp/MtpStorage.o \
+					./mtp/Disk/Dir.o \
+					./mtp/Disk/Disk.o \
+					./mtp/Disk/DiskDebug.o \
+					./mtp/Disk/File.o 
+endif
 include $(MELIS_BASE)/scripts/Makefile.mods					

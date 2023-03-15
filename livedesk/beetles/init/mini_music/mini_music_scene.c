@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY鈥橲 TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS鈥橲DK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY鈥橲 TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <log.h>
 #include "mod_init_i.h"
 #include "mini_music_scene.h"
@@ -213,7 +244,7 @@ static __s32 __cmd_handle(__gui_msg_t *msg)
 
                 dsk_wkm_play_file(filename);
 
-                //更新歌名
+                //鏇存柊姝屽悕
                 __songname_update(msg);
             }
 
@@ -240,7 +271,7 @@ static __s32 __cmd_handle(__gui_msg_t *msg)
 
                 dsk_wkm_play_file(filename);
 
-                //更新歌名
+                //鏇存柊姝屽悕
                 __songname_update(msg);
             }
 
@@ -264,7 +295,7 @@ static __s32 __cmd_handle(__gui_msg_t *msg)
                     __button_bmp_update(msg->h_deswin, 0, MINI_BTN_ID_PLAYPAUSE);
                 }
 
-                //更新歌名
+                //鏇存柊姝屽悕
                 __songname_update(msg);
             }
 
@@ -421,7 +452,7 @@ static __s32 __cb_frmwin(__gui_msg_t *msg)
 
             font = GUI_TTF_CreateFont(&attr);
 
-            //打开图片资源句柄
+            //鎵撳紑鍥剧墖璧勬簮鍙ユ焺
             __open_res();
 
             //button para
@@ -637,7 +668,7 @@ static __s32 __mini_main_proc(__gui_msg_t  *msg)
             GUI_LyrWinSetTop(scene_para->layer);
 
             //GUI_WinSetFocusChild(scene_para->frmwin);
-            //注册自动播放回调
+            //娉ㄥ唽鑷姩鎾斁鍥炶皟
 
             dsk_wkm_set_cb(DSK_WKM_EVENT_AUTO_PLAY_NEXT, esKRNL_GetCallBack(__cb_auto_play_next), (void *)scene_para->frmwin);
             return EPDK_OK;
@@ -647,7 +678,7 @@ static __s32 __mini_main_proc(__gui_msg_t  *msg)
         {
             __mini_music_scene_para_t *scene_para = (__mini_music_scene_para_t *)GUI_WinGetAddData(msg->h_deswin);
 
-            //注销自动播放回调
+            //娉ㄩ攢鑷姩鎾斁鍥炶皟
             dsk_wkm_set_cb(DSK_WKM_EVENT_AUTO_PLAY_NEXT, NULL, NULL);
 
             GUI_LyrWinDelete(scene_para->layer);

@@ -1,30 +1,33 @@
 /*
-*******************************************************************************************************************
-*                                                           Mod orange
-*                                                   the embedded graphic support module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2008, SoftWinners Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name£º     Listmenu.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
-*Author£º        William Wang
 *
-*Version :       1.1.0
-*
-*Date:           2008-8-21
-*
-*Description :   listmenu main function implement
-*
-*Others :        None at present.
-*
-* History :
-*
-* <Author>          <time>      <version>     <description>
-*
-* William Wang     2008-8-21      1.1.0          Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __LIST__MENU__C____
 #define __LIST__MENU__C____
@@ -76,7 +79,7 @@ __u32                   GUI_LstmOnMessage(__listmenu_data_t *lstm, __listmenu_ru
 *             GUI_LstmRxThread
 *
 *  Description:
-*       ½ÓÊÕÏß³Ì
+*       æŽ¥æ”¶çº¿ç¨‹
 *
 *  Parameters:
 *
@@ -147,7 +150,7 @@ __listmenu_data_t *GUI_LstmPrivCreate(H_WIN hListmenu)
         return NULL;
     }
 
-    /*³õÊ¼»¯ËùÓÐÏîÄ¿*/
+    /*åˆå§‹åŒ–æ‰€æœ‰é¡¹ç›®*/
     plistmenu->run_sem                  = NULL;
     plistmenu->dist_sem                 = NULL;
     plistmenu->move_sem                 = NULL;
@@ -196,7 +199,7 @@ __listmenu_data_t *GUI_LstmPrivCreate(H_WIN hListmenu)
         goto  error;
     }
 
-    /*Îªlistmenu·ÖÅäÏûÏ¢buffer*/
+    /*ä¸ºlistmenuåˆ†é…æ¶ˆæ¯buffer*/
     plistmenu->msgbuff                 = (__listmenu_runmsg_t *)orange_malloc(sizeof(__listmenu_runmsg_t) * LISTMENU_FRM_RXQ_DEPTH);
 
     if (!plistmenu->msgbuff)
@@ -217,7 +220,7 @@ __listmenu_data_t *GUI_LstmPrivCreate(H_WIN hListmenu)
 #ifdef SIM_PC_WIN
     __SAVE_MOD_EVN__
 #endif
-    /* ´´½¨rxtxÊØ»¤Ïß³Ì             */
+    /* åˆ›å»ºrxtxå®ˆæŠ¤çº¿ç¨‹             */
     plistmenu->listmenu_RxTID           = esKRNL_TCreate(GUI_LstmRxThread, (void *)plistmenu, 0x2000, 2);
 #ifdef SIM_PC_WIN
     __RESTORE_MOD_EVN__
@@ -231,7 +234,7 @@ __listmenu_data_t *GUI_LstmPrivCreate(H_WIN hListmenu)
 
     if (plistmenu->listlayer != NULL)
     {
-        /* ´´½¨Item Î¬»¤Ïß³Ì             */
+        /* åˆ›å»ºItem ç»´æŠ¤çº¿ç¨‹             */
 #ifdef SIM_PC_WIN
         __SAVE_MOD_EVN__
 #endif
@@ -250,7 +253,7 @@ __listmenu_data_t *GUI_LstmPrivCreate(H_WIN hListmenu)
     }
 
     plistmenu->listlayer->bk_color = listmenu_priv->bk_color;
-    /*»ñÈ¡¹ö¶¯ËÙ¶È*/
+    /*èŽ·å–æ»šåŠ¨é€Ÿåº¦*/
     plistmenu->listlayer->rollspeed = listmenu_priv->mode & 0x07;
 
     switch (plistmenu->listlayer->rollspeed)
@@ -305,7 +308,7 @@ __listmenu_data_t *GUI_LstmPrivCreate(H_WIN hListmenu)
         goto error;
     }
 
-    /*°´¼üÏûÏ¢ÐÅºÅÁ¿*/
+    /*æŒ‰é”®æ¶ˆæ¯ä¿¡å·é‡*/
     plistmenu->dist_sem = esKRNL_SemCreate(1);
 
     if (plistmenu->dist_sem == NULL)
@@ -314,7 +317,7 @@ __listmenu_data_t *GUI_LstmPrivCreate(H_WIN hListmenu)
         goto error;
     }
 
-    /*¼ÓÔØËõÂÔÍ¼¿ØÖÆÐÅºÅÁ¿*/
+    /*åŠ è½½ç¼©ç•¥å›¾æŽ§åˆ¶ä¿¡å·é‡*/
     plistmenu->load_sem = esKRNL_SemCreate(1);
 
     if (plistmenu->load_sem == NULL)
@@ -323,7 +326,7 @@ __listmenu_data_t *GUI_LstmPrivCreate(H_WIN hListmenu)
         goto error;
     }
 
-    /*touch»¬¶¯ÏûÏ¢¿ØÖÆÐÅºÅÁ¿*/
+    /*touchæ»‘åŠ¨æ¶ˆæ¯æŽ§åˆ¶ä¿¡å·é‡*/
     plistmenu->move_sem = esKRNL_SemCreate(1);
 
     if (plistmenu->move_sem == NULL)
@@ -343,7 +346,7 @@ __listmenu_data_t *GUI_LstmPrivCreate(H_WIN hListmenu)
 #endif
                 /*create loaditem thread*/
                 plistmenu->listlayer->LoadTID = esKRNL_TCreate(ListBox_LoadItemThread,
-                                                (void *)plistmenu->listlayer, 0x8000, KRNL_priolevel4);        /* ´´½¨Item Î¬»¤Ïß³Ì             */
+                                                (void *)plistmenu->listlayer, 0x8000, KRNL_priolevel4);        /* åˆ›å»ºItem ç»´æŠ¤çº¿ç¨‹             */
 #ifdef SIM_PC_WIN
                 __RESTORE_MOD_EVN__
 #endif
@@ -355,7 +358,7 @@ __listmenu_data_t *GUI_LstmPrivCreate(H_WIN hListmenu)
                 __SAVE_MOD_EVN__
 #endif
                 plistmenu->listlayer->LoadTID = esKRNL_TCreate(ListLayer_LoadItemThread,
-                                                (void *)plistmenu->listlayer, 0x8000, KRNL_priolevel4);        /* ´´½¨Item Î¬»¤Ïß³Ì             */
+                                                (void *)plistmenu->listlayer, 0x8000, KRNL_priolevel4);        /* åˆ›å»ºItem ç»´æŠ¤çº¿ç¨‹             */
 #ifdef SIM_PC_WIN
                 __RESTORE_MOD_EVN__
 #endif
@@ -390,7 +393,7 @@ __listmenu_data_t *GUI_LstmPrivCreate(H_WIN hListmenu)
         MenuList_AddTail(plistmenu->listlayer->menulist, menuitem);
     }
 
-    /*³õÊ¼»¯listmenu×´Ì¬*/
+    /*åˆå§‹åŒ–listmenuçŠ¶æ€*/
     plistmenu->status                  = 0;
     lyrwin_status = GUI_LyrWinGetSta(GUI_WinGetLyrWin(hListmenu));
 
@@ -431,7 +434,7 @@ __listmenu_data_t *GUI_LstmPrivCreate(H_WIN hListmenu)
                                               plistmenu->listlayer->menulist->head->rect.height;
     }
 
-    /*ÉèÖÃÇúÏß²ÎÊý*/
+    /*è®¾ç½®æ›²çº¿å‚æ•°*/
     plistmenu->gcurv.screen     = plistmenu->listlayer->viewrect.height;
     plistmenu->gcurv.fb_len     = plistmenu->listlayer->menulist->ItemCount * (plistmenu->listlayer->menulist->head->rect.height);
     plistmenu->gcurv.fb_start   = 0;
@@ -439,7 +442,7 @@ __listmenu_data_t *GUI_LstmPrivCreate(H_WIN hListmenu)
     plistmenu->gstate           = LSTMGLIDE_IDLE;
     plistmenu->len              = 0;
     plistmenu->index            = 0;
-    /*ÉèÖÃlistmenuµ±Ç°µÄitem*/
+    /*è®¾ç½®listmenuå½“å‰çš„item*/
     ret = GUI_LstmSetCurItemNo(plistmenu, listmenu_priv->curitemno);
 
     if (ret != ORANGE_OK)
@@ -498,7 +501,7 @@ error:
     return NULL;
 }
 //------------------------------------------------------------------------------------------------------------
-//È¡µÃµ±Ç°item
+//å–å¾—å½“å‰item
 
 //==================================================================
 //function name:    GUI_LstmGetCurItem
@@ -901,7 +904,7 @@ __u32   GUI_LstmSetCurItemNo(__listmenu_data_t *plistmenu, __u32 no)
     return  ORANGE_OK;
 }
 //------------------------------------------------------------------------------------------------------------
-//È¡µÃitemµÄÊýÄ¿
+//å–å¾—itemçš„æ•°ç›®
 
 //==================================================================
 //function name:    GUI_LstmGetItemCount
@@ -924,7 +927,7 @@ __u32 GUI_LstmGetItemCount(H_WIN lstm)
         return __LINE__;
     }
 
-    /*»ñÈ¡listmenu±äÁ¿*/
+    /*èŽ·å–listmenuå˜é‡*/
     plistmenu = (__listmenu_data_t *)GUI_CtrlWinGetAddData(lstm);
 
     if (plistmenu == NULL)
@@ -1108,7 +1111,7 @@ __u32  GUI_LstmGetItemNo(H_WIN H_Item)
 *
 * date:             2009-11-17
 *
-* Description:      Í£Ö¹ºóÌ¨À©É¢¼ÓÔØ
+* Description:      åœæ­¢åŽå°æ‰©æ•£åŠ è½½
 *
 * parameters:
 *
@@ -1156,12 +1159,12 @@ void  GUI_LstmPostRunMsg(__listmenu_data_t *plistmenu, __u32 runid)
 
     if (runid == LSTMM_RUNUP)
     {
-        /*Èç¹ûÊÇÏòÉÏÏûÏ¢£¬¸üÐÂÏòÉÏ¼ÆÊýÖµ*/
+        /*å¦‚æžœæ˜¯å‘ä¸Šæ¶ˆæ¯ï¼Œæ›´æ–°å‘ä¸Šè®¡æ•°å€¼*/
         plistmenu->listlayer->msgupcount ++;
     }
     else if (runid == LSTMM_RUNDOWN)
     {
-        /*Èç¹ûÊÇÏòÏÂÏûÏ¢£¬¸üÐÂÏòÏÂ¼ÆÊýÖµ*/
+        /*å¦‚æžœæ˜¯å‘ä¸‹æ¶ˆæ¯ï¼Œæ›´æ–°å‘ä¸‹è®¡æ•°å€¼*/
         plistmenu->listlayer->msgdowncount ++;
     }
 
@@ -1195,12 +1198,12 @@ void  GUI_LstmPostMoveMsg(__listmenu_data_t *plistmenu, __u32 runid, __u32 dist)
 
     if (runid == LSTMM_MOVEUP)
     {
-        /*Èç¹ûÊÇÏòÉÏÏûÏ¢£¬¸üÐÂÏòÉÏ¼ÆÊýÖµ*/
+        /*å¦‚æžœæ˜¯å‘ä¸Šæ¶ˆæ¯ï¼Œæ›´æ–°å‘ä¸Šè®¡æ•°å€¼*/
         plistmenu->listlayer->msgupcount ++;
     }
     else
     {
-        /*Èç¹ûÊÇÏòÏÂÏûÏ¢£¬¸üÐÂÏòÏÂ¼ÆÊýÖµ*/
+        /*å¦‚æžœæ˜¯å‘ä¸‹æ¶ˆæ¯ï¼Œæ›´æ–°å‘ä¸‹è®¡æ•°å€¼*/
         plistmenu->listlayer->msgdowncount ++;
     }
 
@@ -1237,11 +1240,11 @@ void  GUI_LstmStopProc(__listmenu_data_t *plistmenu)
         __s32   status;
         status  = ListLayer_GetMoveStatus(plistmenu->listlayer);
 
-        /*µÈ´ý»Øµ¯×´Ì¬¹éÎ»£¬Ö®ºóÔÙ¿ªÊ¼ÔËÐÐ*/
+        /*ç­‰å¾…å›žå¼¹çŠ¶æ€å½’ä½ï¼Œä¹‹åŽå†å¼€å§‹è¿è¡Œ*/
         while (status == LISTLAYER_ROUNDDOWN || status == LISTLAYER_ROUNDUP)
         {
             status  = ListLayer_GetMoveStatus(plistmenu->listlayer);
-            /*ÎÞÍ£Ö¹ÏûÏ¢¹ýÀ´£¬¼ÌÐøÔËÐÐ*/
+            /*æ— åœæ­¢æ¶ˆæ¯è¿‡æ¥ï¼Œç»§ç»­è¿è¡Œ*/
             GUI_LstmPostRunMsg(plistmenu, LSTMM_MOVEMSG);
             esKRNL_TimeDly(3);
         };
@@ -1314,7 +1317,7 @@ __u32 GUI_LstmDestroy(H_WIN hlistmenu)
         return ORANGE_OK;
     }
 
-    /*»ñÈ¡listmenu±äÁ¿*/
+    /*èŽ·å–listmenuå˜é‡*/
     plistmenu = (__listmenu_data_t *)GUI_CtrlWinGetAddData(hlistmenu);
     GUI_LstmStopProc(plistmenu);
     GUI_LstmStopOnLoad(plistmenu);
@@ -1462,7 +1465,7 @@ __u32  GUI_LstmKeyUp(__listmenu_data_t *plistmenu, __gui_msg_t *message)
         plistmenu->listlayer->mode != FIXED_MODE)
     {
         __u32                      status;
-        /*µÈ´ýºóÌ¨Ïß³Ì¼ÓÔØÍê³É*/
+        /*ç­‰å¾…åŽå°çº¿ç¨‹åŠ è½½å®Œæˆ*/
         status = ListLayer_GetLoadStatus(plistmenu->listlayer);
 
         while (status != EPDK_TRUE)
@@ -1473,10 +1476,10 @@ __u32  GUI_LstmKeyUp(__listmenu_data_t *plistmenu, __gui_msg_t *message)
 
         GUI_LstmStopProc(plistmenu);
 
-        /*Ñ­»·²Ëµ¥´¦Àí£¬´ÓÍ·µ½Î²*/
+        /*å¾ªçŽ¯èœå•å¤„ç†ï¼Œä»Žå¤´åˆ°å°¾*/
         if (plistmenu->listlayer->setfoucs == REAL_FOUCS)
         {
-            /*È¡Ïû½¹µãµÄÒ»Ð©ÌØÐ§*/
+            /*å–æ¶ˆç„¦ç‚¹çš„ä¸€äº›ç‰¹æ•ˆ*/
             plistmenu->listlayer->menulist->UnCurItem = plistmenu->listlayer->menulist->CurItem;
             plistmenu->listlayer->unfoucs_pos.x = plistmenu->listlayer->foucs_pos.x;
             plistmenu->listlayer->unfoucs_pos.y = plistmenu->listlayer->foucs_pos.y;
@@ -1489,7 +1492,7 @@ __u32  GUI_LstmKeyUp(__listmenu_data_t *plistmenu, __gui_msg_t *message)
         plistmenu->listlayer->menulist->dist = plistmenu->listlayer->menulist->total_dist;
         plistmenu->listlayer->menulist->setCurItem  = plistmenu->listlayer->menulist->ItemCount;
         GUI_LstmStopOnLoad(plistmenu);
-        /*»æÖÆlistmenuµ±Ç°Öµ*/
+        /*ç»˜åˆ¶listmenuå½“å‰å€¼*/
         ret = ListLayer_OnDraw(plistmenu->listlayer);
 
         if (ret != ORANGE_OK)
@@ -1511,10 +1514,10 @@ __u32  GUI_LstmKeyUp(__listmenu_data_t *plistmenu, __gui_msg_t *message)
              plistmenu->listlayer->menulist->ItemCount != 1 &&
              plistmenu->listlayer->mode == FIXED_MODE)
     {
-        /*Ñ­»·²Ëµ¥´¦Àí£¬´ÓÍ·µ½Î²*/
+        /*å¾ªçŽ¯èœå•å¤„ç†ï¼Œä»Žå¤´åˆ°å°¾*/
         if (plistmenu->listlayer->setfoucs == REAL_FOUCS)
         {
-            /*È¡Ïû½¹µãµÄÒ»Ð©ÌØÐ§*/
+            /*å–æ¶ˆç„¦ç‚¹çš„ä¸€äº›ç‰¹æ•ˆ*/
             plistmenu->listlayer->menulist->UnCurItem = plistmenu->listlayer->menulist->CurItem;
             plistmenu->listlayer->unfoucs_pos.x = plistmenu->listlayer->foucs_pos.x;
             plistmenu->listlayer->unfoucs_pos.y = plistmenu->listlayer->foucs_pos.y;
@@ -1526,7 +1529,7 @@ __u32  GUI_LstmKeyUp(__listmenu_data_t *plistmenu, __gui_msg_t *message)
         plistmenu->listlayer->menulist->CurItem = plistmenu->listlayer->menulist->tail;
         plistmenu->listlayer->menulist->setCurItem  = 1;
         GUI_LstmStopProc(plistmenu);
-        /*»æÖÆlistmenuµ±Ç°Öµ*/
+        /*ç»˜åˆ¶listmenuå½“å‰å€¼*/
         ret = ListLayer_OnDraw(plistmenu->listlayer);
 
         if (ret != ORANGE_OK)
@@ -1545,7 +1548,7 @@ __u32  GUI_LstmKeyUp(__listmenu_data_t *plistmenu, __gui_msg_t *message)
     }
     else if (plistmenu->listmenu_RxQ)
     {
-        /*Èç¹ûÊÇÏòÉÏÏûÏ¢£¬¸üÐÂÏòÉÏ¼ÆÊýÖµ*/
+        /*å¦‚æžœæ˜¯å‘ä¸Šæ¶ˆæ¯ï¼Œæ›´æ–°å‘ä¸Šè®¡æ•°å€¼*/
         GUI_LstmPostRunMsg(plistmenu, LSTMM_RUNUP);
         return ORANGE_OK;
     }
@@ -1573,7 +1576,7 @@ __u32  GUI_LstmKeyDown(__listmenu_data_t *plistmenu, __gui_msg_t *message)
     {
         __u32                      status;
         __u32                      ret;
-        /*µÈ´ýºóÌ¨Ïß³Ì¼ÓÔØÍê³É*/
+        /*ç­‰å¾…åŽå°çº¿ç¨‹åŠ è½½å®Œæˆ*/
         status = ListLayer_GetLoadStatus(plistmenu->listlayer);
 
         while (status != EPDK_TRUE)
@@ -1584,10 +1587,10 @@ __u32  GUI_LstmKeyDown(__listmenu_data_t *plistmenu, __gui_msg_t *message)
 
         GUI_LstmStopProc(plistmenu);
 
-        /*Ñ­»·²Ëµ¥´¦Àí£¬´ÓÍ·µ½Î²*/
+        /*å¾ªçŽ¯èœå•å¤„ç†ï¼Œä»Žå¤´åˆ°å°¾*/
         if (plistmenu->listlayer->setfoucs == REAL_FOUCS)
         {
-            /*È¡Ïû½¹µãµÄÒ»Ð©ÌØÐ§*/
+            /*å–æ¶ˆç„¦ç‚¹çš„ä¸€äº›ç‰¹æ•ˆ*/
             plistmenu->listlayer->menulist->UnCurItem = plistmenu->listlayer->menulist->CurItem;
             plistmenu->listlayer->unfoucs_pos.x = plistmenu->listlayer->foucs_pos.x;
             plistmenu->listlayer->unfoucs_pos.y = plistmenu->listlayer->foucs_pos.y;
@@ -1600,7 +1603,7 @@ __u32  GUI_LstmKeyDown(__listmenu_data_t *plistmenu, __gui_msg_t *message)
         plistmenu->listlayer->menulist->dist = 0;
         plistmenu->listlayer->menulist->setCurItem  = 1;
         GUI_LstmStopOnLoad(plistmenu);
-        /*»æÖÆlistmenuµ±Ç°Öµ*/
+        /*ç»˜åˆ¶listmenuå½“å‰å€¼*/
         ret = ListLayer_OnDraw(plistmenu->listlayer);
 
         if (ret != ORANGE_OK)
@@ -1625,10 +1628,10 @@ __u32  GUI_LstmKeyDown(__listmenu_data_t *plistmenu, __gui_msg_t *message)
         __u32                      ret;
         GUI_LstmStopProc(plistmenu);
 
-        /*Ñ­»·²Ëµ¥´¦Àí£¬´ÓÍ·µ½Î²*/
+        /*å¾ªçŽ¯èœå•å¤„ç†ï¼Œä»Žå¤´åˆ°å°¾*/
         if (plistmenu->listlayer->setfoucs == REAL_FOUCS)
         {
-            /*È¡Ïû½¹µãµÄÒ»Ð©ÌØÐ§*/
+            /*å–æ¶ˆç„¦ç‚¹çš„ä¸€äº›ç‰¹æ•ˆ*/
             plistmenu->listlayer->menulist->UnCurItem = plistmenu->listlayer->menulist->CurItem;
             plistmenu->listlayer->unfoucs_pos.x = plistmenu->listlayer->foucs_pos.x;
             plistmenu->listlayer->unfoucs_pos.y = plistmenu->listlayer->foucs_pos.y;
@@ -1639,7 +1642,7 @@ __u32  GUI_LstmKeyDown(__listmenu_data_t *plistmenu, __gui_msg_t *message)
 
         plistmenu->listlayer->menulist->CurItem = plistmenu->listlayer->menulist->head;
         plistmenu->listlayer->menulist->setCurItem  = 1;
-        /*»æÖÆlistmenuµ±Ç°Öµ*/
+        /*ç»˜åˆ¶listmenuå½“å‰å€¼*/
         ret = ListLayer_OnDraw(plistmenu->listlayer);
 
         if (ret != ORANGE_OK)
@@ -1658,7 +1661,7 @@ __u32  GUI_LstmKeyDown(__listmenu_data_t *plistmenu, __gui_msg_t *message)
     }
     else if (plistmenu->listmenu_RxQ)
     {
-        /*Èç¹ûÊÇÏòÏÂÏûÏ¢£¬¸üÐÂÏòÏÂ¼ÆÊýÖµ*/
+        /*å¦‚æžœæ˜¯å‘ä¸‹æ¶ˆæ¯ï¼Œæ›´æ–°å‘ä¸‹è®¡æ•°å€¼*/
         GUI_LstmPostRunMsg(plistmenu, LSTMM_RUNDOWN);
         return ORANGE_OK;
     }
@@ -1765,7 +1768,7 @@ __u32  GUI_LstmKeyDefault(__listmenu_data_t *plistmenu)
 
 __u32 GUI_LstmMoveUp(__listmenu_data_t *plistmenu, __u32 dist)
 {
-    /*Èç¹ûÊÇÏòÉÏÏûÏ¢£¬¸üÐÂÏòÉÏ¼ÆÊýÖµ*/
+    /*å¦‚æžœæ˜¯å‘ä¸Šæ¶ˆæ¯ï¼Œæ›´æ–°å‘ä¸Šè®¡æ•°å€¼*/
     GUI_LstmPostMoveMsg(plistmenu, LSTMM_MOVEUP, dist);
     return ORANGE_OK;
 }
@@ -1791,7 +1794,7 @@ __u32 GUI_LstmMoveUp(__listmenu_data_t *plistmenu, __u32 dist)
 
 __u32 GUI_LstmMoveDown(__listmenu_data_t *plistmenu, __u32 dist)
 {
-    /*Èç¹ûÊÇÏòÉÏÏûÏ¢£¬¸üÐÂÏòÉÏ¼ÆÊýÖµ*/
+    /*å¦‚æžœæ˜¯å‘ä¸Šæ¶ˆæ¯ï¼Œæ›´æ–°å‘ä¸Šè®¡æ•°å€¼*/
     GUI_LstmPostMoveMsg(plistmenu, LSTMM_MOVEDOWN, dist);
     return ORANGE_OK;
 }
@@ -1883,20 +1886,20 @@ __u32 GUI_LstmTouchDown(__listmenu_data_t *pData, __gui_msg_t *msg)
 
             if (pData->listlayer->mode != FIXED_MODE)
             {
-                /*½¹µãµÄ×ø±êÔÚ½áÊøÆÁÎ»ÖÃ*/
+                /*ç„¦ç‚¹çš„åæ ‡åœ¨ç»“æŸå±ä½ç½®*/
                 if (pData->listlayer->menulist->CurItem->rect.y >= pData->listlayer->listbuffer->vrect.height)
                 {
-                    /*ÏÔÊ¾ÇøÓòÔÚÆðÊ¼ÆÁÎ»ÖÃ£¬´ËÊ±ÏÔÊ¾ÆðÊ¼ÆÁÇøÓò£¬»æÖÆÈ´ÔÚ½áÊøÆÁÇøÓò*/
+                    /*æ˜¾ç¤ºåŒºåŸŸåœ¨èµ·å§‹å±ä½ç½®ï¼Œæ­¤æ—¶æ˜¾ç¤ºèµ·å§‹å±åŒºåŸŸï¼Œç»˜åˆ¶å´åœ¨ç»“æŸå±åŒºåŸŸ*/
                     if (pData->listlayer->viewrect.y < pData->listlayer->viewrect.height)
                     {
                         pData->listlayer->foucs_pos.y           = pData->listlayer->menulist->CurItem->rect.y - pData->listlayer->listbuffer->vrect.height;
                     }
                     else
                     {
-                        /*ÏÔÊ¾ÇøÓòºÍ»æÖÆÇøÓòÒ»ÖÂ*/
+                        /*æ˜¾ç¤ºåŒºåŸŸå’Œç»˜åˆ¶åŒºåŸŸä¸€è‡´*/
                         pData->listlayer->foucs_pos.y           = pData->listlayer->menulist->CurItem->rect.y;
                     }
-                }/*½¹µãµÄ×ø±êÔÚÆðÊ¼ÆÁÎ»ÖÃ*/
+                }/*ç„¦ç‚¹çš„åæ ‡åœ¨èµ·å§‹å±ä½ç½®*/
                 else if (pData->listlayer->menulist->CurItem->rect.y < pData->listlayer->viewrect.height)
                 {
                     if (pData->listlayer->viewrect.y >= pData->listlayer->viewrect.height)
@@ -1905,19 +1908,19 @@ __u32 GUI_LstmTouchDown(__listmenu_data_t *pData, __gui_msg_t *msg)
                     }
                     else
                     {
-                        /*ÏÔÊ¾ÇøÓòºÍ»æÖÆÇøÓòÒ»ÖÂ*/
+                        /*æ˜¾ç¤ºåŒºåŸŸå’Œç»˜åˆ¶åŒºåŸŸä¸€è‡´*/
                         pData->listlayer->foucs_pos.y           = pData->listlayer->menulist->CurItem->rect.y;
                     }
                 }
                 else
                 {
-                    /*ÏÔÊ¾ÇøÓòºÍ»æÖÆÇøÓòÒ»ÖÂ*/
+                    /*æ˜¾ç¤ºåŒºåŸŸå’Œç»˜åˆ¶åŒºåŸŸä¸€è‡´*/
                     pData->listlayer->foucs_pos.y           = pData->listlayer->menulist->CurItem->rect.y;
                 }
             }
             else
             {
-                /*ÏÔÊ¾ÇøÓòºÍ»æÖÆÇøÓòÒ»ÖÂ*/
+                /*æ˜¾ç¤ºåŒºåŸŸå’Œç»˜åˆ¶åŒºåŸŸä¸€è‡´*/
                 pData->listlayer->foucs_pos.y           = pData->listlayer->menulist->CurItem->rect.y;
             }
 
@@ -1927,7 +1930,7 @@ __u32 GUI_LstmTouchDown(__listmenu_data_t *pData, __gui_msg_t *msg)
                 pData->listlayer->setfoucs = 0;
             }
 
-            /*²éÕÒmenuitemÀïÃæµÄ×Ó¿Ø¼þ*/
+            /*æŸ¥æ‰¾menuitemé‡Œé¢çš„å­æŽ§ä»¶*/
             if (phitem->nctrls)
             {
                 __u32   count;
@@ -1943,12 +1946,12 @@ __u32 GUI_LstmTouchDown(__listmenu_data_t *pData, __gui_msg_t *msg)
                     win_rect.top    = gen_rect.y;
                     win_rect.bottom = gen_rect.y + gen_rect.height;
 
-                    /*ÕÒµ½×Ó¿Ø¼þµÄÇé¿ö*/
+                    /*æ‰¾åˆ°å­æŽ§ä»¶çš„æƒ…å†µ*/
                     if (PtInRect(&win_rect, win_pos.x, win_pos.y))
                     {
                         __u32               dwAddData;
                         __gui_msg_t         new_msg;
-                        /*×ª»»×ø±êÎª¿Ø¼þÄÚµÄ×ø±ê*/
+                        /*è½¬æ¢åæ ‡ä¸ºæŽ§ä»¶å†…çš„åæ ‡*/
                         ctrl_pos.x = win_pos.x - gen_rect.x;
                         ctrl_pos.y = win_pos.x - gen_rect.y;
                         dwAddData = MAKELONG(ctrl_pos.x, ctrl_pos.y);
@@ -1972,9 +1975,9 @@ __u32 GUI_LstmTouchDown(__listmenu_data_t *pData, __gui_msg_t *msg)
                         new_msg.dwAddData2   = (__u32)dwAddData;
                         new_msg.dwReserved   = msg->dwReserved;
                         new_msg.p_arg        = NULL;
-                        /*Ö±½Ó·¢¸ø×Ó¿Ø¼þ*/
+                        /*ç›´æŽ¥å‘ç»™å­æŽ§ä»¶*/
                         GUI_SendMessage(&new_msg);
-                        /*Ö±½Ó·µ»Ø£¬´ËÊ±²¢²»ÐèÒªÔÙ×÷ÎªunpushedÍ¨ÖªÂë´«µÝ¸ølistmenu*/
+                        /*ç›´æŽ¥è¿”å›žï¼Œæ­¤æ—¶å¹¶ä¸éœ€è¦å†ä½œä¸ºunpushedé€šçŸ¥ç ä¼ é€’ç»™listmenu*/
                         return ORANGE_OK;
                     }
                 }
@@ -1985,7 +1988,7 @@ __u32 GUI_LstmTouchDown(__listmenu_data_t *pData, __gui_msg_t *msg)
     {
         if (phitem)
         {
-            /*²éÕÒmenuitemÀïÃæµÄ×Ó¿Ø¼þ*/
+            /*æŸ¥æ‰¾menuitemé‡Œé¢çš„å­æŽ§ä»¶*/
             if (phitem->nctrls)
             {
                 __u32   count;
@@ -2001,12 +2004,12 @@ __u32 GUI_LstmTouchDown(__listmenu_data_t *pData, __gui_msg_t *msg)
                     win_rect.top    = gen_rect.y;
                     win_rect.bottom = gen_rect.y + gen_rect.height;
 
-                    /*ÕÒµ½×Ó¿Ø¼þµÄÇé¿ö*/
+                    /*æ‰¾åˆ°å­æŽ§ä»¶çš„æƒ…å†µ*/
                     if (PtInRect(&win_rect, win_pos.x, win_pos.y))
                     {
                         __u32               dwAddData;
                         __gui_msg_t         new_msg;
-                        /*×ª»»×ø±êÎª¿Ø¼þÄÚµÄ×ø±ê*/
+                        /*è½¬æ¢åæ ‡ä¸ºæŽ§ä»¶å†…çš„åæ ‡*/
                         ctrl_pos.x = win_pos.x - gen_rect.x;
                         ctrl_pos.y = win_pos.x - gen_rect.y;
                         dwAddData = MAKELONG(ctrl_pos.x, ctrl_pos.y);
@@ -2030,9 +2033,9 @@ __u32 GUI_LstmTouchDown(__listmenu_data_t *pData, __gui_msg_t *msg)
                         new_msg.dwAddData2   = (__u32)dwAddData;
                         new_msg.dwReserved   = msg->dwReserved;
                         new_msg.p_arg        = NULL;
-                        /*Ö±½Ó·¢¸ø×Ó¿Ø¼þ*/
+                        /*ç›´æŽ¥å‘ç»™å­æŽ§ä»¶*/
                         GUI_SendMessage(&new_msg);
-                        /*Ö±½Ó·µ»Ø£¬´ËÊ±²¢²»ÐèÒªÔÙ×÷ÎªunpushedÍ¨ÖªÂë´«µÝ¸ølistmenu*/
+                        /*ç›´æŽ¥è¿”å›žï¼Œæ­¤æ—¶å¹¶ä¸éœ€è¦å†ä½œä¸ºunpushedé€šçŸ¥ç ä¼ é€’ç»™listmenu*/
                         return ORANGE_OK;
                     }
                 }
@@ -2415,7 +2418,7 @@ __u32 GUI_LstmSetUnFoucs(__listmenu_data_t *plistmenu)
 }
 
 //------------------------------------------------------------------------------------------------------------
-// ÏìÓ¦ÏûÏ¢
+// å“åº”æ¶ˆæ¯
 
 //==================================================================
 //function name:    GUI_LstmOnMessage
@@ -2483,10 +2486,10 @@ __u32   GUI_LstmDrawCurNo(H_WIN lstm, __u32 curno)
         return __LINE__;
     }
 
-    /*»ñÈ¡listmenu±äÁ¿*/
+    /*èŽ·å–listmenuå˜é‡*/
     plistmenu = (__listmenu_data_t *)GUI_CtrlWinGetAddData(lstm);
     GUI_LstmStopOnLoad(plistmenu);
-    /*µÈ´ýºóÌ¨Ïß³Ì¼ÓÔØÍê³É*/
+    /*ç­‰å¾…åŽå°çº¿ç¨‹åŠ è½½å®Œæˆ*/
     status = ListLayer_GetLoadStatus(plistmenu->listlayer);
 
     while (status != EPDK_TRUE)
@@ -2495,7 +2498,7 @@ __u32   GUI_LstmDrawCurNo(H_WIN lstm, __u32 curno)
         status = ListLayer_GetLoadStatus(plistmenu->listlayer);
     }
 
-    /*ÉèÖÃlistmenuµ±Ç°Öµ*/
+    /*è®¾ç½®listmenuå½“å‰å€¼*/
     ret = GUI_LstmSetCurItemNo(plistmenu, curno);
 
     if (ret != ORANGE_OK)
@@ -2504,7 +2507,7 @@ __u32   GUI_LstmDrawCurNo(H_WIN lstm, __u32 curno)
         return __LINE__;
     }
 
-    /*»æÖÆlistmenuµ±Ç°Öµ*/
+    /*ç»˜åˆ¶listmenuå½“å‰å€¼*/
     ret = ListLayer_OnDraw(plistmenu->listlayer);
 
     if (ret != ORANGE_OK)
@@ -2512,7 +2515,7 @@ __u32   GUI_LstmDrawCurNo(H_WIN lstm, __u32 curno)
         return __LINE__;
     }
 
-    /*»æÖÆÍê³ÉÖ®ºóÉèÖÃ½¹µã×´Ì¬*/
+    /*ç»˜åˆ¶å®Œæˆä¹‹åŽè®¾ç½®ç„¦ç‚¹çŠ¶æ€*/
     ret = GUI_LstmSetFoucs(plistmenu);
 
     if (ret != ORANGE_OK)
@@ -2555,12 +2558,12 @@ __u32   GUI_LstmSetCurNo(H_WIN lstm, __u32 curno)
         return __LINE__;
     }
 
-    /*»ñÈ¡listmenu±äÁ¿*/
+    /*èŽ·å–listmenuå˜é‡*/
     plistmenu = (__listmenu_data_t *)GUI_CtrlWinGetAddData(lstm);
 
     if (plistmenu->listlayer->menulist->CurItem->itemno != curno)
     {
-        /*µÈ´ýºóÌ¨Ïß³Ì¼ÓÔØÍê³É*/
+        /*ç­‰å¾…åŽå°çº¿ç¨‹åŠ è½½å®Œæˆ*/
         status = ListLayer_GetLoadStatus(plistmenu->listlayer);
 
         while (status != EPDK_TRUE)
@@ -2569,7 +2572,7 @@ __u32   GUI_LstmSetCurNo(H_WIN lstm, __u32 curno)
             status = ListLayer_GetLoadStatus(plistmenu->listlayer);
         }
 
-        /*ÉèÖÃlistmenuµ±Ç°Öµ*/
+        /*è®¾ç½®listmenuå½“å‰å€¼*/
         ret = GUI_LstmSetCurItemNo(plistmenu, curno);
 
         if (ret != ORANGE_OK)
@@ -2580,7 +2583,7 @@ __u32   GUI_LstmSetCurNo(H_WIN lstm, __u32 curno)
 
         if (plistmenu->lyrsts != LISTMENU_SLEEP)
         {
-            /*»æÖÆlistmenuµ±Ç°Öµ*/
+            /*ç»˜åˆ¶listmenuå½“å‰å€¼*/
             ret = ListLayer_OnDraw(plistmenu->listlayer);
 
             if (ret != ORANGE_OK)
@@ -2623,11 +2626,11 @@ __u32   GUI_LstmDelCurItem(H_WIN lstm)
         return __LINE__;
     }
 
-    /*»ñÈ¡listmenu±äÁ¿*/
+    /*èŽ·å–listmenuå˜é‡*/
     plistmenu = (__listmenu_data_t *)GUI_CtrlWinGetAddData(lstm);
     GUI_LstmStopProc(plistmenu);
     GUI_LstmStopOnLoad(plistmenu);
-    /*µÈ´ýºóÌ¨Ïß³Ì¼ÓÔØÍê³É*/
+    /*ç­‰å¾…åŽå°çº¿ç¨‹åŠ è½½å®Œæˆ*/
     status = ListLayer_GetLoadStatus(plistmenu->listlayer);
 
     while (status != EPDK_TRUE)
@@ -2643,12 +2646,12 @@ __u32   GUI_LstmDelCurItem(H_WIN lstm)
 
     if (plistmenu->mode & LISTBOX_MOD)
     {
-        /*É¾³ýlistmenuµ±Ç°Öµ*/
+        /*åˆ é™¤listmenuå½“å‰å€¼*/
         ret = ListLayer_BoxDelCurItem(plistmenu->listlayer);
     }
     else
     {
-        /*É¾³ýlistmenuµ±Ç°Öµ*/
+        /*åˆ é™¤listmenuå½“å‰å€¼*/
         ret = ListLayer_DelCurItem(plistmenu->listlayer);
     }
 
@@ -2691,11 +2694,11 @@ __u32  GUI_LstmAddItemTail(H_WIN lstm, __lstm_item_attr_t *NewItem)
         return __LINE__;
     }
 
-    /*»ñÈ¡listmenu±äÁ¿*/
+    /*èŽ·å–listmenuå˜é‡*/
     plistmenu = (__listmenu_data_t *)GUI_CtrlWinGetAddData(lstm);
     GUI_LstmStopProc(plistmenu);
     GUI_LstmStopOnLoad(plistmenu);
-    /*µÈ´ýºóÌ¨Ïß³Ì¼ÓÔØÍê³É*/
+    /*ç­‰å¾…åŽå°çº¿ç¨‹åŠ è½½å®Œæˆ*/
     status = ListLayer_GetLoadStatus(plistmenu->listlayer);
 
     while (status != EPDK_TRUE)
@@ -2711,12 +2714,12 @@ __u32  GUI_LstmAddItemTail(H_WIN lstm, __lstm_item_attr_t *NewItem)
 
     if (plistmenu->mode & LISTBOX_MOD)
     {
-        /*É¾³ýlistmenuµ±Ç°Öµ*/
+        /*åˆ é™¤listmenuå½“å‰å€¼*/
         ret = ListLayer_BoxAddItemTail(plistmenu->listlayer, NewItem);
     }
     else
     {
-        /*É¾³ýlistmenuµ±Ç°Öµ*/
+        /*åˆ é™¤listmenuå½“å‰å€¼*/
         ret = ListLayer_AddItemTail(plistmenu->listlayer, NewItem);
     }
 
@@ -2760,7 +2763,7 @@ __u32   GUI_LstmNextPage(H_WIN lstm)
         return __LINE__;
     }
 
-    /*»ñÈ¡listmenu±äÁ¿*/
+    /*èŽ·å–listmenuå˜é‡*/
     plistmenu = (__listmenu_data_t *)GUI_CtrlWinGetAddData(lstm);
 
     if (!(plistmenu->mode & LISTBOX_MOD))
@@ -2779,7 +2782,7 @@ __u32   GUI_LstmNextPage(H_WIN lstm)
 
     if (plistmenu->lyrsts != LISTMENU_SLEEP)
     {
-        /*»æÖÆlistmenuµ±Ç°Öµ*/
+        /*ç»˜åˆ¶listmenuå½“å‰å€¼*/
         ret = ListLayer_VarNextPage(plistmenu->listlayer);
 
         if (ret != ORANGE_OK)
@@ -2830,7 +2833,7 @@ __u32   GUI_LstmPrevPage(H_WIN lstm)
         return __LINE__;
     }
 
-    /*»ñÈ¡listmenu±äÁ¿*/
+    /*èŽ·å–listmenuå˜é‡*/
     plistmenu = (__listmenu_data_t *)GUI_CtrlWinGetAddData(lstm);
 
     if (!(plistmenu->mode & LISTBOX_MOD))
@@ -2849,7 +2852,7 @@ __u32   GUI_LstmPrevPage(H_WIN lstm)
 
     if (plistmenu->lyrsts != LISTMENU_SLEEP)
     {
-        /*»æÖÆlistmenuµ±Ç°Öµ*/
+        /*ç»˜åˆ¶listmenuå½“å‰å€¼*/
         ret = ListLayer_VarPrevPage(plistmenu->listlayer);
 
         if (ret != ORANGE_OK)
@@ -2898,7 +2901,7 @@ __u32   GUI_LstmStopSlip(H_WIN lstm)
         return __LINE__;
     }
 
-    /*»ñÈ¡listmenu±äÁ¿*/
+    /*èŽ·å–listmenuå˜é‡*/
     plistmenu = (__listmenu_data_t *)GUI_CtrlWinGetAddData(lstm);
     GUI_LstmStopProc(plistmenu);
     return ORANGE_OK;
@@ -2914,20 +2917,20 @@ void GUI_LstmCurProc(__listmenu_data_t *pData)
 
         if (pData->listlayer->mode != FIXED_MODE)
         {
-            /*½¹µãµÄ×ø±êÔÚ½áÊøÆÁÎ»ÖÃ*/
+            /*ç„¦ç‚¹çš„åæ ‡åœ¨ç»“æŸå±ä½ç½®*/
             if (pData->listlayer->menulist->CurItem->rect.y >= pData->listlayer->listbuffer->vrect.height)
             {
-                /*ÏÔÊ¾ÇøÓòÔÚÆðÊ¼ÆÁÎ»ÖÃ£¬´ËÊ±ÏÔÊ¾ÆðÊ¼ÆÁÇøÓò£¬»æÖÆÈ´ÔÚ½áÊøÆÁÇøÓò*/
+                /*æ˜¾ç¤ºåŒºåŸŸåœ¨èµ·å§‹å±ä½ç½®ï¼Œæ­¤æ—¶æ˜¾ç¤ºèµ·å§‹å±åŒºåŸŸï¼Œç»˜åˆ¶å´åœ¨ç»“æŸå±åŒºåŸŸ*/
                 if (pData->listlayer->viewrect.y < pData->listlayer->viewrect.height)
                 {
                     pData->listlayer->foucs_pos.y           = pData->listlayer->menulist->CurItem->rect.y - pData->listlayer->listbuffer->vrect.height;
                 }
                 else
                 {
-                    /*ÏÔÊ¾ÇøÓòºÍ»æÖÆÇøÓòÒ»ÖÂ*/
+                    /*æ˜¾ç¤ºåŒºåŸŸå’Œç»˜åˆ¶åŒºåŸŸä¸€è‡´*/
                     pData->listlayer->foucs_pos.y           = pData->listlayer->menulist->CurItem->rect.y;
                 }
-            }/*½¹µãµÄ×ø±êÔÚÆðÊ¼ÆÁÎ»ÖÃ*/
+            }/*ç„¦ç‚¹çš„åæ ‡åœ¨èµ·å§‹å±ä½ç½®*/
             else if (pData->listlayer->menulist->CurItem->rect.y < pData->listlayer->viewrect.height)
             {
                 if (pData->listlayer->viewrect.y >= pData->listlayer->viewrect.height)
@@ -2936,19 +2939,19 @@ void GUI_LstmCurProc(__listmenu_data_t *pData)
                 }
                 else
                 {
-                    /*ÏÔÊ¾ÇøÓòºÍ»æÖÆÇøÓòÒ»ÖÂ*/
+                    /*æ˜¾ç¤ºåŒºåŸŸå’Œç»˜åˆ¶åŒºåŸŸä¸€è‡´*/
                     pData->listlayer->foucs_pos.y           = pData->listlayer->menulist->CurItem->rect.y;
                 }
             }
             else
             {
-                /*ÏÔÊ¾ÇøÓòºÍ»æÖÆÇøÓòÒ»ÖÂ*/
+                /*æ˜¾ç¤ºåŒºåŸŸå’Œç»˜åˆ¶åŒºåŸŸä¸€è‡´*/
                 pData->listlayer->foucs_pos.y           = pData->listlayer->menulist->CurItem->rect.y;
             }
         }
         else
         {
-            /*ÏÔÊ¾ÇøÓòºÍ»æÖÆÇøÓòÒ»ÖÂ*/
+            /*æ˜¾ç¤ºåŒºåŸŸå’Œç»˜åˆ¶åŒºåŸŸä¸€è‡´*/
             pData->listlayer->foucs_pos.y           = pData->listlayer->menulist->CurItem->rect.y;
         }
     }
@@ -3003,7 +3006,7 @@ static __s32 ListMenuCtrlProc(__gui_msg_t *msg)
             if (!(pData->status & LISTMENU_FOCUS))
             {
                 GUI_LstmStopOnLoad(pData);
-                /*´¦ÀíÉèÖÃ½¹µãÏûÏ¢*/
+                /*å¤„ç†è®¾ç½®ç„¦ç‚¹æ¶ˆæ¯*/
                 ret = GUI_LstmSetFoucs(pData);
 
                 if (ret != ORANGE_OK)
@@ -3026,7 +3029,7 @@ static __s32 ListMenuCtrlProc(__gui_msg_t *msg)
             if (pData->status & LISTMENU_FOCUS)
             {
                 GUI_LstmStopOnLoad(pData);
-                /*´¦ÀíÉèÖÃ½¹µãÏûÏ¢*/
+                /*å¤„ç†è®¾ç½®ç„¦ç‚¹æ¶ˆæ¯*/
                 ret = GUI_LstmSetUnFoucs(pData);
 
                 if (ret != ORANGE_OK)
@@ -3053,7 +3056,7 @@ static __s32 ListMenuCtrlProc(__gui_msg_t *msg)
             }
 
             GUI_LstmStopOnLoad(pData);
-            /*´¦Àí»æÖÆÏûÏ¢*/
+            /*å¤„ç†ç»˜åˆ¶æ¶ˆæ¯*/
             ret = GUI_LstmOnDraw(pData);
 
             if (ret != ORANGE_OK)
@@ -3075,7 +3078,7 @@ static __s32 ListMenuCtrlProc(__gui_msg_t *msg)
                 GUI_LstmCurProc(pData);
             }
 
-            /*»ñÈ¡¼üÅÌIDÖµ*/
+            /*èŽ·å–é”®ç›˜IDå€¼*/
             switch (msg->dwAddData1)
             {
                 case GUI_MSG_KEY_UP    :
@@ -3089,7 +3092,7 @@ static __s32 ListMenuCtrlProc(__gui_msg_t *msg)
 
                             if (GUI_WinGetExStyle(msg->h_deswin) & WS_EX_CHILDPROC)
                             {
-                                /*×Ó´°¿ÚÓÅÏÈ´¦ÀíRISEÏûÏ¢*/
+                                /*å­çª—å£ä¼˜å…ˆå¤„ç†RISEæ¶ˆæ¯*/
                                 if (pData->listlayer->menulist->CurItem->child[0].hWnd)
                                 {
                                     __gui_msg_t   new_msg;
@@ -3112,7 +3115,7 @@ static __s32 ListMenuCtrlProc(__gui_msg_t *msg)
                             }
                             else
                             {
-                                /*¸¸´°¿ÚÓÅÏÈ´¦ÀíRISEÏûÏ¢*/
+                                /*çˆ¶çª—å£ä¼˜å…ˆå¤„ç†RISEæ¶ˆæ¯*/
                                 notify_msg.hWnd     = msg->h_deswin;
                                 notify_msg.id       = GUI_WinGetItemId(msg->h_deswin);
                                 notify_msg.msgcode  = LSTMN_UNPUSHED;
@@ -3145,7 +3148,7 @@ static __s32 ListMenuCtrlProc(__gui_msg_t *msg)
 
                             if (GUI_WinGetExStyle(msg->h_deswin) & WS_EX_CHILDPROC)
                             {
-                                /*×Ó´°¿ÚÓÅÏÈ´¦ÀíRISEÏûÏ¢*/
+                                /*å­çª—å£ä¼˜å…ˆå¤„ç†RISEæ¶ˆæ¯*/
                                 if (pData->listlayer->menulist->CurItem->child[0].hWnd)
                                 {
                                     __gui_msg_t   new_msg;
@@ -3168,7 +3171,7 @@ static __s32 ListMenuCtrlProc(__gui_msg_t *msg)
                             }
                             else
                             {
-                                /*¸¸´°¿ÚÓÅÏÈ´¦ÀíRISEÏûÏ¢*/
+                                /*çˆ¶çª—å£ä¼˜å…ˆå¤„ç†RISEæ¶ˆæ¯*/
                                 notify_msg.hWnd     = msg->h_deswin;
                                 notify_msg.id       = GUI_WinGetItemId(msg->h_deswin);
                                 notify_msg.msgcode  = LSTMN_UNPUSHED;
@@ -3182,7 +3185,7 @@ static __s32 ListMenuCtrlProc(__gui_msg_t *msg)
                     {
                         if (pData->listlayer->menulist->ItemCount)
                         {
-                            /*Èç¹ûÊÇÉÏÏÂ¼üÖµÔò¼ÓÈëÏûÏ¢¶ÓÁÐ´¦Àí*/
+                            /*å¦‚æžœæ˜¯ä¸Šä¸‹é”®å€¼åˆ™åŠ å…¥æ¶ˆæ¯é˜Ÿåˆ—å¤„ç†*/
                             GUI_LstmKeyDown(pData, msg);
                         }
                     }
@@ -3200,7 +3203,7 @@ static __s32 ListMenuCtrlProc(__gui_msg_t *msg)
 
                         if (GUI_WinGetExStyle(msg->h_deswin) & WS_EX_CHILDPROC)
                         {
-                            /*×Ó´°¿ÚÓÅÏÈ´¦ÀíRISEÏûÏ¢*/
+                            /*å­çª—å£ä¼˜å…ˆå¤„ç†RISEæ¶ˆæ¯*/
                             if (pData->listlayer->menulist->CurItem->child[0].hWnd)
                             {
                                 __gui_msg_t   new_msg;
@@ -3223,7 +3226,7 @@ static __s32 ListMenuCtrlProc(__gui_msg_t *msg)
                         }
                         else
                         {
-                            /*¸¸´°¿ÚÓÅÏÈ´¦ÀíRISEÏûÏ¢*/
+                            /*çˆ¶çª—å£ä¼˜å…ˆå¤„ç†RISEæ¶ˆæ¯*/
                             notify_msg.hWnd     = msg->h_deswin;
                             notify_msg.id       = GUI_WinGetItemId(msg->h_deswin);
                             notify_msg.msgcode  = LSTMN_UNPUSHED;
@@ -3249,7 +3252,7 @@ static __s32 ListMenuCtrlProc(__gui_msg_t *msg)
 
                             if (GUI_WinGetExStyle(msg->h_deswin) & WS_EX_CHILDPROC)
                             {
-                                /*×Ó´°¿ÚÓÅÏÈ´¦ÀíRISEÏûÏ¢*/
+                                /*å­çª—å£ä¼˜å…ˆå¤„ç†RISEæ¶ˆæ¯*/
                                 if (pData->listlayer->menulist->CurItem->child[0].hWnd)
                                 {
                                     __gui_msg_t   new_msg;
@@ -3272,7 +3275,7 @@ static __s32 ListMenuCtrlProc(__gui_msg_t *msg)
                             }
                             else
                             {
-                                /*¸¸´°¿ÚÓÅÏÈ´¦ÀíRISEÏûÏ¢*/
+                                /*çˆ¶çª—å£ä¼˜å…ˆå¤„ç†RISEæ¶ˆæ¯*/
                                 notify_msg.hWnd     = msg->h_deswin;
                                 notify_msg.id       = GUI_WinGetItemId(msg->h_deswin);
                                 notify_msg.msgcode  = LSTMN_UNPUSHED;
@@ -3291,7 +3294,7 @@ static __s32 ListMenuCtrlProc(__gui_msg_t *msg)
 
                             if (GUI_WinGetExStyle(msg->h_deswin) & WS_EX_CHILDPROC)
                             {
-                                /*×Ó´°¿ÚÓÅÏÈ´¦ÀíENTERÏûÏ¢*/
+                                /*å­çª—å£ä¼˜å…ˆå¤„ç†ENTERæ¶ˆæ¯*/
                                 if (pData->listlayer->menulist->CurItem->child[0].hWnd)
                                 {
                                     __gui_msg_t   new_msg;
@@ -3314,7 +3317,7 @@ static __s32 ListMenuCtrlProc(__gui_msg_t *msg)
                             }
                             else
                             {
-                                /*¸¸´°¿ÚÓÅÏÈ´¦ÀíENTERÏûÏ¢*/
+                                /*çˆ¶çª—å£ä¼˜å…ˆå¤„ç†ENTERæ¶ˆæ¯*/
                                 notify_msg.hWnd     = msg->h_deswin;
                                 notify_msg.id       = GUI_WinGetItemId(msg->h_deswin);
                                 notify_msg.msgcode  = LSTMN_PUSHED;
@@ -3340,7 +3343,7 @@ static __s32 ListMenuCtrlProc(__gui_msg_t *msg)
                 break;
             }
 
-            /*»ñÈ¡¼üÅÌIDÖµ*/
+            /*èŽ·å–é”®ç›˜IDå€¼*/
             switch (msg->dwAddData1)
             {
                 case GUI_MSG_TOUCH_UP    :
@@ -3351,7 +3354,7 @@ static __s32 ListMenuCtrlProc(__gui_msg_t *msg)
 
                 case GUI_MSG_TOUCH_DOWN:
                 {
-                    /*ÒÆ¶¯Ö®ºóµÄ°´¼ü²»´¦Àí*/
+                    /*ç§»åŠ¨ä¹‹åŽçš„æŒ‰é”®ä¸å¤„ç†*/
                     if (pData->last_touch != GUI_MSG_TOUCH_MOVE)
                     {
                         GUI_LstmTouchDown(pData, msg);
@@ -3367,7 +3370,7 @@ static __s32 ListMenuCtrlProc(__gui_msg_t *msg)
 
                 case GUI_MSG_TOUCH_LONGDOWN:
 
-                    /*ÒÆ¶¯Ö®ºóµÄ³¤°´¼ü²»´¦Àí*/
+                    /*ç§»åŠ¨ä¹‹åŽçš„é•¿æŒ‰é”®ä¸å¤„ç†*/
                     if (pData->last_touch != GUI_MSG_TOUCH_MOVE)
                     {
                         if (pData->listlayer->setfoucs == 0)
@@ -3429,12 +3432,12 @@ static __s32 ListMenuCtrlProc(__gui_msg_t *msg)
 
         return ORANGE_OK;
 
-        /*menuitemÉÏµÄ×Ó¿Ø¼þÍ¨ÖªÏûÏ¢µÄ´¦Àíº¯Êý*/
+        /*menuitemä¸Šçš„å­æŽ§ä»¶é€šçŸ¥æ¶ˆæ¯çš„å¤„ç†å‡½æ•°*/
         case GUI_MSG_COMMAND:
         {
             __gui_msg_t     notifymsg;
-            /*Ö±½Ó½«×Ó¿Ø¼þµÄÍ¨ÖªÂëÍùlistmenu¿Ø¼þµÄ¸¸´°¿Ú´«µÝ
-            ´«µÝµÄÍ¨ÖªÂëºÍid±£³Ö²»±ä£¬ÕâÐèÒªÓ¦ÓÃ³ÌÐò±£Ö¤ÔÚlistmenuÖÐËùÓÐµÄ¿Ø¼þµÄid£¬Î¨Ò»*/
+            /*ç›´æŽ¥å°†å­æŽ§ä»¶çš„é€šçŸ¥ç å¾€listmenuæŽ§ä»¶çš„çˆ¶çª—å£ä¼ é€’
+            ä¼ é€’çš„é€šçŸ¥ç å’Œidä¿æŒä¸å˜ï¼Œè¿™éœ€è¦åº”ç”¨ç¨‹åºä¿è¯åœ¨listmenuä¸­æ‰€æœ‰çš„æŽ§ä»¶çš„idï¼Œå”¯ä¸€*/
             notifymsg.h_srcwin  = msg->h_deswin;
             notifymsg.h_deswin  = GUI_WinGetParent(msg->h_deswin);
             notifymsg.id        = GUI_MSG_COMMAND;
@@ -3453,7 +3456,3 @@ static __s32 ListMenuCtrlProc(__gui_msg_t *msg)
 }
 
 #endif //__LIST__MENU__H____
-
-
-
-

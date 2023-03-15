@@ -1,30 +1,33 @@
 /*
-*******************************************************************************************************************
-*                                                           Graphic Library
-*                                                   the graphic library support module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2008, SoftWinners Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name:       ListLayer_Process.h
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY鈥橲 TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS鈥橲DK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY鈥橲 TECHNOLOGY.
 *
-*Author:          William Wang
 *
-*Version :        1.1.0
-*
-*Date:            2008-10-20
-*
-*Description :    ListLayer Process head file definition
-*
-*Others :         None at present.
-*
-* History :
-*
-* <Author>          <time>              <version>     <description>
-*
-* William Wang     2008-10-20    1.1.0          Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __LIST_LAYER_PROCESS_H____
 #define __LIST_LAYER_PROCESS_H____
@@ -37,13 +40,13 @@
 
 typedef enum EVENT_LIST_FLAGS
 {
-    LISTLAYER_LOAD_FLAG            = 1 << 0,    /*listmenu加载线程的设置标志位*/
-    LISTLAYER_WAIT_FLAG            = 1 << 1,    /*运行线程的等待加载标志位*/
-    LISTLAYER_FOUCS_FLAG           = 1 << 2,    /*设焦线程的运行标志位*/
-    LISTLAYER_FOUCS_FINISH_FLAG    = 1 << 3,    /*设焦线程设置焦点完成*/
+    LISTLAYER_LOAD_FLAG            = 1 << 0,    /*listmenu鍔犺浇绾跨▼鐨勮缃爣蹇椾綅*/
+    LISTLAYER_WAIT_FLAG            = 1 << 1,    /*杩愯绾跨▼鐨勭瓑寰呭姞杞芥爣蹇椾綅*/
+    LISTLAYER_FOUCS_FLAG           = 1 << 2,    /*璁剧劍绾跨▼鐨勮繍琛屾爣蹇椾綅*/
+    LISTLAYER_FOUCS_FINISH_FLAG    = 1 << 3,    /*璁剧劍绾跨▼璁剧疆鐒︾偣瀹屾垚*/
     LISTLAYER_DRAW_FINISH_FLAG     = 1 << 4,
-    LISTLAYER_DRAW_ITEM_FLAG       = 1 << 5,    /*设焦线程(同时负责停止运行时的扩散操作)*/
-    LISTLAYER_WAIT_LOAD_FLAG       = 1 << 6     /*运行线程停止时发送给加载线程的标志位*/
+    LISTLAYER_DRAW_ITEM_FLAG       = 1 << 5,    /*璁剧劍绾跨▼(鍚屾椂璐熻矗鍋滄杩愯鏃剁殑鎵╂暎鎿嶄綔)*/
+    LISTLAYER_WAIT_LOAD_FLAG       = 1 << 6     /*杩愯绾跨▼鍋滄鏃跺彂閫佺粰鍔犺浇绾跨▼鐨勬爣蹇椾綅*/
 } EVENT_LIST_FLAGS_E;
 
 typedef struct list_event_trigger
@@ -54,11 +57,11 @@ typedef struct list_event_trigger
 
 typedef enum LISTBUFFER_STATUS
 {
-    INMIDDLE     = 0,            //可视窗口位置正中
-    UPWARDS      = 1 << 0,       //可视窗口位置偏上
-    DOWNWARDS    = 1 << 1,       //可视窗口位置偏下
-    WAITUP       = 1 << 2,       //可视窗口不可向上滑动
-    WAITDOWN     = 1 << 3,       //可视窗口不可向下滑动
+    INMIDDLE     = 0,            //鍙绐楀彛浣嶇疆姝ｄ腑
+    UPWARDS      = 1 << 0,       //鍙绐楀彛浣嶇疆鍋忎笂
+    DOWNWARDS    = 1 << 1,       //鍙绐楀彛浣嶇疆鍋忎笅
+    WAITUP       = 1 << 2,       //鍙绐楀彛涓嶅彲鍚戜笂婊戝姩
+    WAITDOWN     = 1 << 3,       //鍙绐楀彛涓嶅彲鍚戜笅婊戝姩
     DOWNOVER     = 1 << 4,
     UPOVER       = 1 << 5
 } LISTBUFFER_STATUS_E;

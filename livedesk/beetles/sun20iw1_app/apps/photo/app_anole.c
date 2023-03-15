@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2011, CHIPHD, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : app_anole.c
-* By        : CQQ
-* Func      :
-* Version   : v1.0
-* ============================================================================================================
-* 2011/07/04 16:57  create this file, implements the fundamental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "app_anole.h"
@@ -24,24 +38,24 @@
 
 __s32 g_ANOLE_EnableTouch = EPDK_FALSE;
 
-//Ãÿ–ß
+//ÁâπÊïà
 static __s32 switchmode[] =
 {
-    DEFAULT_SWITCH,             //ƒ¨»œŒﬁ«–ªª–ßπ˚
-    FADE_IN_OUT,                //µ≠»Îµ≠≥ˆ
-    PERSIAN_BLIND_H,            //ÀÆ∆Ω∞Ÿ“∂¥∞
-    PERSIAN_BLIND_V,            //¥π÷±∞Ÿ“∂¥∞
-    SLID_UP,                    //œÚ…œª¨∂Ø
-    SLID_DOWN,                  //œÚœ¬ª¨∂Ø
-    SLID_LEFT,                  //œÚ◊Ûª¨∂Ø
-    SLID_RIGHT,                 //œÚ”“ª¨∂Ø
-    STRETCH_UP,                 //œÚ…œ’πø™
-    STRETCH_DOWN,               //œÚœ¬’πø™
-    STRETCH_LEFT,               //œÚ◊Û’πø™
-    STRETCH_RIGHT,              //œÚ”“’πø™
-    MOSAIC,                     //¬Ì»¸øÀ
-    ROOM_IN,                    //Àı–°
-    ROOM_OUT,                   //∑≈¥Û
+    DEFAULT_SWITCH,             //ÈªòËÆ§Êó†ÂàáÊç¢ÊïàÊûú
+    FADE_IN_OUT,                //Ê∑°ÂÖ•Ê∑°Âá∫
+    PERSIAN_BLIND_H,            //Ê∞¥Âπ≥ÁôæÂè∂Á™ó
+    PERSIAN_BLIND_V,            //ÂûÇÁõ¥ÁôæÂè∂Á™ó
+    SLID_UP,                    //Âêë‰∏äÊªëÂä®
+    SLID_DOWN,                  //Âêë‰∏ãÊªëÂä®
+    SLID_LEFT,                  //ÂêëÂ∑¶ÊªëÂä®
+    SLID_RIGHT,                 //ÂêëÂè≥ÊªëÂä®
+    STRETCH_UP,                 //Âêë‰∏äÂ±ïÂºÄ
+    STRETCH_DOWN,               //Âêë‰∏ãÂ±ïÂºÄ
+    STRETCH_LEFT,               //ÂêëÂ∑¶Â±ïÂºÄ
+    STRETCH_RIGHT,              //ÂêëÂè≥Â±ïÂºÄ
+    MOSAIC,                     //È©¨ËµõÂÖã
+    ROOM_IN,                    //Áº©Â∞è
+    ROOM_OUT,                   //ÊîæÂ§ß
 };
 
 #define ANOLE_RandomMode_ID  BEETLES_TBL_SIZE(switchmode)
@@ -50,7 +64,7 @@ static __s32 switchmode[] =
 //
 #define GetDataFromBmpFile(_filedata)   ((__u8*)_filedata + 54)
 
-//»°Õº∆¨◊ ‘¥øÌ∏ﬂ
+//ÂèñÂõæÁâáËµÑÊ∫êÂÆΩÈ´ò
 #define GET_BMP_W_H_(_hbmp, _resData, _w, _h) do \
     {\
         _hbmp = bmp_open(_resData); \
@@ -68,7 +82,7 @@ static __s32 switchmode[] =
         } \
     }while(0)
 
-//»°Õº∆¨◊ ‘¥øÌ∏ﬂ
+//ÂèñÂõæÁâáËµÑÊ∫êÂÆΩÈ´ò
 #define GET_BMP_W_H_Ex(_resData, _w, _h) do \
     {\
         HBMP _hbmp = NULL; \
@@ -88,7 +102,7 @@ static __s32 switchmode[] =
     }while(0)
 
 //////////////////////////////////////////////////////////////////////////
-//º”‘ÿ≥ı ºªØ…Ë÷√÷µ
+//Âä†ËΩΩÂàùÂßãÂåñËÆæÁΩÆÂÄº
 static __s32 PHOTO_LoadData(__anole_para_t *anole_para)
 {
     __s32  val;
@@ -131,7 +145,7 @@ static __s32 PHOTO_LoadData(__anole_para_t *anole_para)
 }
 
 //////////////////////////////////////////////////////////////////////////
-//           ª¨∂Ø«–ªª≥ı ºªØº∞∑¥≥ı ºªØ
+//           ÊªëÂä®ÂàáÊç¢ÂàùÂßãÂåñÂèäÂèçÂàùÂßãÂåñ
 //////////////////////////////////////////////////////////////////////////
 #define ANOLE_SLIDER_FB_W                     68
 #define ANOLE_SLIDER_FB_H                     68
@@ -203,8 +217,8 @@ static void APP_ANOLE_SliderUninit(void)
 }
 
 /************************************************************************/
-//≥ı ºªØanole, para --- anoleœ‡πÿ≥ı ºªØ≤Œ ˝÷∏’Î
-// pInitData --- apœ‡πÿ≥ı ºªØ≤Œ ˝÷∏’Î
+//ÂàùÂßãÂåñanole, para --- anoleÁõ∏ÂÖ≥ÂàùÂßãÂåñÂèÇÊï∞ÊåáÈíà
+// pInitData --- apÁõ∏ÂÖ≥ÂàùÂßãÂåñÂèÇÊï∞ÊåáÈíà
 /************************************************************************/
 static int32_t ANOLE_Init(__anole_para_t *para, APP_ANOLE_INIT_T *pInitData)
 {
@@ -216,7 +230,7 @@ static int32_t ANOLE_Init(__anole_para_t *para, APP_ANOLE_INIT_T *pInitData)
     //CheckAPPMEM();
     anole_set_cb(ANOLE_EVENT_SHOW_PIC_FAIL, esKRNL_GetCallBack(pInitData->cb_err), pInitData->pUserPara);
 
-    ret = anole_init();// π”√¡À0x160C Pages;(2011.08.18)
+    ret = anole_init();//‰ΩøÁî®‰∫Ü0x160C Pages;(2011.08.18)
     __log("");
     //CheckAPPMEM();
     APP_ANOLE_SetShowMode(photo_get_ratio());
@@ -276,7 +290,7 @@ static int32_t ANOLE_Init(__anole_para_t *para, APP_ANOLE_INIT_T *pInitData)
 #define DEVICE_TP_NAME        "b:\\INPUT\\TP"
 #define DEVICE_TP_OPEN_MODE   "r+"
 /************************************************************************/
-// ¥Úø™¡Ωµ„¥•√˛ƒ£ Ω
+// ÊâìÂºÄ‰∏§ÁÇπËß¶Êë∏Ê®°Âºè
 /************************************************************************/
 static int32_t OpenTpDualMode(void)
 {
@@ -307,7 +321,7 @@ static int32_t OpenTpDualMode(void)
 }
 
 /************************************************************************/
-// πÿ±’¡Ωµ„¥•√˛ƒ£ Ω(…ËŒ™∆’Õ®ƒ£ Ω)
+// ÂÖ≥Èó≠‰∏§ÁÇπËß¶Êë∏Ê®°Âºè(ËÆæ‰∏∫ÊôÆÈÄöÊ®°Âºè)
 /************************************************************************/
 static int32_t CloseTpDualMode(void)
 {
@@ -338,7 +352,7 @@ static int32_t CloseTpDualMode(void)
 }
 
 /************************************************************************/
-//≥ı ºªØanole
+//ÂàùÂßãÂåñanole
 /************************************************************************/
 int32_t APP_ANOLE_Init(APP_ANOLE_INIT_T *pInitData)
 {
@@ -352,7 +366,7 @@ int32_t APP_ANOLE_Init(APP_ANOLE_INIT_T *pInitData)
 }
 
 /************************************************************************/
-//ÕÀ≥ˆanole
+//ÈÄÄÂá∫anole
 /************************************************************************/
 void APP_ANOLE_Exit(void)
 {
@@ -368,7 +382,7 @@ void APP_ANOLE_Exit(void)
 }
 
 /************************************************************************/
-//»°Œƒº˛–≈œ¢
+//ÂèñÊñá‰ª∂‰ø°ÊÅØ
 /************************************************************************/
 int32_t APP_ANOLE_GetCurPicInfo(APP_ANOLE_FILE_INFO_T *file_info)
 {
@@ -377,7 +391,7 @@ int32_t APP_ANOLE_GetCurPicInfo(APP_ANOLE_FILE_INFO_T *file_info)
     uint32_t    index = anole_npl_get_cur();
 
     file_info->pic.name = file_info->path_name;
-    //ªÒ»°Œƒº˛√˚
+    //Ëé∑ÂèñÊñá‰ª∂Âêç
     anole_npl_index2file(index, file_info->path_name);
 
     eLIBs_GetFileCTime(file_info->path_name, &file_info->time);
@@ -403,7 +417,7 @@ int32_t APP_ANOLE_GetCurPicInfo(APP_ANOLE_FILE_INFO_T *file_info)
 }
 
 /************************************************************************/
-//≤•∑≈¡–±Ì÷–µ±«∞µƒŒƒº˛
+//Êí≠ÊîæÂàóË°®‰∏≠ÂΩìÂâçÁöÑÊñá‰ª∂
 /************************************************************************/
 int32_t APP_ANOLE_PlayCurFile(void)
 {
@@ -436,7 +450,7 @@ int32_t APP_ANOLE_PlayCurFile(void)
 }
 
 /************************************************************************/
-//…Ë÷√Ãÿ–ß
+//ËÆæÁΩÆÁâπÊïà
 /************************************************************************/
 int32_t APP_ANOLE_SetSwitchMode(uint32_t Id)
 {
@@ -452,7 +466,7 @@ int32_t APP_ANOLE_SetSwitchMode(uint32_t Id)
 }
 
 /************************************************************************/
-//»°Ãÿ–ßID
+//ÂèñÁâπÊïàID
 /************************************************************************/
 int32_t APP_ANOLE_GetSwitchMode(void)
 {
@@ -470,7 +484,7 @@ int32_t APP_ANOLE_GetSwitchMode(void)
 }
 
 /************************************************************************/
-//…Ë÷√≤•∑≈ÀŸ∂»
+//ËÆæÁΩÆÊí≠ÊîæÈÄüÂ∫¶
 /************************************************************************/
 int32_t APP_ANOLE_SetPlayInterval(int32_t id_flag, int32_t para)
 {
@@ -498,7 +512,7 @@ int32_t APP_ANOLE_SetPlayInterval(int32_t id_flag, int32_t para)
 }
 
 /************************************************************************/
-//¡Ωµ„¥•√˛∑≈¥Û
+//‰∏§ÁÇπËß¶Êë∏ÊîæÂ§ß
 /************************************************************************/
 int32_t APP_ANOLE_TouchZoomIn(uint32_t pixel_change)
 {
@@ -517,7 +531,7 @@ int32_t APP_ANOLE_TouchZoomIn(uint32_t pixel_change)
 }
 
 /************************************************************************/
-//¡Ωµ„¥•√˛Àı–°
+//‰∏§ÁÇπËß¶Êë∏Áº©Â∞è
 /************************************************************************/
 int32_t APP_ANOLE_TouchZoomOut(uint32_t pixel_change)
 {
@@ -536,11 +550,11 @@ int32_t APP_ANOLE_TouchZoomOut(uint32_t pixel_change)
 }
 
 /************************************************************************/
-//¥•√˛“∆∂Ø
+//Ëß¶Êë∏ÁßªÂä®
 /************************************************************************/
 int32_t APP_ANOLE_TouchMove(int32_t delta_x, int32_t delta_y)
 {
-    //µ±«∞¥¶”⁄scale  ◊¥Ã¨£¨‘Ú÷¥––“∆∂Ø
+    //ÂΩìÂâçÂ§Ñ‰∫éscale  Áä∂ÊÄÅÔºåÂàôÊâßË°åÁßªÂä®
     if (APP_ANOLE_GetSta() == ANOLE_MODE_ZOOM)
     {
         __pos_t move;
@@ -554,7 +568,7 @@ int32_t APP_ANOLE_TouchMove(int32_t delta_x, int32_t delta_y)
 }
 
 /************************************************************************/
-//¥•√˛( ÷∂Ø)«–ªªÕº∆¨
+//Ëß¶Êë∏(ÊâãÂä®)ÂàáÊç¢ÂõæÁâá
 // delta_x = x_up - x_down;
 // delta_y = y_up - y_down;
 /************************************************************************/
@@ -570,7 +584,7 @@ int32_t APP_ANOLE_TouchSwitchPic(int32_t delta_x, int32_t delta_y)
 
         if (ABS(delta_y) < ABS(delta_x))
         {
-            //x∑ΩœÚ
+            //xÊñπÂêë
             if (delta_x <= - TouchMinDist())
             {
                 //              if (mode != SLID_LEFT && mode != STRETCH_LEFT)
@@ -595,7 +609,7 @@ int32_t APP_ANOLE_TouchSwitchPic(int32_t delta_x, int32_t delta_y)
         }
         else
         {
-            //y∑ΩœÚ
+            //yÊñπÂêë
             if (delta_y <= -TouchMinDist())
             {
                 //              if (mode != SLID_UP && mode != STRETCH_UP)
@@ -621,7 +635,7 @@ int32_t APP_ANOLE_TouchSwitchPic(int32_t delta_x, int32_t delta_y)
 
         if (ret == EPDK_OK)
         {
-            //ªπ‘≠◊‘∂Ø≤•∑≈Ãÿ–ß
+            //ËøòÂéüËá™Âä®Êí≠ÊîæÁâπÊïà
             APP_ANOLE_SetSwitchMode(mode);
         }
     }
@@ -635,9 +649,9 @@ int32_t APP_ANOLE_TouchSwitchPic(int32_t delta_x, int32_t delta_y)
 #endif
 
 /************************************************************************/
-// anole touch ¥¶¿Ì
+// anole touch Â§ÑÁêÜ
 // touch_action --- __gui_msg_touchid_t
-// return value --- 0, √ª¥¶¿Ì; ∑«0£¨“—∂‘œ˚œ¢Ω¯––¡À¥¶¿Ì£¨
+// return value --- 0, Ê≤°Â§ÑÁêÜ; Èùû0ÔºåÂ∑≤ÂØπÊ∂àÊÅØËøõË°å‰∫ÜÂ§ÑÁêÜÔºå
 /************************************************************************/
 int32_t APP_ANOLE_Touch(int16_t x, int16_t y, int32_t touch_action, int32_t pixel_change)
 {
@@ -661,12 +675,12 @@ int32_t APP_ANOLE_Touch(int16_t x, int16_t y, int32_t touch_action, int32_t pixe
         {
             case GUI_MSG_TOUCH_ZOOMIN:
             case GUI_MSG_TOUCH_OVERZOOMIN:
-                APP_ANOLE_TouchZoomOut(pixel_change); //æ÷≤øÀı–°(gui∑¢ÀÕµƒœ˚œ¢◊÷√Ê“‚“Âœ‡∑¥¡À)
+                APP_ANOLE_TouchZoomOut(pixel_change); //Â±ÄÈÉ®Áº©Â∞è(guiÂèëÈÄÅÁöÑÊ∂àÊÅØÂ≠óÈù¢ÊÑè‰πâÁõ∏Âèç‰∫Ü)
                 return 2;
 
             case GUI_MSG_TOUCH_ZOOMOUT:
             case GUI_MSG_TOUCH_OVERZOOMOUT:
-                APP_ANOLE_TouchZoomIn(pixel_change); //æ÷≤ø∑≈¥Û(gui∑¢ÀÕµƒœ˚œ¢◊÷√Ê“‚“Âœ‡∑¥¡À)
+                APP_ANOLE_TouchZoomIn(pixel_change); //Â±ÄÈÉ®ÊîæÂ§ß(guiÂèëÈÄÅÁöÑÊ∂àÊÅØÂ≠óÈù¢ÊÑè‰πâÁõ∏Âèç‰∫Ü)
                 return 2;
         }
     }
@@ -789,7 +803,7 @@ void APP_ANOLE_Pause(void)
 {
     anole_backnormal();
 
-    //»Áπ˚√ª”–∫ÛÃ®“Ù∆µ£¨‘Ú‘ –Ì◊‘∂Øπÿª˙
+    //Â¶ÇÊûúÊ≤°ÊúâÂêéÂè∞Èü≥È¢ëÔºåÂàôÂÖÅËÆ∏Ëá™Âä®ÂÖ≥Êú∫
     if (EPDK_FALSE == is_app_exist(APP_MUSIC)
 #if 0// shiql set 0 for D100
         && EPDK_FALSE == is_app_exist(APP_LINEIN)

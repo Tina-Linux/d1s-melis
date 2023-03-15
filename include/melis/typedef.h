@@ -1,22 +1,3 @@
-/*
- * =====================================================================================
- *
- *       Filename:  typedef.h
- *
- *    Description:  root types of melis sdk. origins from compiler stdxxx.h files.
- *
- *        Version:  Melis3.0
- *         Create:  2017-11-02 10:21:07
- *       Revision:  none
- *       Compiler:  gcc version 6.3.0 (crosstool-NG crosstool-ng-1.23.0)
- *
- *         Author:  caozilong@allwinnertech.com
- *   Organization:  BU1-PSW
- *  Last Modified:  2020-07-09 19:17:36
- *
- * =====================================================================================
- */
-
 #ifndef __MELIS_TYPEDEF__
 #define __MELIS_TYPEDEF__
 
@@ -28,43 +9,6 @@ extern "C" {
 #include <stdint.h>
 #include <stdarg.h>
 #include <limits.h>
-
-#define CHIP_PLATFORM
-#define __used                __attribute__((__used__))
-#define __deprecated          __attribute__((deprecated))
-
-#define likely(x)             __builtin_expect((long)!!(x), 1L)
-#define unlikely(x)           __builtin_expect((long)!!(x), 0L)
-
-#define CODE_UNREACHABLE      __builtin_unreachable()
-#define FUNC_NORETURN         __attribute__((__noreturn__))
-
-#ifndef __packed
-#define __packed              __attribute__((__packed__))
-#endif
-#ifndef __aligned
-#define __aligned(x)          __attribute__((__aligned__(x)))
-#endif
-#define __may_alias           __attribute__((__may_alias__))
-#ifndef __printf_like
-#define __printf_like(f, a)   __attribute__((format (printf, f, a)))
-#endif
-
-/*
- *#if (!defined(unlikely))
- *#define unlikely(EXPRESSSION) !!(EXPRESSSION)
- *#endif
- */
-
-#define ATTRIBUTE_UNUSED __attribute__ ((__unused__))
-#define ARG_UNUSED(NAME) NAME ATTRIBUTE_UNUSED
-
-#define RT_TIMER_THREAD_PRIO   8
-/*
-**********************************************************************************************************************
-*                                              常量定义
-**********************************************************************************************************************
-*/
 
 #ifndef EBASE_TRUE
 #define EBASE_TRUE      0
@@ -82,14 +26,12 @@ extern "C" {
 #define EBSP_FALSE      EBASE_FALSE
 #endif
 
-
-
 #ifndef EPDK_OK
-#define EPDK_OK         0                   /* 代表成功*/
+#define EPDK_OK         0
 #endif
 
 #ifndef EPDK_FAIL
-#define EPDK_FAIL       (-1)                /* 代表失败*/
+#define EPDK_FAIL       (-1)
 #endif
 
 #ifndef EPDK_TRUE

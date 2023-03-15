@@ -10,10 +10,10 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# If you see the following export command, do not change the sequence of 
+# If you see the following export command, do not change the sequence of
 #
 #
-# the PATH, we must put our pack routine at the first, to avoid customer's 
+# the PATH, we must put our pack routine at the first, to avoid customer's
 #     runing environment has some excutes which have the same name with out tools.
 export PATH=${MELIS_BASE}/tools/packtool/:$PATH
 ############################ Notice #####################################
@@ -67,10 +67,9 @@ PACK_STORAGE_TYPE=${FLAGS_storage_type}
 MULTI_CONFIG_INDEX=0
 UART_PORT=$(cat ${PACK_TOPDIR}/projects/${PACK_BOARD}/configs/*_nor.fex | fgrep -w "uart_debug_port" | fgrep -v ";" | sed s/[[:space:]]//g | awk -F'=' '{ print  $2 }')
 
-if [ ! $UART_PORT ];then
-     UART_PORT=0
-elif [ "$UART_PORT" -ne 0  ]&&[ "$UART_PORT" -ne 1  ]&&[ "$UART_PORT" -ne 2  ];then
-     UART_PORT=0
+#if uart_port is not exit or uboot_nor_uartx.bin is nor exit. set uart is defult port
+if [ ! $UART_PORT -o ! -f "${PACK_TOPDIR}/projects/${PACK_BOARD}/bin/u-boot_${PACK_CHIP}_nor_uart${UART_PORT}.bin" ];then
+    UART_PORT=0
 fi
 
 # the size for user space is 114432 KB for nand
@@ -110,12 +109,12 @@ ${PACK_TOPDIR}/projects/${PACK_BOARD}/bin/boot0_${PACK_CHIP}_card.bin:boot0_card
 ${PACK_TOPDIR}/projects/${PACK_BOARD}/bin/boot0_${PACK_CHIP}_card.bin:boot0_card_product.fex
 ${PACK_TOPDIR}/projects/${PACK_BOARD}/bin/fes1_${PACK_CHIP}.bin:fes1.fex
 ${PACK_TOPDIR}/projects/${PACK_BOARD}/bin/u-boot_${PACK_CHIP}_nand.bin:u-boot_nand.fex
+${PACK_TOPDIR}/projects/${PACK_BOARD}/bin/u-boot_${PACK_CHIP}_card.bin:u-boot_card.fex
 ${PACK_TOPDIR}/projects/${PACK_BOARD}/bin/u-boot_${PACK_CHIP}_nor_uart${UART_PORT}.bin:u-boot_nor.fex
 ${PACK_TOPDIR}/projects/${PACK_BOARD}/epos.img:epos.img
 )
 
 boot_file_secure=(${PACK_TOPDIR}/projects/${PACK_BOARD}/bin/sboot_${PACK_CHIP}.bin:sboot.bin)
-
 
 function get_char()
 {
@@ -287,8 +286,7 @@ function make_data_image()
 
     for part in $(get_part_info ${1} ${2})
     do
-        echo "*******
-"
+        echo "*******"
         echo "=${part}="
         echo "*******"
         name="$(awk -F: '{print $1}' <<< "${part}")"
@@ -321,7 +319,7 @@ function make_data_image()
         set -e
 
         if [ ! -z $(grep "^CONFIG_ROOTFS_LITTLEFS=y" "${MELIS_BASE}/.config") ] ;
-            then mklittlefs ${size} ${name} ${downloadfile} 
+            then mklittlefs ${size} ${name} ${downloadfile}
         fi
 
         if [ ! -z $(grep "^CONFIG_ROOTFS_MINFS=y" "${MELIS_BASE}/.config") ] ;
@@ -339,9 +337,75 @@ function make_data_image()
     done
 }
 
+function do_rootfs_ini_tmp()
+{
+    cp -f ${PACK_TOPDIR}/projects/${PACK_BOARD}/configs/rootfs.ini ${PACK_TOPDIR}/projects/${PACK_BOARD}/data/UDISK/rootfs_ini.tmp
+    [ -f ${PACK_TOPDIR}/projects/${PACK_BOARD}/data/UDISK/rootfs_ini.tmp ] || {
+        pack_warn "rootfs_ini.tmp not exist!"
+        continue;
+    }
+    echo ${PACK_TOPDIR}/projects/${PACK_BOARD}/data/UDISK/rootfs_ini.tmp
+}
+
+function change_bootA_partition_size()
+{
+    #Set the compression mode according to the configuration
+    fileSize=0
+    if [ ! -z $(grep "^CONFIG_EPOS_COMPRESS_NONE=y" "${MELIS_BASE}/.config") ] ;
+        then
+        fileSize=`ls -l epos.img | awk '{print $5}'` #get filesize
+    elif [ ! -z $(grep "^CONFIG_EPOS_COMPRESS_GZ=y" "${MELIS_BASE}/.config") ];
+        then
+        fileSize=`ls -l epos-gz.img | awk '{print $5}'` #get filesize
+    elif [ ! -z $(grep "^CONFIG_EPOS_COMPRESS_LZ4=y" "${MELIS_BASE}/.config") ];
+        then
+        fileSize=`ls -l epos-lz4.img | awk '{print $5}'` #get filesize
+    elif [ ! -z $(grep "^CONFIG_EPOS_COMPRESS_LZMA=y" "${MELIS_BASE}/.config") ];
+        then
+        fileSize=`ls -l epos.img.lzma | awk '{print $5}'` #get filesize
+    fi
+
+    fileSize=$(( ($fileSize / 1024) + 1)) #get k size
+    fileSize=$(( ($fileSize/64 +1) * 64 * 2)) #align 64K
+    echo "---------------------------------------booA size = $fileSize-----------------------------------"
+    sed -i "/bootA/,/\"melis_pkg_nor\.fex\"/{s/.*size.*/    size = $fileSize/}" $1
+}
+
+function update_package_boot_cfg()
+{
+    #Cancel all compression methods
+    sed -i "s/^item=freertos/;item=freertos/g" package_boot0.cfg
+    sed -i "s/^item=melis-gz/;item=melis-gz/g" package_boot0.cfg
+    sed -i "s/^item=melis-lz4/;item=melis-lz4/g" package_boot0.cfg
+    sed -i "s/^item=melis-lzma/;item=melis-lzma/g" package_boot0.cfg
+
+    #Set the compression mode according to the configuration
+    echo "*******************************************************"
+    if [ ! -z $(grep "^CONFIG_EPOS_COMPRESS_NONE=y" "${MELIS_BASE}/.config") ] ;
+        then
+        echo "epos compress mode is : none"
+        sed -i "s/^;item=freertos/item=freertos/g" package_boot0.cfg
+    elif [ ! -z $(grep "^CONFIG_EPOS_COMPRESS_GZ=y" "${MELIS_BASE}/.config") ];
+        then
+        echo "epos compress mode is : GZ"
+        sed -i "s/^;item=melis-gz/item=melis-gz/g" package_boot0.cfg
+    elif [ ! -z $(grep "^CONFIG_EPOS_COMPRESS_LZ4=y" "${MELIS_BASE}/.config") ];
+        then
+        echo "epos compress mode is : LZ4"
+        sed -i "s/^;item=melis-lz4/item=melis-lz4/g" package_boot0.cfg
+    elif [ ! -z $(grep "^CONFIG_EPOS_COMPRESS_LZMA=y" "${MELIS_BASE}/.config") ];
+        then
+        echo "epos compress mode is : LZMA"
+        sed -i "s/^;item=melis-lzma/item=melis-lzma/g" package_boot0.cfg
+    fi
+    echo "*******************************************************"
+}
+
 function do_prepare()
 {
     pack_info  "copying config/boot binary/phoenix plugin files"
+    do_rootfs_ini_tmp
+
     for file in ${phoenixplugin_file_list[@]} ; do
         echo ${file} ; cp -f $file ./
     done
@@ -380,10 +444,10 @@ function do_prepare()
     if [ "x${PACK_SECURE}" = "xsecure" ] ; then
         IMG_NAME="${IMG_NAME}_${PACK_SECURE}"
     fi
-	
+
 	[ -f epos.img ] && gzip -c      epos.img        > epos-gz.img
 	[ -f epos.img ] && lz4  -f      epos.img        epos-lz4.img
-	[ -f epos.img ] && lzma -zfk    epos.img       
+	[ -f epos.img ] && lzma -zfk    epos.img
 }
 
 function do_common()
@@ -428,6 +492,18 @@ function do_common()
         sed -i '/^secure_without_OS/d'                          sys_config_$1${SUFFIX}.fex
 	fi
 
+    [ -f sys_partition_$1.fex ] || {
+        pack_warn "sys_partition_$1.fex not exist!"
+        continue
+    }
+
+    #Set the compression mode according to the configuration
+    if [ ! -z $(grep "^CONFIG_CHANGE_COMPRESS_METHOD=y" "${MELIS_BASE}/.config") ] ;
+        then
+        update_package_boot_cfg
+        change_bootA_partition_size sys_partition_$1.fex
+    fi
+
     busybox unix2dos sys_config_$1${SUFFIX}.fex
     script  sys_config_$1${SUFFIX}.fex      > /dev/null
     cp -f   sys_config_$1${SUFFIX}.bin      config_$1${SUFFIX}.fex
@@ -439,12 +515,9 @@ function do_common()
         elif [ "$1"  = "nand" ] ; then     update_boot0 boot0_$1.fex	sys_config_$1${SUFFIX}.bin      "NAND"          > /dev/null
         else    pack_warn "please check, img_storage_type is \"${img_storage_type[@]}\""
         fi
+		update_chip_melis boot0_$1.fex
     }
 
-    [ -f sys_partition_$1.fex ] || {
-        pack_warn "sys_partition_$1.fex not exist!"
-        continue
-    }
     busybox unix2dos        sys_partition_$1.fex
     script  sys_partition_$1.fex > /dev/null
 
@@ -459,6 +532,13 @@ function do_common()
         fi
         mv boot_package.fex     melis_pkg_nor.fex
         dd if=melis_pkg_nor.fex of=boot_package_nor.fex bs=1k count=32
+	else
+        update_rtos --image epos-gz.img --output epos-gz-update.img
+        if [ $? -ne 0  ]; then
+            pack_error "add rtos header error!"
+            exit 1
+        fi
+        cp epos-gz-update.img melis_pkg_nor.fex
 	fi
 
     [ -f fes1.fex ] && update_fes1  fes1.fex        sys_config_$1${SUFFIX}.bin > /dev/null
@@ -481,6 +561,8 @@ function do_common()
     }
 
 	rm sys_config.bin
+	cp sys_config_$1${SUFFIX}.bin sys_config_bin.fex
+
 	[ -f env.cfg ] && {
 		env_size=4096
 		mkenvimage -r -p 0x00 -s ${env_size} -o env.fex env.cfg
@@ -491,7 +573,7 @@ function do_finish()
 {
     pack_info "running the function do_finish \"sys_partition_$1.bin\""
     if [ -f sys_partition_$1.bin ] ; then
-        if [ $1 = "nor" ] ; then 
+        if [ $1 = "nor" ] ; then
             update_mbr sys_partition_$1.bin         1       sunxi_mbr_$1.fex
         elif [ $1 = "card" ] ; then
             update_mbr sys_partition_$1.bin         4       sunxi_mbr_$1.fex
@@ -536,7 +618,7 @@ function pack_update_zip()
     local DATA_OUT=${PACK_TOPDIR}/out/${PACK_BOARD}/compile_dir/target/data
     rm -fr update.zip
 
-    ln -fs image/rtos_pkg_nor.fex ${RTOSFS_IMG}
+    ln -fs image/melis_pkg_nor.fex ${RTOSFS_IMG}
 
 #	if [ "x${PACK_SIG}" = "xsecure" ]; then
     	${PACK_TOPDIR}/../../../../aligenie/host/tools/otatool/md5byslice md5.list ${RTOSFS_IMG}  #*.mp3 #toc0.fex toc1.fex
@@ -656,7 +738,7 @@ function do_pack_rtos()
     pack_info "packing for rtos\n"
 
     # boot_package/toc1 limit to 4M，but rtos may large then 4M
-    rm -f rtos_pkg_nor.fex
+    rm -f melis_pkg_nor.fex
     rm -f rtos_pkg.fex
     rm -f freertos-gz-update.fex
     rm -f uboot_toc1.fex
@@ -708,7 +790,7 @@ function do_pack_rtos()
 			pack_error "add rtos header error!"
 			exit 1
 		fi
-		ln -s freertos-gz-update.fex rtos_pkg_nor.fex
+		ln -s freertos-gz-update.fex melis_pkg_nor.fex
 		ln -s freertos-gz-update.fex rtos_pkg.fex
 		cp toc1.fex uboot_toc1.fex #toc1.fex for nand, uboot_toc1.fex for nor
 
@@ -739,7 +821,7 @@ function do_pack_rtos()
 			pack_error "add rtos header error!"
 			exit 1
 		fi
-		ln -s freertos-gz-update.fex rtos_pkg_nor.fex
+		ln -s freertos-gz-update.fex melis_pkg_nor.fex
 		ln -s freertos-gz-update.fex rtos_pkg.fex
 		cp toc1.fex uboot_toc1.fex #toc1.fex for nand, uboot_toc1.fex for nor
 
@@ -767,7 +849,7 @@ function do_pack_rtos()
 			pack_error "add rtos header error!"
 			exit 1
 		fi
-		ln -s freertos-gz-update.fex rtos_pkg_nor.fex
+		ln -s freertos-gz-update.fex melis_pkg_nor.fex
 		ln -s freertos-gz-update.fex rtos_pkg.fex
 
 		if [ "x${storage_type}" = "x3" ] ; then
@@ -799,7 +881,7 @@ function create_rtos_full_img()
         	boot0_file_name=toc0.fex
         	full_rtos_img_name=${PACK_PLATFORM}_${2}Mnor_s.fex
         else
-		boot0_file_name=boot0_nor.fex
+	       	boot0_file_name=boot0_nor.fex
         	full_rtos_img_name=${PACK_PLATFORM}_${2}Mnor.fex
         fi
         set +e
@@ -883,7 +965,7 @@ if [ "x${PACK_STORAGE_TYPE}" = "xnor" ] ; then
 elif [ "x${PACK_STORAGE_TYPE}" = "xsdcard" ] ; then
 	do_common "card"
 elif [ "x${PACK_STORAGE_TYPE}" = "xsdcard_product" ] ; then
-	do_common "card_product"	
+	do_common "card_product"
 elif [ "x${PACK_STORAGE_TYPE}" = "xnand" ] ; then
 	do_common "nand"
 fi
@@ -913,7 +995,7 @@ elif [ "x${PACK_STORAGE_TYPE}" = "xsdcard_product" ] ; then
 	prepare_for_8Mnor
 	sed -i 's/\(imagename = .*\)_[^_]*card/\1_8Mcard/g'             image_card_product.cfg
     IMG_NAME=$(awk '{if($3~/^'${PACK_PLATFORM}'.*img$/)print$3}'    image_card_product.cfg)
-    do_finish "card_product"	
+    do_finish "card_product"
 else
     prepare_for_128Mnand
     do_finish "nand"

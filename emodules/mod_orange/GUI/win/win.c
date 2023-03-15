@@ -1,32 +1,34 @@
 /*
-*******************************************************************************************************************
-*                                                           Mod orange
-*                                                   the embedded graphic support module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2008, Softwinner Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name£º    win.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
-*Author£º       William Wang
 *
-*Version :      1.1.0
-*
-*Date:          2009-8-4
-*
-*Description :  guiÍ¨ÓÃº¯ÊýÊµÏÖÁÐ±í
-*
-*Others :       None at present.
-*
-* History :
-*
-* <Author>          <time>                  <version>     <description>
-*
-* William Wang     2009-8-4         1.1.0          Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "win_i.h"
 #include "win_e.h"
 #include "message_e.h"
@@ -43,7 +45,7 @@ static __gui_manwincreate_para_t backwin_para =
     0,                   //parent  windows
     NULL,                   //hosting windows
     NULL,
-    GUI_RootWinProc,        //back windows process //ÔÝ²»Ê¹ÓÃ±³¾°´°¿ÚµÄ
+    GUI_RootWinProc,        //back windows process //æš‚ä¸ä½¿ç”¨èƒŒæ™¯çª—å£çš„
     0                       //private attr
 };
 
@@ -76,7 +78,7 @@ __s32 GUI_RootWinProc(__gui_msg_t *msg)
                 }
                 else
                 {
-                    /*mainman winÉ¾³ýÖ®ºó½«½¹µã´°¿ÚÖÃÎª¿Õ£¬±ÜÃâÕâ¶ÎÊ±¼äµÄÏûÏ¢·¢ËÍµ½ÎÞÐ§´°¿Ú*/
+                    /*mainman winåˆ é™¤ä¹‹åŽå°†ç„¦ç‚¹çª—å£ç½®ä¸ºç©ºï¼Œé¿å…è¿™æ®µæ—¶é—´çš„æ¶ˆæ¯å‘é€åˆ°æ— æ•ˆçª—å£*/
                     active_mainwnd = NULL;
                 }
             }
@@ -653,7 +655,7 @@ __bool GUI_WinMove(H_WIN hWnd, int x, int y, int w, int h, __bool fPaint)
 *
 * date:             2009-8-19
 *
-* Description:      gui´°¿ÚÏß³ÌÏà¹ØµÄÐÅÏ¢É¾³ý£¬ÓÃÀ´ÔÚÖ÷´°¿Ú»òÕßframewin´°¿Ú½áÊøºó£¬Çå³þÓëÏß³ÌÏà¹ØµÄÐÅÏ¢
+* Description:      guiçª—å£çº¿ç¨‹ç›¸å…³çš„ä¿¡æ¯åˆ é™¤ï¼Œç”¨æ¥åœ¨ä¸»çª—å£æˆ–è€…framewinçª—å£ç»“æŸåŽï¼Œæ¸…æ¥šä¸Žçº¿ç¨‹ç›¸å…³çš„ä¿¡æ¯
 *
 * parameters:
 *
@@ -675,17 +677,17 @@ void GUI_WinThreadCleanup(H_WIN hManWnd)
     }
 
 #endif
-    /*ÈÓµôÏûÏ¢¶ÓÁÐÖÐÓë¸Ã´°¿ÚÏà¹ØµÄÏûÏ¢*/
+    /*æ‰”æŽ‰æ¶ˆæ¯é˜Ÿåˆ—ä¸­ä¸Žè¯¥çª—å£ç›¸å…³çš„æ¶ˆæ¯*/
     GUI_ThrowAwayMessages(hManWnd);
 
     if (pWin->WinType == TYPE_MANWIN)
     {
         __gui_manwin_t  *pManWin = (__gui_manwin_t *)pWin;
 
-        /*ÏûÏ¢ËÞÖ÷´°¿ÚÎª¿ÕµÄÇé¿ö*/
+        /*æ¶ˆæ¯å®¿ä¸»çª—å£ä¸ºç©ºçš„æƒ…å†µ*/
         if (pManWin->pHosting == NULL && pManWin->ManWinType == TYPE_ROOTMAIN)
         {
-            /*ÔÚÇå³ýÍË³öÏûÏ¢Ñ­»·Ö®ºó£¬¶Ï¿ª´°¿ÚÁªÏµ*/
+            /*åœ¨æ¸…é™¤é€€å‡ºæ¶ˆæ¯å¾ªçŽ¯ä¹‹åŽï¼Œæ–­å¼€çª—å£è”ç³»*/
             Win_DeattachFromParent(pWin);
             DestroyMsgQueue(pManWin->pMessages);
             orange_mfree(pManWin->pMessages);
@@ -1203,7 +1205,7 @@ H_WIN GUI_WinGetRootWin(void)
 *
 * date:             2009-9-14
 *
-* Description:      µÃµ½´°¿ÚµÄÈë¿Ú¹ÜÀí´°¿Ú¾ä±ú
+* Description:      å¾—åˆ°çª—å£çš„å…¥å£ç®¡ç†çª—å£å¥æŸ„
 *
 * parameters:
 *
@@ -1276,7 +1278,7 @@ H_WIN GUI_WinGetMainManWin(H_WIN hWnd)
 *
 * date:             2009-7-28
 *
-* Description:      µÃµ½´°¿ÚËùÔÚµÄ¹ÜÀí´°¿Ú¾ä±ú
+* Description:      å¾—åˆ°çª—å£æ‰€åœ¨çš„ç®¡ç†çª—å£å¥æŸ„
 *
 * parameters:
 *
@@ -1630,7 +1632,7 @@ __s32 GUI_WinSetWinRECT(H_WIN hWnd, RECT *Win_Rect)
 *
 * date:             2009-8-13
 *
-* Description:      »ñÈ¡´°¿ÚÔÚ¸¸´°¿ÚÖÐµÄ
+* Description:      èŽ·å–çª—å£åœ¨çˆ¶çª—å£ä¸­çš„
 *
 * parameters:
 *
@@ -1813,7 +1815,7 @@ H_WIN GUI_WinSetFocusChild(H_WIN hWnd)
 *
 * date:             2009-11-12
 *
-* Description:      ÉèÖÃ´°¿ÚÎªÄ³Ò»´°¿ÚµÄ½¹µã×Ó´°¿Ú(ÉèÖÃÍê³ÉÖ®ºó¸Ã´°¿Ú²»Ò»¶¨ÊÇÏµÍ³µÄ½¹µã×Ó´°¿Ú)
+* Description:      è®¾ç½®çª—å£ä¸ºæŸä¸€çª—å£çš„ç„¦ç‚¹å­çª—å£(è®¾ç½®å®Œæˆä¹‹åŽè¯¥çª—å£ä¸ä¸€å®šæ˜¯ç³»ç»Ÿçš„ç„¦ç‚¹å­çª—å£)
 *
 * parameters:
 *
@@ -2043,7 +2045,7 @@ H_WIN GUI_WinGetActiveCtrlWin(H_WIN hWnd)
 *
 * date:             2009-7-28
 *
-* Description:      »ñÈ¡´°¿ÚÀàÐÍ
+* Description:      èŽ·å–çª—å£ç±»åž‹
 *
 * parameters:
 *
@@ -2079,7 +2081,7 @@ __s32  GUI_WinGetType(H_WIN hWnd)
 *
 * date:             2009-9-6
 *
-* Description:      ÅÐ¶ÏÒ»¸ö´°¿ÚÊÇ·ñ¿É¼û
+* Description:      åˆ¤æ–­ä¸€ä¸ªçª—å£æ˜¯å¦å¯è§
 *
 * parameters:
 *
@@ -2383,7 +2385,7 @@ __s32  GUI_WinSetAddData(H_WIN hWnd, unsigned long dwAddData)
 *
 * date:             2009-8-4
 *
-* Description:      »ñÈ¡´°¿ÚµÄ¿Í»§Çø¾ØÐÎ
+* Description:      èŽ·å–çª—å£çš„å®¢æˆ·åŒºçŸ©å½¢
 *
 * parameters:
 *
@@ -2427,7 +2429,7 @@ __s32 GUI_WinGetClient(H_WIN hWnd, RECT *rect)
 *
 * date:             2009-8-4
 *
-* Description:      ¸ù¾ÝID»ñÈ¡´°¿Ú¾ä±ú
+* Description:      æ ¹æ®IDèŽ·å–çª—å£å¥æŸ„
 *
 * parameters:
 *
@@ -2512,7 +2514,7 @@ H_WIN GUI_WinGetHandFromId(H_WIN hParent, __s32 nID)
 *
 * date:             2009-8-4
 *
-* Description:      ¸ù¾Ý´°¿Ú¾ä±ú»ñÈ¡ID
+* Description:      æ ¹æ®çª—å£å¥æŸ„èŽ·å–ID
 *
 * parameters:
 *
@@ -2747,13 +2749,13 @@ NOTIFPROC GUI_WinSetNotifyCallback(H_WIN hwnd, NOTIFPROC notif_proc)
         return HWND_INVALID;
     }
 
-    /*·Ç·¨´°¿Ú½á¹¹*/
+    /*éžæ³•çª—å£ç»“æž„*/
     if (control->DataType != TYPE_HWND)
     {
         return NULL;
     }
 
-    /*´°¿ÚÊÇ¸ù´°¿Ú*/
+    /*çª—å£æ˜¯æ ¹çª—å£*/
     if (control->Parent == NULL)
     {
         return NULL;
@@ -2791,13 +2793,13 @@ NOTIFPROC GUI_WinGetNotifyCallback(H_WIN hwnd)
         return HWND_INVALID;
     }
 
-    /*·Ç·¨´°¿Ú½á¹¹*/
+    /*éžæ³•çª—å£ç»“æž„*/
     if (control->DataType != TYPE_HWND)
     {
         return NULL;
     }
 
-    /*´°¿ÚÊÇ¸ù´°¿Ú*/
+    /*çª—å£æ˜¯æ ¹çª—å£*/
     if (control->Parent == NULL)
     {
         return NULL;

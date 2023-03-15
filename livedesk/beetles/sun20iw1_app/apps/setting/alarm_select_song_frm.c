@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <log.h>
 #include"alarm_select_song_frm.h"
 #include"alarm_select_song_uipara.h"
@@ -78,7 +109,7 @@ rat_type_t  app_alarm_sel_song_get_root_type(__u32 *index)
     ret = rat_get_partition_name(RAT_USB_DISK, disk_name, 0);
     len = eLIBs_strlen(disk_name[0]);
 
-    if ((EPDK_OK == ret) && (len != 0)) // ´ÅÅÌ´æÔÚ
+    if ((EPDK_OK == ret) && (len != 0)) // ç£ç›˜å­˜åœ¨
     {
         root_type = RAT_USB ;
         count++;
@@ -96,7 +127,7 @@ rat_type_t  app_alarm_sel_song_get_root_type(__u32 *index)
 
     *index = count ;
 
-    if (2 == count)  // ÓÐÁ½¸ö´ÅÅÌ
+    if (2 == count)  // æœ‰ä¸¤ä¸ªç£ç›˜
     {
         root_type = RAT_UNKNOWN ;
     }
@@ -447,7 +478,7 @@ static __s32  alarm_sel_song_listbar_init(H_WIN  list_win)
     }
     else
     {
-        config.item_cnt = alarm_sel_song_para->rat.total;   //Rat.total±ØÐëÒÑ¾­»ñµÃ
+        config.item_cnt = alarm_sel_song_para->rat.total;   //Rat.totalå¿…é¡»å·²ç»èŽ·å¾—
     }
 
     config.bk_color = BK_COLOR;
@@ -528,7 +559,7 @@ static __s32 alarm_sel_song_win_on_create(H_WIN  list_win)
     __msg("disk_num = %d\n", disk_num);
     alarm_sel_song_para->media_type = RAT_MEDIA_TYPE_AUDIO ;
 
-    if (2 == disk_num)   // sd ,udisk Í¬Ê±´æÔÚ
+    if (2 == disk_num)   // sd ,udisk åŒæ—¶å­˜åœ¨
     {
         alarm_sel_song_para->is_in_sel_disk_scene = 1 ;
     }
@@ -546,7 +577,7 @@ static __s32 alarm_sel_song_win_on_create(H_WIN  list_win)
     alarm_sel_song_listbar_init(list_win);
     //__here__ ;
 
-    if (EPDK_TRUE == robin_is_open())     //±³¾°Òô´æÔÚÊ±£¬robinÒÑ¾­´ò¿ªÁË
+    if (EPDK_TRUE == robin_is_open())     //èƒŒæ™¯éŸ³å­˜åœ¨æ—¶ï¼Œrobinå·²ç»æ‰“å¼€äº†
     {
         //__here__ ;
         alarm_sel_song_para->bg_music_play_mode = robin_get_play_mode();
@@ -845,7 +876,7 @@ static __s32 alarm_sel_song_on_touch_proc(__gui_msg_t *msg)
             rect.y = uipara->OkBmpRect.y ;
             rect.width = uipara->OkBmpRect.w ;
             rect.height = uipara->OkBmpRect.h ;
-            ret = position_in_rect(&rect, x, y);     //ÅÐ¶ÏÊÇ·ñÔÚÈ·¶¨°´Å¥ÇøÓò
+            ret = position_in_rect(&rect, x, y);     //åˆ¤æ–­æ˜¯å¦åœ¨ç¡®å®šæŒ‰é’®åŒºåŸŸ
 
             if (EPDK_TRUE == ret)
             {
@@ -896,7 +927,7 @@ static __s32 alarm_sel_song_on_touch_proc(__gui_msg_t *msg)
             rect.y = uipara->ListenTestBmpRect.y ;
             rect.width = uipara->ListenTestBmpRect.w ;
             rect.height = uipara->ListenTestBmpRect.h ;
-            ret = position_in_rect(&rect, x, y);     // ÅÐ¶ÏÊÇ·ñÔÚÊÔÌý°´Å¥ÇøÓòÄÚ
+            ret = position_in_rect(&rect, x, y);     // åˆ¤æ–­æ˜¯å¦åœ¨è¯•å¬æŒ‰é’®åŒºåŸŸå†…
 
             if (EPDK_TRUE == ret)
             {
@@ -914,7 +945,7 @@ static __s32 alarm_sel_song_on_touch_proc(__gui_msg_t *msg)
             rect.y = uipara->CancleBmpRect.y ;
             rect.width = uipara->CancleBmpRect.w ;
             rect.height = uipara->CancleBmpRect.h ;
-            ret = position_in_rect(&rect, x, y);     // ÅÐ¶ÏÊÇ·ñÔÚÈ¡Ïû°´Å¥ÇøÓò
+            ret = position_in_rect(&rect, x, y);     // åˆ¤æ–­æ˜¯å¦åœ¨å–æ¶ˆæŒ‰é’®åŒºåŸŸ
 
             if (EPDK_TRUE == ret)
             {
@@ -1138,7 +1169,7 @@ static __s32  alarm_sel_song_win_on_destroy(__gui_msg_t *msg)
     }
 
     //__here__ ;
-    if (1 == alarm_sel_song_para->bg_music_is_exist)     // ±³¾°ÒôÀÖ´æÔÚµÄÇé¿öÏÂ£¬²»ÄÜµ÷ÓÃrobin_close()
+    if (1 == alarm_sel_song_para->bg_music_is_exist)     // èƒŒæ™¯éŸ³ä¹å­˜åœ¨çš„æƒ…å†µä¸‹ï¼Œä¸èƒ½è°ƒç”¨robin_close()
     {
         char FileName[RAT_MAX_FULL_PATH_LEN] = {0} ;
         robin_set_play_mode(alarm_sel_song_para->bg_music_play_mode) ;

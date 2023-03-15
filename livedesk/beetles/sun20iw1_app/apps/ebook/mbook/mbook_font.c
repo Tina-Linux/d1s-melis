@@ -1,16 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              record app sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2006-2009, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : mbook_font.c
-* By      : lyn
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include <kapi.h>
@@ -31,14 +48,14 @@ typedef struct tag_MBOOK_FONT
 ************************************************************************************************************************
 *                                       MBOOK_Font_Init
 *
-*Description: ´´½¨×ÖÌå²Ù×÷¾ä±ú
+*Description: åˆ›å»ºå­—ä½“æ“ä½œå¥æŸ„
 *
-*Arguments  : path: ×Ö¿â´æ·ÅÂ·¾¶
-*             size£º×ÖÌåµÄ´óÐ¡
+*Arguments  : path: å­—åº“å­˜æ”¾è·¯å¾„
+*             sizeï¼šå­—ä½“çš„å¤§å°
 *
 *
-*Return     : ³É¹¦£º·µ»Ø²Ù×÷¾ä±ú
-*             Ê§°Ü£ºNULL
+*Return     : æˆåŠŸï¼šè¿”å›žæ“ä½œå¥æŸ„
+*             å¤±è´¥ï¼šNULL
 *
 ************************************************************************************************************************
 */
@@ -46,7 +63,7 @@ H_FONT  MBOOK_Font_Init(GUI_FONT *ebook_font, __u32 size)
 {
     __u32               i;
     __mbook_font_t     *p_font;
-    // ÉêÇëÄÚ´æ
+    // ç”³è¯·å†…å­˜
     p_font = (__mbook_font_t *)My_Malloc(0, sizeof(__mbook_font_t));
 
     if (p_font == NULL)
@@ -56,8 +73,8 @@ H_FONT  MBOOK_Font_Init(GUI_FONT *ebook_font, __u32 size)
     }
 
     p_font->char_font = ebook_font;
-    // ÉêÇë×Ö·û×Ö¿í´æ·ÅÄÚ´æ
-    p_font->font_table = (__s32 *)My_Malloc(0, 1024);   // ÉêÇëÄÚ´æ
+    // ç”³è¯·å­—ç¬¦å­—å®½å­˜æ”¾å†…å­˜
+    p_font->font_table = (__s32 *)My_Malloc(0, 1024);   // ç”³è¯·å†…å­˜
 
     if (p_font->font_table == NULL)
     {
@@ -65,7 +82,7 @@ H_FONT  MBOOK_Font_Init(GUI_FONT *ebook_font, __u32 size)
         goto FONT_ERROR_2;
     }
 
-    // ÉèÖÃ
+    // è®¾ç½®
     GUI_SetFont(p_font->char_font);
 
     for (i = 0; i < 256; i++)
@@ -87,13 +104,13 @@ FONT_ERROR_2:
 ************************************************************************************************************************
 *                                       MBOOK_Font_Uninit
 *
-*Description: ÊÍ·Å×ÖÌå²Ù×÷¾ä±ú
+*Description: é‡Šæ”¾å­—ä½“æ“ä½œå¥æŸ„
 *
-*Arguments  : hdle£º×ÖÌå²Ù×÷¾ä±ú
+*Arguments  : hdleï¼šå­—ä½“æ“ä½œå¥æŸ„
 *
 *
-*Return     : ³É¹¦£ºEPDK_OK
-*             Ê§°Ü£ºEPDK_FAIL
+*Return     : æˆåŠŸï¼šEPDK_OK
+*             å¤±è´¥ï¼šEPDK_FAIL
 *
 ************************************************************************************************************************
 */
@@ -122,13 +139,13 @@ __s32   MBOOK_Font_Uninit(H_FONT hdle)
 ************************************************************************************************************************
 *                                       MBOOK_Font_GetTable
 *
-*Description: »ñÈ¡×Ö·ûµÄ×Ö¿í±í
+*Description: èŽ·å–å­—ç¬¦çš„å­—å®½è¡¨
 *
-*Arguments  : hdle£º×ÖÌå²Ù×÷¾ä±ú
+*Arguments  : hdleï¼šå­—ä½“æ“ä½œå¥æŸ„
 *
 *
-*Return     : ³É¹¦£º×Ö·û×Ö¿í±í
-*             Ê§°Ü£ºNULL
+*Return     : æˆåŠŸï¼šå­—ç¬¦å­—å®½è¡¨
+*             å¤±è´¥ï¼šNULL
 *
 ************************************************************************************************************************
 */
@@ -149,13 +166,13 @@ __s32  *MBOOK_Font_GetTable(H_FONT hdle)
 ************************************************************************************************************************
 *                                       MBOOK_Font_GetTable
 *
-*Description: »ñÈ¡×Ö¿â¾ä±ú
+*Description: èŽ·å–å­—åº“å¥æŸ„
 *
-*Arguments  : hdle£º×ÖÌå²Ù×÷¾ä±ú
+*Arguments  : hdleï¼šå­—ä½“æ“ä½œå¥æŸ„
 *
 *
-*Return     : ³É¹¦£º×Ö¿â¾ä±ú
-*             Ê§°Ü£ºNULL
+*Return     : æˆåŠŸï¼šå­—åº“å¥æŸ„
+*             å¤±è´¥ï¼šNULL
 *
 ************************************************************************************************************************
 */
@@ -171,7 +188,3 @@ GUI_FONT   *MBOOK_Font_GetFont(H_FONT hdle)
     p_font = (__mbook_font_t *)hdle;
     return p_font->char_font;
 }
-
-
-
-

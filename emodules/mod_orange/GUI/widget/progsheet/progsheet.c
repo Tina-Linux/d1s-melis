@@ -1,32 +1,34 @@
 /*
-*******************************************************************************************************************
-*                                                           ProgSheet  Framework
-*                                                   the display dirver support module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2008, Softwinner Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name£º    ProgSheet.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
-*Author£º       Terry Zeng
 *
-*Version :      1.1.0
-*
-*Date:          2009-09-02
-*
-*Description :  ProgSheet control implement
-*
-*Others :       None at present.
-*
-* History :
-*
-* <Author>          <time>         <version>     <description>
-*
-* Terry.Zeng     2009-09-02         1.1.0          Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "progsheet_i.h"
 #include <kconfig.h>
 
@@ -69,7 +71,7 @@ __bool RegisterProgSheetControl(void)
 *
 * Description:      create page elements
 *
-* parameters:       pData£º progsheet data£» page£ºpage data£»msg£ºgui information
+* parameters:       pDataï¼š progsheet dataï¼› pageï¼špage dataï¼›msgï¼šgui information
 *
 * return:           if success return ERDK_OK
 *                   if fail return the number of fail
@@ -82,13 +84,13 @@ __s32 create_page(progsheet_data_t *pData, page_t *page, __gui_msg_t *msg)
     __gui_ctlwincreate_para_t   ctlcreate_info;
     __gui_msg_t my_msg;
     //__u32 style;
-    /*´Ómsg->dwAddData1ÄÃµ½pageµÄ¿Ø¼þ*/
+    /*ä»Žmsg->dwAddData1æ‹¿åˆ°pageçš„æŽ§ä»¶*/
     page_data = (page_para_t *)msg->dwAddData1;
-    /*pageµÄ»Øµ÷º¯Êý*/
+    /*pageçš„å›žè°ƒå‡½æ•°*/
     page->proc = (__pGUI_WIN_CB)msg->dwAddData2;
     page->data = (__u32)page_data;
     eLIBs_memset(&ctlcreate_info, 0, sizeof(__gui_ctlwincreate_para_t));
-    /*´´½¨page¶ÔÓ¦µÄstatic´°¿Ú£¬´°¿ÚÊôÐÔÎª²»¿É¼û*/
+    /*åˆ›å»ºpageå¯¹åº”çš„staticçª—å£ï¼Œçª—å£å±žæ€§ä¸ºä¸å¯è§*/
     ctlcreate_info.name = page_data->text;
     ctlcreate_info.spClassName = CTRL_STATIC;
     ctlcreate_info.dwStyle = WS_NONE;
@@ -97,9 +99,9 @@ __s32 create_page(progsheet_data_t *pData, page_t *page, __gui_msg_t *msg)
     ctlcreate_info.hParent = msg->h_deswin;
     ctlcreate_info.attr = (void *)page_data;
     page->hwnd = GUI_CtrlWinCreate(&ctlcreate_info);
-    /*ÉèÖÃpage¶ÔÓ¦static¶ÔÓ¦µÄ»Øµ÷º¯Êý*/
+    /*è®¾ç½®pageå¯¹åº”staticå¯¹åº”çš„å›žè°ƒå‡½æ•°*/
     GUI_WinSetCallback(page->hwnd, page->proc);
-    /*Ïòpage¶ÔÓ¦µÄstatic´°¿Ú·¢ËÍGUI_MSG_CREATEÍ¬²½ÏûÏ¢*/
+    /*å‘pageå¯¹åº”çš„staticçª—å£å‘é€GUI_MSG_CREATEåŒæ­¥æ¶ˆæ¯*/
     //  style = GUI_WinGetStyle(page->hwnd);
     //    style = style |WS_VISIBLE;
     //    GUI_WinSetStyle(page->hwnd,style);
@@ -121,7 +123,7 @@ __s32 create_page(progsheet_data_t *pData, page_t *page, __gui_msg_t *msg)
 *
 * Description:      append page to progsheet
 *
-* parameters:       pData£º progsheet data£» page£ºpage data£»
+* parameters:       pDataï¼š progsheet dataï¼› pageï¼špage dataï¼›
 *
 * return:           if success return ERDK_OK
 *                   if fail return the number of fail
@@ -168,7 +170,7 @@ __s32 append_page(progsheet_data_t *pData, page_t *new_page)
 *
 * Description:      calc_page_title_width
 *
-* parameters:       page£ºpage data£»
+* parameters:       pageï¼špage dataï¼›
 *
 * return:           if success return ERDK_OK
 *                   if fail return the number of fail
@@ -238,9 +240,9 @@ static __s32 ProgSheetCtrlProc(__gui_msg_t *msg)
             pData->active_page = NULL;
             pData->head = NULL;
             pData->hmem = 0;
-            /*progsheet¶ÔÓ¦µÄÍ·²¿ÇøÓò£¬Ò²¼´page±êÌâÀ¸ËùÔÚµÄÇøÓò*/
+            /*progsheetå¯¹åº”çš„å¤´éƒ¨åŒºåŸŸï¼Œä¹Ÿå³pageæ ‡é¢˜æ æ‰€åœ¨çš„åŒºåŸŸ*/
             pData->data = (__u32)GUI_WinGetAttr(msg->h_deswin);
-            /*°Ñprogsheetµ±³É´°¿ÚµÄË½ÓÐÊôÐÔ´«µÝ¸ø´°¿Ú*/
+            /*æŠŠprogsheetå½“æˆçª—å£çš„ç§æœ‰å±žæ€§ä¼ é€’ç»™çª—å£*/
             GUI_CtrlWinSetAddData(msg->h_deswin, (__u32)pData);
             break;
         }
@@ -273,10 +275,10 @@ static __s32 ProgSheetCtrlProc(__gui_msg_t *msg)
             }
 
             eLIBs_memset(page, 0, sizeof(page_t));
-            /*´Ó´°¿ÚµÄË½ÓÐÊôÐÔÀï»ñÈ¡»ØprogsheetÊý¾Ý*/
+            /*ä»Žçª—å£çš„ç§æœ‰å±žæ€§é‡ŒèŽ·å–å›žprogsheetæ•°æ®*/
             pData = (progsheet_data_t *)GUI_CtrlWinGetAddData(msg->h_deswin);
 
-            /*Í¨ÖªÏÈÇ°µÄpageÏÔÊ¾Òþ²Ø*/
+            /*é€šçŸ¥å…ˆå‰çš„pageæ˜¾ç¤ºéšè—*/
             if (pData->active_page != NULL)
             {
                 my_msg.id = GUI_MSG_DESTROY;
@@ -286,7 +288,7 @@ static __s32 ProgSheetCtrlProc(__gui_msg_t *msg)
                 GUI_SendMessage(&my_msg);
             }
 
-            /*´´½¨pageµÄÔªËØ*/
+            /*åˆ›å»ºpageçš„å…ƒç´ */
             result = create_page(pData, page, msg);
 
             if (result == -1)
@@ -294,11 +296,11 @@ static __s32 ProgSheetCtrlProc(__gui_msg_t *msg)
                 break;
             }
 
-            /*°ÑpageÌí¼Óµ½sheetÀï*/
+            /*æŠŠpageæ·»åŠ åˆ°sheeté‡Œ*/
             append_page(pData, page);
-            /*¼ÆËãpage titleµÄ¿í¶È*/
+            /*è®¡ç®—page titleçš„å®½åº¦*/
             //          calc_page_title_rect(pData,page,msg);
-            /*ÖØÐÂ»æÖÆprogsheet*/
+            /*é‡æ–°ç»˜åˆ¶progsheet*/
             GUI_InvalidateRect(msg->h_deswin, NULL, ORANGE_TRUE);
             GUI_CtrlWinSetAddData(msg->h_deswin, (__u32)pData);
             break;
@@ -313,7 +315,7 @@ static __s32 ProgSheetCtrlProc(__gui_msg_t *msg)
             pData = (progsheet_data_t *)GUI_CtrlWinGetAddData(msg->h_deswin);
             page = pData->head;
             temp = pData->head;
-            /*ÅÐ¶Ïµ±Ç°µÄ»î¶¯pageÊÇ·ñ¸Ä±ä*/
+            /*åˆ¤æ–­å½“å‰çš„æ´»åŠ¨pageæ˜¯å¦æ”¹å˜*/
             index = msg->dwAddData1;
 
             while ((temp != NULL) && (index >= 0))
@@ -323,18 +325,18 @@ static __s32 ProgSheetCtrlProc(__gui_msg_t *msg)
                 index--;
             }
 
-            /*¸Ä±äÊ±*/
+            /*æ”¹å˜æ—¶*/
             if (page != pData->active_page)
             {
-                /*Í¨ÖªÏÈÇ°µÄpageÏÔÊ¾Òþ²Ø*/
+                /*é€šçŸ¥å…ˆå‰çš„pageæ˜¾ç¤ºéšè—*/
                 my_msg.id = GUI_MSG_DESTROY;
                 my_msg.h_srcwin = msg->h_deswin;
                 my_msg.h_deswin = pData->active_page->hwnd;
                 my_msg.dwAddData1 = 0;
                 GUI_SendMessage(&my_msg);
-                /*ÔòÉèÖÃµ±Ç°»î¶¯pageÎªÐÂµÄpage*/
+                /*åˆ™è®¾ç½®å½“å‰æ´»åŠ¨pageä¸ºæ–°çš„page*/
                 pData->active_page = page;
-                /*ÖØÐÂ»æÖÆprogsheet*/
+                /*é‡æ–°ç»˜åˆ¶progsheet*/
                 GUI_InvalidateRect(msg->h_deswin, NULL, ORANGE_TRUE);
             }
 
@@ -350,7 +352,7 @@ static __s32 ProgSheetCtrlProc(__gui_msg_t *msg)
             page_para_t *page_data;
             __gui_msg_t my_msg;
             pData = (progsheet_data_t *)GUI_CtrlWinGetAddData(msg->h_deswin);
-            /*»æÖÆprogsheet¼°page*/
+            /*ç»˜åˆ¶progsheetåŠpage*/
             GUI_LyrWinSel(GUI_LyrP2H(GUI_WinGetLyrWin(msg->h_deswin)));
             GUI_WinGetClientFBRect(msg->h_deswin, &fbrect);
 
@@ -368,7 +370,7 @@ static __s32 ProgSheetCtrlProc(__gui_msg_t *msg)
 #ifdef CONFIG_GUI_CORE_MEMDEV_EN        //avoid complier error, by Derek
             GUI_MEMDEV_Select(pData->hmem);           // start memory device
 #endif
-            /*»æÖÆÊôÐÔ±í*/
+            /*ç»˜åˆ¶å±žæ€§è¡¨*/
             GUI_SetBkColor(0);
             GUI_ClearRect(rcrect.left, rcrect.top, rcrect.right, rcrect.bottom);
             GUI_BMP_Draw(((progsheet_para_t *)pData->data)->bmp, rcrect.left + ((progsheet_para_t *)pData->data)->bmp_pos.x, rcrect.top + ((progsheet_para_t *)pData->data)->bmp_pos.y);
@@ -376,7 +378,7 @@ static __s32 ProgSheetCtrlProc(__gui_msg_t *msg)
             GUI_SetFont(((progsheet_para_t *)pData->data)->draw_font);
             GUI_SetDrawMode(GUI_DRAWMODE_TRANS);
             GUI_DispStringAt(((progsheet_para_t *)pData->data)->text, rcrect.left + ((progsheet_para_t *)pData->data)->text_pos.x, rcrect.top + ((progsheet_para_t *)pData->data)->text_pos.y);
-            /*·Ö±ð»æÖÆÊôÐÔÒ³*/
+            /*åˆ†åˆ«ç»˜åˆ¶å±žæ€§é¡µ*/
             page = pData->head;
 
             while (page)
@@ -589,13 +591,13 @@ static __s32 ProgSheetCtrlProc(__gui_msg_t *msg)
 
                     if (page != NULL)
                     {
-                        /*Í¨ÖªÏÈÇ°µÄpageÏÔÊ¾Òþ²Ø*/
+                        /*é€šçŸ¥å…ˆå‰çš„pageæ˜¾ç¤ºéšè—*/
                         my_msg.id = GUI_MSG_DESTROY;
                         my_msg.h_srcwin = msg->h_deswin;
                         my_msg.h_deswin = pData->active_page->hwnd;
                         my_msg.dwAddData1 = 0;
                         GUI_SendMessage(&my_msg);
-                        /*ÔòÉèÖÃµ±Ç°»î¶¯pageÎªÐÂµÄpage*/
+                        /*åˆ™è®¾ç½®å½“å‰æ´»åŠ¨pageä¸ºæ–°çš„page*/
                         pData->active_page = page;
                         style = GUI_WinGetStyle(pData->active_page->hwnd);
                         style = style & (~WS_VISIBLE);
@@ -605,7 +607,7 @@ static __s32 ProgSheetCtrlProc(__gui_msg_t *msg)
                         my_msg.h_deswin = pData->active_page->hwnd;
                         my_msg.dwAddData1 = 0;
                         GUI_SendMessage(&my_msg);
-                        /*ÖØÐÂ»æÖÆprogsheet*/
+                        /*é‡æ–°ç»˜åˆ¶progsheet*/
                         GUI_InvalidateRect(msg->h_deswin, NULL, ORANGE_TRUE);
                         //                      notify_msg.hWnd     = msg->h_deswin;
                         //                      notify_msg.id       = GUI_WinGetItemId(msg->h_deswin);

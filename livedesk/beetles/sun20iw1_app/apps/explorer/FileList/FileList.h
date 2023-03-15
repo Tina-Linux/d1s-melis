@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #ifndef __FILELIST_H__
 #define __FILELIST_H__
 #include "beetles_app.h"
@@ -6,52 +37,52 @@
 
 /*!
   * \brief
-  *     ɾ��������Ϣ
+  *     删除拷贝信息
 */
 typedef struct file_op_info_s
 {
-    //item_type_t           type;                       //��Ŀ���ͣ��ļ�����Ŀ¼
-    __u64               total_size;         //��Ҫ������������;
-    __u64               finish_size;        //�ѿ�����������;
-    __u32               total_num;          //Ŀ¼ʱ���追��/ɾ�����ļ�����
-    __u32               finish_num;         //Ŀ¼ʱ������ɿ���/ɾ�����ļ���
-    __u32               percent;            //�ѿ���/ɾ�����ݵİٷֱȣ���ʽ=�ѿ�������/�追����������
-    __u32               dir_level;          //Ŀ¼����
-    void (*OnDraw)(struct file_op_info_s *op_info);               //��ɾ�����Ȼص�����
+    //item_type_t           type;                       //条目类型，文件或者目录
+    __u64               total_size;         //需要拷贝的总容量;
+    __u64               finish_size;        //已拷贝的总容量;
+    __u32               total_num;          //目录时，需拷贝/删除的文件总数
+    __u32               finish_num;         //目录时，已完成拷贝/删除的文件数
+    __u32               percent;            //已拷贝/删除数据的百分比，公式=已拷贝数据/需拷贝数据总量
+    __u32               dir_level;          //目录层数
+    void (*OnDraw)(struct file_op_info_s *op_info);               //画删除进度回调函数
 } file_op_info_t;
 
 
 
 typedef struct file_item_s
 {
-    char *name;                     //�ļ����ļ�������
-    __u32 name_len;                 //������ͷ��ļ����ռ��ʱ����
+    char *name;                     //文件或文件夹名字
+    __u32 name_len;                 //申请和释放文件名空间的时候用
 
     __u8  fatdirattr;               /* FAT only. Contains the "DIR_Attr" field of an entry. */
-    //���ļ��л����ļ�, �ļ��� = FSYS_ATTR_DIRECTORY
-    __u8  status;                   //�Ƿ������ļ���
-    __u64 file_size;                //�ļ���С
-    __u32 create_time;              //����ʱ�䣬��ʱ���ʽ�������
+    //是文件夹还是文件, 文件夹 = FSYS_ATTR_DIRECTORY
+    __u8  status;                   //是否有子文件夹
+    __u64 file_size;                //文件大小
+    __u32 create_time;              //创建时间，用时间格式定义变量
 
-    struct file_item_s *previous;   //ָ����һ����Ŀ
-    struct file_item_s *next;       //ָ����һ����Ŀ
+    struct file_item_s *previous;   //指向上一个条目
+    struct file_item_s *next;       //指向下一个条目
 } file_item_t;
 
 
 typedef struct file_list_s
 {
-    char  file_path[RAT_MAX_FULL_PATH_LEN];         //��ǰĿ¼�ļ�·��
+    char  file_path[RAT_MAX_FULL_PATH_LEN];         //当前目录文件路径
     //char  USB_path[20];               //
     //char  SD_path[20];                //
-    __u32 start_id;                 //��ʾ���б��е���ʼID��
-    __u32 focus_id;                 //��ʾ���б��н���ID��
-    __u32 total;                    //��ǰĿ¼�����ļ�����(�����ļ���,�ļ�,�� "..")
+    __u32 start_id;                 //显示在列表中的起始ID号
+    __u32 focus_id;                 //显示在列表中焦点ID号
+    __u32 total;                    //当前目录下总文件个数(包括文件夹,文件,和 "..")
 
-    file_item_t    *item_list;      //��Ŀ�б��׵�ַ
-    file_item_t    *cur_item;       //��ǰ��Ŀ
+    file_item_t    *item_list;      //条目列表首地址
+    file_item_t    *cur_item;       //当前条目
 
-    struct file_list_s  *parent;    //��һ��Ŀ¼ ��Ϣ
-    struct file_list_s  *child;     //��һ��Ŀ¼ ��Ϣ
+    struct file_list_s  *parent;    //上一级目录 信息
+    struct file_list_s  *child;     //下一级目录 信息
 
 } file_list_t;
 

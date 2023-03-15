@@ -1,30 +1,33 @@
 /*
-************************************************************************************************************************
-*                                                        cuckoo_core
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                             Copyright(C), 2009-2010, SoftWinners Microelectronic Co., Ltd.
-*                                                  All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File Name   : cuckoo_core.h
-*
-* Author      : Gary.Wang
-*
-* Version     : 1.1.0
-*
-* Date        : 2009.09.29
-*
-* Description :
-*
-* Others      : None at present.
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
 *
 *
-* History     :
-*
-*  <Author>        <time>       <version>      <description>
-*
-* Gary.Wang      2009.09.29       1.1.0        build the file
-*
-************************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef  __robin_h__
 #define  __robin_h__
@@ -65,9 +68,9 @@ typedef enum
 
 typedef struct
 {
-    __u32                   reserve_mem_size;  //÷∏∂®cedar‘§¡Ù∏¯”¶”√µƒƒ⁄¥Ê£¨“‘◊÷Ω⁄Œ™µ•Œª£¨“ª∞„Œ™500K-1MæÕ◊„πª¡À
-    CedarStopMode           cedar_stop_mode;   //CEDAR_STOP_MODE_KEEP_PLUGINS:Õ£÷π≤•∑≈ ±±£¡ÙÀ˘”–≤Âº˛£¨CEDAR_STOP_MODE_UNINSTALL_PLUGINSÕ£÷π≤•∑≈ ±–∂‘ÿÀ˘”–≤Âº˛
-    CedarFileSwitchVplyMode switch_vplay_mode; // CEDAR_FILE_SWITCH_VPLY_MODE_GAP:2∏ˆŒƒº˛«–ªª ±£¨∏Ù∂œµƒ£¨÷–º‰”–∫⁄∆¡, CEDAR_FILE_SWITCH_VPLY_MODE_SEAMLESS:Œﬁ∑Ï, ≤ª∫⁄∆¡.
+    __u32                   reserve_mem_size;  //ÊåáÂÆöcedarÈ¢ÑÁïôÁªôÂ∫îÁî®ÁöÑÂÜÖÂ≠òÔºå‰ª•Â≠óËäÇ‰∏∫Âçï‰ΩçÔºå‰∏ÄËà¨‰∏∫500K-1MÂ∞±Ë∂≥Â§ü‰∫Ü
+    CedarStopMode           cedar_stop_mode;   //CEDAR_STOP_MODE_KEEP_PLUGINS:ÂÅúÊ≠¢Êí≠ÊîæÊó∂‰øùÁïôÊâÄÊúâÊèí‰ª∂ÔºåCEDAR_STOP_MODE_UNINSTALL_PLUGINSÂÅúÊ≠¢Êí≠ÊîæÊó∂Âç∏ËΩΩÊâÄÊúâÊèí‰ª∂
+    CedarFileSwitchVplyMode switch_vplay_mode; // CEDAR_FILE_SWITCH_VPLY_MODE_GAP:2‰∏™Êñá‰ª∂ÂàáÊç¢Êó∂ÔºåÈöîÊñ≠ÁöÑÔºå‰∏≠Èó¥ÊúâÈªëÂ±è, CEDAR_FILE_SWITCH_VPLY_MODE_SEAMLESS:Êó†Áºù, ‰∏çÈªëÂ±è.
 
 
 } robin_open_arg_t;
@@ -77,7 +80,7 @@ typedef struct
 *Name        : robin_open
 *Prototype   : __s32  robin_open( robin_mode_e robin_mode, void *arg_p )
 *Arguments   : robin_mode    input. the work mode of the cuckoo_core module.
-*              arg_p       input. arguments, if NULL£¨default value will be set.
+*              arg_p       input. arguments, if NULLÔºådefault value will be set.
 *Return      : ==0    succeed
 *              !=0    fail
 *Description : open cuckoo_core.

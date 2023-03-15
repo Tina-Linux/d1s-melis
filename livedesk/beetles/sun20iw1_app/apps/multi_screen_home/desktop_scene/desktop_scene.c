@@ -1,19 +1,33 @@
 /*
-**************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : main_menu.c
-* By        : Andy.zhang
-* Func      : desk main thread
-* Version   : v1.0
-* ============================================================================================================
-* 2009-7-20 8:51:52  andy.zhang  create this file, implements the fundemental interface;
-**************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "desktop_scene.h"
@@ -114,12 +128,12 @@ static void desktop_scene_view_change_focus(pdesktop_scene_attr_t self)
 
     GUI_SetBkColor(0);
 
-    /*Çå¿ÕÖØ»­ÉÏ´Î¾Û½¹µÄÍ¼±ê*/    
+    /*æ¸…ç©ºé‡ç”»ä¸Šæ¬¡èšç„¦çš„å›¾æ ‡*/    
     draw_multi_screen_icon_coor_rect(self->pui, HOME_UNFOCUS_ICON_START + self->last_focus_item, EPDK_FALSE, &uf_rect_800_480[self->last_focus_item]);
 
     draw_multi_screen_string_center(self->pui, HOME_STRING_START + self->last_focus_item, self->unfocus_txt_color, &string_rect_800_480[self->last_focus_item]);
 
-    /*Çå¿ÕÖØ»­µ±Ç°¾Û½¹µÄÍ¼±ê*/
+    /*æ¸…ç©ºé‡ç”»å½“å‰èšç„¦çš„å›¾æ ‡*/
     draw_multi_screen_icon_coor_rect(self->pui, HOME_FOCUS_ICON_START + self->cur_focus_item, EPDK_TRUE, &uf_rect_800_480[self->cur_focus_item]);
 
     draw_multi_screen_string_center(self->pui, HOME_STRING_START + self->cur_focus_item, self->focus_txt_color, &string_rect_800_480[self->cur_focus_item]);
@@ -346,7 +360,7 @@ static __s32 mmenu_touch_proc(__gui_msg_t *msg)
 		case GUI_MSG_TOUCH_DOWN:
 		{
             __log("GUI_MSG_TOUCH_DOWN");
-			if (GUI_WinGetCaptureWin() != msg->h_deswin)				// ÉèÖÃcapture
+			if (GUI_WinGetCaptureWin() != msg->h_deswin)				// è®¾ç½®capture
 			{
 				GUI_WinSetCaptureWin(msg->h_deswin);
 			}
@@ -561,7 +575,7 @@ H_WIN desktop_scene_create(H_WIN h_parent)
         return NULL;
     }
 
-    //·ÖÅä¿Õ¼ä
+    //åˆ†é…ç©ºé—´
     pdesktopFrm_attr = (pdesktop_scene_attr_t)esMEMS_Malloc(0, sizeof(desktop_scene_attr_t));
 
     if (pdesktopFrm_attr == NULL)
@@ -583,7 +597,7 @@ H_WIN desktop_scene_create(H_WIN h_parent)
 
     pdesktopFrm_attr->layer = _desktop_scene_32bpp_layer_create(&layerRect);
 
-    /*³õÊ¼»¯home ²ÎÊý*/
+    /*åˆå§‹åŒ–home å‚æ•°*/
     __log("cur_desk_app_index:%d", pmulti_screen_home_attr->cur_desk_app_index);
 
     //pdesktopFrm_attr->last_focus_item = pdesktopFrm_attr->cur_focus_item = pmulti_screen_home_attr->cur_desk_app_index;

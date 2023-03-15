@@ -1,30 +1,33 @@
 /*
-*******************************************************************************************************************
-*                                                           Listmenu  Framework
-*                                                   the display dirver support module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2008, Softwinner Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name£∫    gui_i.h
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
 *
-*Author£∫       William Wang
 *
-*Version :      1.1.0
-*
-*Date:          2009-08-09
-*
-*Description :  gui internal data and function definition
-*
-*Others :       None at present.
-*
-* History :
-*
-* <Author>          <time>         <version>     <description>
-*
-* William Wang     2009-10-19         1.1.0          Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef _GUI_I_H_
 #define _GUI_I_H_
@@ -40,7 +43,7 @@
 //
 #if(GUI_WIN_OS == GUI_OS_EPOS)
 
-/*±Í◊ºœﬂ≥Ãª•≥‚Ω”ø⁄∂®“Â*/
+/*Ê†áÂáÜÁ∫øÁ®ã‰∫íÊñ•Êé•Âè£ÂÆö‰πâ*/
 #define  pthread_mutex_t    __krnl_event_t*
 #define  sem_t              __krnl_event_t*
 #define  flags_t            __krnl_flag_grp_t*
@@ -168,7 +171,7 @@ static inline int flags_getvalue(flags_t *flags, unsigned int *value)
 #error "gui win os is invalid"
 #endif
 
-/*π‹¿Ì¥∞ø⁄¿‡–Õ£¨∏˘π‹¿Ì¥∞ø⁄∫Õ◊”π‹¿Ì¥∞ø⁄*/
+/*ÁÆ°ÁêÜÁ™óÂè£Á±ªÂûãÔºåÊ†πÁÆ°ÁêÜÁ™óÂè£ÂíåÂ≠êÁÆ°ÁêÜÁ™óÂè£*/
 #define   TYPE_ROOTMAIN         0x100
 #define   TYPE_CHILDMAIN        0x101
 
@@ -242,7 +245,7 @@ typedef struct _GUI_CLIPRGN
 
 typedef __gui_clipregn_t *pclipregn;
 
-/*œ˚œ¢∂”¡–∂®“Â*/
+/*Ê∂àÊÅØÈòüÂàóÂÆö‰πâ*/
 #define DEF_MAXMSG_LEN      128
 #define DEF_MAX_QUIT_WIN    32
 #define QS_NOTIFYMSG        0x10000000
@@ -264,13 +267,13 @@ typedef __gui_clipregn_t *pclipregn;
 #define PM_REMOVE           0x0001
 #define PM_NOYIELD          0x0002
 
-/*∂®“Âƒ⁄≤øÕº≤„ π”√◊¥Ã¨*/
+/*ÂÆö‰πâÂÜÖÈÉ®ÂõæÂ±Ç‰ΩøÁî®Áä∂ÊÄÅ*/
 typedef enum GUI_LAYER_INTERSTA
 {
-    LAYER_DRAW          = (0),             /*Õº≤„”√◊˜DRAWª∫≥Â£¨
-                                           (√ª”–‘⁄∆‰…œΩ®¡¢¥∞ø⁄ª˙÷∆)*/
-    LAYER_WINDOWS       = (1 << 1),        /*Õº≤„…œ√ÊΩ®¡¢“ª∏ˆ∂¿¡¢µƒ µÃÂ¥∞ø⁄*/
-    LAYER_CONTAINER     = (1 << 2)         /*Õº≤„…œ√ÊΩ®¡¢“ªÃ◊¥∞ø⁄ª˙÷∆£¨∆‰÷–¥∞ø⁄ø…“‘ª•œ‡∏≤∏«*/
+    LAYER_DRAW          = (0),             /*ÂõæÂ±ÇÁî®‰ΩúDRAWÁºìÂÜ≤Ôºå
+                                           (Ê≤°ÊúâÂú®ÂÖ∂‰∏äÂª∫Á´ãÁ™óÂè£Êú∫Âà∂)*/
+    LAYER_WINDOWS       = (1 << 1),        /*ÂõæÂ±Ç‰∏äÈù¢Âª∫Á´ã‰∏Ä‰∏™Áã¨Á´ãÁöÑÂÆû‰ΩìÁ™óÂè£*/
+    LAYER_CONTAINER     = (1 << 2)         /*ÂõæÂ±Ç‰∏äÈù¢Âª∫Á´ã‰∏ÄÂ•óÁ™óÂè£Êú∫Âà∂ÔºåÂÖ∂‰∏≠Á™óÂè£ÂèØ‰ª•‰∫íÁõ∏Ë¶ÜÁõñ*/
 } __gui_layer_intersts_t;
 
 typedef __gui_msg_t *pmsg;
@@ -295,22 +298,22 @@ typedef __gui_syncmsg_t     *psyncmsg;
 
 typedef struct WIN_MSGQUEUE
 {
-    /*œ˚œ¢∂”¡–◊¥Ã¨*/
+    /*Ê∂àÊÅØÈòüÂàóÁä∂ÊÄÅ*/
     __u32               dwState;
     H_WIN               quit_win[DEF_MAX_QUIT_WIN];
     H_WIN               loop_win[DEF_MAX_QUIT_WIN];
     pthread_mutex_t     lock;
     sem_t               wait;
 
-    /*Õ®÷™œ˚œ¢∂”¡–*/
+    /*ÈÄöÁü•Ê∂àÊÅØÈòüÂàó*/
     __gui_qmsg_t       *pFirstNotifyMsg;
     __gui_qmsg_t       *pLastNotifyMsg;
 
-    /*Õ¨≤Ωœ˚œ¢∂”¡–*/
+    /*ÂêåÊ≠•Ê∂àÊÅØÈòüÂàó*/
     __gui_syncmsg_t    *pFirstSyncMsg;
     __gui_syncmsg_t    *pLastSyncMsg;
 
-    /*“Ï≤Ωœ˚œ¢∂”¡– */
+    /*ÂºÇÊ≠•Ê∂àÊÅØÈòüÂàó */
     __gui_msg_t        *pAsyncMsg;
     __gui_msg_t        *pPaintMsg;
     __u32               len;
@@ -327,7 +330,7 @@ typedef struct WIN_MSGQUEUE
     __u8                longcount;
     unsigned long       keyactionvalue;
 
-    /*timerœ˚œ¢¥¶¿ÌΩ·ππ*/
+    /*timerÊ∂àÊÅØÂ§ÑÁêÜÁªìÊûÑ*/
     __u32               FirstTimerSlot;
     __u32               TimerMask;
 } __win_msgqueue_t;
@@ -358,7 +361,7 @@ typedef struct _CTLCLASSINFO
 
 typedef __gui_ctlclass_info_t *pctlclassinfo;
 
-/*¥∞ø⁄µƒºÙ«–”Ú∂®“Â*/
+/*Á™óÂè£ÁöÑÂâ™ÂàáÂüüÂÆö‰πâ*/
 typedef struct __GUI_CLIPINFO
 {
     pthread_mutex_t         lock;
@@ -368,7 +371,7 @@ typedef struct __GUI_CLIPINFO
 
 typedef __gui_clipinfo_t   *pclipinfo;
 
-/*¥∞ø⁄µƒŒﬁ–ß«¯”Ú∂®“Â*/
+/*Á™óÂè£ÁöÑÊó†ÊïàÂå∫ÂüüÂÆö‰πâ*/
 typedef struct __WIN_INVREGN
 {
     pthread_mutex_t         lock;
@@ -378,7 +381,7 @@ typedef struct __WIN_INVREGN
 
 typedef __win_invregn_t *pinvregn;
 
-/*¥∞ø⁄Z–ÚΩ⁄µ„∂®“Â*/
+/*Á™óÂè£ZÂ∫èËäÇÁÇπÂÆö‰πâ*/
 typedef struct _GUI_ZORDERNODE
 {
     H_WIN                   hWnd;          // Handle of window
@@ -388,7 +391,7 @@ typedef struct _GUI_ZORDERNODE
 
 typedef __gui_zordernode_t *pzordernode;
 
-/*Z–Ú–≈œ¢∂®“Â*/
+/*ZÂ∫è‰ø°ÊÅØÂÆö‰πâ*/
 typedef struct __GUI_ZORDERINFO
 {
     __u32                   nNumber;        // Number of windows
@@ -401,7 +404,7 @@ typedef struct __GUI_ZORDERINFO
 typedef __gui_zorderinfo_t *pzorderinfo;
 
 
-/*πˆ∂ØÃı∂®“Â*/
+/*ÊªöÂä®Êù°ÂÆö‰πâ*/
 typedef struct __SCROLLWINDOWINFO
 {
     __u32                   iOffx;
@@ -431,27 +434,27 @@ typedef __gui_scrollbarinfo_t *pscrollbarinfo;
 
 typedef struct tag__GUI_LYRWIN
 {
-    char                        name[GUI_NAME_MAX];   /* ¥∞ø⁄√˚≥∆*/
+    char                        name[GUI_NAME_MAX];   /* Á™óÂè£ÂêçÁß∞*/
 
     H_LYR                       h_swlyr;              /* sw layer handle                                              */
     __u8                        type;
 
-    H_LYR                       h_uselyr;             /*πÿ¡™µƒÕº≤„æ‰±˙£¨‘⁄Exƒ£ Ωœ¬”–”√£¨”√¿¥±Ì æ∏√Õº≤„«ø’ºƒ≥“ªÕº≤„µƒ”≤º˛æ‰±˙*/
+    H_LYR                       h_uselyr;             /*ÂÖ≥ËÅîÁöÑÂõæÂ±ÇÂè•ÊüÑÔºåÂú®ExÊ®°Âºè‰∏ãÊúâÁî®ÔºåÁî®Êù•Ë°®Á§∫ËØ•ÂõæÂ±ÇÂº∫Âç†Êüê‰∏ÄÂõæÂ±ÇÁöÑÁ°¨‰ª∂Âè•ÊüÑ*/
     H_LYR                       h_hwlyr;              /* hw layer                                                     */
     H_LYR                       h_exlyr;
     __disp_layer_para_t         lyrpara;
     __mp                        *devfp;
 
-    __gui_lyrwin_sta_t          status;                //Õº≤„µƒ◊¥Ã¨–≈œ¢
-    __gui_layer_intersts_t      use_sts;               //Õº≤„µƒ π”√◊¥Ã¨–≈œ¢
+    __gui_lyrwin_sta_t          status;                //ÂõæÂ±ÇÁöÑÁä∂ÊÄÅ‰ø°ÊÅØ
+    __gui_layer_intersts_t      use_sts;               //ÂõæÂ±ÇÁöÑ‰ΩøÁî®Áä∂ÊÄÅ‰ø°ÊÅØ
 
-    /* ºÙ«–”Ú */
-    __gui_clipinfo_t           *pGCRInfo;             // ¥∞ø⁄µƒºÙ«–”Ú–≈œ¢.
-    __gui_clipinfo_t            GCRInfo;              //ºÙ«–”Ú–≈œ¢Ω·ππ
+    /* Ââ™ÂàáÂüü */
+    __gui_clipinfo_t           *pGCRInfo;             // Á™óÂè£ÁöÑÂâ™ÂàáÂüü‰ø°ÊÅØ.
+    __gui_clipinfo_t            GCRInfo;              //Ââ™ÂàáÂüü‰ø°ÊÅØÁªìÊûÑ
 
-    /* z–Ú*/
-    __gui_zorderinfo_t          ManWinZOrder;         //Õº≤„µƒÕ®”√¥∞ø⁄Z–Ú¡–±Ì
-    __gui_zorderinfo_t          TopMostWinZOrder;     //Õº≤„µƒ◊Ó∂•¥∞ø⁄µƒZ–Ú¡–±Ì
+    /* zÂ∫è*/
+    __gui_zorderinfo_t          ManWinZOrder;         //ÂõæÂ±ÇÁöÑÈÄöÁî®Á™óÂè£ZÂ∫èÂàóË°®
+    __gui_zorderinfo_t          TopMostWinZOrder;     //ÂõæÂ±ÇÁöÑÊúÄÈ°∂Á™óÂè£ÁöÑZÂ∫èÂàóË°®
 
     struct tag__GUI_LYRWIN      *Next;
 } __gui_lyrwin_t;
@@ -460,80 +463,80 @@ typedef struct tag__GUI_LYRWIN
 /* window handler                                   */
 typedef struct tag__GUI_WIN
 {
-    char                         name[GUI_NAME_MAX];   /* ¥∞ø⁄√˚≥∆*/
+    char                         name[GUI_NAME_MAX];   /* Á™óÂè£ÂêçÁß∞*/
 
-    __u16                        DataType;              /* ¥∞ø⁄µƒ ˝æ›¿‡–Õ£¨”√¿¥≈–∂œ¥∞ø⁄æ‰±˙ «∑Ò”––ß.*/
-    __u16                        WinType;               /* ¥∞ø⁄¿‡–Õ*/
+    __u16                        DataType;              /* Á™óÂè£ÁöÑÊï∞ÊçÆÁ±ªÂûãÔºåÁî®Êù•Âà§Êñ≠Á™óÂè£Âè•ÊüÑÊòØÂê¶ÊúâÊïà.*/
+    __u16                        WinType;               /* Á™óÂè£Á±ªÂûã*/
 
-    __u32                        dwStyle;               /* ¥∞ø⁄µƒstyle.*/
-    __u32                        dwExStyle;            /* ¥∞ø⁄µƒ¿©’πstyle*/
+    __u32                        dwStyle;               /* Á™óÂè£ÁöÑstyle.*/
+    __u32                        dwExStyle;            /* Á™óÂè£ÁöÑÊâ©Â±ïstyle*/
 
-    /* ∏√÷˜¥∞ø⁄À˘ ÙÕº≤„¥∞ø⁄æ‰±˙ */
+    /* ËØ•‰∏ªÁ™óÂè£ÊâÄÂ±ûÂõæÂ±ÇÁ™óÂè£Âè•ÊüÑ */
     __gui_lyrwin_t               *LyrWin;
     /* window tree */
-    struct tag__GUI_WIN          *Parent;              /* ¥∞ø⁄µƒ∏∏¥∞ø⁄÷∏’Î. */
-    struct tag__GUI_WIN          *FirstChild;          /* µ⁄“ª∏ˆ◊”¥∞ø⁄µƒæ‰±˙*/
-    struct tag__GUI_WIN          *Next;                /* ¥∞ø⁄µƒœ¬“ª∏ˆ–÷µ‹¥∞ø⁄*/                                       // the next sibling control.
-    struct tag__GUI_WIN          *Prev;                /* ¥∞ø⁄µƒ«∞“ª∏ˆ–÷µ‹¥∞ø⁄*/                                 // the prev sibling control.
-    struct tag__GUI_WIN          *ActiveChild;         /* µ±«∞º§ªÓµƒ◊”¥∞ø⁄µƒæ‰±˙*/
-    struct tag__GUI_WIN          *OldUnderPointer;     /* …œ“ª¥Œ◊”¥∞ø⁄¥•√˛∆¡œ¬µƒ◊”¥∞ø⁄æ‰±˙*/
+    struct tag__GUI_WIN          *Parent;              /* Á™óÂè£ÁöÑÁà∂Á™óÂè£ÊåáÈíà. */
+    struct tag__GUI_WIN          *FirstChild;          /* Á¨¨‰∏Ä‰∏™Â≠êÁ™óÂè£ÁöÑÂè•ÊüÑ*/
+    struct tag__GUI_WIN          *Next;                /* Á™óÂè£ÁöÑ‰∏ã‰∏Ä‰∏™ÂÖÑÂºüÁ™óÂè£*/                                       // the next sibling control.
+    struct tag__GUI_WIN          *Prev;                /* Á™óÂè£ÁöÑÂâç‰∏Ä‰∏™ÂÖÑÂºüÁ™óÂè£*/                                 // the prev sibling control.
+    struct tag__GUI_WIN          *ActiveChild;         /* ÂΩìÂâçÊøÄÊ¥ªÁöÑÂ≠êÁ™óÂè£ÁöÑÂè•ÊüÑ*/
+    struct tag__GUI_WIN          *OldUnderPointer;     /* ‰∏ä‰∏ÄÊ¨°Â≠êÁ™óÂè£Ëß¶Êë∏Â±è‰∏ãÁöÑÂ≠êÁ™óÂè£Âè•ÊüÑ*/
     struct tag__GUI_WIN          *Primitive;           /* the premitive child of mouse event.*/
 
-    __u32                         id;                   // ¥∞ø⁄ID
+    __u32                         id;                   // Á™óÂè£ID
 
-    __gui_rect_t                  win_rect;             // ¥∞ø⁄‘⁄Õº≤„(ªÚ’ﬂframwin)÷–µƒæÿ–Œ«¯”Ú
-    __gui_rect_t                  client_rect;          // ¥∞ø⁄µƒøÕªß«¯æÿ–Œ«¯”Ú
+    __gui_rect_t                  win_rect;             // Á™óÂè£Âú®ÂõæÂ±Ç(ÊàñËÄÖframwin)‰∏≠ÁöÑÁü©ÂΩ¢Âå∫Âüü
+    __gui_rect_t                  client_rect;          // Á™óÂè£ÁöÑÂÆ¢Êà∑Âå∫Áü©ÂΩ¢Âå∫Âüü
 
-    __color_t                     bkColor;              // ¥∞ø⁄µƒ±≥æ∞…´.
-    GUI_FONT                      *pLogFont;             // ¥∞ø⁄µƒ◊÷ÃÂ.
+    __color_t                     bkColor;              // Á™óÂè£ÁöÑËÉåÊôØËâ≤.
+    GUI_FONT                      *pLogFont;             // Á™óÂè£ÁöÑÂ≠ó‰Ωì.
 
-    __win_invregn_t               InvRgn;               // ¥∞ø⁄µƒŒﬁ–ß«¯–≈œ¢.
-    __gui_clipinfo_t             *pGCRInfo;             // ¥∞ø⁄µƒºÙ«–”Ú–≈œ¢.
-    __gui_zordernode_t           *pZOrderNode;          // ¥∞ø⁄µƒZ–ÚΩ⁄µ„
+    __win_invregn_t               InvRgn;               // Á™óÂè£ÁöÑÊó†ÊïàÂå∫‰ø°ÊÅØ.
+    __gui_clipinfo_t             *pGCRInfo;             // Á™óÂè£ÁöÑÂâ™ÂàáÂüü‰ø°ÊÅØ.
+    __gui_zordernode_t           *pZOrderNode;          // Á™óÂè£ÁöÑZÂ∫èËäÇÁÇπ
 
-    __gui_clipinfo_t              GCRInfo;              // ºÙ«–”Ú–≈œ¢Ω·ππ
+    __gui_clipinfo_t              GCRInfo;              // Ââ™ÂàáÂüü‰ø°ÊÅØÁªìÊûÑ
 
-    __pGUI_WIN_CB                 WindowProc;           // ¥∞ø⁄µƒœ˚œ¢¥¶¿Ì∫Ø ˝
-    NOTIFPROC                     NotifProc;            // Õ®÷™œ˚œ¢¥¶¿Ì∫Ø ˝.
+    __pGUI_WIN_CB                 WindowProc;           // Á™óÂè£ÁöÑÊ∂àÊÅØÂ§ÑÁêÜÂáΩÊï∞
+    NOTIFPROC                     NotifProc;            // ÈÄöÁü•Ê∂àÊÅØÂ§ÑÁêÜÂáΩÊï∞.
 
-    __gui_scrollbarinfo_t         vscroll;              // ¥∞ø⁄µƒπˆ∂ØÃı–≈œ¢
+    __gui_scrollbarinfo_t         vscroll;              // Á™óÂè£ÁöÑÊªöÂä®Êù°‰ø°ÊÅØ
     __gui_scrollbarinfo_t         hscroll;
 
-    unsigned long                 dwAddData;            // ”√ªß¥´µ›¥∞ø⁄ ±–Ë“™¥´µ›µƒ ˝æ›
-    unsigned long                 dwCtrlData;           // ”√ªß±£¥Êµƒœ‡”¶¥∞ø⁄øÿ÷∆–≈œ¢µƒ ˝æ›Ω·ππ
-    //(÷ÿ‘ÿ¥∞ø⁄ ±–Ë“™øÿ÷∆–≈œ¢ ± π”√)
+    unsigned long                 dwAddData;            // Áî®Êà∑‰º†ÈÄíÁ™óÂè£Êó∂ÈúÄË¶Å‰º†ÈÄíÁöÑÊï∞ÊçÆ
+    unsigned long                 dwCtrlData;           // Áî®Êà∑‰øùÂ≠òÁöÑÁõ∏Â∫îÁ™óÂè£ÊéßÂà∂‰ø°ÊÅØÁöÑÊï∞ÊçÆÁªìÊûÑ
+    //(ÈáçËΩΩÁ™óÂè£Êó∂ÈúÄË¶ÅÊéßÂà∂‰ø°ÊÅØÊó∂‰ΩøÁî®)
 } __gui_win_t;
 
 typedef struct __MANWIN
 {
-    __gui_win_t                   base_win;            //ª˘±æ¥∞ø⁄–≈œ¢Ω·ππ
+    __gui_win_t                   base_win;            //Âü∫Êú¨Á™óÂè£‰ø°ÊÅØÁªìÊûÑ
 
-    __u16                         ManWinType;         //π‹¿Ì¥∞ø⁄◊”¿‡–Õ  ∏˘÷˜¥∞ø⁄¿‡–ÕªÚ’ﬂ◊”π‹¿Ì¥∞ø⁄¿‡–Õ
+    __u16                         ManWinType;         //ÁÆ°ÁêÜÁ™óÂè£Â≠êÁ±ªÂûã  Ê†π‰∏ªÁ™óÂè£Á±ªÂûãÊàñËÄÖÂ≠êÁÆ°ÁêÜÁ™óÂè£Á±ªÂûã
 
-    __win_msgqueue_t             *pMessages;           //œ˚œ¢∂”¡–
+    __win_msgqueue_t             *pMessages;           //Ê∂àÊÅØÈòüÂàó
 
-    __u32                          threadid;               //÷˜¥∞ø⁄¥¶¿Ìœ˚œ¢∂”¡–µƒœﬂ≥ÃID
+    __u32                          threadid;               //‰∏ªÁ™óÂè£Â§ÑÁêÜÊ∂àÊÅØÈòüÂàóÁöÑÁ∫øÁ®ãID
 
-    __gui_win_t                  *pHosting;            //÷˜¥∞ø⁄µƒÀﬁ÷˜¥∞ø⁄
+    __gui_win_t                  *pHosting;            //‰∏ªÁ™óÂè£ÁöÑÂÆø‰∏ªÁ™óÂè£
 
-    __gui_win_t                  *pFirstHosted;        //÷˜¥∞ø⁄µƒµ⁄“ª∏ˆhosted¥∞ø⁄æ‰±˙
+    __gui_win_t                  *pFirstHosted;        //‰∏ªÁ™óÂè£ÁöÑÁ¨¨‰∏Ä‰∏™hostedÁ™óÂè£Âè•ÊüÑ
 
-    __gui_win_t                  *pNextHosted;         //÷˜¥∞ø⁄µƒœ¬“ª∏ˆhosted¥∞ø⁄
+    __gui_win_t                  *pNextHosted;         //‰∏ªÁ™óÂè£ÁöÑ‰∏ã‰∏Ä‰∏™hostedÁ™óÂè£
 
-    __gui_win_t                  *pRootMain;           //÷˜¥∞ø⁄µƒroot÷˜¥∞ø⁄
+    __gui_win_t                  *pRootMain;           //‰∏ªÁ™óÂè£ÁöÑroot‰∏ªÁ™óÂè£
 } __gui_manwin_t;
 
 typedef struct tag__GUI_FRMWIN
 {
-    __gui_win_t                   base_win;            //ª˘±æ¥∞ø⁄–≈œ¢Ω·ππ
+    __gui_win_t                   base_win;            //Âü∫Êú¨Á™óÂè£‰ø°ÊÅØÁªìÊûÑ
 
-    __gui_manwin_t               *pManWin;             //÷∏œÚ÷˜¥∞ø⁄µƒ÷∏’Î
+    __gui_manwin_t               *pManWin;             //ÊåáÂêë‰∏ªÁ™óÂè£ÁöÑÊåáÈíà
 
-    __gui_win_t                  *pHosting;            //framewinµƒÀﬁ÷˜¥∞ø⁄
+    __gui_win_t                  *pHosting;            //framewinÁöÑÂÆø‰∏ªÁ™óÂè£
 
-    __gui_win_t                  *pFirstHosted;        //framewinµƒµ⁄“ª∏ˆhosted¥∞ø⁄æ‰±˙
+    __gui_win_t                  *pFirstHosted;        //framewinÁöÑÁ¨¨‰∏Ä‰∏™hostedÁ™óÂè£Âè•ÊüÑ
 
-    __gui_win_t                  *pNextHosted;         //framewinµƒœ¬“ª∏ˆhosted¥∞ø⁄
+    __gui_win_t                  *pNextHosted;         //framewinÁöÑ‰∏ã‰∏Ä‰∏™hostedÁ™óÂè£
 } __gui_frmwin_t;
 
 
@@ -547,13 +550,13 @@ typedef struct __WIDGET
 {
     __gui_win_t                     base_win;
 
-    __u16                           CtrlWinType;         //øÿº˛¥∞ø⁄◊”¿‡–Õ  Õº≤„¥∞ø⁄¿‡–ÕªÚ’ﬂÕ®”√¥∞ø⁄¿‡–Õ
+    __u16                           CtrlWinType;         //Êéß‰ª∂Á™óÂè£Â≠êÁ±ªÂûã  ÂõæÂ±ÇÁ™óÂè£Á±ªÂûãÊàñËÄÖÈÄöÁî®Á™óÂè£Á±ªÂûã
 
-    __gui_frmwin_t                  *pFrameWin;          // controlµƒframewinæ‰±˙
+    __gui_frmwin_t                  *pFrameWin;          // controlÁöÑframewinÂè•ÊüÑ
 
     __gui_ctlclass_info_t           *pcci;               // pointer to Control Class Info struct.
 
-    unsigned long                   dwAddData;           /*controløÿº˛◊‘…ÌµƒÀΩ”– ˝æ›*/
+    unsigned long                   dwAddData;           /*controlÊéß‰ª∂Ëá™Ë∫´ÁöÑÁßÅÊúâÊï∞ÊçÆ*/
 } __gui_widget_t;
 
 typedef __gui_widget_t              *pwidget;
@@ -576,10 +579,10 @@ extern void                 GUI_LogPt2PhyPt(__u8 direct, GUI_POINT *pLogPoint, G
 
 #define DEF_NR_TIMERS           32
 
-/*GUIœµÕ≥timerº‰∏Ù(10ms)*/
+/*GUIÁ≥ªÁªütimerÈó¥Èöî(10ms)*/
 #define DEF_TIMER_PEROID        2
 
-/*GUI«∂Ã◊À¯ ˝æ›Ω·ππ*/
+/*GUIÂµåÂ•óÈîÅÊï∞ÊçÆÁªìÊûÑ*/
 typedef struct __GUI_NESTLOCK
 {
     pthread_mutex_t     lock;
@@ -617,8 +620,3 @@ __s16   GUI_TouchPhyDirToLogDir(__u8 direct, __s16 PhyDir);
 #include "kernel/GUI_Kernel_e.h"
 
 #endif  /* _GUI_PRIVATE_H_ */
-
-
-
-
-

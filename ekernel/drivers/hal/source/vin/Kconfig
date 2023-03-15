@@ -1,0 +1,34 @@
+menu "VIN Devices"
+
+config DRIVERS_VIN
+    bool "enable vin driver"
+    default n
+
+if DRIVERS_VIN
+choice
+	depends on DRIVERS_VIN
+	prompt "select isp work mode"
+	default ISP_READ_THRESHOLD
+
+config ISP_READ_THRESHOLD
+	bool "read ae threshold from flash"
+
+config ISP_FAST_CONVERGENCE
+	bool "use HFR to make AE&AWB fast stability"
+
+config ISP_HARD_LIGHTADC
+	bool "use hard light_adc to make AE&AWB fast stability"
+endchoice
+
+config ISP_NUMBER
+	int "isp support number"
+	default 1
+	range 1 2
+
+menu "sensor driver select"
+source "ekernel/drivers/hal/source/vin/modules/sensor/Kconfig"
+endmenu
+
+endif
+
+endmenu

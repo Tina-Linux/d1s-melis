@@ -86,12 +86,24 @@ function ctoolchain()
         && echo "Couldn't locate the top of the tree.  Try setting TOP." \
         && return
 
-    \cd $T/toolchain/bin
+    \cd $T/../toolchain/bin
+}
+
+function check_opensbi()
+{
+	local sbi_file=${MELIS_BASE}/projects/$TARGET_BOARD/sbi-bin/sbi.bin
+	local sbi_tmp=${MELIS_BASE}/projects/$TARGET_BOARD/sbi-bin/sbi_temp.bin
+
+	cp  $sbi_file $sbi_tmp
+	${MELIS_BASE}/tools/packtool/update_chip_melis $sbi_file > /dev/null
+	rm -rf $sbi_file
+	mv $sbi_tmp $sbi_file
 }
 
 function make()
 {
-    local start_time=$(date +"%s")
+	check_opensbi
+	local start_time=$(date +"%s")
     command make V=s "$@"
     local ret=$?
     local end_time=$(date +"%s")
@@ -99,6 +111,7 @@ function make()
     local hours=$(($tdiff / 3600 ))
     local mins=$((($tdiff % 3600) / 60))
     local secs=$(($tdiff % 60))
+	local board=${TARGET_BOARD}
     echo
     if [ $ret -eq 0 ] ; then
         echo -n -e "#### make completed successfully "
@@ -168,7 +181,7 @@ function muboot()
     fi
     local start_time=$(date +"%s")
     make distclean
-    make ${platformid}_nor_defconfig
+    make ${platformid}_rtos_nor_defconfig
     make -j16
     local ret=$?
     local end_time=$(date +"%s")
@@ -208,10 +221,17 @@ function mboot0()
         return -1
     fi
     local start_time=$(date +"%s")
+    if [ -d board/${platformid}_backup ]; then
+		rm board/${platformid}_backup
+    fi
+    mv board/${platformid} board/${platformid}_backup
+    cp board/${platformid}_rtos board/${platformid} -rf
     make distclean
-    make p=${platformid}_rtos
-    make boot0
+    make p=${platformid}
+    make
     local ret=$?
+    rm board/${platformid} -rf
+    mv board/${platformid}_backup board/${platformid}
     local end_time=$(date +"%s")
     local tdiff=$(($end_time-$start_time))
     local hours=$(($tdiff / 3600 ))
@@ -222,6 +242,8 @@ function mboot0()
         echo -n -e "#### make boot0 completed successfully "
         cp nboot/boot0_spinor_${platformid}.bin ${MELIS_BASE}/projects/$TARGET_BOARD/bin/boot0_${platformid}_nor.bin
         cp nboot/boot0_sdcard_${platformid}.bin ${MELIS_BASE}/projects/$TARGET_BOARD/bin/boot0_${platformid}_card.bin
+        cp nboot/boot0_nand_${platformid}.bin ${MELIS_BASE}/projects/$TARGET_BOARD/bin/boot0_${platformid}_nand.bin
+        cp  fes/fes1_sun20iw1p1.bin ${MELIS_BASE}/projects/$TARGET_BOARD/bin/fes1_${platformid}.bin
     else
         echo -n -e "#### make boot0 failed to build some targets "
     fi
@@ -403,8 +425,7 @@ function cconfigs()
     unset select_config_path
 }
 
-
-function print_lunch_menu(){
+function add_lunch_menu(){
     board_config_path=${MELIS_BASE}/projects
     IFS=$(echo -en "\n\b")
     local j=0
@@ -417,7 +438,9 @@ function print_lunch_menu(){
             j=`expr $j + 1`
         fi
     done
+}
 
+function print_lunch_menu(){
     local i=1
     for config_list_id in ${config_list[@]}
     do
@@ -433,12 +456,22 @@ function copy_config(){
     export UDISK_PATH=${MELIS_BASE}/projects/${TARGET_BOARD}/data/UDISK
 
     dotconfig=${MELIS_BASE}/projects/${board_name}/configs/defconfig
+    parttable=${MELIS_BASE}/projects/${board_name}/configs/sys_partition.fex
+    sysconfig=${MELIS_BASE}/projects/${board_name}/configs/sys_config.fex
+
+    if [ -f ${MELIS_BASE}/projects/${board_name}/configs/chip.mk ];then
+        source ${MELIS_BASE}/projects/${board_name}/configs/chip.mk
+    fi
 
     if [ -f ${dotconfig} ]; then
         cp -rf ${dotconfig} ${MELIS_BASE}/.config
     else
         echo "fatal error, no default .config file."
         return -1
+    fi
+    CONFIG_TARGET_PLATFORM=$(get_platform)
+    if [ "${CONFIG_TARGET_PLATFORM}" = "sun8iw19p1" ]; then
+        cp -fr ${sysconfig} ${MELIS_BASE}/ekernel/arch/boot/fex/
     fi
 }
 
@@ -449,6 +482,7 @@ function get_platform() {
     unset CONFIG_SOC_SUN8IW18P1
     unset CONFIG_SOC_SUN8IW19P1
     unset CONFIG_SOC_SUN20IW1P1
+    unset CONFIG_SOC_SUN20IW3P1
 
     . ${MELIS_BASE}/.config
 
@@ -464,10 +498,10 @@ function get_platform() {
 	echo "sun8iw18p1"
     elif [ "$CONFIG_SOC_SUN8IW19P1" = "$YES" ]; then
 	echo "sun8iw19p1"
-    elif [ "$CONFIG_SOC_SUN8IW19P1" = "$YES" ]; then
-	echo "sun8iw19p1"
     elif [ "$CONFIG_SOC_SUN20IW1P1" = "$YES" ]; then
 	echo "sun20iw1p1"
+    elif [ "$CONFIG_SOC_SUN20IW3P1" = "$YES" ]; then
+	echo "sun20iw3p1"
     fi
 }
 
@@ -481,44 +515,46 @@ function platform_verbose(){
     echo "Project Based On Platform" $TARGET_PLATFORM $TARGET_BOARD
     echo "============================================"
 }
+
 function lunch(){
     local uname=$(uname -a)
+    local board_choice
     echo
     echo "You're building on" $uname
     echo
     echo "Lunch menu... pick a combo:"
     echo "The supported board:"
-    unset config_list
 
-    print_lunch_menu
-    echo -n "What is your choice? "
-    read board_choice
+    if [ "$1"  ] ; then
+        board_choice=$1
+    else
+        print_lunch_menu
+        echo -n "What is your choice? "
+        read board_choice
+    fi
+
+    if (echo -n $board_choice | grep -q -e "^[0-9][0-9]*$"); then
+        if  [ "$board_choice" -gt ${#config_list[@]} ]; then
+	        echo "Too much number, exceed the maxium support board!"
+	        return -1
+        fi
+
+        if [ "$board_choice" -gt 0  ] ;then
+            echo "The $board_choice is number." > /dev/null
+        else
+            echo "The soc family [$board_choice] not supported!"
+            return -1
+        fi
+
+        [ $board_choice -le ${#config_list[@]} ] \
+            && board_choice=${config_list[$(($board_choice-1))]}
+    else
+        board_choice="$board_choice"
+    fi
 
     for config_list_id in ${config_list[@]}
     do
         if [ "$config_list_id" == "$board_choice" ] ; then
-            copy_config $config_list_id
-            platform_verbose
-            return 0
-        fi
-    done
-
-    if  [ "$board_choice" -gt ${#config_list[@]} ]; then
-	echo "Too much number, exceed the maxium support board!"
-	return -1
-    fi
-
-    if [ "$board_choice" -gt 0  ] ;then
-        echo "The $board_choice is number." > /dev/null
-    else
-        echo "The soc family [$board_choice] not supported!"
-        return -1
-    fi
-
-    config_list_id=""
-    for config_list_id in ${config_list[@]}
-    do
-        if [ "${config_list[$board_choice-1]}" == "$config_list_id" ] ; then
             copy_config $config_list_id
         fi
     done
@@ -528,10 +564,37 @@ function lunch(){
     check_elf_store_directory
 
     if [ -n $(grep "^CONFIG_ARM=y" "${MELIS_BASE}/.config") ] ; then
-        export PATH=${PATH}:${MELIS_BASE}/toolchain/gcc-arm-melis-eabi-9-2020-q2-update-x86_64-linux/bin
+        export PATH=${PATH}:${MELIS_BASE}/../toolchain/gcc-arm-melis-eabi-9-2020-q2-update-x86_64-linux/bin
     fi
     if [ -n `grep "^CONFIG_RISCV=y" "${MELIS_BASE}/.config"` ] ; then
-	    export PATH=${PATH}:${MELIS_BASE}/toolchain/riscv64-elf-x86_64-20201104/bin
+	    export PATH=${PATH}:${MELIS_BASE}/../toolchain/riscv64-elf-x86_64-20201104/bin
+    fi
+	
+	#create platform info file
+	echo "chip=$(get_platform)" > platform.txt
+	echo "platform=melis" >> platform.txt
+	echo "board_platform=none" >> platform.txt
+	echo "board=${TARGET_BOARD}" >> platform.txt
+	echo "debug=uart0" >> platform.txt
+	echo "sigmode=none" >> platform.txt
+	echo "securemode=none" >> platform.txt
+	echo "mode=normal" >> platform.txt
+	echo "programmer=none" >> platform.txt
+	echo "tar_image=none" >> platform.txt
+	echo "nor_volume=8" >> platform.txt
+	echo "torage_type=nor" >> platform.txt
+}
+
+function _lunch() {
+    local cur prev
+
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+    if [[ ${cur} == *   ]] ; then
+        COMPREPLY=( $(compgen -W "${config_list[*]}" -- ${cur})   )
+        return 0
     fi
 }
 
@@ -555,3 +618,11 @@ function check_elf_store_directory(){
         mkdir -pv ${MELIS_BASE}/projects/${TARGET_BOARD}/data/UDISK/mod/willow/
     fi
 }
+
+function envsetup() {
+    unset config_list
+    add_lunch_menu
+    complete -F _lunch lunch
+}
+
+envsetup

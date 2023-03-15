@@ -1,32 +1,63 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include "jt_tts.h"
 #include <log.h>
 #include "dfs_posix.h"
-#define   MAX_CHARS_NO   (50)   /*Ä¿Ç°audio dev Çı¶¯µÄ»º³åÇø×î´óÔÊĞí50¸ö×Ö×óÓÒµÄÒôÆµÊıÖµ´óĞ¡*/
+#define   MAX_CHARS_NO   (50)   /*ç›®å‰audio dev é©±åŠ¨çš„ç¼“å†²åŒºæœ€å¤§å…è®¸50ä¸ªå­—å·¦å³çš„éŸ³é¢‘æ•°å€¼å¤§å°*/
 
-static __u8 g_new_buf[MAX_CHARS_NO * 3 + 3]; //Ìí¼Ó½áÎ²¿Õ¸ñ¸øTTS
+static __u8 g_new_buf[MAX_CHARS_NO * 3 + 3]; //æ·»åŠ ç»“å°¾ç©ºæ ¼ç»™TTS
 
 /****************************************************************************
-¶ÔÎÄ¼şÊı¾İ½øĞĞ·ÖÎö£¬·ÖÎö³öÀ´µÄµÄÒ»¾ä»°½øĞĞÒôÆµµÄÕûºÏ
-Ã¿µ±Óöµ½¡£?!µÄÊ±ºò»òÕß´óÓÚ50 ¸öÎÄ×Ö,µ¥×Ö·ûÇé¿öÏÂ(Ó¢ÎÄÇé¿öÏÂ
-´óÓÚ50¸ö×Ö·û¾ÍÒÔ×îºóÒ»¸ö¿Õ¸ñ×÷ÎªÒ»¾ä»°µÄ½áÊø)
-µÄÊ±ºòÈÏÎªÊÇÒ»¾ä»°µÄ½áÊø
+å¯¹æ–‡ä»¶æ•°æ®è¿›è¡Œåˆ†æï¼Œåˆ†æå‡ºæ¥çš„çš„ä¸€å¥è¯è¿›è¡ŒéŸ³é¢‘çš„æ•´åˆ
+æ¯å½“é‡åˆ°ã€‚?!çš„æ—¶å€™æˆ–è€…å¤§äº50 ä¸ªæ–‡å­—,å•å­—ç¬¦æƒ…å†µä¸‹(è‹±æ–‡æƒ…å†µä¸‹
+å¤§äº50ä¸ªå­—ç¬¦å°±ä»¥æœ€åä¸€ä¸ªç©ºæ ¼ä½œä¸ºä¸€å¥è¯çš„ç»“æŸ)
+çš„æ—¶å€™è®¤ä¸ºæ˜¯ä¸€å¥è¯çš„ç»“æŸ
 *****************************************************************************/
 
 /*
 **********************************************************************************************************************
 *                                               __tts_analysis_utf8_oneline
 *
-* Description: ·ÖÎöÊäÈëÊı¾İµÄÄÚÈİ£¬·µ»ØµÚÒ»¸ö¾äÄÚÈİµÄÆğÊ¼µØÖ·ºÍ³¤¶È£¨UTF8±àÂë¸ñÊ½£©
-*            ÈÏÎªÒ»¾ä»°µÄ¹æÔòÎª:
-                            1¡¢Ë«×Ö½ÚÓöµ½¡£!   ? Ê±ºò£¬·ñÔò= 50 ¸ö×Ö·ûÈÏÎªÊÇÒ»¾ä
-                            2¡¢Á¬Ğø50µ¥×Ö½ÚÕÒ×îºóÒ»¸ö¿Õ¸ñ·û×÷ÎªÒ»¾ä£¬»òÕßÓöµ½.!?Ò²ÎªÒ»¾ä£¬
-                                50¸öÒ²×÷ÎªÒ»¾ä
-                            3¡¢Óöµ½»»ĞĞ·ûÒ²ÈÏÎªÊÇÒ»¾ä
+* Description: åˆ†æè¾“å…¥æ•°æ®çš„å†…å®¹ï¼Œè¿”å›ç¬¬ä¸€ä¸ªå¥å†…å®¹çš„èµ·å§‹åœ°å€å’Œé•¿åº¦ï¼ˆUTF8ç¼–ç æ ¼å¼ï¼‰
+*            è®¤ä¸ºä¸€å¥è¯çš„è§„åˆ™ä¸º:
+                            1ã€åŒå­—èŠ‚é‡åˆ°ã€‚!   ? æ—¶å€™ï¼Œå¦åˆ™= 50 ä¸ªå­—ç¬¦è®¤ä¸ºæ˜¯ä¸€å¥
+                            2ã€è¿ç»­50å•å­—èŠ‚æ‰¾æœ€åä¸€ä¸ªç©ºæ ¼ç¬¦ä½œä¸ºä¸€å¥ï¼Œæˆ–è€…é‡åˆ°.!?ä¹Ÿä¸ºä¸€å¥ï¼Œ
+                                50ä¸ªä¹Ÿä½œä¸ºä¸€å¥
+                            3ã€é‡åˆ°æ¢è¡Œç¬¦ä¹Ÿè®¤ä¸ºæ˜¯ä¸€å¥
 * Arguments  :
-*           @data: ÊäÈëµÄÄÚÈİµØÖ·
-*           @size:ÊäÈëµÄÄÚÈİ´óĞ¡
-*           @outputdata: ·ÖÎö³öÀ´µÄµÚÒ»¾ä»°µÄÆğÊ¼µØÖ·
-*           @output_size:·ÖÎö³öÀ´µÄµÚÒ»¾ä»°µÄ³¤¶È
+*           @data: è¾“å…¥çš„å†…å®¹åœ°å€
+*           @size:è¾“å…¥çš„å†…å®¹å¤§å°
+*           @outputdata: åˆ†æå‡ºæ¥çš„ç¬¬ä¸€å¥è¯çš„èµ·å§‹åœ°å€
+*           @output_size:åˆ†æå‡ºæ¥çš„ç¬¬ä¸€å¥è¯çš„é•¿åº¦
 * Returns    :
 
 * Notes      :
@@ -37,10 +68,10 @@ static void __tts_analysis_utf8_oneline(char *data, __u32  size, char **outputda
 {
     __u16                   tmp;
     char                   *p_data;
-    __u32 index_size = 0;       /*¼ÇÂ¼ÊÇ·ñÊÇ´ïµ½ÄÚÈİ½áÎ²*/
-    __s32 one_byt_no = 0;       /*Á¬Ğøµ¥×Ö½ÚÀÛ¼ÓÊı*/
-    __s32 char_no = 0;          /*½âÎöµÄ×Ö·ûÊıÄ¿*/
-    char                   *p_first_one_byt;        /*Ö¸ÏòµÚÒ»¸öÁ¬Ğøµ¥×Ö½ÚÁ÷Êı¾İÎ»ÖÃ*/
+    __u32 index_size = 0;       /*è®°å½•æ˜¯å¦æ˜¯è¾¾åˆ°å†…å®¹ç»“å°¾*/
+    __s32 one_byt_no = 0;       /*è¿ç»­å•å­—èŠ‚ç´¯åŠ æ•°*/
+    __s32 char_no = 0;          /*è§£æçš„å­—ç¬¦æ•°ç›®*/
+    char                   *p_first_one_byt;        /*æŒ‡å‘ç¬¬ä¸€ä¸ªè¿ç»­å•å­—èŠ‚æµæ•°æ®ä½ç½®*/
     *outputdata =  data;
     *output_size = 0;
     p_data = data;
@@ -49,7 +80,7 @@ static void __tts_analysis_utf8_oneline(char *data, __u32  size, char **outputda
     {
         if ((*p_data == 0x0a) || (*p_data == 0x0d))
         {
-            //»»ĞĞ·û¼ì²é
+            //æ¢è¡Œç¬¦æ£€æŸ¥
             if (*(p_data + 1) == 0x0a)
             {
                 p_data = p_data + 2;
@@ -65,18 +96,18 @@ static void __tts_analysis_utf8_oneline(char *data, __u32  size, char **outputda
                 char_no++;
             }
 
-            __msg("--------------------------·ÖÎöÍê±Ï!\n");
+            __msg("--------------------------åˆ†æå®Œæ¯•!\n");
             break;
         }
         else if ((((*p_data) & 0xff) == 0xff) && ((*(p_data + 1) & 0xff) == 0xfe))
         {
-            /*ÒÑ¾­µ½ÄÚÈİµÄ½áÎ²ÁË*/
-            __msg("--------------------------·ÖÎöÍê±Ï!\n");
+            /*å·²ç»åˆ°å†…å®¹çš„ç»“å°¾äº†*/
+            __msg("--------------------------åˆ†æå®Œæ¯•!\n");
             break;
         }
         else if ((*p_data & 0xf0) == 0xe0)
         {
-            // Èı×Ö½ÚÁ÷Êı¾İ
+            // ä¸‰å­—èŠ‚æµæ•°æ®
             tmp = ((*p_data & 0x0f) << 12) | ((*(p_data + 1) & 0x3f) << 6) | (*(p_data + 2) & 0x3f);
             char_no++;
             *output_size += 3;
@@ -85,36 +116,36 @@ static void __tts_analysis_utf8_oneline(char *data, __u32  size, char **outputda
 
             if (0/*tmp == (((0xef & 0x0f) << 12) | ((0xbc & 0x3f) << 6) | (0x81 & 0x3f))*/)
             {
-                /*Óöµ½!ºÅ*/
-                __msg("--------------------------·ÖÎöÍê±Ï!\n");
+                /*é‡åˆ°!å·*/
+                __msg("--------------------------åˆ†æå®Œæ¯•!\n");
                 break;
             }
 
             if (0/*tmp == (((0xe3 & 0x0f) << 12) | ((0x80 & 0x3f) << 6) | (0x82 & 0x3f))*/)
             {
-                /*¾äºÅ*/
-                __msg("--------------------------·ÖÎöÍê±Ï!\n");
+                /*å¥å·*/
+                __msg("--------------------------åˆ†æå®Œæ¯•!\n");
                 break;
             }
 
             if (0/*tmp == (((0xef & 0x0f) << 12) | ((0xbc & 0x3f) << 6) | (0x8c & 0x3f))*/)
             {
-                /*µÀºÅ*/
-                __msg("--------------------------·ÖÎöÍê±Ï!\n");
+                /*é“å·*/
+                __msg("--------------------------åˆ†æå®Œæ¯•!\n");
                 break;
             }
 
             if (0/*tmp == (((0xef & 0x0f) << 12) | ((0xbc & 0x3f) << 6) | (0x9f & 0x3f))*/)
             {
-                /*ÎÊºÅ*/
-                __msg("--------------------------·ÖÎöÍê±Ï!\n");
+                /*é—®å·*/
+                __msg("--------------------------åˆ†æå®Œæ¯•!\n");
                 break;
             }
 
             if (char_no >= MAX_CHARS_NO)
             {
-                /*³¬¹ı50 ¸öÎÄ×Ö*/
-                __msg("--------------------------·ÖÎöÍê±Ï!\n");
+                /*è¶…è¿‡50 ä¸ªæ–‡å­—*/
+                __msg("--------------------------åˆ†æå®Œæ¯•!\n");
                 break;
             }
 
@@ -122,7 +153,7 @@ static void __tts_analysis_utf8_oneline(char *data, __u32  size, char **outputda
         }
         else if ((*p_data & 0xe0) == 0xc0)
         {
-            // Ë«×Ö½ÚÁ÷Êı¾İ
+            // åŒå­—èŠ‚æµæ•°æ®
             tmp = ((*p_data & 0x3f) << 6) | (*(p_data + 1) & 0x3f);
             *output_size += 2;
             char_no++;
@@ -132,17 +163,17 @@ static void __tts_analysis_utf8_oneline(char *data, __u32  size, char **outputda
 
             if (char_no >= MAX_CHARS_NO)
             {
-                /*³¬¹ı50 ¸öÎÄ×Ö*/
-                __msg("--------------------------·ÖÎöÍê±Ï!\n");
+                /*è¶…è¿‡50 ä¸ªæ–‡å­—*/
+                __msg("--------------------------åˆ†æå®Œæ¯•!\n");
                 break;
             }
         }
         else
         {
-            // µ¥×Ö½ÚÁ÷Êı¾İ
+            // å•å­—èŠ‚æµæ•°æ®
             tmp = *p_data & 0xff;
 
-            if (one_byt_no == 0)        //¿ªÊ¼¼ÇÂ¼µ¥¸ö×Ö·ûµÄÎ»ÖÃ
+            if (one_byt_no == 0)        //å¼€å§‹è®°å½•å•ä¸ªå­—ç¬¦çš„ä½ç½®
             {
                 p_first_one_byt = p_data;
             }
@@ -157,22 +188,22 @@ static void __tts_analysis_utf8_oneline(char *data, __u32  size, char **outputda
 
             if (tmp == 0x21)
             {
-                /*Ì¾ºÅ*/
-                __msg("--------------------------·ÖÎöÍê±Ï!\n");
+                /*å¹å·*/
+                __msg("--------------------------åˆ†æå®Œæ¯•!\n");
                 break;
             }
 
             if (tmp == 0x3f)
             {
-                /*ÎÊºÅ*/
-                __msg("--------------------------·ÖÎöÍê±Ï!\n");
+                /*é—®å·*/
+                __msg("--------------------------åˆ†æå®Œæ¯•!\n");
                 break;
             }
 
             if (tmp == 0x2c)
             {
-                /*¶ººÅ*/
-                __msg("--------------------------·ÖÎöÍê±Ï!\n");
+                /*é€—å·*/
+                __msg("--------------------------åˆ†æå®Œæ¯•!\n");
                 break;
             }
 
@@ -180,11 +211,11 @@ static void __tts_analysis_utf8_oneline(char *data, __u32  size, char **outputda
             char_no++;
             index_size += 1;
 
-            if (char_no >= MAX_CHARS_NO) /*³¬¹ı50 ¸öÎÄ×Ö*/
+            if (char_no >= MAX_CHARS_NO) /*è¶…è¿‡50 ä¸ªæ–‡å­—*/
             {
                 if (one_byt_no >= MAX_CHARS_NO)
                 {
-                    /*ÒÑ¾­ÊÇÁ¬Ğø50 ¸öÊÇµ¥×Ö½ÚÁ÷Êı¾İÁË£¬¿ÉÄÜÊÇÓ¢ÎÄÎÄ¼ş²éÕÒ×îºóÒ»¸ö¿Õ¸ñµÄµØ·½*/
+                    /*å·²ç»æ˜¯è¿ç»­50 ä¸ªæ˜¯å•å­—èŠ‚æµæ•°æ®äº†ï¼Œå¯èƒ½æ˜¯è‹±æ–‡æ–‡ä»¶æŸ¥æ‰¾æœ€åä¸€ä¸ªç©ºæ ¼çš„åœ°æ–¹*/
                     int i;
                     __u32  old_size = *output_size ;
 
@@ -192,7 +223,7 @@ static void __tts_analysis_utf8_oneline(char *data, __u32  size, char **outputda
                     {
                         if ((*p_data & 0xff) == 0x20 || (*p_data & 0xff) == 9)
                         {
-                            __msg("--------------------------·ÖÎöÍê±Ï!\n");
+                            __msg("--------------------------åˆ†æå®Œæ¯•!\n");
                             break;
                         }
 
@@ -200,20 +231,20 @@ static void __tts_analysis_utf8_oneline(char *data, __u32  size, char **outputda
                         *output_size -= 1 ;
                     }
 
-                    if (i == 0)         /*ÏòÇ°²éÑ¯ÁËMAX_CHARS_NO ¸ö×Ö·û·¢ÏÖÃ»ÓĞ¿Õ¸ñ·û*/
+                    if (i == 0)         /*å‘å‰æŸ¥è¯¢äº†MAX_CHARS_NO ä¸ªå­—ç¬¦å‘ç°æ²¡æœ‰ç©ºæ ¼ç¬¦*/
                     {
                         *output_size = old_size;
-                        __msg("--------------------------·ÖÎöÍê±Ï!\n");
+                        __msg("--------------------------åˆ†æå®Œæ¯•!\n");
                         break;
                     }
                 }
                 else
                 {
-                    /*ÍË»Øµ½×îºóÒ»¸ö²»ÊÇµ¥×Ö½ÚÁ÷ÊıºóÃæÄÇ¸öµØ·½*/
+                    /*é€€å›åˆ°æœ€åä¸€ä¸ªä¸æ˜¯å•å­—èŠ‚æµæ•°åé¢é‚£ä¸ªåœ°æ–¹*/
                     *output_size = *output_size - (p_data - p_first_one_byt);
                 }
 
-                __msg("--------------------------·ÖÎöÍê±Ï!\n");
+                __msg("--------------------------åˆ†æå®Œæ¯•!\n");
                 break;
             }
         }
@@ -225,7 +256,7 @@ static void __tts_analysis_utf8_oneline(char *data, __u32  size, char **outputda
 static void __tts_analysis_utf8(char *data, __u32  size, __u32 *output_size)
 {
     char *outputdata;
-    __msg("Ò»Ò³´óĞ¡size = %d\n", size);
+    __msg("ä¸€é¡µå¤§å°size = %d\n", size);
     __tts_analysis_utf8_oneline(_tts_play_struct->tts_text_line_add, _tts_play_struct->tts_page_leave_char, &outputdata, output_size);
     __msg("-----data = %x   -outputdata = %x, output_size = %d,  tota_ananlysis = %d\n", data, outputdata, *output_size);
 
@@ -252,9 +283,9 @@ static void __tts_analysis_utf8(char *data, __u32  size, __u32 *output_size)
             break;
         }
 
-        if (*output_size <= 5)          /*·ÀÖ¹Ò»Ò³Êı¾İÍêºóËÀÑ­»·*/
+        if (*output_size <= 5)          /*é˜²æ­¢ä¸€é¡µæ•°æ®å®Œåæ­»å¾ªç¯*/
         {
-            esKRNL_TimeDly(20);     /*ÑÓ³Ù20 ÊÇÈÃaudiodev ¶ÁÍê5´óĞ¡µÄÒôÆµÊı¾İ*/
+            esKRNL_TimeDly(20);     /*å»¶è¿Ÿ20 æ˜¯è®©audiodev è¯»å®Œ5å¤§å°çš„éŸ³é¢‘æ•°æ®*/
             break;
         }
 
@@ -267,17 +298,17 @@ static void __tts_analysis_utf8(char *data, __u32  size, __u32 *output_size)
 **********************************************************************************************************************
 *                                               __tts_analysis_utf8_oneline
 *
-* Description: ·ÖÎöÊäÈëÊı¾İµÄÄÚÈİ£¬·µ»ØµÚÒ»¸ö¾äÄÚÈİµÄÆğÊ¼µØÖ·ºÍ³¤¶È£¨utf16_be±àÂë¸ñÊ½£©
-*            ÈÏÎªÒ»¾ä»°µÄ¹æÔòÎª:
-                            1¡¢Ë«×Ö½ÚÓöµ½¡£!   ? Ê±ºò£¬·ñÔò= 50 ¸ö×Ö·ûÈÏÎªÊÇÒ»¾ä
-                            2¡¢Á¬Ğø50µ¥×Ö½ÚÕÒ×îºóÒ»¸ö¿Õ¸ñ·û×÷ÎªÒ»¾ä£¬»òÕßÓöµ½.!?Ò²ÎªÒ»¾ä£¬
-                                50¸öÒ²×÷ÎªÒ»¾ä
-                            3¡¢Óöµ½»»ĞĞ·ûÒ²ÈÏÎªÊÇÒ»¾ä
+* Description: åˆ†æè¾“å…¥æ•°æ®çš„å†…å®¹ï¼Œè¿”å›ç¬¬ä¸€ä¸ªå¥å†…å®¹çš„èµ·å§‹åœ°å€å’Œé•¿åº¦ï¼ˆutf16_beç¼–ç æ ¼å¼ï¼‰
+*            è®¤ä¸ºä¸€å¥è¯çš„è§„åˆ™ä¸º:
+                            1ã€åŒå­—èŠ‚é‡åˆ°ã€‚!   ? æ—¶å€™ï¼Œå¦åˆ™= 50 ä¸ªå­—ç¬¦è®¤ä¸ºæ˜¯ä¸€å¥
+                            2ã€è¿ç»­50å•å­—èŠ‚æ‰¾æœ€åä¸€ä¸ªç©ºæ ¼ç¬¦ä½œä¸ºä¸€å¥ï¼Œæˆ–è€…é‡åˆ°.!?ä¹Ÿä¸ºä¸€å¥ï¼Œ
+                                50ä¸ªä¹Ÿä½œä¸ºä¸€å¥
+                            3ã€é‡åˆ°æ¢è¡Œç¬¦ä¹Ÿè®¤ä¸ºæ˜¯ä¸€å¥
 * Arguments  :
-*           @data: ÊäÈëµÄÄÚÈİµØÖ·
-*           @size:ÊäÈëµÄÄÚÈİ´óĞ¡
-*           @outputdata: ·ÖÎö³öÀ´µÄµÚÒ»¾ä»°µÄÆğÊ¼µØÖ·
-*           @output_size:·ÖÎö³öÀ´µÄµÚÒ»¾ä»°µÄ³¤¶È
+*           @data: è¾“å…¥çš„å†…å®¹åœ°å€
+*           @size:è¾“å…¥çš„å†…å®¹å¤§å°
+*           @outputdata: åˆ†æå‡ºæ¥çš„ç¬¬ä¸€å¥è¯çš„èµ·å§‹åœ°å€
+*           @output_size:åˆ†æå‡ºæ¥çš„ç¬¬ä¸€å¥è¯çš„é•¿åº¦
 * Returns    :
 
 * Notes      :
@@ -289,15 +320,15 @@ static void __tts_analysis_utf16_be_oneline(char *data, __u32  size, char **outp
 {
     __u16                   tmp;
     __u8                   *p_data;
-    __u32 index_size = 0;       /*¼ÇÂ¼ÊÇ·ñÊÇ´ïµ½ÄÚÈİ½áÎ²*/
-    __s32 char_no = 0;          /*½âÎöµÄ×Ö·ûÊıÄ¿*/
+    __u32 index_size = 0;       /*è®°å½•æ˜¯å¦æ˜¯è¾¾åˆ°å†…å®¹ç»“å°¾*/
+    __s32 char_no = 0;          /*è§£æçš„å­—ç¬¦æ•°ç›®*/
     (*outputdata) = data;
     p_data = data;
     *output_size = 0;
 
     while (index_size < size)
     {
-        tmp = ((*p_data & 0xff) << 8) + (*(p_data + 1) & 0xff);     /*¿ÉÄÜÒª×ª×Ö·û*/
+        tmp = ((*p_data & 0xff) << 8) + (*(p_data + 1) & 0xff);     /*å¯èƒ½è¦è½¬å­—ç¬¦*/
         char_no ++;
 
         if ((tmp == 0x0d) || (tmp == 0x0a))
@@ -328,29 +359,29 @@ static void __tts_analysis_utf16_be_oneline(char *data, __u32  size, char **outp
 
             if (tmp == ((0x00 & 0xff) << 8) + (0x3f & 0xff)/* || tmp == ((0xff & 0xff)<< 8)+ (0x1f & 0xff)*/)
             {
-                /*ÎÊºÅ*/
+                /*é—®å·*/
                 break;
             }
 
             if (tmp == ((0x00 & 0xff) << 8) + (0x21 & 0xff) /*|| tmp == ((0xff & 0xff)<< 8)+ (0x01 & 0xff)*/)
             {
-                /*Ì¾ºÅ*/
+                /*å¹å·*/
                 break;
             }
 
             if (tmp == ((0x00 & 0xff) << 8) + (0x2c & 0xff) /*|| tmp == ((0xff & 0xff)<< 8)+ (0x0c & 0xff)*/)
             {
-                /*¶ººÅ*/
+                /*é€—å·*/
                 break;
             }
 
             if (0/* tmp == ((0x30 & 0xff)<< 8)+ (0x02 & 0xff)*/)
             {
-                /*¾äºÅ*/
+                /*å¥å·*/
                 break;
             }
 
-            if (char_no >= MAX_CHARS_NO)    /*×Ö·û´óÓÚMAX_CHARS_NO,ÓĞ¿ÏÄÜÊÇÓ¢ÎÄ£¬ÏòÇ°ÕÒµ¹ÊıµÚÒ»¸ö¸ö¿Õ¸ñµÄÎ»ÖÃ*/
+            if (char_no >= MAX_CHARS_NO)    /*å­—ç¬¦å¤§äºMAX_CHARS_NO,æœ‰è‚¯èƒ½æ˜¯è‹±æ–‡ï¼Œå‘å‰æ‰¾å€’æ•°ç¬¬ä¸€ä¸ªä¸ªç©ºæ ¼çš„ä½ç½®*/
             {
                 __s32 i ;
                 __u32 old_size = *output_size;
@@ -384,7 +415,7 @@ static void __tts_analysis_utf16_be(char *data, __u32  size, __u32 *output_size)
 {
     char *outputdata;
     __u32 tota_ananlysis = 0;
-    __msg("Ò»Ò³´óĞ¡size = %d\n", size);
+    __msg("ä¸€é¡µå¤§å°size = %d\n", size);
     __tts_analysis_utf16_be_oneline(_tts_play_struct->tts_text_line_add, _tts_play_struct->tts_page_leave_char, &outputdata, output_size);
 
     if (0)
@@ -422,17 +453,17 @@ static void __tts_analysis_utf16_be(char *data, __u32  size, __u32 *output_size)
 **********************************************************************************************************************
 *                                               __tts_analysis_utf16_le_oneline
 *
-* Description: ·ÖÎöÊäÈëÊı¾İµÄÄÚÈİ£¬·µ»ØµÚÒ»¸ö¾äÄÚÈİµÄÆğÊ¼µØÖ·ºÍ³¤¶È£¨utf16_be±àÂë¸ñÊ½£©
-*            ÈÏÎªÒ»¾ä»°µÄ¹æÔòÎª:
-                            1¡¢Ë«×Ö½ÚÓöµ½¡£!   ? Ê±ºò£¬·ñÔò= 50 ¸ö×Ö·ûÈÏÎªÊÇÒ»¾ä
-                            2¡¢Á¬Ğø50µ¥×Ö½ÚÕÒ×îºóÒ»¸ö¿Õ¸ñ·û×÷ÎªÒ»¾ä£¬»òÕßÓöµ½.!?Ò²ÎªÒ»¾ä£¬
-                                50¸öÒ²×÷ÎªÒ»¾ä
-                            3¡¢Óöµ½»»ĞĞ·ûÒ²ÈÏÎªÊÇÒ»¾ä
+* Description: åˆ†æè¾“å…¥æ•°æ®çš„å†…å®¹ï¼Œè¿”å›ç¬¬ä¸€ä¸ªå¥å†…å®¹çš„èµ·å§‹åœ°å€å’Œé•¿åº¦ï¼ˆutf16_beç¼–ç æ ¼å¼ï¼‰
+*            è®¤ä¸ºä¸€å¥è¯çš„è§„åˆ™ä¸º:
+                            1ã€åŒå­—èŠ‚é‡åˆ°ã€‚!   ? æ—¶å€™ï¼Œå¦åˆ™= 50 ä¸ªå­—ç¬¦è®¤ä¸ºæ˜¯ä¸€å¥
+                            2ã€è¿ç»­50å•å­—èŠ‚æ‰¾æœ€åä¸€ä¸ªç©ºæ ¼ç¬¦ä½œä¸ºä¸€å¥ï¼Œæˆ–è€…é‡åˆ°.!?ä¹Ÿä¸ºä¸€å¥ï¼Œ
+                                50ä¸ªä¹Ÿä½œä¸ºä¸€å¥
+                            3ã€é‡åˆ°æ¢è¡Œç¬¦ä¹Ÿè®¤ä¸ºæ˜¯ä¸€å¥
 * Arguments  :
-*           @data: ÊäÈëµÄÄÚÈİµØÖ·
-*           @size:ÊäÈëµÄÄÚÈİ´óĞ¡
-*           @outputdata: ·ÖÎö³öÀ´µÄµÚÒ»¾ä»°µÄÆğÊ¼µØÖ·
-*           @output_size:·ÖÎö³öÀ´µÄµÚÒ»¾ä»°µÄ³¤¶È
+*           @data: è¾“å…¥çš„å†…å®¹åœ°å€
+*           @size:è¾“å…¥çš„å†…å®¹å¤§å°
+*           @outputdata: åˆ†æå‡ºæ¥çš„ç¬¬ä¸€å¥è¯çš„èµ·å§‹åœ°å€
+*           @output_size:åˆ†æå‡ºæ¥çš„ç¬¬ä¸€å¥è¯çš„é•¿åº¦
 * Returns    :
 
 * Notes      :
@@ -444,15 +475,15 @@ static void __tts_analysis_utf16_le_oneline(char *data, __u32  size, char **outp
 {
     __u16                   tmp;
     __u8                   *p_data;
-    __u32 index_size = 0;       /*¼ÇÂ¼ÊÇ·ñÊÇ´ïµ½ÄÚÈİ½áÎ²*/
-    __s32 char_no = 0;          /*½âÎöµÄ×Ö·ûÊıÄ¿*/
+    __u32 index_size = 0;       /*è®°å½•æ˜¯å¦æ˜¯è¾¾åˆ°å†…å®¹ç»“å°¾*/
+    __s32 char_no = 0;          /*è§£æçš„å­—ç¬¦æ•°ç›®*/
     *outputdata = data;
     *output_size = 0;
     p_data = data;
 
     while (index_size < size)
     {
-        tmp = (*p_data & 0xff) + ((*(p_data + 1) & 0xff) << 8);     /*¿ÉÄÜÒª×ª×Ö·û*/
+        tmp = (*p_data & 0xff) + ((*(p_data + 1) & 0xff) << 8);     /*å¯èƒ½è¦è½¬å­—ç¬¦*/
         char_no ++;
 
         if ((tmp == 0x0d) || (tmp == 0x0a))
@@ -483,29 +514,29 @@ static void __tts_analysis_utf16_le_oneline(char *data, __u32  size, char **outp
 
             if (tmp == ((0x3f & 0xff) << 8) + (0x00 & 0xff)/* || tmp == ((0x1f & 0xff)<< 8)+ (0xff & 0xff)*/)
             {
-                /*ÎÊºÅ*/
+                /*é—®å·*/
                 break;
             }
 
             if (tmp == ((0x21 & 0xff) << 8) + (0x00 & 0xff) /*|| tmp == ((0x01 & 0xff)<< 8)+ (0xff & 0xff)*/)
             {
-                /*Ì¾ºÅ*/
+                /*å¹å·*/
                 break;
             }
 
             if (tmp == ((0x2c & 0xff) << 8) + (0x00 & 0xff)/* || tmp == ((0x0c & 0xff)<< 8)+ (0xff & 0xff)*/)
             {
-                /*¶ººÅ*/
+                /*é€—å·*/
                 break;
             }
 
             if (0/* tmp == ((0x02 & 0xff)<< 8)+ (0x30 & 0xff)*/)
             {
-                /*¾äºÅ*/
+                /*å¥å·*/
                 break;
             }
 
-            if (char_no >= MAX_CHARS_NO)    /*×Ö·û´óÓÚMAX_CHARS_NO,ÓĞ¿ÏÄÜÊÇÓ¢ÎÄ£¬ÏòÇ°ÕÒµ¹ÊıµÚÒ»¸ö¸ö¿Õ¸ñµÄÎ»ÖÃ*/
+            if (char_no >= MAX_CHARS_NO)    /*å­—ç¬¦å¤§äºMAX_CHARS_NO,æœ‰è‚¯èƒ½æ˜¯è‹±æ–‡ï¼Œå‘å‰æ‰¾å€’æ•°ç¬¬ä¸€ä¸ªä¸ªç©ºæ ¼çš„ä½ç½®*/
             {
                 __s32 i ;
                 __u32 old_size = *output_size;
@@ -537,7 +568,7 @@ static void __tts_analysis_utf16_le(char *data, __u32  size, __u32 *output_size)
 {
     char *outputdata;
     __u32 tota_ananlysis = 0;
-    __msg("Ò»Ò³´óĞ¡size = %d\n", size);
+    __msg("ä¸€é¡µå¤§å°size = %d\n", size);
     __tts_analysis_utf16_le_oneline(_tts_play_struct->tts_text_line_add, _tts_play_struct->tts_page_leave_char, &outputdata, output_size);
 
     if (0)
@@ -595,17 +626,17 @@ static __u32 __local_language_count(__epdk_charset_enm_e enm)
 **********************************************************************************************************************
 *                                               __tts_analysis_utf16_le_oneline
 *
-* Description: ·ÖÎöÊäÈëÊı¾İµÄÄÚÈİ£¬·µ»ØµÚÒ»¸ö¾äÄÚÈİµÄÆğÊ¼µØÖ·ºÍ³¤¶È£¨utf16_be±àÂë¸ñÊ½£©
-*            ÈÏÎªÒ»¾ä»°µÄ¹æÔòÎª:
-                            1¡¢Ë«×Ö½ÚÓöµ½¡£!   ? Ê±ºò£¬·ñÔò= 50 ¸ö×Ö·ûÈÏÎªÊÇÒ»¾ä
-                            2¡¢Á¬Ğø50µ¥×Ö½ÚÕÒ×îºóÒ»¸ö¿Õ¸ñ·û×÷ÎªÒ»¾ä£¬»òÕßÓöµ½.!?Ò²ÎªÒ»¾ä£¬
-                                50¸öÒ²×÷ÎªÒ»¾ä
-                            3¡¢Óöµ½»»ĞĞ·ûÒ²ÈÏÎªÊÇÒ»¾ä
+* Description: åˆ†æè¾“å…¥æ•°æ®çš„å†…å®¹ï¼Œè¿”å›ç¬¬ä¸€ä¸ªå¥å†…å®¹çš„èµ·å§‹åœ°å€å’Œé•¿åº¦ï¼ˆutf16_beç¼–ç æ ¼å¼ï¼‰
+*            è®¤ä¸ºä¸€å¥è¯çš„è§„åˆ™ä¸º:
+                            1ã€åŒå­—èŠ‚é‡åˆ°ã€‚!   ? æ—¶å€™ï¼Œå¦åˆ™= 50 ä¸ªå­—ç¬¦è®¤ä¸ºæ˜¯ä¸€å¥
+                            2ã€è¿ç»­50å•å­—èŠ‚æ‰¾æœ€åä¸€ä¸ªç©ºæ ¼ç¬¦ä½œä¸ºä¸€å¥ï¼Œæˆ–è€…é‡åˆ°.!?ä¹Ÿä¸ºä¸€å¥ï¼Œ
+                                50ä¸ªä¹Ÿä½œä¸ºä¸€å¥
+                            3ã€é‡åˆ°æ¢è¡Œç¬¦ä¹Ÿè®¤ä¸ºæ˜¯ä¸€å¥
 * Arguments  :
-*           @data: ÊäÈëµÄÄÚÈİµØÖ·
-*           @size:ÊäÈëµÄÄÚÈİ´óĞ¡
-*           @outputdata: ·ÖÎö³öÀ´µÄµÚÒ»¾ä»°µÄÆğÊ¼µØÖ·
-*           @output_size:·ÖÎö³öÀ´µÄµÚÒ»¾ä»°µÄ³¤¶È
+*           @data: è¾“å…¥çš„å†…å®¹åœ°å€
+*           @size:è¾“å…¥çš„å†…å®¹å¤§å°
+*           @outputdata: åˆ†æå‡ºæ¥çš„ç¬¬ä¸€å¥è¯çš„èµ·å§‹åœ°å€
+*           @output_size:åˆ†æå‡ºæ¥çš„ç¬¬ä¸€å¥è¯çš„é•¿åº¦
 * Returns    :
 
 * Notes      :
@@ -617,10 +648,10 @@ static void __tts_analysis_gbk_oneline(char   *data, __u32 size, char **outputda
 {
     __u16                   tmp;
     __u8                   *p_data;
-    __u32 index_size = 0;       /*¼ÇÂ¼ÊÇ·ñÊÇ´ïµ½ÄÚÈİ½áÎ²*/
-    __s32 char_no = 0;          /*½âÎöµÄ×Ö·ûÊıÄ¿*/
-    __s32 one_byt_no = 0;       /*Á¬Ğøµ¥×Ö½ÚÀÛ¼ÓÊı*/
-    char                   *p_first_one_byt;        /*Ö¸ÏòµÚÒ»¸öÁ¬Ğøµ¥×Ö½ÚÁ÷Êı¾İÎ»ÖÃ*/
+    __u32 index_size = 0;       /*è®°å½•æ˜¯å¦æ˜¯è¾¾åˆ°å†…å®¹ç»“å°¾*/
+    __s32 char_no = 0;          /*è§£æçš„å­—ç¬¦æ•°ç›®*/
+    __s32 one_byt_no = 0;       /*è¿ç»­å•å­—èŠ‚ç´¯åŠ æ•°*/
+    char                   *p_first_one_byt;        /*æŒ‡å‘ç¬¬ä¸€ä¸ªè¿ç»­å•å­—èŠ‚æµæ•°æ®ä½ç½®*/
     p_data = data;
     *outputdata = data;
     *output_size = 0;
@@ -645,14 +676,14 @@ static void __tts_analysis_gbk_oneline(char   *data, __u32 size, char **outputda
             }
 
             char_no ++;
-            __msg("----·ÖÎö½áÊø\n") ;
+            __msg("----åˆ†æç»“æŸ\n") ;
             break;
         }
         else if (tmp == 0xff)
         {
             if ((*(p_data + 1) & 0xff) == 0xfe)
             {
-                __msg("----·ÖÎö½áÊø\n") ;
+                __msg("----åˆ†æç»“æŸ\n") ;
                 break;
             }
             else
@@ -662,7 +693,7 @@ static void __tts_analysis_gbk_oneline(char   *data, __u32 size, char **outputda
                 char_no += 1;
             }
         }
-        else if (tmp > 0x7f) //ÊÇÖĞÎÄ×Ö·ûµÄÊ±ºò
+        else if (tmp > 0x7f) //æ˜¯ä¸­æ–‡å­—ç¬¦çš„æ—¶å€™
         {
 #if 0
 
@@ -705,25 +736,25 @@ static void __tts_analysis_gbk_oneline(char   *data, __u32 size, char **outputda
 
                 if (*p_data_temp == 0xa3 && *p_data_temp == 0xa1)
                 {
-                    /*Ì¾ºÅ*/
+                    /*å¹å·*/
                     break;
                 }
 
                 if (*p_data_temp == 0xa3 && *p_data_temp == 0xb1)
                 {
-                    /*ÎÊºÅ*/
+                    /*é—®å·*/
                     break;
                 }
 
                 if (*p_data_temp == 0xa3 && *p_data_temp == 0xac)
                 {
-                    /*¶ººÅ*/
+                    /*é€—å·*/
                     break;
                 }
 
                 if (*p_data_temp == 0xa1 && *p_data_temp == 0xb3)
                 {
-                    /*¶ººÅ*/
+                    /*é€—å·*/
                     break;
                 }
 
@@ -741,25 +772,25 @@ static void __tts_analysis_gbk_oneline(char   *data, __u32 size, char **outputda
 
                 if (*p_data_temp == 0xa3 && *p_data_temp == 0xa1)
                 {
-                    /*Ì¾ºÅ*/
+                    /*å¹å·*/
                     break;
                 }
 
                 if (*p_data_temp == 0xa3 && *p_data_temp == 0xb1)
                 {
-                    /*ÎÊºÅ*/
+                    /*é—®å·*/
                     break;
                 }
 
                 if (*p_data_temp == 0xa3 && *p_data_temp == 0xac)
                 {
-                    /*¶ººÅ*/
+                    /*é€—å·*/
                     break;
                 }
 
                 if (*p_data_temp == 0xa1 && *p_data_temp == 0xb3)
                 {
-                    /*¶ººÅ*/
+                    /*é€—å·*/
                     break;
                 }
 
@@ -768,28 +799,28 @@ static void __tts_analysis_gbk_oneline(char   *data, __u32 size, char **outputda
 
             char_no++;
 
-            /***********ÒÔ´ó¶Ë»úÆ÷À´½øĞĞ±È½Ï****************/
+            /***********ä»¥å¤§ç«¯æœºå™¨æ¥è¿›è¡Œæ¯”è¾ƒ****************/
             if (unicode == ((0x00 & 0xff) << 8) + (0x3f & 0xff)/* || unicode == ((0xff & 0xff)<< 8)+ (0x1f & 0xff)*/)
             {
-                /*ÎÊºÅ*/
+                /*é—®å·*/
                 break;
             }
 
             if (unicode == ((0x00 & 0xff) << 8) + (0x21 & 0xff)/* || unicode == ((0xff & 0xff)<< 8)+ (0x01 & 0xff)*/)
             {
-                /*Ì¾ºÅ*/
+                /*å¹å·*/
                 break;
             }
 
             if (unicode == ((0x00 & 0xff) << 8) + (0x2c & 0xff) /*|| unicode == ((0xff & 0xff)<< 8)+ (0x0c & 0xff)*/)
             {
-                /*¶ººÅ*/
+                /*é€—å·*/
                 break;
             }
 
             if (0 /*unicode == ((0x30 & 0xff)<< 8)+ (0x02 & 0xff)*/)
             {
-                /*¾äºÅ*/
+                /*å¥å·*/
                 break;
             }
 
@@ -806,20 +837,20 @@ static void __tts_analysis_gbk_oneline(char   *data, __u32 size, char **outputda
             p_data += 1;
             char_no += 1;
 
-            if (one_byt_no == 0)        //¿ªÊ¼¼ÇÂ¼µ¥¸ö×Ö·ûµÄÎ»ÖÃ
+            if (one_byt_no == 0)        //å¼€å§‹è®°å½•å•ä¸ªå­—ç¬¦çš„ä½ç½®
             {
                 p_first_one_byt = p_data;
             }
 
             one_byt_no += 1;
 
-            if (tmp == 0x21 || tmp == 0x3f || tmp == 0x2c)             // ! ? , ·Ö¾ä·ûºÅ
+            if (tmp == 0x21 || tmp == 0x3f || tmp == 0x2c)             // ! ? , åˆ†å¥ç¬¦å·
             {
-                __msg("----·ÖÎö½áÊø\n") ;
+                __msg("----åˆ†æç»“æŸ\n") ;
                 break;
             }
 
-            if (char_no >= MAX_CHARS_NO)    /*ÓĞ¿ÉÄÜÊÇÓ¢ÎÄµÄÇé¿öÏÂ*/
+            if (char_no >= MAX_CHARS_NO)    /*æœ‰å¯èƒ½æ˜¯è‹±æ–‡çš„æƒ…å†µä¸‹*/
             {
                 if (one_byt_no >= MAX_CHARS_NO)
                 {
@@ -830,7 +861,7 @@ static void __tts_analysis_gbk_oneline(char   *data, __u32 size, char **outputda
                     {
                         if (*p_data == 0x20)
                         {
-                            __msg("----·ÖÎö½áÊø\n") ;
+                            __msg("----åˆ†æç»“æŸ\n") ;
                             break;
                         }
 
@@ -841,19 +872,19 @@ static void __tts_analysis_gbk_oneline(char   *data, __u32 size, char **outputda
                     if (i == 0)
                     {
                         *output_size = old_size ;
-                        __msg("----·ÖÎö½áÊø\n") ;
+                        __msg("----åˆ†æç»“æŸ\n") ;
                     }
 
                     break;
                 }
                 else
                 {
-                    /*ÍË»Øµ½×îºóÒ»¸ö²»ÊÇµ¥×Ö½ÚÁ÷ÊıºóÃæÄÇ¸öµØ·½*/
+                    /*é€€å›åˆ°æœ€åä¸€ä¸ªä¸æ˜¯å•å­—èŠ‚æµæ•°åé¢é‚£ä¸ªåœ°æ–¹*/
                     int i ;
 
                     for (i = MAX_CHARS_NO; i > 0; i--)
                     {
-                        if (*p_data == 0x20         //¿Õ¸ñ
+                        if (*p_data == 0x20         //ç©ºæ ¼
                             || *p_data == 0x2E    //.
                             || *p_data == 0x2c)    //,
                         {
@@ -866,7 +897,7 @@ static void __tts_analysis_gbk_oneline(char   *data, __u32 size, char **outputda
 
                     __msg("----------p_data = %x, p_first_one_byt = %x\n", p_data, p_first_one_byt);
                     *output_size = *output_size - ((unsigned long)p_data - (unsigned long)p_first_one_byt);
-                    __msg("----·ÖÎö½áÊø\n") ;
+                    __msg("----åˆ†æç»“æŸ\n") ;
                     break;
                 }
             }
@@ -877,7 +908,7 @@ static void __tts_analysis_gbk_oneline(char   *data, __u32 size, char **outputda
 static void __tts_analysis_gbk(char *data, __u32  size, __u32 *output_size)
 {
     char *outputdata;
-    __msg("Ò»Ò³´óĞ¡size = %d, _tts_play_struct->tts_text_line_add= %s\n", size, _tts_play_struct->tts_text_line_add);
+    __msg("ä¸€é¡µå¤§å°size = %d, _tts_play_struct->tts_text_line_add= %s\n", size, _tts_play_struct->tts_text_line_add);
     __tts_analysis_gbk_oneline(_tts_play_struct->tts_text_line_add, _tts_play_struct->tts_page_leave_char, &outputdata, output_size);
 
     if (0)
@@ -894,7 +925,7 @@ static void __tts_analysis_gbk(char *data, __u32  size, __u32 *output_size)
     }
 
     jtTTS_SynthesizeText(_tts_play_struct->jt_hTTS, (const void *)outputdata, (*output_size) * sizeof(char));
-    __msg("------Ò»¾ä»°µÄ´óĞ¡output_size  = %d\n", *output_size);
+    __msg("------ä¸€å¥è¯çš„å¤§å°output_size  = %d\n", *output_size);
 
     while (1)
     {
@@ -913,13 +944,13 @@ static void __tts_analysis_gbk(char *data, __u32  size, __u32 *output_size)
 ************************************************************************************************************************
 *                                       TTS_ANALYSYS_Page
 *
-*Description: Ğ´Ò»Ò³Êı¾İµ½Ö¸¶¨µÄÈíÍ¼²ãÉÏ
+*Description: å†™ä¸€é¡µæ•°æ®åˆ°æŒ‡å®šçš„è½¯å›¾å±‚ä¸Š
 *
-*Arguments  : hdle: ²Ù×÷¾ä±ú
-*             lyr: Í¼²ã¾ä±ú
+*Arguments  : hdle: æ“ä½œå¥æŸ„
+*             lyr: å›¾å±‚å¥æŸ„
 *
-*Return     : EPDK_OK: ³É¹¦
-*             EPDK_FAIL: Ê§°Ü
+*Return     : EPDK_OK: æˆåŠŸ
+*             EPDK_FAIL: å¤±è´¥
 *
 ************************************************************************************************************************
 */

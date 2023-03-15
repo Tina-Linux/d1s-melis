@@ -1,20 +1,34 @@
 /*
-************************************************************************************************************************
-*                                                    ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2007-2010, ANDY, China
-*                                            All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File      : monkey_core.c
-* By        : Andy.zhang
-* Version   : v1.0
-* ======================================================================================================================
-* 2009-11-3 9:39:42  andy.zhang  create this file, implements the fundemental interface;
-************************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "monkey_i.h"
 
 #include "regedit\\monkey_reg.h"
@@ -31,42 +45,42 @@ typedef struct
 {
     /* now play list module */
     MNPL        *npl;                   /* now play list handle     */
-    char        filename[MK_FILE_NAME]; /* ÎÄ¼şÃû³Æ                 */
-    ES_FILE     *fd;                    /* ÎÄ¼ş¾ä±ú                 */
-    int         len;                    /* ÎÄ¼ş³¤¶È                 */
+    char        filename[MK_FILE_NAME]; /* æ–‡ä»¶åç§°                 */
+    ES_FILE     *fd;                    /* æ–‡ä»¶å¥æŸ„                 */
+    int         len;                    /* æ–‡ä»¶é•¿åº¦                 */
 
     /* bookmark module      */
-    HBMK        bmk;                    /* ÊéÇ©Ä£¿é¾ä±ú             */
-    __bool      exist;                  /* ÊÇ·ñ¼ÇÂ¼ÉÏ´Î×îºóÔÄ¶ÁÎ»ÖÃ */
-    __s32       lastOffset;             /* ÉÏ´Î×îºóÔÄ¶ÁÎ»ÖÃ         */
-    //__u32     startOffset;            /* ÆğÊ¼Ò³Æ«ÒÆÁ¿             */
+    HBMK        bmk;                    /* ä¹¦ç­¾æ¨¡å—å¥æŸ„             */
+    __bool      exist;                  /* æ˜¯å¦è®°å½•ä¸Šæ¬¡æœ€åé˜…è¯»ä½ç½® */
+    __s32       lastOffset;             /* ä¸Šæ¬¡æœ€åé˜…è¯»ä½ç½®         */
+    //__u32     startOffset;            /* èµ·å§‹é¡µåç§»é‡             */
 
-    /* ×¢²á±íÅäÖÃ module    */
-    MkFont      mFont;                  /* ×ÖÌå´óĞ¡                 */
-    MkColor     mColor;                 /* ×ÖÌåÑÕÉ«                 */
-    MkEncode    defEncodeStyle;         /* ±àÂë·½Ê½                 */
-    MkSwitch    mSwitch;                /* Ò³ÇĞ»»Ä£Ê½               */
-    MkRotate    mRotate;                /* Ğı×ªÄ£Ê½                 */
-    MkBright    mBright;                /* ±³¾°ÁÁ¶È                 */
-    MkBack      mBack;                  /* ±³¾°Í¼Æ¬                 */
-    MkAutoP     mAutoP;                 /* ×Ô¶¯·­Ò³                 */
+    /* æ³¨å†Œè¡¨é…ç½® module    */
+    MkFont      mFont;                  /* å­—ä½“å¤§å°                 */
+    MkColor     mColor;                 /* å­—ä½“é¢œè‰²                 */
+    MkEncode    defEncodeStyle;         /* ç¼–ç æ–¹å¼                 */
+    MkSwitch    mSwitch;                /* é¡µåˆ‡æ¢æ¨¡å¼               */
+    MkRotate    mRotate;                /* æ—‹è½¬æ¨¡å¼                 */
+    MkBright    mBright;                /* èƒŒæ™¯äº®åº¦                 */
+    MkBack      mBack;                  /* èƒŒæ™¯å›¾ç‰‡                 */
+    MkAutoP     mAutoP;                 /* è‡ªåŠ¨ç¿»é¡µ                 */
 
     /* monkey core module   */
-    MkcConfig   mConfig;                /* ×ÊÔ´ÅäÖÃĞÅÏ¢             */
+    MkcConfig   mConfig;                /* èµ„æºé…ç½®ä¿¡æ¯             */
 
-    GUI_COLOR   color;                  /* µ±Ç°ÏÔÊ¾ÑÕÉ«             */
-    GUI_FONT   *font;                   /* µ±Ç°×ÖÌå                 */
-    __s32       fontHeight;             /* ×ÖÌå¸ß¶È                 */
-    __s32       lineNum;                /* Ò³ĞĞÊıÄ¿                 */
+    GUI_COLOR   color;                  /* å½“å‰æ˜¾ç¤ºé¢œè‰²             */
+    GUI_FONT   *font;                   /* å½“å‰å­—ä½“                 */
+    __s32       fontHeight;             /* å­—ä½“é«˜åº¦                 */
+    __s32       lineNum;                /* é¡µè¡Œæ•°ç›®                 */
 
-    __bool      lyrFlag;                /* µ±Ç°ÊÇ·ñÔÚhlyr_1Í¼²ãÏÔÊ¾ */
-    char        buff[MK_PAGE_CHAR];     /* Ò³Êı¾İ»º³å               */
-    __s32       pageStart, pageEnd;     /* Ò³ÆğÊ¼£¬Ò³½áÊøÎ»ÖÃ       */
-    __u32       *pPal;                  /* µ÷É«°å                   */
+    __bool      lyrFlag;                /* å½“å‰æ˜¯å¦åœ¨hlyr_1å›¾å±‚æ˜¾ç¤º */
+    char        buff[MK_PAGE_CHAR];     /* é¡µæ•°æ®ç¼“å†²               */
+    __s32       pageStart, pageEnd;     /* é¡µèµ·å§‹ï¼Œé¡µç»“æŸä½ç½®       */
+    __u32       *pPal;                  /* è°ƒè‰²æ¿                   */
 
     /* page wrap module  */
-    PageConfig  pConfig;                /* ·ÖÒ³ÅäÖÃĞÅÏ¢             */
-    PageContent *content;               /* ·ÖÒ³¾ä±ú                 */
+    PageConfig  pConfig;                /* åˆ†é¡µé…ç½®ä¿¡æ¯             */
+    PageContent *content;               /* åˆ†é¡µå¥æŸ„                 */
 } MonkeyCore;
 
 enum
@@ -179,7 +193,7 @@ static int __getFileLength(ES_FILE *fd)
 }
 
 /**********************************************************************************************************************/
-/* Í¼²ãÖ±½ÓÇĞ»»º¯Êı */
+/* å›¾å±‚ç›´æ¥åˆ‡æ¢å‡½æ•° */
 static void  __lyrDirectSwc(H_LYR hllay1, H_LYR hllay2, __s32 width, __s32 direct)
 {
     RECT    rect1;
@@ -365,7 +379,7 @@ static void __lyrGlideSwc(H_LYR hllay1, H_LYR hllay2, __s32 width, __s32 direct)
 }
 
 
-/* Í¼²ãÇĞ»»ÏÔÊ¾ */
+/* å›¾å±‚åˆ‡æ¢æ˜¾ç¤º */
 static void __lyrSwitchNext(MonkeyCore *core)
 {
     if (MK_SWITCH_NO == core->mSwitch)
@@ -566,7 +580,7 @@ static void __showPageNext(MonkeyCore *core, MkLine *line)
 {
     RECT rect;
 
-    /* µ÷ÕûÍ¼²ãÎ»ÖÃ */
+    /* è°ƒæ•´å›¾å±‚ä½ç½® */
     if (EPDK_TRUE == core->lyrFlag)
     {
         GUI_LyrWinGetScnWindow(core->mConfig.hlyr_1, &rect);
@@ -606,9 +620,9 @@ static void __showPageNext(MonkeyCore *core, MkLine *line)
         GUI_LyrWinSel(core->mConfig.hlyr_1);
     }
 
-    /* µ÷Õû gui lcd context */
+    /* è°ƒæ•´ gui lcd context */
     __selectLCDContext(core);
-    /* Ğ´ÄÚÈİµ½Í¼²ãÉÏÈ¥*/
+    /* å†™å†…å®¹åˆ°å›¾å±‚ä¸Šå»*/
     GUI_SetTextMode(GUI_TM_TRANS);
     GUI_SetFont(core->font);
     GUI_SetFontMode(GUI_FONTMODE_8BPP256);
@@ -617,7 +631,7 @@ static void __showPageNext(MonkeyCore *core, MkLine *line)
     __showOnePage((H_MKC)core, line);
     __lyrSwitchNext(core);
 
-    /*  Í¼²ãÇĞ»» */
+    /*  å›¾å±‚åˆ‡æ¢ */
     if (EPDK_TRUE == core->lyrFlag)
     {
         GUI_LyrWinCacheOn();
@@ -640,7 +654,7 @@ static void __showPagePrev(MonkeyCore *core, MkLine *line)
 {
     RECT rect;
 
-    /* µ÷ÕûÍ¼²ãÎ»ÖÃ */
+    /* è°ƒæ•´å›¾å±‚ä½ç½® */
     if (EPDK_TRUE == core->lyrFlag)
     {
         GUI_LyrWinGetScnWindow(core->mConfig.hlyr_1, &rect);
@@ -680,9 +694,9 @@ static void __showPagePrev(MonkeyCore *core, MkLine *line)
         GUI_LyrWinSel(core->mConfig.hlyr_1);
     }
 
-    /* µ÷Õû gui lcd context */
+    /* è°ƒæ•´ gui lcd context */
     __selectLCDContext(core);
-    /* Ğ´ÄÚÈİµ½Í¼²ãÉÏÈ¥*/
+    /* å†™å†…å®¹åˆ°å›¾å±‚ä¸Šå»*/
     GUI_SetTextMode(GUI_TM_TRANS);
     GUI_SetFont(core->font);
     GUI_SetFontMode(GUI_FONTMODE_8BPP256);
@@ -691,7 +705,7 @@ static void __showPagePrev(MonkeyCore *core, MkLine *line)
     __showOnePage((H_MKC)core, line);
     __lyrSwitchPrev(core);
 
-    /*  Í¼²ãÇĞ»» */
+    /*  å›¾å±‚åˆ‡æ¢ */
     if (EPDK_TRUE == core->lyrFlag)
     {
         GUI_LyrWinCacheOn();
@@ -965,7 +979,7 @@ __s32 mkc_showPrev(H_MKC mCore)
 *Description :
 *Other       :
 ***********************************************************************************************************************/
-__s32 mkc_showSeek(H_MKC mCore, __s32 offset)       /* offset : Ïà¶ÔÈ«ÎÄÆ«ÒÆÁ¿±ÈÀı£¬1/10000 Îªµ¥Î» */
+__s32 mkc_showSeek(H_MKC mCore, __s32 offset)       /* offset : ç›¸å¯¹å…¨æ–‡åç§»é‡æ¯”ä¾‹ï¼Œ1/10000 ä¸ºå•ä½ */
 {
     MonkeyCore  *core = (MonkeyCore *)mCore;
     MkLine      *line;
@@ -1056,7 +1070,7 @@ __s32  mkc_setAutoPage(H_MKC mCore, MkAutoP mAutoP)
     return EPDK_TRUE;
 }
 
-/* ±£´æ±³¾°Í¼Æ¬ÀàĞÍµ½×¢²á±íÖĞ, ´Ë½Ó¿ÚÃ»ÓĞÕæÕı¸Ä±ä±³¾°Í¼Æ¬ */
+/* ä¿å­˜èƒŒæ™¯å›¾ç‰‡ç±»å‹åˆ°æ³¨å†Œè¡¨ä¸­, æ­¤æ¥å£æ²¡æœ‰çœŸæ­£æ”¹å˜èƒŒæ™¯å›¾ç‰‡ */
 __s32 mkc_setBack(H_MKC mCore, MkBack mBack)
 {
     MonkeyCore *core = (MonkeyCore *)mCore;
@@ -1064,7 +1078,7 @@ __s32 mkc_setBack(H_MKC mCore, MkBack mBack)
     return EPDK_OK;
 }
 
-/* µ±Ç°Ò³µÄÆğÊ¼ºÍ½áÊøÎ»ÖÃµÄ¾ø¶ÔÆ«ÒÆÁ¿*/
+/* å½“å‰é¡µçš„èµ·å§‹å’Œç»“æŸä½ç½®çš„ç»å¯¹åç§»é‡*/
 __s32 mkc_getCurPageOffset(H_MKC mCore, __s32 *start, __s32 *end)
 {
     MonkeyCore *core = (MonkeyCore *)mCore;
@@ -1089,7 +1103,7 @@ __bool mkc_isTail(H_MKC mCore)
     return ret;
 }
 
-/* ²éÑ¯±³¾°Í¼Æ¬ÀàĞÍ */
+/* æŸ¥è¯¢èƒŒæ™¯å›¾ç‰‡ç±»å‹ */
 MkBack mkc_getBack(H_MKC mCore)
 {
     MonkeyCore *core = (MonkeyCore *)mCore;
@@ -1138,7 +1152,7 @@ MkAutoP  mkc_getAutoPage(H_MKC mCore)
     return core->mAutoP;
 }
 
-__s32  mkc_getFileName(H_MKC mCore, char *fileName)     /* ²éÑ¯µ±Ç°´ò¿ªÎÄ¼şÃû³Æ*/
+__s32  mkc_getFileName(H_MKC mCore, char *fileName)     /* æŸ¥è¯¢å½“å‰æ‰“å¼€æ–‡ä»¶åç§°*/
 {
     char    *p;
     MonkeyCore *core = (MonkeyCore *)mCore;
@@ -1147,7 +1161,7 @@ __s32  mkc_getFileName(H_MKC mCore, char *fileName)     /* ²éÑ¯µ±Ç°´ò¿ªÎÄ¼şÃû³Æ*
     return EPDK_OK;
 }
 
-__s32  mkc_openBmk(H_MKC mCore, MkBmk mBmk)             /* Ìø×ªµ½ÊéÇ©Ö¸¶¨Î»ÖÃ */
+__s32  mkc_openBmk(H_MKC mCore, MkBmk mBmk)             /* è·³è½¬åˆ°ä¹¦ç­¾æŒ‡å®šä½ç½® */
 {
     int     offset;
     //__s32     ret;
@@ -1163,14 +1177,14 @@ __s32  mkc_openBmk(H_MKC mCore, MkBmk mBmk)             /* Ìø×ªµ½ÊéÇ©Ö¸¶¨Î»ÖÃ */
     return EPDK_OK;
 }
 
-__s32  mkc_saveBmk(H_MKC mCore, MkBmk mBmk)                 /* ±£´æµ±Ç°Æ«ÒÆÁ¿ÎªÊéÇ© */
+__s32  mkc_saveBmk(H_MKC mCore, MkBmk mBmk)                 /* ä¿å­˜å½“å‰åç§»é‡ä¸ºä¹¦ç­¾ */
 {
     MonkeyCore *core = (MonkeyCore *)mCore;
     bmk_set_offset(core->bmk, (int)mBmk - 1, core->pageStart);
     return EPDK_OK;
 }
 
-__s32  mkc_getBmkOffset(H_MKC mCore, MkBmk mBmk)            /* ²éÑ¯Ö¸¶¨ÊéÇ©Æ«ÒÆ°Ù·Ö±È, Æ«ÒÆÁ¿µ¥Î»: Íò·ÖÖ®Ò» */
+__s32  mkc_getBmkOffset(H_MKC mCore, MkBmk mBmk)            /* æŸ¥è¯¢æŒ‡å®šä¹¦ç­¾åç§»ç™¾åˆ†æ¯”, åç§»é‡å•ä½: ä¸‡åˆ†ä¹‹ä¸€ */
 {
     int offset;
     MonkeyCore *core = (MonkeyCore *)mCore;
@@ -1185,15 +1199,15 @@ __s32  mkc_getBmkOffset(H_MKC mCore, MkBmk mBmk)            /* ²éÑ¯Ö¸¶¨ÊéÇ©Æ«ÒÆ°
     }
     else
     {
-        return -1;      /* ÊéÇ©Ã»ÓĞ±£´æ */
+        return -1;      /* ä¹¦ç­¾æ²¡æœ‰ä¿å­˜ */
     }
 }
 
-/* ¹Ø±Õ¾ä±ú */
+/* å…³é—­å¥æŸ„ */
 __s32 mkc_close(H_MKC mCore)
 {
     MonkeyCore *core = (MonkeyCore *)mCore;
-    /* ±£´æ×¢²á±êÑ¡Ïî */
+    /* ä¿å­˜æ³¨å†Œæ ‡é€‰é¡¹ */
     mkr_setFont(core->mFont);
     mkr_setColor(core->mColor);
     mkr_setSwitch(core->mSwitch);
@@ -1202,20 +1216,19 @@ __s32 mkc_close(H_MKC mCore)
     mkr_setBackground(core->mBack);
     mkr_setAutoPage(core->mAutoP);
     //core->defEncodeStyle = MK_CHAR_ENCODE_GBK;
-    /* ±£´æbmk Ñ¡Ïî  */
+    /* ä¿å­˜bmk é€‰é¡¹  */
     bmk_set_last_offset(core->bmk, core->pageStart);
     bmk_close(core->bmk);
-    /* ¹Ø±Õ now play list */
+    /* å…³é—­ now play list */
     mnpl_delete(core->npl);
-    /* ÊÍ·Å×ÊÔ´      */
+    /* é‡Šæ”¾èµ„æº      */
     pagewrap_delete(core->content);
-    /* ÊÍ·Åµ÷É«°å */
+    /* é‡Šæ”¾è°ƒè‰²æ¿ */
     esMEMS_Mfree(0, core->pPal);
-    /* ¹Ø±ÕÎÄ¼ş¾ä±ú */
+    /* å…³é—­æ–‡ä»¶å¥æŸ„ */
     g_fclose(core->fd);
-    /* ÊÍ·Å¾ä±ú     */
+    /* é‡Šæ”¾å¥æŸ„     */
     //g_free(core);
     esMEMS_Pfree(core, 1 + sizeof(MonkeyCore) / 1024);
     return EPDK_OK;
 }
-

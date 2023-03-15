@@ -1,16 +1,33 @@
-
 /*
-*******************************************************************************
-*                            ePDK
-*               the Easy Portable/Player Develop Kits
-*                       desktop system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-* File      :   Browser.c,
-*           Browser.h
-* By        :   Libaiao
-* Func  :
-* Version   :   v1.0
-*******************************************************************************
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <log.h>
 #include "beetles_app.h"
@@ -21,20 +38,20 @@
 
 #include "FileList.h"
 
-//ÓÃÓÚ¼ì²â¶Ô»°¿òÊÇ·ñ´æÔÚ£¬´æÔÚµÄ»°£¬¶¨Ê±Ê±¼äµ½£¬É¾³ý¶Ô»°¿ò
+//ç”¨äºŽæ£€æµ‹å¯¹è¯æ¡†æ˜¯å¦å­˜åœ¨ï¼Œå­˜åœ¨çš„è¯ï¼Œå®šæ—¶æ—¶é—´åˆ°ï¼Œåˆ é™¤å¯¹è¯æ¡†
 static  __u32 ExplorerTimerId = 0x16;
-// ÔÚä¯ÀÀÒôÀÖÃ½ÌåÊ±£¬±³¾°ÒôÀÖ´æÔÚµÄ»°£¬¶¨Ê±È¥¸üÐÂË÷ÒýºÅ
+// åœ¨æµè§ˆéŸ³ä¹åª’ä½“æ—¶ï¼ŒèƒŒæ™¯éŸ³ä¹å­˜åœ¨çš„è¯ï¼Œå®šæ—¶åŽ»æ›´æ–°ç´¢å¼•å·
 static  __u32 ExplorerDrawBgMusicIndexTimer = 0xff ;
 #define     EXP_DRAW_BG_MUSIC_INDEX_INTERVAL  200   // 2 s 
 #define     C_EXP_TIMER_INTERVAL    300             // 2second
 
-//°´¼ü²Ù×÷¶ÔÓ¦×óÓÒµÄlistbar
+//æŒ‰é”®æ“ä½œå¯¹åº”å·¦å³çš„listbar
 #define LISTBAR_LEFT 1
 #define LISTBAR_RIGHT 0
 
 
 H_WIN explorer_list_win_create(H_WIN h_parent, explr_list_para_t *para);
-static __s32 _explorer_list_win_cb(__gui_msg_t *msg);           //ÏÂ»®Ïß¿ªÊ¼±íÊ¾Îª»Øµ÷º¯Êý
+static __s32 _explorer_list_win_cb(__gui_msg_t *msg);           //ä¸‹åˆ’çº¿å¼€å§‹è¡¨ç¤ºä¸ºå›žè°ƒå‡½æ•°
 
 static __s32 explorer_listview_create(__gui_msg_t *msg);
 static __s32 explorer_file_manager_ignor_sd_usb(__gui_msg_t *msg);
@@ -93,11 +110,11 @@ static __s32 GetListItemFileName(explr_list_para_t *list_para, __s32 ItemIndex, 
 rat_media_type_t GetListItemFileMediaType(HRAT rat_handle, __s32 ItemIndex);
 void ExplorerSendMessage(H_WIN hwin, __s32 id, __s32 data1, __s32 data2);
 
-//¸Ä±äÏÔÊ¾·½Ê½
+//æ”¹å˜æ˜¾ç¤ºæ–¹å¼
 void ExplorerSetViewMode(explr_list_para_t *list_para, explorer_view_mode_e view_mode);
 
 
-//³¤ÎÄ¼þÃû¹ö¶¯ÏÔÊ¾
+//é•¿æ–‡ä»¶åæ»šåŠ¨æ˜¾ç¤º
 __s32 explorer_list_long_string_init(explr_list_para_t *this);
 __s32 explorer_list_long_string_uninit(explr_list_para_t *this);
 __s32 explorer_list_long_string_start_roll_fast(__lbar_draw_para_t *draw_param, char *string)   ;
@@ -106,7 +123,7 @@ static __s32 explorer_list_long_string_stop_roll(explr_list_para_t *this);
 static void explorer_paint_media_list(H_WIN win);
 
 
-//»ñµÃ±£´æÉÏÒ»´Îä¯ÀÀµÄ²ÎÊý
+//èŽ·å¾—ä¿å­˜ä¸Šä¸€æ¬¡æµè§ˆçš„å‚æ•°
 static __s32 explorer_get_last_para(explr_list_para_t *list_para);
 static __s32 explorer_save_last_para(explr_list_para_t *list_para)  ;
 
@@ -125,10 +142,10 @@ extern  __u32 game_key_read(void);
 #undef  VK_LEFT
 #undef  VK_RIGHT
 
-#define VK_UP              0x00000001      // ÏòÉÏ
-#define VK_DOWN            0x00000002      // ÏòÏÂ
-#define VK_LEFT            0x00000004      // Ïò×ó
-#define VK_RIGHT           0x00000008      // ÏòÓÒ
+#define VK_UP              0x00000001      // å‘ä¸Š
+#define VK_DOWN            0x00000002      // å‘ä¸‹
+#define VK_LEFT            0x00000004      // å‘å·¦
+#define VK_RIGHT           0x00000008      // å‘å³
 #define VK_PLAY            0x00000020      // PLAY
 
 /*#define KARAOKE_LYRIC_USE_MALLOC 1
@@ -201,8 +218,8 @@ static void explorer_handle_thread_cb(void *arg)
             msg.h_deswin   = GUI_WinGetHandFromName("Explorer List window");
             //GUI_SendNotifyMessage(&msg);
             //GUI_WinSetFocusChild(msg.h_deswin);
-            GUI_SendNotifyMessage(&msg);//´Ë´¦²»ÄÜÓÃGUI_SendMessage(&msg);·ñÔòÔÚÌø×ªµ½ÁíÍâÒ»¸öaxfÊ±»á¹ÒËÀ
-            //explorer_list_win_on_command(&msg);//ÔÝÊ±ÕâÃ´´¦Àí
+            GUI_SendNotifyMessage(&msg);//æ­¤å¤„ä¸èƒ½ç”¨GUI_SendMessage(&msg);å¦åˆ™åœ¨è·³è½¬åˆ°å¦å¤–ä¸€ä¸ªaxfæ—¶ä¼šæŒ‚æ­»
+            //explorer_list_win_on_command(&msg);//æš‚æ—¶è¿™ä¹ˆå¤„ç†
             usb_key = 0;
             init_reset_close_scn();
             init_reset_auto_off();
@@ -290,7 +307,7 @@ static __s32 explorer_switch_usb_2_sd(__gui_msg_t *msg)
     list_para = (explr_list_para_t *)GUI_WinGetAttr(msg->h_deswin);
     //if(RAT_TF != list_para->root_type)
     {
-        ret = explorer_check_disk_exist(RAT_TF);    // ÅÐ¶Ï¸ø¶¨µÄÅÌ·ûÊÇ·ñ´æÔÚ
+        ret = explorer_check_disk_exist(RAT_TF);    // åˆ¤æ–­ç»™å®šçš„ç›˜ç¬¦æ˜¯å¦å­˜åœ¨
 
         if (EPDK_TRUE != ret)
         {
@@ -322,7 +339,7 @@ static __s32 explorer_switch_sd_2_usb(__gui_msg_t *msg)
     //if(RAT_USB != list_para->root_type)
     {
         H_WIN h_win;
-        ret = explorer_check_disk_exist(RAT_USB);   // ÅÐ¶Ï¸ø¶¨µÄÅÌ·ûÊÇ·ñ´æÔÚ
+        ret = explorer_check_disk_exist(RAT_USB);   // åˆ¤æ–­ç»™å®šçš„ç›˜ç¬¦æ˜¯å¦å­˜åœ¨
 
         if (EPDK_TRUE != ret)
         {
@@ -370,7 +387,7 @@ static __s32 explorer_switch_left_right_listbar(__gui_msg_t *msg)
 
     if (LISTBAR_LEFT == list_para->listbar_left_right)
     {
-        //±ä¸üÖ¸Ê¾Í¼±êµ½ÓÒ²à
+        //å˜æ›´æŒ‡ç¤ºå›¾æ ‡åˆ°å³ä¾§
         /*if(0 == list_para->rat.total)
          {
             __s32 lang_id[]={STRING_EXPLR_CUE , STRING_EXPLR_FOLDER_EMPTY };
@@ -399,7 +416,7 @@ static __s32 explorer_switch_left_right_listbar(__gui_msg_t *msg)
         lang = STRING_EXPLR_SWITCH_TO_LEFT;
         LISTBAR_LostFocus(list_para->listbar_handle);
         LISTBAR_ShowPage(list_para->mediatype_listbar_handle);
-        //±ä¸üÖ¸Ê¾Í¼±êµ½×ó²à
+        //å˜æ›´æŒ‡ç¤ºå›¾æ ‡åˆ°å·¦ä¾§
     }
 
     /*{
@@ -457,24 +474,24 @@ __s32   explorer_list_draw_bg_music_play_song_index(H_WIN list_win)
     __s32 root_type = 0 ;
     __s32  ret = 0 ;
     list_para = (explr_list_para_t *)GUI_WinGetAttr(list_win);
-    ret = is_app_exist(APP_MUSIC) ; // ²éÑ¯±³¾°ÒôÀÖÊÇ·ñ´æÔÚ
+    ret = is_app_exist(APP_MUSIC) ; // æŸ¥è¯¢èƒŒæ™¯éŸ³ä¹æ˜¯å¦å­˜åœ¨
 
     if (EPDK_TRUE == ret)
     {
         __msg(" music exist ");
-        root_type = __app_root_get_bg_music_index(&index) ;  // »ñÈ¡µ±Ç°±³¾°ÒôÀÖ²¥·ÅµÄÅÌ·ûºÍË÷ÒýºÅ
+        root_type = __app_root_get_bg_music_index(&index) ;  // èŽ·å–å½“å‰èƒŒæ™¯éŸ³ä¹æ’­æ”¾çš„ç›˜ç¬¦å’Œç´¢å¼•å·
         __msg("root_type = %d  index = %d   list_para->rat.index=%d ", \
               root_type, index, list_para->rat.index);
         list_para->rat.index = LISTBAR_GetFocusItem(list_para->listbar_handle);
 
-        // µ±Ç°ä¯ÀÀµÄÅÌ·û¸ú²¥·Å±³¾°ÒôÀÖµÄÅÌ·ûÏàÍ¬
+        // å½“å‰æµè§ˆçš„ç›˜ç¬¦è·Ÿæ’­æ”¾èƒŒæ™¯éŸ³ä¹çš„ç›˜ç¬¦ç›¸åŒ
         if ((index != list_para->rat.index) && (root_type == list_para->root_type) && \
             (RAT_MEDIA_TYPE_AUDIO == list_para->media_type))
         {
-            __u32 page_item_cnt = 0;                //Ã¿Ò³µÄÌõÄ¿×ÜÊý
+            __u32 page_item_cnt = 0;                //æ¯é¡µçš„æ¡ç›®æ€»æ•°
             __listbar_scene_t scene;
             eLIBs_memset(&scene, 0x00, sizeof(scene));
-            page_item_cnt = explorer_get_listbar_pagenum(list_para);// »ñÈ¡listbar Ã¿Ò»Ò³ÓÐ¼¸¸öÌõÄ¿
+            page_item_cnt = explorer_get_listbar_pagenum(list_para);// èŽ·å–listbar æ¯ä¸€é¡µæœ‰å‡ ä¸ªæ¡ç›®
             list_para->last_focused_id = index ;
 
             if (list_para->last_focused_id < list_para->rat.total)
@@ -538,7 +555,7 @@ __s32  explorer_check_disk_exist(__s32 root_type)
     return ret ;
 }
 
-// ¼ì²â´ÅÅÌ¸öÊý
+// æ£€æµ‹ç£ç›˜ä¸ªæ•°
 __s32  explorer_get_disk_total_num(root_para_t  *para)
 {
     __s32 ret = 0 ;
@@ -549,7 +566,7 @@ __s32  explorer_get_disk_total_num(root_para_t  *para)
     ret = rat_get_partition_name(RAT_USB_DISK, disk_name, 0);
     len = eLIBs_strlen(disk_name[0]);
 
-    if ((EPDK_OK == ret) && (len != 0)) // ´ÅÅÌ´æÔÚ
+    if ((EPDK_OK == ret) && (len != 0)) // ç£ç›˜å­˜åœ¨
     {
         count++;
         para->root_type = RAT_USB;
@@ -568,7 +585,7 @@ __s32  explorer_get_disk_total_num(root_para_t  *para)
     return count ;
 }
 
-//°Î¿¨¶¯×÷ÏìÓ¦
+//æ‹”å¡åŠ¨ä½œå“åº”
 static __s32 explorer_on_fs_part_out(__gui_msg_t *msg)
 {
     __u32 total = 0;
@@ -587,7 +604,7 @@ static __s32 explorer_on_fs_part_out(__gui_msg_t *msg)
     __msg("explorer_on_fs_part_out");
     __msg("list_para->enter_sd_usb_flag = %d ", list_para->enter_sd_usb_flag);
 
-    if (list_para->enter_sd_usb_flag == 0)      // ÔÚ¶¥¼¶ÎÄ¼þ²Ëµ¥
+    if (list_para->enter_sd_usb_flag == 0)      // åœ¨é¡¶çº§æ–‡ä»¶èœå•
     {
         delete_file_list_nod(list_para->top_file_list) ;
         list_para->top_file_list = NULL ;
@@ -615,40 +632,40 @@ static __s32 explorer_on_fs_part_out(__gui_msg_t *msg)
 
         if (list_para->root_type == RAT_USB)
         {
-            ret = rat_get_partition_name(RAT_USB_DISK, disk_name, 0);   //Ëù°Î¿¨Îªµ±Ç°²¥·ÅµÄ
+            ret = rat_get_partition_name(RAT_USB_DISK, disk_name, 0);   //æ‰€æ‹”å¡ä¸ºå½“å‰æ’­æ”¾çš„
             len = eLIBs_strlen(disk_name[0]);
 
-            if ((EPDK_OK == ret) && (len == 0)) //¿¨ÒÑ¾­°Î³ö
+            if ((EPDK_OK == ret) && (len == 0)) //å¡å·²ç»æ‹”å‡º
             {
                 file_item_t *temp_item  = NULL ;
                 file_item_t *head_item = NULL ;
                 head_item = list_para->top_file_list->item_list ;
                 temp_item = head_item ;
 
-                while (temp_item->next != head_item)    // ËÑË÷½áµã
+                while (temp_item->next != head_item)    // æœç´¢ç»“ç‚¹
                 {
-                    if (RAT_MEDIA_TYPE_USB_DEVICE == temp_item->fatdirattr) // ËÑË÷µ½½áµã
+                    if (RAT_MEDIA_TYPE_USB_DEVICE == temp_item->fatdirattr) // æœç´¢åˆ°ç»“ç‚¹
                     {
                         break ;
                     }
                     else
                     {
-                        temp_item = temp_item->next ;   // Ã»ËÑË÷µ½£¬Ö¸ÏòÏÂÒ»¸ö½áµã£¬¼ÌÐøÍùÏÂËÑË÷
+                        temp_item = temp_item->next ;   // æ²¡æœç´¢åˆ°ï¼ŒæŒ‡å‘ä¸‹ä¸€ä¸ªç»“ç‚¹ï¼Œç»§ç»­å¾€ä¸‹æœç´¢
                     }
                 }
 
-                if (temp_item == list_para->top_file_list->item_list)   // ËÑË÷³öÀ´µÄÊÇÍ·½áµã
+                if (temp_item == list_para->top_file_list->item_list)   // æœç´¢å‡ºæ¥çš„æ˜¯å¤´ç»“ç‚¹
                 {
                     list_para->top_file_list->item_list = list_para->top_file_list->item_list->next;
                     temp_item->next->previous = temp_item->previous ;
                     temp_item->previous ->next = temp_item->next ;
-                    delete_file_item(temp_item);    // É¾³ýitem ;
+                    delete_file_item(temp_item);    // åˆ é™¤item ;
                 }
-                else        //ËÑË÷³öÀ´µÄ½áµã²»ÊÇÍ·½áµã
+                else        //æœç´¢å‡ºæ¥çš„ç»“ç‚¹ä¸æ˜¯å¤´ç»“ç‚¹
                 {
                     temp_item->next->previous = temp_item->previous ;
                     temp_item->previous ->next = temp_item->next ;
-                    delete_file_item(temp_item);    // É¾³ýitem ;
+                    delete_file_item(temp_item);    // åˆ é™¤item ;
                 }
 
                 if (!list_para->top_file_list->item_list)
@@ -676,16 +693,16 @@ static __s32 explorer_on_fs_part_out(__gui_msg_t *msg)
                 return EPDK_OK ;
             }
 
-            ret = rat_get_partition_name(RAT_SD_CARD, disk_name, 0);    // Ëù°Î¿¨²»ÊÇµ±Ç°²¥·ÅµÄ
+            ret = rat_get_partition_name(RAT_SD_CARD, disk_name, 0);    // æ‰€æ‹”å¡ä¸æ˜¯å½“å‰æ’­æ”¾çš„
             len = eLIBs_strlen(disk_name[0]);
 
-            if ((EPDK_OK == ret) && (len == 0)) // ¿¨ÒÑ°Î³ö
+            if ((EPDK_OK == ret) && (len == 0)) // å¡å·²æ‹”å‡º
             {
                 file_item_t *head_item = NULL, *temp_item = NULL;
                 head_item = list_para->top_file_list->item_list ;
                 temp_item = head_item ;
 
-                while (temp_item->next != head_item)    // ËÑË÷½áµã
+                while (temp_item->next != head_item)    // æœç´¢ç»“ç‚¹
                 {
                     if (RAT_MEDIA_TYPE_SD_DEVICE == temp_item->fatdirattr)
                     {
@@ -693,22 +710,22 @@ static __s32 explorer_on_fs_part_out(__gui_msg_t *msg)
                     }
                     else
                     {
-                        temp_item = temp_item->next ;   // Ã»ËÑË÷µ½£¬Ö¸ÏòÏÂÒ»¸ö½áµã£¬¼ÌÐøÍùÏÂËÑË÷
+                        temp_item = temp_item->next ;   // æ²¡æœç´¢åˆ°ï¼ŒæŒ‡å‘ä¸‹ä¸€ä¸ªç»“ç‚¹ï¼Œç»§ç»­å¾€ä¸‹æœç´¢
                     }
                 }
 
-                if (temp_item == list_para->top_file_list->item_list) // ÅÐ¶ÏËÑË÷³öÀ´µÄÊÇ·ñÎªÍ·½áµã
+                if (temp_item == list_para->top_file_list->item_list) // åˆ¤æ–­æœç´¢å‡ºæ¥çš„æ˜¯å¦ä¸ºå¤´ç»“ç‚¹
                 {
                     list_para->top_file_list->item_list = list_para->top_file_list->item_list->next;
                     temp_item->next->previous = temp_item->previous ;
                     temp_item->previous ->next = temp_item->next ;
-                    delete_file_item(temp_item);    // É¾³ýitem ;
+                    delete_file_item(temp_item);    // åˆ é™¤item ;
                 }
-                else        //ËÑË÷³öÀ´µÄ½áµã²»ÊÇÍ·½áµã
+                else        //æœç´¢å‡ºæ¥çš„ç»“ç‚¹ä¸æ˜¯å¤´ç»“ç‚¹
                 {
                     temp_item->next->previous = temp_item->previous ;
                     temp_item->previous ->next = temp_item->next ;
-                    delete_file_item(temp_item);    // É¾³ýitem ;
+                    delete_file_item(temp_item);    // åˆ é™¤item ;
                 }
 
                 if (!list_para->top_file_list->item_list)
@@ -740,7 +757,7 @@ static __s32 explorer_on_fs_part_out(__gui_msg_t *msg)
 
         if (list_para->root_type == RAT_TF)
         {
-            ret = rat_get_partition_name(RAT_SD_CARD, disk_name, 0);    //Ëù°Î¿¨Îªµ±Ç°²¥·ÅµÄ
+            ret = rat_get_partition_name(RAT_SD_CARD, disk_name, 0);    //æ‰€æ‹”å¡ä¸ºå½“å‰æ’­æ”¾çš„
             len = eLIBs_strlen(disk_name[0]);
 
             if ((EPDK_OK == ret) && (len == 0))
@@ -749,7 +766,7 @@ static __s32 explorer_on_fs_part_out(__gui_msg_t *msg)
                 head_item = list_para->top_file_list->item_list ;
                 temp_item = head_item ;
 
-                while (temp_item->next != head_item)    // ËÑË÷½áµã
+                while (temp_item->next != head_item)    // æœç´¢ç»“ç‚¹
                 {
                     if (RAT_MEDIA_TYPE_SD_DEVICE == temp_item->fatdirattr)
                     {
@@ -761,18 +778,18 @@ static __s32 explorer_on_fs_part_out(__gui_msg_t *msg)
                     }
                 }
 
-                if (temp_item == list_para->top_file_list->item_list) // ÅÐ¶ÏËÑË÷³öÀ´µÄÊÇ·ñÎªÍ·½áµã
+                if (temp_item == list_para->top_file_list->item_list) // åˆ¤æ–­æœç´¢å‡ºæ¥çš„æ˜¯å¦ä¸ºå¤´ç»“ç‚¹
                 {
                     list_para->top_file_list->item_list = list_para->top_file_list->item_list->next;
                     temp_item->next->previous = temp_item->previous ;
                     temp_item->previous ->next = temp_item->next ;
-                    delete_file_item(temp_item);    // É¾³ýitem ;
+                    delete_file_item(temp_item);    // åˆ é™¤item ;
                 }
-                else        //ËÑË÷³öÀ´µÄ½áµã²»ÊÇÍ·½áµã
+                else        //æœç´¢å‡ºæ¥çš„ç»“ç‚¹ä¸æ˜¯å¤´ç»“ç‚¹
                 {
                     temp_item->next->previous = temp_item->previous ;
                     temp_item->previous ->next = temp_item->next ;
-                    delete_file_item(temp_item);    // É¾³ýitem ;
+                    delete_file_item(temp_item);    // åˆ é™¤item ;
                 }
 
                 if (!list_para->top_file_list->item_list)
@@ -800,7 +817,7 @@ static __s32 explorer_on_fs_part_out(__gui_msg_t *msg)
                 return EPDK_OK ;
             }
 
-            ret = rat_get_partition_name(RAT_USB_DISK, disk_name, 0);   // Ëù°Î¿¨²»ÊÇµ±Ç°²¥·ÅµÄ
+            ret = rat_get_partition_name(RAT_USB_DISK, disk_name, 0);   // æ‰€æ‹”å¡ä¸æ˜¯å½“å‰æ’­æ”¾çš„
             len = eLIBs_strlen(disk_name[0]);
 
             if ((EPDK_OK == ret) && (len == 0))
@@ -809,7 +826,7 @@ static __s32 explorer_on_fs_part_out(__gui_msg_t *msg)
                 head_item = list_para->top_file_list->item_list ;
                 temp_item = head_item ;
 
-                while (temp_item->next != head_item)    // ËÑË÷½áµã
+                while (temp_item->next != head_item)    // æœç´¢ç»“ç‚¹
                 {
                     if (RAT_MEDIA_TYPE_USB_DEVICE == temp_item->fatdirattr)
                     {
@@ -821,18 +838,18 @@ static __s32 explorer_on_fs_part_out(__gui_msg_t *msg)
                     }
                 }
 
-                if (temp_item == list_para->top_file_list->item_list) // ÅÐ¶ÏËÑË÷³öÀ´µÄÊÇ·ñÎªÍ·½áµã
+                if (temp_item == list_para->top_file_list->item_list) // åˆ¤æ–­æœç´¢å‡ºæ¥çš„æ˜¯å¦ä¸ºå¤´ç»“ç‚¹
                 {
                     list_para->top_file_list->item_list = list_para->top_file_list->item_list->next;
                     temp_item->next->previous = temp_item->previous ;
                     temp_item->previous ->next = temp_item->next ;
-                    delete_file_item(temp_item);    // É¾³ýitem ;
+                    delete_file_item(temp_item);    // åˆ é™¤item ;
                 }
-                else        //ËÑË÷³öÀ´µÄ½áµã²»ÊÇÍ·½áµã
+                else        //æœç´¢å‡ºæ¥çš„ç»“ç‚¹ä¸æ˜¯å¤´ç»“ç‚¹
                 {
                     temp_item->next->previous = temp_item->previous ;
                     temp_item->previous ->next = temp_item->next ;
-                    delete_file_item(temp_item);    // É¾³ýitem ;
+                    delete_file_item(temp_item);    // åˆ é™¤item ;
                 }
 
                 if (!list_para->top_file_list->item_list)
@@ -864,7 +881,7 @@ static __s32 explorer_on_fs_part_out(__gui_msg_t *msg)
     return EPDK_OK;
 }
 
-//²å¿¨¶¯×÷ÏìÓ¦
+//æ’å¡åŠ¨ä½œå“åº”
 static __s32 explorer_on_fs_part_in(__gui_msg_t *msg)
 {
     explr_list_para_t *list_para ;
@@ -910,14 +927,14 @@ static __s32 explorer_on_fs_part_in(__gui_msg_t *msg)
             ret = rat_get_partition_name(RAT_SD_CARD, disk_name, 0);
             len = eLIBs_strlen(disk_name[0]);
 
-            if ((ret == EPDK_OK) && (len != 0))     //´ÅÅÌ´æÔÚ
+            if ((ret == EPDK_OK) && (len != 0))     //ç£ç›˜å­˜åœ¨
             {
                 dirent.d_size = 0 ;
                 dirent.fatdirattr = RAT_MEDIA_TYPE_SD_DEVICE ;
                 eLIBs_strcpy(dirent.d_name, disk_name[0]);
                 new_item = (file_item_t *)new_file_item(&dirent);
 
-                if (new_item != NULL)   //°ÑÐÂÔö¼ÓµÄitem ²åÈëµ½Á´±í½áÎ²
+                if (new_item != NULL)   //æŠŠæ–°å¢žåŠ çš„item æ’å…¥åˆ°é“¾è¡¨ç»“å°¾
                 {
                     head_item = list_para->top_file_list->item_list ;
                     temp_item = head_item->previous ;
@@ -947,7 +964,7 @@ static __s32 explorer_on_fs_part_in(__gui_msg_t *msg)
                 eLIBs_strcpy(dirent.d_name, disk_name[0]);
                 new_item = (file_item_t *) new_file_item(&dirent);
 
-                if (new_item != NULL)   //°ÑÐÂÔö¼ÓµÄitem ²åÈëµ½Á´±í½áÎ²
+                if (new_item != NULL)   //æŠŠæ–°å¢žåŠ çš„item æ’å…¥åˆ°é“¾è¡¨ç»“å°¾
                 {
                     head_item = list_para->top_file_list->item_list ;
                     temp_item = head_item->previous ;
@@ -987,14 +1004,14 @@ static __s32 explorer_on_fs_part_in(__gui_msg_t *msg)
             ret = rat_get_partition_name(RAT_SD_CARD, disk_name, 0);
             len = eLIBs_strlen(disk_name[0]);
 
-            if ((ret == EPDK_OK) && (len != 0))     //´ÅÅÌ´æÔÚ
+            if ((ret == EPDK_OK) && (len != 0))     //ç£ç›˜å­˜åœ¨
             {
                 dirent.d_size = 0 ;
                 dirent.fatdirattr = RAT_MEDIA_TYPE_SD_DEVICE ;
                 eLIBs_strcpy(dirent.d_name, disk_name[0]);
                 new_item = (file_item_t *)new_file_item(&dirent);
 
-                if (new_item != NULL)   //°ÑÐÂÔö¼ÓµÄitem ²åÈëµ½Á´±í½áÎ²
+                if (new_item != NULL)   //æŠŠæ–°å¢žåŠ çš„item æ’å…¥åˆ°é“¾è¡¨ç»“å°¾
                 {
                     head_item = list_para->top_file_list->item_list ;
                     temp_item = head_item ;
@@ -1035,7 +1052,7 @@ static __s32 explorer_on_fs_part_in(__gui_msg_t *msg)
                 eLIBs_strcpy(dirent.d_name, disk_name[0]);
                 new_item = (file_item_t *) new_file_item(&dirent);
 
-                if (new_item != NULL)   //°ÑÐÂÔö¼ÓµÄitem ²åÈëµ½Á´±í½áÎ²
+                if (new_item != NULL)   //æŠŠæ–°å¢žåŠ çš„item æ’å…¥åˆ°é“¾è¡¨ç»“å°¾
                 {
                     head_item = list_para->top_file_list->item_list ;
                     temp_item = head_item ;
@@ -1063,7 +1080,7 @@ static __s32 explorer_on_fs_part_in(__gui_msg_t *msg)
     __msg("explorer_on_fs_part_in end");
     return EPDK_OK;
 }
-// ä¯ÀÀÆ÷Ê±£¬µã»÷ÌõÄ¿Ê±µÄÏìÓ¦¶¯×÷
+// æµè§ˆå™¨æ—¶ï¼Œç‚¹å‡»æ¡ç›®æ—¶çš„å“åº”åŠ¨ä½œ
 static __s32  explorer_list_enter_next_dir(__gui_msg_t *msg)
 {
     explr_list_para_t *list_para;
@@ -1088,11 +1105,11 @@ static __s32  explorer_list_enter_next_dir(__gui_msg_t *msg)
 
     __log("list_para->enter_sd_usb_flag = %d", list_para->enter_sd_usb_flag);
 
-    //µ±Ç°´¦ÓÚsd / usb Ñ¡Ôñ´°¿ÚÖÐ£¬µã»÷sd / usb Ê± ËÑË÷³ö¶ÔÓ¦ÅÌ·ûµÄÃ½Ìå
+    //å½“å‰å¤„äºŽsd / usb é€‰æ‹©çª—å£ä¸­ï¼Œç‚¹å‡»sd / usb æ—¶ æœç´¢å‡ºå¯¹åº”ç›˜ç¬¦çš„åª’ä½“
     if (list_para->enter_sd_usb_flag == 0)
     {
         explorer_list_long_string_stop_roll(list_para);
-        //½øÈëÏÂÒ»¼¶×ÓÎÄ¼þ¼Ð
+        //è¿›å…¥ä¸‹ä¸€çº§å­æ–‡ä»¶å¤¹
         LISTBAR_GetScene(list_para->listbar_handle, &ListBarScene);
         list_para->top_file_list->start_id = ListBarScene.start_id;
         list_para->top_file_list->focus_id = ListBarScene.focus_id;
@@ -1128,7 +1145,7 @@ static __s32  explorer_list_enter_next_dir(__gui_msg_t *msg)
             list_para->h_dialog = NULL ;
         }
 
-        explorer_get_last_para(list_para) ; // »ñÈ¡ÉÏÒ»´ÎµÄ²ÎÊý
+        explorer_get_last_para(list_para) ; // èŽ·å–ä¸Šä¸€æ¬¡çš„å‚æ•°
         list_para->enter_sd_usb_flag = 1 ;
 
         if (RAT_MEDIA_TYPE_AUDIO == list_para->media_type)
@@ -1144,7 +1161,7 @@ static __s32  explorer_list_enter_next_dir(__gui_msg_t *msg)
             LISTBAR_LostFocus(list_para->listbar_handle);
         }
     }
-    else        // µ±Ç°´¦ÓÚÃ½ÌåÎÄ¼þÁÐ±íÖÐ£¬µã»÷Ê±£¬²¥·Å¶ÔÓ¦Ã½ÌåÎÄ¼þ
+    else        // å½“å‰å¤„äºŽåª’ä½“æ–‡ä»¶åˆ—è¡¨ä¸­ï¼Œç‚¹å‡»æ—¶ï¼Œæ’­æ”¾å¯¹åº”åª’ä½“æ–‡ä»¶
     {
         explorer_list_win_on_enter_key(msg) ;
     }
@@ -1153,7 +1170,7 @@ static __s32  explorer_list_enter_next_dir(__gui_msg_t *msg)
 }
 
 
-//ËùÓÐÎÄ¼þ¸üÐÂfilelist Á´±í
+//æ‰€æœ‰æ–‡ä»¶æ›´æ–°filelist é“¾è¡¨
 static __s32 explorer_update_file_list_nod(explr_list_para_t *list_para)
 {
     file_list_t *parent_file_list = NULL;
@@ -1176,7 +1193,7 @@ static __s32 explorer_update_file_list_nod(explr_list_para_t *list_para)
         return EPDK_FAIL;
     }
 
-    eLIBs_strcpy(file_path, list_para->cur_file_list->file_path); //±¸·Ýµ±Ç°½ÚµãÂ·¾¶
+    eLIBs_strcpy(file_path, list_para->cur_file_list->file_path); //å¤‡ä»½å½“å‰èŠ‚ç‚¹è·¯å¾„
 
     //backup cur foucs dir  before rebuild list , just need to consider dir only
     //usr to redraw dir foucs
@@ -1225,7 +1242,7 @@ static __s32 explorer_update_file_list_nod(explr_list_para_t *list_para)
     list_para->cur_file_list->child = temp_file_list;
     temp_file_list->parent = list_para->cur_file_list;
     list_para->cur_file_list = temp_file_list;
-    page_item_cnt = explorer_get_listbar_pagenum(list_para);    // »ñÈ¡listbar Ã¿Ò»Ò³ÓÐ¼¸¸öÌõÄ¿
+    page_item_cnt = explorer_get_listbar_pagenum(list_para);    // èŽ·å–listbar æ¯ä¸€é¡µæœ‰å‡ ä¸ªæ¡ç›®
     //list_para->last_start_id = index;
     list_para->last_focused_id = index;
     list_para->last_start_id = list_para->last_focused_id - (list_para->last_focused_id % page_item_cnt);
@@ -1263,7 +1280,7 @@ static __s32 explorer_update_file_list_nod(explr_list_para_t *list_para)
 
 
 
-//Ã½ÌåÀàÐÍÎÄ¼þÁÐ±í¸üÐÂ
+//åª’ä½“ç±»åž‹æ–‡ä»¶åˆ—è¡¨æ›´æ–°
 static __s32 explorer_filelist_update(explr_list_para_t *list_para)
 {
     //tmp = list_para->rat.index ;
@@ -1283,14 +1300,14 @@ static __s32 explorer_filelist_update(explr_list_para_t *list_para)
         list_para->rat.total = rat_get_cur_scan_cnt(list_para->rat.handle) ;
     }
 
-    //explorer_listbar_uninit(list_para->list_win); //ÖØÐÂ´´½¨listbar,ÒòÎªSquareÎªÈ«ÆÁÄ£Ê½
+    //explorer_listbar_uninit(list_para->list_win); //é‡æ–°åˆ›å»ºlistbar,å› ä¸ºSquareä¸ºå…¨å±æ¨¡å¼
     //explorer_listbar_init(list_para->list_win);
     //LISTBAR_ShowPage(list_para->listbar_handle);
     explorer_list_win_update(list_para);
     return EPDK_OK;
 }
 
-//´Óµ±Ç°Ëù½¨Ê÷½ÚµãÖÐÉ¾³ýÒ»¸ö½Úµã
+//ä»Žå½“å‰æ‰€å»ºæ ‘èŠ‚ç‚¹ä¸­åˆ é™¤ä¸€ä¸ªèŠ‚ç‚¹
 static void delete_file_item_from_tree_list(explr_list_para_t *list_para, char *delete_file)
 {
     file_item_t *item;
@@ -1305,8 +1322,8 @@ static void delete_file_item_from_tree_list(explr_list_para_t *list_para, char *
         return ;
     }
 
-    p1 = eLIBs_strchrlast(delete_file, '\\') + 1; //Î´¿¼ÂÇ¸ùÄ¿Â¼(ÔÚ´Ë²»ÐèÒª)
-    //¸ù¾ÝÎÄ¼þÃû´Óµ±Ç°½ÚµãÏòÉÏËÑË÷
+    p1 = eLIBs_strchrlast(delete_file, '\\') + 1; //æœªè€ƒè™‘æ ¹ç›®å½•(åœ¨æ­¤ä¸éœ€è¦)
+    //æ ¹æ®æ–‡ä»¶åä»Žå½“å‰èŠ‚ç‚¹å‘ä¸Šæœç´¢
     item = list_para->cur_file_list->item_list;
     list = list_para->cur_file_list;
 
@@ -1344,7 +1361,7 @@ static void delete_file_item_from_tree_list(explr_list_para_t *list_para, char *
     }
 }
 
-//ÓÃÓÚ³ýRAT_MEDIA_TYPE_ALL ÒÔÍâµÄÃ½ÌåÀàÐÍ
+//ç”¨äºŽé™¤RAT_MEDIA_TYPE_ALL ä»¥å¤–çš„åª’ä½“ç±»åž‹
 static __s32 explorer_list_delete_file(__gui_msg_t *msg)
 {
     __s32 ret;
@@ -1373,15 +1390,15 @@ static __s32 explorer_list_delete_file(__gui_msg_t *msg)
 __s32 explorer_list_play_file(explr_list_para_t *list_para)
 {
     __s32 ret;
-    char FileName[RAT_MAX_FULL_PATH_LEN] = { 0 };   //È«ÎÄ¼þÃû¼´°üÀ¨ÅÌ·û
+    char FileName[RAT_MAX_FULL_PATH_LEN] = { 0 };   //å…¨æ–‡ä»¶åå³åŒ…æ‹¬ç›˜ç¬¦
     rat_media_type_t media_type ;
     file_item_t file_item;
     GetListItemFileName(list_para, list_para->rat.index, file_item.name);
     __msg("File_manager_play_file filename = %s ", file_item.name);
     media_type = rat_get_file_type(file_item.name) ;
     __msg("media_type = %d", media_type);
-    //list_para->rat.handle = rat_open(list_para->search_path , media_type , 0 );   //È«²¿ËÑË÷
-    list_para->rat.handle = rat_open_ex(list_para->root_type, media_type, 0);   //È«²¿ËÑË÷
+    //list_para->rat.handle = rat_open(list_para->search_path , media_type , 0 );   //å…¨éƒ¨æœç´¢
+    list_para->rat.handle = rat_open_ex(list_para->root_type, media_type, 0);   //å…¨éƒ¨æœç´¢
     __msg("list_para->rat.handle=%d", list_para->rat.handle);
     eLIBs_strcat(FileName, list_para->search_path) ;
     eLIBs_strcat(FileName, "\\") ;
@@ -1402,7 +1419,7 @@ __s32 explorer_list_play_file(explr_list_para_t *list_para)
 __s32 File_manager_play_file(explr_list_para_t *list_para)
 {
     __s32 ret = 0;
-    char FileName[RAT_MAX_FULL_PATH_LEN] = {0}; //È«Â·¾¶
+    char FileName[RAT_MAX_FULL_PATH_LEN] = {0}; //å…¨è·¯å¾„
     rat_media_type_t media_type ;
     __u8 root_type = 0;
     __u8  fatdirattr = 0;
@@ -1441,8 +1458,8 @@ __s32 File_manager_play_file(explr_list_para_t *list_para)
 
     list_para->root_type = root_type ;
     ExplorerListWinGetSearchPath(list_para);
-    //list_para->rat.handle = rat_open(list_para->search_path , media_type , 0 );   //È«²¿ËÑË÷
-    list_para->rat.handle = rat_open_ex(list_para->root_type, media_type, 0);   //È«²¿ËÑË÷
+    //list_para->rat.handle = rat_open(list_para->search_path , media_type , 0 );   //å…¨éƒ¨æœç´¢
+    list_para->rat.handle = rat_open_ex(list_para->root_type, media_type, 0);   //å…¨éƒ¨æœç´¢
     list_para->rat.total = rat_get_cur_scan_cnt(list_para->rat.handle) ;
     __msg("list_para->rat.handle=%d", list_para->rat.handle);
     ret = rat_set_file_for_play(list_para->rat.handle, FileName);
@@ -1466,7 +1483,7 @@ static __s32  file_manager_set_current_file_for_play(__gui_msg_t *msg)
     __u8 root_type = 0;
     __u8  fatdirattr;                   //add by libaiao,2011.8.24
     list_para = (explr_list_para_t *)GUI_WinGetAttr(msg->h_deswin);
-    //ÔÚÎÄ¼þ½øÐÐ²¥·ÅÖ®Ç°£¬ÏÈÍ£µôlistbar,ÒÔ·Àlistbar»¬¶¯Ïß³ÌÔËÐÐ
+    //åœ¨æ–‡ä»¶è¿›è¡Œæ’­æ”¾ä¹‹å‰ï¼Œå…ˆåœæŽ‰listbar,ä»¥é˜²listbaræ»‘åŠ¨çº¿ç¨‹è¿è¡Œ
     explorer_listbar_uninit(list_para->list_win);
     explorer_mediatype_listbar_uninit(list_para->list_win);
     ret = File_manager_play_file(list_para);
@@ -1523,7 +1540,7 @@ static __s32  file_manager_set_current_file_for_play(__gui_msg_t *msg)
             char  path[RAT_MAX_FULL_PATH_LEN] = { 0 };
             file_item = list_para->cur_file_list->cur_item;
             {
-                // »ñÈ¡È«Â·¾¶
+                // èŽ·å–å…¨è·¯å¾„
                 eLIBs_strcpy(path, list_para->cur_file_list->file_path);
                 eLIBs_strcat(path, "\\");
                 eLIBs_strcat(path, file_item->name);
@@ -1562,7 +1579,7 @@ static __s32  file_manager_set_current_file_for_play(__gui_msg_t *msg)
 ********************************************************************************************
 *Function   :      H_WIN explorer_list_win_create(H_WIN h_parent, explr_list_para_t *para)
 *
-*Description    :       ¸ù¾ÝManagerWin´«µÝ¹ýÀ´µÄ²ÎÊý´´½¨FrameWIn³¡¾°
+*Description    :       æ ¹æ®ManagerWinä¼ é€’è¿‡æ¥çš„å‚æ•°åˆ›å»ºFrameWInåœºæ™¯
 *
 *Arguments      :
 *
@@ -1595,7 +1612,7 @@ H_WIN explorer_list_win_create(H_WIN h_parent, explr_list_para_t *para)
     list_para->listbar_left_right = LISTBAR_RIGHT;
     list_para->view_mode = para->view_mode;         //list or square
     list_para->root_para = para->root_para ;
-    ExplorerListWinGetSearchPath(list_para);    // »ñÈ¡ËÑË÷Â·¾¶£¬( list_para->search_path)
+    ExplorerListWinGetSearchPath(list_para);    // èŽ·å–æœç´¢è·¯å¾„ï¼Œ( list_para->search_path)
     //eLIBs_memcpy(list_para->search_path,"e:", sizeof("e:"));
     eLIBs_memset(&framewin_para, 0, sizeof(__gui_framewincreate_para_t));
     framewin_para.name =    "Explorer List window",
@@ -1614,12 +1631,12 @@ H_WIN explorer_list_win_create(H_WIN h_parent, explr_list_para_t *para)
     framewin_para.BkColor.green = 255;
     framewin_para.BkColor.blue = 0;
     framewin_para.attr = (void *)list_para;
-    framewin_para.hLayer = list_para->list_layer;           //»á±»listbarµ÷ÓÃ
+    framewin_para.hLayer = list_para->list_layer;           //ä¼šè¢«listbarè°ƒç”¨
     return (GUI_FrmWinCreate(&framewin_para));
 }
 
 
-//ÎÄ¼þ¹ÜÀíÄ£Ê½£¬Ìø¹ýsd/usbÑ¡Ôñ½çÃæ £¬½øÈëÏÂÒ»¼¶²Ë?
+//æ–‡ä»¶ç®¡ç†æ¨¡å¼ï¼Œè·³è¿‡sd/usbé€‰æ‹©ç•Œé¢ ï¼Œè¿›å…¥ä¸‹ä¸€çº§èœ?
 static __s32 explorer_file_manager_ignor_sd_usb(__gui_msg_t *msg)
 {
     __s32 ret = 0;
@@ -1628,11 +1645,11 @@ static __s32 explorer_file_manager_ignor_sd_usb(__gui_msg_t *msg)
     file_item_t *pfileitem = NULL;
     __inf("Enter %s\r", __FUNCTION__);
     list_para = (explr_list_para_t *)GUI_WinGetAttr(msg->h_deswin);
-    //ÎÄ¼þ¹ÜÀíÄ£Ê½£¬Ìø¹ýsd/usbÑ¡Ôñ½çÃæ £¬½øÈëÏÂÒ»¼¶²Ëµ¥
+    //æ–‡ä»¶ç®¡ç†æ¨¡å¼ï¼Œè·³è¿‡sd/usbé€‰æ‹©ç•Œé¢ ï¼Œè¿›å…¥ä¸‹ä¸€çº§èœå•
     //if(list_para->media_type == RAT_MEDIA_TYPE_ALL)
     {
         //list_para->enter_sd_usb_flag = 0;
-        //ÏÈ¸üÐÂÒ»Ò³£¬·ñÔòfile_manager_list_on_enter_key Ê§°Ü
+        //å…ˆæ›´æ–°ä¸€é¡µï¼Œå¦åˆ™file_manager_list_on_enter_key å¤±è´¥
         //  LISTBAR_ShowPage(list_para->mediatype_listbar_handle); // shiql change for D100 20160715
         LISTBAR_ShowPage(list_para->listbar_handle);
 
@@ -1712,7 +1729,7 @@ static __s32 explorer_file_manager_ignor_sd_usb(__gui_msg_t *msg)
 *****************************************************************************************
 *Function   :           static __s32 explorer_listview_onpaint(__gui_msg_t *msg)
 *
-*Description    :       OnPaint´¦Àíº¯Êý,»­±³¾°Í¼£¬Ç°¾°ListBar showpage, ÆäËûiconÔªËØ
+*Description    :       OnPaintå¤„ç†å‡½æ•°,ç”»èƒŒæ™¯å›¾ï¼Œå‰æ™¯ListBar showpage, å…¶ä»–iconå…ƒç´ 
 *
 *Arguments      :
 *
@@ -1785,11 +1802,11 @@ static __s32 explorer_listview_onpaint(__gui_msg_t *msg)
     else
     {
         //       LISTBAR_ShowPage(list_para->mediatype_listbar_handle); // shiql change this for d100 20160715
-        LISTBAR_ShowPage(list_para->listbar_handle);                //  »æÖÆÓÒ²àµÄlistbar
+        LISTBAR_ShowPage(list_para->listbar_handle);                //  ç»˜åˆ¶å³ä¾§çš„listbar
     }
 
     //    LISTBAR_LostFocus(list_para->mediatype_listbar_handle);// shiql change this for d100 20160715
-    //explorer_draw_file_type( list_para, list_para->media_type );  // »æÖÆ×ó²àµÄÎÄ¼þÀàÐÍ
+    //explorer_draw_file_type( list_para, list_para->media_type );  // ç»˜åˆ¶å·¦ä¾§çš„æ–‡ä»¶ç±»åž‹
     //GUI_SetDrawMode(LCD_DRAWMODE_NORMAL);
     //GUI_MEMDEV_CopyToLCD(draw_mem);
     //GUI_MEMDEV_Select( NULL );
@@ -1802,7 +1819,7 @@ static __s32 explorer_listview_onpaint(__gui_msg_t *msg)
 *************************************************************************************************
 *Function   :           static __s32  explorer_list_win_on_close(__gui_msg_t *msg)
 *
-*Description    :       OnClose´¦Àíº¯Êý£¬ÊÍ·ÅFrameWin
+*Description    :       OnCloseå¤„ç†å‡½æ•°ï¼Œé‡Šæ”¾FrameWin
 *
 *Arguments      :
 *
@@ -1820,7 +1837,7 @@ static __s32  explorer_list_win_on_close(__gui_msg_t *msg)
 *******************************************************************************************
 *Function   :           static __s32  explorer_list_win_on_destroy(__gui_msg_t *msg)
 *
-*Description    :       OnDestroy´¦Àíº¯Êý£¬ÊÍ·Åframewin ËùÓÐÉêÇëµÄ×ÊÔ´
+*Description    :       OnDestroyå¤„ç†å‡½æ•°ï¼Œé‡Šæ”¾framewin æ‰€æœ‰ç”³è¯·çš„èµ„æº
 *
 *Arguments      :
 *
@@ -1883,8 +1900,8 @@ static __s32  explorer_list_win_on_destroy(__gui_msg_t *msg)
     }
 
 #endif
-    explorer_list_long_string_uninit(list_para);        //ÊÍ·Ålong string scroll
-    explorer_listbar_uninit(msg->h_deswin);         // listbar uninit Ó¦¸Ã·ÅÔÚÉ¾³ýÎÄ¼þÁÐ±íÖ®Ç°
+    explorer_list_long_string_uninit(list_para);        //é‡Šæ”¾long string scroll
+    explorer_listbar_uninit(msg->h_deswin);         // listbar uninit åº”è¯¥æ”¾åœ¨åˆ é™¤æ–‡ä»¶åˆ—è¡¨ä¹‹å‰
     explorer_mediatype_listbar_uninit(list_para->list_win);
 #if (EXPLORER_SUPPORT_MINIATURE == 1)
 
@@ -1899,11 +1916,11 @@ static __s32  explorer_list_win_on_destroy(__gui_msg_t *msg)
 
     if (list_para->media_type == RAT_MEDIA_TYPE_ALL)
     {
-        explorer_file_list_uninit(list_para);   //É¾³ýÎÄ¼þÁÐ±í
+        explorer_file_list_uninit(list_para);   //åˆ é™¤æ–‡ä»¶åˆ—è¡¨
     }
     else
     {
-        explorer_file_list_uninit(list_para);   //É¾³ýÎÄ¼þÁ´±í( Ö¸Ïòsd ¿¨, usb µÄÁ´±í)
+        explorer_file_list_uninit(list_para);   //åˆ é™¤æ–‡ä»¶é“¾è¡¨( æŒ‡å‘sd å¡, usb çš„é“¾è¡¨)
         //explorer_save_last_para(list_para);
     }
 
@@ -1935,9 +1952,9 @@ static __s32  explorer_list_win_on_destroy(__gui_msg_t *msg)
         list_para = NULL ;
     }
 
-    //if(rat_is_encryption_partition_Insert(NULL,1))//·ÀÖ¹²å
+    //if(rat_is_encryption_partition_Insert(NULL,1))//é˜²æ­¢æ’
 #if (BEETLES_GAME_FLAG == 1)
-    //if(rat_is_encryption_partition_Insert(NULL,1))//·ÀÖ¹²å
+    //if(rat_is_encryption_partition_Insert(NULL,1))//é˜²æ­¢æ’
     USBJoystickPlugOut(NULL);
 #endif
     return EPDK_OK;
@@ -1947,7 +1964,7 @@ static __s32  explorer_list_win_on_destroy(__gui_msg_t *msg)
 *********************************************************************************************
 *Function   :          __s32 ExplorerListWinOnEnterKey(explr_list_para_t *list_para)
 *
-*Description    :       EnterKey´¦Àíº¯Êý
+*Description    :       EnterKeyå¤„ç†å‡½æ•°
 *
 *Arguments      :
 *
@@ -2024,7 +2041,7 @@ static __s32 explorer_mediatype_update(__gui_msg_t *msg)
         __wrn("explorer_file_manager_ignor_sd_usb11....");
         explorer_file_manager_ignor_sd_usb(msg);
     }*/
-    //ÎÄ¼þ¹ÜÀíÄ£Ê½£¬Ìø¹ýsd/usbÑ¡Ôñ½çÃæ £¬½øÈëÏÂÒ»¼¶²Ëµ¥
+    //æ–‡ä»¶ç®¡ç†æ¨¡å¼ï¼Œè·³è¿‡sd/usbé€‰æ‹©ç•Œé¢ ï¼Œè¿›å…¥ä¸‹ä¸€çº§èœå•
     //if(list_para->media_type == RAT_MEDIA_TYPE_ALL)
     {
         //    rat_close(list_para->rat.handle);
@@ -2085,8 +2102,8 @@ static __s32 explorer_mediatype_update(__gui_msg_t *msg)
     explorer_get_last_para(list_para);
     //explorer_mediatype_listbar_init(list_para->list_win);
     //explorer_listbar_uninit(list_para->list_win);
-    //ÎªRAT_MEDIA_TYPE_ALLÊ±explorer_file_manager_ignor_sd_usbÓÐµ÷ÓÃexplorer_listbar_init()
-    //ÔÚÕâÀïÔÙ´Îµ÷ÓÃ»áµ¼ÖÂËÀ»ú
+    //ä¸ºRAT_MEDIA_TYPE_ALLæ—¶explorer_file_manager_ignor_sd_usbæœ‰è°ƒç”¨explorer_listbar_init()
+    //åœ¨è¿™é‡Œå†æ¬¡è°ƒç”¨ä¼šå¯¼è‡´æ­»æœº
     //..if(list_para->media_type != RAT_MEDIA_TYPE_ALL)
     //..{
     explorer_listbar_init(list_para->list_win);
@@ -2106,7 +2123,7 @@ static __s32 explorer_mediatype_update(__gui_msg_t *msg)
 #if 0 // shiql solve  mediatype_listbar_handle item blink
         LISTBAR_ShowPage(list_para->mediatype_listbar_handle);
 #endif
-        LISTBAR_ShowPage(list_para->listbar_handle);                //  »æÖÆÓÒ²àµÄlistbar
+        LISTBAR_ShowPage(list_para->listbar_handle);                //  ç»˜åˆ¶å³ä¾§çš„listbar
     }
 
     if (list_para->rat.total == 0)
@@ -2138,7 +2155,7 @@ static __s32 explorer_mediatype_update(__gui_msg_t *msg)
 ***********************************************************************************************
 *Function   :          __s32 ExplorerMediatypeListWinOnNextItem(__gui_msg_t *msg)
 *
-*Description    :       ÏòÏÂÒ»¸öÌõÄ¿´¦Àíº¯Êý,ÔÚNextKeyÖÐ±»µ÷ÓÃ
+*Description    :       å‘ä¸‹ä¸€ä¸ªæ¡ç›®å¤„ç†å‡½æ•°,åœ¨NextKeyä¸­è¢«è°ƒç”¨
 *
 *Arguments      :
 *
@@ -2172,7 +2189,7 @@ static __s32 explorer_list_win_update(explr_list_para_t *list_para)
 ***********************************************************************************************
 *Function   :          __s32 ExplorerListWinOnNextItem(explr_list_para_t *list_para)
 *
-*Description    :       ÏòÏÂÒ»¸öÌõÄ¿´¦Àíº¯Êý,ÔÚNextKeyÖÐ±»µ÷ÓÃ
+*Description    :       å‘ä¸‹ä¸€ä¸ªæ¡ç›®å¤„ç†å‡½æ•°,åœ¨NextKeyä¸­è¢«è°ƒç”¨
 *
 *Arguments      :
 *
@@ -2196,7 +2213,7 @@ __s32 ExplorerListWinOnNextItem(explr_list_para_t *list_para)
 ********************************************************************************************
 *Function   :          __s32 ExplorerMediatypeListWinOnPreviousItem(__gui_msg_t *msg)
 *
-*Description    :       ÏòÉÏÒ»¸öÌõÄ¿´¦Àíº¯Êý,ÔÚPreviousKeyÖÐ±»µ÷ÓÃ
+*Description    :       å‘ä¸Šä¸€ä¸ªæ¡ç›®å¤„ç†å‡½æ•°,åœ¨PreviousKeyä¸­è¢«è°ƒç”¨
 *
 *Arguments      :
 *
@@ -2218,7 +2235,7 @@ __s32 ExplorerMediatypeListWinOnPreviousItem(__gui_msg_t *msg)
 ********************************************************************************************
 *Function   :          __s32 ExplorerListWinOnNextItem(explr_list_para_t *list_para)
 *
-*Description    :       ÏòÉÏÒ»¸öÌõÄ¿´¦Àíº¯Êý,ÔÚPreviousKeyÖÐ±»µ÷ÓÃ
+*Description    :       å‘ä¸Šä¸€ä¸ªæ¡ç›®å¤„ç†å‡½æ•°,åœ¨PreviousKeyä¸­è¢«è°ƒç”¨
 *
 *Arguments      :
 *
@@ -2241,7 +2258,7 @@ __s32 ExplorerListWinOnPreviousItem(explr_list_para_t *list_para)
 **********************************************************************************************
 *Function   :          __s32 ExplorerListWinOnNextItem(explr_list_para_t *list_para)
 *
-*Description    :       ÏìÓ¦ÉÏÒ»ÐÐÌõÄ¿´¦Àíº¯Êý,ÔÚPreviousKeyÖÐ±»µ÷ÓÃ
+*Description    :       å“åº”ä¸Šä¸€è¡Œæ¡ç›®å¤„ç†å‡½æ•°,åœ¨PreviousKeyä¸­è¢«è°ƒç”¨
 *
 *Arguments      :
 *
@@ -2252,7 +2269,7 @@ __s32 ExplorerListWinOnPreviousItem(explr_list_para_t *list_para)
 __s32 ExplorerListWinOnNextRow(explr_list_para_t *list_para)
 {
     __s32 ret;
-    __s32 RowCount = LISTBAR_GetRowItemCount(list_para->listbar_handle);    //»ñµÃÒ»ÐÐµÄÌõÄ¿Êý
+    __s32 RowCount = LISTBAR_GetRowItemCount(list_para->listbar_handle);    //èŽ·å¾—ä¸€è¡Œçš„æ¡ç›®æ•°
     ret = rat_move_cursor_forward(list_para->rat.handle, RowCount);
 
     if (ret == 0)
@@ -2268,7 +2285,7 @@ __s32 ExplorerListWinOnNextRow(explr_list_para_t *list_para)
         }
     }
 
-    list_para->rat.index += ret;            //retÎªÊµ¼ÊÏòÏÂÒÆ¶¯µÄÌõÄ¿Êý
+    list_para->rat.index += ret;            //retä¸ºå®žé™…å‘ä¸‹ç§»åŠ¨çš„æ¡ç›®æ•°
 
     if (list_para->rat.index >= list_para->rat.total)
     {
@@ -2284,7 +2301,7 @@ __s32 ExplorerListWinOnNextRow(explr_list_para_t *list_para)
 **********************************************************************************************
 *Function   :          __s32 ExplorerListWinOnNextItem(explr_list_para_t *list_para)
 *
-*Description    :       ÏòÉÏÒ»ÐÐÌõÄ¿´¦Àíº¯Êý,ÔÚPreviousKeyÖÐ±»µ÷ÓÃ
+*Description    :       å‘ä¸Šä¸€è¡Œæ¡ç›®å¤„ç†å‡½æ•°,åœ¨PreviousKeyä¸­è¢«è°ƒç”¨
 *
 *Arguments      :
 *
@@ -2295,7 +2312,7 @@ __s32 ExplorerListWinOnNextRow(explr_list_para_t *list_para)
 __s32 ExplorerListWinOnPreviousRow(explr_list_para_t *list_para)
 {
     __s32 ret;
-    __s32 RowCount = LISTBAR_GetRowItemCount(list_para->listbar_handle);    //»ñµÃÒ»ÐÐµÄÌõÄ¿Êý
+    __s32 RowCount = LISTBAR_GetRowItemCount(list_para->listbar_handle);    //èŽ·å¾—ä¸€è¡Œçš„æ¡ç›®æ•°
 
     if (list_para->rat.index <= 0)
     {
@@ -2319,11 +2336,11 @@ __s32 ExplorerListWinOnPreviousRow(explr_list_para_t *list_para)
 
     if (list_para->rat.index >= ret)
     {
-        list_para->rat.index -= ret;            //retÎªÊµ¼ÊÏòÏÂÒÆ¶¯µÄÌõÄ¿Êý
+        list_para->rat.index -= ret;            //retä¸ºå®žé™…å‘ä¸‹ç§»åŠ¨çš„æ¡ç›®æ•°
     }
     else
     {
-        list_para->rat.index = 0;               //ÒÑ¾­ÔÚµÚÒ»Ò³£¬¶¨Î»µ½µÚÒ»¸öÌõÄ¿
+        list_para->rat.index = 0;               //å·²ç»åœ¨ç¬¬ä¸€é¡µï¼Œå®šä½åˆ°ç¬¬ä¸€ä¸ªæ¡ç›®
         LISTBAR_SetFocusItem(list_para->listbar_handle, list_para->rat.index);
         //__wrn("Explorer_list.c, line296, there is a exception with listview!!!");
         return EPDK_OK;
@@ -2334,11 +2351,11 @@ __s32 ExplorerListWinOnPreviousRow(explr_list_para_t *list_para)
 }
 
 
-//ÏòÏÂÒ»Ò³´¦Àíº¯Êý
+//å‘ä¸‹ä¸€é¡µå¤„ç†å‡½æ•°
 __s32 ExplorerListWinOnNextPage(explr_list_para_t *list_para)
 {
     __s32 ret;
-    __s32 PageCount = LISTBAR_GetPageItemCount(list_para->listbar_handle);  //»ñµÃÒ»ÐÐµÄÌõÄ¿Êý
+    __s32 PageCount = LISTBAR_GetPageItemCount(list_para->listbar_handle);  //èŽ·å¾—ä¸€è¡Œçš„æ¡ç›®æ•°
 
     if (list_para->rat.index + PageCount >= list_para->rat.total)
     {
@@ -2373,7 +2390,7 @@ __s32 ExplorerListWinOnNextPage(explr_list_para_t *list_para)
         __msg("listbar start id = %d", ListBarScene.start_id);
         __msg("listbar focus id = %d", ListBarScene.focus_id);
     }
-    //list_para->rat.index += ret;          //retÎªÊµ¼ÊÏòÏÂÒÆ¶¯µÄÌõÄ¿Êý
+    //list_para->rat.index += ret;          //retä¸ºå®žé™…å‘ä¸‹ç§»åŠ¨çš„æ¡ç›®æ•°
     {
         __listbar_scene_t ListBarScene;
         LISTBAR_NextPage(list_para->listbar_handle);
@@ -2387,11 +2404,11 @@ __s32 ExplorerListWinOnNextPage(explr_list_para_t *list_para)
 }
 
 
-//ÏòÉÏÒ»Ò³´¦Àíº¯Êý
+//å‘ä¸Šä¸€é¡µå¤„ç†å‡½æ•°
 __s32 ExplorerListWinOnPreviousPage(explr_list_para_t *list_para)
 {
     __s32 ret;
-    __s32 PageCount = LISTBAR_GetPageItemCount(list_para->listbar_handle);  //»ñµÃÒ»ÐÐµÄÌõÄ¿Êý
+    __s32 PageCount = LISTBAR_GetPageItemCount(list_para->listbar_handle);  //èŽ·å¾—ä¸€è¡Œçš„æ¡ç›®æ•°
 
     if (list_para->rat.index <= 0)
     {
@@ -2537,7 +2554,7 @@ static __s32  file_manager_list_on_delete(__gui_msg_t *msg)
             //explorer_delete_file_draw_process_ext( list_para );
             ret = eLIBs_remove(path);
 
-            if (ret != 0)   //É¾³ýÊ§°Ü
+            if (ret != 0)   //åˆ é™¤å¤±è´¥
             {
                 //LISTBAR_ShowPage(list_para->listbar_handle);
                 //explorer_create_delete_failed_dialog(msg);
@@ -2548,7 +2565,7 @@ static __s32  file_manager_list_on_delete(__gui_msg_t *msg)
     }
 
     //explorer_clean_delete_file_hint_area();
-    //±£»¤ÏÖ³¡
+    //ä¿æŠ¤çŽ°åœº
     LISTBAR_GetScene(list_para->listbar_handle, &ListBarScene);
     list_para->cur_file_list->start_id = ListBarScene.start_id;
     list_para->cur_file_list->focus_id = ListBarScene.focus_id;
@@ -2583,8 +2600,8 @@ static __s32  file_manager_list_on_delete(__gui_msg_t *msg)
         }
     }
 
-    ret = delete_file_item_from_list(file_item, list_para->cur_file_list);  // É¾³ýÌõÄ¿
-    explorer_listbar_uninit(list_para->list_win);   //ÖØÐÂ´´½¨listbar,ÒòÎªSquareÎªÈ«ÆÁÄ£Ê½
+    ret = delete_file_item_from_list(file_item, list_para->cur_file_list);  // åˆ é™¤æ¡ç›®
+    explorer_listbar_uninit(list_para->list_win);   //é‡æ–°åˆ›å»ºlistbar,å› ä¸ºSquareä¸ºå…¨å±æ¨¡å¼
     explorer_listbar_init(list_para->list_win);
     LISTBAR_ShowPage(list_para->listbar_handle);
 
@@ -2597,7 +2614,7 @@ static __s32  file_manager_list_on_delete(__gui_msg_t *msg)
 }
 
 
-//ÎÄ¼þ¹ÜÀí»Øµ½ÉÏÒ»¼¶²Ëµ¥,²»ÔÙÍË»Øµ½SD/USBÅÌ·ûÑ¡Ôñ½çÃæ£¬Ö±½ÓÍË³ö
+//æ–‡ä»¶ç®¡ç†å›žåˆ°ä¸Šä¸€çº§èœå•,ä¸å†é€€å›žåˆ°SD/USBç›˜ç¬¦é€‰æ‹©ç•Œé¢ï¼Œç›´æŽ¥é€€å‡º
 static __s32  file_manager_list_on_backspace(__gui_msg_t *msg)
 {
     explr_list_para_t *list_para;
@@ -2669,8 +2686,8 @@ static __s32  file_manager_list_on_backspace(__gui_msg_t *msg)
 
     return EPDK_OK;
 }
-// ä¯ÀÀÆ÷´ÓÎÄ¼þÁÐ±í»ØÍËµ½sd/usbÅÌ·ûÑ¡Ôñ½çÃæ£¬»òÕß´Ósd/usbÅÌ·û½çÃæÍË³öµ½Ö÷½çÃæ
-//ÏÖÔÚ¸Ä³É²»ÍË»Øµ½SD/USBÅÌ·ûÑ¡Ôñ½çÃæ£¬Ö±½ÓÍË³ö
+// æµè§ˆå™¨ä»Žæ–‡ä»¶åˆ—è¡¨å›žé€€åˆ°sd/usbç›˜ç¬¦é€‰æ‹©ç•Œé¢ï¼Œæˆ–è€…ä»Žsd/usbç›˜ç¬¦ç•Œé¢é€€å‡ºåˆ°ä¸»ç•Œé¢
+//çŽ°åœ¨æ”¹æˆä¸é€€å›žåˆ°SD/USBç›˜ç¬¦é€‰æ‹©ç•Œé¢ï¼Œç›´æŽ¥é€€å‡º
 static __s32  explorer_list_return_backspace(__gui_msg_t *msg)
 {
     explr_list_para_t *list_para;
@@ -2688,7 +2705,7 @@ static __s32  explorer_list_return_backspace(__gui_msg_t *msg)
         return EPDK_FAIL;
     }
 
-    //if( list_para->enter_sd_usb_flag == 0)  // µ±Ç°´¦ÓÚ×î¶¥¼¶²Ëµ¥, »ØÍËµ½Ö÷½çÃæ
+    //if( list_para->enter_sd_usb_flag == 0)  // å½“å‰å¤„äºŽæœ€é¡¶çº§èœå•, å›žé€€åˆ°ä¸»ç•Œé¢
     {
         explorer_cmd2parent(msg->h_deswin, SWITCH_TO_OTHER_APP, EXPLR_SW_TO_MAIN, 0);
         return EPDK_OK;
@@ -2702,15 +2719,15 @@ static __s32  explorer_list_return_backspace(__gui_msg_t *msg)
     }
 
     explorer_listbar_uninit(list_para->list_win);
-    explorer_save_last_para(list_para); //±£´æµ±Ç°²ÎÊý
-    list_para->cur_file_list = list_para->top_file_list ;       //Ö¸Ïò×î¶¥¼¶ÎÄ¼þ
+    explorer_save_last_para(list_para); //ä¿å­˜å½“å‰å‚æ•°
+    list_para->cur_file_list = list_para->top_file_list ;       //æŒ‡å‘æœ€é¡¶çº§æ–‡ä»¶
     list_para->last_start_id = list_para->top_file_list->start_id;
     list_para->last_focused_id = list_para->top_file_list->focus_id;
     list_para->rat.total = list_para->top_file_list->total;
     __msg("list_para->rat.total=%d", list_para->rat.total);
-    // ´ËÊ±ÒÑ¾­»ØÍËµ½µÚÒ»¼¶²Ëµ¥£¬Ðè½«enter_sd_usb_flagÖÃ0
+    // æ­¤æ—¶å·²ç»å›žé€€åˆ°ç¬¬ä¸€çº§èœå•ï¼Œéœ€å°†enter_sd_usb_flagç½®0
     list_para->enter_sd_usb_flag = 0 ;
-    // ´ÓÎÄ¼þä¯ÀÀÁÐ±íÖÐÍË³öÀ´£¬ÍË³öµ½sd / usb Ñ¡Ôñ´°¿ÚÖÐ£¬Ðè½«return_to_explorer_file_list ÖÃ0
+    // ä»Žæ–‡ä»¶æµè§ˆåˆ—è¡¨ä¸­é€€å‡ºæ¥ï¼Œé€€å‡ºåˆ°sd / usb é€‰æ‹©çª—å£ä¸­ï¼Œéœ€å°†return_to_explorer_file_list ç½®0
     list_para->root_para->return_to_explorer_file_list = 0 ;
     list_para->big_miniature_index = -1 ;
     explorer_listbar_init(list_para->list_win);
@@ -2741,7 +2758,7 @@ static __s32  sd_usb_enter_next_dir(__gui_msg_t *msg)
         return EPDK_FAIL;
     }
 
-    if (list_para->enter_sd_usb_flag == 0)      // ´¦ÓÚ¶¥¼¶ÎÄ¼þ²Ëµ¥,( sd / usb)
+    if (list_para->enter_sd_usb_flag == 0)      // å¤„äºŽé¡¶çº§æ–‡ä»¶èœå•,( sd / usb)
     {
         fatdirattr = list_para->top_file_list->cur_item->fatdirattr;
 
@@ -2760,7 +2777,7 @@ static __s32  sd_usb_enter_next_dir(__gui_msg_t *msg)
     }
 
     explorer_list_long_string_stop_roll(list_para);
-    //½øÈëÏÂÒ»¼¶×ÓÎÄ¼þ¼Ð
+    //è¿›å…¥ä¸‹ä¸€çº§å­æ–‡ä»¶å¤¹
     LISTBAR_GetScene(list_para->listbar_handle, &ListBarScene);
     list_para->cur_file_list->start_id = ListBarScene.start_id;
     list_para->cur_file_list->focus_id = ListBarScene.focus_id;
@@ -2779,7 +2796,7 @@ static __s32  sd_usb_enter_next_dir(__gui_msg_t *msg)
 
     return EPDK_OK;
 }
-//ÎÄ¼þ¹ÜÀí½øÈëÏÂÒ»¼¶²Ëµ¥
+//æ–‡ä»¶ç®¡ç†è¿›å…¥ä¸‹ä¸€çº§èœå•
 static __s32  file_manager_list_on_enter_key(__gui_msg_t *msg)
 {
     explr_list_para_t *list_para = NULL;
@@ -2830,7 +2847,7 @@ static __s32  file_manager_list_on_enter_key(__gui_msg_t *msg)
         || (fatdirattr == RAT_MEDIA_TYPE_SD_DEVICE))
     {
         explorer_list_long_string_stop_roll(list_para);
-        //½øÈëÏÂÒ»¼¶×ÓÎÄ¼þ¼Ð
+        //è¿›å…¥ä¸‹ä¸€çº§å­æ–‡ä»¶å¤¹
         __wrn("file_manager_list_on_enter_key4");
         eLIBs_memset(&ListBarScene, 0x00, sizeof(ListBarScene));
         LISTBAR_GetScene(list_para->listbar_handle, &ListBarScene);
@@ -2910,9 +2927,9 @@ static __s32  file_manager_list_on_enter_key(__gui_msg_t *msg)
         {
             file_manager_set_current_file_for_play(msg);
         }
-        else if (media_type == RAT_MEDIA_TYPE_FIRMWARE) // ¹Ì¼þÉý¼¶
+        else if (media_type == RAT_MEDIA_TYPE_FIRMWARE) // å›ºä»¶å‡çº§
         {
-            if (0) //¿¨Éý¼¶²Ù×÷Î£ÏÕ£¬Êµ¼ÊÒâÒå²»´ó
+            if (0) //å¡å‡çº§æ“ä½œå±é™©ï¼Œå®žé™…æ„ä¹‰ä¸å¤§
             {
                 file_item_t *file_item = NULL;
                 char  path[RAT_MAX_FULL_PATH_LEN] = {0};
@@ -2944,10 +2961,10 @@ static __s32  explorer_list_win_on_enter_key(__gui_msg_t *msg)
     H_WIN hExpWin = NULL;
     explr_list_para_t *list_para;
     list_para = (explr_list_para_t *)GUI_WinGetAttr(msg->h_deswin);
-    //ÔÚÎÄ¼þ½øÐÐ²¥·ÅÖ®Ç°£¬ÏÈÍ£µôlistbar,ÒÔ·Àlistbar½âÂëÏß³ÌÔËÐÐ
+    //åœ¨æ–‡ä»¶è¿›è¡Œæ’­æ”¾ä¹‹å‰ï¼Œå…ˆåœæŽ‰listbar,ä»¥é˜²listbarè§£ç çº¿ç¨‹è¿è¡Œ
     //explorer_listbar_uninit( list_para->list_win );
 #if (EXPLORER_SUPPORT_MINIATURE == 1)
-    list_para->big_miniature_index = list_para->rat.index ; //Õâ¾äÖ÷ÒªÓÃÀ´µ±×ó²àµÄ´óËõÂÔÍ¼»¹Ã»ÓÐ»­¶øÖ±½Ó²¥·ÅÎÄ¼þÊ±²»ÓÃÔÙÖØÐÂ»­´óËõÂÔÍ¼
+    list_para->big_miniature_index = list_para->rat.index ; //è¿™å¥ä¸»è¦ç”¨æ¥å½“å·¦ä¾§çš„å¤§ç¼©ç•¥å›¾è¿˜æ²¡æœ‰ç”»è€Œç›´æŽ¥æ’­æ”¾æ–‡ä»¶æ—¶ä¸ç”¨å†é‡æ–°ç”»å¤§ç¼©ç•¥å›¾
 #endif
     ret = ExplorerListWinOnEnterKey(list_para);
 
@@ -2961,7 +2978,7 @@ static __s32  explorer_list_win_on_enter_key(__gui_msg_t *msg)
     if (list_para->root_para->return_to_explorer_file_list == 0)
     {
         list_para->root_para->explr_root = list_para->root_type ;
-        list_para->root_para->return_to_explorer_file_list = 1; // ²¥·ÅÍêÎÄ¼þÖ®ºó»ØÍËµ½²¥·ÅÁÐ±íÖÐ
+        list_para->root_para->return_to_explorer_file_list = 1; // æ’­æ”¾å®Œæ–‡ä»¶ä¹‹åŽå›žé€€åˆ°æ’­æ”¾åˆ—è¡¨ä¸­
     }
 
     switch (list_para->media_type)
@@ -3051,7 +3068,7 @@ static __s32 explorer_search_no_use_name(char *filename)
         return EPDK_FAIL;
     }
 
-    eLIBs_strcpy(tmp1, filename); //²»Ö±½Ó¶Ô´«ÈëµÄÎÄ¼þÃû½øÐÐ²Ù×÷
+    eLIBs_strcpy(tmp1, filename); //ä¸ç›´æŽ¥å¯¹ä¼ å…¥çš„æ–‡ä»¶åè¿›è¡Œæ“ä½œ
     p1 = eLIBs_strchrlast(tmp1, '\\');
     *p1++ = '\0';
     eLIBs_memset(tmp2, 0, sizeof(tmp2));
@@ -3067,13 +3084,13 @@ static __s32 explorer_search_no_use_name(char *filename)
 
         if (NULL == fp1)
         {
-            break;//ÎÞ´ËÎÄ¼þ£¬ÍË³ö
+            break;//æ— æ­¤æ–‡ä»¶ï¼Œé€€å‡º
         }
         else
         {
             eLIBs_memset(tmpbuf, 0, sizeof(tmpbuf));
-            eLIBs_fclose(fp1);//ÎÄ¼þ´æÔÚ£¬¼ÌÐø²éÕÒ
-            eLIBs_strcpy(tmp2, tmp1); //È¡Ç°×º
+            eLIBs_fclose(fp1);//æ–‡ä»¶å­˜åœ¨ï¼Œç»§ç»­æŸ¥æ‰¾
+            eLIBs_strcpy(tmp2, tmp1); //å–å‰ç¼€
         }
     } while (1);
 
@@ -3084,7 +3101,7 @@ static __s32 explorer_search_no_use_name(char *filename)
 
 
 
-//¸´ÖÆµ¥¸öÎÄ¼þ
+//å¤åˆ¶å•ä¸ªæ–‡ä»¶
 static __s32 explorer_parst_file(explr_list_para_t *list_para)
 {
     ES_FILE *fp1, *fp2, *fp3;
@@ -3103,7 +3120,7 @@ static __s32 explorer_parst_file(explr_list_para_t *list_para)
         return EPDK_FAIL;
     }
 
-    if (RAT_MEDIA_TYPE_ALL == list_para->media_type) //¸´ÖÆµ±Ç°ËùÔÚÄ¿Â¼
+    if (RAT_MEDIA_TYPE_ALL == list_para->media_type) //å¤åˆ¶å½“å‰æ‰€åœ¨ç›®å½•
     {
         eLIBs_strcpy(newfilename, list_para->cur_file_list->file_path);
         p1 = eLIBs_strchrlast(list_para->copy_name_back, '\\');
@@ -3112,10 +3129,10 @@ static __s32 explorer_parst_file(explr_list_para_t *list_para)
         if (NULL != (fp3 = eLIBs_fopen(newfilename, "rb+")))
         {
             eLIBs_fclose(fp3);
-            explorer_search_no_use_name(newfilename); //Èô´æÔÚÏàÍ¬ÎÄ¼þ,ÖØ²é
+            explorer_search_no_use_name(newfilename); //è‹¥å­˜åœ¨ç›¸åŒæ–‡ä»¶,é‡æŸ¥
         }
     }
-    else //Ä¬ÈÏÓëÔ­ÎÄ¼þÍ¬Ò»Ä¿Â¼
+    else //é»˜è®¤ä¸ŽåŽŸæ–‡ä»¶åŒä¸€ç›®å½•
     {
         eLIBs_strcpy(newfilename, list_para->copy_name_back);
         explorer_search_no_use_name(newfilename);
@@ -3174,7 +3191,7 @@ static __s32 explorer_parst_file(explr_list_para_t *list_para)
     return EPDK_OK;
 }
 
-//¸´ÖÆÒ»¸öÄ¿Â¼
+//å¤åˆ¶ä¸€ä¸ªç›®å½•
 static __s32 explorer_parst_dir(char *dst, char *src)
 {
     file_op_info_t op_info;
@@ -3219,10 +3236,10 @@ static __s32 explorer_parst(explr_list_para_t *list_para)
     total_size = eLIBs_GetVolFSpace(list_para->search_path);
     ret = eLIBs_GetFileAttributes(list_para->copy_name_back);
 
-    if (FSYS_ATTR_DIRECTORY & ret) //ÊÇÄ¿Â¼
+    if (FSYS_ATTR_DIRECTORY & ret) //æ˜¯ç›®å½•
     {
         //return EPDK_OK;
-        //ÎÄ¼þÔÓµÄ¸´ÖÆÈÝÁ¿ÊÇ·ñ×ã¹»ÔÚexplorer_parst_dirÖÐÅÐ¶Ï
+        //æ–‡ä»¶æ‚çš„å¤åˆ¶å®¹é‡æ˜¯å¦è¶³å¤Ÿåœ¨explorer_parst_dirä¸­åˆ¤æ–­
     }
     else
     {
@@ -3237,9 +3254,9 @@ static __s32 explorer_parst(explr_list_para_t *list_para)
         return EPDK_FALSE;
     }
 
-    if (FSYS_ATTR_DIRECTORY & ret) //ÊÇÄ¿Â¼
+    if (FSYS_ATTR_DIRECTORY & ret) //æ˜¯ç›®å½•
     {
-        //¸´ÖÆÄ¿Â¼
+        //å¤åˆ¶ç›®å½•
         char path[RAT_MAX_FULL_PATH_LEN];
         eLIBs_strcpy(path, list_para->cur_file_list->file_path);
         //eLIBs_strcat(path,"\\");
@@ -3248,7 +3265,7 @@ static __s32 explorer_parst(explr_list_para_t *list_para)
 
         if (0 == eLIBs_strncmp(path, list_para->copy_name_back, len))
         {
-            //Ïë½«µ±Ç°Ä¿Â¼¸´ÖÆµ½Æä×ÓÄ¿Â¼ÖÐ£¬²»¸´ÖÆ
+            //æƒ³å°†å½“å‰ç›®å½•å¤åˆ¶åˆ°å…¶å­ç›®å½•ä¸­ï¼Œä¸å¤åˆ¶
             __wrn("In the sub dir");
             return EPDK_FAIL;
         }
@@ -3258,7 +3275,7 @@ static __s32 explorer_parst(explr_list_para_t *list_para)
 
         if (0 == eLIBs_strcmp(path, list_para->copy_name_back))
         {
-            //¸´ÖÆÄ¿Â¼ÓëÕ³ÌùÄ¿Â¼Â·¾¶ÏàÍ¬
+            //å¤åˆ¶ç›®å½•ä¸Žç²˜è´´ç›®å½•è·¯å¾„ç›¸åŒ
             __wrn("Dir has already exict");
             return EPDK_FAIL;
         }
@@ -3267,7 +3284,7 @@ static __s32 explorer_parst(explr_list_para_t *list_para)
     }
     else
     {
-        //¸´ÖÆÎÄ¼þ
+        //å¤åˆ¶æ–‡ä»¶
         explorer_parst_file(list_para);
     }
 
@@ -3275,7 +3292,7 @@ static __s32 explorer_parst(explr_list_para_t *list_para)
     {
         //list_para->cur_file_list->total++;
         explorer_update_file_list_nod(list_para);
-        //Ìí¼Óµ½Á´±íÖÐ
+        //æ·»åŠ åˆ°é“¾è¡¨ä¸­
     }
 
     explorer_filelist_update(list_para);
@@ -3384,7 +3401,7 @@ static __s32  explorer_list_win_on_command(__gui_msg_t *msg)
         }
         else if (msg->dwAddData1 == ENTER_SELECT_ITEM_ID)
         {
-            //ÎÄ¼þ¹ÜÀíÄ£Ê½£¬°´ÏÂenter¼ü £¬½øÈëÏÂÒ»¼¶²Ëµ¥
+            //æ–‡ä»¶ç®¡ç†æ¨¡å¼ï¼ŒæŒ‰ä¸‹enteré”® ï¼Œè¿›å…¥ä¸‹ä¸€çº§èœå•
             if (list_para->media_type == RAT_MEDIA_TYPE_ALL)
             {
                 __u8    fatdirattr ;
@@ -3401,7 +3418,7 @@ static __s32  explorer_list_win_on_command(__gui_msg_t *msg)
             }
             else
             {
-                // return_to_explorer_file_list = 1±íÊ¾µ±Ç°´æÓÚÎÄ¼þÁÐ±íµ±ÖÐ
+                // return_to_explorer_file_list = 1è¡¨ç¤ºå½“å‰å­˜äºŽæ–‡ä»¶åˆ—è¡¨å½“ä¸­
                 if (list_para->root_para->return_to_explorer_file_list == 1)
                 {
                     explorer_list_long_string_stop_roll(list_para);
@@ -3505,7 +3522,7 @@ static __s32 explorer_mediatype_listbar_win_touch_proc(__gui_msg_t *msg)
     explorer_viewer_ui_t *ui_param = NULL ;
     RECT    rect, rect1;
     GUI_MEMDEV_Handle   draw_mem;
-    static __pos_t  touch_down_pos, touch_up_pos ;  // ÓÃÓÚ±ÜÃâÎóÅÐµÄ
+    static __pos_t  touch_down_pos, touch_up_pos ;  // ç”¨äºŽé¿å…è¯¯åˆ¤çš„
     list_para = (explr_list_para_t *)GUI_WinGetAttr(msg->h_deswin);
     ui_param = explorer_get_viewer_ui_param();
     x = LOSWORD(msg->dwAddData2);
@@ -3617,7 +3634,7 @@ static __s32 explorer_mediatype_listbar_win_touch_proc(__gui_msg_t *msg)
             //      __msg( " listbar is moving , break ");
             //      break ;
             //  }
-            /* Ö÷ÒªÊÇ±ÜÃâÓ¦ÓÃÊÕ²»µ½gui_msg_touch_moveÏûÏ¢Ôö¼ÓµÄÅÐ¶Ï*/
+            /* ä¸»è¦æ˜¯é¿å…åº”ç”¨æ”¶ä¸åˆ°gui_msg_touch_moveæ¶ˆæ¯å¢žåŠ çš„åˆ¤æ–­*/
             __msg("touch_down_pos.x=%d touch_down_pos.y=%d touch_up_pos.x=%d touch_up_pos.y=%d ", touch_down_pos.x, touch_down_pos.y, touch_up_pos.x, touch_up_pos.y);
 
             if (abs(touch_up_pos.x - touch_down_pos.x) > 30 || abs(touch_up_pos.y - touch_down_pos.y) > 30)
@@ -3637,7 +3654,7 @@ static __s32 explorer_mediatype_listbar_win_touch_proc(__gui_msg_t *msg)
                 if (index >= 0 && index < total_cnt)
                 {
                     //mediatype process
-                    if (list_para->media_type == mediatype_tab[index])  //ÏàÍ¬Ã½ÌåÀàÐÍ£¬²»ÓÃÖØÐÂËÑË÷
+                    if (list_para->media_type == mediatype_tab[index])  //ç›¸åŒåª’ä½“ç±»åž‹ï¼Œä¸ç”¨é‡æ–°æœç´¢
                     {
                         __msg(" the same media type , need not to search again, return ");
                         return EPDK_OK ;
@@ -3653,7 +3670,7 @@ static __s32 explorer_mediatype_listbar_win_touch_proc(__gui_msg_t *msg)
                     list_para->media_type = mediatype_tab[index];
                     explorer_listbar_uninit(list_para->list_win);
                     GUI_LyrWinSel(list_para->list_layer);
-                    //ÎÄ¼þ¹ÜÀíÄ£Ê½£¬Ìø¹ýsd/usbÑ¡Ôñ½çÃæ £¬½øÈëÏÂÒ»¼¶²Ëµ¥
+                    //æ–‡ä»¶ç®¡ç†æ¨¡å¼ï¼Œè·³è¿‡sd/usbé€‰æ‹©ç•Œé¢ ï¼Œè¿›å…¥ä¸‹ä¸€çº§èœå•
                     //if(list_para->media_type == RAT_MEDIA_TYPE_ALL)
                     {
                         //  explorer_file_manager_rebuild(msg);
@@ -3761,7 +3778,7 @@ static __s32 explorer_listbar_win_touch_proc(__gui_msg_t *msg)
     explr_list_para_t *list_para = NULL ;
     explorer_viewer_ui_t *ui_param = NULL ;
     RECT    rect ;
-    static __pos_t  touch_down_pos, touch_up_pos ;  // ÓÃÓÚ±ÜÃâÎóÅÐµÄ
+    static __pos_t  touch_down_pos, touch_up_pos ;  // ç”¨äºŽé¿å…è¯¯åˆ¤çš„
     list_para = (explr_list_para_t *)GUI_WinGetAttr(msg->h_deswin);
     ui_param = explorer_get_viewer_ui_param();
     x = LOSWORD(msg->dwAddData2);
@@ -3927,7 +3944,7 @@ static __s32 explorer_listbar_win_touch_proc(__gui_msg_t *msg)
             //      __msg( " listbar is moving , break ");
             //      break ;
             //  }
-            /* Ö÷ÒªÊÇ±ÜÃâÓ¦ÓÃÊÕ²»µ½gui_msg_touch_moveÏûÏ¢Ôö¼ÓµÄÅÐ¶Ï*/
+            /* ä¸»è¦æ˜¯é¿å…åº”ç”¨æ”¶ä¸åˆ°gui_msg_touch_moveæ¶ˆæ¯å¢žåŠ çš„åˆ¤æ–­*/
             __msg("touch_down_pos.x=%d touch_down_pos.y=%d touch_up_pos.x=%d touch_up_pos.y=%d ", touch_down_pos.x, touch_down_pos.y, touch_up_pos.x, touch_up_pos.y);
 
             if (abs(touch_up_pos.x - touch_down_pos.x) > 30 || abs(touch_up_pos.y - touch_down_pos.y) > 30)
@@ -3950,7 +3967,7 @@ static __s32 explorer_listbar_win_touch_proc(__gui_msg_t *msg)
                 }
                 else if (index >= 0 && index < total_cnt)
                 {
-                    //ÎÄ¼þ¹ÜÀíÄ£Ê½£¬°´ÏÂenter¼ü £¬½øÈëÏÂÒ»¼¶²Ëµ¥
+                    //æ–‡ä»¶ç®¡ç†æ¨¡å¼ï¼ŒæŒ‰ä¸‹enteré”® ï¼Œè¿›å…¥ä¸‹ä¸€çº§èœå•
                     if (list_para->media_type == RAT_MEDIA_TYPE_ALL)
                     {
                         __u8    fatdirattr ;
@@ -4114,11 +4131,11 @@ static __s32  explorer_file_manager_rebuild(__gui_msg_t *msg)
         list_para->cur_file_list->cur_item = pfileitem;
     }
 
-    //ÎÄ¼þ¹ÜÀíÄ£Ê½£¬Ìø¹ýsd/usbÑ¡Ôñ½çÃæ £¬½øÈëÏÂÒ»¼¶²Ëµ¥
+    //æ–‡ä»¶ç®¡ç†æ¨¡å¼ï¼Œè·³è¿‡sd/usbé€‰æ‹©ç•Œé¢ ï¼Œè¿›å…¥ä¸‹ä¸€çº§èœå•
     //if(list_para->media_type == RAT_MEDIA_TYPE_ALL)
     {
         //list_para->enter_sd_usb_flag = 0;
-        //ÏÈ¸üÐÂÒ»Ò³£¬·ñÔòfile_manager_list_on_enter_key Ê§°Ü
+        //å…ˆæ›´æ–°ä¸€é¡µï¼Œå¦åˆ™file_manager_list_on_enter_key å¤±è´¥
         explorer_listbar_uninit(list_para->list_win);
         explorer_listbar_init(list_para->list_win);
         //LISTBAR_ShowPage(list_para->mediatype_listbar_handle);
@@ -4161,7 +4178,7 @@ static __s32  explorer_list_win_touch_proc(__gui_msg_t *msg)
         {
             __msg(" touch position in return bmp rect ");
             explorer_list_long_string_stop_roll(list_para);
-            // »­return ½¹µãÍ¼±ê
+            // ç”»return ç„¦ç‚¹å›¾æ ‡
             {
                 void *p_buf ;
                 __s32  picX, picY ;
@@ -4174,11 +4191,11 @@ static __s32  explorer_list_win_touch_proc(__gui_msg_t *msg)
 
             if (list_para->media_type == RAT_MEDIA_TYPE_ALL)
             {
-                file_manager_list_on_backspace(msg);    //»ØÍËµ½ÉÏÒ»¼¶Ä¿Â¼
+                file_manager_list_on_backspace(msg);    //å›žé€€åˆ°ä¸Šä¸€çº§ç›®å½•
             }
             else
             {
-                explorer_list_return_backspace(msg);    // »ØÍËµ½sd/usbÑ¡Ôñ´°¿Ú»òÍË³öµ½Ö÷½çÃæ
+                explorer_list_return_backspace(msg);    // å›žé€€åˆ°sd/usbé€‰æ‹©çª—å£æˆ–é€€å‡ºåˆ°ä¸»ç•Œé¢
             }
 
             return EPDK_OK ;
@@ -4186,11 +4203,11 @@ static __s32  explorer_list_win_touch_proc(__gui_msg_t *msg)
     }
 
 #endif
-    //if( RAT_MEDIA_TYPE_ALL == list_para->media_type )     //ÎÄ¼þ¹ÜÀíÊ±£¬µã»÷É¾³ý°´Å¥´¦Àí
+    //if( RAT_MEDIA_TYPE_ALL == list_para->media_type )     //æ–‡ä»¶ç®¡ç†æ—¶ï¼Œç‚¹å‡»åˆ é™¤æŒ‰é’®å¤„ç†
     {
 #if 0
 
-        /* ÔÚÉ¾³ý°´Å¥Í¼±êÎ»ÖÃ*/
+        /* åœ¨åˆ é™¤æŒ‰é’®å›¾æ ‡ä½ç½®*/
         if ((pos_x > ui_param->file_type_uiparam.delete_file_icon_rect.x)
             && (pos_x < ui_param->file_type_uiparam.delete_file_icon_rect.x
                 + ui_param->file_type_uiparam.delete_file_icon_rect.width)
@@ -4200,7 +4217,7 @@ static __s32  explorer_list_win_touch_proc(__gui_msg_t *msg)
         {
             __msg(" touch position in delete icon position ");
 
-            if (list_para->cur_file_list == NULL)       //ÎÄ¼þ¼ÐÎª¿Õ
+            if (list_para->cur_file_list == NULL)       //æ–‡ä»¶å¤¹ä¸ºç©º
             {
                 __msg("list_para->cur_file_list  is null , return ");
                 return EPDK_OK;
@@ -4209,7 +4226,7 @@ static __s32  explorer_list_win_touch_proc(__gui_msg_t *msg)
             if (list_para->cur_file_list == list_para->top_file_list)
             {
                 __msg(" in top file list , can't delete it ");
-                return EPDK_OK;                 //¶¥²ãÄ¿Â¼²»¿ÉÒÔÉ¾³ý
+                return EPDK_OK;                 //é¡¶å±‚ç›®å½•ä¸å¯ä»¥åˆ é™¤
             }
 
             if (list_para->cur_file_list->total < 1)
@@ -4326,20 +4343,20 @@ static __s32  explorer_list_win_touch_proc(__gui_msg_t *msg)
         game_media_icon_rect.height = ui_param->file_type_uiparam.file_type_pos[file_type]\
                                       .file_type_game_rect.height ;
 
-        //´¥ÃþÎ»ÖÃÔÚÒôÀÖÃ½ÌåÍ¼±ê·¶Î§ÄÚ
+        //è§¦æ‘¸ä½ç½®åœ¨éŸ³ä¹åª’ä½“å›¾æ ‡èŒƒå›´å†…
         if (ret = position_in_rect(&audio_media_icon_rect,  pos_x, pos_y), EPDK_TRUE == ret)
         {
             __msg(" touch position in audio media icon rect ");
 
             if ((GUI_MSG_TOUCH_UP == msg->dwAddData1) || (GUI_MSG_TOUCH_OVERUP == msg->dwAddData1))
             {
-                if (list_para->media_type == RAT_MEDIA_TYPE_AUDIO)  //ÏàÍ¬Ã½ÌåÀàÐÍ£¬²»ÓÃÖØÐÂËÑË÷
+                if (list_para->media_type == RAT_MEDIA_TYPE_AUDIO)  //ç›¸åŒåª’ä½“ç±»åž‹ï¼Œä¸ç”¨é‡æ–°æœç´¢
                 {
                     __msg(" the same media type , need not to search again, return ");
                     return EPDK_OK ;
                 }
 
-                if (list_para->enter_sd_usb_flag == 0)  //ÔÚ sd/usbÑ¡Ôñ´°¿ÚÖÐ£¬²»ÐèÖØÐÂËÑË÷
+                if (list_para->enter_sd_usb_flag == 0)  //åœ¨ sd/usbé€‰æ‹©çª—å£ä¸­ï¼Œä¸éœ€é‡æ–°æœç´¢
                 {
                     __msg(" in top file list ,no need to search again ");
                     list_para->media_type = RAT_MEDIA_TYPE_AUDIO ;
@@ -4372,26 +4389,26 @@ static __s32  explorer_list_win_touch_proc(__gui_msg_t *msg)
 
                 explorer_get_last_para(list_para);
                 explorer_list_draw_bg_music_play_song_index(list_para->list_win) ;
-                /* list_para->big_miniature_index = -1 Ó¦¸Ã·ÅÔÚ LISTBAR_ShowPageÖ®Ç°£¬ÕâÑù²ÅÄÜÖØÐÂ»­ËõÂÔÍ¼*/
-                list_para->big_miniature_index = -1 ;   //ÖØÐÂ°Ñ»­´óËõÂÔÍ¼µÄÏÂ±êÖÃÎª-1£¬ÒÔ±ãµã»÷Í¼Æ¬Ê±ÖØÐÂ»­´óËõÂÔÍ¼
+                /* list_para->big_miniature_index = -1 åº”è¯¥æ”¾åœ¨ LISTBAR_ShowPageä¹‹å‰ï¼Œè¿™æ ·æ‰èƒ½é‡æ–°ç”»ç¼©ç•¥å›¾*/
+                list_para->big_miniature_index = -1 ;   //é‡æ–°æŠŠç”»å¤§ç¼©ç•¥å›¾çš„ä¸‹æ ‡ç½®ä¸º-1ï¼Œä»¥ä¾¿ç‚¹å‡»å›¾ç‰‡æ—¶é‡æ–°ç”»å¤§ç¼©ç•¥å›¾
                 explorer_listbar_init(list_para->list_win);
                 LISTBAR_ShowPage(list_para->listbar_handle);
             }
         }
-        //´¥ÃþÎ»ÖÃÔÚÊÓÆµÃ½ÌåÍ¼±ê·¶Î§ÄÚ
+        //è§¦æ‘¸ä½ç½®åœ¨è§†é¢‘åª’ä½“å›¾æ ‡èŒƒå›´å†…
         else if (ret = position_in_rect(&video_media_icon_rect, pos_x, pos_y), EPDK_TRUE == ret)
         {
             __msg(" touch position in video media icon rect ");
 
             if ((GUI_MSG_TOUCH_UP == msg->dwAddData1) || (GUI_MSG_TOUCH_OVERUP == msg->dwAddData1))
             {
-                if (list_para->media_type == RAT_MEDIA_TYPE_VIDEO)  //ÏàÍ¬Ã½ÌåÀàÐÍ£¬²»ÓÃÖØÐÂËÑË÷
+                if (list_para->media_type == RAT_MEDIA_TYPE_VIDEO)  //ç›¸åŒåª’ä½“ç±»åž‹ï¼Œä¸ç”¨é‡æ–°æœç´¢
                 {
                     __msg(" the same media type , need not to search again, return ");
                     return EPDK_OK ;
                 }
 
-                if (list_para->enter_sd_usb_flag == 0)  //ÔÚ sd/usbÑ¡Ôñ´°¿ÚÖÐ£¬²»ÐèÖØÐÂËÑË÷
+                if (list_para->enter_sd_usb_flag == 0)  //åœ¨ sd/usbé€‰æ‹©çª—å£ä¸­ï¼Œä¸éœ€é‡æ–°æœç´¢
                 {
                     __msg(" in top file list ,no need to search again ");
                     list_para->media_type = RAT_MEDIA_TYPE_VIDEO ;
@@ -4423,26 +4440,26 @@ static __s32  explorer_list_win_touch_proc(__gui_msg_t *msg)
                 }
 
                 explorer_get_last_para(list_para);
-                /* list_para->big_miniature_index = -1 Ó¦¸Ã·ÅÔÚ LISTBAR_ShowPageÖ®Ç°£¬ÕâÑù²ÅÄÜÖØÐÂ»­ËõÂÔÍ¼*/
-                list_para->big_miniature_index = -1 ;   //ÖØÐÂ°Ñ»­´óËõÂÔÍ¼µÄÏÂ±êÖÃÎª-1£¬ÒÔ±ãµã»÷Í¼Æ¬Ê±ÖØÐÂ»­´óËõÂÔÍ¼
+                /* list_para->big_miniature_index = -1 åº”è¯¥æ”¾åœ¨ LISTBAR_ShowPageä¹‹å‰ï¼Œè¿™æ ·æ‰èƒ½é‡æ–°ç”»ç¼©ç•¥å›¾*/
+                list_para->big_miniature_index = -1 ;   //é‡æ–°æŠŠç”»å¤§ç¼©ç•¥å›¾çš„ä¸‹æ ‡ç½®ä¸º-1ï¼Œä»¥ä¾¿ç‚¹å‡»å›¾ç‰‡æ—¶é‡æ–°ç”»å¤§ç¼©ç•¥å›¾
                 explorer_listbar_init(list_para->list_win);
                 LISTBAR_ShowPage(list_para->listbar_handle);
             }
         }
-        //´¥ÃþÎ»ÖÃÔÚphoto Ã½ÌåÍ¼±ê·¶Î§ÄÚ
+        //è§¦æ‘¸ä½ç½®åœ¨photo åª’ä½“å›¾æ ‡èŒƒå›´å†…
         else if (ret = position_in_rect(&photo_media_icon_rect, pos_x, pos_y), EPDK_TRUE == ret)
         {
             __msg(" touch position in photo media icon rect ");
 
             if ((GUI_MSG_TOUCH_UP == msg->dwAddData1) || (GUI_MSG_TOUCH_OVERUP == msg->dwAddData1))
             {
-                if (list_para->media_type == RAT_MEDIA_TYPE_PIC)    //ÏàÍ¬Ã½ÌåÀàÐÍ£¬²»ÓÃÖØÐÂËÑË÷
+                if (list_para->media_type == RAT_MEDIA_TYPE_PIC)    //ç›¸åŒåª’ä½“ç±»åž‹ï¼Œä¸ç”¨é‡æ–°æœç´¢
                 {
                     __msg(" the same media type , need not to search again, return ");
                     return EPDK_OK ;
                 }
 
-                if (list_para->enter_sd_usb_flag == 0)  //ÔÚ sd/usbÑ¡Ôñ´°¿ÚÖÐ£¬²»ÐèÖØÐÂËÑË÷
+                if (list_para->enter_sd_usb_flag == 0)  //åœ¨ sd/usbé€‰æ‹©çª—å£ä¸­ï¼Œä¸éœ€é‡æ–°æœç´¢
                 {
                     __msg(" in top file list ,no need to search again ");
                     list_para->media_type = RAT_MEDIA_TYPE_PIC ;
@@ -4474,26 +4491,26 @@ static __s32  explorer_list_win_touch_proc(__gui_msg_t *msg)
                 }
 
                 explorer_get_last_para(list_para);
-                /* list_para->big_miniature_index = -1 Ó¦¸Ã·ÅÔÚ LISTBAR_ShowPageÖ®Ç°£¬ÕâÑù²ÅÄÜÖØÐÂ»­ËõÂÔÍ¼*/
-                list_para->big_miniature_index = -1 ;   //ÖØÐÂ°Ñ»­´óËõÂÔÍ¼µÄÏÂ±êÖÃÎª-1£¬ÒÔ±ãµã»÷Í¼Æ¬Ê±ÖØÐÂ»­´óËõÂÔÍ¼
+                /* list_para->big_miniature_index = -1 åº”è¯¥æ”¾åœ¨ LISTBAR_ShowPageä¹‹å‰ï¼Œè¿™æ ·æ‰èƒ½é‡æ–°ç”»ç¼©ç•¥å›¾*/
+                list_para->big_miniature_index = -1 ;   //é‡æ–°æŠŠç”»å¤§ç¼©ç•¥å›¾çš„ä¸‹æ ‡ç½®ä¸º-1ï¼Œä»¥ä¾¿ç‚¹å‡»å›¾ç‰‡æ—¶é‡æ–°ç”»å¤§ç¼©ç•¥å›¾
                 explorer_listbar_init(list_para->list_win);
                 LISTBAR_ShowPage(list_para->listbar_handle);
             }
         }
-        //´¥ÃþÎ»ÖÃÔÚµç×ÓÊéÃ½ÌåÍ¼±ê·¶Î§ÄÚ
+        //è§¦æ‘¸ä½ç½®åœ¨ç”µå­ä¹¦åª’ä½“å›¾æ ‡èŒƒå›´å†…
         else if (ret = position_in_rect(&ebook_media_icon_rect, pos_x, pos_y), EPDK_TRUE == ret)
         {
             __msg(" touch position in EBOOK media icon rect ");
 
             if ((GUI_MSG_TOUCH_UP == msg->dwAddData1) || (GUI_MSG_TOUCH_OVERUP == msg->dwAddData1))
             {
-                if (list_para->media_type == RAT_MEDIA_TYPE_EBOOK)  //ÏàÍ¬Ã½ÌåÀàÐÍ£¬²»ÓÃÖØÐÂËÑË÷
+                if (list_para->media_type == RAT_MEDIA_TYPE_EBOOK)  //ç›¸åŒåª’ä½“ç±»åž‹ï¼Œä¸ç”¨é‡æ–°æœç´¢
                 {
                     __msg(" the same media type , need not to search again, return ");
                     return EPDK_OK ;
                 }
 
-                if (list_para->enter_sd_usb_flag == 0)      //ÔÚ sd/usbÑ¡Ôñ´°¿ÚÖÐ£¬²»ÐèÖØÐÂËÑË÷
+                if (list_para->enter_sd_usb_flag == 0)      //åœ¨ sd/usbé€‰æ‹©çª—å£ä¸­ï¼Œä¸éœ€é‡æ–°æœç´¢
                 {
                     __msg(" in top file list ,no need to search again ");
                     list_para->media_type = RAT_MEDIA_TYPE_EBOOK ;
@@ -4526,13 +4543,13 @@ static __s32  explorer_list_win_touch_proc(__gui_msg_t *msg)
                 }
 
                 explorer_get_last_para(list_para);
-                /* list_para->big_miniature_index = -1 Ó¦¸Ã·ÅÔÚ LISTBAR_ShowPageÖ®Ç°£¬ÕâÑù²ÅÄÜÖØÐÂ»­ËõÂÔÍ¼*/
-                list_para->big_miniature_index = -1 ;   //ÖØÐÂ°Ñ»­´óËõÂÔÍ¼µÄÏÂ±êÖÃÎª-1£¬ÒÔ±ãµã»÷Í¼Æ¬Ê±ÖØÐÂ»­´óËõÂÔÍ¼
+                /* list_para->big_miniature_index = -1 åº”è¯¥æ”¾åœ¨ LISTBAR_ShowPageä¹‹å‰ï¼Œè¿™æ ·æ‰èƒ½é‡æ–°ç”»ç¼©ç•¥å›¾*/
+                list_para->big_miniature_index = -1 ;   //é‡æ–°æŠŠç”»å¤§ç¼©ç•¥å›¾çš„ä¸‹æ ‡ç½®ä¸º-1ï¼Œä»¥ä¾¿ç‚¹å‡»å›¾ç‰‡æ—¶é‡æ–°ç”»å¤§ç¼©ç•¥å›¾
                 explorer_listbar_init(list_para->list_win);
                 LISTBAR_ShowPage(list_para->listbar_handle);
             }
         }
-        //´¥ÃþÎ»ÖÃÔÚÓÎÏ·Ã½ÌåÍ¼±ê·¶Î§ÄÚ
+        //è§¦æ‘¸ä½ç½®åœ¨æ¸¸æˆåª’ä½“å›¾æ ‡èŒƒå›´å†…
         else if (ret = position_in_rect(&game_media_icon_rect, pos_x, pos_y), EPDK_TRUE == ret)
         {
             __msg(" touch position in GAME media icon rect ");
@@ -4542,13 +4559,13 @@ static __s32  explorer_list_win_touch_proc(__gui_msg_t *msg)
                 if ((rat_is_encryption_partition_Insert(NULL, 1))
                     && (CFG_get_game_and_dict_flag(ID_HOME_GAME)))
                 {
-                    if (list_para->media_type == RAT_MEDIA_TYPE_GAME)   //ÏàÍ¬Ã½ÌåÀàÐÍ£¬²»ÓÃÖØÐÂËÑË÷
+                    if (list_para->media_type == RAT_MEDIA_TYPE_GAME)   //ç›¸åŒåª’ä½“ç±»åž‹ï¼Œä¸ç”¨é‡æ–°æœç´¢
                     {
                         __msg(" the same media type , need not to search again, return ");
                         return EPDK_OK ;
                     }
 
-                    if (list_para->enter_sd_usb_flag == 0)      //ÔÚ sd/usbÑ¡Ôñ´°¿ÚÖÐ£¬²»ÐèÖØÐÂËÑË÷
+                    if (list_para->enter_sd_usb_flag == 0)      //åœ¨ sd/usbé€‰æ‹©çª—å£ä¸­ï¼Œä¸éœ€é‡æ–°æœç´¢
                     {
                         __msg(" in top file list ,no need to search again ");
                         list_para->media_type = RAT_MEDIA_TYPE_GAME ;
@@ -4581,8 +4598,8 @@ static __s32  explorer_list_win_touch_proc(__gui_msg_t *msg)
                     }
 
                     explorer_get_last_para(list_para);
-                    /* list_para->big_miniature_index = -1 Ó¦¸Ã·ÅÔÚ LISTBAR_ShowPageÖ®Ç°£¬ÕâÑù²ÅÄÜÖØÐÂ»­ËõÂÔÍ¼*/
-                    list_para->big_miniature_index = -1 ;   //ÖØÐÂ°Ñ»­´óËõÂÔÍ¼µÄÏÂ±êÖÃÎª-1£¬ÒÔ±ãµã»÷Í¼Æ¬Ê±ÖØÐÂ»­´óËõÂÔÍ¼
+                    /* list_para->big_miniature_index = -1 åº”è¯¥æ”¾åœ¨ LISTBAR_ShowPageä¹‹å‰ï¼Œè¿™æ ·æ‰èƒ½é‡æ–°ç”»ç¼©ç•¥å›¾*/
+                    list_para->big_miniature_index = -1 ;   //é‡æ–°æŠŠç”»å¤§ç¼©ç•¥å›¾çš„ä¸‹æ ‡ç½®ä¸º-1ï¼Œä»¥ä¾¿ç‚¹å‡»å›¾ç‰‡æ—¶é‡æ–°ç”»å¤§ç¼©ç•¥å›¾
                     explorer_listbar_init(list_para->list_win);
                     LISTBAR_ShowPage(list_para->listbar_handle);
                 }
@@ -4678,7 +4695,7 @@ static __s32  explorer_list_win_touch_proc(__gui_msg_t *msg)
 **************************************************************************
 *Function   :   static __s32  explorer_list_win_key_proc(__gui_msg_t *msg)
 *
-*Description    :       framewin ÏìÓ¦°´¼ü´¦Àí
+*Description    :       framewin å“åº”æŒ‰é”®å¤„ç†
 *
 *Arguments      :
 *
@@ -4765,7 +4782,7 @@ static __s32  explorer_list_win_key_proc(__gui_msg_t *msg)
 
                 break;
 
-            case GUI_MSG_KEY_LONGVADD:      // ÓÃÓÚ¾Å¹¬¸ñºÍÁÐ±íÄ£Ê½ÇÐ»»
+            case GUI_MSG_KEY_LONGVADD:      // ç”¨äºŽä¹å®«æ ¼å’Œåˆ—è¡¨æ¨¡å¼åˆ‡æ¢
                 //ExplorerListWinOnNextPage(list_para);
                 //__wait__;
                 /*
@@ -4778,7 +4795,7 @@ static __s32  explorer_list_win_key_proc(__gui_msg_t *msg)
                 {
                     ExplorerSetViewMode(list_para, EXPLR_LIST_MODE);
                 }*/
-                //µ±Ç°ÓÃÓÚµ¯³ö±à¼­²Ëµ¥²âÊÔ
+                //å½“å‰ç”¨äºŽå¼¹å‡ºç¼–è¾‘èœå•æµ‹è¯•
                 /*if(list_para->rat.total > 0)
                 {
                    __gui_msg_t dmsg;
@@ -4813,7 +4830,7 @@ static __s32  explorer_list_win_key_proc(__gui_msg_t *msg)
                     explorer_list_enter_next_dir( msg );
                 }
                 */
-                //ÎÄ¼þ¹ÜÀíÄ£Ê½£¬°´ÏÂenter¼ü £¬½øÈëÏÂÒ»¼¶²Ëµ¥
+                //æ–‡ä»¶ç®¡ç†æ¨¡å¼ï¼ŒæŒ‰ä¸‹enteré”® ï¼Œè¿›å…¥ä¸‹ä¸€çº§èœå•
                 if (list_para->media_type == RAT_MEDIA_TYPE_ALL)
                 {
                     __u8    fatdirattr ;
@@ -4831,7 +4848,7 @@ static __s32  explorer_list_win_key_proc(__gui_msg_t *msg)
                 }
                 else
                 {
-                    // return_to_explorer_file_list = 1±íÊ¾µ±Ç°´æÓÚÎÄ¼þÁÐ±íµ±ÖÐ
+                    // return_to_explorer_file_list = 1è¡¨ç¤ºå½“å‰å­˜äºŽæ–‡ä»¶åˆ—è¡¨å½“ä¸­
                     if (list_para->root_para->return_to_explorer_file_list == 1)
                     {
                         __wrn("explorer_list_long_string_stop_roll");
@@ -4856,17 +4873,17 @@ static __s32  explorer_list_win_key_proc(__gui_msg_t *msg)
             {
                 last_key = GUI_MSG_KEY_ESCAPE;
 
-                if (last_key == GUI_MSG_KEY_ESCAPE)     //»Øµ½ÉÏÒ»¼¶²Ëµ¥.
+                if (last_key == GUI_MSG_KEY_ESCAPE)     //å›žåˆ°ä¸Šä¸€çº§èœå•.
                 {
                     explorer_list_long_string_stop_roll(list_para);
 
                     if (list_para->media_type == RAT_MEDIA_TYPE_ALL)
                     {
-                        file_manager_list_on_backspace(msg);    //»ØÍËµ½ÉÏÒ»¼¶Ä¿Â¼
+                        file_manager_list_on_backspace(msg);    //å›žé€€åˆ°ä¸Šä¸€çº§ç›®å½•
                     }
                     else
                     {
-                        explorer_list_return_backspace(msg);// »ØÍËµ½sd/usbÑ¡Ôñ´°¿Ú»òÍË³öµ½Ö÷½çÃæ
+                        explorer_list_return_backspace(msg);// å›žé€€åˆ°sd/usbé€‰æ‹©çª—å£æˆ–é€€å‡ºåˆ°ä¸»ç•Œé¢
                     }
                 }
 
@@ -4898,13 +4915,13 @@ static __s32  explorer_list_win_key_proc(__gui_msg_t *msg)
                 if (last_key == GUI_MSG_KEY_LONGMODE) //USB and SD switch
                 {
                     // explorer_switch_sd_usb(msg);
-                    /**if(list_para->cur_file_list == NULL)//É¾³ýÎÄ¼þ¼Ð»òÎÄ¼þ
+                    /**if(list_para->cur_file_list == NULL)//åˆ é™¤æ–‡ä»¶å¤¹æˆ–æ–‡ä»¶
                     {
                         return EPDK_OK;
                     }
                     if(list_para->cur_file_list == list_para->top_file_list)
                     {
-                        return EPDK_OK;                 //¶¥²ãÄ¿Â¼²»¿ÉÒÔÉ¾³ý
+                        return EPDK_OK;                 //é¡¶å±‚ç›®å½•ä¸å¯ä»¥åˆ é™¤
                     }
                     if(list_para->cur_file_list->total < 1)
                     {
@@ -4950,7 +4967,7 @@ static __s32  explorer_list_win_key_proc(__gui_msg_t *msg)
 ***********************************************************************************************
 *Function   :          static __s32 draw_list_vacant_item(__lbar_draw_para_t *draw_param)
 *
-*Description    :       »­¿Õ°×ÌõÄ¿
+*Description    :       ç”»ç©ºç™½æ¡ç›®
 *
 *Arguments      :
 *
@@ -4982,7 +4999,7 @@ static __s32 draw_list_vacant_item(__lbar_draw_para_t *draw_param)
 ********************************************************************************************
 *Function   :          static __s32 ExtractFileName(char *FileName, char *FilePath)
 *
-*Description    :       ´ÓÈ«Â·¾¶ÖÐ»ñÈ¡ÎÄ¼þÃû
+*Description    :       ä»Žå…¨è·¯å¾„ä¸­èŽ·å–æ–‡ä»¶å
 *
 *Arguments      :
 *
@@ -4999,7 +5016,7 @@ static __s32 ExtractFileName(char *FileName, char *FilePath)
     return EPDK_OK;
 }
 
-//Ä¿Ç°Ê¹ÓÃItemInfo.format·µ»Ømediatype
+//ç›®å‰ä½¿ç”¨ItemInfo.formatè¿”å›žmediatype
 rat_media_type_t GetListItemFileMediaType(HRAT rat_handle, __s32 ItemIndex)
 {
     int ret;
@@ -5012,7 +5029,7 @@ rat_media_type_t GetListItemFileMediaType(HRAT rat_handle, __s32 ItemIndex)
 ********************************************************************************************
 *Function:__s32 GetListItemFileFullPath(explr_list_para_t*list_para,__s32 ItemIndex,char *FilePath)
 *
-*Description    :       ¸ù¾ÝË÷ÒýºÅ»ñµÃÌõÄ¿ÎÄ¼þÃûÈ«Â·¾¶
+*Description    :       æ ¹æ®ç´¢å¼•å·èŽ·å¾—æ¡ç›®æ–‡ä»¶åå…¨è·¯å¾„
 *
 *Arguments      :
 *
@@ -5033,7 +5050,7 @@ __s32 GetListItemFileFullPath(explr_list_para_t *list_para, __s32 ItemIndex, cha
         return EPDK_FAIL;
     }
 
-    eLIBs_strcpy(FilePath, ItemInfo.Path);          //²»È¥²Ù×÷rat ÄÚ´æ
+    eLIBs_strcpy(FilePath, ItemInfo.Path);          //ä¸åŽ»æ“ä½œrat å†…å­˜
     return EPDK_OK;
 }
 
@@ -5041,7 +5058,7 @@ __s32 GetListItemFileFullPath(explr_list_para_t *list_para, __s32 ItemIndex, cha
 **********************************************************************************************
 *Function:static __s32 GetListItemFileName(explr_list_para_t*list_para,__s32ItemIndex,char*FileName)
 *
-*Description    :       ¸ù¾ÝË÷ÒýºÅ»ñµÃÌõÄ¿ÎÄ¼þÃû(Ö»ÓÐÎÄ¼þÃû£¬¹©ÏÔÊ¾)
+*Description    :       æ ¹æ®ç´¢å¼•å·èŽ·å¾—æ¡ç›®æ–‡ä»¶å(åªæœ‰æ–‡ä»¶åï¼Œä¾›æ˜¾ç¤º)
 *
 *Arguments      :
 *
@@ -5069,7 +5086,7 @@ static __s32 GetListItemFileName(explr_list_para_t *list_para, __s32 ItemIndex, 
 ***********************************************************************************************
 *Function   :         static __s32 draw_miniature_for_pic_item(__lbar_draw_para_t *draw_param)
 *
-*Description    :       »­µ±Ç°Í¼Æ¬¶ÔÓ¦µÄËõÂÔÍ¼£¬listbarÇøÓòµÄ×ó²à£¬¼´ÏÔÊ¾ÔÚÎÄ¼þÃûÇ°ÃæµÄËõÂÔÍ¼
+*Description    :       ç”»å½“å‰å›¾ç‰‡å¯¹åº”çš„ç¼©ç•¥å›¾ï¼ŒlistbaråŒºåŸŸçš„å·¦ä¾§ï¼Œå³æ˜¾ç¤ºåœ¨æ–‡ä»¶åå‰é¢çš„ç¼©ç•¥å›¾
 *
 *Arguments      :
 *
@@ -5103,7 +5120,7 @@ static __s32 draw_miniature_for_pic_item(__lbar_draw_para_t *draw_param)
         return EPDK_FAIL ;
     }
 
-    /*if( list_para->enter_sd_usb_flag == 0)    //ÔÚsd/usbÑ¡Ôñ´°¿ÚÊ±£¬Ö±½Ó·µ»Ø
+    /*if( list_para->enter_sd_usb_flag == 0)    //åœ¨sd/usbé€‰æ‹©çª—å£æ—¶ï¼Œç›´æŽ¥è¿”å›ž
     {
         __msg("only for file list view ");
         return EPDK_FAIL ;
@@ -5121,7 +5138,7 @@ static __s32 draw_miniature_for_pic_item(__lbar_draw_para_t *draw_param)
     in_para.format = PIXEL_COLOR_ARGB8888;
     in_para.width = miniature_rect.width;
     in_para.height = miniature_rect.height;
-    in_para.mode = 0;   // 1ÎªÀ­ÉìÄ£Ê½
+    in_para.mode = 0;   // 1ä¸ºæ‹‰ä¼¸æ¨¡å¼
 
     if (list_para->listbar_miniature_buf == NULL)
     {
@@ -5172,7 +5189,7 @@ static __s32 draw_miniature_for_pic_item(__lbar_draw_para_t *draw_param)
 **************************************************************************************
 *Function   :  static __s32 draw_miniature_view_item(__lbar_draw_para_t *draw_param)
 *
-*Description    :       »­ËõÂÔÍ¼in square mode
+*Description    :       ç”»ç¼©ç•¥å›¾in square mode
 *
 *Arguments      :
 *
@@ -5193,7 +5210,7 @@ static __s32 draw_miniature_view_item(__lbar_draw_para_t *draw_param)
     RECT miniature_rect;
     list_para = (explr_list_para_t *)draw_param->attr;
 
-    if (!(list_para->media_type == RAT_MEDIA_TYPE_PIC))     //Í¼Æ¬Ê±²ÅÓÐËõÂÔÍ¼
+    if (!(list_para->media_type == RAT_MEDIA_TYPE_PIC))     //å›¾ç‰‡æ—¶æ‰æœ‰ç¼©ç•¥å›¾
     {
         return EPDK_FAIL;
     }
@@ -5216,10 +5233,10 @@ static __s32 draw_miniature_view_item(__lbar_draw_para_t *draw_param)
     in_para.format = PIXEL_COLOR_ARGB8888;
     in_para.width = miniature_rect.width;
     in_para.height = miniature_rect.height;
-    in_para.mode = 0;   // 1ÎªÀ­ÉìÄ£Ê½
-    pBuf = esMEMS_Balloc(in_para.width * in_para.height * 4);   //ARGB8888,Òò´Ë4±¶´óÐ¡
+    in_para.mode = 0;   // 1ä¸ºæ‹‰ä¼¸æ¨¡å¼
+    pBuf = esMEMS_Balloc(in_para.width * in_para.height * 4);   //ARGB8888,å› æ­¤4å€å¤§å°
 
-    if (pBuf == NULL)                                       //¿ÉÒÔ·Åµ½¿ªÊ¼ÉêÇë£¬ÍË³öÊ±ÊÍ·Å
+    if (pBuf == NULL)                                       //å¯ä»¥æ”¾åˆ°å¼€å§‹ç”³è¯·ï¼Œé€€å‡ºæ—¶é‡Šæ”¾
     {
         __wrn("memory is not enough!!");
         return EPDK_FAIL;
@@ -5257,7 +5274,7 @@ static __s32 draw_miniature_view_item(__lbar_draw_para_t *draw_param)
 ************************************************************************************
 *Function   :   static __s32 draw_mediatype_listview_item_icon(__lbar_draw_para_t *draw_param)
 *
-*Description    :       »­item iconÍ¼±ê(Item×ó±ßµÄIcon)
+*Description    :       ç”»item iconå›¾æ ‡(Itemå·¦è¾¹çš„Icon)
 *
 *Arguments      :
 *
@@ -5299,7 +5316,7 @@ static __s32 draw_mediatype_listview_item_icon(__lbar_draw_para_t *draw_param)
 ************************************************************************************
 *Function   :   static __s32 draw_listview_item_icon(__lbar_draw_para_t *draw_param)
 *
-*Description    :       »­item iconÍ¼±ê(Item×ó±ßµÄIcon,»òÕßÊÇËõÂÔÍ¼Icon)
+*Description    :       ç”»item iconå›¾æ ‡(Itemå·¦è¾¹çš„Icon,æˆ–è€…æ˜¯ç¼©ç•¥å›¾Icon)
 *
 *Arguments      :
 *
@@ -5318,7 +5335,7 @@ static __s32 draw_listview_item_icon(__lbar_draw_para_t *draw_param, rat_media_t
     explorer_get_item_icon_rect(this, &IconRect);
 
     /*
-    if(this->media_type == RAT_MEDIA_TYPE_ALL)      //ÎÄ¼þ¹ÜÀí
+    if(this->media_type == RAT_MEDIA_TYPE_ALL)      //æ–‡ä»¶ç®¡ç†
     {
         //media_type = get_file_list_item_file_type(this->cur_file_list->cur_item);
     }
@@ -5349,7 +5366,7 @@ static __s32 draw_listview_item_icon(__lbar_draw_para_t *draw_param, rat_media_t
 ******************************************************************************************
 *Function   :    static __s32 draw_square_item_focus_icon(__lbar_draw_para_t *draw_param)
 *
-*Description    :       »­ËõÂÔÍ¼»ñµÃ½¹µãÊ±ÏÔÊ¾µÄÍ¼±ê
+*Description    :       ç”»ç¼©ç•¥å›¾èŽ·å¾—ç„¦ç‚¹æ—¶æ˜¾ç¤ºçš„å›¾æ ‡
 *
 *Arguments      :
 *
@@ -5370,14 +5387,14 @@ static __s32 draw_square_item_focus_icon(__lbar_draw_para_t *draw_param)
     /*
     pic_buf = explorer_get_listview_icon_res(ID_EXP_SQUARE_FOCUS);          //draw select border
 
-    //picW =  GUI_BMP_GetXSize(pic_buf);                                        //»ñµÃÍ¼Æ¬¿í
-    //picH =  GUI_BMP_GetYSize(pic_buf);                                        //»ñµÃÍ¼Æ¬¸ß¶È
+    //picW =  GUI_BMP_GetXSize(pic_buf);                                        //èŽ·å¾—å›¾ç‰‡å®½
+    //picH =  GUI_BMP_GetYSize(pic_buf);                                        //èŽ·å¾—å›¾ç‰‡é«˜åº¦
 
     picX = draw_param->rect.x + FocusIconRect.x;
     picY = draw_param->rect.y + FocusIconRect.y;
     GUI_BMP_Draw(pic_buf, picX, picY);
     */
-    //»­½¹µã·½¿ò
+    //ç”»ç„¦ç‚¹æ–¹æ¡†
     GUI_SetColor(GUI_YELLOW);
     X0 = draw_param->rect.x + FocusIconRect.x;
     Y0 = draw_param->rect.y + FocusIconRect.y;
@@ -5399,7 +5416,7 @@ static __s32 draw_square_item_focus_icon(__lbar_draw_para_t *draw_param)
 }
 
 
-//Draw focus icon, ¿Å½«ÉÏÏÂÁ½¸öº¯ÊýÓÅ»¯ÎªÒ»¸öº¯Êý
+//Draw focus icon, é¢—å°†ä¸Šä¸‹ä¸¤ä¸ªå‡½æ•°ä¼˜åŒ–ä¸ºä¸€ä¸ªå‡½æ•°
 static __s32 draw_mediatype_list_item_vacent_icon(__lbar_draw_para_t *draw_param)
 {
     void *pic_buf;
@@ -5416,7 +5433,7 @@ static __s32 draw_mediatype_list_item_vacent_icon(__lbar_draw_para_t *draw_param
 
 
 
-//Draw focus icon, ¿Å½«ÉÏÏÂÁ½¸öº¯ÊýÓÅ»¯ÎªÒ»¸öº¯Êý
+//Draw focus icon, é¢—å°†ä¸Šä¸‹ä¸¤ä¸ªå‡½æ•°ä¼˜åŒ–ä¸ºä¸€ä¸ªå‡½æ•°
 static __s32 draw_list_item_vacent_icon(__lbar_draw_para_t *draw_param)
 {
     //RECT FocusIconRect;
@@ -5459,8 +5476,8 @@ static __s32 draw_list_item_unfocus_icon(__lbar_draw_para_t *draw_param)
     explr_list_para_t *list_para;
     list_para = (explr_list_para_t *)draw_param->attr;
     pic_buf = explorer_get_listview_icon_res(ID_EXP_LIST_ITEM_UNFOCUS_BG);  //draw select border
-    //picW =  GUI_BMP_GetXSize(pic_buf);                                        //»ñµÃÍ¼Æ¬¿í
-    //picH =  GUI_BMP_GetYSize(pic_buf);                                        //»ñµÃÍ¼Æ¬¸ß¶È
+    //picW =  GUI_BMP_GetXSize(pic_buf);                                        //èŽ·å¾—å›¾ç‰‡å®½
+    //picH =  GUI_BMP_GetYSize(pic_buf);                                        //èŽ·å¾—å›¾ç‰‡é«˜åº¦
     //  if(list_para->h_item_fcs_bmp)
     //  {
     //      pic_buf = theme_hdl2buf(list_para->h_item_fcs_bmp);
@@ -5479,7 +5496,7 @@ static __s32 draw_list_item_unfocus_icon(__lbar_draw_para_t *draw_param)
 }
 
 
-//Draw focus icon, ¿Å½«ÉÏÏÂÁ½¸öº¯ÊýÓÅ»¯ÎªÒ»¸öº¯Êý
+//Draw focus icon, é¢—å°†ä¸Šä¸‹ä¸¤ä¸ªå‡½æ•°ä¼˜åŒ–ä¸ºä¸€ä¸ªå‡½æ•°
 static __s32 draw_mediatype_list_item_focus_icon(__lbar_draw_para_t *draw_param)
 {
     RECT FocusIconRect;
@@ -5496,7 +5513,7 @@ static __s32 draw_mediatype_list_item_focus_icon(__lbar_draw_para_t *draw_param)
 }
 
 
-//Draw focus icon, ¿Å½«ÉÏÏÂÁ½¸öº¯ÊýÓÅ»¯ÎªÒ»¸öº¯Êý
+//Draw focus icon, é¢—å°†ä¸Šä¸‹ä¸¤ä¸ªå‡½æ•°ä¼˜åŒ–ä¸ºä¸€ä¸ªå‡½æ•°
 static __s32 draw_list_item_focus_icon(__lbar_draw_para_t *draw_param)
 {
     RECT FocusIconRect;
@@ -5506,8 +5523,8 @@ static __s32 draw_list_item_focus_icon(__lbar_draw_para_t *draw_param)
     explr_list_para_t *list_para;
     list_para = (explr_list_para_t *)draw_param->attr;
     pic_buf = explorer_get_listview_icon_res(ID_EXP_LIST_ITEM_FOCUS_BG);    //draw select border
-    //picW =  GUI_BMP_GetXSize(pic_buf);                                        //»ñµÃÍ¼Æ¬¿í
-    //picH =  GUI_BMP_GetYSize(pic_buf);                                        //»ñµÃÍ¼Æ¬¸ß¶È
+    //picW =  GUI_BMP_GetXSize(pic_buf);                                        //èŽ·å¾—å›¾ç‰‡å®½
+    //picH =  GUI_BMP_GetYSize(pic_buf);                                        //èŽ·å¾—å›¾ç‰‡é«˜åº¦
     //  if(list_para->h_item_fcs_bmp)
     //  {
     //      pic_buf = theme_hdl2buf(list_para->h_item_fcs_bmp);
@@ -5529,7 +5546,7 @@ static __s32 draw_list_item_focus_icon(__lbar_draw_para_t *draw_param)
 *************************************************************************************
 *Function   :       static __s32 save_focus_item_info(__lbar_draw_para_t *draw_param)
 *
-*Description    :   ±£´æ½¹µãÌõÄ¿ÐÅÏ¢
+*Description    :   ä¿å­˜ç„¦ç‚¹æ¡ç›®ä¿¡æ¯
 *
 *Arguments      :
 *
@@ -5553,7 +5570,7 @@ static __s32 save_focus_item_info(__lbar_draw_para_t *draw_param)
 
             if (draw_param->mode == LBAR_MODE_FOCUS)
             {
-                list_para->cur_file_list->cur_item = file_item;     //±£´æµ±Ç°ÌõÄ¿ÐÅÏ¢
+                list_para->cur_file_list->cur_item = file_item;     //ä¿å­˜å½“å‰æ¡ç›®ä¿¡æ¯
             }
         }
         else
@@ -5564,7 +5581,7 @@ static __s32 save_focus_item_info(__lbar_draw_para_t *draw_param)
     }
     else            //
     {
-        if (list_para->enter_sd_usb_flag == 0)  //ÔÚsd /usb Ñ¡Ôñ´°¿ÚÖÐ
+        if (list_para->enter_sd_usb_flag == 0)  //åœ¨sd /usb é€‰æ‹©çª—å£ä¸­
         {
             file_item = get_file_list_item(list_para->cur_file_list, draw_param->index);
 
@@ -5574,7 +5591,7 @@ static __s32 save_focus_item_info(__lbar_draw_para_t *draw_param)
 
                 if (draw_param->mode == LBAR_MODE_FOCUS)
                 {
-                    list_para->cur_file_list->cur_item = file_item;     //±£´æµ±Ç°ÌõÄ¿ÐÅÏ¢
+                    list_para->cur_file_list->cur_item = file_item;     //ä¿å­˜å½“å‰æ¡ç›®ä¿¡æ¯
                 }
             }
         }
@@ -5587,7 +5604,7 @@ static __s32 save_focus_item_info(__lbar_draw_para_t *draw_param)
 ********************************************************************************************
 *Function   :       static __s32 draw_mediatype_listview_item_text(__lbar_draw_para_t *draw_param)
 *
-*Description    :    ÏÔÊ¾ÌõÄ¿ÎÄ±¾
+*Description    :    æ˜¾ç¤ºæ¡ç›®æ–‡æœ¬
 *
 *Arguments      :
 *
@@ -5669,7 +5686,7 @@ static __s32 draw_mediatype_listview_item_text(__lbar_draw_para_t *draw_param)
 ********************************************************************************************
 *Function   :       static __s32 draw_listview_item_text(__lbar_draw_para_t *draw_param)
 *
-*Description    :    ÏÔÊ¾ÌõÄ¿ÎÄ±¾
+*Description    :    æ˜¾ç¤ºæ¡ç›®æ–‡æœ¬
 *
 *Arguments      :
 *
@@ -5732,7 +5749,7 @@ static __s32 draw_listview_item_text(__lbar_draw_para_t *draw_param)
             **/
         {
             eLIBs_memset(FileName, 0, sizeof(FileName));
-            ret = GetListItemFileName(list_para, draw_param->index, FileName);//Ö»È¡ÎÄ¼þÃû
+            ret = GetListItemFileName(list_para, draw_param->index, FileName);//åªå–æ–‡ä»¶å
 
             if (ret == EPDK_FAIL)
             {
@@ -5765,7 +5782,7 @@ static __s32 draw_listview_item_text(__lbar_draw_para_t *draw_param)
         }
         else
         {
-            ret = GetListItemFileFullPath(list_para, draw_param->index, FileName);//È¡È«Â·¾¶Ãû
+            ret = GetListItemFileFullPath(list_para, draw_param->index, FileName);//å–å…¨è·¯å¾„å
         }
 
         file_size = eLIBs_GetFileSize(FileName);
@@ -5824,7 +5841,7 @@ __s32 explorer_draw_file_info(explr_list_para_t *list_para)
         //  explorer_clear_filesize_area( list_para );
         //  explorer_clear_file_create_time_area( list_para );
     }
-    else        //ÎÄ¼þÊôÐÔÊ±ÏÔÊ¾ÎÄ¼þÐÅÏ¢
+    else        //æ–‡ä»¶å±žæ€§æ—¶æ˜¾ç¤ºæ–‡ä»¶ä¿¡æ¯
     {
         file_size = cur_item->file_size;
         explorer_draw_FileSize(file_size, list_para);
@@ -5842,7 +5859,7 @@ __s32 explorer_draw_file_info(explr_list_para_t *list_para)
     return EPDK_OK;
 }
 #endif
-//draw item in list mode, ²»ÒªÔÚListbarµÄ»Øµ÷º¯ÊýÖÐÑ¡ÔñÍ¼²ã
+//draw item in list mode, ä¸è¦åœ¨Listbarçš„å›žè°ƒå‡½æ•°ä¸­é€‰æ‹©å›¾å±‚
 static __s32 draw_mediatype_listview_item(__lbar_draw_para_t *draw_param)
 {
     explr_list_para_t *list_para;
@@ -5855,7 +5872,7 @@ static __s32 draw_mediatype_listview_item(__lbar_draw_para_t *draw_param)
     }
     else if (draw_param->mode == LBAR_MODE_NORMAL)
     {
-        draw_mediatype_list_item_unfocus_icon(draw_param);      //»­unfocus item ±³¾°¿òÍ¼
+        draw_mediatype_list_item_unfocus_icon(draw_param);      //ç”»unfocus item èƒŒæ™¯æ¡†å›¾
     }
 
     __msg("draw_param->rect.x=%d %d %d %d", draw_param->rect.x, draw_param->rect.y, draw_param->rect.width, draw_param->rect.height);
@@ -5865,14 +5882,14 @@ static __s32 draw_mediatype_listview_item(__lbar_draw_para_t *draw_param)
 
     if (draw_param->mode == LBAR_MODE_FOCUS)
     {
-        draw_mediatype_list_item_focus_icon(draw_param);        //»­focus item ±³¾°¿òÍ¼
+        draw_mediatype_list_item_focus_icon(draw_param);        //ç”»focus item èƒŒæ™¯æ¡†å›¾
     }
 
-    // ¶ÔÓÚÍ¼Æ¬£¬»­Æä¶ÔÓ¦µÄËõÂÔÍ¼£¬ÔÚlbar_mode_diffÖÐ»­
+    // å¯¹äºŽå›¾ç‰‡ï¼Œç”»å…¶å¯¹åº”çš„ç¼©ç•¥å›¾ï¼Œåœ¨lbar_mode_diffä¸­ç”»
     if (draw_param->mode == LBAR_MODE_NORMAL
         || draw_param->mode == LBAR_MODE_FOCUS)
     {
-        //»­Ã½Ìå¶ÔÓ¦ÀàÐÍµÄÍ¼±ê(ÏÔÊ¾ÔÚÃ¿¸öitem µÄ×ó²à)
+        //ç”»åª’ä½“å¯¹åº”ç±»åž‹çš„å›¾æ ‡(æ˜¾ç¤ºåœ¨æ¯ä¸ªitem çš„å·¦ä¾§)
         draw_mediatype_listview_item_icon(draw_param);
     }
 
@@ -5886,7 +5903,7 @@ static __s32 draw_mediatype_listview_item(__lbar_draw_para_t *draw_param)
 }
 
 
-//draw item in list mode, ²»ÒªÔÚListbarµÄ»Øµ÷º¯ÊýÖÐÑ¡ÔñÍ¼²ã
+//draw item in list mode, ä¸è¦åœ¨Listbarçš„å›žè°ƒå‡½æ•°ä¸­é€‰æ‹©å›¾å±‚
 static __s32 draw_listview_item(__lbar_draw_para_t *draw_param)
 {
     explr_list_para_t *list_para;
@@ -5897,7 +5914,7 @@ static __s32 draw_listview_item(__lbar_draw_para_t *draw_param)
     {
         if (list_para->view_mode == EXPLR_LIST_MODE)
         {
-            //draw_list_item_focus_icon(draw_param);        //»­focus item ±³¾°¿òÍ¼
+            //draw_list_item_focus_icon(draw_param);        //ç”»focus item èƒŒæ™¯æ¡†å›¾
         }
         else if (list_para->view_mode == EXPLR_SQUARE_MODE)
         {
@@ -5905,14 +5922,14 @@ static __s32 draw_listview_item(__lbar_draw_para_t *draw_param)
         }
         else
         {
-            //  draw_list_item_focus_icon(draw_param);      //»­focus item ±³¾°¿òÍ¼
+            //  draw_list_item_focus_icon(draw_param);      //ç”»focus item èƒŒæ™¯æ¡†å›¾
         }
     }
     else if (draw_param->mode == LBAR_MODE_NORMAL)      //modify 2011.8.3
     {
         if (list_para->view_mode == EXPLR_LIST_MODE)
         {
-            draw_list_item_unfocus_icon(draw_param);        //»­unfocus item ±³¾°¿òÍ¼
+            draw_list_item_unfocus_icon(draw_param);        //ç”»unfocus item èƒŒæ™¯æ¡†å›¾
         }
         else if (list_para->view_mode == EXPLR_SQUARE_MODE)
         {
@@ -5923,7 +5940,7 @@ static __s32 draw_listview_item(__lbar_draw_para_t *draw_param)
     if ((list_para->view_mode == EXPLR_SQUARE_MODE)
         && (list_para->media_type == RAT_MEDIA_TYPE_PIC))
     {
-        explorer_list_long_string_stop_roll(list_para);     //Í£Ö¹³¤ÎÄ¼þÃû¹ö¶¯
+        explorer_list_long_string_stop_roll(list_para);     //åœæ­¢é•¿æ–‡ä»¶åæ»šåŠ¨
     }
     else
     {
@@ -5960,7 +5977,7 @@ static __s32 draw_listview_item(__lbar_draw_para_t *draw_param)
             else
             */
             {
-                //»ñÈ¡Ã½Ìå¶ÔÓ¦µÄÀàÐÍ
+                //èŽ·å–åª’ä½“å¯¹åº”çš„ç±»åž‹
                 media_type = GetListItemFileMediaType(list_para->rat.handle, draw_param->index);
                 __wrn("media_type:%d\r", media_type);
             }
@@ -5984,7 +6001,7 @@ static __s32 draw_listview_item(__lbar_draw_para_t *draw_param)
                 {
                     if (list_para->view_mode == EXPLR_LIST_MODE)
                     {
-                        draw_list_item_focus_icon(draw_param);      //»­focus item ±³¾°¿òÍ¼
+                        draw_list_item_focus_icon(draw_param);      //ç”»focus item èƒŒæ™¯æ¡†å›¾
                     }
                     else if (list_para->view_mode == EXPLR_SQUARE_MODE)
                     {
@@ -5992,10 +6009,10 @@ static __s32 draw_listview_item(__lbar_draw_para_t *draw_param)
                     }
                 }
 
-                // ¶ÔÓÚÍ¼Æ¬£¬»­Æä¶ÔÓ¦µÄËõÂÔÍ¼£¬ÔÚlbar_mode_diffÖÐ»­
+                // å¯¹äºŽå›¾ç‰‡ï¼Œç”»å…¶å¯¹åº”çš„ç¼©ç•¥å›¾ï¼Œåœ¨lbar_mode_diffä¸­ç”»
                 if (draw_param->mode == LBAR_MODE_NORMAL || draw_param->mode == LBAR_MODE_FOCUS)
                 {
-                    //»­Ã½Ìå¶ÔÓ¦ÀàÐÍµÄÍ¼±ê(ÏÔÊ¾ÔÚÃ¿¸öitem µÄ×ó²à)
+                    //ç”»åª’ä½“å¯¹åº”ç±»åž‹çš„å›¾æ ‡(æ˜¾ç¤ºåœ¨æ¯ä¸ªitem çš„å·¦ä¾§)
                     draw_listview_item_icon(draw_param, media_type);
                 }
 
@@ -6009,7 +6026,7 @@ static __s32 draw_listview_item(__lbar_draw_para_t *draw_param)
                 {
                     if (list_para->view_mode == EXPLR_LIST_MODE)
                     {
-                        draw_list_item_focus_icon(draw_param);      //»­focus item ±³¾°¿òÍ¼
+                        draw_list_item_focus_icon(draw_param);      //ç”»focus item èƒŒæ™¯æ¡†å›¾
                     }
                     else if (list_para->view_mode == EXPLR_SQUARE_MODE)
                     {
@@ -6017,10 +6034,10 @@ static __s32 draw_listview_item(__lbar_draw_para_t *draw_param)
                     }
                 }
 
-                // ¶ÔÓÚÍ¼Æ¬£¬»­Æä¶ÔÓ¦µÄËõÂÔÍ¼£¬ÔÚlbar_mode_diffÖÐ»­
+                // å¯¹äºŽå›¾ç‰‡ï¼Œç”»å…¶å¯¹åº”çš„ç¼©ç•¥å›¾ï¼Œåœ¨lbar_mode_diffä¸­ç”»
                 if (draw_param->mode == LBAR_MODE_NORMAL || draw_param->mode == LBAR_MODE_FOCUS)
                 {
-                    //»­Ã½Ìå¶ÔÓ¦ÀàÐÍµÄÍ¼±ê(ÏÔÊ¾ÔÚÃ¿¸öitem µÄ×ó²à)
+                    //ç”»åª’ä½“å¯¹åº”ç±»åž‹çš„å›¾æ ‡(æ˜¾ç¤ºåœ¨æ¯ä¸ªitem çš„å·¦ä¾§)
                     draw_listview_item_icon(draw_param, media_type);
                 }
 
@@ -6036,7 +6053,7 @@ static __s32 draw_listview_item(__lbar_draw_para_t *draw_param)
 
     //if(draw_param->mode == LBAR_MODE_FOCUS)
     {
-        //if(list_para->media_type == RAT_MEDIA_TYPE_ALL)       //ÎÄ¼þ¹ÜÀí
+        //if(list_para->media_type == RAT_MEDIA_TYPE_ALL)       //æ–‡ä»¶ç®¡ç†
         {
             //explorer_draw_file_info(list_para);
         }
@@ -6047,7 +6064,7 @@ static __s32 draw_listview_item(__lbar_draw_para_t *draw_param)
 ****************************************************************************************
 *Function   :  static __s32 _explorer_mediatype_listbar_item_draw(__lbar_draw_para_t *draw_param)
 *
-*Description    :    ListBar»æÖÆÏûÏ¢´¦Àíº¯Êý
+*Description    :    ListBarç»˜åˆ¶æ¶ˆæ¯å¤„ç†å‡½æ•°
 *
 *Arguments      :
 *
@@ -6147,7 +6164,7 @@ static __s32 explorer_show_item_detail(__lbar_draw_para_t *draw_param)
 ****************************************************************************************
 *Function   :  static __s32 _explorer_listbar_item_draw(__lbar_draw_para_t *draw_param)
 *
-*Description    :    ListBar»æÖÆÏûÏ¢´¦Àíº¯Êý
+*Description    :    ListBarç»˜åˆ¶æ¶ˆæ¯å¤„ç†å‡½æ•°
 *
 *Arguments      :
 *
@@ -6234,7 +6251,7 @@ static __s32 _explorer_listbar_item_draw(__lbar_draw_para_t *draw_param)
 ******************************************************************************************
 *Function   :       void explorer_mediatype_listbar_init(H_WIN  list_win)
 *
-*Description    :   list×ó±ß ListBar ³õÊ¼»¯º¯Êý
+*Description    :   listå·¦è¾¹ ListBar åˆå§‹åŒ–å‡½æ•°
 *
 *Arguments      :
 *
@@ -6248,14 +6265,14 @@ static void explorer_mediatype_listbar_init(H_WIN  list_win)
     explr_list_para_t *list_para;
     __listbar_config_t config;
     __s32 item_width = 0, item_height = 0;
-    explorer_viewer_ui_t *ui_param = explorer_get_viewer_ui_param();//»ñµÃÕû¸öAPµÄUIÉè¼Æ²ÎÊý
+    explorer_viewer_ui_t *ui_param = explorer_get_viewer_ui_param();//èŽ·å¾—æ•´ä¸ªAPçš„UIè®¾è®¡å‚æ•°
     __msg("~~~~~~~~~~Listbar is initializing~~~~~~~~~~~");
     eLIBs_memset(&config, 0, sizeof(__listbar_config_t));
     list_para = (explr_list_para_t *)GUI_WinGetAttr(list_win);
     //list_para->last_focus_index = list_para->last_focused_id;
     //if(list_para->view_mode == EXPLR_LIST_MODE)
     {
-        config.item_width = ui_param->mediatype_list_item_ui_param.item_rect.width; //¸ù¾Ýlist or squareÄ£Ê½²»Í¬
+        config.item_width = ui_param->mediatype_list_item_ui_param.item_rect.width; //æ ¹æ®list or squareæ¨¡å¼ä¸åŒ
         config.item_height = ui_param->mediatype_list_item_ui_param.item_rect.height;
         config.list_rect.x = ui_param->mediatype_list_item_ui_param.ListBarArea.x;
         config.list_rect.y = ui_param->mediatype_list_item_ui_param.ListBarArea.y;
@@ -6276,7 +6293,7 @@ static void explorer_mediatype_listbar_init(H_WIN  list_win)
     config.focus_id = list_para->mediatype_index;
     //112350 list_para->last_focused_id;
     config.bk_color = 0;
-    config.alpha_status = 1;                        //´ò¿ªAlpha¿ª¹Ø
+    config.alpha_status = 1;                        //æ‰“å¼€Alphaå¼€å…³
     config.list_attr = (void *)list_para;
     config.item_cnt = ID_MEDIATYPE_MAX;
     list_para->mediatype_listbar_handle = LISTBAR_Create(list_win);                 //new listbar
@@ -6291,14 +6308,14 @@ static void explorer_mediatype_listbar_init(H_WIN  list_win)
     explr_list_para_t *list_para;
     __listbar_config_t config;
     __s32 item_width = 0, item_height = 0;
-    explorer_viewer_ui_t *ui_param = explorer_get_viewer_ui_param();//»ñµÃÕû¸öAPµÄUIÉè¼Æ²ÎÊý
+    explorer_viewer_ui_t *ui_param = explorer_get_viewer_ui_param();//èŽ·å¾—æ•´ä¸ªAPçš„UIè®¾è®¡å‚æ•°
     __msg("~~~~~~~~~~Listbar is initializing~~~~~~~~~~~");
     eLIBs_memset(&config, 0, sizeof(__listbar_config_t));
     list_para = (explr_list_para_t *)GUI_WinGetAttr(list_win);
     //list_para->last_focus_index = list_para->last_focused_id;
     //if(list_para->view_mode == EXPLR_LIST_MODE)
     {
-        config.item_width = ui_param->mediatype_list_item_ui_param.item_rect.width; //¸ù¾Ýlist or squareÄ£Ê½²»Í¬
+        config.item_width = ui_param->mediatype_list_item_ui_param.item_rect.width; //æ ¹æ®list or squareæ¨¡å¼ä¸åŒ
         config.item_height = ui_param->mediatype_list_item_ui_param.item_rect.height;
         config.list_rect.x = ui_param->mediatype_list_item_ui_param.ListBarArea.x;
         config.list_rect.y = ui_param->mediatype_list_item_ui_param.ListBarArea.y;
@@ -6310,7 +6327,7 @@ static void explorer_mediatype_listbar_init(H_WIN  list_win)
     config.focus_id = 0;
     //112350 list_para->last_focused_id;
     config.bk_color = 0;
-    config.alpha_status = 1;                        //´ò¿ªAlpha¿ª¹Ø
+    config.alpha_status = 1;                        //æ‰“å¼€Alphaå¼€å…³
     config.list_attr = (void *)list_para;
     config.item_cnt = 1;
     list_para->mediatype_listbar_handle = LISTBAR_Create(list_win);                 //new listbar
@@ -6328,7 +6345,7 @@ static void explorer_mediatype_listbar_init(H_WIN  list_win)
 ******************************************************************************************
 *Function   :       void explorer_listbar_init(H_WIN  list_win)
 *
-*Description    :    ListBar ³õÊ¼»¯º¯Êý,×¢ÒâÔÚÕâÖ®Ç°Rat±ØÐëÒÑ¾­¹ý³õÊ¼»¯
+*Description    :    ListBar åˆå§‹åŒ–å‡½æ•°,æ³¨æ„åœ¨è¿™ä¹‹å‰Ratå¿…é¡»å·²ç»è¿‡åˆå§‹åŒ–
 *
 *Arguments      :
 *
@@ -6391,7 +6408,7 @@ static void explorer_listbar_init(H_WIN  list_win)
     __listbar_config_t config;
     __scroll_bar_t scroll_param;                        //new scroll bar
     __s32 item_width = 0, item_height = 0;
-    explorer_viewer_ui_t *ui_param = explorer_get_viewer_ui_param();//»ñµÃÕû¸öAPµÄUIÉè¼Æ²ÎÊý
+    explorer_viewer_ui_t *ui_param = explorer_get_viewer_ui_param();//èŽ·å¾—æ•´ä¸ªAPçš„UIè®¾è®¡å‚æ•°
     __msg("~~~~~~~~~~Listbar is initializing~~~~~~~~~~~");
     eLIBs_memset(&config, 0, sizeof(__listbar_config_t));
     eLIBs_memset(&scroll_param, 0, sizeof(__scroll_bar_t));
@@ -6400,7 +6417,7 @@ static void explorer_listbar_init(H_WIN  list_win)
 
     if (list_para->view_mode == EXPLR_LIST_MODE)
     {
-        item_width = ui_param->list_item_ui_param.item_rect.width;  //¸ù¾Ýlist or squareÄ£Ê½²»Í¬
+        item_width = ui_param->list_item_ui_param.item_rect.width;  //æ ¹æ®list or squareæ¨¡å¼ä¸åŒ
         item_height = ui_param->list_item_ui_param.item_rect.height;
         config.list_rect.x = ui_param->list_item_ui_param.ListBarArea.x;
         config.list_rect.y = ui_param->list_item_ui_param.ListBarArea.y;
@@ -6422,19 +6439,19 @@ static void explorer_listbar_init(H_WIN  list_win)
     config.start_id = list_para->last_start_id;
     config.focus_id = list_para->last_focused_id;
     config.bk_color = 0;
-    config.alpha_status = 1;                        //´ò¿ªAlpha¿ª¹Ø
+    config.alpha_status = 1;                        //æ‰“å¼€Alphaå¼€å…³
     config.list_attr = (void *)list_para;
-    config.item_cnt = list_para->rat.total;   //Rat.total±ØÐëÒÑ¾­»ñµÃ
+    config.item_cnt = list_para->rat.total;   //Rat.totalå¿…é¡»å·²ç»èŽ·å¾—
     __wrn("===========config.item_cnt=%d", config.item_cnt);
 #if 0
     scroll_param.show_rect.x = ui_param->scroll_bg_rect.x;
     scroll_param.show_rect.y = ui_param->scroll_bg_rect.y;
     scroll_param.show_rect.width = ui_param->scroll_bg_rect.width;
-    scroll_param.show_rect.height = ui_param->scroll_bg_rect.height;//Õû¸öScoll barÏÔÊ¾ÇøÓò£¬
+    scroll_param.show_rect.height = ui_param->scroll_bg_rect.height;//æ•´ä¸ªScoll baræ˜¾ç¤ºåŒºåŸŸï¼Œ
     scroll_param.scroll_rect.x = ui_param->scroll_rect.x;
     scroll_param.scroll_rect.y = ui_param->scroll_rect.y;
     scroll_param.scroll_rect.width = ui_param->scroll_rect.width;
-    scroll_param.scroll_rect.height = ui_param->scroll_rect.height; //¹ö¶¯ÌõÇøÓò(³ýÈ¥head,body,tail)
+    scroll_param.scroll_rect.height = ui_param->scroll_rect.height; //æ»šåŠ¨æ¡åŒºåŸŸ(é™¤åŽ»head,body,tail)
     scroll_param.head_height = ui_param->scroll_head_height;
     scroll_param.tail_height = ui_param->scroll_tail_height;                //head, tail
     scroll_param.back_bmp = explorer_get_listview_icon_res(ID_EXP_LIST_SCROLL_BG);
@@ -6460,7 +6477,7 @@ static void explorer_listbar_init(H_WIN  list_win)
 *********************************************************************************
 *Function   :       void explorer_mediatype_listbar_uninit(H_WIN  list_win)
 *
-*Description    :    ÊÍ·ÅListbar
+*Description    :    é‡Šæ”¾Listbar
 *
 *Arguments      :
 *
@@ -6489,7 +6506,7 @@ static void explorer_mediatype_listbar_uninit(H_WIN  list_win)
 *********************************************************************************
 *Function   :       void explorer_listbar_uninit(H_WIN  list_win)
 *
-*Description    :    ÊÍ·ÅListbar
+*Description    :    é‡Šæ”¾Listbar
 *
 *Arguments      :
 *
@@ -6517,7 +6534,7 @@ static void explorer_listbar_uninit(H_WIN  list_win)
 *************************************************************************************************
 *Function:void ExplorerSetViewMode(explr_list_para_t *list_para, explorer_view_mode_e view_mode)
 *
-*Description    :    ¸Ä±äExplorerÏÔÊ¾·½Ê½List mode or square mode
+*Description    :    æ”¹å˜Exploreræ˜¾ç¤ºæ–¹å¼List mode or square mode
 *
 *Arguments      :
 *
@@ -6541,7 +6558,7 @@ void ExplorerSetViewMode(explr_list_para_t *list_para, explorer_view_mode_e view
 
     explorer_save_last_para(list_para);
     explorer_get_last_para(list_para) ;
-    explorer_listbar_uninit(list_para->list_win);       //ÖØÐÂ´´½¨listbar,ÒòÎªSquareÎªÈ«ÆÁÄ£Ê½
+    explorer_listbar_uninit(list_para->list_win);       //é‡æ–°åˆ›å»ºlistbar,å› ä¸ºSquareä¸ºå…¨å±æ¨¡å¼
     explorer_listbar_init(list_para->list_win);
     //rat_move_cursor_to_first(list_para->rat.handle);
     LISTBAR_ShowPage(list_para->listbar_handle);
@@ -6561,7 +6578,7 @@ void ExplorerSetViewMode(explr_list_para_t *list_para, explorer_view_mode_e view
     return;
 }
 
-//´´½¨ÎÄ¼þÁÐ±í¶¥²¿¶Ïµã
+//åˆ›å»ºæ–‡ä»¶åˆ—è¡¨é¡¶éƒ¨æ–­ç‚¹
 static __s32 explorer_file_list_init(explr_list_para_t *list_para)
 {
     __u32 total = 0;
@@ -6601,13 +6618,13 @@ static __s32 explorer_file_list_init(explr_list_para_t *list_para)
     }
 
     //  __wrn("explorer_file_list_init 3");
-    //rat_start_miniature_decode(); //¿ªÊ¼ËõÂÔÍ¼Ïß³Ì
+    //rat_start_miniature_decode(); //å¼€å§‹ç¼©ç•¥å›¾çº¿ç¨‹
     // __wrn("explorer_file_list_init 4");
     return EPDK_OK;
 }
 
 
-//É¾³ýÕû¸öÎÄ¼þÁÐ±í
+//åˆ é™¤æ•´ä¸ªæ–‡ä»¶åˆ—è¡¨
 static __s32 explorer_file_list_uninit(explr_list_para_t *list_para)
 {
     if (list_para->top_file_list != NULL)
@@ -6616,7 +6633,7 @@ static __s32 explorer_file_list_uninit(explr_list_para_t *list_para)
         list_para->top_file_list = NULL;
     }
 
-    //rat_stop_miniature_decode();  //Í£Ö¹ ËõÂÔÍ¼Ïß³Ì
+    //rat_stop_miniature_decode();  //åœæ­¢ ç¼©ç•¥å›¾çº¿ç¨‹
     return EPDK_FAIL;
 }
 
@@ -6624,7 +6641,7 @@ static __s32 explorer_file_list_uninit(explr_list_para_t *list_para)
 **********************************************************************************
 *Function   :       static __s32 explorer_rat_init(explr_list_para_t *list_para)
 *
-*Description    :    ËÑË÷ÎÄ¼þModule, Rat ³õÊ¼»¯
+*Description    :    æœç´¢æ–‡ä»¶Module, Rat åˆå§‹åŒ–
 *
 *Arguments      :
 *
@@ -6684,7 +6701,7 @@ static __s32 explorer_rat_init(explr_list_para_t *list_para)
     //list_para->rat.total = rat_get_total_number(list_para->rat.handle);
     //wrn(" begain rat_start_miniature_decode1");
 #if (EXPLORER_SUPPORT_MINIATURE == 1)
-    //rat_start_miniature_decode(); //¿ªÊ¼ËõÂÔÍ¼Ïß³Ì
+    //rat_start_miniature_decode(); //å¼€å§‹ç¼©ç•¥å›¾çº¿ç¨‹
 #endif
     return EPDK_OK;
 }
@@ -6692,7 +6709,7 @@ static __s32 explorer_rat_init(explr_list_para_t *list_para)
 ******************************************************************************************
 *Function   :      static __s32 explorer_rat_uninit(explr_list_para_t *list_para)
 *
-*Description    :    ÊÍ·Årat
+*Description    :    é‡Šæ”¾rat
 *
 *Arguments      :
 *
@@ -6714,14 +6731,14 @@ static __s32 explorer_rat_uninit(explr_list_para_t *list_para)
 
 static __s32 explorer_get_last_para(explr_list_para_t *list_para)
 {
-    __u32 page_item_cnt = 0;                //Ã¿Ò³µÄÌõÄ¿×ÜÊý
+    __u32 page_item_cnt = 0;                //æ¯é¡µçš„æ¡ç›®æ€»æ•°
     char FileName[RAT_MAX_FULL_PATH_LEN] = {0};
     int ret = 0;
     reg_root_para_t *root_para = NULL;
     __s32 page_count = 0;
     __inf("Enter %s\r", __FUNCTION__);
     //page_item_cnt = LISTBAR_GetPageItemCount(list_para->listbar_handle);
-    page_item_cnt = explorer_get_listbar_pagenum(list_para);    // »ñÈ¡listbar Ã¿Ò»Ò³ÓÐ¼¸¸öÌõÄ¿
+    page_item_cnt = explorer_get_listbar_pagenum(list_para);    // èŽ·å–listbar æ¯ä¸€é¡µæœ‰å‡ ä¸ªæ¡ç›®
     root_para = dsk_reg_get_para_by_app(REG_APP_ROOT);
     page_count = explorer_get_listbar_pagenum(list_para);
 
@@ -6978,10 +6995,10 @@ static __s32 explorer_listview_create(__gui_msg_t *msg)
         return EPDK_FAIL ;
     }
 
-    list_para->list_win = list_win;     //±£´æ´°¿Ú¾ä±ú
+    list_para->list_win = list_win;     //ä¿å­˜çª—å£å¥æŸ„
     list_para->font = SWFFont;
     __wrn("explorer is initializing!");
-    /*if(list_para->media_type == RAT_MEDIA_TYPE_ALL)   // ÎÄ¼þ¹ÜÀí     //..
+    /*if(list_para->media_type == RAT_MEDIA_TYPE_ALL)   // æ–‡ä»¶ç®¡ç†     //..
     {
         ret  =  explorer_file_list_init ( list_para ) ;
         if( EPDK_FAIL == ret )
@@ -6989,12 +7006,12 @@ static __s32 explorer_listview_create(__gui_msg_t *msg)
             __msg("explorer file list init fail ") ;
             return EPDK_FAIL ;
         }
-        //½¨Á¢Ò»¸ötimer£¬ÓÃÓÚÉ¾³ý" É¾³ý¶Ô»°¿ò"
+        //å»ºç«‹ä¸€ä¸ªtimerï¼Œç”¨äºŽåˆ é™¤" åˆ é™¤å¯¹è¯æ¡†"
         GUI_SetTimer( list_win , ExplorerTimerId , C_EXP_TIMER_INTERVAL , NULL );
     }
     else*/
     {
-        /*if( list_para->root_para->return_to_explorer_file_list == 0 ) // ½øÈëusb / sd Ñ¡Ôñ´°¿ÚÖÐ
+        /*if( list_para->root_para->return_to_explorer_file_list == 0 ) // è¿›å…¥usb / sd é€‰æ‹©çª—å£ä¸­
         {
             ret  =  explorer_file_list_init ( list_para ) ;
             if( EPDK_FAIL == ret )
@@ -7003,7 +7020,7 @@ static __s32 explorer_listview_create(__gui_msg_t *msg)
                 return EPDK_FAIL ;
             }
         }
-        else*/      // ½øÈëÎÄ¼þä¯ÀÀÁÐ±íÖÐ                         //..
+        else*/      // è¿›å…¥æ–‡ä»¶æµè§ˆåˆ—è¡¨ä¸­                         //..
         {
             ret  =  explorer_file_list_init(list_para) ;
 
@@ -7013,7 +7030,7 @@ static __s32 explorer_listview_create(__gui_msg_t *msg)
                 return EPDK_FAIL ;
             }
 
-            list_para->root_para->explr_root = list_para->root_type;    //±£´æÅÌ·û
+            list_para->root_para->explr_root = list_para->root_type;    //ä¿å­˜ç›˜ç¬¦
             explorer_rat_init(list_para);
 
             if (list_para->rat.total <= 0)
@@ -7045,7 +7062,7 @@ static __s32 explorer_listview_create(__gui_msg_t *msg)
     //explorer_mediatype_listbar_init(list_win); // shiql change this for D100 20160715
     explorer_listbar_init(list_win);
     explorer_list_long_string_init(list_para);
-    // Èç¹û±³¾°ÒôÀÖ´æÔÚ£¬»òÕßÊÇ½øÈëÒôÀÖÁÐ±í£¬ÉèÖÃÒ»¸ötimer
+    // å¦‚æžœèƒŒæ™¯éŸ³ä¹å­˜åœ¨ï¼Œæˆ–è€…æ˜¯è¿›å…¥éŸ³ä¹åˆ—è¡¨ï¼Œè®¾ç½®ä¸€ä¸ªtimer
     /*if( ret = is_app_exist( APP_MUSIC ) , ( EPDK_TRUE == ret )\
         ||(RAT_MEDIA_TYPE_AUDIO == list_para->media_type) )
     {
@@ -7055,7 +7072,7 @@ static __s32 explorer_listview_create(__gui_msg_t *msg)
     */
 #if (EXPLORER_SUPPORT_MINIATURE == 1)
     ret = explorer_get_item_miniature_rect(list_para, &miniature_rect);
-    list_para->listbar_miniature_buf = esMEMS_Balloc(miniature_rect.width * miniature_rect.height * 4); //ARGB8888,Òò´Ë4±¶´óÐ¡
+    list_para->listbar_miniature_buf = esMEMS_Balloc(miniature_rect.width * miniature_rect.height * 4); //ARGB8888,å› æ­¤4å€å¤§å°
     eLIBs_memset(list_para->listbar_miniature_buf, 0, miniature_rect.width * miniature_rect.height * 4);
     list_para->listbar_miniature_size = miniature_rect.width * miniature_rect.height * 4 ;
     ui_param = explorer_get_viewer_ui_param();
@@ -7084,7 +7101,7 @@ void explorer_list_on_timer(__gui_msg_t *msg)
 
     if (ExplorerTimerId == msg->dwAddData1) //only for file manager delete file dialog timer
     {
-        if (list_para->del_dlg_open)    // ÅÐ¶ÏÉ¾³ý¶Ô»°¿òÊÇ·ñ´æÔÚ£¬´æÔÚ°Ñ¶Ô»°¿òÉ¾³ý
+        if (list_para->del_dlg_open)    // åˆ¤æ–­åˆ é™¤å¯¹è¯æ¡†æ˜¯å¦å­˜åœ¨ï¼Œå­˜åœ¨æŠŠå¯¹è¯æ¡†åˆ é™¤
         {
             list_para->del_dlg_open = EPDK_FALSE;
             //explorer_draw_file_info(list_para);
@@ -7093,7 +7110,7 @@ void explorer_list_on_timer(__gui_msg_t *msg)
 
     if (ExplorerDrawBgMusicIndexTimer == msg->dwAddData1)
     {
-        if (list_para->enter_sd_usb_flag == 1)  //½øÈëÁËÎÄ¼þÁÐ±íä¯ÀÀ´°¿Ú²ÅÏìÓ¦timer
+        if (list_para->enter_sd_usb_flag == 1)  //è¿›å…¥äº†æ–‡ä»¶åˆ—è¡¨æµè§ˆçª—å£æ‰å“åº”timer
         {
             explorer_list_draw_bg_music_play_song_index(msg->h_deswin);
         }
@@ -7144,7 +7161,7 @@ static __s32 _explorer_list_win_cb(__gui_msg_t *msg)
                 explorer_listview_onpaint(msg);
             }
 
-            gscene_hbar_set_state(HBAR_ST_SHOW);        // ÏÔÊ¾hbar
+            gscene_hbar_set_state(HBAR_ST_SHOW);        // æ˜¾ç¤ºhbar
             return EPDK_OK;
         }
 
@@ -7190,7 +7207,7 @@ static __s32 _explorer_list_win_cb(__gui_msg_t *msg)
             return EPDK_OK ;
         }
 
-        case DSK_MSG_ALARM: //explorer list ÊÕµ½Õâ¸öÏûÏ¢Ê±£¬Ö»Ðè°Ñµ±Ç°µ¯³öµÄ´°¿ÚÉ¾³ýµô¼´¿É
+        case DSK_MSG_ALARM: //explorer list æ”¶åˆ°è¿™ä¸ªæ¶ˆæ¯æ—¶ï¼Œåªéœ€æŠŠå½“å‰å¼¹å‡ºçš„çª—å£åˆ é™¤æŽ‰å³å¯
         {
             explr_list_para_t *list_para;
             list_para = (explr_list_para_t *)GUI_WinGetAttr(msg->h_deswin);
@@ -7219,7 +7236,7 @@ static __s32 _explorer_list_win_cb(__gui_msg_t *msg)
 }
 
 
-//ÊÍ·ÅListwindow
+//é‡Šæ”¾Listwindow
 __s32 explorer_list_win_delete(H_WIN list_win)
 {
     GUI_FrmWinDelete(list_win);
@@ -7231,10 +7248,10 @@ __s32 explorer_list_win_delete(H_WIN list_win)
 ******************************************************************************************
 *Function   : void  explorer_cmd2parent(H_WIN hwin, __s32 id, __s32 data1, __s32 data2)
 *
-*Description    :       Ïò¸¸´°¿Ú´«ËÍÃüÁîÏûÏ¢
+*Description    :       å‘çˆ¶çª—å£ä¼ é€å‘½ä»¤æ¶ˆæ¯
 *
-*Arguments      :       hwin, Ö÷´°¿Ú¾ä±ú
-*                   id,     ÃüÁî²ÎÊý
+*Arguments      :       hwin, ä¸»çª—å£å¥æŸ„
+*                   id,     å‘½ä»¤å‚æ•°
 *Return         :
 *
 *******************************************************************************************
@@ -7261,9 +7278,9 @@ void  explorer_cmd2parent(H_WIN hwin, __s32 id, __s32 data1, __s32 data2)
 ****************************************************************************************
 *Function   :  void ExplorerSendMessage(H_WIN hwin, __s32 id, __s32 data1, __s32 data2)
 *
-*Description    :   SendMessage,·¢ËÍÍ¬²½ÏûÏ¢£¬¸ÄÏûÏ¢»Øµ÷º¯Êý½«»á±»Á¢¼´Ö´ÐÐ
+*Description    :   SendMessage,å‘é€åŒæ­¥æ¶ˆæ¯ï¼Œæ”¹æ¶ˆæ¯å›žè°ƒå‡½æ•°å°†ä¼šè¢«ç«‹å³æ‰§è¡Œ
 *
-*Arguments      :   Òì²½ÏûÏ¢&NotifyMessage ½«»á±»²åÈëµ½ÏûÏ¢¶ÓÁÐÖÐ£¬²»»á±»Á¢¼´Ö´ÐÐ
+*Arguments      :   å¼‚æ­¥æ¶ˆæ¯&NotifyMessage å°†ä¼šè¢«æ’å…¥åˆ°æ¶ˆæ¯é˜Ÿåˆ—ä¸­ï¼Œä¸ä¼šè¢«ç«‹å³æ‰§è¡Œ
 *
 *Return         :
 *
@@ -7288,7 +7305,7 @@ void ExplorerSendMessage(H_WIN hwin, __s32 id, __s32 data1, __s32 data2)
 *****************************************************************************************
 *Function   :          void  ExplorerListWinGetSearchPath(explr_list_para_t *para)
 *
-*Description    :       ¸ù¾ÝRootType »ñµÃSearch path
+*Description    :       æ ¹æ®RootType èŽ·å¾—Search path
 *
 *Arguments      :
 *
@@ -7393,7 +7410,7 @@ __s32 explorer_list_long_string_start_roll_fast(__lbar_draw_para_t *draw_param, 
         //roll_rect.y = draw_param->rect.y  + ui_para->list_item_ui_param.text_rect.y;
         //roll_rect.width = ui_para->list_item_ui_param.text_rect.width+1;
         //roll_rect.height = ui_para->list_item_ui_param.text_rect.height;
-        explorer_get_item_text_rect(this, &text_rect);  //»ñµÃtext rectangle
+        explorer_get_item_text_rect(this, &text_rect);  //èŽ·å¾—text rectangle
         roll_rect.x = draw_param->rect.x  + text_rect.x ;
         roll_rect.y = draw_param->rect.y  + text_rect.y ;
         roll_rect.width = text_rect.width ;
@@ -7452,4 +7469,3 @@ static __s32 explorer_list_long_string_stop_roll(explr_list_para_t *this)
 
     return EPDK_FAIL;
 }
-
