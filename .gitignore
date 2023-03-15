@@ -100,3 +100,16 @@ livedesk/beetles/sun20iw1_app/res/theme/record/record.script
 livedesk/beetles/sun20iw1_app/res/theme/setting/setting.script
 projects/d1s-evb-board/epos.img
 elibrary/bin/libmediainfo.a
+emodules/mod_update/update.elf
+emodules/mod_update/update.mod
+emodules/mod_video_play/video_play.elf
+emodules/mod_video_play/video_play.mod
+scripts/markelf
+scripts/basic/fixdep
+scripts/kconfig/conf
+scripts/kconfig/zconf.hash.c
+scripts/kconfig/zconf.lex.c
+scripts/kconfig/zconf.tab.c
+ekernel/arch/boot/Image
+ekernel/arch/boot/zImage
+ekernel/arch/boot/zImage.bin
