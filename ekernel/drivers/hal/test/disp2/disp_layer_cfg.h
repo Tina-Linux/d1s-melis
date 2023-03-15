@@ -25,8 +25,6 @@ extern "C" {
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
-#include <rtthread.h>
-#include <log.h>
 #include <hal_mem.h>
 #include <video/sunxi_display2.h>
 

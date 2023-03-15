@@ -33,8 +33,10 @@ extern "C"
 #include <hal_clk.h>
 #include <spi/platform_spi.h>
 #include <spi/common_spi.h>
-
-
+#ifdef CONFIG_COMPONENTS_PM
+#include <pm_devops.h>
+#include <pm_wakelock.h>
+#endif
 
 /*****************************************************************************
  * spi master
@@ -46,13 +48,14 @@ typedef enum
 {
     HAL_SPI_MASTER_0 = 0, /**< spi master port 0 */
     HAL_SPI_MASTER_1 = 1, /**< spi master port 1 */
-    HAL_SPI_MASTER_2 = 2, /**< spi master port 1 */
+    HAL_SPI_MASTER_2 = 2, /**< spi master port 2 */
+    HAL_SPI_MASTER_3 = 3, /**< spi master port 3 */
     HAL_SPI_MASTER_MAX = SPI_MAX_NUM,   /**< spi master max port number\<invalid\> */
 } hal_spi_master_port_t;
 
 typedef struct
 {
-    const uint8_t *tx_buf; /**< Data buffer to send, */
+    uint8_t *tx_buf; /**< Data buffer to send, */
     uint32_t tx_len; /**< The total number of bytes to send. */
     uint32_t
     tx_single_len; /**< The number of bytes to send in single mode. */
@@ -71,6 +74,7 @@ typedef enum spi_mode_type
 {
     SGLE_HALF_DUPLEX_RX, /* single mode, half duplex read */
     SGLE_HALF_DUPLEX_TX, /* single mode, half duplex write */
+    SINGLE_FULL_DUPLEX_RX_TX,	/* single mode, full duplex read and write */
     DUAL_HALF_DUPLEX_RX, /* dual mode, half duplex read */
     DUAL_HALF_DUPLEX_TX, /* dual mode, half duplex write */
     QUAD_HALF_DUPLEX_RX, /* quad mode, half duplex read */
@@ -84,36 +88,6 @@ typedef struct spi_dma
     struct dma_slave_config config;
     struct sunxi_dma_chan *chan;
 } spi_dma_t;
-
-typedef struct sunxi_spi
-{
-    int8_t result : 2;
-#define SPI_XFER_READY 0
-#define SPI_XFER_OK 1
-#define SPI_XFER_FAILED -1
-
-    bool sem;
-    uint16_t irqnum;
-    unsigned long base;
-    spi_mode_type_t mode_type;
-
-    hal_clk_t pclk; /* PLL clock */
-    hal_clk_t bus_clk; /* BUS clock */
-    hal_clk_t mclk; /* spi module clock */
-    struct reset_control *reset;
-
-    spi_dma_t dma_rx;
-    spi_dma_t dma_tx;
-
-    char *align_dma_buf;
-#define ALIGN_DMA_BUF_SIZE (4096 + 64)
-
-    hal_sem_t xSemaphore_tx;
-    hal_sem_t xSemaphore_rx;
-
-    hal_spi_master_port_t port;
-    hal_spi_master_transfer_t *transfer;
-} sunxi_spi_t;
 
 typedef enum
 {
@@ -181,8 +155,8 @@ typedef enum
 /** @brief SPI master running status. */
 typedef enum
 {
-    HAL_SPI_MASTER_BUSY = 0, /**< SPI master is busy. */
-    HAL_SPI_MASTER_IDLE = 1  /**< SPI master is idle. */
+    HAL_SPI_MASTER_IDLE = 0, /**< SPI master is idle. */
+    HAL_SPI_MASTER_BUSY = 1  /**< SPI master is busy. */
 } hal_spi_master_running_status_t;
 
 typedef struct
@@ -200,7 +174,51 @@ typedef struct
     cpha; /**< SPI master clock phase setting. 0: Phase 0(Leading edge
             for sample data)  1: Phase 1(Leading edge for setup data)
             */
+    uint32_t sip;
+    uint32_t flash;
 } hal_spi_master_config_t;
+
+typedef struct sunxi_spi
+{
+    int8_t result : 2;
+#define SPI_XFER_READY 0
+#define SPI_XFER_OK 1
+#define SPI_XFER_FAILED -1
+
+    bool sem;
+    uint16_t irqnum;
+    unsigned long base;
+    spi_mode_type_t mode_type;
+
+    hal_clk_t pclk; /* PLL clock */
+    hal_clk_t bus_clk; /* BUS clock */
+    hal_clk_t mclk; /* spi module clock */
+    struct reset_control *reset;
+
+    spi_dma_t dma_rx;
+    spi_dma_t dma_tx;
+
+    char *align_dma_buf;
+#define ALIGN_DMA_BUF_SIZE (4096 + 64)
+
+    hal_sem_t xSemaphore_tx;
+    hal_sem_t xSemaphore_rx;
+
+    hal_spi_master_port_t port;
+    hal_spi_master_config_t config;
+    hal_spi_master_transfer_t *transfer;
+
+#ifdef CONFIG_COMPONENTS_PM
+    struct pm_device pm;
+    struct wakelock wl;
+#endif
+    bool used;
+} sunxi_spi_t;
+
+struct hal_spi_master {
+	hal_spi_master_port_t port;
+	hal_spi_master_config_t cfg;
+};
 
 typedef enum
 {
@@ -209,7 +227,7 @@ typedef enum
 } hal_spi_transfer_cmd_t;
 
 spi_master_status_t hal_spi_init(hal_spi_master_port_t port, hal_spi_master_config_t *cfg);
-spi_master_status_t hal_spi_write(hal_spi_master_port_t port, const void *buf, uint32_t size);
+spi_master_status_t hal_spi_write(hal_spi_master_port_t port, void *buf, uint32_t size);
 spi_master_status_t hal_spi_deinit(hal_spi_master_port_t port);
 spi_master_status_t hal_spi_read(hal_spi_master_port_t port, void *buf, uint32_t size);
 spi_master_status_t hal_spi_xfer(hal_spi_master_port_t port, hal_spi_master_transfer_t *transfer);

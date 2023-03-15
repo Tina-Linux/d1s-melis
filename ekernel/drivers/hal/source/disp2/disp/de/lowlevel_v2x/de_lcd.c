@@ -240,15 +240,31 @@ s32 tcon_de_attach(u32 tcon_index, u32 de_index)
 	}
 
 #if defined(CONFIG_ARCH_SUN50IW10)
-	if (de_index == 0)
+	/* DE1 and DE0 cannot be connected to the same TCON*/
+	if (de_index == 0) {
+		if (lcd_top[1]->tcon_de_perh.bits.de_port1_perh == tcon_real_index)
+			lcd_top[1]->tcon_de_perh.bits.de_port1_perh =
+			    lcd_top[0]->tcon_de_perh.bits.de_port0_perh;
 		lcd_top[0]->tcon_de_perh.bits.de_port0_perh = tcon_real_index;
-	else if (de_index == 1)
+	} else if (de_index == 1) {
+		if (lcd_top[0]->tcon_de_perh.bits.de_port0_perh == tcon_real_index)
+			lcd_top[0]->tcon_de_perh.bits.de_port0_perh =
+			    lcd_top[1]->tcon_de_perh.bits.de_port1_perh;
 		lcd_top[1]->tcon_de_perh.bits.de_port1_perh = tcon_real_index;
+	}
 #else
-	if (de_index == 0)
+	/* DE1 and DE0 cannot be connected to the same TCON*/
+	if (de_index == 0) {
+		if (lcd_top[0]->tcon_de_perh.bits.de_port1_perh == tcon_real_index)
+			lcd_top[0]->tcon_de_perh.bits.de_port1_perh =
+			    lcd_top[0]->tcon_de_perh.bits.de_port0_perh;
 		lcd_top[0]->tcon_de_perh.bits.de_port0_perh = tcon_real_index;
-	else if (de_index == 1)
+	} else if (de_index == 1) {
+		if (lcd_top[0]->tcon_de_perh.bits.de_port0_perh == tcon_real_index)
+			lcd_top[0]->tcon_de_perh.bits.de_port0_perh =
+			    lcd_top[0]->tcon_de_perh.bits.de_port1_perh;
 		lcd_top[0]->tcon_de_perh.bits.de_port1_perh = tcon_real_index;
+	}
 #endif
 
 	return 0;
@@ -1079,8 +1095,13 @@ s32 tcon0_cfg(u32 sel, struct disp_panel_para *panel)
 
 s32 tcon0_cfg_ext(u32 sel, struct panel_extend_para *extend_panel)
 {
+#ifdef DE_GAMMA
+	de_gamma(sel, extend_panel->lcd_gamma_en,
+		   extend_panel->lcd_gamma_tbl);
+#else
 	tcon_gamma(sel, extend_panel->lcd_gamma_en,
 		   extend_panel->lcd_gamma_tbl);
+#endif
 	tcon_cmap(sel, extend_panel->lcd_cmap_en, extend_panel->lcd_cmap_tbl);
 
 	return 0;

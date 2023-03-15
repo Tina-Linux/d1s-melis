@@ -55,10 +55,10 @@ __s32 g2d_mixer_irq_query(void)
 __s32 g2d_bsp_open(void)
 {
 	g2d_top->sclk_gate.bits.mixer_sclk_gate = 1;
-	g2d_top->sclk_gate.bits.rot_sclk_gate = 1;
 	g2d_top->hclk_gate.bits.mixer_hclk_gate = 1;
-	g2d_top->hclk_gate.bits.rot_hclk_gate = 1;
 	g2d_top->ahb_rst.bits.mixer_ahb_rst = 1;
+	g2d_top->sclk_gate.bits.rot_sclk_gate = 1;
+	g2d_top->hclk_gate.bits.rot_hclk_gate = 1;
 	g2d_top->ahb_rst.bits.rot_ahb_rst = 1;
 	return 0;
 }
@@ -66,10 +66,10 @@ __s32 g2d_bsp_open(void)
 __s32 g2d_bsp_close(void)
 {
 	g2d_top->sclk_gate.bits.mixer_sclk_gate = 0;
-	g2d_top->sclk_gate.bits.rot_sclk_gate = 0;
 	g2d_top->hclk_gate.bits.mixer_hclk_gate = 0;
-	g2d_top->hclk_gate.bits.rot_hclk_gate = 0;
 	g2d_top->ahb_rst.bits.mixer_ahb_rst = 0;
+	g2d_top->sclk_gate.bits.rot_sclk_gate = 0;
+	g2d_top->hclk_gate.bits.rot_hclk_gate = 0;
 	g2d_top->ahb_rst.bits.rot_ahb_rst = 0;
 	return 0;
 }
@@ -77,8 +77,8 @@ __s32 g2d_bsp_close(void)
 __s32 g2d_bsp_reset(void)
 {
 	g2d_top->ahb_rst.bits.mixer_ahb_rst = 0;
-	g2d_top->ahb_rst.bits.rot_ahb_rst = 0;
 	g2d_top->ahb_rst.bits.mixer_ahb_rst = 1;
+	g2d_top->ahb_rst.bits.rot_ahb_rst = 0;
 	g2d_top->ahb_rst.bits.rot_ahb_rst = 1;
 	return 0;
 }

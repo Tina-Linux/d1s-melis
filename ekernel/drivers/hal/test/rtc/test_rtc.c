@@ -11,7 +11,7 @@ static int callback(void)
 
 static int cmd_test_rtc(int argc, const char **argv)
 {
-    unsigned int enable = 0;
+    unsigned int enable = 1;
     struct rtc_time rtc_tm;
     struct rtc_wkalrm wkalrm;
 
@@ -58,7 +58,8 @@ static int cmd_test_rtc(int argc, const char **argv)
     //if do hal_rtc_alarm_irq_enable and hal_rtc_uninit, alarm will not work
     hal_rtc_alarm_irq_enable(enable);
 
-    hal_rtc_deinit();
+    /* if the alarm time is less than code run,run here will close rtc, so the interrupt will not response*/
+    //hal_rtc_deinit();
     return 0;
 }
 

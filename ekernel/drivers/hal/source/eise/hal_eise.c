@@ -18,13 +18,12 @@
  */
 
 
-#include <interrupt.h>
+#include <hal_interrupt.h>
 #include <hal_queue.h>
 #include <sunxi_hal_common.h>
 #include "sunxi_hal_eise.h"
 #include <init.h>
 #include <hal_clk.h>
-#include <interrupt.h>
 #include <log.h>
 #define eise_err(x, arg...) printf("[EISE_ERR] (%s, %d)"x"\n", __func__, __LINE__, ##arg)
 #define eise_warn(x, arg...) printf("[EISE_WARN] (%s, %d)"x"\n", __func__, __LINE__, ##arg)
@@ -51,7 +50,7 @@ typedef enum
 
 static hal_eise_t sHalEise;
 
-static irqreturn_t eise_interrupt(int irq, void* dev_id)
+static hal_irqreturn_t eise_interrupt(void* dev_id)
 {
     int irq_status;
     hal_eise_t* pHe = &sHalEise;
@@ -70,7 +69,7 @@ static irqreturn_t eise_interrupt(int irq, void* dev_id)
 
     pHe->interrupt_times++;
 */
-    return IRQ_HANDLED;
+    return HAL_IRQ_OK;
 }
 
 static int32_t eise_hal_init(int32_t dev)
@@ -88,14 +87,14 @@ static int32_t eise_hal_init(int32_t dev)
         eise_err("creating hal semaphore failed\n");
         return SUNXI_HAL_ERROR;
     }
-    int ret = request_irq(pHe->irq_id, (irq_handler_t)eise_interrupt, 0, "sunxi_eise", NULL);
+    int ret = hal_request_irq(pHe->irq_id, eise_interrupt, "sunxi_eise", NULL);
     if (ret < 0) {
         eise_err("Request EISE Irq error! return %d\n", ret);
         return SUNXI_HAL_ERROR;
     } else {
         //eise_print("Request EISE Irq success! irq_id = %d, return %d\n", pHe->irq_id, ret);
     }
-    enable_irq(pHe->irq_id);
+    hal_enable_irq(pHe->irq_id);
     return SUNXI_HAL_OK;
 }
 
@@ -103,7 +102,7 @@ static int32_t eise_hal_uninit(int32_t dev)
 {
     hal_eise_t* pHe = &sHalEise;
     hal_clock_disable(pHe->mclk);
-    free_irq(pHe->irq_id, NULL);
+    hal_free_irq(pHe->irq_id);
     eise_print("EISE device has been removed!\n");
     return 0;
 }

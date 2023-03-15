@@ -858,7 +858,7 @@ rt_int32_t rt_vsnprintf(char       *buf,
 #ifdef RT_PRINTF_LONGLONG
     unsigned long long num;
 #else
-    rt_uint32_t num;
+    unsigned long num;
 #endif
     int i, len;
     char *str, *end, c;
@@ -1145,7 +1145,7 @@ rt_int32_t rt_vsnprintf(char       *buf,
         if (qualifier == 'l')
 #endif
         {
-            num = va_arg(args, rt_uint32_t);
+            num = va_arg(args, unsigned long);
             if (flags & SIGN)
             {
                 num = (rt_int32_t)num;
@@ -1153,7 +1153,7 @@ rt_int32_t rt_vsnprintf(char       *buf,
         }
         else if (qualifier == 'h')
         {
-            num = (rt_uint16_t)va_arg(args, rt_int32_t);
+            num = (rt_uint16_t)va_arg(args, unsigned long);
             if (flags & SIGN)
             {
                 num = (rt_int16_t)num;
@@ -1161,7 +1161,7 @@ rt_int32_t rt_vsnprintf(char       *buf,
         }
         else
         {
-            num = va_arg(args, rt_uint32_t);
+            num = (uint32_t)va_arg(args, unsigned long);
             if (flags & SIGN)
             {
                 num = (rt_int32_t)num;
@@ -1298,16 +1298,11 @@ RTM_EXPORT(rt_console_set_device);
 
 RT_WEAK void rt_hw_console_output(const char *str)
 {
-#if defined(CONFIG_ARM)
     rt_device_t kconsole = rt_console_get_device();
     if(kconsole)
     {
         kconsole->write(kconsole, 0, str, rt_strlen(str));
     }
-#elif defined(CONFIG_RISCV)
-    int uart_put_buffer(const char *buf, int count);
-    uart_put_buffer(str, rt_strlen(str));
-#endif
 }
 RTM_EXPORT(rt_hw_console_output);
 
@@ -1324,13 +1319,17 @@ void rt_kputs(const char *str)
     }
 
 #ifdef RT_USING_DEVICE
-    if (get_default_console() == RT_NULL)
+    if (_console_device == RT_NULL)
     {
         rt_hw_console_output(str);
     }
     else
     {
-        cli_console_write(get_clitask_console(), str, rt_strlen(str));
+        rt_uint16_t old_flag = _console_device->open_flag;
+
+        _console_device->open_flag |= RT_DEVICE_FLAG_STREAM;
+        rt_device_write(_console_device, 0, str, rt_strlen(str));
+        _console_device->open_flag = old_flag;
     }
 #else
     rt_hw_console_output(str);
@@ -1361,14 +1360,23 @@ int rt_kprintf(const char *fmt, ...)
     {
         length = RT_CONSOLEBUF_SIZE - 1;
     }
+
 #ifdef RT_USING_DEVICE
-    if (get_default_console() == RT_NULL)
+    if (_console_device == RT_NULL)
     {
         rt_hw_console_output(rt_log_buf);
     }
     else
     {
+        rt_uint16_t old_flag = _console_device->open_flag;
+
+        _console_device->open_flag |= RT_DEVICE_FLAG_STREAM;
+#ifdef CONFIG_SUBSYS_MULTI_CONSOLE
         cli_console_write(get_clitask_console(), rt_log_buf, length);
+#else
+        rt_device_write(_console_device, 0, rt_log_buf, length);
+#endif
+        _console_device->open_flag = old_flag;
     }
 #else
     rt_hw_console_output(rt_log_buf);

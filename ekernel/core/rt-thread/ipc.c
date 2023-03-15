@@ -81,7 +81,9 @@ rt_inline rt_err_t rt_ipc_object_init(struct rt_ipc_object *ipc)
  *
  * @return the operation status, RT_EOK on successful
  */
-rt_inline rt_err_t rt_ipc_list_suspend(rt_list_t *list, struct rt_thread *thread, rt_uint8_t flag)
+rt_inline rt_err_t rt_ipc_list_suspend(rt_list_t        *list,
+                                       struct rt_thread *thread,
+                                       rt_uint8_t        flag)
 {
     /* suspend thread */
     rt_thread_suspend(thread);
@@ -206,7 +208,9 @@ rt_uint8_t rt_ipc_get_highest_priority(rt_list_t *list)
     {
         sthread = rt_list_entry(n, struct rt_thread, tlist);
 
-        priority = priority < sthread->current_priority ? priority : sthread->current_priority;
+        priority = priority < sthread->current_priority ?
+                   priority :
+                   sthread->current_priority;
     }
     return priority;
 }
@@ -223,7 +227,10 @@ rt_uint8_t rt_ipc_get_highest_priority(rt_list_t *list)
  *
  * @return the operation status, RT_EOK on successful
  */
-rt_err_t rt_sem_init(rt_sem_t sem, const char *name, rt_uint32_t value, rt_uint8_t flag)
+rt_err_t rt_sem_init(rt_sem_t    sem,
+                     const char *name,
+                     rt_uint32_t value,
+                     rt_uint8_t  flag)
 {
     RT_ASSERT(sem != RT_NULL);
     RT_ASSERT(value < 0x10000U);
@@ -361,8 +368,10 @@ rt_err_t rt_sem_take(rt_sem_t sem, rt_base_t time)
     /* disable interrupt */
     temp = rt_hw_interrupt_disable();
 
-    RT_DEBUG_LOG(RT_DEBUG_IPC, ("thread %s take sem:%s, which value is: %d\n", \
-                                    rt_thread_self()->name, ((struct rt_object *)sem)->name, sem->value));
+    RT_DEBUG_LOG(RT_DEBUG_IPC, ("thread %s take sem:%s, which value is: %d\n",
+                                rt_thread_self()->name,
+                                ((struct rt_object *)sem)->name,
+                                sem->value));
 
     if (sem->value > 0)
     {
@@ -383,6 +392,7 @@ rt_err_t rt_sem_take(rt_sem_t sem, rt_base_t time)
         }
         else
         {
+
 #ifdef CONFIG_CHECK_PREEMPT_LEVEL_IN_IPC
             RT_ASSERT(preempt_level() == 0);
 #endif
@@ -397,20 +407,24 @@ rt_err_t rt_sem_take(rt_sem_t sem, rt_base_t time)
             /* reset thread error number */
             thread->error = RT_EOK;
 
-            RT_DEBUG_LOG(RT_DEBUG_IPC, ("sem take: suspend thread - %s\n", thread->name));
+            RT_DEBUG_LOG(RT_DEBUG_IPC, ("sem take: suspend thread - %s\n",
+                                        thread->name));
 
             /* suspend thread */
-            rt_ipc_list_suspend(&(sem->parent.suspend_thread), thread, sem->parent.parent.flag);
+            rt_ipc_list_suspend(&(sem->parent.suspend_thread),
+                                thread,
+                                sem->parent.parent.flag);
 
             /* has waiting time, start thread timer */
             if (time > 0)
             {
-                rt_tick_t tm = time;
-                RT_DEBUG_LOG(RT_DEBUG_IPC, ("set thread:%s to timer list\n", thread->name));
+                RT_DEBUG_LOG(RT_DEBUG_IPC, ("set thread:%s to timer list\n",
+                                            thread->name));
 
                 /* reset the timeout of thread timer and start it */
-                rt_timer_control(&(thread->thread_timer), RT_TIMER_CTRL_SET_TIME, &tm);
-
+                rt_timer_control(&(thread->thread_timer),
+                                 RT_TIMER_CTRL_SET_TIME,
+                                 &time);
                 rt_timer_start(&(thread->thread_timer));
             }
 
@@ -470,8 +484,10 @@ rt_err_t rt_sem_release(rt_sem_t sem)
     /* disable interrupt */
     temp = rt_hw_interrupt_disable();
 
-    RT_DEBUG_LOG(RT_DEBUG_IPC, ("thread %s releases sem:%s, which value is: %d\n", \
-                                rt_thread_self()->name, ((struct rt_object *)sem)->name, sem->value));
+    RT_DEBUG_LOG(RT_DEBUG_IPC, ("thread %s releases sem:%s, which value is: %d\n",
+                                rt_thread_self()->name,
+                                ((struct rt_object *)sem)->name,
+                                sem->value));
 
     if (!rt_list_isempty(&sem->parent.suspend_thread))
     {
@@ -707,7 +723,8 @@ rt_err_t rt_mutex_take(rt_mutex_t mutex, rt_base_t time)
 
     RT_OBJECT_HOOK_CALL(rt_object_trytake_hook, (&(mutex->parent.parent)));
 
-    RT_DEBUG_LOG(RT_DEBUG_IPC, ("mutex_take: current thread %s, mutex value: %d, hold: %d\n",
+    RT_DEBUG_LOG(RT_DEBUG_IPC,
+                 ("mutex_take: current thread %s, mutex value: %d, hold: %d\n",
                   thread->name, mutex->value, mutex->hold));
 
     /* reset thread error */
@@ -752,27 +769,39 @@ __again:
             }
             else
             {
+#ifdef CONFIG_CHECK_PREEMPT_LEVEL_IN_IPC
+                RT_ASSERT(preempt_level() == 0);
+#endif
+
                 /* mutex is unavailable, push to suspend list */
-                RT_DEBUG_LOG(RT_DEBUG_IPC, ("mutex_take: suspend thread: %s\n", thread->name));
+                RT_DEBUG_LOG(RT_DEBUG_IPC, ("mutex_take: suspend thread: %s\n",
+                                            thread->name));
 
                 /* change the owner thread priority of mutex */
                 if (thread->current_priority < mutex->owner->current_priority)
                 {
                     /* change the owner thread priority */
-                    rt_thread_control(mutex->owner, RT_THREAD_CTRL_CHANGE_PRIORITY, &thread->current_priority);
+                    rt_thread_control(mutex->owner,
+                                      RT_THREAD_CTRL_CHANGE_PRIORITY,
+                                      &thread->current_priority);
                 }
 
                 /* suspend current thread */
-                rt_ipc_list_suspend(&(mutex->parent.suspend_thread), thread, mutex->parent.parent.flag);
+                rt_ipc_list_suspend(&(mutex->parent.suspend_thread),
+                                    thread,
+                                    mutex->parent.parent.flag);
 
                 /* has waiting time, start thread timer */
                 if (time > 0)
                 {
-                    RT_DEBUG_LOG(RT_DEBUG_IPC, ("mutex_take: start the timer of thread:%s\n", thread->name));
+                    RT_DEBUG_LOG(RT_DEBUG_IPC,
+                                 ("mutex_take: start the timer of thread:%s\n",
+                                  thread->name));
 
                     /* reset the timeout of thread timer and start it */
-                    rt_timer_control(&(thread->thread_timer), RT_TIMER_CTRL_SET_TIME, &time);
-
+                    rt_timer_control(&(thread->thread_timer),
+                                     RT_TIMER_CTRL_SET_TIME,
+                                     &time);
                     rt_timer_start(&(thread->thread_timer));
                 }
 
@@ -842,8 +871,9 @@ rt_err_t rt_mutex_release(rt_mutex_t mutex)
     /* disable interrupt */
     temp = rt_hw_interrupt_disable();
 
-    RT_DEBUG_LOG(RT_DEBUG_IPC, ("mutex_release:current thread %s, mutex value: %d, hold: %d\n",
-                    thread->name, mutex->value, mutex->hold));
+    RT_DEBUG_LOG(RT_DEBUG_IPC,
+                 ("mutex_release:current thread %s, mutex value: %d, hold: %d\n",
+                  thread->name, mutex->value, mutex->hold));
 
     RT_OBJECT_HOOK_CALL(rt_object_put_hook, (&(mutex->parent.parent)));
 
@@ -866,16 +896,21 @@ rt_err_t rt_mutex_release(rt_mutex_t mutex)
         /* change the owner thread to original priority */
         if (mutex->original_priority != mutex->owner->current_priority)
         {
-            rt_thread_control(mutex->owner, RT_THREAD_CTRL_CHANGE_PRIORITY, &(mutex->original_priority));
+            rt_thread_control(mutex->owner,
+                              RT_THREAD_CTRL_CHANGE_PRIORITY,
+                              &(mutex->original_priority));
         }
 
         /* wakeup suspended thread */
         if (!rt_list_isempty(&mutex->parent.suspend_thread))
         {
             /* get suspended thread */
-            thread = rt_list_entry(mutex->parent.suspend_thread.next, struct rt_thread, tlist);
+            thread = rt_list_entry(mutex->parent.suspend_thread.next,
+                                   struct rt_thread,
+                                   tlist);
 
-            RT_DEBUG_LOG(RT_DEBUG_IPC, ("mutex_release: resume thread: %s\n", thread->name));
+            RT_DEBUG_LOG(RT_DEBUG_IPC, ("mutex_release: resume thread: %s\n",
+                                        thread->name));
 
             /* set new owner and priority */
             mutex->owner             = thread;
@@ -883,7 +918,7 @@ rt_err_t rt_mutex_release(rt_mutex_t mutex)
             mutex->hold ++;
 
             max_priority = rt_ipc_get_highest_priority(&mutex->parent.suspend_thread);
-            if (thread->current_priority != max_priority)
+            if ((mutex->parent.parent.flag == RT_IPC_FLAG_FIFO) && (thread->current_priority != max_priority))
             {
                 rt_thread_control(thread, RT_THREAD_CTRL_CHANGE_PRIORITY, &(max_priority));
             }
@@ -1713,7 +1748,9 @@ rt_err_t rt_mb_recv(rt_mailbox_t mb, rt_ubase_t *value, rt_base_t timeout)
 
         RT_DEBUG_IN_THREAD_CONTEXT;
         /* suspend current thread */
-        rt_ipc_list_suspend(&(mb->parent.suspend_thread), thread, mb->parent.parent.flag);
+        rt_ipc_list_suspend(&(mb->parent.suspend_thread),
+                            thread,
+                            mb->parent.parent.flag);
 
         /* has waiting time, start thread timer */
         if (timeout > 0)
@@ -1721,10 +1758,13 @@ rt_err_t rt_mb_recv(rt_mailbox_t mb, rt_ubase_t *value, rt_base_t timeout)
             /* get the start tick of timer */
             tick_delta = rt_tick_get();
 
-            RT_DEBUG_LOG(RT_DEBUG_IPC, ("mb_recv: start timer of thread:%s\n", thread->name));
+            RT_DEBUG_LOG(RT_DEBUG_IPC, ("mb_recv: start timer of thread:%s\n",
+                                        thread->name));
 
             /* reset the timeout of thread timer and start it */
-            rt_timer_control(&(thread->thread_timer), RT_TIMER_CTRL_SET_TIME, &timeout);
+            rt_timer_control(&(thread->thread_timer),
+                             RT_TIMER_CTRL_SET_TIME,
+                             &timeout);
             rt_timer_start(&(thread->thread_timer));
         }
 

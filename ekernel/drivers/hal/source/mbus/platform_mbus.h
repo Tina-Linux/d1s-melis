@@ -35,8 +35,10 @@
 
 #if defined(CONFIG_ARCH_SUN8IW18P1)
 #include "platform/mbus_sun8iw18.h"
-#elif defined(CONFIG_SOC_SUN20IW1P1)
+#elif defined(CONFIG_SOC_SUN20IW1P1) || defined(CONFIG_ARCH_SUN8IW20)
 #include "platform/mbus_sun20iw1.h"
+#elif defined(CONFIG_ARCH_SUN20IW2)
+#include "platform/mbus_sun20iw2.h"
 #endif
 
 #endif

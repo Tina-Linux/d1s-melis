@@ -1,6 +1,5 @@
 obj-y += pcm.o
 obj-y += control.o
-obj-y += alsa_config.o
 obj-y += pcm_config.o
 obj-y += pcm_hw.o
 obj-y += pcm_direct.o
@@ -23,6 +22,14 @@ obj-y += pcm_params.o
 obj-y += pcm_rate_linear.o
 obj-y += external_resample/speexrate/rate_speexrate.o
 obj-y += external_resample/speexrate/resample_speexdsp.o
+
+ifneq ($(CONFIG_KERNEL_FREERTOS), y)
+obj-y += alsa_config.o
+endif
+ifeq ($(CONFIG_KERNEL_FREERTOS)_$(CONFIG_ARCH_DSP), y_y)
+obj-y += alsa_config.o
+endif
+
 #obj-y += external_resample/awrate/doResample.o
 #obj-y += external_resample/awrate/rate_awrate.o
 #obj-y += external_resample/awrate/audiomix.o

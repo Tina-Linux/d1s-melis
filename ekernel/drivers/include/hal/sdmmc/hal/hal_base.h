@@ -39,7 +39,7 @@
 #include "hal_board.h"
 #include "hal_dev.h"
 
-#include "hal_debug.h"
+#include "xradio_hal_debug.h"
 #include "hal_os.h"
 
 #endif /* _DRIVER_CHIP_HAL_BASE_H_ */

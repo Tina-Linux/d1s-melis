@@ -1,11 +1,20 @@
-EXTRA_CFLAGS += -I$(MELIS_BASE)/ekernel/drivers/include/hal/sdmmc
-EXTRA_CFLAGS += -I$(MELIS_BASE)/ekernel/drivers/include/hal/sdmmc/hal
-EXTRA_CFLAGS += -I$(MELIS_BASE)/ekernel/drivers/include/hal/sdmmc/sys
-EXTRA_CFLAGS += -I$(MELIS_BASE)/ekernel/drivers/include/hal/sdmmc/osal
-EXTRA_CFLAGS += -I$(MELIS_BASE)/ekernel/drivers/include/hal/sdmmc/os
-EXTRA_CFLAGS += -I$(MELIS_BASE)/ekernel/drivers/include/hal/sdmmc/osal/RT-Thread
-EXTRA_CFLAGS += -Werror
-#EXTRA_CFLAGS += -I$(MELIS_BASE)/ekernel/drivers/include/hal/sdmmc/osal/FreeRTOS
+
+ifeq ($(CONFIG_OS_MELIS), y)
+INC_PREFIX = drivers/
+subdir-ccflags-y += -I $(INC_PREFIX)include/hal/sdmmc/osal/RT-Thread
+endif
+
+ifeq ($(CONFIG_KERNEL_FREERTOS), y)
+INC_PREFIX =
+subdir-ccflags-y += -I $(INC_PREFIX)include/hal/sdmmc/osal/FreeRTOS
+endif
+
+subdir-ccflags-y += -I $(INC_PREFIX)include/hal/sdmmc
+subdir-ccflags-y += -I $(INC_PREFIX)include/hal/sdmmc/hal
+subdir-ccflags-y += -I $(INC_PREFIX)include/hal/sdmmc/sys
+subdir-ccflags-y += -I $(INC_PREFIX)include/hal/sdmmc/osal
+subdir-ccflags-y += -I $(INC_PREFIX)include/hal/sdmmc/os
+subdir-ccflags-y += -Werror
 
 obj-y += osal/
 obj-y += core.o

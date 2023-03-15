@@ -29,8 +29,6 @@
 #include <rtthread.h>
 #include <preempt.h>
 #include <rthw.h>
-#include <excep.h>
-#include <kconfig.h>
 
 extern rt_list_t rt_thread_priority_table[RT_THREAD_PRIORITY_MAX];
 extern struct rt_thread *rt_current_thread;
@@ -90,6 +88,11 @@ void rt_thread_exit(void)
 {
     struct rt_thread *thread;
     register rt_base_t level;
+
+#ifdef CONFIG_AW_CHECK_MELIS_TASK_EXIT
+    void aw_check_melis_task_exit(void);
+    aw_check_melis_task_exit();
+#endif
 
     /* get current thread */
     thread = rt_current_thread;
@@ -411,6 +414,9 @@ rt_thread_t rt_thread_create(const char *name,
         return RT_NULL;
     }
 
+#ifdef CONFIG_KASAN
+    stack_size += stack_size;
+#endif
     stack_start = (void *)RT_KERNEL_MALLOC(stack_size);
     if (stack_start == RT_NULL)
     {

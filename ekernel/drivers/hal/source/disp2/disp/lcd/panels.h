@@ -148,4 +148,8 @@ extern struct __lcd_panel st7789v_cpu_panel;
 extern struct __lcd_panel VVX07H005A10_panel;
 #endif
 
+#ifdef CONFIG_LCD_SUPPORT_TFT08006
+extern struct __lcd_panel tft08006_panel;
+#endif
+
 #endif

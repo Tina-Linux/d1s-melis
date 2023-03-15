@@ -1,5 +1,8 @@
 subdir-ccflags-y +=
 
+ifeq ($(CONFIG_MOD_SLIB), y)
+endif
+
 ifeq ($(CONFIG_MOD_CEDAR_ENABLE), y)
 endif
 ifeq ($(CONFIG_MOD_WILLOW_ENABLE), y)
@@ -17,12 +20,12 @@ ifeq ($(CONFIG_MOD_CHARSET_ENABLE), y)
 obj-m += mod_charset/
 endif
 
-ifeq ($(CONFIG_FINSH_EXTERN_SCRIPT), y)
-obj-m += mod_test/
+ifeq ($(CONFIG_MOD_UPDATE), y)
+obj-m += mod_update/
 endif
 
 #add this judgement temporarily by swb-date-210305, could be change in the future
-ifeq ($(CONFIG_SOC_SUN20IW1), y)
+ifeq ($(CONFIG_MOD_FM), y)
 obj-m += fm/
 endif
 
@@ -31,5 +34,8 @@ obj-m += mod_mixture/
 endif
 
 ifeq ($(CONFIG_MOD_JPEG_CODEC_ENABLE), y)
-obj-m += mod_jpeg_dec/
+endif
+
+ifeq ($(CONFIG_MOD_VIDEO_PLAY_ENABLE), y)
+obj-m += mod_video_play/
 endif

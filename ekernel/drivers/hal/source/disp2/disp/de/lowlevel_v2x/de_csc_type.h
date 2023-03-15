@@ -70,6 +70,26 @@ union GLB_ALPHA_REG {
 	} bits;
 };
 
+union GAMMA_CTL_REG {
+	unsigned int dwval;
+	struct {
+		unsigned int gamma_en:1;
+		unsigned int color_mode:3;
+		unsigned int blue_en:1;
+		unsigned int res0:27;
+	} bits;
+};
+
+union COLOR_REG {
+	unsigned int dwval;
+	struct {
+		unsigned int B:10;
+		unsigned int G:10;
+		unsigned int R:10;
+		unsigned int res0:2;
+	} bits;
+};
+
 /* Channel CSC and Device CSC */
 struct __csc_reg_t {
 	union CSC_BYPASS_REG bypass;
@@ -87,6 +107,12 @@ struct __csc_reg_t {
 	union CSC_COEFF_REG c22;
 	union CSC_CONST_REG c23;
 	union GLB_ALPHA_REG alpha;
+};
+
+struct __gamma_reg_t {
+	union GAMMA_CTL_REG gamma_ctl;
+	union COLOR_REG blue_screen;
+	union COLOR_REG gamma_tbl[1024];
 };
 
 /* CSC IN SMBL */

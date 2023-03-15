@@ -149,8 +149,27 @@ int ir_nec_decode(hal_cir_info_t *info, cir_raw_event ev)
 			break;
 
 		if (nec->necx_repeat) {
-			printf("scancode:0x%x\n", scancode);
+			 //printf("repeat scancode:0x%x\n", scancode);
+#if 0
 			hal_cir_put_value(info, scancode);
+#else
+			if (info->valid == true) {
+				if(info->press_cnt < 5) {
+					++info->press_cnt;//Clear 0 when lifting the key
+
+					if (info->hTimer)
+						rt_timer_start(info->hTimer);
+				} else {
+					info->crt_value = scancode;
+					//info->key_down(scancode);
+					hal_cir_long_press_value(info, scancode);
+					info->pre_value = info->crt_value;//Record the current key value
+
+					if (info->hTimer)
+						rt_timer_start(info->hTimer);
+				}
+			}
+#endif
 		} else {
 			address     = (nec->bits >> 24) & 0xff;
 			not_address = (nec->bits >> 16) & 0xff;
@@ -186,10 +205,36 @@ int ir_nec_decode(hal_cir_info_t *info, cir_raw_event ev)
 
 			if (nec->is_nec_x)
 				nec->necx_repeat = true;
-
+			if((info->user_code != IR_NOT_CHECK_USER_CODE) &&
+				((scancode >> 16) & 0xffff) != (info->user_code & 0xffff))
+			{
+				info->valid = false;
+				printf("info->user_code:0x%x error\n", scancode);
+			}
 			scancode = scancode >> 8 & 0xff;
-			printf("scancode:0x%x\n", scancode);
+			//printf("scancode:0x%x\n", scancode);
+#if 0
 			hal_cir_put_value(info, scancode);
+#else
+			if (info->valid == true) {
+				info->crt_value = scancode;
+
+				//When several keys are pressed alternately, the "Keyup" message of the previous key is sent
+				if((info->pre_value != info->crt_value) && (info->pre_value != 0xff)) {
+					if (info->key_up)
+						info->key_up(info->pre_value); // send keyup msg,previous key
+
+					printf("previous key up, key = %x \n", info->pre_value);
+					info->pre_value = 0xff;
+				}
+				info->crt_value = scancode;
+				info->key_down(scancode);
+				info->pre_value = info->crt_value;//Record the current key value
+
+				if (info->hTimer)
+					rt_timer_start(info->hTimer);
+			}
+#endif
 		}
 
 		nec->state = STATE_INACTIVE;

@@ -103,7 +103,7 @@ static inline int dmaengine_prep_dma_cyclic(
 {
 	hal_dma_status_t status = 0;
 
-	snd_print("[%s] line:%d buf_addr:0x%x, buf_len:0x%x, period_len:0x%x\n",
+	snd_print("[%s] line:%d buf_addr:%p, buf_len:0x%x, period_len:0x%x\n",
 		__func__, __LINE__, buf_addr, buf_len, period_len);
 
 	status = hal_dma_prep_cyclic(chan->dma_handle,
@@ -172,11 +172,13 @@ static inline int dmaengine_terminate_async(struct dma_chan *chan)
 		return -1;
 	}
 
+	/* Freeing memory in interrupt is not allowed
 	status = hal_dma_chan_desc_free(chan->dma_handle);
 	if (status != HAL_DMA_STATUS_OK) {
 		snd_err("hal_dma_chan_desc_free failed, return:%d\n", status);
 		return -1;
 	}
+	*/
 
 	return 0;
 }

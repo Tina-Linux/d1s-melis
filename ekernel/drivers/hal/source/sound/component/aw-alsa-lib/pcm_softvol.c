@@ -668,7 +668,7 @@ static int softvol_load_control(snd_pcm_t *pcm, snd_pcm_softvol_t *svol,
 	ret = snd_ctl_get(svol->control->card_name, svol->control->control_name, &info);
 	if (ret < 0) {
 		memset(&info, 0, sizeof(snd_ctl_info_t));
-		info.name = svol->control->control_name;
+		info.name = (const unsigned char *)svol->control->control_name;
 		info.value = svol->max_val;
 		info.count = cchannels;
 		info.min = 0;

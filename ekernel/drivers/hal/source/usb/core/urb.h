@@ -1,6 +1,5 @@
 #ifndef _USB_URB_H_
 #define _USB_URB_H_
-#include "usb_host_common.h"
 
 void _debug_print_urb(struct urb *urb_input);
 

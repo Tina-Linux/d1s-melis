@@ -78,34 +78,60 @@ extern int mmc_gpiod_request_cd_irq(struct mmc_host* host);
 #define SDC_IRQHandler                  NVIC_IRQHandler
 */
 
-#define SDC_REQUEST_IRQ(n, hdl,d)         ({SDC_LOGD("%s,%d,sdc %d irq request \n",__func__, __LINE__, d->sdc_id);\
-											request_irq(n, hdl, 0, "sdmmc",d);})
-#define SDC_FREE_IRQ(n, d)         (free_irq(n, d))
+#define SDC_REQUEST_IRQ(n, hdl, name, d)         ({SDC_LOGD("%s,%d,sdc %d irq request \n",__func__, __LINE__, d->sdc_id);\
+											hal_request_irq(n, hdl, name, d);})
+#define SDC_FREE_IRQ(n, d)         (hal_free_irq(n))
 #define SDC_SetPriority(n, l)           ({SDC_LOGN("Not imp %s,%d\n", __FUNCTION__,__LINE__);})
-#define SDC_ENABLE_IRQ(n)               enable_irq(n)
+#define SDC_ENABLE_IRQ(n)               hal_enable_irq(n)
 #define SDC_CONFIG_IRQ(n, hdl, l)       ({SDC_LOGN("Not imp %s,%d\n", __FUNCTION__,__LINE__);})
-#define SDC_DISABLE_IRQ(n)              disable_irq(n)
-//#define SDC_CLEAR_IRQPINGD(n)           gic_clear_pending(n)
+#define SDC_DISABLE_IRQ(n)              hal_disable_irq(n)
 #define SDC_CLEAR_IRQPINGD(n)		 ({SDC_LOGN("Not imp %s,%d\n", __FUNCTION__,__LINE__);})
-//#define SDC_CLEAR_IRQPINGD(n)		 free_irq(n)
-//#define SDC_IRQHandler                  interrupt_handler_t
-#define SDC_IRQHandler                  irq_handler_t  *
+#define SDC_IRQHandler                  hal_irq_handler_t  *
 
 #define NUSE_STANDARD_INTERFACE  1
 #ifdef NUSE_STANDARD_INTERFACE
+
 #define SDC1_SUPPORT                    1
+
+#ifndef SDC_CCM_SDC0_SCLK_CTRL
 #define SDC_CCM_SDC0_SCLK_CTRL          (SDC_CCM_BASE + 0x830)
+#endif
+
+#ifndef SDC_CCM_SDC1_SCLK_CTRL
 #define SDC_CCM_SDC1_SCLK_CTRL          (SDC_CCM_BASE + 0x834)
 #define SDC_CCM_SDC_BUS_GATE_RESET		(SDC_CCM_BASE + 0x84c)
-/*
-#define SDC0_CCM_BusForceReset()        HAL_CCM_BusForcePeriphReset(CCM_BUS_PERIPH_BIT_SDC0)
-#define SDC0_CCM_BusReleaseRest()       HAL_CCM_BusReleasePeriphReset(CCM_BUS_PERIPH_BIT_SDC0)
-#define SDC0_CCM_BusEnableClock()       HAL_CCM_BusEnablePeriphClock(CCM_BUS_PERIPH_BIT_SDC0)
-#define SDC0_CCM_BusDisableClock()      HAL_CCM_BusDisablePeriphClock(CCM_BUS_PERIPH_BIT_SDC0)
-#define SDC0_CCM_EnableMClock()         HAL_CCM_SDC0_EnableMClock()
-#define SDC0_DisableMClock              HAL_CCM_SDC0_DisableMClock
-#define SDC0_SetMClock                  HAL_CCM_SDC0_SetMClock
-*/
+#endif
+
+#ifndef SDC_CCM_SClk_DIV_N_SHIFT 
+#define SDC_CCM_SClk_DIV_N_SHIFT   (8)
+#endif
+
+#ifndef SDC_CCM_SClk_DIV_M_SHIFT 
+#define SDC_CCM_SClk_DIV_M_SHIFT   (0)
+#endif
+
+#if ( defined(SDC_CCM_SDC_BUS_GATE) && defined(SDC_CCM_SDC_BUS_RESET) )
+
+#define SDC0_CCM_BusForceReset()        ({int __v =  readl(SDC_CCM_SDC_BUS_RESET);\
+										__v &= ~(1<<4);\
+										writel(__v,SDC_CCM_SDC_BUS_RESET);})
+#define SDC0_CCM_BusReleaseRest()       ({int __v =  readl(SDC_CCM_SDC_BUS_RESET);\
+										 __v |= (1<<4);\
+										 writel(__v,SDC_CCM_SDC_BUS_RESET);})
+#define SDC0_CCM_BusEnableClock()       ({int __v =  readl(SDC_CCM_SDC_BUS_GATE);\
+										 __v |= (1<<4);\
+										 writel(__v,SDC_CCM_SDC_BUS_GATE);})
+#define SDC0_CCM_BusDisableClock()      ({int __v =  readl(SDC_CCM_SDC_BUS_GATE);\
+										 __v &= ~(1<<4);\
+										 writel(__v,SDC_CCM_SDC_BUS_GATE);})
+#define SDC0_CCM_EnableMClock()         ({int __v =  readl(SDC_CCM_SDC0_SCLK_CTRL);\
+										 __v |= (1<<31);\
+										 writel(__v,SDC_CCM_SDC0_SCLK_CTRL);})
+#define SDC0_DisableMClock()              ({int __v =  readl(SDC_CCM_SDC0_SCLK_CTRL);\
+										   __v &= ~(1<<31);\
+										   writel(__v,SDC_CCM_SDC0_SCLK_CTRL);})
+
+#else
 
 #define SDC0_CCM_BusForceReset()        ({int v =  readl(SDC_CCM_SDC_BUS_GATE_RESET); v &= ~(1<<16); writel(v,SDC_CCM_SDC_BUS_GATE_RESET);})
 #define SDC0_CCM_BusReleaseRest()       ({int v =  readl(SDC_CCM_SDC_BUS_GATE_RESET); v |= (1<<16); writel(v,SDC_CCM_SDC_BUS_GATE_RESET);})
@@ -114,6 +140,7 @@ extern int mmc_gpiod_request_cd_irq(struct mmc_host* host);
 #define SDC0_CCM_EnableMClock()         ({int v =  readl(SDC_CCM_SDC0_SCLK_CTRL); v |= (1<<31); writel(v,SDC_CCM_SDC0_SCLK_CTRL);})
 #define SDC0_DisableMClock()              ({int v =  readl(SDC_CCM_SDC0_SCLK_CTRL); v &= ~(1<<31); writel(v,SDC_CCM_SDC0_SCLK_CTRL);})
 
+#endif
 
 #define SDC1_CCM_BusForceReset()        ({int v =  readl(SDC_CCM_SDC_BUS_GATE_RESET); v &= ~(1<<17); writel(v,SDC_CCM_SDC_BUS_GATE_RESET);})
 #define SDC1_CCM_BusReleaseRest()       ({int v =  readl(SDC_CCM_SDC_BUS_GATE_RESET); v |= (1<<17); writel(v,SDC_CCM_SDC_BUS_GATE_RESET);})
@@ -296,7 +323,7 @@ static void __mci_force_dump_host_info(struct mmc_host *host)
 	uint16_t debug_mask = host->debug_mask;
 	host->debug_mask |= ROM_DUMP_MASK | ROM_ERR_MASK;
 	SDC_LOGE("*force dump gpio reg*\n");
-	sdc_hex_dump_word((void *)SDC_GPIO_BASE+0xb0,0xff);
+	sdc_hex_dump_word((void *)SDC_GPIO_BASE+0,0x1ff);
 	sdc_hex_dump_word((void *)SDC_GPIO_BASE+0x340,0xff);
 	SDC_LOGE("*force dump ccmu reg*\n");
 	sdc_hex_dump_word((void *)SDC_CCM_SDC0_SCLK_CTRL ,0xff);
@@ -736,7 +763,6 @@ void rom_HAL_SDC_Enable_Sdio_Irq(struct mmc_host *host, int enable)
 
 
 
-//#endif
 
 static void __mci_clk_prepare_enable(struct mmc_host *host)
 {
@@ -797,7 +823,7 @@ static void __mci_restore_io(struct mmc_host* host)
 }
 
 __nonxip_text
-static irqreturn_t __mci_irq_handler(uint32_t sdc_id)
+static hal_irqreturn_t __mci_irq_handler(uint32_t sdc_id)
 {
 	struct mmc_host *host = _mci_host[sdc_id];
 	uint32_t sdio_int = 0;
@@ -812,7 +838,7 @@ static irqreturn_t __mci_irq_handler(uint32_t sdc_id)
 	//SDC_IT_LOGD("***%s,%d***\n",__FUNCTION__, __LINE__);
 	if (!host) {
 		SDC_IT_LOGE_RAW(ROM_ERR_MASK, "%s,%d no host exist!\n", __func__, __LINE__);
-		return IRQ_NONE;
+		return HAL_IRQ_OK;
 	}
 
 	if (!host->present) {
@@ -833,7 +859,7 @@ static irqreturn_t __mci_irq_handler(uint32_t sdc_id)
 	if (!msk_int && !idma_int) {
 		SDC_IT_LOGE("sdc nop irq: ri:%08lx mi:%08lx ie:%08lx idi:%08lx\n",
 		         HAL_PR_SZ_L(raw_int), HAL_PR_SZ_L(msk_int), HAL_PR_SZ_L(idma_inte), HAL_PR_SZ_L(idma_int));
-		return IRQ_NONE;
+		return HAL_IRQ_OK;
 	}
 
 	host->int_sum = raw_int;
@@ -924,17 +950,17 @@ sdio_out:
 	if (sdio_int)
 		__mci_signal_sdio_irq(host);
 #endif
-	return IRQ_HANDLED;
+	return HAL_IRQ_OK;
 }
 __nonxip_text
- irqreturn_t SDC0_IRQHandler(int id, void *data)
+ hal_irqreturn_t SDC0_IRQHandler(void *data)
 {
 	return __mci_irq_handler(SDC0);
 }
 
 #if SDC1_SUPPORT
 __nonxip_text
- irqreturn_t SDC1_IRQHandler(int id, void *data) //static
+ hal_irqreturn_t SDC1_IRQHandler(void *data) //static
 {
 	return __mci_irq_handler(SDC1);
 }
@@ -1010,7 +1036,7 @@ static int32_t __mci_update_clock(struct mmc_host *host, uint32_t cclk)
 		rval &= ~(1U<<31);
 		writel(rval,SDC_CCM_SDC0_SCLK_CTRL);
 		HAL_WMB();
-		rval = (src << 24) | (n << 8) | (m);
+		rval = (src << 24) | (n << SDC_CCM_SClk_DIV_N_SHIFT) | (m << SDC_CCM_SClk_DIV_M_SHIFT );
 
 		writel(rval,SDC_CCM_SDC0_SCLK_CTRL);
 		HAL_WMB();
@@ -1029,7 +1055,7 @@ static int32_t __mci_update_clock(struct mmc_host *host, uint32_t cclk)
 			writel(rval,SDC_CCM_SDC1_SCLK_CTRL);
 
 			HAL_WMB();
-			rval = (src << 24) | (n << 8) | (m);
+			rval = (src << 24) | (n << SDC_CCM_SClk_DIV_N_SHIFT) | (m << SDC_CCM_SClk_DIV_M_SHIFT);
 			writel(rval,SDC_CCM_SDC1_SCLK_CTRL);
 
 			HAL_WMB();
@@ -1730,7 +1756,7 @@ int32_t HAL_SDC_Get_ReadOnly(struct mmc_host *host)
 
 #ifdef CONFIG_DETECT_CARD
 
-static  irqreturn_t __mci_cd_irq(int unuse, void *arg);
+static  hal_irqreturn_t __mci_cd_irq(void *arg);
 static void __mci_enable_cd_pin_irq(struct mmc_host *host)
 {
 	//SDC_LOGD("Not implement %s,%d\n", __FUNCTION__,__LINE__);
@@ -1797,7 +1823,7 @@ static void __mci_dat3_det(void *arg)
 	__mci_voltage_stable_det(host);
 }
 
-static irqreturn_t __mci_cd_irq(int unuse, void *arg)
+static hal_irqreturn_t __mci_cd_irq(void *arg)
 {
 	struct mmc_host *host = (struct mmc_host *)arg;
 
@@ -1807,7 +1833,8 @@ static irqreturn_t __mci_cd_irq(int unuse, void *arg)
 		SDC_ModTimer(&host->cd_timer, 10);
 		__mci_disable_cd_pin_irq(host);
 	}
-	return (irqreturn_t)NULL;
+
+	return (hal_irqreturn_t)NULL;
 }
 #endif
 
@@ -1824,6 +1851,7 @@ int32_t rom_HAL_SDC_PowerOn(struct mmc_host *host)
 
 	__mci_restore_io(host);
 	__mci_clk_prepare_enable(host);
+	sdc_hex_dump_word((void *)(SMC0_BASE + 0x1000UL * host->sdc_id) ,0x150);
 
 
 	/* delay 1ms ? */
@@ -2128,6 +2156,8 @@ struct mmc_host *hal_sdc_init(struct mmc_host *host)
 	sd_gpio_cfg = &sd_gpio_cfg_entry;
 #endif
 	int ret = 0;
+	
+	printf("host debug mask %x", host->debug_mask);
 
 	if (host->State != SDC_STATE_RESET) {
 		SDC_LOGW("%s----%d reinit sdc!\n", __func__,__LINE__);
@@ -2164,9 +2194,9 @@ struct mmc_host *hal_sdc_init(struct mmc_host *host)
 #ifdef __CONFIG_ARCH_APP_CORE
 #ifdef NUSE_STANDARD_INTERFACE
 	if (host->sdc_id == 0) {
-#ifndef SDC_FPGA
+//#ifndef SDC_FPGA
 		sdmmc_pinctrl_init(host);
-#endif
+//#endif
 		host->caps |= MMC_CAP_4_BIT_DATA;
 	} else if (host->sdc_id == 1) {
 		sdmmc_pinctrl_init(host);
@@ -2198,16 +2228,16 @@ struct mmc_host *hal_sdc_init(struct mmc_host *host)
 
 	/* register IRQ */
 	if (host->sdc_id == 0) {
-		ret = SDC_REQUEST_IRQ(SDC0_IRQn, SDC0_IRQHandler, host);
-		if (ret != 0) {
+		ret = SDC_REQUEST_IRQ(SDC0_IRQn, SDC0_IRQHandler, "sdc0", host);
+		if (ret < 0) {
 			SDC_LOGE("%s,%d err:%d\n",__func__, __LINE__, ret);
 			return NULL;
 		}
 		SDC_SetPriority(SDC0_IRQn, NVIC_PERIPH_PRIO_DEFAULT);
 #if SDC1_SUPPORT
 	} else if (host->sdc_id == 1) {
-		ret = SDC_REQUEST_IRQ(SDC1_IRQn, SDC1_IRQHandler, host);
-		if (ret != 0) {
+		ret = SDC_REQUEST_IRQ(SDC1_IRQn, SDC1_IRQHandler, "sdc1", host);
+		if (ret < 0) {
 			SDC_LOGE("%s,%d err:%d\n",__func__, __LINE__, ret);
 			return NULL;
 		}
@@ -2271,7 +2301,14 @@ struct mmc_host *hal_sdc_init(struct mmc_host *host)
 	host->present = 1;
 #endif
 	host->align_dma_buf = HAL_MallocAlign(SDC_ALIGN_DMA_BUF_SIZE);
+	/* TODO sun20iw2p1 the dma controller of sdmmc can not access the lastest 256KB sram */
+#if 1
 	host->idma_des = HAL_MallocAlign(HAL_ALIGN(SDXC_MAX_DES_NUM * sizeof(smc_idma_des), OS_CACHE_ALIGN_BYTES));
+#else
+	static char data_chip[4096] __attribute__ ((aligned (128))) = {1, 2};
+	memset(data_chip, 0, sizeof(data_chip));
+	host->idma_des = (smc_idma_des *)data_chip;
+#endif
 	if (HAL_PT_TO_U(host->idma_des) & 0x07U) {
 		SDC_LOGE_RAW(ROM_ERR_MASK, "%s malloc not aligned by 8B\n", __func__);
 		return NULL;

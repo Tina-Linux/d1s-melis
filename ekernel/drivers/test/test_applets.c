@@ -1,7 +1,38 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <rtthread.h>
 #include <finsh_api.h>
 #include <mod_defs.h>
-#include <list.h>
+#include <aw_list.h>
 #include "msh.h"
 #include <finsh.h>
 #include <finsh_api.h>
@@ -45,22 +76,22 @@ static void auto_movie_test(void*arg)
     //@0
     while(test_cnt --)
     {
-        key_sim(KPAD_ENTER,3);//½øä¯ÀÀÆ÷
-        key_sim(KPAD_UP,1);//·­Ò³
-        key_sim(KPAD_UP,1);//·­Ò³
-        key_sim(KPAD_DOWN,1);//·­Ò³
-        key_sim(KPAD_DOWN,1);//·­Ò³
+        key_sim(KPAD_ENTER,3);//è¿›æµè§ˆå™¨
+        key_sim(KPAD_UP,1);//ç¿»é¡µ
+        key_sim(KPAD_UP,1);//ç¿»é¡µ
+        key_sim(KPAD_DOWN,1);//ç¿»é¡µ
+        key_sim(KPAD_DOWN,1);//ç¿»é¡µ
         
-		key_sim(KPAD_ENTER,60*60);//½øµçÓ°,²¥·Å1h
+		key_sim(KPAD_ENTER,60*60);//è¿›ç”µå½±,æ’­æ”¾1h
 
-        key_sim(KPAD_RETURN,4);//·µ»Øä¯ÀÀÆ÷
-        key_sim(KPAD_RETURN,3);//·µ»ØÖ÷½çÃæ
+        key_sim(KPAD_RETURN,4);//è¿”å›æµè§ˆå™¨
+        key_sim(KPAD_RETURN,3);//è¿”å›ä¸»ç•Œé¢
     }
 	rt_kprintf("auto_test movie complete!\n");
 	
 	if(all_test == 1)
 	{
-		return ;//µ±×öÆÕÍ¨º¯ÊıÓÃ
+		return ;//å½“åšæ™®é€šå‡½æ•°ç”¨
 	}
 	esKRNL_SemPend(key_lock, 0, &err);
 	task_id = 0;
@@ -75,25 +106,25 @@ static void auto_music_test(void* arg)
 {
     int32_t test_cnt= *(unsigned int*)arg;
 	uint8_t err;
-    key_sim(KPAD_RIGHT,300);//·µ»ØµÚÒ»¸öÔªËØ
+    key_sim(KPAD_RIGHT,300);//è¿”å›ç¬¬ä¸€ä¸ªå…ƒç´ 
     while(test_cnt --)
     {
-        key_sim(KPAD_ENTER,3);//½øä¯ÀÀÆ÷
-        key_sim(KPAD_UP,6);//·­Ò³
-        key_sim(KPAD_UP,6);//·­Ò³
-        key_sim(KPAD_DOWN,6);//·­Ò³
-        key_sim(KPAD_DOWN,6);//·­Ò³
+        key_sim(KPAD_ENTER,3);//è¿›æµè§ˆå™¨
+        key_sim(KPAD_UP,6);//ç¿»é¡µ
+        key_sim(KPAD_UP,6);//ç¿»é¡µ
+        key_sim(KPAD_DOWN,6);//ç¿»é¡µ
+        key_sim(KPAD_DOWN,6);//ç¿»é¡µ
         
-        key_sim(KPAD_DOWN,60*60);//½øÒôÀÖ,²¥·Å1h
+        key_sim(KPAD_DOWN,60*60);//è¿›éŸ³ä¹,æ’­æ”¾1h
 
-        key_sim(KPAD_RETURN,4);//·µ»Øä¯ÀÀÆ÷
-        key_sim(KPAD_RETURN,3);//·µ»ØÖ÷½çÃæ
+        key_sim(KPAD_RETURN,4);//è¿”å›æµè§ˆå™¨
+        key_sim(KPAD_RETURN,3);//è¿”å›ä¸»ç•Œé¢
     }
-	key_sim(KPAD_LEFT,300);//·µ»ØµÚÒ»¸öÔªËØ
+	key_sim(KPAD_LEFT,300);//è¿”å›ç¬¬ä¸€ä¸ªå…ƒç´ 
 	rt_kprintf("auto_test music complete!\n");
 	if(all_test == 1)
 	{
-		return ;//µ±×öÆÕÍ¨º¯ÊıÓÃ
+		return ;//å½“åšæ™®é€šå‡½æ•°ç”¨
 	}
 	
 	esKRNL_SemPend(key_lock, 0, &err);
@@ -112,8 +143,8 @@ static void auto_power_test(void *arg)
     key_sim(KPAD_RIGHT,300);
     while(test_cnt --)
     {
-        key_sim(KPAD_ENTER,3);//½øÈë½çÃæ
-        key_sim(KPAD_ENTER,1);//×Ô¶¯¹ØÆÁ
+        key_sim(KPAD_ENTER,3);//è¿›å…¥ç•Œé¢
+        key_sim(KPAD_ENTER,1);//è‡ªåŠ¨å…³å±
         key_sim(KPAD_ENTER,1);
         key_sim(KPAD_ENTER,1);
         key_sim(KPAD_ENTER,1);
@@ -121,7 +152,7 @@ static void auto_power_test(void *arg)
         key_sim(KPAD_ENTER,1);
         
         key_sim(KPAD_DOWN,1);
-        key_sim(KPAD_ENTER,1);//¶¨Ê±¹Ø»ú
+        key_sim(KPAD_ENTER,1);//å®šæ—¶å…³æœº
         key_sim(KPAD_ENTER,1);
         key_sim(KPAD_ENTER,1);
         key_sim(KPAD_ENTER,1);
@@ -129,12 +160,12 @@ static void auto_power_test(void *arg)
         
         key_sim(KPAD_RETURN,2);
     }
-    key_sim(KPAD_LEFT,300);//·µ»ØµÚÒ»¸öÔªËØ
+    key_sim(KPAD_LEFT,300);//è¿”å›ç¬¬ä¸€ä¸ªå…ƒç´ 
     key_sim(KPAD_LEFT,300);
 	rt_kprintf("auto_test power complete!\n");
 	if(all_test == 1)
 	{
-		return ;//µ±×öÆÕÍ¨º¯ÊıÓÃ
+		return ;//å½“åšæ™®é€šå‡½æ•°ç”¨
 	}
 	
 	esKRNL_SemPend(key_lock, 0, &err);
@@ -156,24 +187,24 @@ static void auto_fm_test(void* arg)
     
     while(test_cnt --)
     {
-        key_sim(KPAD_ENTER,4);//½øÈëÓ¦ÓÃ
-        key_sim(KPAD_DOWN,2);//»»Ì¨
-        key_sim(KPAD_DOWN,2);//»»Ì¨
-        key_sim(KPAD_DOWN,2);//»»Ì¨
-        key_sim(KPAD_DOWN,2);//»»Ì¨
+        key_sim(KPAD_ENTER,4);//è¿›å…¥åº”ç”¨
+        key_sim(KPAD_DOWN,2);//æ¢å°
+        key_sim(KPAD_DOWN,2);//æ¢å°
+        key_sim(KPAD_DOWN,2);//æ¢å°
+        key_sim(KPAD_DOWN,2);//æ¢å°
         
-        key_sim(KPAD_DOWN,60*60);//²¥·Å1h
+        key_sim(KPAD_DOWN,60*60);//æ’­æ”¾1h
         
-        key_sim(KPAD_RETURN,4);//ÍË»ØÖ÷½çÃæ
+        key_sim(KPAD_RETURN,4);//é€€å›ä¸»ç•Œé¢
     }
 	
-    key_sim(KPAD_LEFT,300);//·µ»ØµÚÒ»¸öÔªËØ
+    key_sim(KPAD_LEFT,300);//è¿”å›ç¬¬ä¸€ä¸ªå…ƒç´ 
     key_sim(KPAD_LEFT,300);
     key_sim(KPAD_LEFT,300);
 	rt_kprintf("auto_test fm complete!\n");
 	if(all_test == 1)
 	{
-		return ;//µ±×öÆÕÍ¨º¯ÊıÓÃ
+		return ;//å½“åšæ™®é€šå‡½æ•°ç”¨
 	}
 	
 	esKRNL_SemPend(key_lock, 0, &err);
@@ -197,34 +228,34 @@ static void auto_photo_test(void* arg)
 
     while(test_cnt --)
     {
-        key_sim(KPAD_ENTER,3);//½øä¯ÀÀÆ÷
-        key_sim(KPAD_DOWN,1);//ÉÏÏÂ·­Ò³
-        key_sim(KPAD_DOWN,1);//ÉÏÏÂ·­Ò³
-        key_sim(KPAD_UP,1);//ÉÏÏÂ·­Ò³
-        key_sim(KPAD_UP,1);//ÉÏÏÂ·­Ò³
+        key_sim(KPAD_ENTER,3);//è¿›æµè§ˆå™¨
+        key_sim(KPAD_DOWN,1);//ä¸Šä¸‹ç¿»é¡µ
+        key_sim(KPAD_DOWN,1);//ä¸Šä¸‹ç¿»é¡µ
+        key_sim(KPAD_UP,1);//ä¸Šä¸‹ç¿»é¡µ
+        key_sim(KPAD_UP,1);//ä¸Šä¸‹ç¿»é¡µ
         
-        key_sim(KPAD_ENTER,2);//½øÍ¼Æ¬
-        key_sim(KPAD_DOWN,4);//ÉÏÏÂ·­Ò³
-        key_sim(KPAD_DOWN,4);//ÉÏÏÂ·­Ò³
-        key_sim(KPAD_UP,4);//ÉÏÏÂ·­Ò³
-        key_sim(KPAD_UP,4);//ÉÏÏÂ·­Ò³
+        key_sim(KPAD_ENTER,2);//è¿›å›¾ç‰‡
+        key_sim(KPAD_DOWN,4);//ä¸Šä¸‹ç¿»é¡µ
+        key_sim(KPAD_DOWN,4);//ä¸Šä¸‹ç¿»é¡µ
+        key_sim(KPAD_UP,4);//ä¸Šä¸‹ç¿»é¡µ
+        key_sim(KPAD_UP,4);//ä¸Šä¸‹ç¿»é¡µ
 
-        key_sim(KPAD_ENTER,60*60);//×Ô¶¯²¥·Å1h
+        key_sim(KPAD_ENTER,60*60);//è‡ªåŠ¨æ’­æ”¾1h
         
-        key_sim(KPAD_ENTER,5);//Í£Ö¹×Ô¶¯²¥·Å
+        key_sim(KPAD_ENTER,5);//åœæ­¢è‡ªåŠ¨æ’­æ”¾
         
-        key_sim(KPAD_RETURN,2);//·µ»Øä¯ÀÀÆ÷
-        key_sim(KPAD_RETURN,3);//·µ»ØÖ÷½çÃæ
+        key_sim(KPAD_RETURN,2);//è¿”å›æµè§ˆå™¨
+        key_sim(KPAD_RETURN,3);//è¿”å›ä¸»ç•Œé¢
     }
 	
-    key_sim(KPAD_RIGHT,300);//·µ»ØµÚÒ»¸öÔªËØ
+    key_sim(KPAD_RIGHT,300);//è¿”å›ç¬¬ä¸€ä¸ªå…ƒç´ 
     key_sim(KPAD_RIGHT,300);
     key_sim(KPAD_RIGHT,300);
     key_sim(KPAD_RIGHT,300);
 	rt_kprintf("auto_test photo complete!\n");
 	if(all_test == 1)
 	{
-		return ;//µ±×öÆÕÍ¨º¯ÊıÓÃ
+		return ;//å½“åšæ™®é€šå‡½æ•°ç”¨
 	}
 	
 	esKRNL_SemPend(key_lock, 0, &err);
@@ -258,17 +289,17 @@ static void auto_explorer_test(void* arg)
         key_sim(KPAD_DOWN,800);//next
         key_sim(KPAD_UP,800);//next
         key_sim(KPAD_UP,800);//next
-        key_sim(KPAD_RETURN,3);//·µ»ØSD list
-        key_sim(KPAD_RETURN,3);//·µ»ØÖ÷½çÃæ
+        key_sim(KPAD_RETURN,3);//è¿”å›SD list
+        key_sim(KPAD_RETURN,3);//è¿”å›ä¸»ç•Œé¢
     }
 	
-    key_sim(KPAD_RIGHT,300);//·µ»ØµÚÒ»¸öÔªËØ
+    key_sim(KPAD_RIGHT,300);//è¿”å›ç¬¬ä¸€ä¸ªå…ƒç´ 
     key_sim(KPAD_RIGHT,300);
     key_sim(KPAD_RIGHT,300);
 	rt_kprintf("auto_test explorer complete!\n");
 	if(all_test == 1)
 	{
-		return ;//µ±×öÆÕÍ¨º¯ÊıÓÃ
+		return ;//å½“åšæ™®é€šå‡½æ•°ç”¨
 	}
 	esKRNL_SemPend(key_lock, 0, &err);
 	task_id = 0;
@@ -293,52 +324,52 @@ static void auto_ebook_test(void*arg)
 
     while(test_cnt --)
     {
-        key_sim(KPAD_ENTER,3);//½øä¯ÀÀÆ÷
-        key_sim(KPAD_ENTER,3);//½øµç×ÓÊé
-        key_sim(KPAD_RIGHT,1);//·­Ò³
-        key_sim(KPAD_RIGHT,1);//·­Ò³
-        key_sim(KPAD_LEFT,1);//·­Ò³
-        key_sim(KPAD_LEFT,1);//·­Ò³
+        key_sim(KPAD_ENTER,3);//è¿›æµè§ˆå™¨
+        key_sim(KPAD_ENTER,3);//è¿›ç”µå­ä¹¦
+        key_sim(KPAD_RIGHT,1);//ç¿»é¡µ
+        key_sim(KPAD_RIGHT,1);//ç¿»é¡µ
+        key_sim(KPAD_LEFT,1);//ç¿»é¡µ
+        key_sim(KPAD_LEFT,1);//ç¿»é¡µ
         
-        key_sim(KPAD_MENU,2);//½øÈë²Ëµ¥
-        key_sim(KPAD_ENTER,2);//½øÈëÑÕÉ«Ñ¡Ôñ
-        key_sim(KPAD_DOWN,2);//ÒÆ¶¯µ½ÂÌÉ«
-        key_sim(KPAD_ENTER,2);//Ñ¡ÔñÂÌÉ«
-        key_sim(KPAD_DOWN,2);//ÒÆ¶¯µ½À¶É«
-        key_sim(KPAD_RETURN,2);//ÍË³ö
+        key_sim(KPAD_MENU,2);//è¿›å…¥èœå•
+        key_sim(KPAD_ENTER,2);//è¿›å…¥é¢œè‰²é€‰æ‹©
+        key_sim(KPAD_DOWN,2);//ç§»åŠ¨åˆ°ç»¿è‰²
+        key_sim(KPAD_ENTER,2);//é€‰æ‹©ç»¿è‰²
+        key_sim(KPAD_DOWN,2);//ç§»åŠ¨åˆ°è“è‰²
+        key_sim(KPAD_RETURN,2);//é€€å‡º
 
-        key_sim(KPAD_MENU,2);//½øÈë²Ëµ¥
+        key_sim(KPAD_MENU,2);//è¿›å…¥èœå•
         key_sim(KPAD_DOWN,2);
-        key_sim(KPAD_ENTER,2);//½øÈëËÙ¶ÈÑ¡Ôñ
-        key_sim(KPAD_DOWN,2);//Ñ¡Ôñ¹Ø
-        key_sim(KPAD_DOWN,2);//Ñ¡Ôñ¿ì
-        key_sim(KPAD_DOWN,2);//Ñ¡ÔñÖĞ
-        key_sim(KPAD_DOWN,2);//Ñ¡ÔñÂı
-        key_sim(KPAD_RETURN,2);//ÍË³ö
+        key_sim(KPAD_ENTER,2);//è¿›å…¥é€Ÿåº¦é€‰æ‹©
+        key_sim(KPAD_DOWN,2);//é€‰æ‹©å…³
+        key_sim(KPAD_DOWN,2);//é€‰æ‹©å¿«
+        key_sim(KPAD_DOWN,2);//é€‰æ‹©ä¸­
+        key_sim(KPAD_DOWN,2);//é€‰æ‹©æ…¢
+        key_sim(KPAD_RETURN,2);//é€€å‡º
 
-		key_sim(KPAD_MENU,2);//½øÈë²Ëµ¥
+		key_sim(KPAD_MENU,2);//è¿›å…¥èœå•
         key_sim(KPAD_DOWN,2);
         key_sim(KPAD_DOWN,2);
-        key_sim(KPAD_ENTER,2);//½øÈëÌø×ªÒ³Ãæ
+        key_sim(KPAD_ENTER,2);//è¿›å…¥è·³è½¬é¡µé¢
         key_sim(KPAD_ENTER,2);
 		key_sim(KPAD_ENTER,2);
 		key_sim(KPAD_ENTER,2);
-        key_sim(KPAD_ENTER,2);//Ìø×ªµ½µÚ1111Ò³
+        key_sim(KPAD_ENTER,2);//è·³è½¬åˆ°ç¬¬1111é¡µ
         key_sim(KPAD_UP,2);
-        key_sim(KPAD_UP,2);//ÒÆ¶¯µ½È·¶¨
-        key_sim(KPAD_ENTER,2);//µã»÷È·¶¨
+        key_sim(KPAD_UP,2);//ç§»åŠ¨åˆ°ç¡®å®š
+        key_sim(KPAD_ENTER,2);//ç‚¹å‡»ç¡®å®š
         
         
-        key_sim(KPAD_RETURN,3);//·µ»Øä¯ÀÀÆ÷
-        key_sim(KPAD_RETURN,2);//·µ»ØÖ÷½çÃæ
+        key_sim(KPAD_RETURN,3);//è¿”å›æµè§ˆå™¨
+        key_sim(KPAD_RETURN,2);//è¿”å›ä¸»ç•Œé¢
     }
 
-    key_sim(KPAD_RIGHT,300);//·µ»ØµÚÒ»¸öÔªËØ
+    key_sim(KPAD_RIGHT,300);//è¿”å›ç¬¬ä¸€ä¸ªå…ƒç´ 
     key_sim(KPAD_RIGHT,300);
 	rt_kprintf("auto_test ebook complete!\n");
 	if(all_test == 1)
 	{
-		return ;//µ±×öÆÕÍ¨º¯ÊıÓÃ
+		return ;//å½“åšæ™®é€šå‡½æ•°ç”¨
 	}
 	
 	esKRNL_SemPend(key_lock, 0, &err);
@@ -358,35 +389,35 @@ static void auto_setting_test(void*arg)
     key_sim(KPAD_LEFT,300);//@7
     while(test_cnt --)
     {
-        key_sim(KPAD_ENTER,3);//½ø½çÃæ
-        key_sim(KPAD_ENTER,1);//ÓïÑÔ
+        key_sim(KPAD_ENTER,3);//è¿›ç•Œé¢
+        key_sim(KPAD_ENTER,1);//è¯­è¨€
         key_sim(KPAD_ENTER,1);//
         
         key_sim(KPAD_DOWN,500);
-        key_sim(KPAD_ENTER,500);//±³¹âÁÁ¶È
+        key_sim(KPAD_ENTER,500);//èƒŒå…‰äº®åº¦
         key_sim(KPAD_ENTER,500);//
         
         key_sim(KPAD_DOWN,500);
-        key_sim(KPAD_ENTER,500);//ÒôÁ¿
+        key_sim(KPAD_ENTER,500);//éŸ³é‡
         key_sim(KPAD_ENTER,500);//
         
         key_sim(KPAD_DOWN,500);
-        key_sim(KPAD_ENTER,500);//Êä³ö
+        key_sim(KPAD_ENTER,500);//è¾“å‡º
         key_sim(KPAD_ENTER,500);//
         
         key_sim(KPAD_DOWN,500);
-        key_sim(KPAD_ENTER,2);//»Ö¸´³ö³§
-        key_sim(KPAD_ENTER,3);//ÊÇ
+        key_sim(KPAD_ENTER,2);//æ¢å¤å‡ºå‚
+        key_sim(KPAD_ENTER,3);//æ˜¯
         
-        key_sim(KPAD_DOWN,500);//Èí¼ş°æ±¾
+        key_sim(KPAD_DOWN,500);//è½¯ä»¶ç‰ˆæœ¬
         key_sim(KPAD_RETURN,2);
     }
 
-    key_sim(KPAD_RIGHT,300);//·µ»ØµÚÒ»¸öÔªËØ
+    key_sim(KPAD_RIGHT,300);//è¿”å›ç¬¬ä¸€ä¸ªå…ƒç´ 
 	rt_kprintf("auto_test setting complete!\n");
 	if(all_test == 1)
 	{
-		return ;//µ±×öÆÕÍ¨º¯ÊıÓÃ
+		return ;//å½“åšæ™®é€šå‡½æ•°ç”¨
 	}
 	
 	esKRNL_SemPend(key_lock, 0, &err);
@@ -456,7 +487,7 @@ static int auto_test(int argc, const char **argv)
         rt_kprintf("\t   id: 6 : ebook\n");
         rt_kprintf("\t   id: 7 : setting\n");
         rt_kprintf("\t   id: 8 : all test\n");
-        rt_kprintf("\t   id: -1£ºstop test(cnt = -1 too)\n");
+        rt_kprintf("\t   id: -1ï¼šstop test(cnt = -1 too)\n");
         rt_kprintf("\t   cnt: n time\n");
         return 0;
     }

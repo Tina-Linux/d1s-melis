@@ -39,6 +39,8 @@
 #include <hal_cache.h>
 #include <hal_dma.h>
 
+#include <sunxi_hal_common.h>
+
 #define DMA_TEST_LEN	1024
 static void dma_test_cb(void *param)
 {
@@ -55,8 +57,8 @@ int cmd_test_dma(int argc, char **argv)
 
 	hal_log_info("run in dma test");
 
-	buf2 = hal_malloc(DMA_TEST_LEN);
-	buf1 = hal_malloc(DMA_TEST_LEN);
+	buf2 = dma_alloc_coherent(DMA_TEST_LEN);
+	buf1 = dma_alloc_coherent(DMA_TEST_LEN);
 
 	if (buf1 == NULL) {
 		hal_log_err("malloc buf1 error!");
@@ -74,7 +76,8 @@ int cmd_test_dma(int argc, char **argv)
 	for (i = 0;i < DMA_TEST_LEN; i++)
 		buf1[i] = i & 0xff;
 
-	hal_dcache_clean_all();
+	hal_dcache_clean_invalidate((unsigned long)buf1, DMA_TEST_LEN);
+	hal_dcache_clean_invalidate((unsigned long)buf2, DMA_TEST_LEN);
 
 	/* request dma chan */
 	ret = hal_dma_chan_request(&hdma);
@@ -104,7 +107,7 @@ int cmd_test_dma(int argc, char **argv)
 		goto end;
 	}
 
-	ret = hal_dma_prep_memcpy(hdma, (uint32_t)buf2, (uint32_t)buf1, DMA_TEST_LEN);
+	ret = hal_dma_prep_memcpy(hdma, (unsigned long)buf2, (unsigned long)buf1, DMA_TEST_LEN);
 	if (ret != HAL_DMA_STATUS_OK) {
 		hal_log_err("dma prep error, ret:%d", ret);
 		goto end;
@@ -130,18 +133,31 @@ int cmd_test_dma(int argc, char **argv)
 		goto end;
 	}
 
-	hal_dcache_invalidate_all();
+	hal_dcache_invalidate((unsigned long)buf2, DMA_TEST_LEN);
 
 	hal_log_info("src buf:\n");
-	for (i = 0;i < DMA_TEST_LEN; i++)
-		printf("0x%x ", buf1[i]);
+	for (i = 0;i < DMA_TEST_LEN; i++) {
+		if (i % 16 == 0)
+			printf("\n");
+		printf("%02x ", buf1[i]);
+	}
+	printf("\n\n\n");
 	hal_log_info("dst buf:\n");
-	for (i = 0;i < DMA_TEST_LEN; i++)
-		printf("0x%x ", buf2[i]);
+	for (i = 0;i < DMA_TEST_LEN; i++) {
+		if (i % 16 == 0)
+			printf("\n");
+		printf("%02x ", buf2[i]);
+	}
+	printf("\n\n\n");
+
+	if (memcmp(buf1, buf2, DMA_TEST_LEN) != 0)
+		printf("dma test fail\n");
+	else
+		printf("dma test pass\n");
 
 end:
-	hal_free(buf1);
-	hal_free(buf2);
+	dma_free_coherent(buf1);
+	dma_free_coherent(buf2);
 
 	return 0;
 }

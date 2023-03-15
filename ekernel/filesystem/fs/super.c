@@ -1,29 +1,34 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                                  File System
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2011-2014, Sunny China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : super.c
-* By      : Sunny
-* Version : v1.0
-* Date    : 2011-1-15
-* Descript: super.c contains code to handle: - mount structures
-*                                            - super-block tables
-*                                            - filesystem drivers list
-*                                            - mount system call
-*                                            - umount system call
-*                                            - ustat system call
-*           code is extracted from linux.
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
-* Update  : date                auther      ver     notes
-*           2011-3-15 15:45:42  Sunny       1.0     Create this file.
-*********************************************************************************************************
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "fs.h"
 #include "namei.h"
 #include "buffer_head.h"    /* for fsync_super() */
@@ -351,15 +356,15 @@ __s32 get_sb_bdev(struct file_system_type *fs_type,
     s->s_flags = flags;
     s->s_part = part;
 
-    /* ÉèÖÃ·ÖÇøÊı¾İ½á¹¹ÖĞµÄÎÄ¼şÏµÍ³Ë½ÓĞ¾ä±ú */
+    /* è®¾ç½®åˆ†åŒºæ•°æ®ç»“æ„ä¸­çš„æ–‡ä»¶ç³»ç»Ÿç§æœ‰å¥æŸ„ */
     esFSYS_pioctrl(part, PART_IOC_SYS_SETFSPRIV, (long)s, NULL);
 
-    /* »ñÈ¡²¢ÉèÖÃ·ÖÇøµÄ·ÖÇøÉè±¸ÃûºÍÎÄ¼şÏµÍ³Ãû */
+    /* è·å–å¹¶è®¾ç½®åˆ†åŒºçš„åˆ†åŒºè®¾å¤‡åå’Œæ–‡ä»¶ç³»ç»Ÿå */
     esFSYS_pioctrl(part, PART_IOC_SYS_GETNAME, 0, &partname);
     strncpy(s->s_volname, partname, MAX_VOLUME_NAME_LEN);
     strncpy(s->s_fsname, fs_type->name, MAX_FS_NAME_LEN);
 
-    /* »ñÈ¡·ÖÇøµÄÅÌ·û */
+    /* è·å–åˆ†åŒºçš„ç›˜ç¬¦ */
     esFSYS_pioctrl(part, PART_IOC_SYS_GETLETTER, 0, &s->s_letter);
 
     list_add_tail(&s->s_list, &super_blocks);
@@ -373,7 +378,7 @@ __s32 get_sb_bdev(struct file_system_type *fs_type,
         goto error;
     }
 
-    /* ÉèÖÃ¾í±êºóµÄÅÌ·û"xxx (D:)" */
+    /* è®¾ç½®å·æ ‡åçš„ç›˜ç¬¦"xxx (D:)" */
     i = strlen(s->s_volname);
     buf[2] = toupper(s->s_letter);
     strncpy(&s->s_volname[i], buf, MAX_VOLUME_NAME_LEN - i);
@@ -409,12 +414,12 @@ int deactivate_super(struct super_block *s, int force)
         return -EBUSY;
     }
 
-    /* ÎÄ¼şÏµÍ³Îª¿ÕÏĞ×´Ì¬»òÇ¿ÖÆĞ¶ÔØ */
+    /* æ–‡ä»¶ç³»ç»Ÿä¸ºç©ºé—²çŠ¶æ€æˆ–å¼ºåˆ¶å¸è½½ */
     generic_shutdown_super(s);
     invalidate_buffers(s, 1, 0);
     put_super(s);
 
-    /* Ê¼ÖÕ·µ»Ø³É¹¦×´Ì¬ */
+    /* å§‹ç»ˆè¿”å›æˆåŠŸçŠ¶æ€ */
     return 0;
 }
 
@@ -437,4 +442,3 @@ void unmount_check(struct super_block *sb)
     //        }
     //    }
 }
-

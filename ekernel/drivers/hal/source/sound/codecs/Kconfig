@@ -35,8 +35,46 @@ config SND_CODEC_SUN8IW20_AUDIOCODEC
 	  Select Y to add support the Codec embedded in the Allwinner
 	  sun8iw20 and affiliated SoCs.
 
+config SND_CODEC_SUN20IW2_AUDIOCODEC
+	bool "Allwinner AudioCodec support"
+	default n
+	select SND_PLATFORM_SUNXI_CPUDAI
+	select SND_PLATFORM_SUNXI_PCM
+	depends on (ARCH_SUN20IW2P1 || ARCH_SUN20IW2)
+	help
+	  Select Y to add support the Codec embedded in the Allwinner
+	  sun20iw2 and affiliated SoCs.
+
+if SND_CODEC_SUN20IW2_AUDIOCODEC
+menu "Allwinner AudioCodec Choose"
+config SND_CODEC_AUDIOCODEC_DAC
+	bool "Allwinner AudioCodec DAC Support"
+	default n
+	select SND_COMMON_SUNXI_COMMON
+	select SND_COMMON_SUNXI_ALG_CFG
+	help
+	  Select Y to add support for audiocodec dac.
+
+config SND_CODEC_AUDIOCODEC_ADC
+	bool "Allwinner AudioCodec ADC Support"
+	default n
+	select SND_COMMON_SUNXI_COMMON
+	help
+	  Select Y to add support for audiocodec adc.
+endmenu
+endif
+
+config SND_CODEC_DUMMY
+	bool "Sunxi dummy codec"
+	default n
+
 config SND_CODEC_AC108
 	bool "Sunxi AC108 codec"
 	default n
+
+config SND_CODEC_AC101S
+	bool "Sunxi AC101S codec"
+	default n
+	select DRIVERS_TWI
 
 endmenu

@@ -1,22 +1,34 @@
 /*
- * ===========================================================================================
- *
- *       Filename:  module.c
- *
- *    Description:  dynamic memory implemetation.
- *
- *        Version:  Melis3.0
- *         Create:  2020-07-07 15:19:59
- *       Revision:  none
- *       Compiler:  GCC:version 7.2.1 20170904 (release),ARM/embedded-7-branch revision 255204
- *
- *         Author:  caozilong@allwinnertech.com
- *   Organization:  BU1-PSW
- *  Last Modified:  2020-07-21 12:03:08
- *
- * ===========================================================================================
- */
-
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -28,6 +40,9 @@
 #include <sbi.h>
 #include <arch.h>
 #include <log.h>
+#include <hal_interrupt.h>
+#include <hal_mem.h>
+#include <hal_atomic.h>
 
 static pmd_t system_pmd_tbl[PTRS_PER_PMD] __aligned(PAGE_SIZE);
 // max alloc 2M for module.
@@ -47,18 +62,10 @@ static unsigned long __get_vm_area_node(unsigned long size)
 {
     unsigned int total, used, max_used, aval;
 
-    BUG_ON(in_interrupt());
+    BUG_ON(hal_interrupt_get_nest());
 
     size = ALIGN_TO_PAGE(size, PAGE_SIZE);
     if (unlikely(!size))
-    {
-        return 0;
-    }
-
-    rt_memory_info(&total, &used, &max_used);
-    aval = total - used;
-
-    if (aval < size)
     {
         return 0;
     }
@@ -167,9 +174,10 @@ int __pte_alloc_kernel(pmd_t *pmd)
 }
 
 
-static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end, pgprot_t prot, void *pages, int *nr)
+static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end, pgprot_t prot, void *pages[], int *nr)
 {
     pte_t *pte;
+    void *page = NULL;
 
     /*
      * nr is a running index into the array which helps higher level
@@ -185,11 +193,19 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end, pgp
     {
         if (pte_none(*pte))/*if pte is NULL, set the the page address as new*/
         {
+            if (pages == NULL)
+            {
 #ifdef CONFIG_SLAB_DEBUG
-            void *page = (void *)rt_page_alloc(PAGE_SIZE/4096);
+                page = (void *)rt_page_alloc(PAGE_SIZE/4096);
 #else
-            void *page = (void *)rt_malloc(PAGE_SIZE);
+                page = (void *)hal_malloc(PAGE_SIZE);
 #endif
+            }
+            else
+            {
+                page = pages[*nr];
+            }
+
             if(RT_NULL == page)
             {
                 __log("vmap_pte_ent request failed!\r\n");
@@ -211,7 +227,7 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end, pgp
 }
 
 static int vmap_pmd_range(pud_t *pud, unsigned long addr,
-                          unsigned long end, pgprot_t prot, void *pages, int *nr)
+                          unsigned long end, pgprot_t prot, void *pages[], int *nr)
 {
     pmd_t *pmd;
     unsigned long next;
@@ -235,7 +251,7 @@ static int vmap_pmd_range(pud_t *pud, unsigned long addr,
 }
 
 static int vmap_pud_range(p4d_t *p4d, unsigned long addr,
-                          unsigned long end, pgprot_t prot, struct page **pages, int *nr)
+                          unsigned long end, pgprot_t prot, void *pages[], int *nr)
 {
     pud_t *pud;
     unsigned long next;
@@ -258,7 +274,7 @@ static int vmap_pud_range(p4d_t *p4d, unsigned long addr,
 }
 
 
-static int vmap_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end, pgprot_t prot, struct page **pages, int *nr)
+static int vmap_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end, pgprot_t prot, void *pages[], int *nr)
 {
     p4d_t *p4d;
     unsigned long next;
@@ -288,7 +304,7 @@ static int vmap_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end, pgp
  *
  * Ie. pte at addr+N*PAGE_SIZE shall point to pfn corresponding to pages[N]
  */
-static int vmap_page_range_noflush(unsigned long start, unsigned long end, pgprot_t prot, void *pages)
+static int vmap_page_range_noflush(unsigned long start, unsigned long end, pgprot_t prot, void *pages[])
 {
     pgd_t *pgd;
     unsigned long next;
@@ -328,7 +344,7 @@ static inline void flush_cache_vmap(unsigned long start, unsigned long end)
 }
 
 static int vmap_page_range(unsigned long start, unsigned long end,
-                           pgprot_t prot, void *pages)
+                           pgprot_t prot, void *pages[])
 {
     int ret;
 
@@ -337,7 +353,7 @@ static int vmap_page_range(unsigned long start, unsigned long end,
     return ret;
 }
 
-int map_vm_area(unsigned long size, pgprot_t prot, void *pages, unsigned long target_vmaddr)
+int map_vm_area(unsigned long size, pgprot_t prot, void *pages[], unsigned long target_vmaddr)
 {
     unsigned long addr = (unsigned long)target_vmaddr;
     unsigned long end = addr + size;
@@ -350,8 +366,7 @@ int map_vm_area(unsigned long size, pgprot_t prot, void *pages, unsigned long ta
 
 static void *__vmalloc_area_node(unsigned long area_sz, pgprot_t prot, unsigned long target_vmaddr)
 {
-    void *pages = NULL;
-    if (map_vm_area(area_sz, prot, pages, target_vmaddr))
+    if (map_vm_area(area_sz, prot, NULL, target_vmaddr))
     {
         __err("falure to map.");
         goto fail;
@@ -445,11 +460,6 @@ static inline void flush_cache_vunmap(unsigned long start, unsigned long end)
 
 }
 
-/*
- * If a p?d_bad entry is found while walking page tables, report
- * the error, before resetting entry to p?d_none.  Usually (but
- * very seldom) called out from the p?d_none_or_clear_bad macros.
- */
 void pgd_clear_bad(pgd_t *pgd)
 {
     pgd_ERROR(*pgd);
@@ -531,8 +541,7 @@ static inline int pmd_none_or_clear_bad(pmd_t *pmd)
 }
 
 /*** Page table manipulation functions ***/
-
-static void vunmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end)
+static void vunmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end, void *page)
 {
     pte_t *pte;
 
@@ -547,18 +556,21 @@ static void vunmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end)
         }
         else if (!pte_none(ptent))
         {
-            void *page = pte_page(ptent);
+            if (page == NULL)
+            {
+                void *page_pte = pte_page(ptent);
 #ifdef CONFIG_SLAB_DEBUG
-            rt_page_free(page, 1);
+                rt_page_free(page_pte, 1);
 #else
-            rt_free(page);
+                hal_free(page_pte);
 #endif
+            }
         }
     } while (pte++, addr += PAGE_SIZE, addr != end);
 }
 
 
-static void vunmap_pmd_range(pud_t *pud, unsigned long addr, unsigned long end)
+static void vunmap_pmd_range(pud_t *pud, unsigned long addr, unsigned long end, void *page)
 {
     pmd_t *pmd;
     unsigned long next;
@@ -575,11 +587,11 @@ static void vunmap_pmd_range(pud_t *pud, unsigned long addr, unsigned long end)
         {
             continue;
         }
-        vunmap_pte_range(pmd, addr, next);
+        vunmap_pte_range(pmd, addr, next, page);
     } while (pmd++, addr = next, addr != end);
 }
 
-static void vunmap_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end)
+static void vunmap_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end, void *page)
 {
     pud_t *pud;
     unsigned long next;
@@ -596,12 +608,12 @@ static void vunmap_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end)
         {
             continue;
         }
-        vunmap_pmd_range(pud, addr, next);
+        vunmap_pmd_range(pud, addr, next, page);
     } while (pud++, addr = next, addr != end);
 }
 
 
-static void vunmap_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end)
+static void vunmap_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end, void *page)
 {
     p4d_t *p4d;
     unsigned long next;
@@ -619,12 +631,12 @@ static void vunmap_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end)
         {
             continue;
         }
-        vunmap_pud_range(p4d, addr, next);
+        vunmap_pud_range(p4d, addr, next, page);
     } while (p4d++, addr = next, addr != end);
 }
 
 
-static void vunmap_page_range(unsigned long addr, unsigned long end)
+static void vunmap_page_range(unsigned long addr, unsigned long end, void *page)
 {
     pgd_t *pgd;
     unsigned long next;
@@ -638,19 +650,19 @@ static void vunmap_page_range(unsigned long addr, unsigned long end)
         {
             continue;
         }
-        vunmap_p4d_range(pgd, addr, next);
+        vunmap_p4d_range(pgd, addr, next, page);
     } while (pgd++, addr = next, addr != end);
 }
 
-static void unmap_vmap_area(unsigned long vmaddr, unsigned long free_sz)
+void unmap_vmap_area(unsigned long vmaddr, unsigned long free_sz, void *page)
 {
-    vunmap_page_range(vmaddr, vmaddr + free_sz);
+    vunmap_page_range(vmaddr, vmaddr + free_sz, page);
 }
 
 static void free_unmap_vmap_area(unsigned long vmaddr, unsigned long free_sz)
 {
     flush_cache_vunmap(vmaddr, free_sz);
-    unmap_vmap_area(vmaddr, free_sz);
+    unmap_vmap_area(vmaddr, free_sz, NULL);
     flush_tlb_kernel_range(vmaddr, vmaddr + free_sz);
 }
 
@@ -679,6 +691,16 @@ static int vmem_unmap(unsigned long start, unsigned long free_sz)
     vmem_remove_mappings(start, free_sz);
 
     return 0;
+}
+
+unsigned long get_memory_prot(unsigned long prot)
+{
+    if (prot & PAGE_MEM_ATTR_NON_CACHEABLE) {
+        return PAGE_KERNEL_NON_CACHEABLE.pgprot;
+    } else if (prot & PAGE_MEM_ATTR_CACHEABLE) {
+        return PAGE_KERNEL_EXEC.pgprot;
+    }
+    return PAGE_KERNEL_NON_CACHEABLE.pgprot;
 }
 
 int module_alloc(void *target_vmaddr, unsigned long map_size, bool executable)
@@ -710,10 +732,9 @@ int module_alloc(void *target_vmaddr, unsigned long map_size, bool executable)
     }
 
     // keep atomic of map.
-    rt_enter_critical();
-    // executeable page for dynamic module.
+    hal_enter_critical();
     ptr = vmalloc_prot((unsigned long)target_vmaddr, map_size, prot);
-    rt_exit_critical();
+    hal_exit_critical();
 
     if (ptr != target_vmaddr)
     {
@@ -743,9 +764,9 @@ int module_free(void *target_vmaddr, unsigned long free_size)
     free_sz = ALIGN_TO_PAGE(free_sz, PAGE_SIZE);
 
     // keep atomic of map.
-    rt_enter_critical();
+    hal_enter_critical();
     vmem_unmap(start, free_sz);
-    rt_exit_critical();
+    hal_exit_critical();
 
     return 0;
 }
@@ -787,4 +808,3 @@ void awos_arch_vmem_delete(uint8_t *virtaddr, uint32_t npage)
 
     return;
 }
-

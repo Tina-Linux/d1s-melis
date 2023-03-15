@@ -81,8 +81,6 @@
 #define CLK_BUS_I2C1        70
 #define CLK_BUS_I2C2        71
 #define CLK_BUS_I2C3        72
-#define CLK_BUS_CAN0        73
-#define CLK_BUS_CAN1        74
 #define CLK_SPI0        75
 #define CLK_SPI1        76
 #define CLK_BUS_SPI0        77

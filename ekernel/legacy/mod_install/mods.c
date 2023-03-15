@@ -1,47 +1,51 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                                Module Loader
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2011-2014, Sunny China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : module.c
-* By      : Sunny
-* Version : v1.0
-* Date    : 2011-3-30
-* Descript: module loader handing functions.
-* Update  : date                auther      ver     notes
-*           2011-3-30 11:14:57  Sunny       1.0     Create this file.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "mods.h"
 #include "eelf.h"
-#include <rthw.h>
-#include <string.h>
-#include <debug.h>
+#include <hal_debug.h>
 #include <sys_mems.h>
-#include <kconfig.h>
 #include <log.h>
+
+#include <hal_interrupt.h>
 
 __krnl_xcb_t            *esXCBTbl[EPOS_id_mumber];
 #define  esMCBTbl       ((__module_mcb_t **)esXCBTbl)
 
 #define EPDK_ROOTFS_PATH          "f:\\rootfs\\"
-/*
-*********************************************************************************************************
-*                                       SET FCSE ID
-*
-* Description:
-*
-* Arguments  :
-*
-* Returns    :
-*
-* Note       :
-*********************************************************************************************************
-*/
+
 __u8 MODS_SetFsceID(__u8 fcseid)
 {
 #ifdef CONFIG_ARMV5TE
@@ -51,19 +55,6 @@ __u8 MODS_SetFsceID(__u8 fcseid)
 #endif
 }
 
-/*
-*********************************************************************************************************
-*                                       GET MAGIC SECTION DATA
-*
-* Description:
-*
-* Arguments  :
-*
-* Returns    :
-*
-* Note       :
-*********************************************************************************************************
-*/
 int32_t MODS_GetMagicData(__hdle hLDR, __module_mgsec_t *pMagicSection)
 {
     uint32_t    MagicIndex;
@@ -79,19 +70,6 @@ int32_t MODS_GetMagicData(__hdle hLDR, __module_mgsec_t *pMagicSection)
 
 }
 
-/*
-*********************************************************************************************************
-*                                     LOAD SECTION DATA TO VM
-*
-* Description:
-*
-* Arguments  :
-*
-* Returns    :
-*
-* Note       :
-*********************************************************************************************************
-*/
 int32_t MODS_LoadSectionData(__hdle hLDR, uint32_t Index, uint32_t maddr, uint32_t domain, void* heap)
 {
     __section_rom_hdr_t ROMHdr;
@@ -103,7 +81,7 @@ int32_t MODS_LoadSectionData(__hdle hLDR, uint32_t Index, uint32_t maddr, uint32
     int32_t             ret = EPDK_OK;
 
     //initialize section rom header
-    rt_memset(&ROMHdr, 0, sizeof(ROMHdr));
+    memset(&ROMHdr, 0, sizeof(ROMHdr));
 
     //get section rom header
     if (LDR_GetSecROMHdr(hLDR, Index, &ROMHdr) != EPDK_OK)
@@ -149,7 +127,7 @@ int32_t MODS_LoadSectionData(__hdle hLDR, uint32_t Index, uint32_t maddr, uint32
         uint32_t i = 0, npage = 0;
 
         __wrn("size %d, addr = %p.", ROMHdr.Size, ROMHdr.VAddr);
-        if (awos_arch_vmem_create((rt_uint8_t *)AlignAddr, ((ROMHdr.Size + VMAddr - AlignAddr + 0xfff) >> 12), domain) != 0)
+        if (awos_arch_vmem_create((uint8_t *)AlignAddr, ((ROMHdr.Size + VMAddr - AlignAddr + 0xfff) >> 12), domain) != 0)
         {
             __err("create module section virtual memory space failed");
             return EPDK_FAIL;
@@ -196,26 +174,13 @@ int32_t MODS_LoadSectionData(__hdle hLDR, uint32_t Index, uint32_t maddr, uint32
     if (ClearFlag)
     {
         //need clear this section
-        rt_memset((void *)VMAddr, 0, ROMHdr.Size);
+        memset((void *)VMAddr, 0, ROMHdr.Size);
     }
 
     //module section load succeeded
     return EPDK_OK;
 }
 
-/*
-*********************************************************************************************************
-*                                       SET SECTION VM BITMAP
-*
-* Description:
-*
-* Arguments  :
-*
-* Returns    :
-*
-* Note       :
-*********************************************************************************************************
-*/
 int32_t MODS_SectionVMBitMapSet(__hdle hLDR, __module_mcb_t *mcb, uint32_t Index)
 {
     uint32_t            BitIndex;
@@ -224,7 +189,7 @@ int32_t MODS_SectionVMBitMapSet(__hdle hLDR, __module_mcb_t *mcb, uint32_t Index
     uint32_t            vBaseAddr;
 
     //initialize section rom header
-    rt_memset(&ROMHdr, 0, sizeof(ROMHdr));
+    memset(&ROMHdr, 0, sizeof(ROMHdr));
 
     //get section rom header
     if (LDR_GetSecROMHdr(hLDR, Index, &ROMHdr) != EPDK_OK)
@@ -266,19 +231,6 @@ int32_t MODS_SectionVMBitMapSet(__hdle hLDR, __module_mcb_t *mcb, uint32_t Index
     return EPDK_OK;
 }
 
-/*
-*********************************************************************************************************
-*                                      CHECK MODULE VM BITMAP IS SET
-*
-* Description:
-*
-* Arguments  :
-*
-* Returns    :
-*
-* Note       :
-*********************************************************************************************************
-*/
 __bool MODS_VMBitMapIsSet(uint32_t *pVMBitMap, uint32_t BitIndex)
 {
     BitIndex %= 32;
@@ -290,19 +242,6 @@ __bool MODS_VMBitMapIsSet(uint32_t *pVMBitMap, uint32_t BitIndex)
     return 0;
 }
 
-/*
-*********************************************************************************************************
-*                                     DESTORY MODULE VM SPACE
-*
-* Description:
-*
-* Arguments  :
-*
-* Returns    :
-*
-* Note       :
-*********************************************************************************************************
-*/
 int32_t MODS_DestoryModuleVM(__module_mcb_t *pMCB)
 {
     uint32_t        BitIndex = 0;
@@ -313,7 +252,7 @@ int32_t MODS_DestoryModuleVM(__module_mcb_t *pMCB)
     //open module file
     for(i = 0; secRecord[i].sectionAddr != 0; i ++)
     {
-        awos_arch_vmem_delete((rt_uint8_t *)secRecord[i].sectionAddr, secRecord[i].npage);
+        awos_arch_vmem_delete((uint8_t *)secRecord[i].sectionAddr, secRecord[i].npage);
         secRecord[i].sectionAddr    = 0;
         secRecord[i].npage          = 0;
     }
@@ -324,19 +263,6 @@ int32_t MODS_DestoryModuleVM(__module_mcb_t *pMCB)
     return EPDK_OK;
 }
 
-/*
-*********************************************************************************************************
-*                                     CREATE MODULE VM SPACE
-*
-* Description:
-*
-* Arguments  :
-*
-* Returns    :
-*
-* Note       :
-*********************************************************************************************************
-*/
 int32_t MODS_CreateModuleVM(__hdle hLDR, __module_mcb_t *mcb)
 {
     uint32_t    Index;
@@ -414,7 +340,7 @@ uint32_t MODS_GetModuleID(__module_mgsec_t *pModMagic)
     if (pModMagic->type == EMOD_TYPE_USER)
     {
         __err("user type module not allowd on melis3.0.");
-        software_break();
+        hal_sys_abort();
         mid = EPOS_umid_min;
         while (mid <= EPOS_umid_max)
         {
@@ -541,7 +467,7 @@ uint32_t esMODS_MInstall(const char *mfile, uint8_t mode)
         {
             char strtmp[256] = {0};
             strcpy(strtmp, EPDK_ROOTFS_PATH);
-            strcat(strtmp, tmpfile + 2);
+            strcat(strtmp, (const char *)(tmpfile + 2));
             strcpy(tmpfile, strtmp);
         }
     }
@@ -577,7 +503,7 @@ uint32_t esMODS_MInstall(const char *mfile, uint8_t mode)
     //open module file
     if (hLDR == NULL)
     {
-        hLDR = LDR_LoadFile(tmpfile);
+        hLDR = LDR_LoadFile((const char *)tmpfile);
     }
 
     if (hLDR == NULL)
@@ -594,7 +520,7 @@ uint32_t esMODS_MInstall(const char *mfile, uint8_t mode)
     }
 
     //get magic section of module
-    rt_memset(&ModMagic, 0, sizeof(ModMagic));
+    memset(&ModMagic, 0, sizeof(ModMagic));
     if (MODS_GetMagicData(hLDR, &ModMagic) != EPDK_OK)
     {
         __err("get module magic section failed");
@@ -602,12 +528,12 @@ uint32_t esMODS_MInstall(const char *mfile, uint8_t mode)
     }
 
     //get module id, this process can't been interrupt.
-    cpu_sr  = rt_hw_interrupt_disable();
+    cpu_sr  = hal_interrupt_save();
     mid     = MODS_GetModuleID(&ModMagic);
     if (mid == 0)
     {
         __err("get module [%s] id failed", tmpfile);
-        rt_hw_interrupt_enable(cpu_sr);
+        hal_interrupt_restore(cpu_sr);
         goto error;
     }
 
@@ -615,20 +541,20 @@ uint32_t esMODS_MInstall(const char *mfile, uint8_t mode)
     if (esMCBTbl[mid] != NULL)
     {
         __log("check, module %s already installed.", mfile);
-        rt_hw_interrupt_enable(cpu_sr);
+        hal_interrupt_restore(cpu_sr);
         return mid;
     }
-    rt_hw_interrupt_enable(cpu_sr);
+    hal_interrupt_restore(cpu_sr);
     sectionNum  = LDR_GetSecNumber(hLDR);
 
     //allocate memory for module control block
-    mcb     = (__module_mcb_t *)rt_malloc(sizeof(__module_mcb_t) + rt_strlen(tmpfile) + 1 + sectionNum * sizeof(__elf_runmem));
+    mcb     = (__module_mcb_t *)malloc(sizeof(__module_mcb_t) + strlen((const char *)tmpfile) + 1 + sectionNum * sizeof(__elf_runmem));
     if (mcb == (__module_mcb_t *)0)
     {
         __err("allocate memory for module control block failed");
         goto error;
     }
-    rt_memset(mcb, 0, sizeof(__module_mcb_t) + rt_strlen(tmpfile) + 1 + sectionNum * sizeof(__elf_runmem));
+    memset(mcb, 0, sizeof(__module_mcb_t) + strlen((const char *)tmpfile) + 1 + sectionNum * sizeof(__elf_runmem));
 
     esMCBTbl[mid]   = (__module_mcb_t *)mcb;
     //initialize module control block,
@@ -645,8 +571,8 @@ uint32_t esMODS_MInstall(const char *mfile, uint8_t mode)
     mcb->xcb.xfile  = (char*)((intptr_t)mcb + sizeof(__module_mcb_t));
     mcb->xcb.them   = 0;
     mcb->xcb.lang   = 0;
-    mcb->xcb.heap   = (void*)((intptr_t)mcb + sizeof(__module_mcb_t) + rt_strlen(tmpfile) + 1);
-    rt_strncpy(mcb->xcb.xfile, tmpfile, rt_strlen(tmpfile) + 1);
+    mcb->xcb.heap   = (void*)((intptr_t)mcb + sizeof(__module_mcb_t) + strlen((const char *)tmpfile) + 1);
+    strncpy(mcb->xcb.xfile, (const char *)tmpfile, strlen((const char *)tmpfile) + 1);
 
     //create module section virtual memory space
     if (MODS_CreateModuleVM(hLDR, mcb) != EPDK_OK)
@@ -681,7 +607,7 @@ error:
     }
     if (mcb)
     {
-        rt_free((void *)mcb);
+        free((void *)mcb);
     }
     return 0;
 }
@@ -761,8 +687,8 @@ int32_t esMODS_MUninstall(uint8_t id)
     MODS_DestoryModuleVM(mcb);
 
     //release allocated module control block
-    rt_free((void *)mcb);
-    esMCBTbl[id] = RT_NULL;
+    free((void *)mcb);
+    esMCBTbl[id] = NULL;
 
     //dump module uninstall information
     __inf("module [%s] uninstall succeeded", mcb->xcb.xfile);
@@ -835,7 +761,7 @@ int32_t esMODS_MClose(__mp *mp)
     if (mp == NULL)
     {
         __err("invalid parameter.");
-        software_break();
+        hal_sys_abort();
         return EPDK_FAIL;
     }
 
@@ -973,37 +899,11 @@ long esMODS_MIoctrl(__mp *mp, uint32_t cmd, int32_t aux, void *pbuffer)
     return ret;
 }
 
-/*
-*********************************************************************************************************
-*                                       MODULE SYSTEM START
-*
-* Description: This function is used to start module sub-system
-*
-* Arguments  : void
-*
-* Returns    : if success, return EPDK_OK, else return EPDK_FAIL
-*
-* Note       :
-*********************************************************************************************************
-*/
 int32_t MODS_Init(void)
 {
     return EPDK_OK;
 }
 
-/*
-*********************************************************************************************************
-*                                       MODULE SYSTEM END
-*
-* Description: This function is used to end module sub-system
-*
-* Arguments  : void
-*
-* Returns    : if success, return EPDK_OK, else return EPDK_FAIL
-*
-* Note       :
-*********************************************************************************************************
-*/
 int32_t MODS_Exit(void)
 {
     return EPDK_OK;

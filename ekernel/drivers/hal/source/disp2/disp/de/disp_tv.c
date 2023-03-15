@@ -68,7 +68,8 @@ extern void sync_event_proc(u32 disp, bool timeout);
 #if defined(__LINUX_PLAT__)
 static s32 disp_tv_event_proc(int irq, void *parg)
 #else
-irqreturn_t disp_tv_event_proc(int irq, void *parg)
+//hal_irqreturn_t disp_tv_event_proc(int irq, void *parg)
+hal_irqreturn_t disp_tv_event_proc(void *parg)
 #endif
 {
 	struct disp_device *ptv = (struct disp_device *)parg;
@@ -99,6 +100,7 @@ irqreturn_t disp_tv_event_proc(int irq, void *parg)
 }
 
 #if defined(CONFIG_ARCH_SUN8IW6)
+/* no need tcon clk for 1680 */
 static s32 tv_clk_init(struct disp_device *ptv)
 {
 	struct disp_device_private_data *ptvp = disp_tv_get_priv(ptv);
@@ -146,7 +148,58 @@ static s32 tv_clk_config(struct disp_device *ptv)
 
 	return hal_clk_set_rate(ptvp->clk, ptv->timings.pixel_clk);
 }
+#else
+/**
+ * Set clock relationship
+ */
+static s32 tv_clk_init(struct disp_device *ptv)
+{
+	struct disp_device_private_data *ptvp = disp_tv_get_priv(ptv);
 
+	if (!ptv || !ptvp) {
+		DE_WRN("tv init null hdl!\n");
+		return DIS_FAIL;
+	}
+
+	if (!ptvp->clk) {
+		DE_WRN("clk is NULL\n");
+		return DIS_FAIL;
+	}
+
+	ptvp->clk_parent = disp_sys_clk_get_parent(ptvp->clk);
+
+	return 0;
+}
+
+static s32 tv_clk_exit(struct disp_device *ptv)
+{
+	struct disp_device_private_data *ptvp = disp_tv_get_priv(ptv);
+
+	if (!ptv || !ptvp) {
+		DE_WRN("tv init null hdl!\n");
+		return DIS_FAIL;
+	}
+
+	return 0;
+}
+
+static s32 tv_clk_config(struct disp_device *ptv)
+{
+	struct disp_device_private_data *ptvp = disp_tv_get_priv(ptv);
+
+	if (!ptv || !ptvp) {
+		DE_WRN("tv init null hdl!\n");
+		return DIS_FAIL;
+	}
+
+	if (!ptvp->clk) {
+		DE_WRN("clk is NULL\n");
+		return DIS_FAIL;
+	}
+
+	disp_sys_clk_set_parent(ptvp->clk, ptvp->clk_parent);
+	return 0;
+}
 #endif
 
 static s32 tv_clk_enable(struct disp_device *ptv)
@@ -350,10 +403,9 @@ s32 disp_tv_enable(struct disp_device *ptv)
 
 	if (mgr->enable)
 		mgr->enable(mgr);
-#if defined(CONFIG_ARCH_SUN8IW6)
-	tv_clk_config(ptv);	/* no need tcon clk for 1680 */
-	tv_clk_enable(ptv);
-#endif
+
+	tv_clk_config(ptv);
+
 	if (ptvp->tv_func.tv_enable == NULL) {
 		DE_WRN("tv_enable is NULL\n");
 		return -1;
@@ -541,9 +593,9 @@ static s32 disp_tv_init(struct disp_device *ptv)
 		DE_WRN("tv init null hdl!\n");
 		return DIS_FAIL;
 	}
-#if defined(CONFIG_ARCH_SUN8IW6)
+
 	tv_clk_init(ptv);
-#endif
+
 	return 0;
 }
 
@@ -556,9 +608,7 @@ s32 disp_tv_exit(struct disp_device *ptv)
 		return DIS_FAIL;
 	}
 	disp_tv_disable(ptv);
-#if defined(CONFIG_ARCH_SUN8IW6)
 	tv_clk_exit(ptv);
-#endif
 	hal_free(ptv);
 	hal_free(ptvp);
 	return 0;

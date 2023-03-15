@@ -32,7 +32,7 @@
 #ifndef __USB_CH9_H__
 #define __USB_CH9_H__
 
-#include <stdint.h>
+#include "usb_os_platform.h"
 
 /* CONTROL REQUEST SUPPORT */
 
@@ -64,7 +64,7 @@
 #define USB_RECIP_OTHER			0x03
 /* From Wireless USB 1.0 */
 #define USB_RECIP_PORT			0x04
-#define USB_RECIP_RPIPE		0x05
+#define USB_RECIP_RPIPE			0x05
 
 /*
  * Standard requests, for the bRequest field of a SETUP packet.
@@ -133,20 +133,20 @@
  * Test Mode Selectors
  * See USB 2.0 spec Table 9-7
  */
-#define	TEST_J		1
-#define	TEST_K		2
-#define	TEST_SE0_NAK	3
-#define	TEST_PACKET	4
-#define	TEST_FORCE_EN	5
+#define	TEST_J				1
+#define	TEST_K				2
+#define	TEST_SE0_NAK			3
+#define	TEST_PACKET			4
+#define	TEST_FORCE_EN			5
 
 /*
  * New Feature Selectors as added by USB 3.0
  * See USB 3.0 spec Table 9-7
  */
-#define USB_DEVICE_U1_ENABLE	48	/* dev may initiate U1 transition */
-#define USB_DEVICE_U2_ENABLE	49	/* dev may initiate U2 transition */
-#define USB_DEVICE_LTM_ENABLE	50	/* dev may send LTM */
-#define USB_INTRF_FUNC_SUSPEND	0	/* function suspend */
+#define USB_DEVICE_U1_ENABLE		48	/* dev may initiate U1 transition */
+#define USB_DEVICE_U2_ENABLE		49	/* dev may initiate U2 transition */
+#define USB_DEVICE_LTM_ENABLE		50	/* dev may send LTM */
+#define USB_INTRF_FUNC_SUSPEND		0	/* function suspend */
 
 #define USB_INTR_FUNC_SUSPEND_OPT_MASK	0xFF00
 /*
@@ -158,10 +158,10 @@
 /*
  * Interface status, Figure 9-5 USB 3.0 spec
  */
-#define USB_INTRF_STAT_FUNC_RW_CAP     1
-#define USB_INTRF_STAT_FUNC_RW         2
+#define USB_INTRF_STAT_FUNC_RW_CAP	1
+#define USB_INTRF_STAT_FUNC_RW		2
 
-#define USB_ENDPOINT_HALT		0	/* IN/OUT will STALL */
+#define USB_ENDPOINT_HALT		0 /* IN/OUT will STALL */
 
 /* Bit array elements as returned by the USB_REQ_GET_STATUS request. */
 #define USB_DEV_STAT_U1_ENABLED		2	/* transition into U1 state */
@@ -268,34 +268,32 @@ struct usb_ctrlrequest {
 
 /* All standard descriptors have these 2 fields at the beginning */
 struct usb_descriptor_header {
-	uint8_t  bLength;
-	uint8_t  bDescriptorType;
+	uint8_t bLength;
+	uint8_t bDescriptorType;
 };
-
 
 /*-------------------------------------------------------------------------*/
 
 /* USB_DT_DEVICE: Device descriptor */
 struct usb_device_descriptor {
-	uint8_t  bLength;
-	uint8_t  bDescriptorType;
+	uint8_t bLength;
+	uint8_t bDescriptorType;
 
 	uint16_t bcdUSB;
-	uint8_t  bDeviceClass;
-	uint8_t  bDeviceSubClass;
-	uint8_t  bDeviceProtocol;
-	uint8_t  bMaxPacketSize0;
+	uint8_t bDeviceClass;
+	uint8_t bDeviceSubClass;
+	uint8_t bDeviceProtocol;
+	uint8_t bMaxPacketSize0;
 	uint16_t idVendor;
 	uint16_t idProduct;
 	uint16_t bcdDevice;
-	uint8_t  iManufacturer;
-	uint8_t  iProduct;
-	uint8_t  iSerialNumber;
-	uint8_t  bNumConfigurations;
+	uint8_t iManufacturer;
+	uint8_t iProduct;
+	uint8_t iSerialNumber;
+	uint8_t bNumConfigurations;
 };
 
 #define USB_DT_DEVICE_SIZE		18
-
 
 /*
  * Device and/or Interface Class codes
@@ -333,15 +331,15 @@ struct usb_device_descriptor {
  * descriptors.
  */
 struct usb_config_descriptor {
-	uint8_t  bLength;
-	uint8_t  bDescriptorType;
+	uint8_t bLength;
+	uint8_t bDescriptorType;
 
 	uint16_t wTotalLength;
-	uint8_t  bNumInterfaces;
-	uint8_t  bConfigurationValue;
-	uint8_t  iConfiguration;
-	uint8_t  bmAttributes;
-	uint8_t  bMaxPower;
+	uint8_t bNumInterfaces;
+	uint8_t bConfigurationValue;
+	uint8_t iConfiguration;
+	uint8_t bmAttributes;
+	uint8_t bMaxPower;
 };
 
 #define USB_DT_CONFIG_SIZE		9
@@ -356,10 +354,10 @@ struct usb_config_descriptor {
 
 /* USB_DT_STRING: String descriptor */
 struct usb_string_descriptor {
-	uint8_t  bLength;
-	uint8_t  bDescriptorType;
+	uint8_t bLength;
+	uint8_t bDescriptorType;
 
-	uint16_t wData[1];		/* UTF-16LE encoded */
+	uint16_t wData[1]; /* UTF-16LE encoded */
 };
 
 /* note that "string" zero is special, it holds language codes that
@@ -370,16 +368,16 @@ struct usb_string_descriptor {
 
 /* USB_DT_INTERFACE: Interface descriptor */
 struct usb_interface_descriptor {
-	uint8_t  bLength;
-	uint8_t  bDescriptorType;
+	uint8_t bLength;
+	uint8_t bDescriptorType;
 
-	uint8_t  bInterfaceNumber;
-	uint8_t  bAlternateSetting;
-	uint8_t  bNumEndpoints;
-	uint8_t  bInterfaceClass;
-	uint8_t  bInterfaceSubClass;
-	uint8_t  bInterfaceProtocol;
-	uint8_t  iInterface;
+	uint8_t bInterfaceNumber;
+	uint8_t bAlternateSetting;
+	uint8_t bNumEndpoints;
+	uint8_t bInterfaceClass;
+	uint8_t bInterfaceSubClass;
+	uint8_t bInterfaceProtocol;
+	uint8_t iInterface;
 };
 
 #define USB_DT_INTERFACE_SIZE		9
@@ -388,34 +386,32 @@ struct usb_interface_descriptor {
 
 /* USB_DT_ENDPOINT: Endpoint descriptor */
 struct usb_endpoint_descriptor {
-	uint8_t  bLength;
-	uint8_t  bDescriptorType;
+	uint8_t bLength;
+	uint8_t bDescriptorType;
 
-	uint8_t  bEndpointAddress;
-	uint8_t  bmAttributes;
+	uint8_t bEndpointAddress;
+	uint8_t bmAttributes;
 	uint16_t wMaxPacketSize;
-	uint8_t  bInterval;
+	uint8_t bInterval;
 
 	/* NOTE:  these two are _only_ in audio endpoints. */
 	/* use USB_DT_ENDPOINT*_SIZE in bLength, not sizeof. */
-	uint8_t  bRefresh;
-	uint8_t  bSynchAddress;
+	uint8_t bRefresh;
+	uint8_t bSynchAddress;
 };
 
-
 /* USB_DT_DEVICE_QUALIFIER: Device Qualifier descriptor */
-struct __attribute__((packed)) usb_qualifier_descriptor
-{
-    uint8_t  bLength;
-    uint8_t  bDescriptorType;
+struct __attribute__((packed)) usb_qualifier_descriptor {
+	uint8_t bLength;
+	uint8_t bDescriptorType;
 
-    uint16_t bcdUSB;
-    uint8_t  bDeviceClass;
-    uint8_t  bDeviceSubClass;
-    uint8_t  bDeviceProtocol;
-    uint8_t  bMaxPacketSize0;
-    uint8_t  bNumConfigurations;
-    uint8_t  bRESERVED;
+	uint16_t bcdUSB;
+	uint8_t bDeviceClass;
+	uint8_t bDeviceSubClass;
+	uint8_t bDeviceProtocol;
+	uint8_t bMaxPacketSize0;
+	uint8_t bNumConfigurations;
+	uint8_t bRESERVED;
 };
 
 
@@ -436,10 +432,9 @@ struct __attribute__((packed)) usb_qualifier_descriptor
 #define USB_ENDPOINT_XFER_INT		3
 #define USB_ENDPOINT_MAX_ADJUSTABLE	0x80
 
-#define USB_EP_MAXP_MULT_SHIFT	11
-#define USB_EP_MAXP_MULT_MASK	(3 << USB_EP_MAXP_MULT_SHIFT)
-#define USB_EP_MAXP_MULT(m) \
-	(((m) & USB_EP_MAXP_MULT_MASK) >> USB_EP_MAXP_MULT_SHIFT)
+#define USB_EP_MAXP_MULT_SHIFT		11
+#define USB_EP_MAXP_MULT_MASK		(3 << USB_EP_MAXP_MULT_SHIFT)
+#define USB_EP_MAXP_MULT(m)		(((m)&USB_EP_MAXP_MULT_MASK) >> USB_EP_MAXP_MULT_SHIFT)
 
 /* The USB 3.0 spec redefines bits 5:4 of bmAttributes as interrupt ep type. */
 #define USB_ENDPOINT_INTRTYPE		0x30
@@ -455,7 +450,7 @@ struct __attribute__((packed)) usb_qualifier_descriptor
 #define USB_ENDPOINT_USAGE_MASK		0x30
 #define USB_ENDPOINT_USAGE_DATA		0x00
 #define USB_ENDPOINT_USAGE_FEEDBACK	0x10
-#define USB_ENDPOINT_USAGE_IMPLICIT_FB	0x20	/* Implicit feedback Data endpoint */
+#define USB_ENDPOINT_USAGE_IMPLICIT_FB	0x20 /* Implicit feedback Data endpoint */
 
 static inline int usb_endpoint_num(const struct usb_endpoint_descriptor *epd)
 {
@@ -471,88 +466,87 @@ static inline int usb_endpoint_dir_in(const struct usb_endpoint_descriptor *epd)
 	return ((epd->bEndpointAddress & USB_ENDPOINT_DIR_MASK) == USB_DIR_IN);
 }
 
-static inline int usb_endpoint_dir_out(
-				const struct usb_endpoint_descriptor *epd)
+static inline int usb_endpoint_dir_out(const struct usb_endpoint_descriptor *epd)
 {
 	return ((epd->bEndpointAddress & USB_ENDPOINT_DIR_MASK) == USB_DIR_OUT);
 }
 
-static inline int usb_endpoint_xfer_bulk(
-				const struct usb_endpoint_descriptor *epd)
+static inline int usb_endpoint_xfer_bulk(const struct usb_endpoint_descriptor *epd)
 {
 	return ((epd->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
 		USB_ENDPOINT_XFER_BULK);
 }
-static inline int usb_endpoint_xfer_control(
-				const struct usb_endpoint_descriptor *epd)
+
+static inline int usb_endpoint_xfer_control(const struct usb_endpoint_descriptor *epd)
 {
 	return ((epd->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
 		USB_ENDPOINT_XFER_CONTROL);
 }
-static inline int usb_endpoint_xfer_int(
-				const struct usb_endpoint_descriptor *epd)
+
+static inline int usb_endpoint_xfer_int(const struct usb_endpoint_descriptor *epd)
 {
 	return ((epd->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
 		USB_ENDPOINT_XFER_INT);
 }
-static inline int usb_endpoint_xfer_isoc(
-				const struct usb_endpoint_descriptor *epd)
+
+static inline int usb_endpoint_xfer_isoc(const struct usb_endpoint_descriptor *epd)
 {
 	return ((epd->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
 		USB_ENDPOINT_XFER_ISOC);
 }
-static inline int usb_endpoint_is_bulk_in(
-				const struct usb_endpoint_descriptor *epd)
+
+static inline int usb_endpoint_is_bulk_in(const struct usb_endpoint_descriptor *epd)
 {
 	return usb_endpoint_xfer_bulk(epd) && usb_endpoint_dir_in(epd);
 }
-static inline int usb_endpoint_is_bulk_out(
-				const struct usb_endpoint_descriptor *epd)
+
+static inline int usb_endpoint_is_bulk_out(const struct usb_endpoint_descriptor *epd)
 {
 	return usb_endpoint_xfer_bulk(epd) && usb_endpoint_dir_out(epd);
 }
-static inline int usb_endpoint_is_int_in(
-				const struct usb_endpoint_descriptor *epd)
+
+static inline int usb_endpoint_is_int_in(const struct usb_endpoint_descriptor *epd)
 {
 	return usb_endpoint_xfer_int(epd) && usb_endpoint_dir_in(epd);
 }
-static inline int usb_endpoint_is_int_out(
-				const struct usb_endpoint_descriptor *epd)
+
+static inline int usb_endpoint_is_int_out(const struct usb_endpoint_descriptor *epd)
 {
 	return usb_endpoint_xfer_int(epd) && usb_endpoint_dir_out(epd);
 }
-static inline int usb_endpoint_is_isoc_in(
-				const struct usb_endpoint_descriptor *epd)
+
+static inline int usb_endpoint_is_isoc_in(const struct usb_endpoint_descriptor *epd)
 {
 	return usb_endpoint_xfer_isoc(epd) && usb_endpoint_dir_in(epd);
 }
-static inline int usb_endpoint_is_isoc_out(
-				const struct usb_endpoint_descriptor *epd)
+
+static inline int usb_endpoint_is_isoc_out(const struct usb_endpoint_descriptor *epd)
 {
 	return usb_endpoint_xfer_isoc(epd) && usb_endpoint_dir_out(epd);
 }
+
 static inline int usb_endpoint_maxp(const struct usb_endpoint_descriptor *epd)
 {
 	return le16_to_cpu(epd->wMaxPacketSize);
 }
 
 enum usb_device_speed {
-	USB_SPEED_UNKNOWN = 0,			/* enumerating */
-	USB_SPEED_LOW, USB_SPEED_FULL,		/* usb 1.1 */
-	USB_SPEED_HIGH,				/* usb 2.0 */
-	USB_SPEED_WIRELESS,			/* wireless (usb 2.5) */
-	USB_SPEED_SUPER,			/* usb 3.0 */
-	USB_SPEED_SUPER_PLUS,			/* usb 3.1 */
+	USB_SPEED_UNKNOWN = 0, /* enumerating */
+	USB_SPEED_LOW, USB_SPEED_FULL, /* usb 1.1 */
+	USB_SPEED_HIGH,	      /* usb 2.0 */
+	USB_SPEED_WIRELESS,   /* wireless (usb 2.5) */
+	USB_SPEED_SUPER,      /* usb 3.0 */
+	USB_SPEED_SUPER_PLUS, /* usb 3.1 */
 };
 enum usb_device_state {
 	USB_STATE_NOTATTACHED = 0,
 	USB_STATE_ATTACHED,
-	USB_STATE_POWERED,			/* wired */
-	USB_STATE_RECONNECTING,			/* auth */
-	USB_STATE_UNAUTHENTICATED,		/* auth */
-	USB_STATE_DEFAULT,			/* limited function */
+	USB_STATE_POWERED,	   /* wired */
+	USB_STATE_RECONNECTING,	   /* auth */
+	USB_STATE_UNAUTHENTICATED, /* auth */
+	USB_STATE_DEFAULT,	   /* limited function */
 	USB_STATE_ADDRESS,
-	USB_STATE_CONFIGURED,			/* most functions */
+	USB_STATE_CONFIGURED, /* most functions */
 	USB_STATE_SUSPENDED
 };
 #endif /*__USB_CH9_H__*/

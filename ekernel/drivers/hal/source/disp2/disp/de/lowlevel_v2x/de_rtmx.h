@@ -403,4 +403,5 @@ int de_rtmx_set_palette(unsigned int sel, unsigned int chno,
 			void *data, unsigned int num);
 int de_rtmx_set_dither_out(unsigned int sel, unsigned int en, unsigned int fifo_3d,
 			unsigned int mode, unsigned int fmt);
+bool direct_show_after_vep(u32 sel);
 #endif

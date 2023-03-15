@@ -36,6 +36,9 @@ struct disp_capture_private_data {
 
 	disp_clk_t clk;
 	disp_clk_t clk_bus;
+#if defined(CONFIG_ARCH_SUN20IW2)
+	disp_clk_t clk_mbus;
+#endif
 	hal_sem_t  mlock;
 	u32 data_lock;
 };
@@ -132,6 +135,9 @@ static s32 disp_capture_clk_enable(struct disp_capture *cptr)
 
 	disp_sys_clk_enable(cptrp->clk);
 	disp_sys_clk_enable(cptrp->clk_bus);
+#if defined(CONFIG_ARCH_SUN20IW2)
+	disp_sys_clk_enable(cptrp->clk_mbus);
+#endif
 
 	return 0;
 }
@@ -145,6 +151,9 @@ static s32 disp_capture_clk_disable(struct disp_capture *cptr)
 		return 0;
 	}
 
+#if defined(CONFIG_ARCH_SUN20IW2)
+	disp_sys_clk_disable(cptrp->clk_mbus);
+#endif
 	disp_sys_clk_disable(cptrp->clk_bus);
 	disp_sys_clk_disable(cptrp->clk);
 
@@ -177,7 +186,12 @@ s32 disp_capture_start(struct disp_capture *cptr)
 		disp_sys_mutex_unlock(&cptrp->mlock);
 		return -1;
 	}
-	disp_capture_clk_enable(cptr);
+
+	/**
+	 * Can not turn off the clock directly, If it is turned off directly,
+	 * the DE module will not work.
+	 */
+	// disp_capture_clk_enable(cptr);
 	disp_al_capture_init(cptr->disp);
 	cptrp->enabled = 1;
 	disp_sys_mutex_unlock(&cptrp->mlock);
@@ -202,7 +216,7 @@ s32 disp_capture_stop(struct disp_capture *cptr)
 	disp_sys_mutex_lock(&cptrp->mlock);
 	if (cptrp->enabled == 1) {
 		disp_al_capture_exit(cptr->disp);
-		disp_capture_clk_disable(cptr);
+		// disp_capture_clk_disable(cptr);
 		cptrp->enabled = 0;
 	}
 	cptrp->data_lock = hal_spin_lock_irqsave(&disp_lock);
@@ -617,8 +631,15 @@ s32 disp_init_capture(struct disp_bsp_init_para *para)
 		disp_sys_mutex_init(&capturep->mlock);
 		capturep->data_lock = 0;
 
+#ifndef CONFIG_ARCH_SUN8IW19
 		capturep->clk = para->clk_de[disp];
 		capturep->clk_bus = para->clk_bus_de[disp];
+#if defined(CONFIG_ARCH_SUN20IW2)
+		capturep->clk_mbus = para->clk_mbus_de[disp];
+#endif
+#else
+		capturep->clk = para->mclk[DISP_MOD_DE];
+#endif
 		capture->disp = disp;
 		sprintf(capture->name, "capture%d", (int)disp);
 		capturep->shadow_protect = para->shadow_protect;

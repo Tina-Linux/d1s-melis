@@ -43,12 +43,16 @@
 #define SUNXI_IRQ_UART1		(0)
 #define SUNXI_IRQ_UART2		(0)
 #define SUNXI_IRQ_UART3		(0)
+#define SUNXI_IRQ_UART4		(0)
+#define SUNXI_IRQ_UART5		(0)
 
 #define SUNXI_UART0_BASE	(0x07080000)
 /* not used */
 #define SUNXI_UART1_BASE	(0xffffffff)
 #define SUNXI_UART2_BASE	(0xffffffff)
 #define SUNXI_UART3_BASE	(0xffffffff)
+#define SUNXI_UART4_BASE	(0xffffffff) /* no support */
+#define SUNXI_UART5_BASE	(0xffffffff) /* no support */
 
 #define UART_FIFO_SIZE		(64)
 
@@ -56,6 +60,8 @@
 #define UART1_GPIO_FUNCTION	(2)
 #define UART2_GPIO_FUNCTION	(2)
 #define UART3_GPIO_FUNCTION	(2)
+#define UART4_GPIO_FUNCTION	(2) /* no support */
+#define UART5_GPIO_FUNCTION	(2) /* no support */
 
 #define UART0_TX		GPIOL(8)
 #define UART0_RX		GPIOL(9)
@@ -66,6 +72,10 @@
 #define UART2_RX		GPIOL(9)
 #define UART3_TX		GPIOL(8)
 #define UART3_RX		GPIOL(9)
+#define UART4_TX		GPIOL(8) /* no support */
+#define UART4_RX		GPIOL(9) /* no support */
+#define UART5_TX		GPIOL(8) /* no support */
+#define UART5_RX		GPIOL(9) /* no support */
 
 /* for prcm and ccmu compatibility */
 #define HAL_CLK_PERIPH_UART0	CCU_MOD_CLK_R_UART
@@ -73,6 +83,8 @@
 #define HAL_CLK_PERIPH_UART1	CCU_MOD_CLK_NONE
 #define HAL_CLK_PERIPH_UART2	CCU_MOD_CLK_NONE
 #define HAL_CLK_PERIPH_UART3	CCU_MOD_CLK_NONE
+#define HAL_CLK_PERIPH_UART4	CCU_MOD_CLK_NONE
+#define HAL_CLK_PERIPH_UART5	CCU_MOD_CLK_NONE
 #endif /* CONFIG_CORE_DSP0 */
 
 #endif /*__UART_SUN50IW11_H__  */

@@ -19,10 +19,7 @@
 *
 ********************************************************************************************************************
 */
-#ifndef  __MSC_COMMON_H__
-#define  __MSC_COMMON_H__
+#ifndef __MSC_COMMON_H__
+#define __MSC_COMMON_H__
 
-
-#endif   //__MSC_COMMON_H__
-
-
+#endif	//__MSC_COMMON_H__

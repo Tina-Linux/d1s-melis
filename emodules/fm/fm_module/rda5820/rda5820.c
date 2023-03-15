@@ -1,16 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              hello world sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                               (c) Copyright 2006-2007, Steven.ZGJ China
-*                                           All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : rda5820.c
-* By      : xueli
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include  "rda5820.h"
 
@@ -55,7 +72,7 @@ static  __u8 RDA5820_reg_data[] =
 *
 * description:   iic write
 *
-* notes:         5×Ö½ÚÁ¬ĞøĞ´
+* notes:         5å­—èŠ‚è¿ç»­å†™
 *
 **********************************************/
 static __s32 fm_iic_write(__u8  addr, __u8 *wfm_data)
@@ -75,7 +92,7 @@ static __s32 fm_iic_write(__u8  addr, __u8 *wfm_data)
 *
 * description:   iic write
 *
-* notes:         5×Ö½ÚÁ¬Ğø¶Á
+* notes:         5å­—èŠ‚è¿ç»­è¯»
 *
 **********************************************/
 static __s32 fm_iic_read(__u8  addr, __u8 *wfm_data)
@@ -194,9 +211,9 @@ __s32  fm_exit(void)
 /**********************************************
 * function:      fm_auto_search
 *
-* description:   ×Ô¶¯ËÑË÷£¬Ö§³ÖÏòÉÏËÑË÷ºÍÏòÏÂËÑË÷
+* description:   è‡ªåŠ¨æœç´¢ï¼Œæ”¯æŒå‘ä¸Šæœç´¢å’Œå‘ä¸‹æœç´¢
 *
-* notes:         ËÑË÷µ½Ò»¸öÆµµãºóÍË³ö£¬·µ»ØÖµÊÇÒ»¸öXX.X MHzµ¥Î»
+* notes:         æœç´¢åˆ°ä¸€ä¸ªé¢‘ç‚¹åé€€å‡ºï¼Œè¿”å›å€¼æ˜¯ä¸€ä¸ªXX.X MHzå•ä½
 *
 **********************************************/
 __s32  fm_auto_search(__s32 freq, __u32 search_dir)
@@ -290,11 +307,11 @@ __s32  fm_auto_search(__s32 freq, __u32 search_dir)
 /**********************************************
 * function:      fm_play
 *
-* description:   ¸ù¾İÊäÈëµÄÆµÂÊ£¬²¥·Å´ËÆµÂÊµÄ
-*                µçÌ¨½ÚÄ¿£¬¼´Ê¹Ã»ÓĞ½ÚÄ¿Ö»ÓĞ
-*                ÔëÒô£¬ÕÕÑù²¥³ö
+* description:   æ ¹æ®è¾“å…¥çš„é¢‘ç‡ï¼Œæ’­æ”¾æ­¤é¢‘ç‡çš„
+*                ç”µå°èŠ‚ç›®ï¼Œå³ä½¿æ²¡æœ‰èŠ‚ç›®åªæœ‰
+*                å™ªéŸ³ï¼Œç…§æ ·æ’­å‡º
 *
-* notes:         Ö»·µ»Ø³É¹¦
+* notes:         åªè¿”å›æˆåŠŸ
 *
 **********************************************/
 __s32 fm_play(__s32 freq)
@@ -338,8 +355,8 @@ __s32 fm_play(__s32 freq)
 /**********************************************
 * function:      fm_manual_search
 *
-* description:   ÊÖ¶¯ËÑË÷£¬Ê¹ÓÃfm_play
-*                ·µ»ØÖµÊÇÏÂÒ»¸öËÑË÷ÆµÂÊµã
+* description:   æ‰‹åŠ¨æœç´¢ï¼Œä½¿ç”¨fm_play
+*                è¿”å›å€¼æ˜¯ä¸‹ä¸€ä¸ªæœç´¢é¢‘ç‡ç‚¹
 *
 * notes:
 *
@@ -351,10 +368,10 @@ __s32 fm_manual_search(__s32 freq, __u32 search_dir)
 /**********************************************
 * function:      fm_area_choose
 *
-* description:   µØÇøÑ¡Ôñ£¬Çø±ğ²»Í¬µÄÆğÊ¼ºÍÖÕÖ¹
-*                ÆµÂÊ
+* description:   åœ°åŒºé€‰æ‹©ï¼ŒåŒºåˆ«ä¸åŒçš„èµ·å§‹å’Œç»ˆæ­¢
+*                é¢‘ç‡
 *
-* notes:         ÊäÈëÕıÈ·µØÇø·µ»Ø³É¹¦£¬·ñÔòÊ§°Ü
+* notes:         è¾“å…¥æ­£ç¡®åœ°åŒºè¿”å›æˆåŠŸï¼Œå¦åˆ™å¤±è´¥
 *
 **********************************************/                    //OK
 __s32 fm_area_choose(__s32 area, void *pbuffer)
@@ -387,7 +404,7 @@ __s32 fm_area_choose(__s32 area, void *pbuffer)
 /**********************************************
 * function:      fm_stereo_choose
 *
-* description:   ÒôÖÊÑ¡Ôñ£¬Á¢ÌåÉùºÍÆÕÍ¨ÉùÒô
+* description:   éŸ³è´¨é€‰æ‹©ï¼Œç«‹ä½“å£°å’Œæ™®é€šå£°éŸ³
 *
 * notes:
 *
@@ -454,7 +471,7 @@ __s32 fm_signal_gain(__u8 sigain)
 /**********************************************
 * function:      fm_send
 *
-* description:   ·¢Éä¹¦ÄÜ
+* description:   å‘å°„åŠŸèƒ½
 *
 * notes:
 *
@@ -501,7 +518,7 @@ __s32 fm_send_off(void)
 /**********************************************
 * function:      fm_mute
 *
-* description:   ¾²Òô¹¦ÄÜ
+* description:   é™éŸ³åŠŸèƒ½
 *
 * notes:
 *
@@ -530,8 +547,8 @@ __s32 fm_mute(__s32 voice_onoff)
 /**********************************************
 * function:      fm_signal_level
 *
-* description:   ĞÅºÅÇ¿¶ÈÑ¡Ôñ£¬ÒªÇóĞÅºÅÇ¿´óÔ½¸ß£¬ÊÕµ½µÄµçÌ¨Ô½ÉÙ
-*                   ÒªÇóĞÅºÅÇ¿´óÔ½¸ß£¬ÊÕµ½µÄµçÌ¨Ô½¶à£¬µ«ÎŞĞ§µçÌ¨Ò²¶à
+* description:   ä¿¡å·å¼ºåº¦é€‰æ‹©ï¼Œè¦æ±‚ä¿¡å·å¼ºå¤§è¶Šé«˜ï¼Œæ”¶åˆ°çš„ç”µå°è¶Šå°‘
+*                   è¦æ±‚ä¿¡å·å¼ºå¤§è¶Šé«˜ï¼Œæ”¶åˆ°çš„ç”µå°è¶Šå¤šï¼Œä½†æ— æ•ˆç”µå°ä¹Ÿå¤š
 *
 * notes:
 *
@@ -574,4 +591,3 @@ __s32 fm_signal_level(__s32 signal_level)
 }
 
 #endif
-

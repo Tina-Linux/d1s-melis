@@ -40,6 +40,8 @@
 #include "sun8iw19-codec.h"
 #elif defined (CONFIG_SOC_SUN20IW1P1) || (CONFIG_ARCH_SUN8IW20)
 #include "sun8iw20-codec.h"
+#elif defined (CONFIG_ARCH_SUN20IW2)
+#include "sun20iw2-codec.h"
 #endif
 
 unsigned int sunxi_codec_read(struct snd_codec *codec, unsigned int reg);

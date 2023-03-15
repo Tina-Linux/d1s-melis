@@ -19,13 +19,12 @@
 *
 ********************************************************************************************************************
 */
-#ifndef  __MSCPROTOCOL_H__
-#define  __MSCPROTOCOL_H__
+#ifndef __MSCPROTOCOL_H__
+#define __MSCPROTOCOL_H__
 
 int mscQIC157Command(__mscDev_t *mscDev, __ScsiCmnd_t *ScsiCmnd);
 int mscATAPICommand(__mscDev_t *mscDev, __ScsiCmnd_t *ScsiCmnd);
 int mscUFICommand(__mscDev_t *mscDev, __ScsiCmnd_t *ScsiCmnd);
 int mscScsiCommand(__mscDev_t *mscDev, __ScsiCmnd_t *ScsiCmnd);
 
-#endif   //__MSCPROTOCOL_H__
-
+#endif //__MSCPROTOCOL_H__

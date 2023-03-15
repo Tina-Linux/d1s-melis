@@ -34,6 +34,7 @@
 #include "../sys/compiler.h"
 //#include "kernel/os/os_common.h"
 #include "stdint.h"
+#include <hal_status.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -72,7 +73,7 @@ extern "C" {
 #define HAL_ARRAY_SIZE(a)   (sizeof((a)) / sizeof((a)[0]))
 
 /* Wait forever timeout value */
-#define HAL_WAIT_FOREVER    OS_WAIT_FOREVER
+// #define HAL_WAIT_FOREVER    OS_WAIT_FOREVER
 
 #define HAL_SIZE_T 		(unsigned long)
 #define HAL_PT_TO_U(v)		(HAL_SIZE_T(v))
@@ -85,17 +86,7 @@ extern "C" {
 
 #define HAL_WMB() 		{dsb(0xf);}
 
-/**
- * @brief HAL Status value
- */
-typedef enum
-{
-    HAL_OK      = 0,	/* success */
-    HAL_ERROR   = -1,	/* general error */
-    HAL_BUSY    = -2,	/* device or resource busy */
-    HAL_TIMEOUT = -3,	/* wait timeout */
-    HAL_INVALID = -4	/* invalid argument */
-} HAL_Status;
+typedef hal_status_t HAL_Status;
 
 #ifdef __cplusplus
 }

@@ -39,5 +39,12 @@
 #if defined(CONFIG_ARCH_SUN8IW18P1)
 #include "platform/ce_sun8iw18.h"
 #endif
+#if defined(CONFIG_ARCH_SUN20IW2)
+#include "platform/ce_sun20iw2.h"
+#endif
+
+#if defined(CONFIG_ARCH_SUN20IW1) || defined(CONFIG_ARCH_SUN8IW20)
+#include "platform/ce_sun20iw1.h"
+#endif
 
 #endif

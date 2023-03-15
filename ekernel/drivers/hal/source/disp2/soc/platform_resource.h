@@ -44,7 +44,11 @@ s32 plat_get_reg_base(u32 index, u32 *data);
 
 s32 plat_get_irq_no(u32 index, u32 *data);
 
+#ifndef CONFIG_ARCH_SUN8IW19
 s32 plat_get_clk(char *name, hal_clk_id_t *data);
+#else
+s32 plat_get_clk(u32 index, hal_clk_id_t *data);
+#endif
 
 s32 plat_get_clk_parent(hal_clk_id_t clk, hal_clk_id_t * parent);
 

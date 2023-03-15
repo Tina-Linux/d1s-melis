@@ -8,8 +8,19 @@ obj-y += codecs/
 obj-y += platform/
 
 # Audio Utils
-obj-$(CONFIG_COMPONENTS_AW_ALSA_LIB) += component/
+obj-y += component/
+
+# Sunxi common
+obj-y += common/
 
 # Soundcards Register Select
+ifneq ($(CONFIG_KERNEL_FREERTOS), y)
 obj-y += card_default.o
+endif
+ifeq ($(CONFIG_KERNEL_FREERTOS)_$(CONFIG_ARCH_DSP), y_y)
+obj-y += card_default.o
+endif
 
+ifeq ($(CONFIG_COMPONENTS_PM), y)
+CFLAGS += -Icomponents/common/aw/pm/include/
+endif

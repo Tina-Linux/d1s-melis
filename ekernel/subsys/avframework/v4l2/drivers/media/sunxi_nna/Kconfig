@@ -1,7 +1,0 @@
-config SUNXI_NNA
-    depends on (SOC_SUN8IW19P1)
-    tristate "sunxi nna driver"
-    default N
-    help
-
-

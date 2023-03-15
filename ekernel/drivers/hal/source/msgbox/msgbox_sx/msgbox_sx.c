@@ -180,7 +180,7 @@ static inline int msg_irq_clear(struct messagebox *mb, unsigned long clr)
 	return 0;
 }
 
-int msg_irq_handler_sx(int i, void *d)
+hal_irqreturn_t msg_irq_handler_sx(void *d)
 {
 	int channel;
 	struct messagebox *mb = d;
@@ -200,7 +200,7 @@ int msg_irq_handler_sx(int i, void *d)
 
 	msg_irq_clear(mb, status & enable);
 
-	return 0;
+	return HAL_IRQ_OK;
 }
 
 static inline int

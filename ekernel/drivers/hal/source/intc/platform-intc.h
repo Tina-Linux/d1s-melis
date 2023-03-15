@@ -39,5 +39,11 @@
 #if defined(CONFIG_ARCH_SUN50IW11)
 #include "platform/intc-sun50iw11.h"
 #endif
+#if defined(CONFIG_ARCH_SUN20IW2) && defined(CONFIG_ARCH_DSP)
+#include "platform/intc-sun20iw2.h"
+#endif
 
+#if defined(CONFIG_ARCH_SUN55IW3) && defined(CONFIG_ARCH_DSP)
+#include "platform/intc-sun55iw3.h"
+#endif
 #endif /* __INTC_PLATFORM_H__ */

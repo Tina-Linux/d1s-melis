@@ -9,14 +9,21 @@ extern "C"
 #ifdef CONFIG_KERNEL_FREERTOS
 #include <FreeRTOS.h>
 #include <semphr.h>
+typedef struct QueueDefinition hal_mutex;
 typedef SemaphoreHandle_t hal_mutex_t;
-#else
+#elif defined(CONFIG_RTTKERNEL)
 #include <rtthread.h>
+typedef struct rt_mutex hal_mutex;
 typedef rt_mutex_t hal_mutex_t;
+#else
+#error "can not support the RTOS!!"
 #endif
+
 #include <stdint.h>
 #include <stddef.h>
 
+int hal_mutex_init(hal_mutex *mutex);
+int hal_mutex_detach(hal_mutex *mutex);
 hal_mutex_t hal_mutex_create(void);
 int hal_mutex_delete(hal_mutex_t mutex);
 int hal_mutex_lock(hal_mutex_t  mutex);

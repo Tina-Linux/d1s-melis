@@ -2,17 +2,17 @@
 * Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
 * Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
-* the the people's Republic of China and other countries.
+* the the People's Republic of China and other countries.
 * All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
 * DISCLAIMER
 * THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
-* IF YOU NEED TO INTEGRATE THIRD PARTY¡¯S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
-* IN ALLWINNERS¡¯SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
 * ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
 * ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
 * COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
-* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY¡¯S TECHNOLOGY.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
 *
 * THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
@@ -29,7 +29,6 @@
 * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 * OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef __DRV_GPIO_H__
 #define __DRV_GPIO_H__
 
@@ -265,7 +264,7 @@ gpio_status_t drv_gpio_to_irq(gpio_pin_t gpio_pin, int32_t *irq);
  * @note
  * @warning
  */
-gpio_status_t drv_gpio_irq_request(uint32_t irq, irq_handler_t hdle, unsigned long flags, void *data);
+gpio_status_t drv_gpio_irq_request(uint32_t irq, hal_irq_handler_t hdle, unsigned long flags, void *data);
 
 /**
  * @hua       This function free an irq of gpio.
@@ -312,4 +311,3 @@ gpio_status_t drv_gpio_init(void);
 #endif
 
 #endif
-

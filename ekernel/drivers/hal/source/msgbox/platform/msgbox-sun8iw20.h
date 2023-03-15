@@ -125,6 +125,9 @@ static inline void *MSGBOX_MSG_REG(int m, int n, int p)
 	return (msgbox_base + 0x70 + (n)*0x100 + (p)*0x4);
 }
 
+#define RST_MSGBOX_TYPE HAL_SUNXI_RESET
+#define CLK_MSGBOX_TYPE HAL_SUNXI_CCU
+
 #define THIS_MSGBOX_USE MSGBOX_DSP
 #define IRQ_MSGBOX 3
 #define RST_MSGBOX RST_BUS_MSGBOX1

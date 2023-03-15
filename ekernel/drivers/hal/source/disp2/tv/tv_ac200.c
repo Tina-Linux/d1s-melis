@@ -156,7 +156,7 @@ s32 tv_detect_thread(void *parg)
 
 s32 tv_detect_enable(void)
 {
-	tv_hpd_task = kthread_create(tv_detect_thread, (void *)0, "tve detect");
+	tv_hpd_task = kthread_create(tv_detect_thread, (void *)0, "tve detect", HAL_THREAD_STACK_SIZE, HAL_THREAD_PRIORITY_SYS);
 	if (IS_ERR_OR_NULL(tv_hpd_task)) {
 		s32 err = 0;
 
@@ -790,8 +790,9 @@ static int tv_ac200_init(void)
 	ret = platform_driver_register(&tv_ac200_driver);
 	if (ret)
 		return -EINVAL;
+	else
+		return 0;
 
-	return ret;
 }
 late_initcall(tv_ac200_init);
 /* module_platform_driver(tv_ac200_driver); */

@@ -31,8 +31,8 @@
 
  */
 
-#ifndef __PWM_SUN8IW19_H__
-#define __PWM_SUN8IW19_H__
+#ifndef __PWM_SUN8IW20_H__
+#define __PWM_SUN8IW20_H__
 
 #include <hal_gpio.h>
 /*****************************************************************************
@@ -172,6 +172,6 @@ static pwm_gpio_t pwm_gpio[PWM_NUM] =
 };
 
 
-#endif /* __PWM-SUN8IW19_H__ */
+#endif /* __PWM-SUN8IW20_H__ */
 
 

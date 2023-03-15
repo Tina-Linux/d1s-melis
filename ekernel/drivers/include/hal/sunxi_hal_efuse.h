@@ -22,6 +22,11 @@
 #ifndef __SUNXI_SID_H__
 #define __SUNXI_SID_H__
 
+#define CHIP_VER_A		0x0
+#define CHIP_VER_B		0x1
+#define CHIP_VER_C		0x2
+#define CHIP_VER_D		0x3
+
 typedef enum efuse_err
 {
 	EFUSE_ERR_ARG = -1,
@@ -49,9 +54,13 @@ typedef struct efuse_key_map_new{
 
 int hal_efuse_write(char *key_name, unsigned char *key_data, size_t key_bit_len);
 int hal_efuse_read(char *key_name, unsigned char *key_data, size_t key_bit_len);
+int hal_efuse_read_ext(uint32_t start_bit, uint32_t bit_num, uint8_t *data);
 int hal_efuse_set_security_mode(void);
 int hal_efuse_get_security_mode(void);
 int hal_efuse_get_chipid(unsigned char *buffer);
 int hal_efuse_get_thermal_cdata(unsigned char *buffer);
+int hal_efuse_get_chip_ver(void);
+int hal_get_module_param_from_sid(uint32_t *dst, uint32_t offset, uint32_t len);
 
+efuse_key_map_new_t *efuse_search_key_by_name(const char *key_name);
 #endif    /*  #ifndef __EFUSE_H__  */

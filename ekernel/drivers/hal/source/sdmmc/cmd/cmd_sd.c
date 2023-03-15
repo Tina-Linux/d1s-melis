@@ -28,6 +28,7 @@
  */
 
 #include <string.h>
+#include <hal_cmd.h>
 //#include "console.h"
 #include "sys/sys_debug.h"
 
@@ -146,16 +147,19 @@ enum cmd_status cmd_sd_test_exec(char *cmd)
 		CMD_DBG("use defaule argument %s\n", cmd);
 		host_id = 0;
 		cd_mode = CARD_ALWAYS_PRESENT;
-/*
+
+#if 0
 		sdc_degmask = (ROM_DUMP_MASK | ROM_DBG_MASK | ROM_INF_MASK | \
                          ROM_WRN_MASK | ROM_ERR_MASK | ROM_ANY_MASK);
 		card_dbgmask = (ROM_DUMP_MASK | ROM_DBG_MASK | ROM_INF_MASK | \
                          ROM_WRN_MASK | ROM_ERR_MASK | ROM_ANY_MASK);
-*/
+
+#else
 		sdc_degmask = (ROM_INF_MASK | \
                          ROM_WRN_MASK | ROM_ERR_MASK | ROM_ANY_MASK);
 		card_dbgmask = ( ROM_INF_MASK | \
                        ROM_WRN_MASK | ROM_ERR_MASK | ROM_ANY_MASK);
+#endif
 	}
 	mmc_test(host_id, cd_mode, sdc_degmask, card_dbgmask);
 

@@ -1,20 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                              Time manage Module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2006-2010, kevin.z China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : counter.c
-* By      : kevin.z
-* Version : v2.0
-* Date    : 2010-11-25 13:38
-* Descript:
-* Update  : date                auther      ver     notes
-*           2010-11-25 13:38    kevin.z     2.0     build the file.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "sys_time_i.h"
 #include <string.h>
@@ -128,7 +141,7 @@ __hdle esTIME_RequestCntr(__pCB_ClkCtl_t cb, char *pUsr)
     __time_cntr_node_t  *tmpCntr;
     int                 i = 0;
     char                devName[MAX_NAME_LEN];
-    rt_device_t         devFd = RT_NULL;
+    rt_device_t         devFd = NULL;
     sunxi_driver_avs_t  *ppusr = NULL;
 
     tmpCntr = (__time_cntr_node_t *)k_malloc(sizeof(__time_cntr_node_t));
@@ -145,7 +158,7 @@ __hdle esTIME_RequestCntr(__pCB_ClkCtl_t cb, char *pUsr)
     {
         sprintf(devName, "avs%d", i);
         devFd = rt_device_find(devName);
-        if (devFd != RT_NULL)
+        if (devFd != NULL)
         {
             ppusr = (sunxi_driver_avs_t *)devFd->user_data;
             if (ppusr->used == 0)
@@ -493,5 +506,3 @@ int32_t esTIME_QuerryCntrStat(__hdle hCntr)
 
     return tmpCntr->nStat;
 }
-
-

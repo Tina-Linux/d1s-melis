@@ -11,17 +11,20 @@
 #ifndef _DISP_INCLUDE_H_
 #define _DISP_INCLUDE_H_
 
+#ifdef CONFIG_KERNEL_FREERTOS
+#include <aw_types.h>
+#else
 #include <typedef.h>
+#endif
 #include <stdbool.h>
 #include <hal_sem.h>
 #include <hal_clk.h>
-#include <log.h>
 #include <aw_list.h>
-#include <hal_sem.h>
 #include <hal_gpio.h>
+#include <sunxi_hal_common.h>
 #include <sunxi_hal_pwm.h>
 #include <hal_atomic.h>
-#include <workqueue.h>
+#include <hal_workqueue.h>
 #include <video/sunxi_display2.h>
 #include <video/sunxi_metadata.h>
 #include "../disp_sys_intf.h"
@@ -29,9 +32,6 @@
 #include <hal_queue.h>
 #include <hal_log.h>
 #include "disp_features.h"
-
-
-
 
 #define DISP2_DEBUG_LEVEL 0
 
@@ -83,12 +83,6 @@
 #define LCD_GAMMA_TABLE_SIZE (256 * sizeof(unsigned int))
 
 #define ONE_SEC 1000000000ull
-
-#undef readl
-#define readl(addr)     (*((volatile unsigned int  *)(addr)))
-#undef writel
-#define writel(v, addr) (*((volatile unsigned int  *)(addr)) = (unsigned int)(v))
-
 
 typedef hal_clk_id_t disp_clk_t;
 
@@ -391,6 +385,24 @@ struct disp_enhance_config {
 	struct disp_enhance_info info;
 	enum disp_enhance_dirty_flags flags;
 };
+
+
+struct peak_pq_cfg {
+	u32 hp_ratio;
+	u32 bp0_ratio;
+	u32 bp1_ratio;
+	u32 corth;
+	u32 neg_gain;
+	u32 dif_up;
+	u32 beta;
+	u32 gain;
+};
+
+struct g_pq_cfg {
+	struct peak_pq_cfg peak;
+};
+
+
 
 enum disp_smbl_dirty_flags {
 	SMBL_DIRTY_NONE = 0x00000000,
@@ -793,13 +805,20 @@ struct disp_health_info {
 struct disp_bsp_init_para {
 	uintptr_t reg_base[DISP_MOD_NUM];
 	u32 irq_no[DISP_MOD_NUM];
+#ifndef CONFIG_ARCH_SUN8IW19
 	disp_clk_t clk_de[DE_NUM];
 	disp_clk_t clk_bus_de[DE_NUM];
+#if defined(CONFIG_ARCH_SUN20IW2)
+	disp_clk_t clk_mbus_de[DE_NUM];
+#endif
 	disp_clk_t clk_bus_dpss_top[DISP_DEVICE_NUM];
 	disp_clk_t clk_tcon_lcd[DISP_DEVICE_NUM];
 	disp_clk_t clk_bus_tcon_lcd[DISP_DEVICE_NUM];
 	disp_clk_t clk_mipi_dsi[CLK_DSI_NUM];
 	disp_clk_t clk_bus_mipi_dsi[CLK_DSI_NUM];
+#else
+	disp_clk_t mclk[DISP_MOD_NUM];
+#endif
 	struct reset_control *rst_bus_lvds;
 	s32 (*disp_int_process)(u32 sel);
 	s32 (*vsync_event)(u32 sel);
@@ -965,6 +984,8 @@ struct disp_device {
 	struct disp_lcd_flow *(*get_close_flow)(struct disp_device *dispdev);
 	s32 (*pin_cfg)(struct disp_device *dispdev, u32 bon);
 	s32 (*set_gamma_tbl)(struct disp_device *dispdev, u32 *tbl,
+			      u32 size);
+	s32 (*get_gamma_tbl)(struct disp_device *dispdev, u32 *tbl,
 			      u32 size);
 	s32 (*enable_gamma)(struct disp_device *dispdev);
 	s32 (*disable_gamma)(struct disp_device *dispdev);

@@ -5,10 +5,10 @@
 
 #define RT_GDB_ICACHE
 /* RT_NAME_MAX*/
-#define RT_NAME_MAX 32
+#define RT_NAME_MAX CONFIG_RT_NAME_MAX
 
 /* RT_ALIGN_SIZE*/
-#define RT_ALIGN_SIZE   4
+#define RT_ALIGN_SIZE   CONFIG_RT_ALIGN_SIZE
 
 #ifdef CONFIG_MODULES
 #define RT_USING_MODULE         CONFIG_MODULES
@@ -22,65 +22,168 @@
 
 /* SECTION: RT_DEBUG */
 /* Thread Debug */
+#ifdef CONFIG_RT_DEBUG
 #define RT_DEBUG
+#endif
 //#define SCHEDULER_DEBUG
 /* #define RT_THREAD_DEBUG */
-
-#define RT_USING_OVERFLOW_CHECK
+#ifdef CONFIG_RT_DEBUG_INIT_CONFIG
+#define RT_DEBUG_INIT 1
+#else
 #define RT_DEBUG_INIT 0
+#endif
+#ifdef CONFIG_RT_DEBUG_THREAD_CONFIG
+#define RT_DEBUG_THREAD 1
+#else
+#define RT_DEBUG_THREAD 0
+#endif
+#ifdef CONFIG_RT_DEBUG_SCHEDULER_CONFIG
+#define RT_DEBUG_SCHEDULER 1
+#else
+#define RT_DEBUG_SCHEDULER 0
+#endif
+#ifdef CONFIG_RT_DEBUG_IPC_CONFIG
+#define RT_DEBUG_IPC 1
+#else
+#define RT_DEBUG_IPC 0
+#endif
+#ifdef CONFIG_RT_DEBUG_TIMER_CONFIG
+#define RT_DEBUG_TIMER 1
+#else
+#define RT_DEBUG_TIMER 0
+#endif
+#ifdef CONFIG_RT_DEBUG_IRQ_CONFIG
+#define RT_DEBUG_IRQ 1
+#else
+#define RT_DEBUG_IRQ 0
+#endif
+#ifdef CONFIG_RT_DEBUG_MEM_CONFIG
+#define RT_DEBUG_MEM 1
+#else
+#define RT_DEBUG_MEM 0
+#endif
+#ifdef CONFIG_RT_DEBUG_SLAB_CONFIG
+#define RT_DEBUG_COLOR 1
+#else
+#define RT_DEBUG_COLOR 0
+#endif
+#ifdef CONFIG_RT_DEBUG_MEMHEAP_CONFIG
+#define RT_DEBUG_MEMHEAP 1
+#else
+#define RT_DEBUG_MEMHEAP 0
+#endif
+#ifdef CONFIG_RT_DEBUG_MODULE_CONFIG
+#define RT_DEBUG_MODULE 1
+#else
+#define RT_DEBUG_MODULE 0
+#endif
+
+#ifdef CONFIG_RT_USING_OVERFLOW_CHECK
+#define RT_USING_OVERFLOW_CHECK
+#endif
+
 #define RT_USING_INTERRUPT_INFO
 
 /* Using Hook */
+#ifdef CONFIG_RT_USING_HOOK
 #define RT_USING_HOOK
+#endif
+#ifdef CONFIG_RT_USING_IDLE_HOOK
+#define RT_USING_IDLE_HOOK
+#endif
 
-/* Using Software Timer */
+#ifdef CONFIG_RT_USING_TIMER_SOFT
 #define RT_USING_TIMER_SOFT
-#define RT_TIMER_THREAD_PRIO        8
-#define RT_TIMER_THREAD_STACK_SIZE  0x4000
-
+#define RT_TIMER_THREAD_PRIO        CONFIG_RT_TIMER_THREAD_PRIO
+#define RT_TIMER_THREAD_STACK_SIZE  CONFIG_RT_TIMER_THREAD_STACK_SIZE
+#endif
 
 /* SECTION: IPC */
+#ifdef CONFIG_RT_USING_SEMAPHORE
 /* Using Semaphore */
 #define RT_USING_SEMAPHORE
-
+#endif
+#ifdef CONFIG_RT_USING_MUTEX
 /* Using Mutex */
 #define RT_USING_MUTEX
-
+#endif
+#ifdef CONFIG_RT_USING_EVENT
 /* Using Event */
 #define RT_USING_EVENT
-
+#endif
+#ifdef CONFIG_RT_USING_MAILBOX
 /* Using MailBox */
 #define RT_USING_MAILBOX
-
+#endif
+#ifdef CONFIG_RT_USING_MESSAGEQUEUE
 /* Using Message Queue */
 #define RT_USING_MESSAGEQUEUE
+#endif
+#ifdef CONFIG_RT_USING_PIPE
+#define RT_USING_PIPE
+#endif
+#ifdef CONFIG_RT_USING_RINGBUFFER
+#define RT_USING_RINGBUFFER
+#endif
+#ifdef CONFIG_RT_USING_WAITQUEUE
+#define RT_USING_WAITQUEUE
+#endif
+#ifdef CONFIG_RT_USING_WORKQUEUE
+#define RT_USING_WORKQUEUE
+#endif
+#ifdef CONFIG_RT_USING_COMPLETION
+#define RT_USING_COMPLETION
+#endif
+#ifdef CONFIG_RT_USING_SIGNALS
+#define RT_USING_SIGNALS
+#endif
 
 /* SECTION: Memory Management */
-/* Using Memory Pool Management*/
-//#define RT_USING_MEMPOOL
-
-/* Using Dynamic Heap Management */
-#define RT_USING_HEAP
-
-//#define RT_USING_MEMHEAP
-
-/* Using Small MM */
-/* #define RT_USING_SMALL_MEM */
-
-/* Using SLAB Allocator */
+#ifdef CONFIG_RT_USING_MEMPOOL
+#define RT_USING_MEMPOOL
+#endif
+#ifdef CONFIG_RT_USING_MEMHEAP
+#define RT_USING_MEMHEAP
+#endif
+#ifdef CONFIG_RT_USING_NOHEAP
+#define RT_USING_NOHEAP
+#endif
+#ifdef CONFIG_RT_USING_SMALL_MEM
+#define RT_USING_SMALL_MEM
+#endif
+#ifdef CONFIG_RT_USING_SLAB
 #define RT_USING_SLAB
+#endif
+#ifdef CONFIG_RT_USING_MEMHEAP_AS_HEAP
+#define RT_USING_MEMHEAP_AS_HEAP
+#endif
+#ifdef CONFIG_RT_USING_MEMTRACE
+#define RT_USING_MEMTRACE
+#endif
+#ifdef CONFIG_RT_USING_HEAP
+#define RT_USING_HEAP
+#endif
 
 /* SECTION: Device System */
-/* Using Device System */
+#ifdef CONFIG_RT_USING_DEVICE
 #define RT_USING_DEVICE
-
-#define RT_USING_DEVICE_IPC
+#endif
+#ifdef CONFIG_RT_USING_INTERRUPT_INFO
+#define RT_USING_INTERRUPT_INFO
+#endif
 
 /* SECTION: Console options */
+#ifdef CONFIG_RT_USING_CONSOLE
 #define RT_USING_CONSOLE
-/* the buffer size of console */
-#define RT_CONSOLEBUF_SIZE 1024
-#define RT_CONSOLE_DEVICE_NAME "uart0"
+#endif
+
+
+#ifdef CONFIG_RT_CONSOLEBUF_SIZE
+#define RT_CONSOLEBUF_SIZE CONFIG_RT_CONSOLEBUF_SIZE
+#endif
+#ifdef CONFIG_RT_CONSOLE_DEVICE_NAME
+#define RT_CONSOLE_DEVICE_NAME CONFIG_RT_CONSOLE_DEVICE_NAME
+#endif
 
 /* SECTION: finsh, a C-Express shell */
 /* Using FinSH as Shell*/
@@ -130,6 +233,7 @@
 /* Using C++ support */
 /* #define RT_USING_CPLUSPLUS */
 
+#ifdef CONFIG_RT_USING_DFS
 /* SECTION: Device filesystem support */
 /* using DFS support */
 #define RT_USING_DFS
@@ -151,6 +255,13 @@
 //#define RT_NFS_HOST_EXPORT        "192.168.1.5:/"
 
 #define DFS_USING_WORKDIR
+
+#define RT_DFS_ELM_USE_LFN 1
+#define RT_DFS_ELM_MAX_LFN 255
+
+#define RT_USING_POSIX
+
+#endif
 
 /* the max number of mounted filesystem */
 //#define DFS_FILESYSTEMS_MAX     4
@@ -286,10 +397,7 @@
  * #define RT_DFS_ELM_MAX_LFN   128
  */
 
-#define RT_USING_POSIX
 #define RT_USING_LIBC
-#define RT_DFS_ELM_USE_LFN 1
-#define RT_DFS_ELM_MAX_LFN 255
 
 #define RT_USING_PTHREADS
 #define RT_START_FROM_IDLE
@@ -298,6 +406,5 @@
 #define RT_USING_SYSTEM_WORKQUEUE
 #define RT_SYSTEM_WORKQUEUE_PRIORITY 23
 #define RT_SYSTEM_WORKQUEUE_STACKSIZE 2048
-#define RT_USING_MEMHEAP CONFIG_RT_USING_MEMHEAP
 
 #endif

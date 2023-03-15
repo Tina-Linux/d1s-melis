@@ -13,10 +13,10 @@ enum cpu_type {
 };
 
 struct msg_endpoint {
-	uint32_t local_amp;
-	uint32_t remote_amp;
-	uint32_t write_ch;
-	uint32_t read_ch;
+	int32_t local_amp;
+	int32_t remote_amp;
+	int32_t write_ch;
+	int32_t read_ch;
 	struct msg_endpoint *next;
 	void *data;
 	void (*rec)(uint32_t l, void *d);
@@ -27,8 +27,8 @@ struct msg_endpoint {
 
 uint32_t hal_msgbox_init(void);
 
-uint32_t hal_msgbox_alloc_channel(struct msg_endpoint *edp, uint32_t remote,
-			      uint32_t read, uint32_t write);
+uint32_t hal_msgbox_alloc_channel(struct msg_endpoint *edp, int32_t remote,
+			      int32_t read, int32_t write);
 
 uint32_t hal_msgbox_channel_send(struct msg_endpoint *edp, uint8_t *bf,
 			     uint32_t len);

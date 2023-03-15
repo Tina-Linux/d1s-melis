@@ -1169,8 +1169,10 @@ void sdio_cardinfo_load(uint32_t card_id)
 
 	fread(&s_card_info, sizeof(struct mmc_card_info), 1, fp);
 	fclose(fp);
+	sdc_param.pwr_mode = POWER_MODE_180;
 	sdc_param.cd_mode = CARD_ALWAYS_PRESENT;
 	sdc_param.debug_mask = debug_mask;
+	sdc_param.dma_use = 1;
 	host = hal_sdc_create(card_id, &sdc_param);
 	hal_sdc_init(host);
 	mmc_card_restore(&s_card_info);

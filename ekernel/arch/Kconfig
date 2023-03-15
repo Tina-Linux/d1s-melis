@@ -4,24 +4,8 @@ config  ARM
 	bool "Support ARM family processors"
 	default y
  
-config  MIPS
-	bool "Support MIPS ISA processors"
-	default n 
-
-config  CSKY
-	bool "Support C-SKY ISA processors"
-	default n 
-
-config  ANDES
-	bool "Support andes ISA processors"
-	default n 
-
 config  RISCV
 	bool "Support riscv ISA processors"
-	default n 
-
-config  XTENSA
-	bool "Support xtensa ISA processors"
 	default n 
 
 choice

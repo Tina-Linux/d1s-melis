@@ -32,6 +32,7 @@
 #include "sunxi_hal_common.h"
 #include "clk_factors.h"
 #include "clk.h"
+#include <hal_timer.h>
 
 static int sunxi_clk_disable_plllock(struct factor_init_data *factor)
 {
@@ -88,11 +89,11 @@ static int sunxi_clk_is_lock(struct factor_init_data *factor)
         reg = readl(factor->lock_reg);
         if (GET_BITS(factor->lock_bit, 1, reg))
         {
-            clk_udelay(20);
+            hal_udelay(20);
             break;
         }
 
-        clk_udelay(1);
+        hal_udelay(1);
     }
 
     if (factor->lock_mode == PLL_LOCK_NEW_MODE)

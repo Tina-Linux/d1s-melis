@@ -22,6 +22,24 @@ static struct nor_info idt_puya[] =
         .total_size = SZ_8M,
         .flag = SUPPORT_GENERAL,
     },
+    {
+        .model = "P25Q80H",
+        .id = {0x85, 0x60, 0x14},
+        .total_size = SZ_1M,
+        .flag = SUPPORT_ALL_ERASE_BLK,
+    },
+    {
+        .model = "P25Q32H",
+        .id = {0x85, 0x60, 0x16},
+        .total_size = SZ_4M,
+        .flag = SUPPORT_ALL_ERASE_BLK,
+    },
+    {
+        .model = "p25q128h",
+        .id = {0x85, 0x20, 0x18},
+        .total_size = SZ_16M,
+        .flag = SUPPORT_GENERAL,
+    }
 };
 
 static int nor_puya_quad_mode(struct nor_flash *unused)
@@ -29,7 +47,7 @@ static int nor_puya_quad_mode(struct nor_flash *unused)
     int ret;
     unsigned char cmd[3];
     char reg[2] = {0};
-	
+
     cmd[0] = NOR_PUYA_CMD_RDSR2;
     ret = nor_transfer(1, cmd, 1, reg, 2);
     if (ret) {

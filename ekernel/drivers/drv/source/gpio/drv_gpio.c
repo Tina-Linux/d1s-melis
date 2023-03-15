@@ -7,12 +7,12 @@
 *
 * DISCLAIMER
 * THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
-* IF YOU NEED TO INTEGRATE THIRD PARTY¡¯S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
-* IN ALLWINNERS¡¯SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
 * ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
 * ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
 * COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
-* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY¡¯S TECHNOLOGY.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
 *
 * THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
@@ -29,7 +29,6 @@
 * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 * OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include <sunxi_drv_gpio.h>
 #include <standby/standby.h>
 /**
@@ -499,7 +498,7 @@ gpio_status_t drv_gpio_to_irq(gpio_pin_t gpio_pin, int32_t *irq)
  * @note
  * @warning
  */
-gpio_status_t drv_gpio_irq_request(uint32_t irq, irq_handler_t hdle, unsigned long flags, void *data)
+gpio_status_t drv_gpio_irq_request(uint32_t irq, hal_irq_handler_t hdle, unsigned long flags, void *data)
 {
     int ret = 0;
 
@@ -583,7 +582,7 @@ gpio_status_t drv_gpio_irq_disable(uint32_t irq)
  * @param     none
  * @warning
  */
-gpio_status_t drv_gpio_suspend(void)
+int drv_gpio_suspend(void *data)
 {
     int ret = 0;
     ret = hal_gpio_suspend();
@@ -598,7 +597,7 @@ gpio_status_t drv_gpio_suspend(void)
  * @param     none
  * @warning
  */
-gpio_status_t drv_gpio_resume(void)
+int drv_gpio_resume(void *data)
 {
     int ret = 0;
     ret = hal_gpio_resume();
@@ -630,4 +629,3 @@ gpio_status_t drv_gpio_init(void)
     return DRV_GPIO_STATUS_OK;
 }
 //subsys_initcall(drv_gpio_init);
-

@@ -12,16 +12,18 @@ extern "C"
 #include <FreeRTOS.h>
 #include <semphr.h>
 typedef SemaphoreHandle_t hal_sem_t;
-#else
+#elif defined(CONFIG_RTTKERNEL)
 #include <rtthread.h>
 typedef rt_sem_t hal_sem_t;
+#else
+#error "can not support the RTOS!!"
 #endif
 
 hal_sem_t hal_sem_create(unsigned int cnt);
 int hal_sem_delete(hal_sem_t sem);
 int hal_sem_getvalue(hal_sem_t sem, int *val);
 int hal_sem_post(hal_sem_t sem);
-int hal_sem_timedwait(hal_sem_t sem, int ticks);
+int hal_sem_timedwait(hal_sem_t sem, unsigned long ticks);
 int hal_sem_trywait(hal_sem_t sem);
 int hal_sem_wait(hal_sem_t sem);
 int hal_sem_clear(hal_sem_t sem);

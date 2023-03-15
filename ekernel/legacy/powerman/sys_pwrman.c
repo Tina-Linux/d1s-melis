@@ -1,17 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                    eMOD
-*                                   the Easy Portable/Player Operation System
-*                                            power manager sub-system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                     (c) Copyright 2008-2009, kevin.z China
-*                                              All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File   : sys_pwrman.c
-* Version: V1.0
-* By     : kevin.z
-* Date   : 2009-5-25 16:48
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <arch.h>
 #include <string.h>
@@ -19,13 +35,14 @@
 #include <port.h>
 #include <kapi.h>
 #include <log.h>
-#include <rtthread.h>
 #include <sys_mems.h>
 #include <sys_pins.h>
 #include <csp_ccm_para.h>
 #include <mod_powermanage.h>
 #include <mod_defs.h>
 #include <melis/standby/standby.h>
+
+#include <hal_mem.h>
 
 extern int             fioctrl(FILE* fp, int Cmd, void *args);
 
@@ -164,7 +181,7 @@ int32_t pwrman_init(__dram_para_t *para)
         return EPDK_FAIL;
     }
 
-    rt_memset(&sys_pwrman, 0, sizeof(__sys_pwrman_cfg_t));
+    memset(&sys_pwrman, 0, sizeof(__sys_pwrman_cfg_t));
 
     if (esCFG_GetKeyValue("display_mode", "pvp_mode",  &display_mode, 1))
     {
@@ -202,7 +219,7 @@ int32_t pwrman_init(__dram_para_t *para)
     //unlock cpu frequency
     sys_pwrman.cpu_lock         = 0;
     sys_pwrman.start_flag       = EPDK_FALSE;
-    sys_pwrman.mode_list        = (__pwrman_mode_list_t *)rt_malloc(sizeof(__pwrman_mode_list_t));
+    sys_pwrman.mode_list        = (__pwrman_mode_list_t *)hal_malloc(sizeof(__pwrman_mode_list_t));
     if (!sys_pwrman.mode_list)
     {
         __err("pwrman request memory failed!");
@@ -300,7 +317,7 @@ int32_t pwrman_start(void)
     }
 
     //create power manager server
-    sys_pwrman.task_prio    = awos_task_create("pwrm_tsk",  pwrman_main_task, (void *)0, 0x400, RT_TIMER_THREAD_PRIO - 3, 10);
+    sys_pwrman.task_prio    = awos_task_create("pwrm_tsk",  pwrman_main_task, (void *)0, 0x400, CONFIG_RT_TIMER_THREAD_PRIO - 3, 10);
     if (!sys_pwrman.task_prio)
     {
         __log("Create power manager main task failed!");
@@ -327,7 +344,7 @@ int32_t pwrman_start(void)
         //clear standby moudle virtual space,
         //the RO and RW section will overlay when load standby module,
         //so the ZI section no need to clear again.
-        rt_memset(sys_pwrman.pStandbyBin, 0, STANDBY_SIZE);
+        memset(sys_pwrman.pStandbyBin, 0, STANDBY_SIZE);
 
         //load standby module RO and RW sections.
         fread(sys_pwrman.pStandbyBin, 1, STANDBY_SIZE, pTmpFile);
@@ -407,7 +424,7 @@ int32_t pwrman_exit(void)
     while (sys_pwrman.mode_list)
     {
         tmpMode = sys_pwrman.mode_list->next;
-        k_free(sys_pwrman.mode_list);
+        hal_free(sys_pwrman.mode_list);
         sys_pwrman.mode_list    = tmpMode;
     }
 
@@ -462,7 +479,7 @@ int32_t esPWRMAN_ReqPwrmanMode(int32_t mode)
                 {
                     //process usb cable connect
                     __drv_power_ips_status_t    status;
-                    rt_memset(&status, 0, sizeof(__drv_power_ips_status_t));
+                    memset(&status, 0, sizeof(__drv_power_ips_status_t));
 
                     arg[0]  = 0;
                     arg[1]  = (unsigned long)&status;
@@ -620,7 +637,7 @@ int32_t esPWRMAN_RelPwrmanMode(int32_t mode)
                     {
                         //process usb cable connect
                         __drv_power_ips_status_t    status;
-                        rt_memset(&status, 0, sizeof(__drv_power_ips_status_t));
+                        memset(&status, 0, sizeof(__drv_power_ips_status_t));
 
                         arg[0]  = 0ul;
                         arg[1]  = (unsigned long)&status;
@@ -918,7 +935,7 @@ int32_t esPWRMAN_RegDevice(__sys_pwrman_dev_e device, __pCB_DPMCtl_t cb, void *p
         __log("allocate memory for device power management node failed");
         return EPDK_FAIL;
     }
-    rt_memset(tmpNode, 0, sizeof(__pwrman_dev_node_t));
+    memset(tmpNode, 0, sizeof(__pwrman_dev_node_t));
 
     // check device power management node register already or not
     tmpLink = sys_pwrman.pDevList;
@@ -1028,7 +1045,7 @@ int32_t esPWRMAN_UnregDevice(__sys_pwrman_dev_e device, __pCB_DPMCtl_t cb)
 
 int32_t esPWRMAN_GetStandbyPara(__sys_pwrman_para_t *pStandbyPara)
 {
-    rt_memcpy(pStandbyPara, &PwrmanStandbyPar, sizeof(__sys_pwrman_para_t));
+    memcpy(pStandbyPara, &PwrmanStandbyPar, sizeof(__sys_pwrman_para_t));
     return EPDK_OK;
 }
 
@@ -1038,4 +1055,3 @@ int32_t esPWRMAN_SetStandbyMode(uint32_t standby_mode)
     PwrmanStandbyPar.standby_mode   = standby_mode;
     return EPDK_OK;
 }
-

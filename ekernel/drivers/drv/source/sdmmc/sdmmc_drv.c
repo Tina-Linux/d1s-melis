@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
@@ -50,7 +81,7 @@ int32_t mmc_block_write(struct mmc_card *card, const uint8_t *buf, uint64_t sblk
 static rt_err_t sunxi_sdmmc_init(rt_device_t dev)
 {
     int ret = -1;
-    int host_id = (int)dev->user_data;
+    int host_id = (long)dev->user_data;
     dev->flag |= RT_DEVICE_FLAG_ACTIVATED;
 	__s32 internal_card	= 0x00;
 
@@ -96,7 +127,7 @@ static rt_size_t sunxi_sdmmc_read(rt_device_t dev, rt_off_t pos, void *buffer, r
     char *sector_buf = NULL;
     uint8_t *data = buffer;
 
-    struct mmc_card *card = mmc_card_open((int)dev->user_data);
+    struct mmc_card *card = mmc_card_open((long)dev->user_data);
     if (card == NULL)
     {
         printf("mmc open fail\n");
@@ -237,7 +268,7 @@ out:
     {
         free(sector_buf);
     }
-    mmc_card_close((int)dev->user_data);
+    mmc_card_close((long)dev->user_data);
 
     return ret ? ret : sz;
 }
@@ -261,7 +292,7 @@ static rt_size_t sunxi_sdmmc_write(rt_device_t dev, rt_off_t pos, const void *bu
     char *sector_buf = NULL;
     uint8_t *data = (uint8_t *)buffer;
 
-    struct mmc_card *card = mmc_card_open((int)dev->user_data);
+    struct mmc_card *card = mmc_card_open((long)dev->user_data);
     if (card == NULL)
     {
         printf("mmc open fail\n");
@@ -402,7 +433,7 @@ out:
     {
         free(sector_buf);
     }
-    mmc_card_close((int)dev->user_data);
+    mmc_card_close((long)dev->user_data);
 
     return ret ? ret : sz;
 }
@@ -419,7 +450,7 @@ static rt_err_t sunxi_sdmmc_control(rt_device_t dev, int cmd, void *args)
         return -EINVAL;
     }
 
-    struct mmc_card *card = mmc_card_open((int)dev->user_data);
+    struct mmc_card *card = mmc_card_open((long)dev->user_data);
     if (!card)
     {
         return ret;
@@ -455,14 +486,14 @@ static rt_err_t sunxi_sdmmc_control(rt_device_t dev, int cmd, void *args)
             break;
     }
 
-    mmc_card_close((int)dev->user_data);
+    mmc_card_close((long)dev->user_data);
     return ret;
 }
 
 #ifdef CONFIG_MELIS_LEGACY_DRIVER_MAN
 typedef struct __DEV_SDMMC
 {
-    uint32_t        last_lun;               //»Áπ˚Œ™1£¨±Ì æ «◊Ó∫Û“ª∏ˆ∑÷«¯,◊¢“‚:±ÿ–Î «µ⁄“ª∏ˆ◊÷∂Œ
+    uint32_t        last_lun;               //Â¶ÇÊûú‰∏∫1ÔºåË°®Á§∫ÊòØÊúÄÂêé‰∏Ä‰∏™ÂàÜÂå∫,Ê≥®ÊÑè:ÂøÖÈ°ªÊòØÁ¨¨‰∏Ä‰∏™Â≠óÊÆµ
     __u32           card_no;
     __u32           boot;
     __u32           offset;
@@ -738,15 +769,178 @@ void melis_part_deinit(int card_id)
     discard_block_cache();
 #endif
 }
-
+#include "part_efi.h"
+#define MMC_LOGICAL_OFFSET   (20 * 1024 * 1024/512)
+#define SUNXI_MBR_MAGIC			    "softw411"
+#define GPT_ENTRY_SIZE			128
+typedef struct tag_CRC32_DATA
+{
+    __u32 CRC;
+    __u32 CRC_32_Tbl[256];
+} CRC32_DATA_t;
 
 __dev_sdmmc_t   *pDevSys[SDC_COUNT][MAX_PART_COUNT] = {NULL};
+__u32 calc_crc32(const unsigned char *buffer, __u32 length)
+{
+    __u32 i, j;
+    CRC32_DATA_t crc32;
+    __u32 CRC32 = 0xffffffff;
+    crc32.CRC = 0;
+
+    for ( i = 0; i < 256; ++i)
+    {
+        crc32.CRC = i;
+        for ( j = 0; j < 8 ; ++j)
+        {
+            if (crc32.CRC & 1)
+                crc32.CRC = (crc32.CRC >> 1) ^ 0xEDB88320;
+            else
+                crc32.CRC >>= 1;
+        }
+        crc32.CRC_32_Tbl[i] = crc32.CRC;
+    }
+
+    CRC32 = 0xffffffff;
+    for ( i = 0; i < length; ++i)
+    {
+        CRC32 = crc32.CRC_32_Tbl[(CRC32^((unsigned char*)buffer)[i]) & 0xff] ^ (CRC32 >> 8);
+    }
+
+    return CRC32^0xffffffff;
+}
+
+void sunxi_get_logical_offset_param(int storage_type, u32 *logic_offset,
+				    int *total_sectors)
+{
+	/*
+	 * for nand, no phyread available, so this is not relevant
+	 * for mmc, part offset is physical offset, offset should be taken care in start value, refer by logic_offset here
+	 * for nor, part offset is logical offset, offset should be taken care in end value, refer by total_sectors here
+	 */
+	if (storage_type == STORAGE_SDC0 || storage_type == STORAGE_SDC1 ||
+	    storage_type == STORAGE_SDC2) {
+		*logic_offset = MMC_LOGICAL_OFFSET;
+	} else {
+		*logic_offset = 0;
+	}
+#if 0
+	*total_sectors = sunxi_sprite_size();
+#ifdef CONFIG_SUNXI_SPINOR
+	if (storage_type == STORAGE_NOR) {
+		*total_sectors -= SPINOR_LOGICAL_OFFSET;
+	}
+#endif
+#endif
+}
+
+int gpt_convert_to_sunxi_mbr(void *sunxi_mbr_buf, char *gpt_buf, int storage_type)
+{
+	u32 data_len	  = 0;
+	char *pbuf	    = gpt_buf;
+	gpt_entry *pgpt_entry = NULL;
+	char *gpt_entry_start = NULL;
+	int PartCount	 = 0;
+	int pos		      = 0;
+	int i, j;
+	int crc32_total;
+	int mbr_size = 0;
+	u64 start_sector;
+	int total_sectors;
+	u32 logic_offset = 0;
+
+	/* mbr_size = 256; [> hardcode, TODO: fixit <] */
+	/* mbr_size = mbr_size * (1024/512); */
+
+	sunxi_mbr_t *sunxi_mbr = (sunxi_mbr_t *)sunxi_mbr_buf;
+	memset(sunxi_mbr, 0, sizeof(sunxi_mbr_t));
+
+	sunxi_mbr->version = 0x00000200;
+	memcpy(sunxi_mbr->magic, SUNXI_MBR_MAGIC, 8);
+	sunxi_mbr->copy = 1;
+
+	data_len = 0;
+	data_len += 512; /* 0 to gpt->head */
+	data_len += 512; /* gpt->head to gpt_entry */
+	gpt_entry_start = (pbuf + data_len);
+	while (1) {
+		pgpt_entry = (gpt_entry *)(gpt_entry_start + (pos)*GPT_ENTRY_SIZE);
+		if ((long)(pgpt_entry->starting_lba) > 0) {
+			//printf("gpt pos:%d s:0x%llx e:0x%llx\n", pos, pgpt_entry->starting_lba, pgpt_entry->ending_lba);
+			PartCount++;
+		} else
+			break;
+
+		pos++;
+	}
+	sunxi_mbr->PartCount = PartCount;
+	//printf("PartCount = %d\n", PartCount);
+	//sunxi_mbr->PartCount += 1; //need UDISK
+	//printf("fix, now PartCount = %d\n", sunxi_mbr->PartCount);
+
+	for (i = sunxi_mbr->PartCount - 1; i >= 0; i--) {
+		/* udisk is the first part */
+		/* pos = (i == sunxi_mbr->PartCount-1) ? 0: i+1; */
+		pos	= i;
+		pgpt_entry = (gpt_entry *)(gpt_entry_start + (pos)*GPT_ENTRY_SIZE);
+
+		sunxi_mbr->array[i].lenhi = ((pgpt_entry->ending_lba - pgpt_entry->starting_lba + 1) >> 32) & 0xffffffff;
+		sunxi_mbr->array[i].lenlo = ((pgpt_entry->ending_lba - pgpt_entry->starting_lba + 1) >> 0) & 0xffffffff;
+		if (i == sunxi_mbr->PartCount - 1) {
+			sunxi_mbr->array[i].lenhi = 0;
+			sunxi_mbr->array[i].lenlo = 0;
+		};
+		//printf("%d starting_lba:%llx ending_lba:%llx\n", i, pgpt_entry->starting_lba, pgpt_entry->ending_lba);
+		if (i == 0) {
+			/* mbr_size = pgpt_entry->ending_lba - 511; */
+			sunxi_get_logical_offset_param(storage_type, &logic_offset, &total_sectors);
+			mbr_size = pgpt_entry->starting_lba - logic_offset;
+			//printf("mbr sector size:%x\n", mbr_size);
+		}
+
+		if (pgpt_entry->attributes.fields.type_guid_specific == 0x6000)
+			sunxi_mbr->array[i].ro = 1;
+		else if (pgpt_entry->attributes.fields.type_guid_specific == 0x8000)
+			sunxi_mbr->array[i].ro = 0;
+
+		strcpy((char *)sunxi_mbr->array[i].classname, "DISK");
+		memset(sunxi_mbr->array[i].name, 0, 16);
+
+		for (j = 0; j < 16; j++) {
+			if (pgpt_entry->partition_name[j])
+				sunxi_mbr->array[i].name[j] = pgpt_entry->partition_name[j];
+			else
+				break;
+		}
+	}
+
+	for (i = 0; i < sunxi_mbr->PartCount; i++) {
+		if (i == 0) {
+			sunxi_mbr->array[i].addrhi = 0;
+			sunxi_mbr->array[i].addrlo = mbr_size;
+		} else {
+			start_sector = sunxi_mbr->array[i - 1].addrlo;
+			start_sector |= (u64)sunxi_mbr->array[i - 1].addrhi << 32;
+			start_sector += sunxi_mbr->array[i - 1].lenlo;
+
+			sunxi_mbr->array[i].addrlo = (u32)(start_sector & 0xffffffff);
+			sunxi_mbr->array[i].addrhi = (u32)((start_sector >> 32) & 0xffffffff);
+		}
+		/*printf("i=%d, addrhi=%d addrlo=0x%x, lenhi=0x%x, lenlo=0x%x, name=%s\n", i, sunxi_mbr->array[i].addrhi,
+		       sunxi_mbr->array[i].addrlo, sunxi_mbr->array[i].lenhi, sunxi_mbr->array[i].lenlo, sunxi_mbr->array[i].name);*/
+	}
+
+	crc32_total      = calc_crc32((const unsigned char *)(sunxi_mbr_buf + 4), SUNXI_MBR_SIZE - 4);
+	sunxi_mbr->crc32 = crc32_total;
+
+	return 0;
+}
 
 void melis_part_init_bootcard(int card_id)
 {
     uint32_t            capacity = 0;
     struct mmc_card     *card;
     sunxi_mbr_t         *pMBR = NULL;
+    sunxi_mbr_t         *temp_buf = NULL;
     int32_t             ret = 0;
     uint32_t            offset = 0;
     int32_t             i = 0;
@@ -789,11 +983,27 @@ void melis_part_init_bootcard(int card_id)
         goto err;
     }
     rt_memset((void*)pMBR, 0, 16384);
+    temp_buf	= (sunxi_mbr_t *)rt_malloc(16384);
+    if (!temp_buf)
+    {
+        __err("allocate memory for mbr test failed");
+	    ret = -ENOMEM;
+	    goto err;
+    }
+    rt_memset((void*)temp_buf, 0, 16384);
 
     /*step 03: read mbr */
-    ret = sdmmc_dev_read((void*)pMBR, 40960/*unit is sector(512bytes)*/, 32/*16kbytes*/, pDevSys[card_id][0]);
+    ret = sdmmc_dev_read((void*)temp_buf, 40960/*unit is sector(512bytes)*/, 32/*16kbytes*/, pDevSys[card_id][0]);
 
-    __inf("sdmmc mbr read complete, received %d bytes", ret);
+    if(rt_strncmp(temp_buf->magic,SUNXI_MBR_MAGIC,8))
+    {
+        gpt_convert_to_sunxi_mbr((void *)pMBR,(char *)temp_buf,STORAGE_SDC0);
+    }
+    else
+    {
+        __log("PhoenixCard burn is mbr");
+        rt_memcpy(pMBR,temp_buf,16384);
+    }
 
     /*step 04: realloc part structure depending on the mbr part count*/
     pDevSys[card_id][0] = (__dev_sdmmc_t *)rt_realloc(pDevSys[card_id][0], (pMBR->PartCount) * sizeof(__dev_sdmmc_t));
@@ -856,6 +1066,11 @@ out:
     {
         rt_free(pMBR);
         pMBR    = NULL;
+    }
+	if(temp_buf)
+    {
+        rt_free(temp_buf);
+        temp_buf    = NULL;
     }
     return ;
 }

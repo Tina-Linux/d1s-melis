@@ -9,6 +9,14 @@ config HAL_TEST_SPINOR
     depends on DRIVERS_SPINOR
         default n
 
+config DRIVERS_SPINOR_FREQ_READ_ID
+    int "spinor frequency of reading id  (MHz)"
+    depends on DRIVERS_SPINOR
+    range 10 100
+    default 50
+    help
+      The frequency of reading id for spi master.
+
 config DRIVERS_SPINOR_FREQ
     int "spinor frequency (MHz)"
     depends on DRIVERS_SPINOR
@@ -16,6 +24,17 @@ config DRIVERS_SPINOR_FREQ
     default 50
     help
       The frequency for spi master.
+
+config DRIVERS_SPINOR_HARDWARE_MAX_BIT
+    int "spinor hardware max bit"
+    depends on DRIVERS_SPINOR
+    range 1 4
+    default 4
+    help
+      How many lines to transmit data at the same time.
+      1 : single, support miso for read, mosi for write.
+      2 : dual, support use both miso and mosi for read/write.
+      3 : quad, use miso/mosi/wp/hold for read/write.
 
 config DRIVERS_SPINOR_4K_SECTORS
     bool "Use small 4096 B erase sectors"

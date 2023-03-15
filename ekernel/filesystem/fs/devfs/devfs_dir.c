@@ -1,22 +1,34 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                                  File System
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2011-2014, Sunny China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : dev_dir.c
-* By      : Sunny
-* Version : v1.0
-* Date    : 2011-3-16
-* Descript: device file system directory handing functions.
-* Update  : date                auther      ver     notes
-*           2011-3-16 14:05:49  Sunny       1.0     Create this file.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY鈥橲 TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS鈥橲DK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY鈥橲 TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "fs.h"
 #include "devfs.h"
 #include "errno.h"
@@ -44,7 +56,7 @@ static __s32 devfs_readdir(struct file *filp, void *dirent, filldir_t filldir)
 
     cpos = filp->f_pos;
 
-    /* 判断是否是合法的目录节点 */
+    /* 鍒ゆ柇鏄惁鏄悎娉曠殑鐩綍鑺傜偣 */
     if (! S_ISDIR(inode->i_mode))
     {
         fs_log_debug("fail, readdir on a none dir node!\n");
@@ -54,21 +66,21 @@ static __s32 devfs_readdir(struct file *filp, void *dirent, filldir_t filldir)
 
     for (;;)
     {
-        /* 读取目录下的条目 */
+        /* 璇诲彇鐩綍涓嬬殑鏉＄洰 */
         itemInfo.dir = DEVFS_I(inode)->i_hnode;
         itemInfo.itemPos = cpos;
         ret = esFSYS_pioctrl(sb->s_part, PART_IOC_USR_GETITEM, (long)&itemInfo, &dinfo);
-        if (ret == EPDK_FAIL) /* 到达目录末尾 */
+        if (ret == EPDK_FAIL) /* 鍒拌揪鐩綍鏈熬 */
         {
             ret = 0;
             goto EOD;
         }
 
-        /* 填充目录结构 */
+        /* 濉厖鐩綍缁撴瀯 */
         cino = cpos + 1;
-        rc = filldir(dirent, dinfo.name, strlen(dinfo.name), 0, cpos ++, cino,
+        rc = filldir(dirent, dinfo.name, strlen((const char *)dinfo.name), 0, cpos ++, cino,
                      (dinfo.type == DEVFS_CLASS_TYPE ? FSYS_ATTR_DIRECTORY : 0) | FSYS_ATTR_READONLY | FSYS_ATTR_SYSTEM, 0);
-        if (rc)    /* 目录缓存空间不足 */
+        if (rc)    /* 鐩綍缂撳瓨绌洪棿涓嶈冻 */
         {
             ret = 1;
             goto NoEnoughFillBuff;
@@ -89,4 +101,3 @@ const struct file_operations devfs_dir_operations =
 {
     .readdir    = devfs_readdir,
 };
-

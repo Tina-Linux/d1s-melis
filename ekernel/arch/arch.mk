@@ -1,5 +1,7 @@
 -include include/config/auto.conf
 
+DB_QUOTES := "
+
 ifdef CONFIG_ARM
 
 TARGET_BINARY_FORMAT := elf32-littlearm
@@ -35,14 +37,9 @@ endif
 
 ifdef CONFIG_RISCV
 # t-head compile flag.
-ifdef CONFIG_SUPPORT_FP_KERNEL
-RISCVFLAGS     := -mcmodel=medany -mabi=lp64d -march=rv64gcxthead
-else
-RISCVFLAGS     := -mcmodel=medany -mabi=lp64d -march=rv64gcxthead
-endif
-
-#RISCVFLAGS     += -march=rv64imafdc
+RISCVFLAGS     := $(subst $(DB_QUOTES),,$(CONFIG_TOOLCHAIN_MACH_FLAGS))
 RISCVFLAGS     += -falign-functions=4
+ARCH_VFPUSED   += $(subst $(DB_QUOTES),,$(CONFIG_TOOLCHAIN_MACH_FLAGS))
 endif
 
 MELISINCLUDE   += $(RISCVFLAGS)

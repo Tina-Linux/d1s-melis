@@ -1,22 +1,50 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
 #include <limits.h>
 #include <stdio.h>
 
-#include <rtdef.h>
 #include <rtthread.h>
 #include <excep.h>
 
 #include <backtrace.h>
-#include <log.h>
 
-#define CONFIG_MELIS_RUN_IN_S_MODE
+#include <hal_thread.h>
+#include <hal_interrupt.h>
 
-#if defined(__GNUC__)
-#if (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
-#error "Can not support big-endian!"
-#endif
+#ifdef CONFIG_KALLSYMS
+#include <kallsyms.h>
 #endif
 
 //#define BACKTRACE_DEBUG 1
@@ -25,7 +53,7 @@
 #define backtrace_debug(fmt, ...)
 #else
 #define backtrace_debug(fmt, ...) \
-    printk("[%s:%d]:"fmt, __func__, __LINE__, ##__VA_ARGS__)
+    printf("[%s:%d]:"fmt, __func__, __LINE__, ##__VA_ARGS__)
 #endif
 
 #define BT_SCAN_MAX_LIMIT   0x2000
@@ -33,16 +61,13 @@
 
 #define PC2ADDR(pc)          ((char *)(((uintptr_t)(pc)) & 0xfffffffe))
 
-#if 0
-#define IS_VALID_TEXT_ADDRESS(pc)     ((((uintptr_t)pc > CONFIG_DRAM_PHYBASE) && ((uintptr_t)pc < CONFIG_DRAM_PHYBASE + CONFIG_DRAM_SIZE)))
-#else
 #define IS_VALID_TEXT_ADDRESS(pc)     backtrace_check_address((uintptr_t)(pc))
-#endif
 
 int32_t check_virtual_address(uintptr_t vaddr);
 
 int backtrace_check_address(uintptr_t pc)
 {
+#ifdef CONFIG_SOC_SUN20IW1P1
     if (pc < (CONFIG_DRAM_PHYBASE + 64 * 1024))
     {
         return 0;
@@ -51,12 +76,15 @@ int backtrace_check_address(uintptr_t pc)
     {
         return 0;
     }
-
     return check_virtual_address(pc);
+#else
+    if ((pc > CONFIG_DRAM_PHYBASE) && (pc < (CONFIG_DRAM_PHYBASE + CONFIG_DRAM_SIZE)))
+    {
+        return 1;
+    }
+    return 0;
+#endif
 }
-
-#define IS_COMPREEES_ADDR(pc)     ((uintptr_t)(pc) & 0x1)
-#define MAKE_COMPRESSED_ADDR(pc)    do{(pc) = (void *)((uintptr_t)(pc) | 0x1);}while(0)
 
 #define insn_length(x) \
     (((x) & 0x03) < 0x03 ? 2 : \
@@ -86,9 +114,6 @@ enum task_states
     TASK_RUNNING,
 };
 
-extern char *_mmu_text_start;
-extern char *_mmu_text_end;
-
 extern void ret_from_create_c(void);
 extern unsigned long riscv_cpu_handle_interrupt(unsigned long scause, unsigned long sepc, unsigned long stval, irq_regs_t *regs);
 
@@ -111,11 +136,11 @@ static int check_task_is_running(void *task)
         return TASK_SUSPEND;
     }
 
-    if (thread == rt_thread_self() && rt_interrupt_get_nest() == 0)
+    if (thread == kthread_self() && hal_interrupt_get_nest() == 0)
     {
         return TASK_RUNNING;
     }
-    else if (thread == rt_thread_self())
+    else if (thread == kthread_self())
     {
         return TASK_INTERRUPTED;
     }
@@ -157,6 +182,23 @@ static char *long2str(long num, char *str)
     return str;
 }
 
+static void print_backtrace(print_function print_func, unsigned long addr)
+{
+    char backtrace_output_buf[] = "backtrace : 0X         ";
+#ifdef CONFIG_KALLSYMS
+    char sym_buffer[KSYM_NAME_LEN];
+#endif
+    if (print_func) {
+        long2str(addr, &backtrace_output_buf[14]);
+        print_func(backtrace_output_buf);
+#ifdef CONFIG_KALLSYMS
+        sprint_symbol(sym_buffer, addr);
+        print_func(" : %s", sym_buffer);
+#endif
+        print_func("\r\n");
+    }
+}
+
 static void get_register_from_task_stack(void *context, char **PC, char **LR, long **SP)
 {
     switch_context_t *task_ctx;
@@ -171,33 +213,26 @@ static int find_lr_offset(char *LR, print_function print_func)
 {
     char *LR_fixed;
     unsigned short ins16;
-    char backtrace_output_buf[] = "backtrace : 0X         \r\n";
     int offset = 4;
+#ifdef CONFIG_SOC_SUN20IW1
     unsigned long *irq_entry = (unsigned long *)&riscv_cpu_handle_interrupt;
+#else
+    unsigned long *irq_entry = NULL;
+#endif
 
     irq_entry ++;
-
     LR_fixed = LR;
-
     /* meet irq_entry, it is irq handler exit address. */
     if (LR_fixed == PC2ADDR(irq_entry))
     {
-        if (print_func != NULL)
-        {
-            long2str((long)irq_entry, &backtrace_output_buf[14]);
-            print_func(backtrace_output_buf);
-        }
+        print_backtrace(print_func, (unsigned long)irq_entry);
         return 0;
     }
 
     /* meet ret_from_create_c, it is task exit function */
     if (LR_fixed == PC2ADDR(&ret_from_create_c))
     {
-        if (print_func != NULL)
-        {
-            long2str((long)&ret_from_create_c, &backtrace_output_buf[14]);
-            print_func(backtrace_output_buf);
-        }
+        print_backtrace(print_func, (unsigned long)&ret_from_create_c);
         return 0;
     }
 
@@ -211,8 +246,7 @@ static int find_lr_offset(char *LR, print_function print_func)
 
     if (print_func != NULL)
     {
-        long2str((long)LR_fixed - offset, &backtrace_output_buf[14]);
-        print_func(backtrace_output_buf);
+        print_backtrace(print_func, (unsigned long)LR_fixed - offset);
     }
 
     return offset;
@@ -281,10 +315,20 @@ static int riscv_ins16_get_push_lr_framesize(unsigned short inst, int *offset)
 
     if ((inst & 0xE07E) == 0xE006)
     {
-        /* c.sd ra, (offset)sp  */
+        /* c.sdsp ra, (offset)sp  */
         int immed_6_8 = (inst >> 7) & 0x07 ;
         int immed_3_5 = (inst >> 10) & 0x07 ;
         int immed = immed_6_8 << 6 | immed_3_5 << 3;
+        *offset = immed / sizeof(long);
+        backtrace_debug("immed=%d ", immed);
+        ret = -1;
+    }
+    else if ((inst & 0xE07E) == 0xC006)
+    {
+        /* c.swsp ra, (offset)sp  */
+        int immed_6_7 = (inst >> 7) & 0x03 ;
+        int immed_2_5 = (inst >> 9) & 0x0f ;
+        int immed = immed_6_7 << 6 | immed_2_5 << 2;
         *offset = immed / sizeof(long);
         backtrace_debug("immed=%d ", immed);
         ret = -1;
@@ -395,7 +439,7 @@ static int riscv_ins16_backtrace_return_pop(unsigned short inst)
         ret = 0;;
     }
 
-    backtrace_debug("inst:0x%x, ret = %d\n", inst);
+    backtrace_debug("inst:0x%x, ret = %d\n", inst, ret);
     return ret;
 }
 
@@ -613,13 +657,13 @@ static int riscv_ins16_backtrace_stack_pop(unsigned short inst)
     return ret;
 }
 
-static int riscv_backtrace_from_stack(long **pSP, char **pPC,
+static int riscv_backtrace_from_stack(long **pSP, char **pPC, char **pLR,
                                       print_function print_func)
 {
     char *parse_addr = NULL;
     long  *SP = *pSP;
     char *PC = *pPC;
-    char *LR;
+    char *LR = *pLR;
     int i;
     int temp;
     int framesize = 0;
@@ -628,18 +672,14 @@ static int riscv_backtrace_from_stack(long **pSP, char **pPC,
     unsigned short ins16 = 0;
     unsigned short ins16_h = 0;
     unsigned short ins16_l = 0;
-    char backtrace_output_buf[] = "backtrace : 0X         \r\n";
 
     if (SP == get_task_stack_bottom(NULL))
     {
-        if (print_func != NULL)
-        {
-            long2str((long)&ret_from_create_c, &backtrace_output_buf[14]);
-            print_func(backtrace_output_buf);
-        }
+        print_backtrace(print_func, (unsigned long)&ret_from_create_c);
         return 1;
     }
 
+#ifndef CONFIG_KALLSYMS
     for (i = 2; i < BT_SCAN_MAX_LIMIT; i += 2)
     {
         int result = 0;
@@ -696,6 +736,64 @@ static int riscv_backtrace_from_stack(long **pSP, char **pPC,
         }
         return -1;
     }
+#else
+	if (!kallsyms_lookup_size_offset((unsigned long)PC, NULL, (unsigned long *)&offset)) {
+		if (print_func != NULL)
+		{
+			print_func("backtrace fail!\r\n");
+		}
+		return -1;
+	}
+	parse_addr = (char *)((unsigned long)PC - offset);
+	backtrace_debug("function boundary: %p for %p, offset = %d\n", parse_addr, PC, offset);
+	offset = -1;
+    for (i = 0; parse_addr + i < PC; i += 2)
+    {
+        int result = 0;
+        char *parse = PC - i;
+        if (IS_VALID_TEXT_ADDRESS(parse) == 0)
+        {
+            if (print_func)
+            {
+                print_func("backtrace fail!\r\n");
+            }
+            return -1;
+        }
+        ins16_h = *(unsigned short *)parse;
+
+        if (IS_VALID_TEXT_ADDRESS(parse- 2) == 0)
+        {
+            if (print_func)
+            {
+                print_func("backtrace fail!\r\n");
+            }
+            return -1;
+        }
+        ins16_l = *(unsigned short *)(parse - 2);
+
+        backtrace_debug("parse = %p:", parse);
+
+        if (insn_length(ins16_l) == 4)
+        {
+            ins32 = (ins16_h << 16) | ins16_l;
+            result = riscv_ins32_get_push_lr_framesize(ins32, &offset);
+            i += 2;
+        }
+        else
+        {
+            ins16 = ins16_h;
+            result = riscv_ins16_get_push_lr_framesize(ins16, &offset);
+        }
+
+        if (offset >= 0)
+        {
+            break;
+        }
+    }
+
+	/* PC maybe in leaf function, we directily use ra */
+	backtrace_debug("parse_addr = %p, PC = %p, offset = %d\n", parse_addr, PC, offset);
+#endif
 
     for (i = 0; parse_addr + i < PC; i += 2)
     {
@@ -738,6 +836,13 @@ static int riscv_backtrace_from_stack(long **pSP, char **pPC,
 
     backtrace_debug("i = %d, framesize = %d, SP = %p\n", i, framesize, SP);
 
+#ifdef CONFIG_KALLSYMS
+	if (offset == -1 || framesize == 0) {
+		LR  = *pLR;
+		offset = 0;
+		goto leaf_func;
+	}
+#endif
     if (!offset)
     {
         return -1;
@@ -752,6 +857,9 @@ static int riscv_backtrace_from_stack(long **pSP, char **pPC,
     }
 
     LR  = (char *) * (SP + offset);
+#ifdef CONFIG_KALLSYMS
+leaf_func:
+#endif
     if (IS_VALID_TEXT_ADDRESS(LR) == 0)
     {
         if (print_func != NULL)
@@ -901,7 +1009,7 @@ static int riscv_backtrace_from_lr(long **pSP, char **pPC, char *LR,
         }
     }
 
-    backtrace_debug("i = %d, parse_addr = %p, PC = %p, SP = %p, framesize = %d\n", i, parse_addr, PC, framesize);
+    backtrace_debug("i = %d, parse_addr = %p, PC = %p, SP = %p, framesize = %d\n", i, parse_addr, PC, SP, framesize);
 
     if (IS_VALID_TEXT_ADDRESS(LR) == 0)
     {
@@ -920,7 +1028,7 @@ static int riscv_backtrace_from_lr(long **pSP, char **pPC, char *LR,
     return offset == 0 ? 1 : 0;
 }
 
-static int backtrace_from_stack(long **pSP, char **pPC,
+static int backtrace_from_stack(long **pSP, char **pPC, char **pLR,
                                 print_function print_func)
 {
     if (IS_VALID_TEXT_ADDRESS(*pPC) == 0)
@@ -928,7 +1036,7 @@ static int backtrace_from_stack(long **pSP, char **pPC,
         return -1;
     }
 
-    return riscv_backtrace_from_stack(pSP, pPC, print_func);
+    return riscv_backtrace_from_stack(pSP, pPC, pLR, print_func);
 }
 
 static int backtrace_from_lr(long **pSP, char **pPC, char *LR,
@@ -967,7 +1075,6 @@ static int _backtrace(char *taskname, void *output[], int size, int offset, prin
     tcb_shadow_t *task = NULL;
     char    *LR = NULL;
     int check_self = 0;
-    char backtrace_output_buf[] = "backtrace : 0X         \r\n";
 
     if (output && size > 0)
     {
@@ -998,12 +1105,6 @@ static int _backtrace(char *taskname, void *output[], int size, int offset, prin
         __asm__ volatile("mv %0, sp\n" : "=r"(SP));
         __asm__ volatile("auipc %0, 0\n" : "=r"(PC));
         __asm__ volatile("mv %0, ra\n" : "=r"(LR));
-#ifdef CONFIG_MELIS_RUN_IN_S_MODE
-        __asm__ volatile("csrr %0, sstatus\n" : "=r"(CPSR));
-#else
-        __asm__ volatile("csrr %0, mstatus\n" : "=r"(CPSR));
-#endif
-
         check_self = 1;
     }
     else if (exception_mode == 1)
@@ -1033,15 +1134,11 @@ static int _backtrace(char *taskname, void *output[], int size, int offset, prin
         }
     }
 
-    if (print_func != NULL)
-    {
-        long2str((long)PC, &backtrace_output_buf[14]);
-        print_func(backtrace_output_buf);
-    }
+    print_backtrace(print_func, (unsigned long)PC);
 
     for (level = 1; level < BT_LEVEL_LIMIT; level++)
     {
-        ret = backtrace_from_stack(&SP, &PC, print_func);
+        ret = backtrace_from_stack(&SP, &PC, &LR, print_func);
         if (ret != 0)
         {
             break;
@@ -1066,7 +1163,7 @@ static int _backtrace(char *taskname, void *output[], int size, int offset, prin
         {
             for (; level < BT_LEVEL_LIMIT; level++)
             {
-                ret = backtrace_from_stack(&SP, &PC, print_func);
+                ret = backtrace_from_stack(&SP, &PC, &LR, print_func);
                 if (ret != 0)
                 {
                     break;

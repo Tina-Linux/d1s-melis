@@ -7,11 +7,12 @@ extern "C"
 #endif
 
 /* include me to supprot FINSH_FUNCTION_EXPORT_CMD */
-
 #ifdef CONFIG_KERNEL_FREERTOS
 #include <console.h>
-#else
+#elif defined(CONFIG_RTTKERNEL)
 #include <rtthread.h>
+#else
+#error "can not support the RTOS!!"
 #endif
 
 #ifdef __cplusplus

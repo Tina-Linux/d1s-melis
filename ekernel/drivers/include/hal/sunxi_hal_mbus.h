@@ -45,6 +45,7 @@ enum mbus_pmu {
 	MBUS_PMU_OTH,           /* other masters */
 	MBUS_PMU_TOTAL,         /* total masters */
 	MBUS_PMU_RV_SYS,        /* RV_SYS */
+	MBUS_PMU_CE,            /* CE */
 	MBUS_PMU_DE,            /* DE */
 	MBUS_PMU_G2D,           /* G2D */
 	MBUS_PMU_TVD,           /* TVD */
@@ -52,6 +53,9 @@ enum mbus_pmu {
 	MBUS_PMU_DSP_SYS,       /* DSP_SYS */
 	MBUS_PMU_DI,            /* DI */
 	MBUS_PMU_IOMMU,         /* IOMMU */
+	MBUS_PMU_DMA0,          /* DMA0 */
+	MBUS_PMU_DMA1,          /* DMA1 */
+	MBUS_PMU_MAHB,          /* MAHB */
 };
 
 typedef enum{

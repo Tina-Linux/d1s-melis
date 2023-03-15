@@ -721,7 +721,7 @@ static const int sun20iw1_de_is_support_vep[] = {
 	1,
 	/* DISP0 CH1 */
 	0,
-	/* DISP0 CH2 */
+	/* DISP1 CH0 */
 	0,
 };
 
@@ -788,6 +788,76 @@ static const struct de_feat sun20iw1_de_features = {
 };
 
 #endif /*endif CONFIG_ARCH_SUN20iW1 */
+
+#if defined(CONFIG_ARCH_SUN20IW2)
+static const int sun20iw2_de_num_chns[] = {
+	/* DISP0 */
+	2,
+};
+
+static const int sun20iw2_de_num_vi_chns[] = {
+	/* DISP0 */
+	0,
+};
+
+static const int sun20iw2_de_num_layers[] = {
+	/* DISP0 CH0 */
+	4,
+	/* DISP0 CH1 */
+	4,
+};
+
+static const int sun20iw2_de_is_support_vep[] = {
+	/* DISP0 CH0 */
+	0,
+	/* DISP0 CH1 */
+	0,
+};
+
+static const int sun20iw2_de_is_support_smbl[] = {
+	/* CH0 */
+	0,
+	/* CH1 */
+	0,
+};
+
+static const int sun20iw2_de_supported_output_types[] = {
+	/* tcon0 */
+	DE_OUTPUT_TYPE_LCD,
+};
+
+static const int sun20iw2_de_is_support_wb[] = {
+	/* DISP0 */
+	1,
+};
+
+static const int sun20iw2_de_is_support_scale[] = {
+	/* DISP0 CH0 */
+	1,
+	/* DISP0 CH1 */
+	0,
+};
+
+static const int sun20iw2_de_scale_line_buffer[] = {
+	/* DISP0 */
+	1024,
+};
+
+static const struct de_feat sun20iw2_de_features = {
+	.num_screens = DE_NUM,
+	.num_devices = DEVICE_NUM,
+	.num_chns = sun20iw2_de_num_chns,
+	.num_vi_chns = sun20iw2_de_num_vi_chns,
+	.num_layers = sun20iw2_de_num_layers,
+	.is_support_vep = sun20iw2_de_is_support_vep,
+	.is_support_smbl = sun20iw2_de_is_support_smbl,
+	.is_support_wb = sun20iw2_de_is_support_wb,
+	.supported_output_types = sun20iw2_de_supported_output_types,
+	.is_support_scale = sun20iw2_de_is_support_scale,
+	.scale_line_buffer = sun20iw2_de_scale_line_buffer,
+};
+
+#endif /*endif CONFIG_ARCH_SUN20iW2 */
 
 #if defined(CONFIG_ARCH_SUN50IW10)
 static const int sun50iw10_de_num_chns[] = {
@@ -1420,6 +1490,8 @@ int de_feat_init(void)
 	de_cur_features = &sun8iw17_de_features;
 #elif defined(CONFIG_ARCH_SUN20IW1)
 	de_cur_features = &sun20iw1_de_features;
+#elif defined(CONFIG_ARCH_SUN20IW2)
+	de_cur_features = &sun20iw2_de_features;
 #else
 #error "undefined platform!!!"
 #endif

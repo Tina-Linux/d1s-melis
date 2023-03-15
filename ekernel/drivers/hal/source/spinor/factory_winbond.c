@@ -32,12 +32,6 @@ static struct nor_info idt_winbond[] =
         .total_size = SZ_16M,
         .flag = SUPPORT_GENERAL | SUPPORT_INDIVIDUAL_PROTECT,
     },
-    {
-        .model = "w25q128jvsim",
-        .id = {0xef, 0x40, 0x11},
-        .total_size = SZ_16M,
-        .flag = SUPPORT_GENERAL | SUPPORT_INDIVIDUAL_PROTECT,
-    },
 };
 
 static int nor_winbond_set_wps(int val)

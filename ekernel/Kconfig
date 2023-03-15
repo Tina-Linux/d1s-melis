@@ -3,9 +3,10 @@ menu "Kernel Setup"
 source "ekernel/arch/Kconfig"
 source "ekernel/core/Kconfig"
 source "ekernel/drivers/drv/Kconfig"
+source "ekernel/drivers/osal/Kconfig"
 source "ekernel/drivers/test/Kconfig"
 source "ekernel/filesystem/Kconfig"
-source "ekernel/subsys/Kconfig"
+source "ekernel/components/Kconfig"
 source "ekernel/legacy/Kconfig"
 
 config ARMCPU_HIGH_VECTOR_ADDRESS
@@ -43,5 +44,51 @@ choice
 		bool "Fat Filesystem"
 
 endchoice
+
+config  CHANGE_COMPRESS_METHOD
+	bool "change compress method of epos"
+	default n
+
+if CHANGE_COMPRESS_METHOD
+	choice
+		prompt "method of compress"
+		help
+			The higher the compression rate, the higher the decompression time.
+			Compression rate sorting: LZMA > GZ > LZ4 > without compress.
+			Decompression time sorting  at startup: LZMA > GZ > LZ4 > without compress.
+
+		config EPOS_COMPRESS_LZMA
+			bool "Epos compress with LZMA(default)"
+			help
+				If you want smaller firmware, LZMA compression is recommended.
+
+		config EPOS_COMPRESS_GZ
+			bool "Epos compress with GZ(recommend)"
+			help
+				GZ is the best compression algorithm considering both time and size
+
+		config EPOS_COMPRESS_LZ4
+			bool "Epos compress with LZ4(Fastest)"
+			help
+				If you want the Fastest boot speed, lz4 compression is recommended.
+
+		config EPOS_COMPRESS_NONE
+			bool "Epos without compress(The worst)"
+			help
+				Although there is no compression, we do not need to decompress the data, but we need more time to load the data.
+	endchoice
+endif
+
+config DOUBLE_FREE_CHECK
+	bool  "Doule Free Check"
+	default n
+
+config CMSIS
+    bool "ARM CMSIS interface support"
+    default n
+    help
+       CMSIS enables consistent device support and simple software interfaces to the processor and its peripherals, simplifying software reuse, reducing the learning curve for microcontroller developers, 
+       and reducing the time to market for new devices.
+
 
 endmenu

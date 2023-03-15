@@ -33,8 +33,6 @@
 #ifndef __RTC_SUN8IW19_H__
 #define __RTC_SUN8IW19_H__
 
-#define BIT(nr)     (1UL << (nr))
-
 #define SUNXI_RTC_BASE      0x07000000
 #define SUNXI_RTC_DATA_BASE     (SUNXI_RTC_BASE+0x100)
 

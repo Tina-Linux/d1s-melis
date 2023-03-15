@@ -61,6 +61,8 @@ struct sunxi_clk_factor_freq
 #define PLLPERIPH1(n, d1, d2, freq)  {F_N8X8_D1V1X1_D2V0X1(n, d1, d2), freq}
 #define PLLVIDEO0(n, d1, freq)       {F_N8X8_D1V1X1(n, d1), freq}
 #define PLLAUDIO(n, p, d1, d2, freq) {F_N8X8_P16X6_D1V1X1_D2V0X1(n, p, d1, d2), freq}
+#define PLLCSI(n, d1, freq)          {F_N8X8_D1V1X1(n, d1), freq}
+#define PLLNPU(n, d1, freq)          {F_N8X8_D1V1X1(n, d1), freq}
 
 #define SUNXI_CLK_FACTORS_CONFIG(name, _nshift, _nwidth, _kshift, _kwidth, \
                                  _mshift, _mwidth, _pshift, _pwidth, _d1shift, _d1width, \

@@ -3,9 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <time.h>
-#include <rtthread.h>
 #include <hal_mem.h>
-#include <log.h>
 #include <video/sunxi_display2.h>
 #include "disp_layer_cfg.h"
 #include "disp_mem.h"
@@ -161,5 +159,5 @@ int lbc_test(int argc, char **argv)
 
 
 
-FINSH_FUNCTION_EXPORT_ALIAS(lbc_test, __cmd_disp_lbc_test, disp lbc test);
+FINSH_FUNCTION_EXPORT_ALIAS(lbc_test, __cmd_disp_lbc_test, disp_lbc_test);
 

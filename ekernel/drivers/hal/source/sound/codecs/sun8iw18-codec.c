@@ -116,6 +116,117 @@ void sunxi_audiocodec_reg_dump(void)
 }
 #endif
 
+#if AW87579_ANALOG_PA
+static twi_status_t aw87579_init_i2c_device(twi_port_t port)
+{
+	twi_status_t ret = 0;
+
+	ret = hal_twi_init(port);
+	if (ret != TWI_STATUS_OK) {
+		snd_err("init i2c err ret=%d.\n", ret);
+		return ret;
+	}
+
+	return TWI_STATUS_OK;
+}
+
+static twi_status_t aw87579_deinit_i2c_device(twi_port_t port)
+{
+	twi_status_t ret = 0;
+
+	ret = hal_twi_uninit(port);
+	if (ret != TWI_STATUS_OK) {
+		snd_err("init i2c err ret=%d.\n", ret);
+		return ret;
+	}
+
+	return TWI_STATUS_OK;
+}
+
+static twi_status_t aw87579_read(struct twi_device *twi_dev,
+	unsigned char reg, unsigned char *rt_value)
+{
+	twi_status_t ret;
+
+	hal_twi_control(twi_dev->bus, I2C_SLAVE, &twi_dev->addr);
+	ret = hal_twi_read(twi_dev->bus, reg, rt_value, 1);
+	if (ret != TWI_STATUS_OK) {
+		snd_err("error = %d [REG-0x%02x]\n", ret, reg);
+		return ret;
+	}
+
+	return TWI_STATUS_OK;
+}
+
+static int aw87579_write(struct twi_device *twi_dev,
+	unsigned char reg, unsigned char value)
+{
+	twi_status_t ret;
+	twi_msg_t msg;
+	unsigned char buf[2] = {reg, value};
+
+	msg.flags = 0;
+	msg.addr =  twi_dev->addr;
+	msg.len = 2;
+	msg.buf = buf;
+
+	ret = hal_twi_control(twi_dev->bus, I2C_RDWR, &msg);
+	if (ret != TWI_STATUS_OK) {
+		snd_err("error = %d [REG-0x%02x]\n", ret, reg);
+		return ret;
+	}
+
+	return TWI_STATUS_OK;
+}
+
+static int aw87579_analog_pa_get_data(struct snd_kcontrol *kcontrol,
+				struct snd_ctl_info *info)
+{
+	struct snd_codec *codec = kcontrol->private_data;
+	struct sunxi_codec_info *sunxi_codec = codec->private_data;
+
+	twi_status_t ret;
+	unsigned char value = 0;
+
+	ret = aw87579_read(&sunxi_codec->param.twi_dev, AW87579_REG_SYSCTRL, &value);
+	if (ret != TWI_STATUS_OK) {
+		snd_err("aw87579 analog pa get data failed!");
+		return -1;
+	}
+	if (value == 0x78) {
+		info->value = 1;
+	} else {
+		info->value = 0;
+	}
+	snd_print("get analog pa value:%u\n", info->value);
+	info->id = kcontrol->id;
+	info->name = kcontrol->name;
+	info->min = kcontrol->min;
+	info->max = kcontrol->max;
+	return 0;
+}
+
+static int aw87579_analog_pa_set_data(struct snd_kcontrol *kcontrol, unsigned long val)
+{
+	struct snd_codec *codec = kcontrol->private_data;
+	struct sunxi_codec_info *sunxi_codec = codec->private_data;
+
+	if (val != AW87579_ANALOG_PA_ON && val != AW87579_ANALOG_PA_OFF)
+		return -1;
+
+	unsigned char value = 0;
+	if (val == AW87579_ANALOG_PA_ON) {
+		value = 0x78;
+	} else {
+		value = 0x01;
+	}
+	aw87579_write(&sunxi_codec->param.twi_dev, AW87579_REG_SYSCTRL, value);
+	snd_print("set analog pa value:%u\n", val);
+	return 0;
+}
+
+#else
+
 static int sunxi_spk_gpio_get_data(struct snd_kcontrol *kcontrol,
 				struct snd_ctl_info *info)
 {
@@ -151,6 +262,7 @@ static int sunxi_spk_gpio_set_data(struct snd_kcontrol *kcontrol, unsigned long 
 
 	return -1;
 }
+#endif
 
 static const char * const codec_format_function[] = {
 			"hub_disable", "hub_enable"};
@@ -162,9 +274,15 @@ static struct snd_kcontrol sunxi_codec_controls[] = {
 	SND_CTL_KCONTROL("MIC3 gain volume", SUNXI_MIC2_MIC3_CTL, MIC3BOOST, 0x7),
 	SND_CTL_KCONTROL("ADC gain volume", SUNXI_ADC_CTL, ADCG, 0x7),
 	SND_CTL_KCONTROL("LINEOUT volume", SUNXI_LINEOUT_CTL1, LINEOUT_VOL, 0x1f),
+	#if AW87579_ANALOG_PA
+	SND_CTL_KCONTROL_EXT("Spk PA Switch", 1, 0,
+					aw87579_analog_pa_get_data,
+					aw87579_analog_pa_set_data),
+	#else
 	SND_CTL_KCONTROL_EXT("Spk PA Switch", 1, 0,
 					sunxi_spk_gpio_get_data,
 					sunxi_spk_gpio_set_data),
+	#endif
 
 	SND_CTL_KCONTROL("Left Input Mixer DACL Switch", SUNXI_LADCMIX_SRC, LADC_DACL, 1),
 	SND_CTL_KCONTROL("Left Input Mixer MIC1 Boost Switch", SUNXI_LADCMIX_SRC, LADC_MIC1_STAGE, 1),
@@ -528,8 +646,12 @@ static int sun8iw18_codec_probe(struct snd_codec *codec)
 		.mic2gain	= 0x4,
 		.mic3gain	= 0x0,
 		.adcgain	= 0x3,
+		#if AW87579_ANALOG_PA
+		.twi_dev        = AW87579_CHIP_CFG,
+		#else
 		.gpio_spk	= GPIOH(9),
 		.gpio_spk_power = GPIOH(2),
+		#endif
 		.pa_msleep_time = 50,
 		.adcdrc_cfg     = 0,
 		.adchpf_cfg     = 1,
@@ -565,6 +687,17 @@ static int sun8iw18_codec_probe(struct snd_codec *codec)
 
 	sunxi_codec_init(codec);
 
+#if AW87579_ANALOG_PA
+	snd_print("init aw87579 i2c port.\n");
+	int ret = aw87579_init_i2c_device(sunxi_codec->param.twi_dev.bus);
+	if (ret != TWI_STATUS_OK) {
+		snd_err("init i2c err\n");
+		return -ENOMEM;
+	}
+
+	hal_twi_control(sunxi_codec->param.twi_dev.bus, I2C_SLAVE, &sunxi_codec->param.twi_dev.addr);
+#endif
+
 	return 0;
 }
 
@@ -572,6 +705,14 @@ static int sun8iw18_codec_remove(struct snd_codec *codec)
 {
 	struct sunxi_codec_info *sunxi_codec = codec->private_data;
 	struct sunxi_codec_param *param = &sunxi_codec->param;
+
+#if AW87579_ANALOG_PA
+	snd_print("deinit aw87579 i2c port.\n");
+	int ret = aw87579_deinit_i2c_device(sunxi_codec->param.twi_dev.bus);
+	if (ret != TWI_STATUS_OK) {
+		snd_err("i2c deinit port %d failed.\n", sunxi_codec->param.twi_dev.bus);
+	}
+#endif
 
 	if (param->adcdrc_cfg)
 		adcdrc_enable(codec, 0);
@@ -741,6 +882,9 @@ static int sunxi_codec_dapm_control(struct snd_pcm_substream *substream,
 				(0x1<<LINEOUTL_EN), (0x1<<LINEOUTL_EN));
 			snd_codec_update_bits(codec, SUNXI_LINEOUT_CTL0,
 				(0x1<<LINEOUTR_EN), (0x1<<LINEOUTR_EN));
+			#if AW87579_ANALOG_PA
+			aw87579_write(&sunxi_codec->param.twi_dev, AW87579_REG_SYSCTRL, 0x78);
+			#else
 			if (param->gpio_spk > 0) {
 				hal_gpio_set_direction(param->gpio_spk,
 						GPIO_DIRECTION_OUTPUT);
@@ -753,10 +897,14 @@ static int sunxi_codec_dapm_control(struct snd_pcm_substream *substream,
 				hal_gpio_set_data(param->gpio_spk_power,
 						GPIO_DATA_HIGH);
 			}
+			#endif
 			/* delay to wait PA stable */
 			hal_msleep(param->pa_msleep_time);
 		} else {
 			/* Playback off */
+			#if AW87579_ANALOG_PA
+			aw87579_write(&sunxi_codec->param.twi_dev, AW87579_REG_SYSCTRL, 0x01);
+			#else
 			if (param->gpio_spk > 0) {
 				hal_gpio_set_direction(param->gpio_spk,
 						GPIO_DIRECTION_OUTPUT);
@@ -769,6 +917,7 @@ static int sunxi_codec_dapm_control(struct snd_pcm_substream *substream,
 				hal_gpio_set_data(param->gpio_spk_power,
 						GPIO_DATA_LOW);
 			}
+			#endif
 			hal_msleep(param->pa_msleep_time);
 			/* LINEOUT */
 			snd_codec_update_bits(codec, SUNXI_LINEOUT_CTL0,

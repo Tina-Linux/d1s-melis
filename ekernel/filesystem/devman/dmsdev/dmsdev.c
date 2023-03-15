@@ -1,17 +1,34 @@
 /*
-**********************************************************************************************************************
-*                                                   ePOS
-*                                  the Easy Portable/Player Operation System
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                (c) Copyright 2007-2008, Steven.ZGJ.China
-*                                           All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : devman.c
-* By      : steven.ZGJ
-* Version : V1.00
-**********************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "dmsdev.h"
 //#include <sys_fsys.h>
 #include <log.h>
@@ -82,7 +99,7 @@ static int32_t dmsdev_Ioctrl(__hdle hDev, uint32_t Cmd, int32_t Aux, void *pBuff
             __dev_classnode_t       *pClassnode = (__dev_classnode_t *)itemInfo->dir;
             int32_t                 i, res, idx = itemInfo->itemPos;
 
-            /* ²éÕÒÀà¶¥µã½ÚµãÏÂµÄÀà½Úµã£¬¼´Ò»¼¶Ä¿Â¼ */
+            /* æŸ¥æ‰¾ç±»é¡¶ç‚¹èŠ‚ç‚¹ä¸‹çš„ç±»èŠ‚ç‚¹ï¼Œå³ä¸€çº§ç›®å½• */
             if (itemInfo->dir == (__hdle)&devclass_nop)
             {
                 for (i = 0, pClassnode = devclass_nop.next; pClassnode && i < idx; pClassnode = pClassnode->next, i ++);
@@ -93,14 +110,14 @@ static int32_t dmsdev_Ioctrl(__hdle hDev, uint32_t Cmd, int32_t Aux, void *pBuff
                 }
                 else
                 {
-                    /* ·µ»ØÖ¸ÏòµÄÉè±¸½ÚµãÁ´ */
+                    /* è¿”å›žæŒ‡å‘çš„è®¾å¤‡èŠ‚ç‚¹é“¾ */
                     dinfo->name     = pClassnode->name;
                     dinfo->hnode    = (__hdle)(pClassnode);
                     dinfo->type     = DEVFS_CLASS_TYPE;
                     res             = EPDK_OK;
                 }
             }
-            /* ²éÕÒÉè±¸½Úµã£¬ÓÉÉè±¸Àà½ÚµãÖ¸ÏòµÄ½ÚµãÁ´²éÕÒ */
+            /* æŸ¥æ‰¾è®¾å¤‡èŠ‚ç‚¹ï¼Œç”±è®¾å¤‡ç±»èŠ‚ç‚¹æŒ‡å‘çš„èŠ‚ç‚¹é“¾æŸ¥æ‰¾ */
             else
             {
                 __dev_node_t *pNode = NULL;
@@ -113,7 +130,7 @@ static int32_t dmsdev_Ioctrl(__hdle hDev, uint32_t Cmd, int32_t Aux, void *pBuff
                 }
                 else
                 {
-                    /* ·µ»ØÕÒµ½µÄÉè±¸½ÚµãÖ¸Õë */
+                    /* è¿”å›žæ‰¾åˆ°çš„è®¾å¤‡èŠ‚ç‚¹æŒ‡é’ˆ */
                     dinfo->name     = pNode->name;
                     dinfo->hnode    = (__hdle)pNode;
                     dinfo->type     = DEVFS_NODE_TYPE;

@@ -51,10 +51,6 @@
 #define hal_read_reg16(x)                (*(volatile u16 *)(x))
 #define hal_read_reg32(x)                (*(volatile u32 *)(x))
 
-#undef readl
-#undef writel
-#define readl(x) hal_read_reg32(x)
-#define writel(val, reg) hal_write_reg32(reg, val)
 /************************************************************************************************
 * Macro definition CCMU_XXX
 * @Description: These definitions used to CCMU HAL-API and Drivers source code debug
@@ -98,8 +94,9 @@ void hal_clock_init(void);
 * # others : soc clocks initialization may have some abnormal problems
 * @Attention: clock initialize timing depands on specific soc platform clock design
 *************************************************************************************************/
+#if defined(CONFIG_DRIVERS_SUNXI_CCU) || defined(CONFIG_DRIVERS_SUNXI_CLK)
 hal_clk_t hal_clock_get(hal_clk_type_t type, hal_clk_id_t id);
-
+#endif
 
 hal_clk_status_t hal_clock_put(hal_clk_t clk);
 

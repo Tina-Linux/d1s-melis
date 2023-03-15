@@ -4,4 +4,10 @@ config DRIVERS_HWSPINLOCK
     bool "enable hwspinlock driver"
         default n
 
+config HAL_TEST_HWSPINLOCK
+    bool "enable hwspinlock hal APIS test command"
+        depends on DRIVERS_HWSPINLOCK
+	default n
+
+
 endmenu

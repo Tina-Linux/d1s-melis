@@ -1,9 +1,9 @@
 /*
 ********************************************************************************************************************
-*                                             
+*
 *
 *                              (c) Copyright 2007-2010, javen.China
-*										All	Rights Reserved
+*			                All Rights Reserved
 *
 * File Name 	: misc_lib.c
 *
@@ -13,22 +13,19 @@
 *
 * Date 			: 2010.03.02
 *
-* Description 	: ÄÚ´æÔ¤·ÖÅä
+* Description 	: å†…å­˜é¢„åˆ†é…
 *
 * History 		:
 *
 ********************************************************************************************************************
 */
-//#include  "usb_host_config.h"
-//#include  "usb_host_base_types.h"
-#include  "usb_os_platform.h"
-#include  "error.h"
-#include  "misc_lib.h"
 
-#if  0
-#define DMSG_TEMP_TEST   hal_log_info
+#include "usb_os_platform.h"
+
+#if 0
+#define DMSG_TEMP_TEST hal_log_info
 #else
-#define DMSG_TEMP_TEST(...) 
+#define DMSG_TEMP_TEST(...)
 #endif
 
 /*
@@ -36,19 +33,19 @@
 *                     xGetDataFromBuffer
 *
 * Description:
-*     ´ÓBufferµÄBitOffsetÎ»ÖÃ¿ªÊ¼È¡³öBitCount¸öbitµÄÊý¾Ý, ´æ·Åµ½32Î»µÄDataÖÐ¡£
+*     ä»ŽBufferçš„BitOffsetä½ç½®å¼€å§‹å–å‡ºBitCountä¸ªbitçš„æ•°æ®, å­˜æ”¾åˆ°32ä½çš„Dataä¸­ã€‚
 *
 * Parameters:
-*    Buffer  	:  input.  ´æ·Å×ÅÔ­Ê¼Êý¾Ý
-*    BitOffset  :  input.  Ïà¶ÔÆðÊ¼µØÖ·µÄbitÆ«ÒÆÎ»
-*    BitCount  	:  input.  bitµÄ¸öÊý, ×î´ó32Î»
-* 	 Data		:  output. ´æ·Å×îÖÕ½á¹û
+*    Buffer  	:  input.  å­˜æ”¾ç€åŽŸå§‹æ•°æ®
+*    BitOffset  :  input.  ç›¸å¯¹èµ·å§‹åœ°å€çš„bitåç§»ä½
+*    BitCount  	:  input.  bitçš„ä¸ªæ•°, æœ€å¤§32ä½
+* 	 Data		:  output. å­˜æ”¾æœ€ç»ˆç»“æžœ
 *
 * Return value:
-*    ·µ»Ø³É¹¦»òÕßÊ§°Ü
+*    è¿”å›žæˆåŠŸæˆ–è€…å¤±è´¥
 *
 * note:
-*    ÎÞ
+*    æ— 
 *
 *        BitOffset                                       BitOffset + BitCount
 *           |                                                   |
@@ -56,35 +53,38 @@
 *  |--------[--------|----------------|----------------|--------]--------|
 *
 *  |        |--Head--|--------------body---------------|--tail--|
-* Start     
+* Start
 *
 *******************************************************************************
 */
-int xGetDataFromBuffer(unsigned char *Buffer, unsigned int BitOffset, unsigned int BitCount, int *Data)
+int xGetDataFromBuffer(unsigned char *Buffer,
+		       unsigned int BitOffset,
+		       unsigned int BitCount,
+		       int *Data)
 {
-	unsigned char *Start        	= NULL;	/* ±¾´Î»»ËãµÄÆðÊ¼µØÖ· 	*/
-	
-	unsigned int TempData_Head	= 0;	/* ´æ·ÅÊý¾ÝµÄÍ· 		*/
-	unsigned int Len_Head		= 0;
-	
-	unsigned int TempData_Body	= 0;	/* ´æ·ÅÊý¾ÝÖÐ¼ä²¿·Ö 	*/
-	unsigned int Len_Body		= 0;
-	
-	unsigned int TempData_Tail	= 0;	/* ´æ·ÅÊý¾ÝÎ²°Í 		*/
-    unsigned int Len_Tail		= 0;
+	unsigned char *Start = NULL; /* æœ¬æ¬¡æ¢ç®—çš„èµ·å§‹åœ°å€ */
 
-	DMSG_TEMP_TEST("xGetDataFromBuffer: Buffer = %x, BitOffset = %x, BitCount = %x, Data = %x\n", 
-		      Buffer, BitOffset, BitCount, Data);
+	unsigned int TempData_Head = 0; /* å­˜æ”¾æ•°æ®çš„å¤´ */
+	unsigned int Len_Head = 0;
 
-	if(BitCount > 32){
+	unsigned int TempData_Body = 0; /* å­˜æ”¾æ•°æ®ä¸­é—´éƒ¨åˆ† */
+	unsigned int Len_Body = 0;
+
+	unsigned int TempData_Tail = 0; /* å­˜æ”¾æ•°æ®å°¾å·´ */
+	unsigned int Len_Tail = 0;
+
+	DMSG_TEMP_TEST("xGetDataFromBuffer: Buffer = %x, BitOffset = %x, BitCount = %x, Data = %x\n",
+		       Buffer, BitOffset, BitCount, Data);
+
+	if (BitCount > 32) {
 		hal_log_err("ERR: BitCount(%d) is must longer than 32\n", BitCount);
 		return USB_ERR_BAD_ARGUMENTS;
 	}
 
-    /* length */
-	if(BitOffset % 8){
+	/* length */
+	if (BitOffset % 8) {
 		Len_Head = 8 - (BitOffset % 8);
-	}else{
+	} else {
 		Len_Head = 0;
 	}
 
@@ -92,39 +92,40 @@ int xGetDataFromBuffer(unsigned char *Buffer, unsigned int BitOffset, unsigned i
 	Len_Body = BitCount - Len_Head - Len_Tail;
 	Start = Buffer + BitOffset / 8;
 
-	DMSG_TEMP_TEST("Len_Head = %d, Len_Tail = %d, Len_Body = %d, Buffer= %x, Start = %x\n", 
-		   Len_Head, Len_Tail, Len_Body, Buffer, Start);
+	DMSG_TEMP_TEST("Len_Head = %d, Len_Tail = %d, Len_Body = %d, Buffer= %x, Start = %x\n",
+		       Len_Head, Len_Tail, Len_Body, Buffer, Start);
 
-    /* head data */
-    TempData_Head = (*Start >> (8 - Len_Head)) & 0xff;
+	/* head data */
+	TempData_Head = (*Start >> (8 - Len_Head)) & 0xff;
 
-    /* body data */
-	if(Len_Head){
+	/* body data */
+	if (Len_Head) {
 		Start += 1;
 	}
 
-	if(Len_Body == 0){
+	if (Len_Body == 0) {
 		TempData_Body = 0;
-	}else if(Len_Body == 8){
-	    TempData_Body = Start[0];
-	}else if(Len_Body == 16){
-		TempData_Body = ((unsigned short) Start[1] << 8) | ((unsigned short) Start[0]);
-	}else if(Len_Body == 23){
-		TempData_Body = ((unsigned int) Start[2] << 16) | ((unsigned int) Start[1] << 8) | ((unsigned int) Start[0]);
-	}else{
-		TempData_Body = ((unsigned int) Start[3] << 23) | ((unsigned int) Start[2] << 16) | ((unsigned int) Start[1] << 8) | ((unsigned int) Start[0]);
+	} else if (Len_Body == 8) {
+		TempData_Body = Start[0];
+	} else if (Len_Body == 16) {
+		TempData_Body = ((unsigned short)Start[1] << 8) | ((unsigned short)Start[0]);
+	} else if (Len_Body == 23) {
+		TempData_Body = ((unsigned int)Start[2] << 16) | ((unsigned int)Start[1] << 8)
+				| ((unsigned int)Start[0]);
+	} else {
+		TempData_Body = ((unsigned int)Start[3] << 23) | ((unsigned int)Start[2] << 16)
+				| ((unsigned int)Start[1] << 8) | ((unsigned int)Start[0]);
 	}
 
-    /* tail data */
+	/* tail data */
 	Start += (Len_Body / 8);
 	TempData_Tail = Start[0] & ((1 << Len_Tail) - 1);
 
-	DMSG_TEMP_TEST("TempData_Head = %d, TempData_Body = %d, TempData_Tail = %d\n", TempData_Head, TempData_Body, TempData_Tail);
+	DMSG_TEMP_TEST("TempData_Head = %d, TempData_Body = %d, TempData_Tail = %d\n",
+		       TempData_Head, TempData_Body, TempData_Tail);
 
-	*Data = (TempData_Tail << (Len_Head + Len_Body)) | (TempData_Body << Len_Head) | TempData_Head;
+	*Data = (TempData_Tail << (Len_Head + Len_Body)) | (TempData_Body << Len_Head)
+		| TempData_Head;
 
 	return USB_ERR_SUCCESS;
 }
-
-
-

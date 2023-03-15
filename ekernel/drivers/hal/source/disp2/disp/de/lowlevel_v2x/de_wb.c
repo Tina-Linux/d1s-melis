@@ -245,7 +245,7 @@ s32 wb_ebios_set_para(u32 sel, struct disp_capture_config *cfg)
 	    && (out_window_w > LINE_BUF_LEN))
 		return -1;
 	/* gctrl */
-	wb_dev[sel]->gctrl.dwval |= (0x10000000 | (in_port << 16));
+	wb_dev[sel]->gctrl.dwval |= (0x20000000 | (in_port << 16));
 	/* input size */
 	wb_dev[sel]->size.dwval = (in_w - 1) | ((in_h - 1) << 16);
 	/* input crop window */

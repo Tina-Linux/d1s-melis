@@ -1,28 +1,40 @@
 /*
- * =====================================================================================
- *
- *       Filename:  mod_Display.c
- *
- *    Description:  support the connection to drv and upper application layer
- *
- *        Version:  1.0
- *         Create:  2020-08-07 15:46:44
- *       Revision:  none
- *       Compiler:  gcc version 6.3.0 (crosstool-NG crosstool-ng-1.23.0)
- *
- *         Author:  liujiaming@allwinnertech.com
- *   Organization:  PDC-PD1
- *  Last Modified:  2020-08-07 15:46:44
- *
- * =====================================================================================
- */
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <mod_display.h>
 #include "mod_display_i.h"
 #include <dfs_posix.h>
 #include <rtthread.h>
 #include <dfs_posix.h>
 #include <pthread.h>
-
 
 typedef struct layer_scaler{
 __u32 dst_w;
@@ -50,20 +62,20 @@ struct layer_dev {
 struct disp_mgr_t {
     struct layer_dev layer[CHN_NUM][LYL_NUM];
     int req_layer_cnt;
-
-    int disp_fd;
-    int cur_screen;
     unsigned int lcd_scn_phy; 
     pthread_mutex_t mlock;
-    bool is_init;
 };
+
 static layer_scaler_t winscaler;
 static layer_rect_t lcd_scn[CHN_NUM][LYL_NUM];
 static __disp_mp_t mod_disp_mp;
-static struct disp_mgr_t disp_mgr;
+static struct disp_mgr_t disp_mgr[2];
 static bool tv_enable;
 static __s32 tv_mode_last = -1;
-//static disp_layer_config reserved_config[2];
+static int disp_fd;
+static int cur_screen;
+static bool is_init;
+
 
 int disp_module_init(void);
 int disp_module_deinit(void);
@@ -80,18 +92,29 @@ int disp_layer_get_fb(__u32 hlay,disp_fb_info *fb);
 
 static int check_hlay_valid(__u32 hlay)
 {
-    int bValid = 0;
+    int bValid = -1;
+    int ch_on_de;
     int ch  = HD2CHN(hlay);
     int lyl = HD2LYL(hlay);
-    if(ch >=0 && ch < CHN_NUM)
+    if(cur_screen == SCREEN_0){
+        ch_on_de = 2;
+    }else if(cur_screen == SCREEN_1){
+        ch_on_de = 1;
+    }else{
+        ch_on_de = 0;
+    }
+
+    if(ch >=0 && ch < ch_on_de)
     {
         if(lyl >=0 && lyl < LYL_NUM)
         {
             bValid = 1;
         }
     }
+
     return bValid;
 }
+
 static __disp_pixel_type_t get_fb_type(enum disp_pixel_format  format)
 {
     if(format >= DISP_FORMAT_YUV444_I_AYUV && format <= DISP_FORMAT_YUV411_SP_VUVU_10BIT)
@@ -198,7 +221,7 @@ static void mod2drv_fb(disp_fb_info *drvfb,__disp_video_fb_t *modfb,__u32 hlay)
 	//drvfb->addr[0] 			= (__u32)modfb->addr[0];
 	//drvfb->addr[1] 			= (__u32)modfb->addr[1];
 	//drvfb->addr[2] 			= (__u32)modfb->addr[2];
-	memcpy(drvfb,&(disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].config.info.fb), sizeof(disp_fb_info));
+	memcpy(drvfb,&(disp_mgr[cur_screen].layer[HD2CHN(hlay)][HD2LYL(hlay)].config.info.fb), sizeof(disp_fb_info));
 
     if(DISP_FORMAT_YUV420_P_YV12 == modfb->format)
     {
@@ -206,9 +229,9 @@ static void mod2drv_fb(disp_fb_info *drvfb,__disp_video_fb_t *modfb,__u32 hlay)
         drvfb->addr[1]          = esMEMS_VA2PA((__u32)modfb->addr[2]);
         drvfb->addr[2]          = esMEMS_VA2PA((__u32)modfb->addr[1]);
 
-        disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].addr_va[0] = (__u32)modfb->addr[0];
-        disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].addr_va[1] = (__u32)modfb->addr[2];
-        disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].addr_va[2] = (__u32)modfb->addr[1];
+       disp_mgr[cur_screen].layer[HD2CHN(hlay)][HD2LYL(hlay)].addr_va[0] = (__u32)modfb->addr[0];
+       disp_mgr[cur_screen].layer[HD2CHN(hlay)][HD2LYL(hlay)].addr_va[1] = (__u32)modfb->addr[2];
+       disp_mgr[cur_screen].layer[HD2CHN(hlay)][HD2LYL(hlay)].addr_va[2] = (__u32)modfb->addr[1];
     }
     else
     {
@@ -216,9 +239,9 @@ static void mod2drv_fb(disp_fb_info *drvfb,__disp_video_fb_t *modfb,__u32 hlay)
         drvfb->addr[1]          = esMEMS_VA2PA((__u32)modfb->addr[1]);
         drvfb->addr[2]          = esMEMS_VA2PA((__u32)modfb->addr[2]);
 
-        disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].addr_va[0] = (__u32)modfb->addr[0];
-        disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].addr_va[1] = (__u32)modfb->addr[1];
-        disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].addr_va[2] = (__u32)modfb->addr[2];
+       disp_mgr[cur_screen].layer[HD2CHN(hlay)][HD2LYL(hlay)].addr_va[0] = (__u32)modfb->addr[0];
+       disp_mgr[cur_screen].layer[HD2CHN(hlay)][HD2LYL(hlay)].addr_va[1] = (__u32)modfb->addr[1];
+       disp_mgr[cur_screen].layer[HD2CHN(hlay)][HD2LYL(hlay)].addr_va[2] = (__u32)modfb->addr[2];
     }
 }
 
@@ -272,7 +295,7 @@ static void mod2drv_layerinfo(disp_layer_config *drvinfo, __disp_layer_info_t *m
 	drvinfo->info.fb.format 			= modinfo->fb.format;
     drvinfo->info.fb.size[0].width    	= modinfo->fb.size.width;
 	drvinfo->info.fb.size[0].height		= modinfo->fb.size.height;
-    
+
     if ((DISP_FORMAT_YUV420_P == modinfo->fb.format)
     || (DISP_FORMAT_YUV420_SP_UVUV == modinfo->fb.format)
     || (DISP_FORMAT_YUV420_SP_VUVU == modinfo->fb.format)
@@ -331,9 +354,9 @@ static void mod2drv_layerinfo(disp_layer_config *drvinfo, __disp_layer_info_t *m
         drvinfo->info.fb.addr[1] 			= esMEMS_VA2PA((__u32)modinfo->fb.addr[2]);
         drvinfo->info.fb.addr[2] 			= esMEMS_VA2PA((__u32)modinfo->fb.addr[1]);
 
-        disp_mgr.layer[drvinfo->channel][drvinfo->layer_id].addr_va[0] = (__u32)modinfo->fb.addr[0];
-        disp_mgr.layer[drvinfo->channel][drvinfo->layer_id].addr_va[1] = (__u32)modinfo->fb.addr[2];
-        disp_mgr.layer[drvinfo->channel][drvinfo->layer_id].addr_va[2] = (__u32)modinfo->fb.addr[1];
+       disp_mgr[cur_screen].layer[drvinfo->channel][drvinfo->layer_id].addr_va[0] = (__u32)modinfo->fb.addr[0];
+       disp_mgr[cur_screen].layer[drvinfo->channel][drvinfo->layer_id].addr_va[1] = (__u32)modinfo->fb.addr[2];
+       disp_mgr[cur_screen].layer[drvinfo->channel][drvinfo->layer_id].addr_va[2] = (__u32)modinfo->fb.addr[1];
         drvinfo->info.fb.format = DISP_FORMAT_YUV420_P;
     }
     else if(DISP_FORMAT_YUV420_P_YU12 == modinfo->fb.format)
@@ -342,9 +365,9 @@ static void mod2drv_layerinfo(disp_layer_config *drvinfo, __disp_layer_info_t *m
         drvinfo->info.fb.addr[1] 			= esMEMS_VA2PA((__u32)modinfo->fb.addr[1]);
         drvinfo->info.fb.addr[2] 			= esMEMS_VA2PA((__u32)modinfo->fb.addr[2]);
 
-        disp_mgr.layer[drvinfo->channel][drvinfo->layer_id].addr_va[0] = (__u32)modinfo->fb.addr[0];
-        disp_mgr.layer[drvinfo->channel][drvinfo->layer_id].addr_va[1] = (__u32)modinfo->fb.addr[1];
-        disp_mgr.layer[drvinfo->channel][drvinfo->layer_id].addr_va[2] = (__u32)modinfo->fb.addr[2];
+       disp_mgr[cur_screen].layer[drvinfo->channel][drvinfo->layer_id].addr_va[0] = (__u32)modinfo->fb.addr[0];
+       disp_mgr[cur_screen].layer[drvinfo->channel][drvinfo->layer_id].addr_va[1] = (__u32)modinfo->fb.addr[1];
+       disp_mgr[cur_screen].layer[drvinfo->channel][drvinfo->layer_id].addr_va[2] = (__u32)modinfo->fb.addr[2];
         drvinfo->info.fb.format = DISP_FORMAT_YUV420_P;
     }
     else
@@ -353,9 +376,9 @@ static void mod2drv_layerinfo(disp_layer_config *drvinfo, __disp_layer_info_t *m
         drvinfo->info.fb.addr[1] 			= esMEMS_VA2PA((__u32)modinfo->fb.addr[1]);
         drvinfo->info.fb.addr[2] 			= esMEMS_VA2PA((__u32)modinfo->fb.addr[2]);
 
-        disp_mgr.layer[drvinfo->channel][drvinfo->layer_id].addr_va[0] = (__u32)modinfo->fb.addr[0];
-        disp_mgr.layer[drvinfo->channel][drvinfo->layer_id].addr_va[1] = (__u32)modinfo->fb.addr[1];
-        disp_mgr.layer[drvinfo->channel][drvinfo->layer_id].addr_va[2] = (__u32)modinfo->fb.addr[2];
+       disp_mgr[cur_screen].layer[drvinfo->channel][drvinfo->layer_id].addr_va[0] = (__u32)modinfo->fb.addr[0];
+       disp_mgr[cur_screen].layer[drvinfo->channel][drvinfo->layer_id].addr_va[1] = (__u32)modinfo->fb.addr[1];
+       disp_mgr[cur_screen].layer[drvinfo->channel][drvinfo->layer_id].addr_va[2] = (__u32)modinfo->fb.addr[2];
     }
 
     if(modinfo->mode == MOD_DISP_LAYER_WORK_MODE_NORMAL)
@@ -363,7 +386,7 @@ static void mod2drv_layerinfo(disp_layer_config *drvinfo, __disp_layer_info_t *m
         drvinfo->info.fb.lbc_en = 0;
         return;
     }
-    __log("lbc_mode = %d", modinfo->fb.lbc_mode);
+    __inf("lbc_mode = %d", modinfo->fb.lbc_mode);
     if (modinfo->fb.lbc_mode > 0)
     {
         u32 seg_width = 16, seg_height = 4;
@@ -380,7 +403,7 @@ static void mod2drv_layerinfo(disp_layer_config *drvinfo, __disp_layer_info_t *m
 	}
         if (modinfo->fb.lbc_mode == 1)//1.5x
         {
-            cmp_ratio = 666;
+            cmp_ratio = 667;
         }
         else if (modinfo->fb.lbc_mode == 2)//2x
         {
@@ -430,7 +453,6 @@ static void mod2drv_layerinfo(disp_layer_config *drvinfo, __disp_layer_info_t *m
         __wrn("segline_tar_bits_out = %d, seg_tar_bits_out = %d",segline_tar_bits_out,seg_tar_bits_out);
 	}
 
-
 }
 
 static void drv2mod_layerinfo(disp_layer_config *drvinfo, __disp_layer_info_t *modinfo)
@@ -439,7 +461,8 @@ static void drv2mod_layerinfo(disp_layer_config *drvinfo, __disp_layer_info_t *m
 	//drvinfo->layer_id 					= HD2LYL(hlay);
 	//drvinfo->enable = 1;
 	//drvinfo->info.mode = LAYER_MODE_BUFFER;
-	modinfo->mode = (drvinfo->channel==1) ? 1:4;
+    __inf("drvinfo->channel = %d",drvinfo->channel);
+	modinfo->mode = (drvinfo->channel == 0) ? 1 : 0;
 	modinfo->alpha_en = drvinfo->info.alpha_mode;
 	modinfo->alpha_val = drvinfo->info.alpha_value;
 	modinfo->prio = drvinfo->info.zorder;
@@ -464,9 +487,9 @@ static void drv2mod_layerinfo(disp_layer_config *drvinfo, __disp_layer_info_t *m
 	//modinfo->fb.addr[1] = drvinfo->info.fb.addr[1];
 	//modinfo->fb.addr[2] = drvinfo->info.fb.addr[2];
 
-	modinfo->fb.addr[0] = disp_mgr.layer[drvinfo->channel][drvinfo->layer_id].addr_va[0];
-	modinfo->fb.addr[1] = disp_mgr.layer[drvinfo->channel][drvinfo->layer_id].addr_va[1];
-	modinfo->fb.addr[2] = disp_mgr.layer[drvinfo->channel][drvinfo->layer_id].addr_va[2];
+	modinfo->fb.addr[0] =disp_mgr[cur_screen].layer[drvinfo->channel][drvinfo->layer_id].addr_va[0];
+	modinfo->fb.addr[1] =disp_mgr[cur_screen].layer[drvinfo->channel][drvinfo->layer_id].addr_va[1];
+	modinfo->fb.addr[2] =disp_mgr[cur_screen].layer[drvinfo->channel][drvinfo->layer_id].addr_va[2];
 
 }
 
@@ -474,15 +497,15 @@ static void drv2mod_layerinfo(disp_layer_config *drvinfo, __disp_layer_info_t *m
 static int disp_layer_manager_init(void)
 {
     int ret = RET_OK;
-    disp_mgr.cur_screen = SCREEN_0;
-    if (disp_mgr.is_init) {
+    cur_screen = SCREEN_0;
+    if (is_init) {
         return RET_FAIL;
     }
 
-    disp_mgr.disp_fd = open(DISP_DEV, O_WRONLY);
-    if (disp_mgr.disp_fd < 0)
+    disp_fd = open(DISP_DEV, O_WRONLY);
+    if (disp_fd < 0)
     {
-        __log("Failed to open disp device, ret:%x, errno: %d", disp_mgr.disp_fd, errno);
+        __log("Failed to open disp device, ret:%x, errno: %d", disp_fd, errno);
         return  RET_FAIL;
     }
 
@@ -494,54 +517,68 @@ static int disp_layer_manager_init(void)
     int ch;
     int lyl;
     int err;
-
+/*
     args[0] = 0;
     args[1] = 0;
-    ioctl(disp_mgr.disp_fd, DISP_BLANK, args);
-    disp_mgr.is_init = 1;
-    disp_mgr.req_layer_cnt = 0;
+    ioctl(disp_fd, DISP_BLANK, args);
+    is_init = 1;
+*/
+   disp_mgr[SCREEN_0].req_layer_cnt = 0;
+   disp_mgr[SCREEN_1].req_layer_cnt = 0;
 
     for(ch=0; ch<CHN_NUM; ch++)
     {
         for(lyl=0; lyl<LYL_NUM; lyl++)
         {
-            disp_mgr.layer[ch][lyl].config.channel = ch;
-            disp_mgr.layer[ch][lyl].config.layer_id = lyl;
+            //SCREEN_0 two channel and each have four layer
+            disp_mgr[SCREEN_0].layer[ch][lyl].config.channel = ch;
+            disp_mgr[SCREEN_0].layer[ch][lyl].config.layer_id = lyl;
             #if 1
             tv_enable = 0;
-            winscaler.src_w = ioctl(disp_mgr.disp_fd, DISP_GET_SCN_WIDTH, args);
-            winscaler.src_h = ioctl(disp_mgr.disp_fd, DISP_GET_SCN_HEIGHT, args);
+            winscaler.src_w = ioctl(disp_fd, DISP_GET_SCN_WIDTH, args);
+            winscaler.src_h = ioctl(disp_fd, DISP_GET_SCN_HEIGHT, args);
             winscaler.dst_w = winscaler.src_w;
             winscaler.dst_h = winscaler.src_h;
-            disp_mgr.lcd_scn_phy =  winscaler.src_w << 16 | winscaler.src_h;           
+            disp_mgr[SCREEN_0].lcd_scn_phy =  winscaler.src_w << 16 | winscaler.src_h;           
             #endif
-            err = pthread_mutex_init(&disp_mgr.layer[ch][lyl].mlock, NULL);
+            err = pthread_mutex_init(&disp_mgr[SCREEN_0].layer[ch][lyl].mlock, NULL);
             if(err != 0)
             {
                 __log("fatal error! pthread mutex init fail!");
                 ret = RET_FAIL;
                 goto _exit0;
             }
+            //SCREEN_1 one channel and have four layer
+            if(ch==0)
+            {
+                disp_mgr[SCREEN_1].layer[ch][lyl].config.channel = ch;
+                disp_mgr[SCREEN_1].layer[ch][lyl].config.layer_id = lyl;
+                err = pthread_mutex_init(&disp_mgr[SCREEN_1].layer[ch][lyl].mlock, NULL);
+                if(err != 0)
+                {
+                    __log("fatal error! pthread mutex init fail!");
+                    ret = RET_FAIL;
+                    goto _exit0;
+                }
+            }
+            #if 0
             if(UI_LYCHN == ch && UI_LYLAY == lyl)
             {
-                ret = disp_dev_layer_config(DISP_LAYER_GET_CONFIG, &disp_mgr.layer[ch][lyl].config);
+                ret = disp_dev_layer_config(DISP_LAYER_GET_CONFIG, &disp_mgr[0].layer[ch][lyl].config);
                 if (ret < 0)
                 {
                     __log("get para failed");
                 }
                 else
                 {
-                   disp_layer_config *pLayerConfig = &disp_mgr.layer[ch][lyl].config;
-                  //  __log("ret[%d][%d,%d]ch[%d]lyl[%d] init: enable[%d], screenwin[%d,%d, %dx%d], zorder[%d], alpha[mode:%d, value:%d]",
-                    //    ret, ch, lyl, pLayerConfig->channel, pLayerConfig->layer_id, pLayerConfig->enable,
-                    //    pLayerConfig->info.screen_win.x, pLayerConfig->info.screen_win.y, pLayerConfig->info.screen_win.width, pLayerConfig->info.screen_win.height,
-                    //    pLayerConfig->info.zorder, pLayerConfig->info.alpha_mode, pLayerConfig->info.alpha_value);
+                   disp_layer_config *pLayerConfig = &disp_mgr[0].layer[ch][lyl].config;
                 }
-                disp_mgr.layer[ch][lyl].config.channel = ch;
-                disp_mgr.layer[ch][lyl].config.layer_id = lyl;
+               disp_mgr[cur_screen].layer[ch][lyl].config.channel = ch;
+               disp_mgr[cur_screen].layer[ch][lyl].config.layer_id = lyl;
             }
-
+            #endif
         }
+
     }
 _exit0:
     return ret;
@@ -560,37 +597,43 @@ static int disp_layer_manager_deinit(void)
     {
         for(lyl=0; lyl<LYL_NUM; lyl++)
         {
-            err = pthread_mutex_destroy(&disp_mgr.layer[ch][lyl].mlock);
+            err = pthread_mutex_destroy(&disp_mgr[SCREEN_0].layer[ch][lyl].mlock);
             if(err != 0)
             {
                 __log("fatal error! pthread mutex destroy fail!");
                 ret = RET_FAIL;
             }
+            if(ch == 0)
+            {
+                err = pthread_mutex_destroy(&disp_mgr[SCREEN_1].layer[ch][lyl].mlock);
+            }
         }
     }
-    close(disp_mgr.disp_fd);
-    disp_mgr.disp_fd = -1;
-
+    close(disp_fd);
+    disp_fd = -1;
     return ret;
 }
 
 
 int disp_module_init(void)
 {
-    memset(&disp_mgr, 0, sizeof(disp_mgr));
-    pthread_mutex_init(&disp_mgr.mlock, NULL);
-
-    disp_mgr.disp_fd = -1;
+    memset(&disp_mgr[SCREEN_0], 0, sizeof(disp_mgr[SCREEN_0]));
+    memset(&disp_mgr[SCREEN_1], 0, sizeof(disp_mgr[SCREEN_1]));
+    pthread_mutex_init(&disp_mgr[SCREEN_0].mlock, NULL);
+    pthread_mutex_init(&disp_mgr[SCREEN_1].mlock, NULL);
+    disp_fd = -1;
     return disp_layer_manager_init();
 }
 
 
 int disp_module_deinit()
 {
-    if (disp_mgr.is_init) {
+    if (is_init) {
         disp_layer_manager_deinit();
-        disp_mgr.is_init = 0;
-        pthread_mutex_destroy(&disp_mgr.mlock);
+        cur_screen = -1;
+        is_init = 0;
+        pthread_mutex_destroy(&disp_mgr[SCREEN_0].mlock);
+        pthread_mutex_destroy(&disp_mgr[SCREEN_1].mlock);
     }
     return 0;
 }
@@ -611,12 +654,13 @@ int disp_dev_layer_config(__DISP_t cmd, disp_layer_config *pinfo)
         }
 
     }
-    //if()
 #endif
-    args[0] = disp_mgr.cur_screen;
+    args[0] = cur_screen;
     args[1] = (unsigned long)pinfo;
     args[2] = 1;
-    ret = ioctl(disp_mgr.disp_fd, cmd, args);
+    __inf("screen%d: %d  %d",cur_screen,pinfo->info.screen_win.width,pinfo->info.screen_win.height);
+
+    ret = ioctl(disp_fd, cmd, args);
 #if 1
     if(tv_enable)
     {       
@@ -638,20 +682,20 @@ int disp_dev_layer_config(__DISP_t cmd, disp_layer_config *pinfo)
 
 int layer_request(__mod_disp_layer_work_mode_t mode)   //finish
 {
-    int ch;
-    int id;
+    int ch = 0;
+    int id = 0;
 
-    pthread_mutex_lock(&disp_mgr.mlock);
+    pthread_mutex_lock(&disp_mgr[cur_screen].mlock);
 	if(mode == MOD_DISP_LAYER_WORK_MODE_SCALER)
 	{
-		__wrn("layer_request MOD_DISP_LAYER_WORK_MODE_SCALER");
+		__log("layer_request MOD_DISP_LAYER_WORK_MODE_SCALER");
 	    for(id=0; id<LYL_NUM; id++)
 		{
             ch = 0;
             {
-	            if(!(disp_mgr.layer[ch][id].req_stat & HWD_STATUS_REQUESTED))
+	            if(!(disp_mgr[cur_screen].layer[ch][id].req_stat & HWD_STATUS_REQUESTED))
 				{
-	                disp_mgr.layer[ch][id].req_stat |= HWD_STATUS_REQUESTED;
+	               disp_mgr[cur_screen].layer[ch][id].req_stat |= HWD_STATUS_REQUESTED;
 	                goto out;
 	            }
             }
@@ -661,15 +705,17 @@ int layer_request(__mod_disp_layer_work_mode_t mode)   //finish
 	}
 	else
 	{
-		__wrn("layer_request MOD_DISP_LAYER_WORK_MODE_NORMAL");
+		__log("layer_request MOD_DISP_LAYER_WORK_MODE_NORMAL");
+        if(cur_screen == SCREEN_1)
+         goto out;
 
 	    for(id=0; id<LYL_NUM; id++)
 		{
 	        ch = 1;
 			{
-	            if(!(disp_mgr.layer[ch][id].req_stat & HWD_STATUS_REQUESTED))
+	            if(!(disp_mgr[SCREEN_0].layer[ch][id].req_stat & HWD_STATUS_REQUESTED))
 				{
-	                disp_mgr.layer[ch][id].req_stat |= HWD_STATUS_REQUESTED;
+	               disp_mgr[SCREEN_0].layer[ch][id].req_stat |= HWD_STATUS_REQUESTED;
 	                goto out;
 	            }
             }
@@ -677,16 +723,20 @@ int layer_request(__mod_disp_layer_work_mode_t mode)   //finish
 	}
 
 out:
-    if (id==LYL_NUM) {
+    if (id == LYL_NUM) {
         __log("layer use up.");
-		pthread_mutex_unlock(&disp_mgr.mlock);
-
+		pthread_mutex_unlock(&disp_mgr[cur_screen].mlock);
         return 0;
     }
 
-    disp_mgr.req_layer_cnt++;
-	pthread_mutex_unlock(&disp_mgr.mlock);
-    __log("requested: ch:%d, id:%d   disp_mgr.req_layer_cnt = %d", ch, id,disp_mgr.req_layer_cnt);
+    if(cur_screen == SCREEN_1 && mode == MOD_DISP_LAYER_WORK_MODE_NORMAL){
+        __log("no this channel.");
+		pthread_mutex_unlock(&disp_mgr[cur_screen].mlock);
+        return 0;
+    }
+   disp_mgr[cur_screen].req_layer_cnt++;
+	pthread_mutex_unlock(&disp_mgr[cur_screen].mlock);
+    __log("requested: ch:%d, id:%d  disp_mgr[%d].req_layer_cnt = %d", ch, id,cur_screen,disp_mgr[cur_screen].req_layer_cnt);
     return HLAY(ch, id);
 }
 
@@ -704,34 +754,30 @@ int disp_layer_release(__u32 hlay)
     int chn = HD2CHN(hlay);
     int lyl = HD2LYL(hlay);
     int ret = disp_layer_close(hlay);
-    #ifdef DE_LAYER_BUG
-    if(lyl != 0)
-    {
-		memset(&config, 0, sizeof(disp_layer_config));
-    }
-    #endif
+
     if (RET_OK == ret) {
-        pthread_mutex_lock(&disp_mgr.mlock);
-        if (disp_mgr.layer[chn][lyl].req_stat)
+        pthread_mutex_lock(&disp_mgr[cur_screen].mlock);
+        if (disp_mgr[cur_screen].layer[chn][lyl].req_stat)
 		{
     		memset(&config, 0, sizeof(disp_layer_config));
             config.channel = chn;
             config.layer_id = lyl;
+
 			disp_layer_set_para(&config);
-            disp_mgr.layer[chn][lyl].req_stat = 0;
-			disp_mgr.layer[chn][lyl].open_flag = 0;
-			memset(&disp_mgr.layer[chn][lyl].config,0, sizeof(disp_layer_config));
-			disp_mgr.layer[chn][lyl].addr_va[0] = 0;
-			disp_mgr.layer[chn][lyl].addr_va[1] = 0;
-			disp_mgr.layer[chn][lyl].addr_va[2] = 0;
-			disp_mgr.layer[chn][lyl].rot_degree = 0;
-            disp_mgr.req_layer_cnt--;
+            disp_mgr[cur_screen].layer[chn][lyl].req_stat = 0;
+			disp_mgr[cur_screen].layer[chn][lyl].open_flag = 0;
+			memset(&disp_mgr[cur_screen].layer[chn][lyl].config,0, sizeof(disp_layer_config));
+			disp_mgr[cur_screen].layer[chn][lyl].addr_va[0] = 0;
+			disp_mgr[cur_screen].layer[chn][lyl].addr_va[1] = 0;
+			disp_mgr[cur_screen].layer[chn][lyl].addr_va[2] = 0;
+			disp_mgr[cur_screen].layer[chn][lyl].rot_degree = 0;
+            disp_mgr[cur_screen].req_layer_cnt--;
             if(tv_enable)
             {
                 memset(&lcd_scn[chn][lyl], 0, sizeof(layer_rect_t)); 
             }
         }
-		pthread_mutex_unlock(&disp_mgr.mlock);
+		pthread_mutex_unlock(&disp_mgr[cur_screen].mlock);
     }
     return ret;
 
@@ -739,42 +785,29 @@ int disp_layer_release(__u32 hlay)
 
 int disp_layer_open(__u32 hlay)
 {
+    int ret = -1;
+
     if(!check_hlay_valid(hlay))
     {
         __log("fatal error! hlay[%d] invalid!", hlay);
         return RET_FAIL;
     }
-    int ret = 0;
-    __u64 tempw,temph;
     disp_layer_config config;
     memset(&config, 0, sizeof(disp_layer_config));
     config.channel  = HD2CHN(hlay);
     config.layer_id = HD2LYL(hlay);
-    pthread_mutex_lock(&disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].mlock);
-    #ifdef DE_LAYER_BUG
-    if(config.layer_id == 0)
-    {
-        memcpy(&config,&reserved_config[config.channel],sizeof(disp_layer_config));
-        config.info.screen_win.width = reserved_config[config.channel].info.screen_win.width;
-        config.info.screen_win.height = reserved_config[config.channel].info.screen_win.height;
-        tempw = reserved_config[config.channel].info.fb.crop.width;
-        temph = reserved_config[config.channel].info.fb.crop.height;
-        __log("temp w h %llx  %llx ",tempw,temph);
-        config.info.fb.crop.width = tempw << 32;//reserved_config[config.channel].info.fb.crop.width << 32;
-        config.info.fb.crop.height = temph << 32;// reserved_config[config.channel].info.fb.crop.height << 32;
-    }
-    else
-    #endif
-    {
-        disp_layer_get_para(&config);
-    }
+    pthread_mutex_lock(&disp_mgr[cur_screen].layer[HD2CHN(hlay)][HD2LYL(hlay)].mlock);
+    disp_layer_get_para(&config);
+
     config.enable = 1;
+    __inf("config: w:%d  h:%d",config.info.screen_win.width,config.info.screen_win.height);
+
     ret = disp_layer_set_para(&config);
     if (0 == ret) {
-        disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].open_flag = config.enable;
-        disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].config.enable = config.enable;
+       disp_mgr[cur_screen].layer[HD2CHN(hlay)][HD2LYL(hlay)].open_flag = config.enable;
+       disp_mgr[cur_screen].layer[HD2CHN(hlay)][HD2LYL(hlay)].config.enable = config.enable;
     }
-    pthread_mutex_unlock(&disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].mlock);
+    pthread_mutex_unlock(&disp_mgr[cur_screen].layer[HD2CHN(hlay)][HD2LYL(hlay)].mlock);
     return ret;
 }
 
@@ -794,53 +827,28 @@ int disp_layer_close(__u32 hlay)
     memset(&config, 0, sizeof(disp_layer_config));
     config.channel  = HD2CHN(hlay);
     config.layer_id = HD2LYL(hlay);
-    pthread_mutex_lock(&disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].mlock);
-    #ifdef DE_LAYER_BUG
-    if(config.layer_id == 0)
-    {
-        disp_layer_get_para(&config);
-        __log("000 fb.crop.width = %x  fb.crop.height = %x",config.info.fb.crop.width,config.info.fb.crop.height);
-        memcpy(&reserved_config[config.channel],&config,sizeof(disp_layer_config));
-        reserved_config[config.channel].info.screen_win.width = config.info.screen_win.width;
-        reserved_config[config.channel].info.screen_win.height = config.info.screen_win.height;
-        __log("reserved con w = %d  h =%d",reserved_config[config.channel].info.screen_win.width,reserved_config[config.channel].info.screen_win.height);
-        reserved_config[config.channel].info.fb.crop.width =config.info.fb.crop.width >> 32;
-        reserved_config[config.channel].info.fb.crop.height =config.info.fb.crop.height >> 32;
-        __log("111 fb.crop.width = %x  fb.crop.height = %x",reserved_config[config.channel].info.fb.crop.width,reserved_config[config.channel].info.fb.crop.height);
-        config.enable = 1;
-        config.info.screen_win.width = 1;
-        config.info.screen_win.height = 1;
-        config.info.fb.crop.width = 1ul<<32;
-        config.info.fb.crop.height = 1ul<<32;
-        ret = disp_layer_set_para(&config);
+    pthread_mutex_lock(&disp_mgr[cur_screen].layer[HD2CHN(hlay)][HD2LYL(hlay)].mlock);
 
-        if (0 == ret) {
-            disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].open_flag = config.enable;
-            disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].config.enable = config.enable;
-        }
-    }
-    else
-    #endif
+    disp_layer_get_para(&config);
+    config.enable = 0;
+    __wrn("......close layer %d   ch = %d  ly = %d",hlay,config.channel,config.layer_id);
+
+    ret = disp_layer_set_para(&config);
+    if(0 == ret)
     {
-        disp_layer_get_para(&config);
-        config.enable = 0;
-        __wrn("......close layer %d   ch = %d  ly = %d",hlay,config.channel,config.layer_id);
-        ret = disp_layer_set_para(&config);
-        if(0 == ret)
+        disp_mgr[cur_screen].layer[HD2CHN(hlay)][HD2LYL(hlay)].open_flag = config.enable;
+        disp_mgr[cur_screen].layer[HD2CHN(hlay)][HD2LYL(hlay)].config.enable = config.enable;
+    }
+
+    for(i=0; i< LYL_NUM; i++)//de bug.
+    {
+        if(disp_mgr[cur_screen].layer[config.channel][i].config.enable)
         {
-            disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].open_flag = config.enable;
-            disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].config.enable = config.enable;
-        }
-        
-        for(i=0; i< LYL_NUM; i++)
-        {
-            if(disp_mgr.layer[config.channel][i].config.enable)
-            {
-                 disp_layer_open(HLAY(config.channel,i));
-            }
+                disp_layer_open(HLAY(config.channel,i));
         }
     }
-    pthread_mutex_unlock(&disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].mlock);
+
+    pthread_mutex_unlock(&disp_mgr[cur_screen].layer[HD2CHN(hlay)][HD2LYL(hlay)].mlock);
     return ret;
 }
 
@@ -871,10 +879,10 @@ int disp_layer_get_para(disp_layer_config *pinfo)
     int ret = RET_OK;
     if(bValid)
     {
-        if(!disp_mgr.layer[pinfo->channel][pinfo->layer_id].config.enable)    //if disable, then driver will not store para, use our storage.
+        if(!disp_mgr[cur_screen].layer[pinfo->channel][pinfo->layer_id].config.enable)    //if disable, then driver will not store para, use our storage.
         {
-            //__log("ch[%d]lyl[%d] disable, use storage value", pinfo->channel, pinfo->layer_id);
-            memcpy(pinfo, &disp_mgr.layer[pinfo->channel][pinfo->layer_id].config, sizeof(disp_layer_config));
+            __log("ch[%d]lyl[%d] disable, use storage value", pinfo->channel, pinfo->layer_id);
+            memcpy(pinfo, &disp_mgr[cur_screen].layer[pinfo->channel][pinfo->layer_id].config, sizeof(disp_layer_config));
             ret = RET_OK;
         }
         else
@@ -890,9 +898,9 @@ int disp_layer_get_para(disp_layer_config *pinfo)
                 {
                     __log("Be careful! layer_config ret[%d] > 0, is it normal?", ret);
                 }
-                /*if(memcmp(&disp_mgr.layer[pinfo->channel][pinfo->layer_id].config, pinfo, sizeof(disp_layer_config))!=0)
+                /*if(memcmp(&disp_mgr[0].layer[pinfo->channel][pinfo->layer_id].config, pinfo, sizeof(disp_layer_config))!=0)
                 {
-                    disp_layer_config *pUserConfig = &disp_mgr.layer[pinfo->channel][pinfo->layer_id].config;
+                    disp_layer_config *pUserConfig = &disp_mgr[0].layer[pinfo->channel][pinfo->layer_id].config;
                     __log("fatal error! ch[%d]lyl[%d] disp layer config is not match!", pinfo->channel, pinfo->layer_id);
                 }*/
             }
@@ -937,7 +945,7 @@ int disp_layer_set_para(disp_layer_config *pinfo)
         }
         if(bValid)
         {
-            memcpy(&disp_mgr.layer[pinfo->channel][pinfo->layer_id].config, pinfo, sizeof(disp_layer_config));
+            memcpy(&disp_mgr[cur_screen].layer[pinfo->channel][pinfo->layer_id].config, pinfo, sizeof(disp_layer_config));
         }
     }
     return ret;
@@ -962,13 +970,14 @@ int disp_layer_set_fb(__u32 hlay,disp_fb_info *fb)
     memset(&config, 0, sizeof(disp_layer_config));
     config.channel  = HD2CHN(hlay);
     config.layer_id = HD2LYL(hlay);
-    //pthread_mutex_lock(&disp_mgr.mlock);
-    pthread_mutex_lock(&disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].mlock);
+    //pthread_mutex_lock(&disp_mgr[0].mlock);
+    pthread_mutex_lock(&disp_mgr[cur_screen].layer[HD2CHN(hlay)][HD2LYL(hlay)].mlock);
     disp_layer_get_para(&config);
 
 	memcpy(&(config.info.fb), fb, sizeof(disp_fb_info));
 	disp_layer_set_para(&config);
-    pthread_mutex_unlock(&disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].mlock);
+    pthread_mutex_unlock(&disp_mgr[cur_screen].layer[HD2CHN(hlay)][HD2LYL(hlay)].mlock);
+    
 	return RET_OK;
 }
 
@@ -986,14 +995,22 @@ int disp_layer_get_fb(__u32 hlay,disp_fb_info *fb)
         return RET_FAIL;
     }
 
-	memcpy(fb,&(disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].config.info.fb), sizeof(disp_fb_info));
+	memcpy(fb,&(disp_mgr[cur_screen].layer[HD2CHN(hlay)][HD2LYL(hlay)].config.info.fb), sizeof(disp_fb_info));
 
-	fb->addr[0] = disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].addr_va[0];
-	fb->addr[1] = disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].addr_va[1];
-	fb->addr[2] = disp_mgr.layer[HD2CHN(hlay)][HD2LYL(hlay)].addr_va[2];
+	fb->addr[0] =disp_mgr[cur_screen].layer[HD2CHN(hlay)][HD2LYL(hlay)].addr_va[0];
+	fb->addr[1] =disp_mgr[cur_screen].layer[HD2CHN(hlay)][HD2LYL(hlay)].addr_va[1];
+	fb->addr[2] =disp_mgr[cur_screen].layer[HD2CHN(hlay)][HD2LYL(hlay)].addr_va[2];
 	return RET_OK;
 }
 
+int disp_wait_vsync(int de_no)
+{
+    __u64 para[4] = {0};
+    para[0] = de_no;
+    return ioctl(disp_fd, DISP_WAIT_VSYNC, para);
+}
+
+#if 0
  void auto_resolution_adapt(__u32 mode)
  {
     __u32 i,j;
@@ -1012,8 +1029,8 @@ int disp_layer_get_fb(__u32 hlay,disp_fb_info *fb)
             }
             else
             {
-                winscaler.src_w = disp_mgr.lcd_scn_phy >> 16;
-                winscaler.src_h = disp_mgr.lcd_scn_phy & 0xffff;                    
+                winscaler.src_w =disp_mgr[cur_screen].lcd_scn_phy >> 16;
+                winscaler.src_h =disp_mgr[cur_screen].lcd_scn_phy & 0xffff;                    
             }           
         break;
 
@@ -1028,17 +1045,17 @@ int disp_layer_get_fb(__u32 hlay,disp_fb_info *fb)
             }
             else
             {
-                winscaler.src_w = disp_mgr.lcd_scn_phy >> 16;
-                winscaler.src_h = disp_mgr.lcd_scn_phy & 0xffff;                    
+                winscaler.src_w =disp_mgr[cur_screen].lcd_scn_phy >> 16;
+                winscaler.src_h =disp_mgr[cur_screen].lcd_scn_phy & 0xffff;                    
             }                     
         break;
 
         case MOD_DISP_TV_MOD_NULL:
             tv_enable = 0;        
-            winscaler.dst_w = disp_mgr.lcd_scn_phy >> 16;
-            winscaler.dst_h = disp_mgr.lcd_scn_phy & 0xffff;
-            winscaler.src_w = disp_mgr.lcd_scn_phy >> 16;
-            winscaler.src_h = disp_mgr.lcd_scn_phy & 0xffff;                  
+            winscaler.dst_w =disp_mgr[cur_screen].lcd_scn_phy >> 16;
+            winscaler.dst_h =disp_mgr[cur_screen].lcd_scn_phy & 0xffff;
+            winscaler.src_w =disp_mgr[cur_screen].lcd_scn_phy >> 16;
+            winscaler.src_h =disp_mgr[cur_screen].lcd_scn_phy & 0xffff;                  
             
         break;
         
@@ -1047,28 +1064,28 @@ int disp_layer_get_fb(__u32 hlay,disp_fb_info *fb)
     {
         for(j=0; j< CHN_NUM; j++)
         {
-            if(disp_mgr.layer[j][i].config.enable)
+            if(disp_mgr[0].layer[j][i].config.enable)
             {
                if(mode == MOD_DISP_TV_MOD_NULL)
                {//exit tv
-                disp_mgr.layer[j][i].config.info.screen_win.x      = lcd_scn[j][i].x;
-                disp_mgr.layer[j][i].config.info.screen_win.y      = lcd_scn[j][i].y;
-                disp_mgr.layer[j][i].config.info.screen_win.width  = lcd_scn[j][i].w;
-                disp_mgr.layer[j][i].config.info.screen_win.height = lcd_scn[j][i].h;          
+               disp_mgr[cur_screen].layer[j][i].config.info.screen_win.x      = lcd_scn[j][i].x;
+               disp_mgr[cur_screen].layer[j][i].config.info.screen_win.y      = lcd_scn[j][i].y;
+               disp_mgr[cur_screen].layer[j][i].config.info.screen_win.width  = lcd_scn[j][i].w;
+               disp_mgr[cur_screen].layer[j][i].config.info.screen_win.height = lcd_scn[j][i].h;          
                }
                else
                {//enter tv
-                lcd_scn[j][i].x = disp_mgr.layer[j][i].config.info.screen_win.x;
-                lcd_scn[j][i].y = disp_mgr.layer[j][i].config.info.screen_win.y;
-                lcd_scn[j][i].w = disp_mgr.layer[j][i].config.info.screen_win.width;
-                lcd_scn[j][i].h = disp_mgr.layer[j][i].config.info.screen_win.height;
+                lcd_scn[j][i].x =disp_mgr[cur_screen].layer[j][i].config.info.screen_win.x;
+                lcd_scn[j][i].y =disp_mgr[cur_screen].layer[j][i].config.info.screen_win.y;
+                lcd_scn[j][i].w =disp_mgr[cur_screen].layer[j][i].config.info.screen_win.width;
+                lcd_scn[j][i].h =disp_mgr[cur_screen].layer[j][i].config.info.screen_win.height;
                }                
-                disp_layer_set_para(&disp_mgr.layer[j][i].config);
+                disp_layer_set_para(&disp_mgr[0].layer[j][i].config);
             }
         }
     }
  }
-
+#endif
 __s32 Mod_Display_MInit(void)
 {
 
@@ -1141,7 +1158,7 @@ long Mod_Display_MIoctrl(__mp *mp, __u32 cmd,  __s32 aux, void *pbuffer)
         para[2] = *((__u64 *)((__u64)pbuffer + 8));   //argc1
         para[3] = *((__u64 *)((__u64)pbuffer + 16));   //argc2
     }
-
+    cur_screen = aux;
     __inf("cmd:%d  aux:%d  para:%d  %d  %d",cmd,aux,para[1],para[2],para[3]);
     switch (cmd)
     {
@@ -1157,8 +1174,8 @@ long Mod_Display_MIoctrl(__mp *mp, __u32 cmd,  __s32 aux, void *pbuffer)
     		colorinfo.info.zorder = 1;
     		colorinfo.info.mode = LAYER_MODE_COLOR;
     		colorinfo.info.fb.format = DISP_FORMAT_ARGB_8888;
-    		colorinfo.info.screen_win.width = ioctl(disp_mgr.disp_fd, DISP_GET_SCN_WIDTH, para);
-    		colorinfo.info.screen_win.height = ioctl(disp_mgr.disp_fd, DISP_GET_SCN_HEIGHT, para);
+    		colorinfo.info.screen_win.width = ioctl(disp_fd, DISP_GET_SCN_WIDTH, para);
+    		colorinfo.info.screen_win.height = ioctl(disp_fd, DISP_GET_SCN_HEIGHT, para);
     		colorinfo.info.screen_win.x = 0;
     		colorinfo.info.screen_win.y = 0;
     		colorinfo.info.fb.crop.x =
@@ -1180,12 +1197,13 @@ long Mod_Display_MIoctrl(__mp *mp, __u32 cmd,  __s32 aux, void *pbuffer)
                 lcd_scn[colorinfo.channel][colorinfo.layer_id].x = colorinfo.info.screen_win.height;
             }
             disp_layer_set_para(&colorinfo);
+            disp_wait_vsync(para[0]);
 			break;
         }
 		case MOD_DISP_GET_BKCOLOR:
 		{
              disp_layer_config *colorinfo;
-            colorinfo = &disp_mgr.layer[HD2CHN(para[1])][HD2LYL(para[1])].config;
+            colorinfo = &disp_mgr[cur_screen].layer[HD2CHN(para[1])][HD2LYL(para[1])].config;
             if(colorinfo->info.mode != LAYER_MODE_COLOR)
             {
                 __err("layer not color mode");
@@ -1196,7 +1214,7 @@ long Mod_Display_MIoctrl(__mp *mp, __u32 cmd,  __s32 aux, void *pbuffer)
 		}
 		case MOD_DISP_GET_OUTPUT_TYPE:
 		{
-		    ret = ioctl(disp_mgr.disp_fd, DISP_GET_OUTPUT_TYPE, para);
+		    ret = ioctl(disp_fd, DISP_GET_OUTPUT_TYPE, para);
 			break;
 		}
 
@@ -1204,11 +1222,11 @@ long Mod_Display_MIoctrl(__mp *mp, __u32 cmd,  __s32 aux, void *pbuffer)
         {
             if(tv_enable)
             {
-                ret = disp_mgr.lcd_scn_phy >> 16;
+                ret =disp_mgr[cur_screen].lcd_scn_phy >> 16;
             }
             else
             {
-                ret = ioctl(disp_mgr.disp_fd, DISP_GET_SCN_WIDTH, para);
+                ret = ioctl(disp_fd, DISP_GET_SCN_WIDTH, para);
             }
 			break;
         }
@@ -1217,36 +1235,37 @@ long Mod_Display_MIoctrl(__mp *mp, __u32 cmd,  __s32 aux, void *pbuffer)
         {
             if(tv_enable)
             {
-                ret = disp_mgr.lcd_scn_phy & 0xffff;
+                ret =disp_mgr[cur_screen].lcd_scn_phy & 0xffff;
             }
             else
             {
-                ret = ioctl(disp_mgr.disp_fd, DISP_GET_SCN_HEIGHT, para);
+                ret = ioctl(disp_fd, DISP_GET_SCN_HEIGHT, para);
             }
 			break;
         }
 
 		case MOD_DISP_VSYNC_EVENT_EN:
 		{
-		    ret = ioctl(disp_mgr.disp_fd, DISP_VSYNC_EVENT_EN, para);
+		    ret = ioctl(disp_fd, DISP_VSYNC_EVENT_EN, para);
 			break;
 		}
 
 		case MOD_DISP_SHADOW_PROTECT:
 		{
-		    ret = ioctl(disp_mgr.disp_fd, DISP_SHADOW_PROTECT, para);
+		    ret = ioctl(disp_fd, DISP_SHADOW_PROTECT, para);
 			break;
 		}
 
 		case MOD_DISP_BLANK:
 		{
-		    ret = ioctl(disp_mgr.disp_fd, DISP_BLANK, para);
+		    ret = ioctl(disp_fd, DISP_BLANK, para);
 			break;
 		}
 
 
 		case MOD_DISP_DEVICE_SWITCH:
 		{
+			#if 0
             __u32 now_type;
             __u32 goto_type;
             __s32 tv_mode;
@@ -1256,7 +1275,7 @@ long Mod_Display_MIoctrl(__mp *mp, __u32 cmd,  __s32 aux, void *pbuffer)
             tv_mode = para[2];
 
             para_get[0] = 0;
-            now_type = ioctl(disp_mgr.disp_fd, DISP_GET_OUTPUT_TYPE, para_get);
+            now_type = ioctl(disp_fd, DISP_GET_OUTPUT_TYPE, para_get);
 
             __log("now_type:%d  goto_type = %d  tv_mode:%d",now_type,goto_type, tv_mode);
 
@@ -1290,8 +1309,8 @@ long Mod_Display_MIoctrl(__mp *mp, __u32 cmd,  __s32 aux, void *pbuffer)
                 para[2] = 0;
                 tv_mode_last = MOD_DISP_TV_MOD_NULL;
             }
-
-		    ret = ioctl(disp_mgr.disp_fd, DISP_DEVICE_SWITCH, para);		 
+			#endif
+		    ret = ioctl(disp_fd, DISP_DEVICE_SWITCH, para);		 
 
 			break;
 		}
@@ -1299,6 +1318,7 @@ long Mod_Display_MIoctrl(__mp *mp, __u32 cmd,  __s32 aux, void *pbuffer)
         case MOD_DISP_LAYER_SET_CONFIG:
         {
 			ret = disp_dev_layer_config(DISP_LAYER_SET_CONFIG,(void *)para);
+            disp_wait_vsync(para[0]);
 			break;
         }
 
@@ -1335,8 +1355,9 @@ long Mod_Display_MIoctrl(__mp *mp, __u32 cmd,  __s32 aux, void *pbuffer)
                 lcd_scn[drvinfo.channel][drvinfo.layer_id].w = drvinfo.info.screen_win.width;
                 lcd_scn[drvinfo.channel][drvinfo.layer_id].h = drvinfo.info.screen_win.height;
             }
-			ret = disp_layer_set_para(&drvinfo);
 
+			ret = disp_layer_set_para(&drvinfo);
+            disp_wait_vsync(para[0]);
 			break;
         }
 
@@ -1376,8 +1397,8 @@ long Mod_Display_MIoctrl(__mp *mp, __u32 cmd,  __s32 aux, void *pbuffer)
 			memset(&drvfb, 0, sizeof(drvfb));
 			mod2drv_fb(&drvfb,(void *)para[2],para[1]);
 			ret = disp_layer_set_fb(para[1],&drvfb);
-
-			//echo_drvlayer_info(&(disp_mgr.layer[HD2CHN(para[1])][HD2LYL(para[1])].config.info));
+            disp_wait_vsync(para[0]);
+			//echo_drvlayer_info(&(disp_mgr[0].layer[HD2CHN(para[1])][HD2LYL(para[1])].config.info));
 			break;
         }
 
@@ -1408,7 +1429,9 @@ long Mod_Display_MIoctrl(__mp *mp, __u32 cmd,  __s32 aux, void *pbuffer)
 			drvinfo.info.screen_win.y 			= scn_win->y;
 			drvinfo.info.screen_win.width 		= scn_win->width;
 			drvinfo.info.screen_win.height 		= scn_win->height;
+
 			ret = disp_layer_set_para(&drvinfo);
+            disp_wait_vsync(para[0]);
 			break;
         }
 
@@ -1457,6 +1480,7 @@ long Mod_Display_MIoctrl(__mp *mp, __u32 cmd,  __s32 aux, void *pbuffer)
 			drvinfo.info.fb.crop.height 		= drvinfo.info.fb.crop.height<<32;
 
 			ret = disp_layer_set_para(&drvinfo);
+            disp_wait_vsync(para[0]);
 			break;
         }
 
@@ -1504,6 +1528,7 @@ long Mod_Display_MIoctrl(__mp *mp, __u32 cmd,  __s32 aux, void *pbuffer)
 			ret = disp_layer_get_para(&drvinfo);
 			drvinfo.enable = 0;
 			ret = disp_layer_set_para(&drvinfo);
+            disp_wait_vsync(para[0]);
 			break;
         }
 
@@ -1519,6 +1544,7 @@ long Mod_Display_MIoctrl(__mp *mp, __u32 cmd,  __s32 aux, void *pbuffer)
 			drvinfo.info.alpha_value  = para[2];
 			__log("drvinfo.info.alpha_value = %x",drvinfo.info.alpha_value);
 			disp_layer_set_para(&drvinfo);
+            disp_wait_vsync(para[0]);
 			break;
         }
 
@@ -1542,6 +1568,7 @@ long Mod_Display_MIoctrl(__mp *mp, __u32 cmd,  __s32 aux, void *pbuffer)
 			memset(&drvfb, 0, sizeof(drvfb));
 			mod2drv_fb(&drvfb,(__disp_video_fb_t *)para[2],para[1]);
 			ret = disp_layer_set_fb(para[1],&drvfb);
+            disp_wait_vsync(para[0]);
 			break;
         }
 
@@ -1558,15 +1585,15 @@ long Mod_Display_MIoctrl(__mp *mp, __u32 cmd,  __s32 aux, void *pbuffer)
 
         case MOD_DISP_CMD_START_CMD_CACHE:
         {
-			para[1] = 1;
-		    ret = ioctl(disp_mgr.disp_fd, DISP_SHADOW_PROTECT, para);
+			//para[1] = 1;
+		    //ret = ioctl(disp_fd, DISP_SHADOW_PROTECT, para);
 			break;
         }
 
         case MOD_DISP_CMD_EXECUTE_CMD_AND_STOP_CACHE:
         {
-			para[1] = 0;
-		    ret = ioctl(disp_mgr.disp_fd, DISP_SHADOW_PROTECT, para);
+			//para[1] = 0;
+		    //ret = ioctl(disp_fd, DISP_SHADOW_PROTECT, para);
 			break;
         }
 
@@ -1582,187 +1609,168 @@ long Mod_Display_MIoctrl(__mp *mp, __u32 cmd,  __s32 aux, void *pbuffer)
 
 		case MOD_DISP_LCD_BACKLIGHT_ENABLE:
 		{
-		    ret = ioctl(disp_mgr.disp_fd, DISP_LCD_BACKLIGHT_ENABLE, para);
+		    ret = ioctl(disp_fd, DISP_LCD_BACKLIGHT_ENABLE, para);
 			break;
 		}
 
 		case MOD_DISP_LCD_BACKLIGHT_DISABLE:
 		{
-		    ret = ioctl(disp_mgr.disp_fd, DISP_LCD_BACKLIGHT_DISABLE, para);
+		    ret = ioctl(disp_fd, DISP_LCD_BACKLIGHT_DISABLE, para);
 			break;
 		}
 
 		case MOD_DISP_LCD_SET_BRIGHTNESS:
 		{
-		    ret = ioctl(disp_mgr.disp_fd, DISP_LCD_SET_BRIGHTNESS, para);
+		    ret = ioctl(disp_fd, DISP_LCD_SET_BRIGHTNESS, para);
 			break;
 		}
 
 		case MOD_DISP_LCD_GET_BRIGHTNESS:
 		{
-		    ret = ioctl(disp_mgr.disp_fd, DISP_LCD_GET_BRIGHTNESS, para);
+		    ret = ioctl(disp_fd, DISP_LCD_GET_BRIGHTNESS, para);
 			break;
 		}
 
 		case MOD_DISP_TV_SET_GAMMA_TABLE:
 		{
-		    ret = ioctl(disp_mgr.disp_fd, DISP_TV_SET_GAMMA_TABLE, para);
+		    ret = ioctl(disp_fd, DISP_TV_SET_GAMMA_TABLE, para);
 			break;
 		}
 
 		case MOD_DISP_LCD_GAMMA_CORRECTION_ENABLE:
 		{
-		    ret = ioctl(disp_mgr.disp_fd, DISP_LCD_GAMMA_CORRECTION_ENABLE, para);
+		    ret = ioctl(disp_fd, DISP_LCD_GAMMA_CORRECTION_ENABLE, para);
 			break;
 		}
 
 		case MOD_DISP_LCD_GAMMA_CORRECTION_DISABLE:
 		{
-		    ret = ioctl(disp_mgr.disp_fd, DISP_LCD_GAMMA_CORRECTION_DISABLE, para);
+		    ret = ioctl(disp_fd, DISP_LCD_GAMMA_CORRECTION_DISABLE, para);
 			break;
 		}
 
 
 		case MOD_DISP_LCD_SET_GAMMA_TABLE:
 		{
-		    ret = ioctl(disp_mgr.disp_fd, DISP_LCD_SET_GAMMA_TABLE, para);
+		    ret = ioctl(disp_fd, DISP_LCD_SET_GAMMA_TABLE, para);
 			break;
 		}
 
 			/* ---- hdmi --- */
 		case MOD_DISP_HDMI_SUPPORT_MODE:
 			{
-			    ret = ioctl(disp_mgr.disp_fd, DISP_HDMI_SUPPORT_MODE, para);
+			    ret = ioctl(disp_fd, DISP_HDMI_SUPPORT_MODE, para);
 				break;
 			}
 
 		case MOD_DISP_SET_TV_HPD:
 			{
-			    ret = ioctl(disp_mgr.disp_fd, DISP_SET_TV_HPD, para);
+			    ret = ioctl(disp_fd, DISP_SET_TV_HPD, para);
 				break;
 			}
 
 			/* ----enhance---- */
 		case MOD_DISP_ENHANCE_ENABLE:
 			{
-			    ret = ioctl(disp_mgr.disp_fd, DISP_ENHANCE_ENABLE, para);
+			    ret = ioctl(disp_fd, DISP_ENHANCE_ENABLE, para);
 				break;
 			}
 
 		case MOD_DISP_ENHANCE_DISABLE:
 			{
-			    ret = ioctl(disp_mgr.disp_fd, DISP_ENHANCE_DISABLE, para);
+			    ret = ioctl(disp_fd, DISP_ENHANCE_DISABLE, para);
 				break;
 			}
 
 		case MOD_DISP_ENHANCE_DEMO_ENABLE:
 			{
-			    ret = ioctl(disp_mgr.disp_fd, DISP_ENHANCE_DEMO_ENABLE, para);
+			    ret = ioctl(disp_fd, DISP_ENHANCE_DEMO_ENABLE, para);
 				break;
 			}
 
 		case MOD_DISP_ENHANCE_DEMO_DISABLE:
 			{
-			    ret = ioctl(disp_mgr.disp_fd, DISP_ENHANCE_DEMO_DISABLE, para);
+			    ret = ioctl(disp_fd, DISP_ENHANCE_DEMO_DISABLE, para);
 				break;
 			}
 
 		case MOD_DISP_ENHANCE_SET_MODE:
 			{
-			    ret = ioctl(disp_mgr.disp_fd, DISP_ENHANCE_SET_MODE, para);
+			    ret = ioctl(disp_fd, DISP_ENHANCE_SET_MODE, para);
 				break;
 			}
 
 		case MOD_DISP_ENHANCE_GET_MODE:
 			{
-			    ret = ioctl(disp_mgr.disp_fd, DISP_ENHANCE_GET_MODE, para);
+			    ret = ioctl(disp_fd, DISP_ENHANCE_GET_MODE, para);
 				break;
 			}
 
 		case MOD_DISP_ENHANCE_SET_BRIGHT:
 			{
-			    ret = ioctl(disp_mgr.disp_fd, DISP_ENHANCE_SET_BRIGHT, para);
+			    ret = ioctl(disp_fd, DISP_ENHANCE_SET_BRIGHT, para);
 				break;
 			}
 
 		case MOD_DISP_ENHANCE_GET_BRIGHT:
 			{
-			    ret = ioctl(disp_mgr.disp_fd, DISP_ENHANCE_GET_BRIGHT, para);
+			    ret = ioctl(disp_fd, DISP_ENHANCE_GET_BRIGHT, para);
 				break;
 			}
 
 		case MOD_DISP_ENHANCE_SET_CONTRAST:
 			{
-			    ret = ioctl(disp_mgr.disp_fd, DISP_ENHANCE_SET_CONTRAST, para);
+			    ret = ioctl(disp_fd, DISP_ENHANCE_SET_CONTRAST, para);
 				break;
 			}
 
 		case MOD_DISP_ENHANCE_GET_CONTRAST:
 			{
-			    ret = ioctl(disp_mgr.disp_fd, DISP_ENHANCE_GET_CONTRAST, para);
+			    ret = ioctl(disp_fd, DISP_ENHANCE_GET_CONTRAST, para);
 				break;
 			}
 
 		case MOD_DISP_ENHANCE_SET_SATURATION:
 			{
-			    ret = ioctl(disp_mgr.disp_fd, DISP_ENHANCE_SET_SATURATION, para);
+			    ret = ioctl(disp_fd, DISP_ENHANCE_SET_SATURATION, para);
 				break;
 			}
 
 		case MOD_DISP_ENHANCE_GET_SATURATION:
 			{
-			    ret = ioctl(disp_mgr.disp_fd, DISP_ENHANCE_GET_SATURATION, para);
-				break;
-			}
-
-			/* ---smart backlight -- */
-		case MOD_DISP_SMBL_ENABLE:
-			{
-			    ret = ioctl(disp_mgr.disp_fd, DISP_SMBL_ENABLE, para);
-				break;
-			}
-
-		case MOD_DISP_SMBL_DISABLE:
-			{
-			    ret = ioctl(disp_mgr.disp_fd, DISP_SMBL_DISABLE, para);
-				break;
-			}
-
-		case MOD_DISP_SMBL_SET_WINDOW:
-			{
-			    ret = ioctl(disp_mgr.disp_fd, DISP_SMBL_SET_WINDOW, para);
+			    ret = ioctl(disp_fd, DISP_ENHANCE_GET_SATURATION, para);
 				break;
 			}
 
 			/* ---capture -- */
 		case MOD_DISP_CAPTURE_START:
 			{
-			    ret = ioctl(disp_mgr.disp_fd, DISP_CAPTURE_START, para);
+			    ret = ioctl(disp_fd, DISP_CAPTURE_START, para);
 				break;
 			}
 
 		case MOD_DISP_CAPTURE_STOP:
 			{
-			    ret = ioctl(disp_mgr.disp_fd, DISP_CAPTURE_STOP, para);
+			    ret = ioctl(disp_fd, DISP_CAPTURE_STOP, para);
 				break;
 			}
 
 		case MOD_DISP_CAPTURE_COMMIT:
 			{
-			    ret = ioctl(disp_mgr.disp_fd, DISP_CAPTURE_COMMIT, para);
+			    ret = ioctl(disp_fd, DISP_CAPTURE_COMMIT, para);
 				break;
 			}
 
 		case MOD_DISP_LCD_CHECK_OPEN_FINISH:
 			{
-				ret = ioctl(disp_mgr.disp_fd, DISP_LCD_CHECK_OPEN_FINISH, para);
+				ret = ioctl(disp_fd, DISP_LCD_CHECK_OPEN_FINISH, para);
 				break;
 			}
 
         case 0xff:
         {
 			__log("mod_display test case!!");
-            ret = ioctl(disp_mgr.disp_fd, 0xffff, para);
+            ret = ioctl(disp_fd, 0xffff, para);
 
 			break;
         }
@@ -1772,7 +1780,3 @@ long Mod_Display_MIoctrl(__mp *mp, __u32 cmd,  __s32 aux, void *pbuffer)
     }
 	return ret;
 }
-
-
-
-

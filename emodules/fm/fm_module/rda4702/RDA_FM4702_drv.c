@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include "epdk.h"
 #include "RDA_FM4702_drv.h"
 #include  "drv_fm_i.h"
@@ -122,7 +153,7 @@ unsigned char OperationSi47XX_2w(unsigned char mode, unsigned char *buf, unsigne
     __twi_dev_para_ex_t  piic;
     __s32 ret = EPDK_FAIL;
     __u8 reg_addr = 0;
-    buf[0] &= (~0x40);              //´ò¿ª¾²Òô¹¦ÄÜ
+    buf[0] &= (~0x40);              //æ‰“å¼€é™éŸ³åŠŸèƒ½
     piic.slave_addr_flag = 0;
     piic.slave_addr      = FM_SI470X_ADDR;
     piic.byte_addr_width = 0;
@@ -133,7 +164,7 @@ unsigned char OperationSi47XX_2w(unsigned char mode, unsigned char *buf, unsigne
 
     if (ret == EPDK_FAIL)
     {
-        //FAIL ´¦Àí
+        //FAIL å¤„ç†
         __wrn("IIC WRITE ERR\n");
         return EPDK_FAIL;
     }
@@ -162,17 +193,17 @@ __s32 FM_SI47XX_WriteReg(WRITE_REG_ADDR RegAddr, __u16 InputData)
     NumOfBytesToWrite = RegAddr * 2;
     WriteRegArray[RegAddr * 2 - 2] = ((InputData & 0xFF00) >> 8);
     WriteRegArray[RegAddr * 2 - 1] = (InputData & 0x00FF);
-    iic_para.slave_addr         = FM_SI470X_ADDR; //Éè±¸µØÖ·£¬ÖµÎª7bitµØÖ·£¬²»º¬¶ÁĞ´±êÖ¾Î»
+    iic_para.slave_addr         = FM_SI470X_ADDR; //è®¾å¤‡åœ°å€ï¼Œå€¼ä¸º7bitåœ°å€ï¼Œä¸å«è¯»å†™æ ‡å¿—ä½
     iic_para.slave_addr_flag    = 0;
-    iic_para.byte_addr          = &reg_addr;    //Èç¹û·ÃÎÊÉè±¸µÄ¼Ä´æÆ÷µØÖ·²»ÊÇ8Î»µÄ»°£¬ĞèÒª´«Èë×î¸ßbyteµÄµØÖ·£¬ ÕâÀïÒÔ8Î»ÎªÀı£¬ËùÒÔÖ±½ÓÈ¡µØÖ·
-    iic_para.byte_addr_width    = 0;            //Éè±¸¼Ä´æÆ÷µØÖ·µÄ³¤¶È£¬ÒÔbyteÎªµ¥Î»£¬ÕâÀïÒÔ8Î»ÎªÀı£¬ËùÒÔÈ¡1, Èç¹û>1£¬ÌîËùĞè³¤¶È£¬×î´óµ½3
-    iic_para.data               = WriteRegArray;         //Êı¾İbuffer
-    iic_para.byte_count         = NumOfBytesToWrite;          //Ğ´ÈëÊı¾İ³¤¶È
+    iic_para.byte_addr          = &reg_addr;    //å¦‚æœè®¿é—®è®¾å¤‡çš„å¯„å­˜å™¨åœ°å€ä¸æ˜¯8ä½çš„è¯ï¼Œéœ€è¦ä¼ å…¥æœ€é«˜byteçš„åœ°å€ï¼Œ è¿™é‡Œä»¥8ä½ä¸ºä¾‹ï¼Œæ‰€ä»¥ç›´æ¥å–åœ°å€
+    iic_para.byte_addr_width    = 0;            //è®¾å¤‡å¯„å­˜å™¨åœ°å€çš„é•¿åº¦ï¼Œä»¥byteä¸ºå•ä½ï¼Œè¿™é‡Œä»¥8ä½ä¸ºä¾‹ï¼Œæ‰€ä»¥å–1, å¦‚æœ>1ï¼Œå¡«æ‰€éœ€é•¿åº¦ï¼Œæœ€å¤§åˆ°3
+    iic_para.data               = WriteRegArray;         //æ•°æ®buffer
+    iic_para.byte_count         = NumOfBytesToWrite;          //å†™å…¥æ•°æ®é•¿åº¦
     ret = eLIBs_fioctrl(fiic, TWI_WRITE_SPEC_RS,  0, (void *)&iic_para);
 
     if (ret == EPDK_FAIL)
     {
-        //FAIL ´¦Àí
+        //FAIL å¤„ç†
         __msg("IIC WRITE ERR\n");
         return EPDK_FAIL;
     }
@@ -195,18 +226,18 @@ __u16 FM_SI47XX_ReadReg(READ_REG_ADDR RegAddr)
     __s32 ret = EPDK_FAIL;
     __u8 reg_addr = 0;
     NumOfBytesToRead = RegAddr * 2;
-    iic_para.slave_addr         = FM_SI470X_ADDR; //Éè±¸µØÖ·£¬ÖµÎª7bitµØÖ·£¬²»º¬¶ÁĞ´±êÖ¾Î»
+    iic_para.slave_addr         = FM_SI470X_ADDR; //è®¾å¤‡åœ°å€ï¼Œå€¼ä¸º7bitåœ°å€ï¼Œä¸å«è¯»å†™æ ‡å¿—ä½
     iic_para.slave_addr_flag    = 0;
-    iic_para.byte_addr          = &reg_addr;    //Èç¹û·ÃÎÊÉè±¸µÄ¼Ä´æÆ÷µØÖ·²»ÊÇ8Î»µÄ»°£¬ĞèÒª´«Èë×î¸ßbyteµÄµØÖ·£¬ ÕâÀïÒÔ8Î»ÎªÀı£¬ËùÒÔÖ±½ÓÈ¡µØÖ·
-    iic_para.byte_addr_width    = 0;            //Éè±¸¼Ä´æÆ÷µØÖ·µÄ³¤¶È£¬ÒÔbyteÎªµ¥Î»£¬ÕâÀïÒÔ8Î»ÎªÀı£¬ËùÒÔÈ¡1, Èç¹û>1£¬ÌîËùĞè³¤¶È£¬×î´óµ½3
-    iic_para.data               = ReadRegArray;         //Êı¾İbuffer
-    iic_para.byte_count         = NumOfBytesToRead;          //¶ÁÈ¡Êı¾İ³¤¶È
-    //Èç¹û²»ÊÇ±ê×¼iic£¬¼´²»·¢restartµÄ¶Á²Ù×÷
+    iic_para.byte_addr          = &reg_addr;    //å¦‚æœè®¿é—®è®¾å¤‡çš„å¯„å­˜å™¨åœ°å€ä¸æ˜¯8ä½çš„è¯ï¼Œéœ€è¦ä¼ å…¥æœ€é«˜byteçš„åœ°å€ï¼Œ è¿™é‡Œä»¥8ä½ä¸ºä¾‹ï¼Œæ‰€ä»¥ç›´æ¥å–åœ°å€
+    iic_para.byte_addr_width    = 0;            //è®¾å¤‡å¯„å­˜å™¨åœ°å€çš„é•¿åº¦ï¼Œä»¥byteä¸ºå•ä½ï¼Œè¿™é‡Œä»¥8ä½ä¸ºä¾‹ï¼Œæ‰€ä»¥å–1, å¦‚æœ>1ï¼Œå¡«æ‰€éœ€é•¿åº¦ï¼Œæœ€å¤§åˆ°3
+    iic_para.data               = ReadRegArray;         //æ•°æ®buffer
+    iic_para.byte_count         = NumOfBytesToRead;          //è¯»å–æ•°æ®é•¿åº¦
+    //å¦‚æœä¸æ˜¯æ ‡å‡†iicï¼Œå³ä¸å‘restartçš„è¯»æ“ä½œ
     ret = eLIBs_fioctrl(fiic, TWI_READ_SPEC_RS,  0, (void *)&iic_para);
 
     if (ret == EPDK_FAIL)
     {
-        //FAIL ´¦Àí
+        //FAIL å¤„ç†
         __msg("IIC READ ERR\n");
         return 0;
     }
@@ -404,10 +435,10 @@ void FM_SI47XX_PowerUp(void)
     //FM_SI47XX_WriteReg(W05h, 0x4800);
 #endif
     //FM_SI47XX_WriteReg(W05h,SI_RECOMMENDED_SEEKTH | BandSelect | SpacingSelect | VolumeCtrl);
-    //esKRNL_TimeDly(1);                                      //µØÇøÆµ¶ÎÉèÖÃ
-    //FM_SI47XX_WriteReg(W06h,SKSNR_NORMAL|SKSNR_NORMAL);     //ĞÅºÅÇ¿¶ÈÖĞ
-    //FM_SI47XX_WriteReg(W06h,SKSNR_LOW|SKCNT_LOW);           //ĞÅºÅÇ¿¶ÈµÍ
-    //FM_SI47XX_WriteReg(W06h,SKSNR_HIGH|SKCNT_HIGH);         //ĞÅºÅÇ¿¶È¸ß
+    //esKRNL_TimeDly(1);                                      //åœ°åŒºé¢‘æ®µè®¾ç½®
+    //FM_SI47XX_WriteReg(W06h,SKSNR_NORMAL|SKSNR_NORMAL);     //ä¿¡å·å¼ºåº¦ä¸­
+    //FM_SI47XX_WriteReg(W06h,SKSNR_LOW|SKCNT_LOW);           //ä¿¡å·å¼ºåº¦ä½
+    //FM_SI47XX_WriteReg(W06h,SKSNR_HIGH|SKCNT_HIGH);         //ä¿¡å·å¼ºåº¦é«˜
     //id = FM_SI47XX_ReadReg(R01h);
     //__msg("after power up R01h: 0x%x\n", id );
 }
@@ -1060,9 +1091,9 @@ char Si4702_FM_Tune_Freq(unsigned short channel_freq, unsigned char channel_spac
 /**********************************************
 * function:      fm_auto_search
 *
-* description:   ×Ô¶¯ËÑË÷£¬Ö§³ÖÏòÉÏËÑË÷ºÍÏòÏÂËÑË÷
+* description:   è‡ªåŠ¨æœç´¢ï¼Œæ”¯æŒå‘ä¸Šæœç´¢å’Œå‘ä¸‹æœç´¢
 *
-* notes:         ËÑË÷µ½Ò»¸öÆµµãºóÍË³ö£¬·µ»ØÖµÊÇÒ»¸öXX.X MHzµ¥Î»
+* notes:         æœç´¢åˆ°ä¸€ä¸ªé¢‘ç‚¹åé€€å‡ºï¼Œè¿”å›å€¼æ˜¯ä¸€ä¸ªXX.X MHzå•ä½
 *
 **********************************************/
 __s32  fm_auto_search(__s32 freq, __u32 search_dir)
@@ -1225,7 +1256,7 @@ __s32  fm_auto_search(__s32 freq, __u32 search_dir)
         value = FM_SI47XX_ReadReg(R0Ah);
         RSSI  = (value & 0x00FF);
 
-        if ((value & 0x3000) == 0x0000 && RSSI > 0x19) //RSSI ÁéÃô¶È
+        if ((value & 0x3000) == 0x0000 && RSSI > 0x19) //RSSI çµæ•åº¦
         {
             __inf("R0AH:0x%x, Freq: %d\n", value, freq);
             return (freq);
@@ -1259,11 +1290,11 @@ __s32  fm_auto_search(__s32 freq, __u32 search_dir)
 /**********************************************
 * function:      fm_play
 *
-* description:   ¸ù¾İÊäÈëµÄÆµÂÊ£¬²¥·Å´ËÆµÂÊµÄ
-*                µçÌ¨½ÚÄ¿£¬¼´Ê¹Ã»ÓĞ½ÚÄ¿Ö»ÓĞ
-*                ÔëÒô£¬ÕÕÑù²¥³ö
+* description:   æ ¹æ®è¾“å…¥çš„é¢‘ç‡ï¼Œæ’­æ”¾æ­¤é¢‘ç‡çš„
+*                ç”µå°èŠ‚ç›®ï¼Œå³ä½¿æ²¡æœ‰èŠ‚ç›®åªæœ‰
+*                å™ªéŸ³ï¼Œç…§æ ·æ’­å‡º
 *
-* notes:         Ö»·µ»Ø³É¹¦
+* notes:         åªè¿”å›æˆåŠŸ
 *
 **********************************************/
 __s32 fm_play(__s32 freq)
@@ -1305,8 +1336,8 @@ __s32 fm_play(__s32 freq)
 /**********************************************
 * function:      fm_manual_search
 *
-* description:   ÊÖ¶¯ËÑË÷£¬Ê¹ÓÃfm_play
-*                ·µ»ØÖµÊÇÏÂÒ»¸öËÑË÷ÆµÂÊµã
+* description:   æ‰‹åŠ¨æœç´¢ï¼Œä½¿ç”¨fm_play
+*                è¿”å›å€¼æ˜¯ä¸‹ä¸€ä¸ªæœç´¢é¢‘ç‡ç‚¹
 *
 * notes:
 *
@@ -1318,10 +1349,10 @@ __s32 fm_manual_search(__s32 freq, __u32 search_dir)
 /**********************************************
 * function:      fm_area_choose
 *
-* description:   µØÇøÑ¡Ôñ£¬Çø±ğ²»Í¬µÄÆğÊ¼ºÍÖÕÖ¹
-*                ÆµÂÊ
+* description:   åœ°åŒºé€‰æ‹©ï¼ŒåŒºåˆ«ä¸åŒçš„èµ·å§‹å’Œç»ˆæ­¢
+*                é¢‘ç‡
 *
-* notes:         ÊäÈëÕıÈ·µØÇø·µ»Ø³É¹¦£¬·ñÔòÊ§°Ü
+* notes:         è¾“å…¥æ­£ç¡®åœ°åŒºè¿”å›æˆåŠŸï¼Œå¦åˆ™å¤±è´¥
 *
 **********************************************/                    //OK
 __s32 fm_area_choose(__s32 area, void *pbuffer)
@@ -1358,7 +1389,7 @@ __s32 fm_area_choose(__s32 area, void *pbuffer)
 /**********************************************
 * function:      fm_stereo_choose
 *
-* description:   ÒôÖÊÑ¡Ôñ£¬Á¢ÌåÉùºÍÆÕÍ¨ÉùÒô
+* description:   éŸ³è´¨é€‰æ‹©ï¼Œç«‹ä½“å£°å’Œæ™®é€šå£°éŸ³
 *
 * notes:
 *
@@ -1418,7 +1449,7 @@ __s32  fm_send_off(void)
 /**********************************************
 * function:      fm_mute
 *
-* description:   ¾²Òô¹¦ÄÜ
+* description:   é™éŸ³åŠŸèƒ½
 *
 * notes:
 *
@@ -1446,8 +1477,8 @@ __s32 fm_mute(__s32 voice_onoff)
 /**********************************************
 * function:      fm_signal_level
 *
-* description:   ĞÅºÅÇ¿¶ÈÑ¡Ôñ£¬ÒªÇóĞÅºÅÇ¿´óÔ½¸ß£¬ÊÕµ½µÄµçÌ¨Ô½ÉÙ
-*                ÒªÇóĞÅºÅÇ¿´óÔ½¸ß£¬ÊÕµ½µÄµçÌ¨Ô½¶à£¬µ«ÎŞĞ§µçÌ¨Ò²¶à
+* description:   ä¿¡å·å¼ºåº¦é€‰æ‹©ï¼Œè¦æ±‚ä¿¡å·å¼ºå¤§è¶Šé«˜ï¼Œæ”¶åˆ°çš„ç”µå°è¶Šå°‘
+*                è¦æ±‚ä¿¡å·å¼ºå¤§è¶Šé«˜ï¼Œæ”¶åˆ°çš„ç”µå°è¶Šå¤šï¼Œä½†æ— æ•ˆç”µå°ä¹Ÿå¤š
 *
 * notes:
 *

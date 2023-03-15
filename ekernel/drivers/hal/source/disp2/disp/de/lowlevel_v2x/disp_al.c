@@ -839,15 +839,13 @@ int disp_al_lcd_cfg(u32 screen_id, struct disp_panel_para *panel,
 
 	if (panel->lcd_if == LCD_IF_DSI)	{
 #if defined(SUPPORT_DSI)
-		if (panel->lcd_if == LCD_IF_DSI) {
-			if (dsi_cfg(screen_id, panel) != 0)
-				DE_WRN("dsi %d cfg fail!\n", screen_id);
-			if (panel->lcd_tcon_mode == DISP_TCON_DUAL_DSI &&
-			    screen_id + 1 < DEVICE_DSI_NUM) {
-				if (dsi_cfg(screen_id + 1, panel) != 0)
-					DE_WRN("dsi %d cfg fail!\n",
-					       screen_id + 1);
-			}
+		if (dsi_cfg(screen_id, panel) != 0)
+			DE_WRN("dsi %d cfg fail!\n", screen_id);
+		if (panel->lcd_tcon_mode == DISP_TCON_DUAL_DSI &&
+		    screen_id + 1 < DEVICE_DSI_NUM) {
+			if (dsi_cfg(screen_id + 1, panel) != 0)
+				DE_WRN("dsi %d cfg fail!\n",
+				       screen_id + 1);
 		}
 #endif
 	}
@@ -1672,3 +1670,48 @@ void disp_al_show_builtin_patten(u32 hwdev_index, u32 patten)
 {
 	tcon_show_builtin_patten(hwdev_index, patten);
 }
+
+unsigned long de_get_reg_base(u32 sel, u32 *off, int need_update)
+{
+	u32 flag = *off & PQ_REG_MASK;
+	unsigned long reg_base = 0x0;
+
+	DE_INF("flag = 0x%x\n", flag);
+
+	switch (flag) {
+		case PEAK_OFST:
+			reg_base = de_peak_get_reg_base(sel);
+			if (reg_base == 0) {
+				pr_err("Get PEAK reg base err!\n");
+				return 0;
+			}
+			if (need_update) {
+				de_peak_set_pq_dirty(sel);
+			}
+			*off = *off - PEAK_OFST;
+			break;
+		case LTI_OFST:
+			reg_base = de_lti_get_reg_base(sel, 0, need_update);
+			if (reg_base == 0) {
+				pr_err("Get PEAK reg base err!\n");
+				return 0;
+			}
+			*off = *off - LTI_OFST;
+			break;
+		case FCE_OFST:
+			break;
+		case ASE_OFST:
+			break;
+		case FCC_OFST:
+			break;
+		default:
+			break;
+	}
+
+	return reg_base;
+}
+unsigned long disp_al_get_reg_base(u32 sel, u32 *off, int updata)
+{
+	return de_get_reg_base(sel, off, updata);
+}
+

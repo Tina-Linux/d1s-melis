@@ -1,22 +1,34 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                                  File System
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2011-2014, Sunny China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : rawpart.c
-* By      : Sunny
-* Version : v1.0
-* Date    : 2011-3-15
-* Descript: raw partition system.
-* Update  : date                auther      ver     notes
-*           2011-3-15 15:02:30  Sunny       1.0     Create this file.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "rawpart.h"
 #include "fsys_debug.h"
 
@@ -158,12 +170,12 @@ int32_t  rawpart_ioctl(__fsys_part_t *pPart, uint32_t Cmd, long Aux, void *pBuff
             break;
         }
         /***********************************old******************/
-        case FSYS_PART_CMD_GET_STATUS:              /* »ñÈ¡×´Ì¬ĞÅÏ¢                 */
+        case FSYS_PART_CMD_GET_STATUS:              /* è·å–çŠ¶æ€ä¿¡æ¯                 */
         {
             return 0;
         }
 
-        case FSYS_PART_CMD_GET_INFO:                /* »ñÈ¡ĞÅÏ¢                     */
+        case FSYS_PART_CMD_GET_INFO:                /* è·å–ä¿¡æ¯                     */
         {
             esDEV_Lock(pPart->hNode);
             x = esDEV_Ioctl(hDev, DEV_CMD_GET_INFO, Aux, pBuffer);
@@ -226,7 +238,7 @@ int32_t  rawpart_mount(__fsys_part_t *pPart)
     __fsys_rawpart_p_t  *pPDPrivate  = NULL;
 
 
-    /* ·ÖÅäË½ÓĞµÄÊı¾İ¿Õ¼ä       */
+    /* åˆ†é…ç§æœ‰çš„æ•°æ®ç©ºé—´       */
     pPart->hPDPrivate   = (__hdle)malloc(sizeof(__fsys_rawpart_p_t));
     pPDPrivate          = (__fsys_rawpart_p_t *)(pPart->hPDPrivate);
 
@@ -238,7 +250,7 @@ int32_t  rawpart_mount(__fsys_part_t *pPart)
 
     esDEV_Lock(pPart->hNode);
 
-    /* ¼ÆËã³ö·ÖÇøµÄĞÅÏ¢         */
+    /* è®¡ç®—å‡ºåˆ†åŒºçš„ä¿¡æ¯         */
     esDEV_Ioctl(pPart->hDev, DEV_CMD_GET_INFO, 0, &blkinf);
     pPDPrivate->partaddr        = 0;
     pPDPrivate->partseccnt      = blkinf.partsize;
@@ -281,7 +293,7 @@ int32_t rawpart_unmount(__fsys_part_t *pPart, int force)
 *
 *             rawpart_identify
 *
-  Description:Ê¶±ğ·ÖÇø£¬Èç¹ûhDevËùÖ¸ÏòµÄ¿éÉè±¸ÎªÆÕÍ¨´ÅÅÌ·ÖÇø¸ñÊ½£¬ÄÇÃ´·µ»ØEPDK_OK
+  Description:è¯†åˆ«åˆ†åŒºï¼Œå¦‚æœhDevæ‰€æŒ‡å‘çš„å—è®¾å¤‡ä¸ºæ™®é€šç£ç›˜åˆ†åŒºæ ¼å¼ï¼Œé‚£ä¹ˆè¿”å›EPDK_OK
 
 
   Parameters:
@@ -312,7 +324,7 @@ uint32_t rawpart_identify(__hdle hDev)
 *
 *             rawpart_fdisk
 *
-  Description:·ÖÇø
+  Description:åˆ†åŒº
 
 
   Parameters:

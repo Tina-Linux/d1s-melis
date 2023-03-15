@@ -51,7 +51,7 @@ static __always_inline uint32_t HAL_GetHFClock(void)
 {
 //	return HAL_PRCM_GetHFClock();
 	printf("%s,%d Warning Use fix value 24000000\n", __FUNCTION__,__LINE__);
-	return 24*1000*1000;
+	return 40*1000*1000;
 }
 
 /**

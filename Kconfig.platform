@@ -28,16 +28,24 @@ choice
 			Based on r328 Platform.
 
 	config SOC_SUN8IW19P1
-		bool "v459 SOC Platform"
+		bool "v833/v831 SOC Platform"
 		select SOC_SUN8IW19
+		select ARCH_SUN8IW19
 		help
-			Based on v459 Platform.
+			Based on v833/v831 Platform.
 
 	config SOC_SUN20IW1P1
 		bool "D1s SOC Platform"
 		select SOC_SUN20IW1
 		help
 			Based on D1s Platform.
+
+	config SOC_SUN20IW3P1
+		bool "V853 SOC Platform"
+		select SOC_SUN20IW3
+		help
+			Based on D1s Platform.
+
 endchoice
 
 config SOC_SUN3I
@@ -76,17 +84,46 @@ config SOC_SUN8IW18
     	help
     		Based on SUN8IW18 SOC familiy.
 
+config ARCH_SUN8IW19
+	bool "soc sun8iw19"
+	select SOC_SUN8I
+	help
+		Soc sun8iw19
 config SOC_SUN8IW19
 	bool
 	select SOC_SUN8I
+	select ARCH_SUN8IW19
 	help
 		Based on SUN8IW19 SOC familiy.
 
 config SOC_SUN20IW1
 	bool
 	select SOC_SUN20I
+	select ARCH_SUN20IW1
 	help
-		Based on RISCV-THead SOC familiy.
+		Based on SUN20IW1 SOC familiy.
+
+config SOC_SUN20IW3
+	bool
+	select SOC_SUN20I
+	select ARCH_SUN20IW3
+	help
+		Based on SUN20I SOC familiy.
+
+config ARCH_SUN8IW19
+	bool
+	help
+		Based on SUN8IW19 SOC familiy.
+
+config ARCH_SUN20IW1
+	bool
+	help
+		Based on SUN20I SOC familiy.
+
+config ARCH_SUN20IW3
+	bool
+	help
+		Based on SUN20I SOC familiy.
 
 config DRAM_PHYBASE
 	hex  "Physical base address of Dram"

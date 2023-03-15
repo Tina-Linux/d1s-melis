@@ -2,67 +2,144 @@
 #define __USB_OS_PLATFORM_H__
 
 #include <stdint.h>
-#include <typedef.h>
+#include <string.h>
+#include <stdio.h>
+#include <stddef.h>
+#include <unistd.h>
+#include <script.h>
 
+#include "hal_cfg.h"
+#include "hal_osal.h"
+#include "hal_clk.h"
+#include "hal_gpio.h"
+#include "hal_reset.h"
+
+#include "sunxi_hal_usb.h"
+#include "sunxi_hal_common.h"
+
+#include "error.h"
+#include "endian.h"
+#include "bitops.h"
+
+#ifdef CONFIG_KERNEL_FREERTOS
+#include "usb_rtos.h"
+#else
+#include "usb_melis.h"
+#endif
+
+/*-------------------------------------------------------------*/
+
+#define gfp_t		unsigned int
 #define dma_addr_t	unsigned long
-#define gfp_t		uint32_t
 
-uint16_t le16_to_cpu(uint16_t x);
-uint32_t le32_to_cpu(uint32_t x);
-uint32_t le32_to_cpup(const uint32_t *x);
+/*-------------------------------------------------------------*/
 
-#define cpu_to_le16(x) le16_to_cpu((x))
-#define cpu_to_le32(x) le32_to_cpu(x)
+#define ENABLE_DMA_ALLOC_COHERENT		1
 
-static inline u16 get_be16(u8 *buf)
-{
-    return ((__u16) buf[0] << 8) | ((__u16) buf[1]);
-}
+#define USB_DESC_MALLOC_ALIGN_SIZE		64
+#define USB_OHCI_HCCA_MALLOC_ALIGN_SIZE		256
+#define USB_EHCI_PERIODIC_MALLOC_ALIGN_SIZE	4096
 
-static inline u32 get_be32(u8 *buf)
-{
-    return ((__u32) buf[0] << 24) | ((__u32) buf[1] << 16) |
-           ((__u32) buf[2] << 8) | ((__u32) buf[3]);
-}
+/*-------------------------------------------------------------*/
+/* usb hci moduble debug */
 
-static inline void put_be16(__u8 *buf, __u16 val)
-{
-    buf[0] = (__u8)(val >> 8);
-    buf[1] = (__u8)val;
-}
+int hal_usb_hcd_debug_get(void);
+#define EHCI_DEBUG_COLOR_OFF			"\033[0m"
+#define EHCI_DEBUG_COLOR_GRAY			"\033[0;37m"
+#define EHCI_DEBUG_OFFSET(x)			"\033[" #x "D\033[" #x "C"
+#define EHCI_DEBUG_PRINTF(format, args...)                                     \
+	do {                                                                   \
+		if (hal_usb_hcd_debug_get())                                   \
+			printf("[%s:%d]" "%s" format "\n\r",                   \
+			    __func__, __LINE__, EHCI_DEBUG_OFFSET(40), ##args);\
+	} while(0)
 
-static inline void put_be32(__u8 *buf, __u32 val)
-{
-    buf[0] = (__u8)(val >> 24);
-    buf[1] = (__u8)(val >> 16);
-    buf[2] = (__u8)(val >> 8);
-    buf[3] = (__u8)val;
-}
+#define EHCI_DEBUG_LINE_BREAK()              \
+	do {                                 \
+		if (hal_usb_hcd_debug_get()) \
+			printf("\n\r");       \
+	} while (0)
 
-/* ȡ����ֵ */
-#undef  absolute
-#define absolute(p)                     ((p) > 0 ? (p) : -(p))
+/*-------------------------------------------------------------*/
+/* SOC platform */
 
-//#define readb(addr)      (*((volatile unsigned char *)(long)(addr)))
-//#define readw(addr)             (*((volatile unsigned short *)(long)(addr)))
-// #define readl(addr)             (*((volatile unsigned int *)(long)(addr)))
-//#define writeb(v, addr) (*((volatile unsigned char *)(long)(addr)) = (unsigned char)(v))
-//#define writew(v, addr) (*((volatile unsigned short *)(long)(addr)) = (unsigned short)(v))
-// #define writel(v, addr) (*((volatile unsigned int *)(long)(addr)) = (unsigned int)(v))
-
+#if defined(CONFIG_ARCH_SUN8IW18P1)
+#include "../platform/sun8iw18/usb_sun8iw18.h"
+#endif
+#if defined(CONFIG_ARCH_SUN8IW19)
+#include "../platform/sun8iw19/usb_sun8iw19.h"
+#endif
 #if defined(CONFIG_ARCH_SUN8IW20) || defined(CONFIG_SOC_SUN20IW1)
-#define readl(addr)             (*((volatile unsigned int *)(long)(addr)))
-#define writel(v, addr) (*((volatile unsigned int *)(long)(addr)) = (unsigned int)(v))
+#include "../platform/sun20iw1/usb_sun20iw1.h"
+#endif
+#if defined(CONFIG_ARCH_SUN20IW2)
+#include "../platform/sun20iw2/usb_sun20iw2.h"
 #endif
 
-void *usb_dma_malloc(uint32_t size, dma_addr_t *p_addr);
-void usb_dma_free(void *v_addr, dma_addr_t p_addr);
-void usb_set_bit(int bit_nr, volatile uint32_t *addr);
-void usb_clear_bit(int bit_nr, volatile uint32_t *addr);
-uint32_t usb_test_bit(int bit_nr, volatile uint32_t *addr);
-uint32_t usb_test_and_clear_bit(int bit_nr, volatile uint32_t *addr);
-void usb_clear_bit32(int bit_nr, volatile uint32_t *addr);
-void usb_dec32(uint32_t *addr);
-void usb_inc32(uint32_t *addr);
-void Usb_uint2str_dec(unsigned int input, char *str);
+struct platform_usb_config {
+	unsigned char *name;
+	unsigned int pbase;
+	unsigned int irq;
+	unsigned int ohci_clk;
+	unsigned int usb_clk;
+	unsigned int usb_rst;
+	unsigned int phy_clk;
+	unsigned int phy_rst;
+};
+
+typedef struct usb_gpio_config {
+	unsigned int valid;
+	unsigned int gpio;
+} usb_gpio_config_t;
+
+struct platform_usb_port_config {
+	unsigned int enable;
+	unsigned int port_type;
+	unsigned int detect_type;
+	unsigned int detect_mode;
+	usb_gpio_config_t id; /* usb id pin info */
+	usb_gpio_config_t det_vbus; /* usb det_vbus pin info */
+	usb_gpio_config_t drv_vbus[USB_MAX_CONTROLLER_COUNT]; /* usb drv_vbus pin info */
+};
+
+struct platform_usb_config *platform_get_ehci_table(void);
+struct platform_usb_config *platform_get_ohci_table(void);
+struct platform_usb_config *platform_get_otg_table(void);
+struct platform_usb_port_config *platform_get_port_table(void);
+
+/*-------------------------------------------------------------*/
+/* USB dma alloc/free */
+
+static inline void *usb_dma_malloc(uint32_t size, dma_addr_t *p_addr, uint32_t align)
+{
+	void *v_addr = NULL;
+
+	/* should be 32 byte-align for QH and QTD */
+#ifdef CONFIG_DMA_COHERENT_HEAP
+	v_addr = dma_coherent_heap_alloc_align(size, align);
+#else
+	v_addr = dma_alloc_coherent_align(size, align);
 #endif
+	if (v_addr) {
+		*p_addr = __va_to_pa((unsigned long)v_addr);
+		memset(v_addr, 0, size);
+		return v_addr;
+	}
+
+	hal_log_err("hal_malloc failed\n");
+	return NULL;
+}
+
+static inline void usb_dma_free(void *v_addr, dma_addr_t p_addr)
+{
+	if (v_addr) {
+#ifdef CONFIG_DMA_COHERENT_HEAP
+		dma_coherent_heap_free_align(v_addr);
+#else
+		dma_free_coherent_align(v_addr);
+#endif
+	}
+}
+
+
+#endif //__USB_OS_PLATFORM_H__

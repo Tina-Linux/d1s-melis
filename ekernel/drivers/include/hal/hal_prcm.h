@@ -22,6 +22,7 @@
 
 #include <sunxi_hal_rtc.h>
 #include <sunxi_hal_common.h>
+#include <sunxi_hal_prcm.h>
 
 /* the clock status of on-off */
 typedef enum ccu_clk_onoff {
@@ -152,7 +153,6 @@ typedef enum ccu_mod_clk {
 	CCU_MOD_CLK_R_VM,
 	CCU_MOD_CLK_R_THS,
 	CCU_MOD_CLK_R_LRADC,
-	CCU_MOD_CLK_R_CAN,
 
 	CCU_MOD_CLK_R_LPSD,
 	CCU_MOD_CLK_R_MAD,

@@ -20,11 +20,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <interrupt.h>
-#include <init.h>
 #include <hal_clk.h>
 #include <hal_reset.h>
 #include <hal_timer.h>
+#ifdef CONFIG_STANDBY
 #include <melis/standby/standby.h>
+#endif
 
 #include "g2d_driver_i.h"
 #include "g2d_top.h"
@@ -49,6 +50,13 @@
 #define G2D_IOMMU_MASTER_ID			3
 #define IOMMU_RESET_REG                         0x02010010
 #define IOMMU_BGR_REG                           0x020017bc
+
+#elif defined(CONFIG_ARCH_SUN20IW2)
+#define SUNXI_IRQ_G2D			103
+#define SUNXI_G2D_START				0x40b00000
+#define SUNXI_G2D_RESET_ID			RST_G2D
+#define SUNXI_G2D_CLK_PARENT			CLK_DEVICE
+
 #endif
 
 #ifndef SUNXI_G2D_CLK_ID
@@ -323,31 +331,31 @@ int g2d_wait_cmd_finish(unsigned int timeout)
 	return 0;
 }
 
-irqreturn_t g2d_handle_irq(int irq, void *dev_id)
+hal_irqreturn_t g2d_handle_irq(void *dev_id)
 {
 #if G2D_MIXER_RCQ_USED == 1
 	if (g2d_top_rcq_task_irq_query()) {
-		// g2d_top_mixer_reset();
+		g2d_top_mixer_reset();
 		g2d_ext_hd.finish_flag = 1;
 		hal_sem_post(g2d_ext_hd.queue_sem);
-		return IRQ_HANDLED;
+		return HAL_IRQ_OK;
 	}
 #else
 	if (g2d_mixer_irq_query()) {
-		// g2d_top_mixer_reset();
+		g2d_top_mixer_reset();
 		g2d_ext_hd.finish_flag = 1;
 		hal_sem_post(g2d_ext_hd.queue_sem);
-		return IRQ_HANDLED;
+		return HAL_IRQ_OK;
 	}
 #endif
 	if (g2d_rot_irq_query()) {
 		// g2d_top_rot_reset();
 		g2d_ext_hd.finish_flag = 1;
 		hal_sem_post(g2d_ext_hd.queue_sem);
-		return IRQ_HANDLED;
+		return HAL_IRQ_OK;
 	}
 
-	return IRQ_HANDLED;
+	return HAL_IRQ_OK;
 }
 
 int g2d_clk_init(__g2d_info_t *info)
@@ -357,6 +365,9 @@ int g2d_clk_init(__g2d_info_t *info)
 	hal_reset_id_t rst_id;
 	hal_reset_type_t reset_type = HAL_SUNXI_RESET;
 	hal_clk_type_t clk_type = HAL_SUNXI_CCU;
+#if defined(CONFIG_ARCH_SUN20IW2)
+	hal_clk_type_t clk_type_aon = HAL_SUNXI_AON_CCU;
+#endif
 	hal_clk_id_t clk_id[G2D_CLK_NUM] = {
 			SUNXI_G2D_CLK_ID,/*note SUNXI_G2D_CLK_ID must be here, please see g2d_clock_enable*/
 			SUNXI_G2D_CLK_BUS_ID,
@@ -365,7 +376,11 @@ int g2d_clk_init(__g2d_info_t *info)
 	info->clk_rate = 300000000; /*300Mhz*/
 	info->reset = hal_reset_control_get(reset_type, SUNXI_G2D_RESET_ID);
 	hal_reset_control_deassert(info->reset);
+#if defined(CONFIG_ARCH_SUN20IW2)
+	info->clk_parent= hal_clock_get(clk_type_aon,SUNXI_G2D_CLK_PARENT);
+#else
 	info->clk_parent= hal_clock_get(clk_type,SUNXI_G2D_CLK_PARENT);
+#endif
 	for(i = 0; i < G2D_CLK_NUM; i++) {
 		if (clk_id[i] != (hal_clk_id_t)-1) {
 			info->clk[i] = hal_clock_get(clk_type, clk_id[i]);
@@ -513,12 +528,12 @@ int g2d_probe(void)
 	memset(info, 0, sizeof(__g2d_info_t));
 	info->io = SUNXI_G2D_START;
 
-	if (request_irq(SUNXI_IRQ_G2D, g2d_handle_irq, 0, "g2d", NULL))
-        {
+	if (hal_request_irq(SUNXI_IRQ_G2D, g2d_handle_irq, "g2d", NULL) < 0)
+	{
 		G2D_ERR_MSG("g2d request irq error\n");
 		return -1;
-        }
-	enable_irq(SUNXI_IRQ_G2D);
+	}
+	hal_enable_irq(SUNXI_IRQ_G2D);
 
 	g2d_clk_init(info);
 	drv_g2d_init(info);

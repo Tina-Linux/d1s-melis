@@ -1,22 +1,34 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                                  File System
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2011-2014, Sunny China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : fat_dir.c
-* By      : Sunny
-* Version : v1.0
-* Date    : 2011-1-16
-* Descript: directory handing functions.
-* Update  : date                auther      ver     notes
-*           2011-3-16 15:44:24  Sunny       1.0     Create this file.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include <string.h>
 #include "fs.h"
 #include "fatfs.h"
@@ -29,20 +41,20 @@
 #include "fsys_debug.h"
 
 //Modify by Bayden
-//�Ƿ�֧�ֺ�ܼ��ܹ��ߵ�����Ŀ¼(2078\2028�汾)
+//是否支持宏杰加密工具的隐藏目录(2078\2028版本)
 #define HIDDEN_DIR_SUPPORT_FLAG_1504_5120_7642_2078 1
 
 //Modify by Bayden
-//�Ƿ�֧�ֺ㲨���ܹ��ߵ�����Ŀ¼
+//是否支持恒波加密工具的隐藏目录
 #define HIDDEN_DIR_SUPPORT_FLAG_5746_1845_5532_0794 1
 
 
 //Modify by Bayden
-//�Ƿ�֧�ֳ����ع�U�̼��ܴ�ʦV9.0���ߵ�����Ŀ¼
+//是否支持超级特工U盘加密大师V9.0工具的隐藏目录
 #define HIDDEN_DIR_SUPPORT_FLAG_5647_1824_3946_8852    1
 
 //Modify by Bayden
-//�Ƿ�֧�ּ��ܹ��ߵ�����Ŀ¼(Ŀ¼���һ���ַ�Ϊ.)
+//是否支持加密工具的隐藏目录(目录最后一个字符为.)
 #define DOT_DIR_SUPPORT_FLAG_1504_5120_7642_1640    1
 
 
@@ -478,7 +490,7 @@ parse_long:
 
         pw = *unicode;
 
-        //if(0x002e != *pw)//�����ĵ�ǰ�ļ��к͵�ǰĿ¼
+        //if(0x002e != *pw)//正常的当前文件夹和当前目录
         {
             while (0 != *pw)
             {
@@ -527,7 +539,7 @@ parse_long:
 
         pw = *unicode;
 
-        //if(0x002e != *pw)//�����ĵ�ǰ�ļ��к͵�ǰĿ¼
+        //if(0x002e != *pw)//正常的当前文件夹和当前目录
         {
             while (0 != *pw)
             {
@@ -1244,7 +1256,7 @@ int fat_subdirs(struct inode *dir)
 
 
 
-//û�ҵ�������һ��
+//没找到，分配一个
 
 int fat_get_label(struct super_block *sb)
 {
@@ -1865,4 +1877,3 @@ error_remove:
     return err;
 }
 #endif
-

@@ -39,4 +39,8 @@ extern "C"
 #define CE_RST_BIT							(16)
 #define CE_DEASSERT							(1)
 
+#ifdef __cplusplus
+}
+#endif
+
 #endif

@@ -59,6 +59,13 @@ extern "C" {
 #define GP_CH5_CMP_DATA_REG (0x54) /* channal 5 compare data register */
 #define GP_CH6_CMP_DATA_REG (0x58) /* channal 6 compare data register */
 #define GP_CH7_CMP_DATA_REG (0x5c) /* channal 7 compare data register */
+#define GP_CH8_CMP_DATA_REG (0x60) /* channal 8 compare data register */
+#define GP_CH9_CMP_DATA_REG (0x64) /* channal 9 compare data register */
+#define GP_CHA_CMP_DATA_REG (0x68) /* channal 10 compare data register */
+#define GP_CHB_CMP_DATA_REG (0x6c) /* channal 11 compare data register */
+#define GP_CHC_CMP_DATA_REG (0x70) /* channal 12 compare data register */
+#define GP_CHD_CMP_DATA_REG (0x74) /* channal 13 compare data register */
+#define GP_CHE_CMP_DATA_REG (0x78) /* channal 14 compare data register */
 #define GP_CH0_DATA_REG     (0x80) /* channal 0 data register */
 #define GP_CH1_DATA_REG     (0x84) /* channal 1 data register */
 #define GP_CH2_DATA_REG     (0x88) /* channal 2 data register */
@@ -67,6 +74,13 @@ extern "C" {
 #define GP_CH5_DATA_REG     (0x94) /* channal 5 data register */
 #define GP_CH6_DATA_REG     (0x98) /* channal 6 data register */
 #define GP_CH7_DATA_REG     (0x9c) /* channal 7 data register */
+#define GP_CH8_DATA_REG     (0xa0) /* channal 8 data register */
+#define GP_CH9_DATA_REG     (0xa4) /* channal 9 data register */
+#define GP_CHA_DATA_REG     (0xa8) /* channal 10 data register */
+#define GP_CHB_DATA_REG     (0xac) /* channal 11 data register */
+#define GP_CHC_DATA_REG     (0xb0) /* channal 12 data register */
+#define GP_CHD_DATA_REG     (0xb4) /* channal 13 data register */
+#define GP_CHE_DATA_REG     (0xb8) /* channal 14 data register */
 
 /*
  * GP_SR_REG default value: 0x01df_002f 50KHZ
@@ -76,8 +90,14 @@ extern "C" {
 
 /* GP_CTRL_REG default value:0x0000_0000 */
 #define GP_FIRST_CONCERT_DLY    (0xff<<24) /* delay time of the first time */
-#define GP_CALI_EN      (1 << 17) /* enable calibration */
-#define GP_ADC_EN       (1 << 16) /* GPADC function enable */
+#define GP_CALI_EN		(1 << 17) /* enable calibration */
+#define GP_ADC_EN		(1 << 16) /* GPADC function enable */
+#define GP_LP_TEMPSENTS		(1 << 7)
+#define GP_EN_TEMPSENS		(1 << 6)
+#define GP_VBAT_DET_EN		(1 << 5)
+#define GP_LP_EN		(1 << 4)
+#define GP_VREF_MODE_SEL	(7 << 1)
+#define GP_ADC_LDO_EN		(1 << 0)
 
 /*
  * 00:single conversion mode
@@ -206,7 +226,7 @@ extern "C" {
 #define GP_CH7_CMP_LOW_DATA     (0xfff << 0)
 
 /* GP_CH0_DATA_REG default value:0x0000_0000 */
-#define GP_CH_DATA_MASK     (0xfff << 0) /*data mask */
+#define GP_CH_DATA_MASK		(0xfff << 0) /*data mask */
 
 #define CHANNEL_0_SELECT        (0x01 << 0)
 #define CHANNEL_1_SELECT        (0x01 << 1)
@@ -216,10 +236,19 @@ extern "C" {
 #define CHANNEL_5_SELECT        (0x01 << 5)
 #define CHANNEL_6_SELECT        (0x01 << 6)
 #define CHANNEL_7_SELECT        (0x01 << 7)
+#define CHANNEL_8_SELECT        (0x01 << 8)
+#define CHANNEL_A_SELECT        (0x01 << 9)
+#define CHANNEL_B_SELECT        (0x01 << 0xa)
+#define CHANNEL_C_SELECT        (0x01 << 0xb)
+#define CHANNEL_D_SELECT        (0x01 << 0xc)
+#define CHANNEL_E_SELECT        (0x01 << 0xd)
+#if defined(CONFIG_ARCH_SUN20IW2)
+#define CHANNEL_MAX_NUM         16
+#define CHANNEL_NUM 16
+#else
 #define CHANNEL_MAX_NUM         8
 #define CHANNEL_NUM 4
-
-
+#endif
 #ifdef __cplusplus
 }
 #endif

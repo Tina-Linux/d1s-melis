@@ -22,6 +22,19 @@ obj-y += clk-divider.o
 obj-$(CONFIG_ARCH_SUN8IW20) += ccu-sun8iw20.o
 obj-$(CONFIG_ARCH_SUN8IW20) += ccu-sun8iw20-r.o
 obj-$(CONFIG_ARCH_SUN8IW20) += ccu-sun8iw20-rtc.o
+
 obj-$(CONFIG_SOC_SUN20IW1) += ccu-sun8iw20.o
 obj-$(CONFIG_SOC_SUN20IW1) += ccu-sun8iw20-r.o
 obj-$(CONFIG_SOC_SUN20IW1) += ccu-sun8iw20-rtc.o
+
+obj-$(CONFIG_ARCH_SUN20IW2) += ccu-sun20iw2.o
+obj-$(CONFIG_ARCH_SUN20IW2) += ccu-sun20iw2-r.o
+obj-$(CONFIG_ARCH_SUN20IW2) += ccu-sun20iw2-aon.o
+
+obj-$(CONFIG_ARCH_SUN55IW3) += ccu-sun55iw3.o
+obj-$(CONFIG_ARCH_SUN55IW3) += ccu-sun55iw3-dsp.o
+obj-$(CONFIG_ARCH_SUN55IW3) += ccu-sun55iw3-r.o
+
+ifeq ($(CONFIG_COMPONENTS_PM), y)
+CFLAGS += -Icomponents/common/aw/pm/include/
+endif

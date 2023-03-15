@@ -61,8 +61,8 @@ static inline void wav_file_list(void)
 static inline wav_file_t *find_builtin_wav_file(const char *name)
 {
 	int i;
-	wav_hw_params_t params;
 #if 0
+	wav_hw_params_t params;
 	for (i = 0; i < ARRAY_SIZE(wav_file_array); i++) {
 		printf("name:%s, start:%p, end:%p\n",
 			wav_file_array[i].name,

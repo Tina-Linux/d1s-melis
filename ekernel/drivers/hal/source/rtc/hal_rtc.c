@@ -17,11 +17,11 @@
 #include <hal_thread.h>
 #include <hal_timer.h>
 #include <stdlib.h>
-#include <interrupt.h>
 #include <rtc/rtc.h>
 #include <sunxi_hal_rtc.h>
 #include <hal_log.h>
 #include <hal_interrupt.h>
+#include <hal_clk.h>
 
 //for debug
 #define CONFIG_DRIVERS_RTC_DEBUG
@@ -158,7 +158,7 @@ int hal_rtc_register_callback(rtc_callback_t user_callback)
 }
 
 
-static irqreturn_t hal_rtc_alarmirq(int irq, void *dev)
+static hal_irqreturn_t hal_rtc_alarmirq(void *dev)
 {
     struct hal_rtc_dev *rtc_dev = (struct hal_rtc_dev *)dev;
     u32 val;
@@ -178,7 +178,7 @@ static irqreturn_t hal_rtc_alarmirq(int irq, void *dev)
         return 0;
     }
 
-    return -1;
+    return 1;
 }
 
 static void hal_rtc_setaie(int to, struct hal_rtc_dev *rtc_dev)
@@ -678,6 +678,26 @@ void hal_rtc_max_year_show(unsigned int *max)
     RTC_INFO("sunxi rtc max year:%d", *max);
 }
 
+
+#ifdef CONFIG_ARCH_SUN20IW2
+static int sunxi_rtc_clk_init(void)
+{
+	hal_clk_status_t ret;
+	hal_clk_type_t clk_type = HAL_SUNXI_R_CCU;
+	hal_clk_id_t clk_id;
+	hal_clk_t clk;
+
+	clk = hal_clock_get(clk_type, clk_id);
+	ret = hal_clock_enable(clk);
+	if (ret != HAL_CLK_STATUS_OK) {
+		RTC_ERR("RTC clock enable failed.\n");
+		return -1;
+	}
+
+	return 0;
+}
+#endif
+
 int hal_rtc_init(void)
 {
     struct hal_rtc_dev *rtc_dev = &sunxi_hal_rtc;
@@ -705,8 +725,8 @@ int hal_rtc_init(void)
 
     if(hal_rtc_clk_init(rtc_dev))
     {
-	RTC_ERR("rtc init clk error!\n");
-	return RTC_CLK_ERROR;
+		RTC_ERR("rtc init clk error!\n");
+		return RTC_CLK_ERROR;
     }
 
 #ifndef CONFIG_ARCH_SUN20IW2
@@ -728,17 +748,20 @@ int hal_rtc_init(void)
     tmp_data = hal_readl(rtc_dev->base + SUNXI_LOSC_CTRL);
     tmp_data |= (EXT_LOSC_GSM | REG_LOSCCTRL_MAGIC);
     hal_writel(tmp_data, rtc_dev->base + SUNXI_LOSC_CTRL);
+#else
+    /* get clock source from */
+    sunxi_rtc_clk_init();
 #endif
     rtc_dev->irq = SUXNI_IRQ_RTC;
 
-    ret = request_irq(rtc_dev->irq, hal_rtc_alarmirq, 0, "rtc-ctrl", rtc_dev);
-    if (ret)
+    ret = hal_request_irq(rtc_dev->irq, hal_rtc_alarmirq, "rtc", rtc_dev);
+    if (ret < 0)/* Modify error detection methods for RTC to C906 & M33 */
     {
         RTC_ERR("Could not request IRQ");
         return -1;
     }
-    enable_irq(rtc_dev->irq);
-    RTC_INFO("RTC enabled");
+    hal_enable_irq(rtc_dev->irq);
+    /* RTC_INFO("RTC enabled"); */
 
     return 0;
 }
@@ -746,6 +769,7 @@ int hal_rtc_init(void)
 int hal_rtc_deinit(void)
 {
     struct hal_rtc_dev *rtc_dev = &sunxi_hal_rtc;
+
 #if defined(CONFIG_SOC_SUN20IW1)
     hal_clock_disable(rtc_dev->bus_clk);
     hal_clock_put(rtc_dev->bus_clk);
@@ -756,7 +780,8 @@ int hal_rtc_deinit(void)
     hal_reset_control_assert(rtc_dev->reset);
     hal_reset_control_put(rtc_dev->reset);
 #endif
-    free_irq(rtc_dev->irq, rtc_dev);
+    hal_disable_irq(rtc_dev->irq);
+    hal_free_irq(rtc_dev->irq);
     return 0;
 }
 

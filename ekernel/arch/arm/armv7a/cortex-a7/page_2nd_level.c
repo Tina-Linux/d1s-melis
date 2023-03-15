@@ -1,33 +1,47 @@
 /*
- * ===========================================================================================
- *
- *       Filename:  page_2nd_level.c
- *
- *    Description:  used to do memory map for 2nd level page table on ARMV7-A.
- *
- *        Version:  Melis3.0
- *         Create:  2019-10-29 16:19:44
- *       Revision:  none
- *       Compiler:  GCC:version 7.2.1 20170904 (release),ARM/embedded-7-branch revision 255204
- *                  porting from linux 4.9.
- *         Author:  caozilong@allwinnertech.com
- *   Organization:  BU1-PSW
- *  Last Modified:  2020-06-11 17:30:07
- *
- * ===========================================================================================
- */
-
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <barrier.h>
-#include <common/list.h>
+#include <aw_list.h>
 #include "page_2nd_level.h"
 #include "pgtable.h"
 #include <debug.h>
 #include <log.h>
+
+#include <hal_mem.h>
 
 #define DBG(fmt, ...)     do { printf("%s line %d, "fmt, __func__, __LINE__, ##__VA_ARGS__); } while (0)
 
@@ -43,15 +57,6 @@ static int __get_vm_area_node(unsigned long size,
     if (unlikely(!size))
     {
         __err("aligned size is zero. ");
-        return 0;
-    }
-
-    rt_memory_info(&total, &used, &max_used);
-
-    aval = total - used;
-    if (aval < size)
-    {
-        __err("not enough memory to map. ");
         return 0;
     }
 
@@ -160,7 +165,7 @@ static void set_pte_at(void *mm, unsigned long addr,
 }
 
 //final stage of setting MMU table. Set PTE entry by traversing the PTE table.
-//pud, pmd are collapse to pgd. 4-level page table map are reduce dimension to 
+//pud, pmd are collapse to pgd. 4-level page table map are reduce dimension to
 //2-level page table map.
 static int vmap_pte_range(pmd_t *pmd, unsigned long addr,
                           unsigned long end, pgprot_t prot, void *pages, int *nr)
@@ -340,15 +345,17 @@ void add_alloc_info(unsigned long start, unsigned long end, void *pages)
 {
     module_alloc_info_t *p;
 
-    p = rt_malloc(sizeof(module_alloc_info_t));
+    p = hal_malloc(sizeof(module_alloc_info_t));
     if (!p)
     {
         BUG();
     }
 
-    p->start = start;
-    p->end = end;
-    p->pages = pages;
+    memset(p, 0x00, sizeof(module_alloc_info_t));
+    p->start  = start;
+    p->end    = end;
+    p->pages  = pages;
+    p->npages = (end - start) / PAGE_SIZE;
 
     INIT_LIST_HEAD(&p->list);
     list_add(&p->list, &root_head);
@@ -363,9 +370,13 @@ module_alloc_info_t *find_alloc_info(unsigned long start, unsigned long end)
     list_for_each_safe(pos, q, &root_head)
     {
         tmp = list_entry(pos, module_alloc_info_t, list);
-        if ((tmp->start == start) && (tmp->end == end))
+        if ((tmp->start <= start) && (tmp->end >= end))
         {
-            list_del(pos);
+            tmp->npages -=  (end - start) / PAGE_SIZE;
+            if(tmp->npages == 0)
+            {
+                list_del(pos);
+            }
             return tmp;
         }
     }
@@ -560,7 +571,6 @@ static void vunmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end)
     {
         pte_t ptent = ptep_get_and_clear(NULL, addr, pte);
         WARN_ON(!pte_none(ptent) && !pte_present(ptent));
-        //rt_page_free(pte_page(ptent), 1);
     } while (pte++, addr += PAGE_SIZE, addr != end);
 }
 
@@ -721,12 +731,12 @@ static void __vunmap(const void *addr, unsigned long size, int deallocate_pages)
             BUG();
         }
 
-        rt_page_free(module->pages, size >> PAGE_SHIFT);
+        rt_page_free((void*)((unsigned long)module->pages + (addr - module->start)), size >> PAGE_SHIFT);
     }
 
-    if (module)
+    if (module && module->npages == 0)
     {
-        rt_free(module);
+        hal_free(module);
     }
     return;
 }
@@ -848,9 +858,9 @@ void *module_alloc(void *target_vmaddr, unsigned long map_size)
 #define PAGE_KERNEL_EXEC        pgprot_kernel
     BUG_ON(in_interrupt());
 
-    rt_enter_critical();
+    hal_enter_critical();
     addr = __vmalloc_node_range(map_size, align, start, end, 0, PAGE_KERNEL_EXEC, 0, 0, __builtin_return_address(0));
-    rt_exit_critical();
+    hal_exit_critical();
 
     return addr;
 }
@@ -866,9 +876,9 @@ int module_free(void *target_vmaddr, unsigned long free_size)
 
     BUG_ON(in_interrupt());
 
-    rt_enter_critical();
+    hal_enter_critical();
     err = vfree(target_vmaddr, free_size);
-    rt_exit_critical();
+    hal_exit_critical();
 
     if (err)
     {
@@ -877,4 +887,77 @@ int module_free(void *target_vmaddr, unsigned long free_size)
     }
 
     return 0;
+}
+
+void show_pte(unsigned long addr)
+{
+    pgd_t *pgd;
+    pgd_t *pgd_base;
+
+    pgd_base = pgd_offset(NULL, 0UL);
+    printf("pgdbase = 0x%08lx\n", (unsigned long)pgd_base);
+
+    pgd = pgd_offset(NULL, addr);
+    printf("[0x%08lx] *pgd=0x%08llx",
+           addr, (long long)pgd_val(*pgd));
+
+    do
+    {
+        pud_t *pud;
+        pmd_t *pmd;
+        pte_t *pte;
+
+        if (pgd_none(*pgd))
+        {
+            break;
+        }
+
+        if (pgd_bad(*pgd))
+        {
+            printf("(bad)");
+            break;
+        }
+
+        pud = pud_offset(pgd, addr);
+        if (PTRS_PER_PUD != 1)
+        {
+            printf(", *pud=%08llx", (long long)pud_val(*pud));
+        }
+
+        if (pud_none(*pud))
+        {
+            break;
+        }
+
+        if (pud_bad(*pud))
+        {
+            printf("(bad)");
+            break;
+        }
+
+        pmd = pmd_offset(pud, addr);
+        if (PTRS_PER_PMD != 1)
+        {
+            printf(", *pmd=%08llx", (long long)pmd_val(*pmd));
+        }
+
+        if (pmd_none(*pmd))
+        {
+            break;
+        }
+
+        if (pmd_bad(*pmd))
+        {
+            printf("(bad)");
+            break;
+        }
+
+        pte = pte_offset_map(pmd, addr);
+        printf(", *pte=%08llx", (long long)pte_val(*pte));
+        printf(", *ppte=%08llx",
+               (long long)pte_val(pte[PTE_HWTABLE_PTRS]));
+        pte_unmap(pte);
+    } while (0);
+
+    printf("\n");
 }

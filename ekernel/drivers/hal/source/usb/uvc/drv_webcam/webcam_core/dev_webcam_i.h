@@ -18,43 +18,41 @@
 */
 #ifndef _DEV_WEBCAM_I_H_
 #define _DEV_WEBCAM_I_H_
-#include "hal_sem.h"
-#include "sunxi_hal_common.h"
+
 #include "webcam_linklist_manager.h"
 
-typedef enum capture_state_e
-{
-	CAPTURE_NONE  = 0,
+typedef void *__hdle;
+
+typedef enum capture_state_e {
+	CAPTURE_NONE = 0,
 	CAPTURE_ON,
 	CAPTURE_ON_AND_CALLBACK,
 	CAPTURE_REMOVE,
-}capture_state;
+} capture_state;
 
-typedef struct STRUCT_WEBCAM_DEV
-{
-    hal_sem_t webcam_lock;    ///¶ÔWEBCAM_DEV²Ù×÷½øÐÐ»¥³âµÄsemaphore
-    
-    __s32						webcam_frame_num;  //±íÊ¾ÓÐÐ§µÄwebcam_frameµÄ¸öÊý, <= WEBCAM_BUFFER_NUM
-    __webcam_frame_t			webcam_frame[WEBCAM_BUFFER_NUM];
-    __webcam_frame_t			*p_webcam_frame[WEBCAM_BUFFER_NUM];
-    __s32 						frame_id_last;//´æ·ÅÉÏÒ»´Îindex
-    __s32 						frame_id_last_b;//
-    __webcam_linklist_manager_t *full2; //¹ÜÀíÖ¡¶ÓÁÐ,·ÖÎª×°ÍêµÄÖ¡£¬ºÍ¿ÕÏÐµÄÖ¡
-    __webcam_linklist_manager_t *free2;
-	__s32       				diftion;
-    __s64       				pts;  //¼ÇÂ¼µÃµ½µÄµ±Ç°µÄPTS
-    __u32       				pts_flag; //ÉèÖÃPTSµÄ»ñÈ¡·½Ê½£¬aux = 0:CSI×Ô¼ºËãPTS; 1:Í¨¹ý»Øµ÷º¯ÊýµÃµ½PTS; 2.²»ÐèÒªPTS
-    __pCBK_t    				CB_GetPts;
+typedef struct STRUCT_WEBCAM_DEV {
+	hal_sem_t webcam_lock;	//å¯¹WEBCAM_DEVæ“ä½œè¿›è¡Œäº’æ–¥çš„semaphore
 
-    __webcam_mode_t 			webcam_mode_last;//×îºóÒ»´ÎµÄÅäÖÃ£¬Ä³Ð©³¡ºÏÐèÒªÔÝ´æÏÂÀ´
+	__s32 webcam_frame_num;	 //è¡¨ç¤ºæœ‰æ•ˆçš„webcam_frameçš„ä¸ªæ•°, <= WEBCAM_BUFFER_NUM
+	__webcam_frame_t webcam_frame[WEBCAM_BUFFER_NUM];
+	__webcam_frame_t *p_webcam_frame[WEBCAM_BUFFER_NUM];
+	__s32 frame_id_last;		     //å­˜æ”¾ä¸Šä¸€æ¬¡index
+	__s32 frame_id_last_b;		     //
+	__webcam_linklist_manager_t *full2;  //ç®¡ç†å¸§é˜Ÿåˆ—,åˆ†ä¸ºè£…å®Œçš„å¸§ï¼Œå’Œç©ºé—²çš„å¸§
+	__webcam_linklist_manager_t *free2;
+	__s32 diftion;
+	__s64 pts;	//è®°å½•å¾—åˆ°çš„å½“å‰çš„PTS
+	__u32 pts_flag; //è®¾ç½®PTSçš„èŽ·å–æ–¹å¼ï¼Œaux = 0:CSIè‡ªå·±ç®—PTS; 1:é€šè¿‡å›žè°ƒå‡½æ•°å¾—åˆ°PTS; 2.ä¸éœ€è¦PTS
+	__pCBK_t CB_GetPts;
 
-    capture_state				capture;
-    transport_cb_t				tran_cb;
-    uvc_irq_t					irq_cb;
-    __u32						used_addr0;
-    __u32						used_addr1;
+	__webcam_mode_t webcam_mode_last;  //æœ€åŽä¸€æ¬¡çš„é…ç½®ï¼ŒæŸäº›åœºåˆéœ€è¦æš‚å­˜ä¸‹æ¥
 
-}__webcam_dev_t;
+	capture_state capture;
+	transport_cb_t tran_cb;
+	uvc_irq_t irq_cb;
+	__u32 used_addr0;
+	__u32 used_addr1;
 
-#endif  /* _DEV_WEBCAM_I_H_ */
+} __webcam_dev_t;
 
+#endif /* _DEV_WEBCAM_I_H_ */

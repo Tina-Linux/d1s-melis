@@ -1,21 +1,34 @@
 /*
- * =====================================================================================
- *
- *       Filename:  mod_Mixture.c
- *
- *       Description:  support the connection to drv and upper application layer
- *
- *       Version:  1.0
- *       Create:  2020-08-07 15:46:44
- *       Revision:  none
- *       Compiler:  gcc version 6.3.0 (crosstool-NG crosstool-ng-1.23.0)
- *
- *       Author:  liujiaming@allwinnertech.com
- *       Organization:  PDC-PD1
- *       Last Modified:  2020-08-07 15:46:44
- *
- * =====================================================================================
- */
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include "mod_mixture_i.h"
 #include <mod_mixture.h>
 #include <mod_display.h>
@@ -47,12 +60,12 @@ typedef struct
     __u32 height;
 } JPG_SIZE;
 /*
-startup_logo_en         
-startup_logo_type        
-startup_picture_type        
-startup_logo_enlarge        
-startup_ani_total_frame      
-startup_ani_inter_time       
+startup_logo_en
+startup_logo_type
+startup_picture_type
+startup_logo_enlarge
+startup_ani_total_frame
+startup_ani_inter_time
 */
 typedef struct
 {
@@ -62,7 +75,7 @@ typedef struct
     __u32           logo_enlarge;
     __u32           logo_index;
     __u32           ani_total_frame;
-    __u32           ani_cur_frame;    
+    __u32           ani_cur_frame;
     __u32           ani_inter_time;
     char            *logo_path;
     unsigned long   logo_addr;
@@ -76,7 +89,7 @@ typedef struct
     __mp* mp_display;
 	__u32 b_stop;
 	__u32 boot_logo_en;
-	__hdle logo_layer;	
+	__hdle logo_layer;
 	__u32 jpeg_yuv_size;
 	__u32 t_animation_task;
 	__u32 b_animation;
@@ -87,7 +100,7 @@ typedef struct
 	__u32 b_carback;
 	__krnl_event_t *cvbs_sem;
 	__krnl_event_t *anim_sem;
-	
+
 } mod_logo_data_t;
 
 #define ALIGN_TO_16B(x)   ((((x) + (1 <<  4) - 1) >>  4) <<  4)
@@ -107,7 +120,7 @@ __s32 read_picture_index(void)
 	__u32 read_len;
 	__s32 value = -1;
 	ES_FILE *fp = NULL;
-	
+
 	fp = eLIBs_fopen(LOGO_PATH"index.bin", "rb");
     if (fp == NULL)
     {
@@ -122,7 +135,7 @@ __s32 read_picture_index(void)
         goto err;
     }
 	value = eLIBs_atoi(&str);
-	
+
 	err:
     if (fp)
     {
@@ -168,15 +181,15 @@ __s32 LoadDataFromFile(const char *path, char **data, __u32 *size)
     if (fp)
     {
         eLIBs_fclose(fp);
-    }    
+    }
 	return realLen;
-	
+
 	err:
 	if(tmpBuf)
 	{
 		eLIBs_free(tmpBuf);
 	}
-	
+
     if (fp)
     {
         eLIBs_fclose(fp);
@@ -244,16 +257,15 @@ int ReadDataFromFile(unsigned char *buf, unsigned char *path, int size)
 
 	ret = eLIBs_fread(buf, 1, size, fp);
 	__wrn("read ret=%d, size=%d\n", ret, size);
-	
+
     eLIBs_fclose(fp);
 	return ret;
 }
-#if 0
-static __s32 show_jpg_logo(void)
+
+static __s32 show_jpg_logo(logo_execute i)
 {
     JPG_SIZE *size;
-    __u32 file_size, tmpsize;
-    __u32 arg[3] = {0};
+    __u64 arg[3] = {0};
     __u32 yuv_size = 0;
     __s32 ret = -1;
     __u32 vcoder_mod_id = 0;
@@ -267,25 +279,19 @@ static __s32 show_jpg_logo(void)
     __u16 offset;
 	int src_width;
 	int src_height;
-	
-    eLIBs_memset(&logo_layer_para, 0x00, sizeof(logo_layer_para));
-    plogo_data->jpeg_info = (stJpegFrameInfo *)esMEMS_Malloc(0, sizeof(stJpegFrameInfo));
-    size = (JPG_SIZE *)esMEMS_Malloc(0, sizeof(JPG_SIZE));
 
-    arg[0] = MOD_DISP_LAYER_WORK_MODE_SCALER;
-    arg[1] = 0;
-    arg[2] = 0;
-    plogo_data->logo_layer = esMODS_MIoctrl(plogo_data->mp_display, MOD_DISP_LAYER_REQUEST, 0, (void *)arg);
-    if (plogo_data->logo_layer == 0)
+    eLIBs_memset(&logo_layer_para, 0x00, sizeof(logo_layer_para));
+    plogo_data->logoinfo[i].jpeg_info = (stJpegFrameInfo *)esMEMS_Malloc(0, sizeof(stJpegFrameInfo));
+    if(plogo_data->logoinfo[i].jpeg_info == NULL)
     {
-        __log("request logo_layer fail");
-		return -1;
+        __log("malloc logo jpeg buffer failed!");
+        return -1;
     }
 
-    disp_w = esMODS_MIoctrl(plogo_data->mp_display, MOD_DISP_GET_SCN_WIDTH, 0, 0);
-    disp_h = esMODS_MIoctrl(plogo_data->mp_display, MOD_DISP_GET_SCN_HEIGHT, 0, 0);
+    size = (JPG_SIZE *)esMEMS_Malloc(0, sizeof(JPG_SIZE));
 
-    vcoder_mod_id = esMODS_MInstall("c:\\mod\\vcoder.mod", 0);
+    /*Parse this photo,vcoder_mod is a parsing tool.*/
+    vcoder_mod_id = esMODS_MInstall("d:\\mod\\vcoder.mod", 0);
     if (!vcoder_mod_id)
     {
         __log("install vcoder failed...\n");
@@ -301,33 +307,48 @@ static __s32 show_jpg_logo(void)
         }
     }
 
-    if (plogo_data->picture_addr == 0 || plogo_data->picture_size == 0)
+    if (plogo_data->logoinfo[i].logo_addr == 0 || plogo_data->logoinfo[i].logo_size == 0)
     {
     	__log("no picture\n");
         return -1;
     }
-    plogo_data->jpeg_info->jpegData = plogo_data->picture_addr;
-    plogo_data->jpeg_info->jpegData_len = plogo_data->picture_size;
+    plogo_data->logoinfo[i].jpeg_info->jpegData = (void *)plogo_data->logoinfo[i].logo_addr;
+    plogo_data->logoinfo[i].jpeg_info->jpegData_len = plogo_data->logoinfo[i].logo_size;
 
-    if (get_size_jpg(size, plogo_data->picture_addr) == EPDK_FAIL)
+    if (get_size_jpg(size, (void *)plogo_data->logoinfo[i].logo_addr) == EPDK_FAIL)
     {
         __log("get the jpg size fail!");
 		return -1;
     }
 
     plogo_data->jpeg_yuv_size = (ALIGN_TO_16B(size->width)) * (ALIGN_TO_16B(size->height)) * 3 / 2;
-    plogo_data->jpeg_info->yuv_buf = (__u32)esMEMS_Palloc(((plogo_data->jpeg_yuv_size + 1023) >> 10), 0);
-    if (plogo_data->jpeg_info->yuv_buf == NULL)
+    plogo_data->logoinfo[i].jpeg_info->yuv_buf = (unsigned long)esMEMS_Palloc(((plogo_data->jpeg_yuv_size + 1023) >> 10), 0);
+    if ((void *)plogo_data->logoinfo[i].jpeg_info->yuv_buf == NULL)
     {
         __log("jpeg_info->yuv_buf malloc fail,size:%d\n", plogo_data->jpeg_yuv_size);
 		return -1;
     }
-    esMEMS_CleanFlushDCacheRegion((void *)plogo_data->jpeg_info->yuv_buf, plogo_data->jpeg_yuv_size);
-    ret = esMODS_MIoctrl(vcoder, MPEJ_CODEC_CMD_DECODER, 0, plogo_data->jpeg_info);
+    esMEMS_CleanFlushDCacheRegion((void *)plogo_data->logoinfo[i].jpeg_info->yuv_buf, plogo_data->jpeg_yuv_size);
+    ret = esMODS_MIoctrl(vcoder, MPEJ_CODEC_CMD_DECODER, 0, plogo_data->logoinfo[i].jpeg_info);
     esMODS_MClose(vcoder);
     esMODS_MUninstall(vcoder_mod_id);
 
-	logo_enlarge = plogo_data->logo_enlarge;
+    //get display layer
+    arg[0] = MOD_DISP_LAYER_WORK_MODE_SCALER;
+    arg[1] = 0;
+    arg[2] = 0;
+    plogo_data->logo_layer = (__hdle)esMODS_MIoctrl(plogo_data->mp_display, MOD_DISP_LAYER_REQUEST, 0, (void *)arg);
+    if (plogo_data->logo_layer == 0)
+    {
+        __log("request logo_layer fail");
+		return -1;
+    }
+
+    disp_w = esMODS_MIoctrl(plogo_data->mp_display, MOD_DISP_GET_SCN_WIDTH, 0, 0);
+    disp_h = esMODS_MIoctrl(plogo_data->mp_display, MOD_DISP_GET_SCN_HEIGHT, 0, 0);
+
+
+	logo_enlarge = plogo_data->logoinfo[i].logo_enlarge;
     if (logo_enlarge == 1)
     {
         scn_w = disp_w;
@@ -343,7 +364,7 @@ static __s32 show_jpg_logo(void)
         scn_w = size->width;
         scn_h = size->height;
     }
-	
+
 	if(scn_w > disp_w)
 	{
 		scn_w = disp_w;
@@ -373,50 +394,49 @@ static __s32 show_jpg_logo(void)
     logo_layer_para.scn_win.width    = scn_w;
     logo_layer_para.scn_win.height   = scn_h;
     logo_layer_para.fb.lbc_mode      = 0;
-    logo_layer_para.fb.addr[0]       = (__u32)plogo_data->jpeg_info->y_buf;
-    logo_layer_para.fb.addr[1]       = (__u32)plogo_data->jpeg_info->v_buf;
-    logo_layer_para.fb.addr[2]       = (__u32)plogo_data->jpeg_info->u_buf;
-    logo_layer_para.fb.size.width = plogo_data->jpeg_info->pic_width;
-    logo_layer_para.fb.size.height = plogo_data->jpeg_info->pic_height;
-	
-    arg[0] = plogo_data->logo_layer;
-    arg[1] = (__u32)&logo_layer_para;
+    logo_layer_para.fb.addr[0]       = (__u32)plogo_data->logoinfo[i].jpeg_info->y_buf;
+    logo_layer_para.fb.addr[1]       = (__u32)plogo_data->logoinfo[i].jpeg_info->v_buf;
+    logo_layer_para.fb.addr[2]       = (__u32)plogo_data->logoinfo[i].jpeg_info->u_buf;
+    logo_layer_para.fb.size.width = plogo_data->logoinfo[i].jpeg_info->pic_width;
+    logo_layer_para.fb.size.height = plogo_data->logoinfo[i].jpeg_info->pic_height;
+
+    arg[0] = (__u64)plogo_data->logo_layer;
+    arg[1] = (__u64)&logo_layer_para;
     arg[2] = 0;
     esMODS_MIoctrl(plogo_data->mp_display, MOD_DISP_CMD_LAYER_SET_PARA, 0, (void *)arg);
-    //esMODS_MIoctrl(mp_display, DISP_CMD_LAYER_OPEN, 0, (void *)arg);
 
     esMEMS_Mfree(0, size);
     return 0;
 
 }
 
-__s32 close_jpg_logo(void)
+__s32 close_jpg_logo(logo_execute i)
 {
 	__u32 arg[3] = {0};
 
 	// not close this layer, and background receive this layer
 	if(plogo_data->b_stop != 1)
 	{
-		arg[0] = plogo_data->logo_layer;
+		arg[0] = (__u64)plogo_data->logo_layer;
 	    arg[1] = 0;
 	    arg[2] = 0;
 	    esMODS_MIoctrl(plogo_data->mp_display, MOD_DISP_CMD_LAYER_CLOSE, 0, (void *)arg);
 		esMODS_MIoctrl(plogo_data->mp_display, MOD_DISP_LAYER_RELEASE, 0, (void *)arg);
 	}
-	
-	if (plogo_data->jpeg_info)
+
+	if (plogo_data->logoinfo[i].jpeg_info)
     {
-        if (plogo_data->jpeg_info->yuv_buf)
+        if (plogo_data->logoinfo[i].jpeg_info->yuv_buf)
         {
-            esMEMS_Pfree(plogo_data->jpeg_info->yuv_buf, ((plogo_data->jpeg_yuv_size + 1023) >> 10));
-            plogo_data->jpeg_info->yuv_buf = NULL;
+            esMEMS_Pfree((void *)plogo_data->logoinfo[i].jpeg_info->yuv_buf, ((plogo_data->jpeg_yuv_size + 1023) >> 10));
+            plogo_data->logoinfo[i].jpeg_info->yuv_buf = 0;
         }
-        esMEMS_Mfree(0, plogo_data->jpeg_info);
-        plogo_data->jpeg_info = NULL;
+        esMEMS_Mfree(0, plogo_data->logoinfo[i].jpeg_info);
+        plogo_data->logoinfo[i].jpeg_info = NULL;
     }
 	return 0;
 }
-#endif
+
 static __s32 show_bmp_logo(logo_execute i)
 {
 	__u32 value;
@@ -426,7 +446,6 @@ static __s32 show_bmp_logo(logo_execute i)
 	__u32 scn_w = 0, scn_h = 0;
 	 __s32 width, height;
     __disp_layer_info_t layer_para;
-    //Picture_t *bmp_info = NULL;
 	char *tmp_buf = NULL;
 	__u32 tmp_size = 0;
 
@@ -447,7 +466,7 @@ static __s32 show_bmp_logo(logo_execute i)
         return -1;
 	}
 	eLIBs_memcpy(tmp_buf, (void *)plogo_data->logoinfo[i].logo_addr, plogo_data->logoinfo[i].logo_size);
-	
+
 	// note: this function has been aready relesed frist param memory
 	ret = Parse_Pic_BMP_ByRam(tmp_buf, tmp_size, plogo_data->logoinfo[i].bmp_info, NULL);
     if (-1 == ret)
@@ -482,7 +501,7 @@ static __s32 show_bmp_logo(logo_execute i)
         scn_w = plogo_data->logoinfo[i].bmp_info->Width;
         scn_h = plogo_data->logoinfo[i].bmp_info->Height;
     }
-	
+
 	if(scn_w > width)
 	{
 		scn_w = width;
@@ -494,7 +513,7 @@ static __s32 show_bmp_logo(logo_execute i)
 	esMEMS_CleanFlushDCacheRegion((void *)plogo_data->logoinfo[i].bmp_info->Buffer, plogo_data->logoinfo[i].bmp_info->BufferSize);
 
     layer_para.mode = MOD_DISP_LAYER_WORK_MODE_SCALER;
-    layer_para.fb.lbc_mode      = 0;    
+    layer_para.fb.lbc_mode      = 0;
     layer_para.fb.addr[0]       = (__u64)plogo_data->logoinfo[i].bmp_info->Buffer;
     layer_para.fb.size.width    = plogo_data->logoinfo[i].bmp_info->Width;
     layer_para.fb.size.height   = plogo_data->logoinfo[i].bmp_info->Height;
@@ -515,14 +534,13 @@ static __s32 show_bmp_logo(logo_execute i)
     layer_para.scn_win.y        = (height - scn_h) >> 1;
     layer_para.scn_win.width    = scn_w;
     layer_para.scn_win.height   = scn_h;
-	
+
     arg[0] = (__u64)plogo_data->logo_layer;
     arg[1] = (__u64)&layer_para;
     arg[2] = 0;
     esMODS_MIoctrl(plogo_data->mp_display, MOD_DISP_CMD_LAYER_SET_PARA, 0, (void *)arg);
     return 0;
 }
-
 
 __s32 close_bmp_logo(logo_execute i)
 {
@@ -536,7 +554,7 @@ __s32 close_bmp_logo(logo_execute i)
 	    arg[2] = 0;
 	    esMODS_MIoctrl(plogo_data->mp_display, MOD_DISP_CMD_LAYER_CLOSE, 0, (void *)arg);
 		esMODS_MIoctrl(plogo_data->mp_display, MOD_DISP_LAYER_RELEASE, 0, (void *)arg);
-        
+
 	}
 	if (plogo_data->logoinfo[i].bmp_info)
     {
@@ -548,14 +566,14 @@ __s32 close_bmp_logo(logo_execute i)
         eLIBs_free(plogo_data->logoinfo[i].bmp_info);
         plogo_data->logoinfo[i].bmp_info = NULL;
     }
-    
+
     if (plogo_data->logoinfo[i].logo_addr)
     {
         eLIBs_free((void *)plogo_data->logoinfo[i].logo_addr);
-        plogo_data->logoinfo[i].logo_addr = 0;
+        plogo_data->logoinfo[i].logo_addr = (unsigned long)NULL;
         plogo_data->logoinfo[i].logo_size = 0;
     }
-    
+
 	return 0;
 }
 
@@ -563,8 +581,7 @@ __s32 show_picture(logo_execute i)
 {
 	if (plogo_data->logoinfo[i].picture_type == JPG)
 	{
-    	__err("not support jpg now");
-		//show_jpg_logo(i);
+		show_jpg_logo(i);
 	}
 	else if(plogo_data->logoinfo[i].picture_type == BMP)
 	{
@@ -582,7 +599,7 @@ __s32 stop_picture(logo_execute i)
 {
 	if (plogo_data->logoinfo[i].picture_type == JPG)
 	{
-		//close_jpg_logo();
+		close_jpg_logo(i);
 	}
 	else if(plogo_data->logoinfo[i].picture_type == BMP)
 	{
@@ -598,7 +615,7 @@ static void open_lcd_backlight(void)
 {
     __u64 arg[3];
     __u32 backlight = 0;
-    ES_FILE * fp = NULL;    
+    ES_FILE * fp = NULL;
 	fp = eLIBs_fopen("e:\\mixture.bin", "rb+");
 	if(fp)
 	{
@@ -628,12 +645,11 @@ static void close_lcd_backlight(void)
     return;
 }
 
-#if 0
-static void __jpg_animation(mod_logo_data_t *plogo_data)
+
+static void __jpg_animation(logo_execute i)
 {
     JPG_SIZE *size = NULL;
-    __u32 file_size, tmpsize;
-    __u32 arg[3] = {0};
+    __u64 arg[3] = {0};
     __u32 yuv_size = 0;
     __s32 ret = -1;
     __u32 vcoder_mod_id = 0;
@@ -648,15 +664,15 @@ static void __jpg_animation(mod_logo_data_t *plogo_data)
 	char path[64];
 	__u8 err;
 
-	plogo_data->b_animation = 1; 
+	plogo_data->b_animation = 1;
 	eLIBs_memset(&logo_layer_para, 0x00, sizeof(logo_layer_para));
-    plogo_data->jpeg_info = (stJpegFrameInfo *)esMEMS_Malloc(0, sizeof(stJpegFrameInfo));
+    plogo_data->logoinfo[i].jpeg_info = (stJpegFrameInfo *)esMEMS_Malloc(0, sizeof(stJpegFrameInfo));
     size = (JPG_SIZE *)esMEMS_Malloc(0, sizeof(JPG_SIZE));
 
 	arg[0] = MOD_DISP_LAYER_WORK_MODE_SCALER;
     arg[1] = 0;
     arg[2] = 0;
-    plogo_data->logo_layer = esMODS_MIoctrl(plogo_data->mp_display, MOD_DISP_LAYER_REQUEST, 0, (void *)arg);
+    plogo_data->logo_layer = (__hdle)esMODS_MIoctrl(plogo_data->mp_display, MOD_DISP_LAYER_REQUEST, 0, (void *)arg);
     if (plogo_data->logo_layer == 0)
     {
         __log("request logo_layer fail");
@@ -666,7 +682,7 @@ static void __jpg_animation(mod_logo_data_t *plogo_data)
     disp_w = esMODS_MIoctrl(plogo_data->mp_display, MOD_DISP_GET_SCN_WIDTH, 0, 0);
     disp_h = esMODS_MIoctrl(plogo_data->mp_display, MOD_DISP_GET_SCN_HEIGHT, 0, 0);
 
-    vcoder_mod_id = esMODS_MInstall("c:\\mod\\vcoder.mod", 0);
+    vcoder_mod_id = esMODS_MInstall("d:\\mod\\vcoder.mod", 0);
     if (!vcoder_mod_id)
     {
         __log("install vcoder failed...\n");
@@ -682,18 +698,28 @@ static void __jpg_animation(mod_logo_data_t *plogo_data)
         }
     }
 
-	eLIBs_sprintf(path, LOGO_PATH"logo%d.bin", plogo_data->cur_frame);
-	LoadDataFromFile(path, &plogo_data->frame_addr, &plogo_data->frame_size);
-    plogo_data->jpeg_info->jpegData = plogo_data->frame_addr;
-	plogo_data->jpeg_info->jpegData_len = plogo_data->frame_size;
 
-	if (get_size_jpg(size, plogo_data->frame_addr) == EPDK_FAIL)
+
+    if(i == STARTUP)
+    {
+        eLIBs_sprintf(path, LOGO_PATH"stalogo%d.bin", plogo_data->logoinfo[i].ani_cur_frame);
+    }
+    else if(i == SHUTDOWN)
+    {
+        eLIBs_sprintf(path, LOGO_PATH"stologo%d.bin", plogo_data->logoinfo[i].ani_cur_frame);
+    }
+
+	LoadDataFromFile(path, (char **)&plogo_data->logoinfo[i].logo_addr, &plogo_data->logoinfo[i].logo_size);
+    plogo_data->logoinfo[i].jpeg_info->jpegData = (void *)plogo_data->logoinfo[i].logo_addr;
+	plogo_data->logoinfo[i].jpeg_info->jpegData_len = plogo_data->logoinfo[i].logo_size;
+
+	if (get_size_jpg(size, (uint8_t *)plogo_data->logoinfo[i].logo_addr) == EPDK_FAIL)
 	{
 		__log("get the jpg size fail!");
 		goto EXIT_TASK;
 	}
 
-	logo_enlarge = plogo_data->logo_enlarge;
+	logo_enlarge = plogo_data->logoinfo[i].logo_enlarge;
 	if (logo_enlarge == 1)
     {
         scn_w = disp_w;
@@ -709,7 +735,7 @@ static void __jpg_animation(mod_logo_data_t *plogo_data)
         scn_w = size->width;
         scn_h = size->height;
     }
-	
+
 	if(scn_w > disp_w)
 	{
 		scn_w = disp_w;
@@ -720,16 +746,16 @@ static void __jpg_animation(mod_logo_data_t *plogo_data)
 	}
 
 	plogo_data->jpeg_yuv_size = (ALIGN_TO_16B(size->width)) * (ALIGN_TO_16B(size->height)) * 3 / 2;
-	plogo_data->jpeg_info->yuv_buf = (__u32)esMEMS_Palloc(((plogo_data->jpeg_yuv_size + 1023) >> 10), 0);
-	if (plogo_data->jpeg_info->yuv_buf == NULL)
+	plogo_data->logoinfo[i].jpeg_info->yuv_buf = (unsigned long)esMEMS_Palloc(((plogo_data->jpeg_yuv_size + 1023) >> 10), 0);
+	if ((void *)plogo_data->logoinfo[i].jpeg_info->yuv_buf == NULL)
 	{
 		__log("jpeg_info->yuv_buf malloc fail,size:%d\n", plogo_data->jpeg_yuv_size);
 		goto EXIT_TASK;
 	}
-	esMEMS_CleanFlushDCacheRegion((void *)plogo_data->jpeg_info->yuv_buf, plogo_data->jpeg_yuv_size);
+	esMEMS_CleanFlushDCacheRegion((void *)plogo_data->logoinfo[i].jpeg_info->yuv_buf, plogo_data->jpeg_yuv_size);
 	while (1)
     {
-	    ret = esMODS_MIoctrl(vcoder, MPEJ_CODEC_CMD_DECODER, 0, plogo_data->jpeg_info);
+	    ret = esMODS_MIoctrl(vcoder, MPEJ_CODEC_CMD_DECODER, 0, plogo_data->logoinfo[i].jpeg_info);
 	    logo_layer_para.fb.format        = DISP_FORMAT_YUV420_P;
 	    logo_layer_para.fb.seq           = DISP_SEQ_UVUV;
 	    logo_layer_para.fb.mode          = DISP_MOD_NON_MB_UV_COMBINED;
@@ -749,25 +775,25 @@ static void __jpg_animation(mod_logo_data_t *plogo_data)
 	    logo_layer_para.scn_win.y        = (disp_h - scn_h) >> 1;
 	    logo_layer_para.scn_win.width    = scn_w;
 	    logo_layer_para.scn_win.height   = scn_h;
-        logo_layer_para.fb.lbc_mode      = 0;            
-	    logo_layer_para.fb.addr[0]       = (__u32)plogo_data->jpeg_info->y_buf;
-	    logo_layer_para.fb.addr[1]       = (__u32)plogo_data->jpeg_info->v_buf;
-	    logo_layer_para.fb.addr[2]       = (__u32)plogo_data->jpeg_info->u_buf;
-	    logo_layer_para.fb.size.width = plogo_data->jpeg_info->pic_width;
-	    logo_layer_para.fb.size.height = plogo_data->jpeg_info->pic_height;
-	    arg[0] = plogo_data->logo_layer;
-	    arg[1] = (__u32)&logo_layer_para;
+        logo_layer_para.fb.lbc_mode      = 0;
+	    logo_layer_para.fb.addr[0]       = (__u32)plogo_data->logoinfo[i].jpeg_info->y_buf;
+	    logo_layer_para.fb.addr[1]       = (__u32)plogo_data->logoinfo[i].jpeg_info->v_buf;
+	    logo_layer_para.fb.addr[2]       = (__u32)plogo_data->logoinfo[i].jpeg_info->u_buf;
+	    logo_layer_para.fb.size.width = plogo_data->logoinfo[i].jpeg_info->pic_width;
+	    logo_layer_para.fb.size.height = plogo_data->logoinfo[i].jpeg_info->pic_height;
+	    arg[0] = (__u64)plogo_data->logo_layer;
+	    arg[1] = (__u64)&logo_layer_para;
 	    arg[2] = 0;
 	    esMODS_MIoctrl(plogo_data->mp_display, MOD_DISP_CMD_LAYER_SET_PARA, 0, (void *)arg);
 	   // esMODS_MIoctrl(mp_display, DISP_CMD_LAYER_OPEN, 0, (void *)arg);
-		if (plogo_data->inter_time)
+		if (plogo_data->logoinfo[i].ani_inter_time)
 		{
-			esKRNL_TimeDly(plogo_data->inter_time);
+			esKRNL_TimeDly(plogo_data->logoinfo[i].ani_inter_time);
 		}
 
 		if (plogo_data->carback_en && plogo_data->b_carback)
 		{
-			arg[0] = plogo_data->logo_layer;
+			arg[0] = (__u64)plogo_data->logo_layer;
 			arg[1] = 0;
 			arg[2] = 0;
 			esMODS_MIoctrl(plogo_data->mp_display, MOD_DISP_CMD_LAYER_CLOSE, 0, (void *)arg);
@@ -783,42 +809,49 @@ static void __jpg_animation(mod_logo_data_t *plogo_data)
 			arg[0] = MOD_DISP_LAYER_WORK_MODE_SCALER;
 		    arg[1] = 0;
 		    arg[2] = 0;
-		    plogo_data->logo_layer = esMODS_MIoctrl(plogo_data->mp_display, MOD_DISP_LAYER_REQUEST, 0, (void *)arg);
+		    plogo_data->logo_layer = (__hdle)esMODS_MIoctrl(plogo_data->mp_display, MOD_DISP_LAYER_REQUEST, 0, (void *)arg);
 		    if (plogo_data->logo_layer == 0)
 		    {
 		        __log("request logo_layer fail");
 				goto EXIT_TASK;
 		    }
 		}
-		
-		plogo_data->cur_frame++;
-		__log("cur_frame=%d, total_frame=%d\n", plogo_data->cur_frame, plogo_data->total_frame);
-		if (plogo_data->cur_frame > plogo_data->total_frame)
+
+		plogo_data->logoinfo[i].ani_cur_frame++;
+		__log("cur_frame=%d, total_frame=%d\n", plogo_data->logoinfo[i].ani_cur_frame, plogo_data->logoinfo[i].ani_total_frame);
+		if (plogo_data->logoinfo[i].ani_cur_frame > plogo_data->logoinfo[i].ani_total_frame)
 		{
 			break;
 		}
 
-		if(plogo_data->frame_addr)
+		if(plogo_data->logoinfo[i].logo_addr)
 		{
-			eLIBs_free(plogo_data->frame_addr);
-			plogo_data->frame_addr = NULL;
-			plogo_data->frame_size = 0;
+			eLIBs_free((void *)plogo_data->logoinfo[i].logo_addr);
+			plogo_data->logoinfo[i].logo_addr = (unsigned long)NULL;
+			plogo_data->logoinfo[i].logo_size = 0;
 		}
 
-		eLIBs_sprintf(path, LOGO_PATH"logo%d.bin", plogo_data->cur_frame);
-		LoadDataFromFile(path, &plogo_data->frame_addr, &plogo_data->frame_size);
-	    plogo_data->jpeg_info->jpegData = plogo_data->frame_addr;
-		plogo_data->jpeg_info->jpegData_len = plogo_data->frame_size;
+		if(i == STARTUP)
+        {
+            eLIBs_sprintf(path, LOGO_PATH"stalogo%d.bin", plogo_data->logoinfo[i].ani_cur_frame);
+        }
+        else if(i == SHUTDOWN)
+        {
+            eLIBs_sprintf(path, LOGO_PATH"stologo%d.bin", plogo_data->logoinfo[i].ani_cur_frame);
+        }
+		LoadDataFromFile(path, (char **)&plogo_data->logoinfo[i].logo_addr, &plogo_data->logoinfo[i].logo_size);
+	    plogo_data->logoinfo[i].jpeg_info->jpegData = (void *)plogo_data->logoinfo[i].logo_addr;
+		plogo_data->logoinfo[i].jpeg_info->jpegData_len = plogo_data->logoinfo[i].logo_size;
 
     }
 
 	EXIT_TASK:
-	plogo_data->b_animation = 0; 
-	if(plogo_data->frame_addr)
+	plogo_data->b_animation = 0;
+	if(plogo_data->logoinfo[i].logo_size)
 	{
-		eLIBs_free(plogo_data->frame_addr);
-		plogo_data->frame_addr = NULL;
-		plogo_data->frame_size = 0;
+		eLIBs_free((void *)plogo_data->logoinfo[i].logo_addr);
+		plogo_data->logoinfo[i].logo_addr = (unsigned long)NULL;
+		plogo_data->logoinfo[i].logo_size = 0;
 	}
 	if(vcoder)
 	{
@@ -835,10 +868,9 @@ static void __jpg_animation(mod_logo_data_t *plogo_data)
 		esMEMS_Mfree(0, size);
 		size = NULL;
 	}
-    
+
     esKRNL_TDel(EXEC_prioself);
 }
-#endif
 
 static void __bmp_animation(logo_execute i)
 {
@@ -851,7 +883,7 @@ static void __bmp_animation(logo_execute i)
 	__u32 scn_w = 0, scn_h = 0;
 	 __s32       width, height;
     __disp_layer_info_t layer_para;
-	plogo_data->b_animation = 1; 
+	plogo_data->b_animation = 1;
 	eLIBs_memset(&layer_para, 0, sizeof(__disp_layer_info_t));
     plogo_data->logoinfo[i].bmp_info = (Picture_t *)eLIBs_malloc(sizeof(Picture_t));
     if(plogo_data->logoinfo[i].bmp_info== NULL)
@@ -882,7 +914,7 @@ static void __bmp_animation(logo_execute i)
     }
 	LoadDataFromFile(path, (char **)&plogo_data->logoinfo[i].logo_addr, &plogo_data->logoinfo[i].logo_size);
 	Parse_Pic_BMP_ByRam((void *)plogo_data->logoinfo[i].logo_addr, plogo_data->logoinfo[i].logo_size, plogo_data->logoinfo[i].bmp_info, NULL);
-	plogo_data->logoinfo[i].logo_addr = 0;
+	plogo_data->logoinfo[i].logo_addr = (unsigned long)NULL;
 	//plogo_data->frame_size = 0;
 
 	logo_enlarge = plogo_data->logoinfo[i].logo_enlarge;
@@ -901,7 +933,7 @@ static void __bmp_animation(logo_execute i)
         scn_w = plogo_data->logoinfo[i].bmp_info->Width;
         scn_h = plogo_data->logoinfo[i].bmp_info->Height;
     }
-	
+
 	if(scn_w > width)
 	{
 		scn_w = width;
@@ -913,9 +945,9 @@ static void __bmp_animation(logo_execute i)
 
 	while(1)
 	{
-	    //esMEMS_CleanFlushDCacheRegion((void *)plogo_data->picture->Buffer, plogo_data->frame_size);        
+	    //esMEMS_CleanFlushDCacheRegion((void *)plogo_data->picture->Buffer, plogo_data->frame_size);
 	    layer_para.mode = MOD_DISP_LAYER_WORK_MODE_SCALER;
-        layer_para.fb.lbc_mode      = 0;                    
+        layer_para.fb.lbc_mode      = 0;
 	    layer_para.fb.addr[0]       = (__u64)plogo_data->logoinfo[i].bmp_info->Buffer;
 	    layer_para.fb.addr[1]       = 0;
 	    layer_para.fb.addr[2]       = 0;
@@ -980,7 +1012,7 @@ static void __bmp_animation(logo_execute i)
 		{
 			break;
 		}
-        
+
         if(i == STARTUP)
         {
     		eLIBs_sprintf(path, LOGO_PATH"stalogo%d.bin", plogo_data->logoinfo[i].ani_cur_frame);
@@ -990,15 +1022,15 @@ static void __bmp_animation(logo_execute i)
     		eLIBs_sprintf(path, LOGO_PATH"stologo%d.bin", plogo_data->logoinfo[i].ani_cur_frame);
         }
 		LoadDataFromFile(path, (char **)&plogo_data->logoinfo[i].logo_addr, &plogo_data->logoinfo[i].logo_size);
-		Parse_Pic_BMP_ByRam((void *)plogo_data->logoinfo[i].logo_addr, plogo_data->logoinfo[i].logo_size, 
+		Parse_Pic_BMP_ByRam((void *)plogo_data->logoinfo[i].logo_addr, plogo_data->logoinfo[i].logo_size,
                             plogo_data->logoinfo[i].bmp_info, plogo_data->logoinfo[i].bmp_info->Buffer);
-        
-		plogo_data->logoinfo[i].logo_addr = 0;
+
+		plogo_data->logoinfo[i].logo_addr = (unsigned long)NULL;
 		plogo_data->logoinfo[i].logo_size = 0;
 	}
 
 	EXIT_TASK:
-	plogo_data->b_animation = 0; 
+	plogo_data->b_animation = 0;
 	esKRNL_TDel(EXEC_prioself);
 }
 
@@ -1008,8 +1040,8 @@ static void __animation_task(void *arg)
     logo_execute i = *((logo_execute *)arg);
 	if (plogo_data->logoinfo[i].picture_type == JPG)
 	{
-    	__err("not support jpg now");
-		//__jpg_animation(plogo_data);
+    	//__err("not support jpg now");
+		__jpg_animation(i);
 	}
 	else if(plogo_data->logoinfo[i].picture_type == BMP)
 	{
@@ -1021,30 +1053,31 @@ static void __animation_task(void *arg)
     }
 
 }
-#if 0
 
-__s32 close_jpg_animation(void)
+#if 1
+
+__s32 close_jpg_animation(logo_execute i)
 {
-	__u32 arg[3] = {0};
+	__u64 arg[3] = {0};
 
 	if(plogo_data->b_stop != 1)
 	{
-		arg[0] = plogo_data->logo_layer;
+		arg[0] = (__u64)plogo_data->logo_layer;
 	    arg[1] = 0;
 	    arg[2] = 0;
 	    esMODS_MIoctrl(plogo_data->mp_display, MOD_DISP_CMD_LAYER_CLOSE, 0, (void *)arg);
 		esMODS_MIoctrl(plogo_data->mp_display, MOD_DISP_LAYER_RELEASE, 0, (void *)arg);
 	}
 
-	if (plogo_data->jpeg_info)
+	if (plogo_data->logoinfo[i].jpeg_info)
     {
-        if (plogo_data->jpeg_info->yuv_buf)
+        if (plogo_data->logoinfo[i].jpeg_info->yuv_buf)
         {
-            esMEMS_Pfree(plogo_data->jpeg_info->yuv_buf, ((plogo_data->jpeg_yuv_size + 1023) >> 10));
-            plogo_data->jpeg_info->yuv_buf = NULL;
+            esMEMS_Pfree((void*)plogo_data->logoinfo[i].jpeg_info->yuv_buf, ((plogo_data->jpeg_yuv_size + 1023) >> 10));
+            plogo_data->logoinfo[i].jpeg_info->yuv_buf = (unsigned long)NULL;
         }
-        esMEMS_Mfree(0, plogo_data->jpeg_info);
-        plogo_data->jpeg_info = NULL;
+        esMEMS_Mfree(0, plogo_data->logoinfo[i].jpeg_info);
+        plogo_data->logoinfo[i].jpeg_info = NULL;
     }
 
 	return 0;
@@ -1093,7 +1126,7 @@ static __u32 stop_animation(logo_execute i)
 	}
 	if (plogo_data->logoinfo[i].picture_type == JPG)
 	{
-		//close_jpg_animation();
+		close_jpg_animation(i);
 	}
 	else if(plogo_data->logoinfo[i].picture_type == BMP)
 	{
@@ -1103,9 +1136,9 @@ static __u32 stop_animation(logo_execute i)
     {
         __err("no this logo");
     }
-	
+
 	return 0;
-	
+
 }
 
 #if 0
@@ -1193,7 +1226,7 @@ __s32 video_init(void)
         __wrn("install video_play mod fail!\n");
         return EPDK_FAIL;
     }
-    
+
     mod_video_play = esMODS_MOpen(mid_video_play, index);
     if (!mod_video_play)
     {
@@ -1278,7 +1311,7 @@ static __s32 show_nosignal_bmp_picture(void)
 	Parse_Pic_BMP_ByRam(pic_addr, pic_size, picture_nosi, NULL);
 	pic_addr = NULL;
 	pic_size = 0;
-	
+
     /*open display driver handle*/
     p_disp = eLIBs_fopen("b:\\DISP\\DISPLAY", "r+");
     if (!p_disp)
@@ -1295,7 +1328,7 @@ static __s32 show_nosignal_bmp_picture(void)
     arg[1] = 0;
     arg[2] = 0;
     nosi_layer = esMODS_MIoctrl(p_disp, MOD_DISP_LAYER_REQUEST, 0, (void *)arg);
-	
+
     layer_para.mode = MOD_DISP_LAYER_WORK_MODE_NORMAL;
     layer_para.fb.addr[0]       = (__u32)picture_nosi->Buffer;
     layer_para.fb.addr[1]       = 0;
@@ -1319,7 +1352,7 @@ static __s32 show_nosignal_bmp_picture(void)
     layer_para.scn_win.y        = (height - picture_nosi->Height) >> 1;
     layer_para.scn_win.width    = picture_nosi->Width;
     layer_para.scn_win.height   = picture_nosi->Height;
-	
+
     __wrn("picture_nosi->Width = %d, picture_nosi->Height = %d\n", picture_nosi->Width, picture_nosi->Height);
     arg[0] = nosi_layer;
     arg[1] = (__u32)&layer_para;
@@ -1331,7 +1364,7 @@ static __s32 show_nosignal_bmp_picture(void)
     arg[2] = 0;
   //  esMODS_MIoctrl(p_disp, DISP_CMD_LAYER_OPEN, 0, (void *)arg);
     eLIBs_fclose(p_disp);
-	
+
     return EPDK_OK;
 }
 
@@ -1346,7 +1379,7 @@ __s32 close_nosignal_bmp_picture(void)
         __log("open display device fail!\n");
         return EPDK_FAIL;
     }
-	
+
     if (nosi_layer)
     {
         arg[0] = nosi_layer;
@@ -1356,7 +1389,7 @@ __s32 close_nosignal_bmp_picture(void)
         esMODS_MIoctrl(p_disp, MOD_DISP_LAYER_RELEASE, 0, (void *)arg);
         nosi_layer = 0;
     }
-	
+
     if (picture_nosi != NULL)
     {
         if (picture_nosi->Buffer != NULL)
@@ -1368,12 +1401,12 @@ __s32 close_nosignal_bmp_picture(void)
         eLIBs_free(picture_nosi->Buffer);
         picture_nosi = NULL;
     }
-	
+
 	if(p_disp)
 	{
 		eLIBs_fclose(p_disp);
 	}
-	
+
     return EPDK_OK;
 }
 
@@ -1392,20 +1425,20 @@ static void __carback_task(void *p_arg)
         nosignal_pic_enable = 0;
     }
 	__log("nosignal_pic_enable=%d\n", nosignal_pic_enable);
-	
+
     if (check_io() != 0)
     {
         __log("not det carback");
 		 goto EXIT_TASK;
     }
-    
+
 	// waiting for mount part D: plugin
 	while((fp = eLIBs_fopen("d:\\mod\\video_play.mod", "rb")) == NULL)
 	{
 		esKRNL_TimeDly(1);
 	}
 	eLIBs_fclose(fp);
-	
+
 	__log("enter carback!");
 	plogo_data->b_carback = 1;
 	if(plogo_data->stype == STATIC_LOGO || plogo_data->stype == CHANGE_LOGO)
@@ -1420,7 +1453,7 @@ static void __carback_task(void *p_arg)
 	        __log("cvbs pend fail, err=%d", err);
 	    }
 	}
-	
+
 	video_init();
     video_open();
 
@@ -1442,7 +1475,7 @@ static void __carback_task(void *p_arg)
 			break;
 		}
 		#endif
-		
+
 		if (check_io() != 0)
 		{
 			if (nosignal_pic_enable == 1)
@@ -1480,7 +1513,7 @@ static void __carback_task(void *p_arg)
 				}
 			}
 		}
-		
+
 		esKRNL_TimeDly(1);
     }
 
@@ -1501,7 +1534,7 @@ static void __carback_task(void *p_arg)
 	EXIT_TASK:
     esKRNL_TDel(EXEC_prioself);
 }
-	
+
 #endif
 __s32 plogo_data_init(void)
 {
@@ -1509,14 +1542,14 @@ __s32 plogo_data_init(void)
 	//__u32 size = 0;
 	int param = 0;
 	//char path[64];
-	
+
 	if (esCFG_GetKeyValue("mixture_para", "boot_logo_en", (int32_t *)&param, 1) != EPDK_OK)
     {
         param = 0;
     }
 	plogo_data->boot_logo_en = param;
-///////////////////////////////startup//////////////////////////////////////    
-    
+///////////////////////////////startup//////////////////////////////////////
+
 	if (esCFG_GetKeyValue("mixture_para", "startup_logo_en", (int32_t *)&param, 1) != EPDK_OK)
     {
         param = 0;
@@ -1542,7 +1575,7 @@ __s32 plogo_data_init(void)
             param = 0;
         }
     	plogo_data->logoinfo[STARTUP].logo_enlarge = param;
-        
+
 		if (esCFG_GetKeyValue("mixture_para", "startup_ani_total_frame", &param, 1) != EPDK_OK)
 	    {
 	        param = 0;
@@ -1557,15 +1590,15 @@ __s32 plogo_data_init(void)
 
     	__inf("startup::logo_type=%d, picture_type=%d,logo_enlarge=%d  ani_time = %d  ani_total = %d\n",
 		plogo_data->logoinfo[STARTUP].logo_type, plogo_data->logoinfo[STARTUP].picture_type,plogo_data->logoinfo[STARTUP].logo_enlarge,
-		plogo_data->logoinfo[STARTUP].ani_inter_time,plogo_data->logoinfo[STARTUP].ani_total_frame);        
+		plogo_data->logoinfo[STARTUP].ani_inter_time,plogo_data->logoinfo[STARTUP].ani_total_frame);
     }
-///////////////////////////////shutdown//////////////////////////////////////    
+///////////////////////////////shutdown//////////////////////////////////////
 	if (esCFG_GetKeyValue("mixture_para", "shutdown_logo_en", (int32_t *)&param, 1) != EPDK_OK)
     {
         param = 0;
     }
 	plogo_data->logoinfo[SHUTDOWN].logo_en= param;
-    
+
     if(plogo_data->logoinfo[SHUTDOWN].logo_en)
     {
     	if (esCFG_GetKeyValue("mixture_para", "shutdown_logo_type", (int32_t *)&param, 1) != EPDK_OK)
@@ -1585,7 +1618,7 @@ __s32 plogo_data_init(void)
             param = 0;
         }
     	plogo_data->logoinfo[SHUTDOWN].logo_enlarge = param;
-        
+
 		if (esCFG_GetKeyValue("mixture_para", "shutdown_ani_total_frame", &param, 1) != EPDK_OK)
 	    {
 	        param = 0;
@@ -1597,7 +1630,7 @@ __s32 plogo_data_init(void)
 	        param = 0;
 	    }
 		plogo_data->logoinfo[SHUTDOWN].ani_inter_time = param;
-        
+
     	__inf("shutdown::logo_type=%d, picture_type=%d,logo_enlarge=%d  ani_time = %d  ani_total = %d\n",
 		plogo_data->logoinfo[SHUTDOWN].logo_type, plogo_data->logoinfo[SHUTDOWN].picture_type,plogo_data->logoinfo[SHUTDOWN].logo_enlarge,
 		plogo_data->logoinfo[SHUTDOWN].ani_inter_time,plogo_data->logoinfo[SHUTDOWN].ani_total_frame);
@@ -1608,12 +1641,12 @@ __s32 plogo_data_init(void)
         param = 0;
     }
 	plogo_data->carback_en = param;
-    
+
 	if(plogo_data->carback_en)
 	{
 		 plogo_data->cvbs_sem = esKRNL_SemCreate(0);
 		 plogo_data->anim_sem = esKRNL_SemCreate(0);
-	}    
+	}
 	#if 0
 	if (plogo_data->stype == STATIC_LOGO)
 	{
@@ -1637,7 +1670,7 @@ __s32 plogo_data_init(void)
 			plogo_data->picture_index = 1;
 			eLIBs_sprintf(path, LOGO_PATH"startlogo%d.bin", plogo_data->picture_index);
 			LoadDataFromFile(path, &plogo_data->picture_addr, &plogo_data->picture_size);
-			__inf("picture index=%d, addr=0x%x, size=%d\n", plogo_data->picture_index, 
+			__inf("picture index=%d, addr=0x%x, size=%d\n", plogo_data->picture_index,
 				plogo_data->picture_addr, plogo_data->picture_size);
 		}
 	}
@@ -1646,13 +1679,13 @@ __s32 plogo_data_init(void)
 		plogo_data->picture_index = read_picture_index();
 		eLIBs_sprintf(path, LOGO_PATH"logo%d.bin", plogo_data->picture_index);
 		LoadDataFromFile(path, &plogo_data->picture_addr, &plogo_data->picture_size);
-		__inf("picture index=%d, addr=0x%x, size=%d\n", plogo_data->picture_index, 
+		__inf("picture index=%d, addr=0x%x, size=%d\n", plogo_data->picture_index,
 			plogo_data->picture_addr, plogo_data->picture_size);
 	}
 	else if (plogo_data->stype == ANIMATION)
-	{		
+	{
 		plogo_data->cur_frame = 1;
-		__inf("total_frame=%d, cur_frame=%d, inter_time=%d\n", plogo_data->total_frame, 
+		__inf("total_frame=%d, cur_frame=%d, inter_time=%d\n", plogo_data->total_frame,
 			plogo_data->cur_frame, plogo_data->inter_time);
 		if(plogo_data->carback_en)
 		{
@@ -1758,7 +1791,7 @@ static rt_err_t mixture_control(struct rt_device *dev, int cmd, void *args)
     }
 	switch(cmd)
 	{
- 
+
 	}
     return 0;
 }
@@ -1773,9 +1806,9 @@ static __u32 mixture_reg_dev()
         __wrn("init mixture err");
         return;
     }
-    
+
     rt_err_t ret = -1;
-    
+
     if(!device)
     {
         return ret;
@@ -1793,7 +1826,7 @@ static __u32 mixture_reg_dev()
     {
         __err("dev reg fail");
         return ret;
-    } 
+    }
 }
 
 #endif
@@ -1812,7 +1845,7 @@ __mp *Mod_Mixture_MOpen(__u32 mid, __u32 mode)
 {
 	mod_mixture_mp.used = 1;
 	mod_mixture_mp.mid = mid;
-  
+
 	plogo_data = (mod_logo_data_t *)eLIBs_malloc(sizeof(mod_logo_data_t));
 	if(plogo_data == NULL)
 	{
@@ -1829,7 +1862,7 @@ __mp *Mod_Mixture_MOpen(__u32 mid, __u32 mode)
     }
 	plogo_data_init();
 
-	return (void *)&mod_mixture_mp;    
+	return (void *)&mod_mixture_mp;
 }
 
 __s32 Mod_Mixture_MClose(__mp *mp)
@@ -1862,7 +1895,7 @@ long Mod_Mixture_MIoctrl(__mp *mp, __u32 cmd, __s32 aux, void *pbuffer)
 {
     __s32 retVal = EPDK_OK;
     logo_execute i;
-    
+
     if (pbuffer != NULL)
     {
         i = *((logo_execute *)pbuffer);
@@ -1896,8 +1929,9 @@ long Mod_Mixture_MIoctrl(__mp *mp, __u32 cmd, __s32 aux, void *pbuffer)
                     __err("no this logo");
                 }
                 __inf("path = %s",path);
+
     			LoadDataFromFile(path, (char **)&plogo_data->logoinfo[i].logo_addr, &plogo_data->logoinfo[i].logo_size);
-    			__inf("picture index=%d, addr=0x%x, size=%d\n", plogo_data->logoinfo[i].logo_index, 
+    			__inf("picture index=%d, addr=0x%x, size=%d\n", plogo_data->logoinfo[i].logo_index,
     				plogo_data->logoinfo[i].logo_addr,plogo_data->logoinfo[i].logo_size);
 				show_picture(i);
 
@@ -1912,7 +1946,7 @@ long Mod_Mixture_MIoctrl(__mp *mp, __u32 cmd, __s32 aux, void *pbuffer)
             if(i == STARTUP)
             {
     			open_lcd_backlight();
-            }  
+            }
 
 			if (plogo_data->carback_en)
 			{
@@ -1933,7 +1967,7 @@ long Mod_Mixture_MIoctrl(__mp *mp, __u32 cmd, __s32 aux, void *pbuffer)
 				stop_animation(i);
     			plogo_data->b_stop = 1;
 			}
-			
+
 			if (plogo_data->carback_en)
 			{
 				if (plogo_data->t_carback_task)
@@ -1953,7 +1987,7 @@ long Mod_Mixture_MIoctrl(__mp *mp, __u32 cmd, __s32 aux, void *pbuffer)
             if(i == SHUTDOWN)
             {
                 close_lcd_backlight();
-            }            
+            }
             break;
         }
 
@@ -1969,7 +2003,7 @@ long Mod_Mixture_MIoctrl(__mp *mp, __u32 cmd, __s32 aux, void *pbuffer)
 			}
 			break;
 		}
-		
+
         default:
         {
             retVal = EPDK_FAIL;

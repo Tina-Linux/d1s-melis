@@ -41,6 +41,10 @@ config BOOT_LOGO_BMP
 	bool "boot logo bmp"
 	default y 
 
+config SHOW_FULL_VERSION
+	bool "displays full version information."
+	default y
+
 config CROSS_COMPILE
 	string "Cross-compiler tool prefix"
 	default arm-melis-eabi-
@@ -60,18 +64,18 @@ config INIT_CARD_PRODUCT
 config LOG_DEFAULT_LEVEL
 	int
 	prompt "Default log level"
-	default 2
+	default 1
 	range 0 5
 	help
 	Sets log level for modules which dont specify it explicitly. When                                                                                                                                    
 	set to 0 it means log wont be activated for those modules.
 	Levels are:
 	0 OFF, do not write by default
-	1 LOG, default to only write SYS_LOG_LOG
-	2 ERROR, default to write SYS_LOG_ERR in addition to previous levels
+	1 LOG, default to only write SYS_LOG
+	2 ERROR, default to only write SYS_LOG_ERR
 	3 WARNING, default to write SYS_LOG_WRN in addition to previous level
 	4 INFO, default to write SYS_LOG_INF in addition to previous levels
-	5 MESSAGE, default to write SYS_LOG_MSG in addition to previous levels
+	5 DEBUG, default to write SYS_LOG_DBG in addition to previous levels
 
 config CC_STACKPROTECTOR_STRONG
 	bool "enable stack-protector"
@@ -88,16 +92,21 @@ config LOG_RELEASE
 config BOOTUP_TURBO
 	bool "bootup turbost"
 	default n
-	select DISABLE_ALL_DEBUGLOG
 	select SDK_THUMB_MODE
 	help
 		fast bootup
 
 config DISABLE_ALL_DEBUGLOG
 	bool "disable module log verbose"
-	depends on BOOTUP_TURBO
+	default n
 	help
 		Reduce all the log.
+
+config PRINT_TIMESTAMP
+	bool "printk prints timestamps"
+	default n
+	help
+		printk prints timestamps.
 
 config DYNAMIC_LOG_LEVEL_SUPPORT
 	bool "dynamic log level support"
@@ -135,13 +144,37 @@ config DYNAMIC_LOG_DEFAULT_LEVEL
 	5 DEBUG, default to write SYS_LOG_DBG in addition to previous levels"
 endif
 
-
 config FRAME_POINTER  
 	bool "enable FP register as frame pointer"
 	default y 
 	select CC_OPTIMIZE_FOR_DEBUG
 	help
 		frame pointer enabled!
+
+config FRAME_WARN
+	int "Warn for stack frames larger than (needs gcc 4.4)"
+	range 0 8192
+	default 8192
+	help
+		Tell gcc to warn at build time for stack frames larger than this.
+		Setting this too low will cause a lot of warnings.
+		Setting it to 0 disables the warning.
+		Requires gcc 4.4
+
+choice
+prompt "Io Lock"
+default UART_CLI_USE_NONE
+
+config UART_CLI_USE_NONE
+	bool "Lock None"
+
+config UART_CLI_USE_MUTEX
+	bool "Use Mutex"
+
+config UART_CLI_USE_SPINLOCK
+	bool "Use SpinLock"
+
+endchoice
 
 choice
 	prompt "Compiler optimization level"
@@ -162,6 +195,14 @@ choice
 		and generate most helpful debug infomation for GDB.
 endchoice
 
+config CC_OPTIMIZE_LEVEL
+	int "Optimize for debug"
+	default 0
+	range 0 3
+	depends on CC_OPTIMIZE_FOR_DEBUG
+	help
+	Building the project with optimization level(range 0-3)
+
 config ARM_UNWIND
 	bool "Enable stack unwinding support (EXPERIMENTAL)"
 	default n if FRAME_POINTER=y
@@ -176,9 +217,42 @@ config OS_MELIS
        bool "Melis OS"
        default y
 
+config KALLSYMS
+		bool "keep Melis kernel symbols"
+		default n
+
+if KALLSYMS
+	config KALLSYMS_ALL
+		bool "keep Melis kernel all symbols"
+		default n
+endif
+
 config SDK_THUMB_MODE
 	bool "Enable Thumb mode sdk compile flags"
 	depends on BOOTUP_TURBO
 	help
 		compile whole sdk with -mthumb flags.
+
+config MELIS_GENERATE_HEAD
+	bool "Generate melis head"
+	default y
+	help
+		general epos_hdr head.
+
+menu "Toolchain Setup"
+
+config TOOLCHAIN_MACH_FLAGS
+    string "Toolchain arch flags"
+	default ""
+	help
+		Toolchain Arch Flags
+
+config TOOLCHAIN_LD_FLAGS
+    string "Toolchain ld flags"
+	default ""
+	help
+		Toolchain LD Flags
+
+endmenu
+
 endmenu

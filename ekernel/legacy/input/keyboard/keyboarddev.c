@@ -1,26 +1,41 @@
 /*
-*********************************************************************************************************
-*                                                    eMOD
-*                                         the melis Operation System
-*                                               input sub-system
-*                                          keyboard logic device handler
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2010-2012, sunny China
-*                                              All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File   : keyboarddev.c
-* Version: V1.0
-* By     : Sunny
-* Date   : 2010-7-11
-* Note   : this module is for general key device handler,
-*          all key class physic devices use this module to dispatch and package message.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "keyboarddev_i.h"
 #include <string.h>
 #include <kapi.h>
 #include <log.h>
-#include <rtthread.h>
+#include <sunxi_input.h>
+
+#include <hal_thread.h>
 
 #define SUNXI_KEYBOARD_NAME		"sunxi-keyboard"
 
@@ -87,6 +102,7 @@ int32_t LKeyDevMan_Unlock(void)
 * Returns    : NONE.
 *********************************************************************************************************
 */
+#if 0  //no used
 static void LKeyDevGraberThread(void *p_arg)
 {
     __input_ldev_t          *ldev = (__input_ldev_t *)p_arg;
@@ -120,7 +136,7 @@ static void LKeyDevGraberThread(void *p_arg)
         pPacket->ldev_id = ldev->evbuf[j];
         j = (j + 1) % ldev->ev_maxlen;
         ldev->ev_len--;
-        
+
         pPacket->pdev_id = ldev->evbuf[j];
         j = (j + 1) % ldev->ev_maxlen;
         ldev->ev_len--;
@@ -304,6 +320,7 @@ static int32_t LKeyDevEvent(__input_dev_t *dev, uint32_t type, uint32_t code, in
 #endif
     return 0;
 }
+#endif
 
 static const __input_lid_t LKeyDevIds[] =
 {
@@ -361,7 +378,7 @@ int32_t INPUT_LKeyDevInit(void)
     pLKeyDev->id_table  = LKeyDevIds;
 
     /* set logical keyboard device event handler */
-    pLKeyDev->event     = LKeyDevEvent;
+    // pLKeyDev->event     = LKeyDevEvent;
 
     /* initialize event buffer information */
     pLKeyDev->ev_sem    = esKRNL_SemCreate(1);
@@ -384,12 +401,12 @@ int32_t INPUT_LKeyDevInit(void)
         return EPDK_FAIL;
     }
 
-#if 1//!defined(CONFIG_SOC_SUN20IW1)
+#if 0//!defined(CONFIG_SOC_SUN20IW1)
     /* create logical keyboard device graber thread */
-    pLKeyDev->tid   = awos_task_create("kb_input", LKeyDevGraberThread, pLKeyDev, 0x2000, RT_TIMER_THREAD_PRIO - 5, 10);
+    pLKeyDev->tid   = awos_task_create("kb_input", LKeyDevGraberThread, pLKeyDev, 0x2000, CONFIG_RT_TIMER_THREAD_PRIO - 5, 10);
 #else
 /*20201205 comment this code temporarily, because input & gpadc have not been work.*/
-    //pLKeyDev->tid   = awos_task_create("kb_input", sunxi_keyboard_thread, pLKeyDev, 0x1000, RT_TIMER_THREAD_PRIO - 5, 10);
+    pLKeyDev->tid   = awos_task_create("kb_input", sunxi_keyboard_thread, pLKeyDev, 0x1000, CONFIG_RT_TIMER_THREAD_PRIO - 5, 10);
 #endif
     if (pLKeyDev-> tid == NULL)
     {
@@ -435,16 +452,6 @@ void INPUT_LKeyDevExit(void)
 }
 
 
-struct sunxi_input_event
-{
-    unsigned int type;
-    unsigned int code;
-    unsigned int value;
-};
-
-extern int32_t INPUT_GetLdevPos(const char *name, __input_ldev_t **pLdev);
-extern int sunxi_input_open(const char *name);
-extern int sunxi_input_read(int fd, void *buffer, unsigned int size);
 static void sunxi_keyboard_thread(void *p_arg)
 {
 	int32_t                     keyboardfd = 0;
@@ -455,14 +462,14 @@ static void sunxi_keyboard_thread(void *p_arg)
     __input_graber_t            *pGraber = NULL;
 
 	do{
-		rt_thread_delay(20);
+		kthread_sleep(20);
 /*20201205 comment this code temporarily, because input & gpadc have not been work.*/
-		//keyboardfd = sunxi_input_open(SUNXI_KEYBOARD_NAME);
+		keyboardfd = sunxi_input_open(SUNXI_KEYBOARD_NAME);
 	}while(-1 == keyboardfd);
 
 	while(1)
 	{
-		rt_memset((void*)&keyevent, 0, sizeof(struct sunxi_input_event));
+		memset((void*)&keyevent, 0, sizeof(struct sunxi_input_event));
 
         pPacket.ldev_id     = ldev->seq;
         pPacket.pdev_id     = 0xA5A5;
@@ -470,7 +477,7 @@ static void sunxi_keyboard_thread(void *p_arg)
 		/*there is a semphore in sunxi_input_read func, so this thread do not need pend process*/
         do{
 /*20201205 comment this code temporarily, because input & gpadc have not been work.*/
-            //count = sunxi_input_read(keyboardfd, (void*)&keyevent, sizeof(struct sunxi_input_event));
+            count = sunxi_input_read(keyboardfd, (void*)&keyevent, sizeof(struct sunxi_input_event));
             if(count != sizeof(struct sunxi_input_event))
             {
                 __inf("fetch input event empty!!");
@@ -503,10 +510,28 @@ static void sunxi_keyboard_thread(void *p_arg)
             esKRNL_CallBack(pGraber->callback, (void *)&pPacket);
             pGraber = pGraber->next;
         }
+        pPacket.event_cnt = 0;
 	}
 }
 
 
+int32_t console_LKeyDevEvent(__input_dev_t *dev, uint32_t type, uint32_t code, int32_t value)
+{
+    struct sunxi_input_dev *sunxikbd_dev = NULL;
+    sunxikbd_dev = find_input_dev_by_name("sunxi-keyboard");
+
+    if(type == EV_SYN)
+    {
+        input_sync(sunxikbd_dev);
+    }
+    else if(type == EV_KEY)
+    {
+        input_report_key(sunxikbd_dev, code , value);
+    }
+    return 0;
+}
+
+#if 0 //no used
 int32_t console_buffer[64];
 int32_t valid_key_number = 0;
 int32_t console_LKeyDevEvent(__input_dev_t *dev, uint32_t type, uint32_t code, int32_t value)
@@ -522,14 +547,14 @@ int32_t console_LKeyDevEvent(__input_dev_t *dev, uint32_t type, uint32_t code, i
 
     if(EV_SYN != type)
     {
-        __inf("record the keyvalue before syn event!");
-        return ;   
+        __log("record the keyvalue before syn event!");
+        return -1;
     }
     if(LKeyDevMan.LKeyDev == NULL)
     {
         __log("input sys keydev not init!");
         valid_key_number = 0;
-        return ;
+        return -1;
     }
     ldev = LKeyDevMan.LKeyDev;
 
@@ -572,8 +597,9 @@ int32_t console_LKeyDevEvent(__input_dev_t *dev, uint32_t type, uint32_t code, i
     awos_arch_unlock_irq(cpu_sr);
 
     /* wakeup logical key device event handle thread */
-    
+
     esKRNL_SemPost(ldev->ev_sem);
 
     return 0;
 }
+#endif

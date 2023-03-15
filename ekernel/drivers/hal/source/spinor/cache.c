@@ -196,12 +196,12 @@ static inline unsigned int get_addr_by_blk(unsigned int blk)
     return c->addr + blk * nor->blk_size;
 }
 
-static inline void set_bit(int nr, unsigned long *addr)
+static inline void nor_set_bit(int nr, unsigned long *addr)
 {
     addr[nr / BITS_PER_LONG] |= 1UL << (nr % BITS_PER_LONG);
 }
 
-static __always_inline int test_bit(unsigned int nr, const unsigned long *addr)
+static __always_inline int nor_test_bit(unsigned int nr, const unsigned long *addr)
 {
     return ((1UL << (nr % BITS_PER_LONG)) &
             (((unsigned long *)addr)[nr / BITS_PER_LONG])) != 0;
@@ -215,7 +215,7 @@ static int nor_flush_erase(struct nor_cache *nc)
 
     for (end = start = 0; end < nc->blk_cnt; end++) {
         /* we should do erase lazy to get more continuous erase block */
-        if (test_bit(end, nc->bitmap_blk))
+        if (nor_test_bit(end, nc->bitmap_blk))
             continue;
         /* continuous zero, do nothing */
         if (start == end) {
@@ -256,7 +256,7 @@ static int nor_flush_write(struct nor_cache *nc)
         /* let start with (last_write page + 1) */
         page = (i + nc->last_write + 1) % nc->page_cnt;
 
-        if (!test_bit(page, nc->bitmap_page))
+        if (!nor_test_bit(page, nc->bitmap_page))
             continue;
 
         SPINOR_DEBUG("flush write: addr 0x%x\n", get_addr_by_page(page));
@@ -348,7 +348,7 @@ int nor_cache_write(unsigned int addr, char *buf, unsigned int len)
 
         SPINOR_DEBUG("write: mark page %d abs addr 0x%x\n", page,
                 get_addr_by_page(page));
-        set_bit(page, nc->bitmap_page);
+        nor_set_bit(page, nc->bitmap_page);
 
         /*
          * The order of page to flush-write is very pivotal. On lfs,
@@ -417,13 +417,13 @@ int nor_cache_read(unsigned int addr, char *buf, unsigned int len)
     while (len) {
         unsigned int size = min(len, nor->page_size);
 
-        if (test_bit(page, nc->bitmap_page)) {
+        if (nor_test_bit(page, nc->bitmap_page)) {
             SPINOR_DEBUG("read match cache page %d addr 0x%x\n", page,
                     get_addr_by_page(page));
             memcpy(buf, pbuf, size);
         } else {
             blk = addr_to_blk(nor, addr - c->addr);
-            if (test_bit(blk, nc->bitmap_blk)) {
+            if (nor_test_bit(blk, nc->bitmap_blk)) {
                 SPINOR_DEBUG("read match cache erase blk 0x%x addr 0x%x\n",
                                              blk, get_addr_by_page(page));
                 memset(buf, 0xFF, size);
@@ -520,7 +520,7 @@ int nor_cache_erase(unsigned int addr, unsigned int len)
     blk = addr_to_blk(nor, addr - c->addr);
     for (; len; len -= nor->blk_size, blk++) {
         SPINOR_DEBUG("erase: mark blk %d addr 0x%x\n", blk, get_addr_by_blk(blk));
-        set_bit(blk, nc->bitmap_blk);
+        nor_set_bit(blk, nc->bitmap_blk);
     }
 
     ret = 0;

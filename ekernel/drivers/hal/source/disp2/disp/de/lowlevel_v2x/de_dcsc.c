@@ -25,11 +25,17 @@
 #define DCSC_OFST	0xB0000
 #define CSC_ENHANCE_MODE_NUM 3
 /* must equal to ENHANCE_MODE_NUM */
+#ifdef CONFIG_COMMAND_PQD
+void pq_get_enhance(struct disp_csc_config *conig);
+#endif
 
 static volatile struct __csc_reg_t *dcsc_dev[DE_NUM];
 static volatile struct __csc2_reg_t *dcsc2_dev[DE_NUM];
+static volatile struct __gamma_reg_t *gamma_dev[DE_NUM];
 static struct de_reg_blocks dcsc_coeff_block[DE_NUM];
 static struct de_reg_blocks dcsc_enable_block[DE_NUM];
+static struct de_reg_blocks dcsc_gamma_block[DE_NUM];
+static struct de_reg_blocks dcsc_ctl_block[DE_NUM];
 static struct disp_csc_config g_dcsc_config[DE_NUM];
 
 static unsigned int is_in_smbl[DE_NUM];
@@ -43,6 +49,12 @@ static int de_dcsc_set_reg_base(unsigned int sel, void *base)
 	else
 		dcsc_dev[sel] = (struct __csc_reg_t *) base;
 
+	return 0;
+}
+
+static int de_gamma_set_reg_base(unsigned int sel, void *base)
+{
+	gamma_dev[sel] = (struct __gamma_reg_t *) base;
 	return 0;
 }
 
@@ -95,6 +107,20 @@ int de_dcsc_apply(unsigned int sel, struct disp_csc_config *config)
 		dcsc2_dev[sel]->bypass.bits.enable = 1;
 		/* always enable csc */
 	} else {
+#ifdef DE_GAMMA
+		dcsc_dev[sel]->c00.dwval = (*(csc_coeff)) << 7;
+		dcsc_dev[sel]->c01.dwval = (*(csc_coeff + 1)) << 7;
+		dcsc_dev[sel]->c02.dwval = (*(csc_coeff + 2)) << 7;
+		dcsc_dev[sel]->c03.dwval = (*(csc_coeff + 3) + 0x200) << 7;
+		dcsc_dev[sel]->c10.dwval = (*(csc_coeff + 4)) << 7;
+		dcsc_dev[sel]->c11.dwval = (*(csc_coeff + 5)) << 7;
+		dcsc_dev[sel]->c12.dwval = (*(csc_coeff + 6)) << 7;
+		dcsc_dev[sel]->c13.dwval = (*(csc_coeff + 7) + 0x200) << 7;
+		dcsc_dev[sel]->c20.dwval = (*(csc_coeff + 8)) << 7;
+		dcsc_dev[sel]->c21.dwval = (*(csc_coeff + 9)) << 7;
+		dcsc_dev[sel]->c22.dwval = (*(csc_coeff + 10)) << 7;
+		dcsc_dev[sel]->c23.dwval = (*(csc_coeff + 11) + 0x200) << 7;
+#else
 		dcsc_dev[sel]->c00.dwval = *(csc_coeff);
 		dcsc_dev[sel]->c01.dwval = *(csc_coeff + 1);
 		dcsc_dev[sel]->c02.dwval = *(csc_coeff + 2);
@@ -107,6 +133,7 @@ int de_dcsc_apply(unsigned int sel, struct disp_csc_config *config)
 		dcsc_dev[sel]->c21.dwval = *(csc_coeff + 9);
 		dcsc_dev[sel]->c22.dwval = *(csc_coeff + 10);
 		dcsc_dev[sel]->c23.dwval = *(csc_coeff + 11) + 0x200;
+#endif
 		dcsc_dev[sel]->bypass.bits.enable = 1;
 		/* always enable csc */
 	}
@@ -120,6 +147,42 @@ int de_dcsc_apply(unsigned int sel, struct disp_csc_config *config)
 int de_dcsc_get_config(unsigned int sel, struct disp_csc_config *config)
 {
 	memcpy(config, &g_dcsc_config[sel], sizeof(struct disp_csc_config));
+
+	return 0;
+}
+
+s32 de_blue_screen(u32 sel, u32 mode, u32 blue_en, u32 rgb)
+{
+	gamma_dev[sel]->gamma_ctl.bits.blue_en = blue_en;
+	gamma_dev[sel]->gamma_ctl.bits.color_mode = mode;
+
+	gamma_dev[sel]->blue_screen.bits.R = rgb & 0xff0000 << 4;
+	gamma_dev[sel]->blue_screen.bits.G = rgb & 0xff00 << 2;
+	gamma_dev[sel]->blue_screen.bits.B = rgb & 0xff;
+	dcsc_ctl_block[sel].dirty = 1;
+	return 0;
+}
+
+s32 de_gamma(u32 sel, u32 en, u32 *gamma_tbl)
+{
+	int i;
+	unsigned int *addr = (unsigned int *)(&(gamma_dev[sel]->gamma_tbl[0]));
+
+	for (i = 0; i < 256; i++) {
+		*addr = ((gamma_tbl[i] & 0xff0000)<< 4) |
+			((gamma_tbl[i] & 0xff00)<< 2) |
+			(gamma_tbl[i] & 0xff);
+		addr++;
+	}
+
+	gamma_dev[sel]->gamma_ctl.bits.gamma_en = en;
+//	dcsc_gamma_block[sel].dirty = 1;
+//	dcsc_ctl_block[sel].dirty = 1;
+	memcpy((void *)dcsc_gamma_block[sel].off,
+	   dcsc_gamma_block[sel].val, dcsc_gamma_block[sel].size);
+
+	memcpy((void *)dcsc_ctl_block[sel].off,
+	   dcsc_ctl_block[sel].val, dcsc_ctl_block[sel].size);
 
 	return 0;
 }
@@ -150,7 +213,19 @@ int de_dcsc_update_regs(unsigned int sel)
 		   dcsc_coeff_block[sel].val, dcsc_coeff_block[sel].size);
 		dcsc_coeff_block[sel].dirty = 0x0;
 	}
+/*
+	if (dcsc_gamma_block[sel].dirty == 0x1) {
+		memcpy((void *)dcsc_gamma_block[sel].off,
+		   dcsc_gamma_block[sel].val, dcsc_gamma_block[sel].size);
+		dcsc_gamma_block[sel].dirty = 0x0;
+	}
 
+	if (dcsc_ctl_block[sel].dirty == 0x1) {
+		memcpy((void *)dcsc_ctl_block[sel].off,
+		   dcsc_ctl_block[sel].val, dcsc_ctl_block[sel].size);
+		dcsc_ctl_block[sel].dirty = 0x0;
+	}
+*/
 	return 0;
 }
 
@@ -196,7 +271,7 @@ int de_dcsc_init(struct disp_bsp_init_para *para)
 			dcsc_coeff_block[screen_id].dirty = 0;
 
 		} else {
-			memory =  disp_sys_malloc(sizeof(struct __csc_reg_t));
+			memory =  disp_sys_malloc(sizeof(struct __csc_reg_t) + sizeof(struct __gamma_reg_t));
 			if (memory == NULL) {
 				DE_WRN("disp_sys_malloc Ccsc[%d] mm fail! size=0x%x\n",
 				     screen_id,
@@ -213,6 +288,18 @@ int de_dcsc_init(struct disp_bsp_init_para *para)
 			dcsc_coeff_block[screen_id].val = memory + 0x10;
 			dcsc_coeff_block[screen_id].size = 0x30;
 			dcsc_coeff_block[screen_id].dirty = 0;
+
+			dcsc_ctl_block[screen_id].off = base + 0x40;
+			dcsc_ctl_block[screen_id].val = memory + sizeof(struct __csc_reg_t);
+			dcsc_ctl_block[screen_id].size = 0x08;
+			dcsc_ctl_block[screen_id].dirty = 0;
+
+			dcsc_gamma_block[screen_id].off = base + 0x100;
+			dcsc_gamma_block[screen_id].val = memory + sizeof(struct __csc_reg_t) + dcsc_ctl_block[screen_id].size;
+			dcsc_gamma_block[screen_id].size = 1024;/*now only 2^8*4*/
+			dcsc_gamma_block[screen_id].dirty = 0;
+
+			de_gamma_set_reg_base(screen_id, memory + sizeof(struct __csc_reg_t));
 		}
 		g_dcsc_config[screen_id].enhance_mode = 0;
 		de_dcsc_set_reg_base(screen_id, memory);

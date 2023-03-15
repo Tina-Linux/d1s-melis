@@ -34,4 +34,9 @@ config SUNXI_UART_REGISTER_UART3
 	depends on DRIVERS_UART
         default n
 
+config CLI_UART_PORT
+    int "cli uart port number"
+    depends on DRIVERS_UART
+    default 0
+
 endmenu

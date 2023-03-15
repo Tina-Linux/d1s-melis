@@ -42,15 +42,29 @@
 
 static int cmd_test_hwspinlock_get(int argc, char **argv)
 {
-	hal_hwspinlock_get(1);
+	int ret;
 
+	ret = hal_hwspinlock_get(0);
+	if (ret) {
+		printf("hwspinlock get err\n");
+		return -1;
+	}
+
+	printf("hwspinlock get success\n");
 	return 0;
 }
 
 static int cmd_test_hwspinlock_put(int argc, char **argv)
 {
-	hal_hwspinlock_put(1);
+	int ret;
 
+	ret = hal_hwspinlock_put(0);
+	if (ret) {
+		printf("hwspinlock put err\n");
+		return -1;
+	}
+
+	printf("hwspinlock put success\n");
 	return 0;
 }
 

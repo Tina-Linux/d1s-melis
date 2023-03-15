@@ -1,24 +1,35 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                               Pin Manage Module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2006-2010, kevin.z China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : sys_pin.c
-* By      : kevin.z
-* Version : v2.0
-* Date    : 2010-11-27 9:26
-* Descript:
-* Update  : date                auther      ver     notes
-*           2010-11-27 9:26     kevin.z     2.0     build the file;
-*           2011-6-18 13:24:07  sunny       2.0     add pin int support.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "sys_pins_i.h"
-#include <rtthread.h>
 #include <arch.h>
 #include <port.h>
 #include <string.h>
@@ -106,7 +117,7 @@ __hdle esPINS_PinGrpReq(user_gpio_set_t *pGrpStat, __u32 GrpSize)
         return NULL;
     }
 
-    rt_memset(tmpNode, 0, sizeof(__pin_item_node_t));
+    memset(tmpNode, 0, sizeof(__pin_item_node_t));
     tmpNode->hPin = (__hdle)((unsigned long)tmpNode + sizeof(__pin_item_node_t));
 
     if(pGrpStat[i].port == 0)
@@ -120,7 +131,7 @@ __hdle esPINS_PinGrpReq(user_gpio_set_t *pGrpStat, __u32 GrpSize)
     drv_gpio_set_pull_status(logicPinNum, pGrpStat[i].pull);
     drv_gpio_set_driving_level(logicPinNum, pGrpStat[i].drv_level);
 
-    rt_memcpy(tmpNode->hPin, (void *)pGrpStat, sizeof(user_gpio_set_t));
+    memcpy(tmpNode->hPin, (void *)pGrpStat, sizeof(user_gpio_set_t));
     tmpNode->grpSize = 1;
 
     //insert the pin item node to the list of pin manager
@@ -218,7 +229,7 @@ int32_t esPINS_PinGrpRel(__hdle hPin, __s32 bRestore)
 *********************************************************************************************************
 *                                   PINS Get All STATUS
 *
-* Description: »ñÈ¡ÉêÇëµÄ¶à×éGPIOµÄÈ«²¿×´Ì¬(do not support temp)
+* Description: èŽ·å–ç”³è¯·çš„å¤šç»„GPIOçš„å…¨éƒ¨çŠ¶æ€(do not support temp)
 *
 * Arguments  : hPin     pins handle;
 *              pGrpStat point of struct user_gpio_set, gpio description
@@ -252,7 +263,7 @@ int32_t esPINS_GetPinGrpStat(__hdle hPin, user_gpio_set_t *pGrpStat, __u32 GrpSi
 
     if(0 == bFromHW)
     {
-        rt_memcpy((void *)pGrpStat, (void *)(tmpNode->hPin),  GrpSize * sizeof(user_gpio_set_t));
+        memcpy((void *)pGrpStat, (void *)(tmpNode->hPin),  GrpSize * sizeof(user_gpio_set_t));
     }
     else
     {
@@ -268,7 +279,7 @@ int32_t esPINS_GetPinGrpStat(__hdle hPin, user_gpio_set_t *pGrpStat, __u32 GrpSi
                 continue;
             }
             logicPinNum = (grpStat[i].port - 1) * PINS_PER_BANK + (grpStat[i].port_num);
-            rt_strncpy(pGrpStat[i].gpio_name, grpStat[i].gpio_name, 32/*rt_strlen(grpStat[i].gpio_name)*/);
+            strncpy(pGrpStat[i].gpio_name, grpStat[i].gpio_name, 32/*strlen(grpStat[i].gpio_name)*/);
             pGrpStat[i].port     = grpStat[i].port;
             pGrpStat[i].port_num = grpStat[i].port_num;
             pGrpStat[i].mul_sel  = -1;/*drv_gpio_pinmux_get_function(logicPinNum, &recvData); 
@@ -300,7 +311,7 @@ int32_t esPINS_GetPinGrpStat(__hdle hPin, user_gpio_set_t *pGrpStat, __u32 GrpSi
 *********************************************************************************************************
 *                                   PINS Get ONE STATUS
 *
-* Description: »ñÈ¡ÉêÇëµÄÒ»×éGPIOµÄ£¬ÆäÖÐÒ»¸öGPIOµÄ×´Ì¬£¬ÓÃÃû³Æ½øÐÐÆ¥Åä
+* Description: èŽ·å–ç”³è¯·çš„ä¸€ç»„GPIOçš„ï¼Œå…¶ä¸­ä¸€ä¸ªGPIOçš„çŠ¶æ€ï¼Œç”¨åç§°è¿›è¡ŒåŒ¹é…
 *
 * Arguments  : hPin      pins handle;
 *              pPinStat  pointer to struct user_gpio_set_t
@@ -350,12 +361,12 @@ int32_t esPINS_GetPinStat(__hdle hPin, user_gpio_set_t *pPinStat, const char *pP
 
     if(0 == bFromHW)
     {
-        rt_memcpy((void *)pPinStat, (void *)(&grpStat[i]), sizeof(user_gpio_set_t));
+        memcpy((void *)pPinStat, (void *)(&grpStat[i]), sizeof(user_gpio_set_t));
     }
     else
     {
         logicPinNum = (grpStat[i].port - 1) * PINS_PER_BANK + (grpStat[i].port_num);
-        rt_strncpy(pPinStat->gpio_name, grpStat[i].gpio_name, 32/*rt_strlen(grpStat[i].gpio_name)*/);
+        strncpy(pPinStat->gpio_name, grpStat[i].gpio_name, 32/*strlen(grpStat[i].gpio_name)*/);
         pPinStat->port	   = grpStat[i].port;
         pPinStat->port_num = grpStat[i].port_num;
         pPinStat->mul_sel  = -1;/*drv_gpio_pinmux_get_function(logicPinNum, &recvData); 
@@ -384,7 +395,7 @@ int32_t esPINS_GetPinStat(__hdle hPin, user_gpio_set_t *pPinStat, const char *pP
 *********************************************************************************************************
 *                                   PINS Set ONE STATUS
 *
-* Description: ÉèÖÃÉêÇëµÄÒ»×éGPIOµÄ£¬ÆäÖÐÒ»¸öGPIOµÄ×´Ì¬£¬ÓÃÃû³Æ½øÐÐÆ¥Åä
+* Description: è®¾ç½®ç”³è¯·çš„ä¸€ç»„GPIOçš„ï¼Œå…¶ä¸­ä¸€ä¸ªGPIOçš„çŠ¶æ€ï¼Œç”¨åç§°è¿›è¡ŒåŒ¹é…
 *
 * Arguments  : hPin             pins handle;
 *              pGrpStat         pointer to struct user_gpio_set_t
@@ -458,8 +469,8 @@ int32_t esPINS_SetPinStat(__hdle hPin, user_gpio_set_t *pPinStat, const char *pP
 *********************************************************************************************************
 *                                   PINS Set ONE IO STATUS
 *
-* Description: ÉèÖÃÉêÇëµÄÒ»×éGPIOµÄ£¬ÆäÖÐÒ»¸öGPIOµÄÊäÈëÊä³ö×´Ì¬£¬ÓÃÃû³Æ½øÐÐÆ¥Åä
-*              Èç¹ûÓÃ»§ÉêÇëµÄÊ±ºòÖ»ÓÐÒ»¸öGPIO£¬ÔòÃû³ÆÌî0¼´¿É
+* Description: è®¾ç½®ç”³è¯·çš„ä¸€ç»„GPIOçš„ï¼Œå…¶ä¸­ä¸€ä¸ªGPIOçš„è¾“å…¥è¾“å‡ºçŠ¶æ€ï¼Œç”¨åç§°è¿›è¡ŒåŒ¹é…
+*              å¦‚æžœç”¨æˆ·ç”³è¯·çš„æ—¶å€™åªæœ‰ä¸€ä¸ªGPIOï¼Œåˆ™åç§°å¡«0å³å¯
 *
 * Arguments  : hPin         pins handle;
 *              bOut         GPIO_DIRECTION_INPUT
@@ -509,8 +520,8 @@ int32_t esPINS_SetPinIO(__hdle hPin, __bool bOut, const char *pPinName)
 *********************************************************************************************************
 *                                   PINS Set ONE PULL STATUS
 *
-* Description: ÉèÖÃÉêÇëµÄÒ»×éGPIOµÄ£¬ÆäÖÐÒ»¸öGPIOµÄÉÏÀ­ÏÂÀ­×´Ì¬£¬ÓÃÃû³Æ½øÐÐÆ¥Åä
-*              Èç¹ûÓÃ»§ÉêÇëµÄÊ±ºòÖ»ÓÐÒ»¸öGPIO£¬ÔòÃû³ÆÌî0¼´¿É
+* Description: è®¾ç½®ç”³è¯·çš„ä¸€ç»„GPIOçš„ï¼Œå…¶ä¸­ä¸€ä¸ªGPIOçš„ä¸Šæ‹‰ä¸‹æ‹‰çŠ¶æ€ï¼Œç”¨åç§°è¿›è¡ŒåŒ¹é…
+*              å¦‚æžœç”¨æˆ·ç”³è¯·çš„æ—¶å€™åªæœ‰ä¸€ä¸ªGPIOï¼Œåˆ™åç§°å¡«0å³å¯
 *
 * Arguments  : hPin         pins handle;
 *              PullStat     GPIO_PULL_DOWN_DISABLED
@@ -562,8 +573,8 @@ int32_t esPINS_SetPinPull(__hdle hPin, __u32 PullStat, const char *pPinName)
 *********************************************************************************************************
 *                                   PINS Set ONE DRIVER LEVEL STATUS
 *
-* Description: ÉèÖÃÉêÇëµÄÒ»×éGPIOµÄ£¬ÆäÖÐÒ»¸öGPIOµÄÇý¶¯ÄÜÁ¦×´Ì¬£¬ÓÃÃû³Æ½øÐÐÆ¥Åä
-*              Èç¹ûÓÃ»§ÉêÇëµÄÊ±ºòÖ»ÓÐÒ»¸öGPIO£¬ÔòÃû³ÆÌî0¼´¿É
+* Description: è®¾ç½®ç”³è¯·çš„ä¸€ç»„GPIOçš„ï¼Œå…¶ä¸­ä¸€ä¸ªGPIOçš„é©±åŠ¨èƒ½åŠ›çŠ¶æ€ï¼Œç”¨åç§°è¿›è¡ŒåŒ¹é…
+*              å¦‚æžœç”¨æˆ·ç”³è¯·çš„æ—¶å€™åªæœ‰ä¸€ä¸ªGPIOï¼Œåˆ™åç§°å¡«0å³å¯
 *
 * Arguments  : hPin         pins handle;
 *              DriveLevel   GPIO_DRIVING_LEVEL0
@@ -616,8 +627,8 @@ int32_t esPINS_SetPinDrive(__hdle hPin, __u32 DriveLevel, const char *pPinName)
 *********************************************************************************************************
 *                                   PINS READ ONE DATA STATUS
 *
-* Description: ¶ÁÈ¡ÉêÇëµÄÒ»×éGPIOµÄ£¬ÆäÖÐÒ»¸öGPIOµÄµçÆ½×´Ì¬£¬ÓÃÃû³Æ½øÐÐÆ¥Åä
-*              Èç¹ûÓÃ»§ÉêÇëµÄÊ±ºòÖ»ÓÐÒ»¸öGPIO£¬ÔòÃû³ÆÌî0¼´¿É
+* Description: è¯»å–ç”³è¯·çš„ä¸€ç»„GPIOçš„ï¼Œå…¶ä¸­ä¸€ä¸ªGPIOçš„ç”µå¹³çŠ¶æ€ï¼Œç”¨åç§°è¿›è¡ŒåŒ¹é…
+*              å¦‚æžœç”¨æˆ·ç”³è¯·çš„æ—¶å€™åªæœ‰ä¸€ä¸ªGPIOï¼Œåˆ™åç§°å¡«0å³å¯
 *
 * Arguments  : hPin         pins handle;
 *              pPinName     gpio name string
@@ -674,8 +685,8 @@ int32_t esPINS_ReadPinData(__hdle hPin, const char *pPinName)
 *********************************************************************************************************
 *                                   PINS WRITE ONE DATA STATUS
 *
-* Description: ÉèÖÃÉêÇëµÄÒ»×éGPIOµÄ£¬ÆäÖÐÒ»¸öGPIOµÄµçÆ½×´Ì¬£¬ÓÃÃû³Æ½øÐÐÆ¥Åä
-*              Èç¹ûÓÃ»§ÉêÇëµÄÊ±ºòÖ»ÓÐÒ»¸öGPIO£¬ÔòÃû³ÆÌî0¼´¿É
+* Description: è®¾ç½®ç”³è¯·çš„ä¸€ç»„GPIOçš„ï¼Œå…¶ä¸­ä¸€ä¸ªGPIOçš„ç”µå¹³çŠ¶æ€ï¼Œç”¨åç§°è¿›è¡ŒåŒ¹é…
+*              å¦‚æžœç”¨æˆ·ç”³è¯·çš„æ—¶å€™åªæœ‰ä¸€ä¸ªGPIOï¼Œåˆ™åç§°å¡«0å³å¯
 *
 * Arguments  : hPin         pins handle;
 *              Value        GPIO_DATA_LOW

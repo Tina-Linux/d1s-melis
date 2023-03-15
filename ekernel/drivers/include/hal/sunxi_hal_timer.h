@@ -51,6 +51,9 @@ typedef enum
 {
     SUNXI_TMR0 = 0,
     SUNXI_TMR1,
+    SUNXI_TMR2,
+    SUNXI_TMR3,
+    SUNXI_TMR4,
     SUNXI_TMR_NUM,
 }  hal_timer_id_t;
 
@@ -62,6 +65,13 @@ void hal_timer_stop(hal_timer_id_t timer);
 void hal_timer_start(hal_timer_id_t timer, bool periodic);
 hal_timer_status_t hal_timer_set_oneshot(hal_timer_id_t timer, uint32_t delay_us, timer_callback callback, void *callback_param);
 hal_timer_status_t hal_timer_set_periodic(hal_timer_id_t timer, uint32_t delay_us, timer_callback callback, void *callback_param);
+
+void hal_wuptimer_init(hal_timer_id_t timer);
+void hal_wuptimer_uninit(hal_timer_id_t timer);
+void hal_wuptimer_stop(hal_timer_id_t timer);
+void hal_wuptimer_start(hal_timer_id_t timer, bool periodic);
+hal_timer_status_t hal_wuptimer_set_oneshot(hal_timer_id_t timer, uint32_t delay_us, timer_callback callback, void *callback_param);
+hal_timer_status_t hal_wuptimer_set_periodic(hal_timer_id_t timer, uint32_t delay_us, timer_callback callback, void *callback_param);
 
 #ifdef __cplusplus
 }

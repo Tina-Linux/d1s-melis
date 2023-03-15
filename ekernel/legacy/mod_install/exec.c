@@ -1,22 +1,34 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                                execute sub-system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2011-2014, Sunny China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : exec.c
-* By      : Sunny
-* Version : v1.0
-* Date    : 2011-4-1
-* Descript: execute sub-system.
-* Update  : date                auther      ver     notes
-*           2011-4-1 18:54:41   Sunny       1.0     Create this file.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include <rthw.h>
 #include <log.h>
 #include <debug.h>
@@ -81,7 +93,7 @@ int32_t EXEC_LoadSectionData(__hdle hLDR, uint32_t paddr, uint32_t Index, void* 
     __elf_runmem        *secRecord  = (__elf_runmem *)heap;
 
     //initialize section rom header
-    rt_memset(&ROMHdr, 0, sizeof(ROMHdr));
+    memset(&ROMHdr, 0, sizeof(ROMHdr));
 
     //get section rom header
     if (LDR_GetSecROMHdr(hLDR, Index, &ROMHdr) != EPDK_OK)
@@ -126,7 +138,7 @@ int32_t EXEC_LoadSectionData(__hdle hLDR, uint32_t paddr, uint32_t Index, void* 
         uint32_t i = 0, npage = 0;
 
         __log("size %d, addr = %p.", ROMHdr.Size, ROMHdr.VAddr);
-        if (awos_arch_vmem_create((rt_uint8_t *)AlignAddr, ((ROMHdr.Size + VMAddr - AlignAddr + 0xfff) >> 12), MEMS_domain_user) != EPDK_OK)
+        if (awos_arch_vmem_create((uint8_t *)AlignAddr, ((ROMHdr.Size + VMAddr - AlignAddr + 0xfff) >> 12), MEMS_domain_user) != EPDK_OK)
         {
             __err("create process section virtual memory space failed");
             return EPDK_FAIL;
@@ -163,7 +175,7 @@ int32_t EXEC_LoadSectionData(__hdle hLDR, uint32_t paddr, uint32_t Index, void* 
     if (ClearFlag)
     {
         //need clear this section
-        rt_memset((void *)VMAddr, 0, ROMHdr.Size);
+        memset((void *)VMAddr, 0, ROMHdr.Size);
     }
 
     //process section load succeeded
@@ -221,7 +233,7 @@ int32_t EXEC_CreateProcessVM(__hdle hLDR, __exec_pcb_t *pcb)
             //release allcotes virtual memory system
             for(i = 0; secRecord[i].sectionAddr != 0; i ++)
             {
-                awos_arch_vmem_delete((rt_uint8_t *)secRecord[i].sectionAddr, secRecord[i].npage);
+                awos_arch_vmem_delete((uint8_t *)secRecord[i].sectionAddr, secRecord[i].npage);
                 secRecord[i].sectionAddr    = 0;
                 secRecord[i].npage          = 0;
             }
@@ -274,7 +286,7 @@ uint8_t EXEC_GetProcessID(void)
 * Description: This function allows you to delete a App.  The calling task process delete itself by
 *              input EXEC_pdelself.  App's memory will be returned to system memory pool.
 *
-* Arguments  : pid  process id,µ±pidÎªEXEC_pdelselfÊ±£¬Îªdelete self
+* Arguments  : pid  process id,å½“pidä¸ºEXEC_pdelselfæ—¶ï¼Œä¸ºdelete self
 *
 * Returns    :
 *
@@ -286,7 +298,7 @@ int8_t esEXEC_PDel(uint8_t id)
     struct rt_object_information *information;
     struct rt_list_node *node;
     rt_thread_t         temp;
-    rt_uint32_t         fcse;
+    uint32_t         fcse;
     __exec_pcb_t        *pcb = esPCBTbl[id];
     uint32_t            i = 0;
     __elf_runmem        *secRecord = (__elf_runmem *)(pcb->xcb.heap);
@@ -306,32 +318,32 @@ int8_t esEXEC_PDel(uint8_t id)
 
     for(i = 0; secRecord[i].sectionAddr != 0; i ++)
     {
-        awos_arch_vmem_delete((rt_uint8_t *)secRecord[i].sectionAddr, secRecord[i].npage);
+        awos_arch_vmem_delete((uint8_t *)secRecord[i].sectionAddr, secRecord[i].npage);
         secRecord[i].sectionAddr    = 0;
         secRecord[i].npage    = 0;
     }
 
-    rt_free((void *)esPCBTbl[id]);
-    esPCBTbl[id]    = RT_NULL;
+    hal_free((void *)esPCBTbl[id]);
+    esPCBTbl[id]    = NULL;
 
     information     = rt_object_get_information(RT_Object_Class_Thread);
-    RT_ASSERT(information != RT_NULL);
+    RT_ASSERT(information != NULL);
     for (node  = information->object_list.next; node != &(information->object_list); node  = node->next)
     {
         struct rt_object *object;
         object  = rt_list_entry(node, struct rt_object, list);
         temp    = (rt_thread_t)object;
 
-        if ((rt_uint32_t)temp->entry  < (32 * 1024 * 1024))
+        if ((uint32_t)temp->entry  < (32 * 1024 * 1024))
         {
-            if (temp != rt_thread_self())
+            if (temp != kthread_self())
             {
-                rt_thread_delete(temp);
+                kthread_stop(temp);
             }
         }
     }
 
-    rt_thread_delete(rt_thread_self());
+    kthread_stop(kthread_self());
     rt_schedule();
     return EPDK_OK;
 }
@@ -343,7 +355,7 @@ int8_t esEXEC_PDel(uint8_t id)
 *              input EXEC_pdelself.  App's memory will be returned to system memory pool.
 *
 * Arguments  : pid  process id
-*                   µ±pidÎªEXEC_pdelselfÊ±£¬Îªdelete self
+*                   å½“pidä¸ºEXEC_pdelselfæ—¶ï¼Œä¸ºdelete self
 *
 * Returns    :
 *
@@ -360,10 +372,10 @@ int8_t esEXEC_PDelReq(uint8_t pid)
 {
     __epos_kmsg_t *msg_tdel;
 
-    msg_tdel = (__epos_kmsg_t *)rt_malloc(sizeof(__epos_kmsg_t));
+    msg_tdel = (__epos_kmsg_t *)hal_malloc(sizeof(__epos_kmsg_t));
     if (msg_tdel)
     {
-        //ÏòÏµÍ³ÓÊÏä·¢Ò»¸öÉ¾³ýÇëÇóµÄÃüÁî
+        //å‘ç³»ç»Ÿé‚®ç®±å‘ä¸€ä¸ªåˆ é™¤è¯·æ±‚çš„å‘½ä»¤
         msg_tdel->target       = KMSG_TGT_CALLBACK;
         msg_tdel->message      = 0;
         msg_tdel->prio         = KMSG_PRIO_LOW;
@@ -387,14 +399,14 @@ int8_t esEXEC_PDelReq(uint8_t pid)
 *
 * Returns    :
 *
-* Notes      : ËùÓÐµÄ½ø³ÌµÄmainº¯Êý¶¼±»Õâ¸öÏß³Ìµ÷ÓÃ£¬ÊäÈë²ÎÊýºÍ·µ»Ø²ÎÊý¶¼ÓÉ´ËÏß³Ì´¦Àí
+* Notes      : æ‰€æœ‰çš„è¿›ç¨‹çš„mainå‡½æ•°éƒ½è¢«è¿™ä¸ªçº¿ç¨‹è°ƒç”¨ï¼Œè¾“å…¥å‚æ•°å’Œè¿”å›žå‚æ•°éƒ½ç”±æ­¤çº¿ç¨‹å¤„ç†
 *
 **********************************************************************************************************************
 */
 static void exec_main_thread(void *p_arg)
 {
     uint32_t    fcseid;
-    uint32_t    cpu_sr;
+    unsigned long cpu_sr;
     uint8_t     prio = 30;
     __exec_mainthread_para_t *para;
 
@@ -405,18 +417,18 @@ static void exec_main_thread(void *p_arg)
         __err("fatal error, parameter is invalid.");
         return;
     }
-    //ÇÐ»»½øÈëÓÃ»§¶Î
-    cpu_sr = rt_hw_interrupt_disable();
+    //åˆ‡æ¢è¿›å…¥ç”¨æˆ·æ®µ
+    cpu_sr = hal_interrupt_save();
 
     asm volatile("mrc p15, 0, %0, c13, c0, 0" : "=r"(fcseid) : : "memory");
     asm volatile("mcr p15, 0, %0, c13, c0, 0" : :"r"(para->id << 25): "memory");
 
-    rt_hw_interrupt_enable(cpu_sr);
+    hal_interrupt_restore(cpu_sr);
 
     //call main function of the process, and store return value to pcb
     rt_err_t rt_thread_nameset(rt_thread_t thread, char *name);
-    rt_thread_nameset(rt_thread_self(), esPCBTbl[para->id]->xcb.xfile);
-    rt_thread_control(rt_thread_self(), RT_THREAD_CTRL_CHANGE_PRIORITY, &prio);
+    rt_thread_nameset(kthread_self(), esPCBTbl[para->id]->xcb.xfile);
+    rt_thread_control(kthread_self(), RT_THREAD_CTRL_CHANGE_PRIORITY, &prio);
 
     /* shell entry can be null! so weired anyway. */
     //if (para->main)
@@ -424,18 +436,18 @@ static void exec_main_thread(void *p_arg)
         esPCBTbl[para->id]->ret = para->main(para->p_arg);
     }
 
-    //ÍË»ØÏµÍ³Ì¬
+    //é€€å›žç³»ç»Ÿæ€
     asm volatile("mcr p15, 0, %0, c13, c0, 0 " : : "r"(fcseid) : "memory");
 
-    rt_free(para);
+    hal_free(para);
 
-    //Èç¹ûsem²»Îª¿Õ£¬±íÊ¾ÓÐÓÃ»§ÔÚµÈ´ý´Ë½ø³Ì½áÊø
+    //å¦‚æžœsemä¸ä¸ºç©ºï¼Œè¡¨ç¤ºæœ‰ç”¨æˆ·åœ¨ç­‰å¾…æ­¤è¿›ç¨‹ç»“æŸ
     if (esPCBTbl[para->id]->retsem)
     {
-        rt_sem_release(esPCBTbl[para->id]->retsem);
+        hal_sem_post(esPCBTbl[para->id]->retsem);
     }
 
-    rt_thread_delete(rt_thread_self());
+    rt_thread_delete(kthread_self());
     rt_schedule();
 
     return;
@@ -476,17 +488,17 @@ uint8_t esEXEC_PCreate(const char *filename, void *p_arg, uint32_t mode, uint32_
     }
 
     //allocate a process id, this process can't been interrupt.
-    cpu_sr  = rt_hw_interrupt_disable();
+    cpu_sr  = hal_interrupt_save();
     pid     = EXEC_GetProcessID();
     if (pid == 0)
     {
         __err("allocate process [%s] id failed", filename);
-        rt_hw_interrupt_enable(cpu_sr);
+        hal_interrupt_restore(cpu_sr);
         goto error;
     }
     //ocur this process control block first
     esPCBTbl[pid]   = (__exec_pcb_t *)0xffffffff;
-    rt_hw_interrupt_enable(cpu_sr);
+    hal_interrupt_restore(cpu_sr);
 
     //load process file
     hLDR    = LDR_LoadFile(filename);
@@ -505,17 +517,17 @@ uint8_t esEXEC_PCreate(const char *filename, void *p_arg, uint32_t mode, uint32_
     sectionNum  = LDR_GetSecNumber(hLDR);
 
     //allocate memory for process control block
-    pcb = (__exec_pcb_t *)rt_malloc(sizeof(__exec_pcb_t) + rt_strlen(filename) + 1 + sectionNum * sizeof(__elf_runmem));
+    pcb = (__exec_pcb_t *)hal_malloc(sizeof(__exec_pcb_t) + strlen(filename) + 1 + sectionNum * sizeof(__elf_runmem));
     if (pcb == (__exec_pcb_t *)0)
     {
         __err("allocate memory for process control block failed");
         goto error;
     }
 
-    rt_memset(pcb, 0, sizeof(__exec_pcb_t) + rt_strlen(filename) + 1 + sectionNum * sizeof(__elf_runmem));
+    memset(pcb, 0, sizeof(__exec_pcb_t) + strlen(filename) + 1 + sectionNum * sizeof(__elf_runmem));
 
     //get magic section of process
-    rt_memset(&ExecMagic, 0, sizeof(ExecMagic));
+    memset(&ExecMagic, 0, sizeof(ExecMagic));
     if (EXEC_GetMagicData(hLDR, &ExecMagic) != EPDK_OK)
     {
         __err("get process magic section failed");
@@ -537,7 +549,7 @@ uint8_t esEXEC_PCreate(const char *filename, void *p_arg, uint32_t mode, uint32_
     strcpy(pcb->xcb.xfile, (char *)filename);
     pcb->xcb.them   = 0;
     pcb->xcb.lang   = 0;
-    pcb->xcb.heap   = (void*)((intptr_t)pcb + sizeof(__exec_pcb_t) + rt_strlen(filename) + 1);
+    pcb->xcb.heap   = (void*)((intptr_t)pcb + sizeof(__exec_pcb_t) + strlen(filename) + 1);
 
     //register this process control block to system
     esPCBTbl[pid]   = pcb;
@@ -558,32 +570,32 @@ uint8_t esEXEC_PCreate(const char *filename, void *p_arg, uint32_t mode, uint32_
     //start process
     {
         __exec_mainthread_para_t *para;
-        para = (__exec_mainthread_para_t *)rt_malloc(sizeof(__exec_mainthread_para_t));
+        para = (__exec_mainthread_para_t *)hal_malloc(sizeof(__exec_mainthread_para_t));
         if (para == NULL)
         {
             __err("fatal error, malloc buffer failure.");
             goto error;
         }
 
-        rt_memset(para, 0x00, sizeof(__exec_mainthread_para_t));
+        memset(para, 0x00, sizeof(__exec_mainthread_para_t));
         para->main  = ExecMagic.main;
         para->p_arg = p_arg;
         para->id    = pid;
         if (mode & EXEC_CREATE_WAIT_RET)
         {
-            //wait main function to return£¬need create a sem to pending
-            pcb->retsem = rt_sem_create("proc_sem", 0, 0);
+            //wait main function to returnï¼Œneed create a sem to pending
+            pcb->retsem = hal_sem_create(0);
         }
         else
         {
-            pcb->retsem = RT_NULL;
+            pcb->retsem = NULL;
         }
         if (esKRNL_TCreate(exec_main_thread, para, ExecMagic.mtskstksize, (pid << 8) | ExecMagic.mtskprio) != 0)
         {
             if (mode & EXEC_CREATE_WAIT_RET)
             {
-                rt_sem_take(pcb->retsem, RT_WAITING_FOREVER);
-                rt_sem_delete(pcb->retsem);
+                hal_sem_timedwait(pcb->retsem, HAL_WAIT_FOREVER);
+                hal_sem_delete(pcb->retsem);
                 if (ret)
                 {
                     *ret    = pcb->ret;
@@ -599,8 +611,8 @@ uint8_t esEXEC_PCreate(const char *filename, void *p_arg, uint32_t mode, uint32_
                 return pid;
             }
         }
-        rt_free(para);
-        rt_sem_delete(pcb->retsem);
+        hal_free(para);
+        hal_sem_delete(pcb->retsem);
     }
 
     //process create failed
@@ -615,7 +627,7 @@ error:
     }
     if (pcb)
     {
-        rt_free((void *)pcb);
+        hal_free((void *)pcb);
     }
 
     __log("process [%s] created failed!", filename);

@@ -2,7 +2,7 @@ menu "CIR Devices"
 
 config DRIVERS_CIR
 	bool "enable CIR driver"
-        default y
+        default n
 
 menu "CIR option features"
 

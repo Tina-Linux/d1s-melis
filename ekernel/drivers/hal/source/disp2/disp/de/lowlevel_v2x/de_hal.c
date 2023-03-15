@@ -9,11 +9,14 @@
  */
 
 #include "de_hal.h"
+#include "../disp_manager.h"
 
 #define EINK_DEBUG 0
 static unsigned int g_device_fps[DE_NUM] = { 60 };
 static bool g_de_blank[DE_NUM] = { false };
 static unsigned int g_de_freq;
+
+extern int de_dcsc_get_config(unsigned int sel, struct disp_csc_config *config);
 
 int de_update_device_fps(unsigned int sel, u32 fps)
 {
@@ -61,8 +64,7 @@ static int de_set_coarse(unsigned int sel, unsigned char chno, unsigned int fmt,
 	return 0;
 }
 
-static int
-de_calc_overlay_scaler_para(unsigned int screen_id,
+static int de_calc_overlay_scaler_para(unsigned int screen_id,
 		unsigned char chn, unsigned char layno,
 		unsigned char *fmt,
 		struct disp_layer_config_data *data,
@@ -528,16 +530,27 @@ int de_al_lyr_apply(unsigned int screen_id, struct disp_layer_config_data *data,
 				csc_cfg.in_fmt = (chn_is_yuv[j]) ?
 				    DE_YUV : DE_RGB;
 				csc_cfg.in_mode = cs[j];
-				csc_cfg.out_fmt = DE_RGB;
+
+				/* Set the output format according to
+				 * the actual output format.
+				 */
+				if (direct_show_after_vep(screen_id))
+					csc_cfg.out_fmt = (u32)disp_get_current_output_format_by_device_type(screen_id);
+				else
+					csc_cfg.out_fmt = DE_RGB;
 				csc_cfg.out_mode = DE_BT601;
 
 				color = 0;
 			}
 			csc_cfg.out_color_range = DISP_COLOR_RANGE_0_255;
-			csc_cfg.brightness = 50;
-			csc_cfg.contrast = 50;
-			csc_cfg.saturation = 50;
-			csc_cfg.hue = 50;
+
+			struct disp_csc_config cfg = {0};
+			de_dcsc_get_config(screen_id,&cfg);
+			csc_cfg.brightness = cfg.brightness;
+			csc_cfg.contrast = cfg.contrast;
+			csc_cfg.saturation = cfg.saturation;
+			csc_cfg.hue = cfg.hue;
+
 			de_ccsc_apply(screen_id, j, &csc_cfg);
 			de_rtmx_set_blend_color(screen_id, j, color);
 		}
@@ -760,7 +773,8 @@ int de_al_mgr_apply(unsigned int screen_id, struct disp_manager_data *data)
 	g_de_blank[screen_id] = data->config.blank;
 
 	if ((data->flag & MANAGER_ENABLE_DIRTY)
-	    || (data->flag & MANAGER_COLOR_SPACE_DIRTY)) {
+	    || (data->flag & MANAGER_COLOR_SPACE_DIRTY)
+		|| ((data->flag & MANAGER_BACK_COLOR_DIRTY))) {
 		csc_cfg.color = color;
 		csc_cfg.out_fmt =
 		    (data->config.cs == DISP_CSC_TYPE_RGB) ? DE_RGB : DE_YUV;

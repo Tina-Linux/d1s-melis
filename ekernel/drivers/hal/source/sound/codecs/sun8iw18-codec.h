@@ -32,6 +32,8 @@
 #ifndef __SUN8IW18_CODEC_H
 #define __SUN8IW18_CODEC_H
 
+#include <sunxi_hal_twi.h>
+
 #define SUNXI_CODEC_BASE_ADDR	(0x05096000)
 
 #define SUNXI_DAC_DPC           0x00
@@ -936,9 +938,22 @@
 /* SUNXI_BIAS_CAL_CTRL:0x15 */
 #define CUR_TEST_SEL		6
 
+#define AW87579_ANALOG_PA      (0)
+
+#if AW87579_ANALOG_PA
+struct twi_device {
+	twi_port_t bus;
+	unsigned int addr;
+};
+#endif
+
 struct sunxi_codec_param {
+#if AW87579_ANALOG_PA
+	struct twi_device twi_dev;
+#else
 	int16_t gpio_spk;
 	int16_t gpio_spk_power;//add
+#endif
 	int16_t pa_msleep_time;
 	uint8_t pa_level;
 	uint8_t digital_vol;
@@ -966,5 +981,17 @@ struct sunxi_codec_info {
 	uint32_t irq;
 	struct sunxi_codec_param param;
 };
+
+#if AW87579_ANALOG_PA
+#define AW87579_ANALOG_PA_OFF    0
+#define AW87579_ANALOG_PA_ON     1
+
+#define AW87579_REG_SYSCTRL  0x01
+
+#define AW87579_CHIP_CFG \
+{ \
+	.bus = TWI_MASTER_1, .addr = 0x58 \
+}
+#endif
 
 #endif /* __SUN8IW18_CODEC_H */

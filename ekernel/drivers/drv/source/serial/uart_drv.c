@@ -1,37 +1,34 @@
 /*
- * Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
- *
- * Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
- * the the People's Republic of China and other countries.
- * All Allwinner Technology Co.,Ltd. trademarks are used with permission.
- *
- * DISCLAIMER
- * THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
- * IF YOU NEED TO INTEGRATE THIRD PARTY¡¯S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR
- * MPEGLA, ETC.)
- * IN ALLWINNERS¡¯SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
- * ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
- * ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT
- * TO MATTERS
- * COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
- * YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY¡¯S TECHNOLOGY.
- *
- *
- * THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
- * PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
- * WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
- * THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
- * OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
- * IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
- * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <hal_poll.h>
 #include <hal_uart.h>
 #include <sunxi_drv_uart.h>
@@ -75,6 +72,7 @@ static const sunxi_hal_driver_uart_t sunxi_hal_uart_driver =
 };
 
 static sunxi_driver_uart_t uart0, uart1, uart2, uart3;
+static sunxi_driver_uart_t uart4, uart5;
 
 static rt_err_t sunxi_serial_init(struct rt_device *dev)
 {
@@ -84,7 +82,7 @@ static rt_err_t sunxi_serial_init(struct rt_device *dev)
 
     if (dev == NULL)
     {
-        while (1);
+        return -1;
     }
 
     pvfy = container_of(dev, sunxi_driver_uart_t, base);
@@ -118,7 +116,7 @@ static rt_err_t sunxi_serial_close(struct rt_device *dev)
 
     if (dev == NULL)
     {
-        while (1);
+        return -1;
     }
 
     pvfy = container_of(dev, sunxi_driver_uart_t, base);
@@ -147,7 +145,7 @@ static rt_size_t sunxi_serial_read(struct rt_device *dev, rt_off_t pos, void *bu
 
     if (dev == NULL)
     {
-        while (1);
+        return -1;
     }
 
     pvfy = container_of(dev, sunxi_driver_uart_t, base);
@@ -182,7 +180,7 @@ static rt_size_t sunxi_serial_write(struct rt_device *dev, rt_off_t pos, const v
 
     if (dev == NULL)
     {
-        while (1);
+        return -1;
     }
 
     pvfy = container_of(dev, sunxi_driver_uart_t, base);
@@ -211,7 +209,7 @@ static rt_err_t sunxi_serial_control(struct rt_device *dev, int cmd, void *args)
 
     if (dev == NULL)
     {
-        while (1);
+        return -1;
     }
 
     pvfy = container_of(dev, sunxi_driver_uart_t, base);
@@ -237,6 +235,7 @@ static rt_err_t sunxi_serial_control(struct rt_device *dev, int cmd, void *args)
 #include <rtdevice.h>
 #include <dfs_poll.h>
 #include <string.h>
+#include <inttypes.h>
 
 #define CHECK_POLL_OPS_FUNC_IS_VALAID(drv, func) \
 	drv && drv->poll_ops && drv->poll_ops->func
@@ -247,7 +246,7 @@ static int32_t uart_wakeup_poll_waitqueue(int32_t dev_id, short key)
     char dev_name [RT_NAME_MAX];
 
     memset(dev_name, 0, RT_NAME_MAX);
-    sprintf(dev_name, "uart%ld", dev_id);
+    sprintf(dev_name, "uart%"PRIu32, dev_id);
     dev = rt_device_find(dev_name);
     if (!dev)
     {
@@ -404,7 +403,7 @@ static void init_uart_device(struct rt_device *dev, void *usr_data, char *dev_na
 
 void sunxi_driver_uart_init(void)
 {
-    struct rt_device *device0, *device1, *device2, *device3;
+    struct rt_device *device0, *device1, *device2, *device3, *device4, *device5;
 
     device0 = &uart0.base;
     uart0.dev_id = 0;
@@ -422,10 +421,20 @@ void sunxi_driver_uart_init(void)
     uart3.dev_id = 3;
     uart3.hal_drv = &sunxi_hal_uart_driver;
 
+    device4 = &uart4.base;
+    uart4.dev_id = 4;
+    uart4.hal_drv = &sunxi_hal_uart_driver;
+
+    device5 = &uart5.base;
+    uart5.dev_id = 5;
+    uart5.hal_drv = &sunxi_hal_uart_driver;
+
     init_uart_device(device0, &uart0, "uart0");
     init_uart_device(device1, &uart1, "uart1");
     init_uart_device(device2, &uart2, "uart2");
     init_uart_device(device3, &uart3, "uart3");
+    init_uart_device(device4, &uart4, "uart4");
+    init_uart_device(device5, &uart5, "uart5");
 
     return;
 }

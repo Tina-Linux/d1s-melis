@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
@@ -18,7 +49,7 @@
 #ifndef ARRAY_SIZE
 #define ARRAY_SIZE(array) (sizeof(array)/sizeof(array[0]))
 #endif
-/* #define ALIGN(x, a) __ALIGN_KERNEL((x), (a)) */
+
 #define ALIGN_DOWN(x, a) __ALIGN_KERNEL((x) - ((a) - 1), (a))
 #define __ALIGN_KERNEL(x, a) __ALIGN_KERNEL_MASK(x, (typeof(x))(a) - 1)
 #define __ALIGN_KERNEL_MASK(x, mask) (((x) + (mask)) & ~(mask))
@@ -149,6 +180,7 @@ static struct dfs_file_ops part_device_fops =
     .write = part_fops_write,
 };
 #endif
+
 #ifdef CONFIG_MELIS_LEGACY_DRIVER_MAN
 typedef struct __SPINOR_DEV
 {
@@ -168,16 +200,17 @@ typedef struct tag_CRC32_DATA
 } CRC32_DATA_t;
 
 #define MAX_PART_COUNT 4
+
 static __spinor_dev_t pndev[MAX_PART_COUNT];
 
 static __u32 calc_crc32(const unsigned char *buffer, __u32 length)
 {
 	__u32 i, j;
 	CRC32_DATA_t crc32;
-	__u32 CRC32 = 0xffffffff;  /* …Ë÷√≥ı º÷µ */
+	__u32 CRC32 = 0xffffffff;  /* ËÆæÁΩÆÂàùÂßãÂÄº */
 	crc32.CRC = 0;
 
-	for ( i = 0; i < 256; ++i) /* ”√++i“‘Ã·∏ﬂ–ß¬  */
+	for ( i = 0; i < 256; ++i) /* Áî®++i‰ª•ÊèêÈ´òÊïàÁéá */
 	{
 		crc32.CRC = i;
 		for ( j = 0; j < 8 ; ++j)
@@ -190,7 +223,7 @@ static __u32 calc_crc32(const unsigned char *buffer, __u32 length)
 		crc32.CRC_32_Tbl[i] = crc32.CRC;
 	}
 
-	CRC32 = 0xffffffff; /* …Ë÷√≥ı º÷µ */
+	CRC32 = 0xffffffff; /* ËÆæÁΩÆÂàùÂßãÂÄº */
     for ( i = 0; i < length; ++i)
     {
         CRC32 = crc32.CRC_32_Tbl[(CRC32^((unsigned char*)buffer)[i]) & 0xff] ^ (CRC32 >> 8);
@@ -220,12 +253,6 @@ static __hdle spinor_dev_open(void *arg, __u32 mode)
     return (__hdle)pdev;
 }
 
-/********************************************************************************************************
-* Function   : spinor_dev_close
-* Description:
-* Arguments  :
-* Return     :
-*********************************************************************************************************/
 static __s32 spinor_dev_close(__hdle hdev)
 {
     __s32          cpu_sr;
@@ -244,13 +271,6 @@ static __s32 spinor_dev_close(__hdle hdev)
     return EPDK_OK;
 }
 
-
-/********************************************************************************************************
-* Function   : spinor_dev_read
-* Description:
-* Arguments  :
-* Return     :
-*********************************************************************************************************/
 static __u32 spinor_dev_read(void *pbuffer, __u32 block, __u32 n, __hdle hdev)
 {
     __u8           err;
@@ -286,12 +306,6 @@ exit:
     return 0;
 }
 
-/********************************************************************************************************
-* Function   : spinor_dev_write
-* Description:
-* Arguments  :
-* Return     :
-*********************************************************************************************************/
 static __u32 spinor_dev_write(const void *pbuffer, __u32 block, __u32 n, __hdle hdev)
 {
     __u8           err;
@@ -325,12 +339,7 @@ static __u32 spinor_dev_write(const void *pbuffer, __u32 block, __u32 n, __hdle 
 exit:
     return 0;
 }
-/********************************************************************************************************
-* Function   : spinor_dev_ioctrl
-* Description:
-* Arguments  :
-* Return     :
-*********************************************************************************************************/
+
 static int32_t spinor_dev_ioctrl(__hdle hdev, uint32_t cmd, long aux, void *pbuffer)
 {
     __spinor_dev_t *pndev = (__spinor_dev_t *)hdev;
@@ -367,14 +376,17 @@ static __dev_devop_t melis_spinor_dev_op =
     spinor_dev_write,
     spinor_dev_ioctrl
 };
+
 static unsigned char *udisk_buff = NULL;
 static unsigned char *udisk_buff_backup = NULL;
+
 typedef struct udisk_sector_manager
 {
 	int sector;
 	int drity;
 	struct udisk_sector_manager *next;
 } udisk_manager_t;
+
 static udisk_manager_t sector_header;
 
 static __s32 melis_udisk_sector_manager_init(__spinor_dev_t *pDev)
@@ -404,7 +416,8 @@ static __s32 melis_udisk_sector_manager_init(__spinor_dev_t *pDev)
 	}
 	return 0;
 }
-/*±»Ωœudisk∫Õudisk backup÷–ƒ«–©…»«¯ ˝æ›≤ª“ª÷¬£¨…Ë÷√Œ™dirty*/
+
+/*ÊØîËæÉudiskÂíåudisk backup‰∏≠ÈÇ£‰∫õÊâáÂå∫Êï∞ÊçÆ‰∏ç‰∏ÄËá¥ÔºåËÆæÁΩÆ‰∏∫dirty*/
 static __s32 melis_udisk_part_mark_dirty_data(__spinor_dev_t *pDev)
 {
 	u32 offset = 0;
@@ -422,9 +435,9 @@ static __s32 melis_udisk_part_mark_dirty_data(__spinor_dev_t *pDev)
 	return 0;
 }
 /*
-Ω´ udisk∫Õudisk backup÷– ˝æ›≤ª“ª÷¬µƒ…»«¯–¥ªÿµΩflash÷–
-pbuffer: ˝æ›‘¥
-offset:udisk ªÚ’ﬂudisk backupµƒ∆´“∆
+Â∞Ü udiskÂíåudisk backup‰∏≠Êï∞ÊçÆ‰∏ç‰∏ÄËá¥ÁöÑÊâáÂå∫ÂÜôÂõûÂà∞flash‰∏≠
+pbuffer:Êï∞ÊçÆÊ∫ê
+offset:udisk ÊàñËÄÖudisk backupÁöÑÂÅèÁßª
 */
 static __s32 melis_udisk_part_flush_dirty_data(__spinor_dev_t *pDev, unsigned char *pbuffer, __u32 offset)
 {
@@ -457,8 +470,6 @@ static __s32 melis_udisk_part_flush_dirty_data(__spinor_dev_t *pDev, unsigned ch
 			if (flag == 1)
 			{
 				total += write_sector_num;
-//				__log("%s %d %s write_sector_num:%d\n", __func__, __LINE__, __func__, write_sector_num);
-//				__log("%s %d %s write_sector_start:%d\n", __func__, __LINE__, __func__, write_sector_start);
 				erase_sector.len = write_sector_num*norblk.blk_bytes;
 				erase_sector.addr = pDev->offset + write_sector_start*norblk.blk_bytes + offset;
 				rt_device_control(dev, BLOCK_DEVICE_CMD_ERASE_SECTOR, &erase_sector);				
@@ -470,14 +481,12 @@ static __s32 melis_udisk_part_flush_dirty_data(__spinor_dev_t *pDev, unsigned ch
 		}
 		next_node = next_node->next;
 	}
-	/*»Áπ˚◊Ó∫Ûµƒ…»«¯Œ™dirty£¨…œ√Êµƒ≤Ÿ◊˜ø…ƒ‹√ªƒ‹’˝»∑flush£¨¥À¥¶–Ë“™‘Ÿ¥Œ≈–∂œ*/
+	/*Â¶ÇÊûúÊúÄÂêéÁöÑÊâáÂå∫‰∏∫dirtyÔºå‰∏äÈù¢ÁöÑÊìç‰ΩúÂèØËÉΩÊ≤°ËÉΩÊ≠£Á°ÆflushÔºåÊ≠§Â§ÑÈúÄË¶ÅÂÜçÊ¨°Âà§Êñ≠*/
 	if (flag == 1)
 	{
 		total += write_sector_num;
 		erase_sector.len = write_sector_num*norblk.blk_bytes;
 		erase_sector.addr = pDev->offset + write_sector_start*norblk.blk_bytes + offset;
-//		__log("%s %d %s write_sector_num:%d\n", __func__, __LINE__, __func__, write_sector_num);
-//		__log("%s %d %s write_sector_start:%d\n", __func__, __LINE__, __func__, write_sector_start);
 		rt_device_control(dev, BLOCK_DEVICE_CMD_ERASE_SECTOR, &erase_sector);
 		rt_device_write(dev, erase_sector.addr, pbuffer + write_sector_start*norblk.blk_bytes, erase_sector.len);
 		flag = 0;
@@ -486,22 +495,19 @@ static __s32 melis_udisk_part_flush_dirty_data(__spinor_dev_t *pDev, unsigned ch
 	}
 	/*CRC PART*/
 	rt_device_close(dev);
-//	__log("%s %d %s total:%d end\n", __func__, __LINE__, __func__, total);
-	
+	return 0;
 }
 
 static __s32 melis_udisk_part_check(__spinor_dev_t *pDev)
 {
-	rt_device_t *dev = NULL;
+	rt_device_t dev = NULL;
 	u32 udisk_part_size = 0, udisk_part_crc_size = 0, udisk_part_backup_offset = 0;
 	u32 actual_crc = 0, actual_crc_backup = 0, crc32 = 0, crc32_backup = 0;
 	blk_dev_erase_t erase_sector;	
 
-//	__log("%s %d %s \n", __func__, __LINE__, __func__);
 	dev = rt_device_find("spinor");
 	if (rt_device_open(dev, RT_DEVICE_FLAG_RDWR))
 	{
-		__log("%s %d %s \n", __func__, __LINE__, __func__);
 		return -1;
 	}
 	udisk_part_size = pDev->info.partsize*pDev->info.secsize;
@@ -512,7 +518,6 @@ static __s32 melis_udisk_part_check(__spinor_dev_t *pDev)
     if (udisk_buff == NULL)
     {
         __err("melis spinor udisk_part_check fail!\n");
-		__log("%s %d %s \n", __func__, __LINE__, __func__);
 		rt_device_close(dev);
         return -1;
     }
@@ -520,7 +525,6 @@ static __s32 melis_udisk_part_check(__spinor_dev_t *pDev)
     if (udisk_buff_backup == NULL)
     {
         __err("melis spinor udisk_part_check fail!\n");
-		__log("%s %d %s \n", __func__, __LINE__, __func__);
 		hal_free(udisk_buff_backup);
 		rt_device_close(dev);
         return -1;
@@ -573,35 +577,20 @@ static __s32 melis_udisk_part_flush(__spinor_dev_t *pDev)
 	udisk_part_backup_offset = udisk_part_size + udisk_part_crc_size;
 
 	actual_crc = calc_crc32(udisk_buff, udisk_part_size);
-	//actual_crc_backup = calc_crc32(udisk_buff_backup, udisk_part_size);
-//	__log("%s %d  crc:%x\n", __func__, __LINE__, actual_crc);
 	if (memcmp(udisk_buff,udisk_buff_backup,udisk_part_backup_offset))
 	{
 		*(__u32 *)(udisk_buff + udisk_part_size) = actual_crc;
 
-//		check(udisk_buff, 0, udisk_part_size);
-		/*œ»–¥udisk part*/
+		/*ÂÖàÂÜôudisk part*/
 		melis_udisk_part_mark_dirty_data(pDev);
 		melis_udisk_part_flush_dirty_data(pDev, udisk_buff, 0);
 
-		/*‘Ÿ–¥udisk backup part*/
+		/*ÂÜçÂÜôudisk backup part*/
 		melis_udisk_part_mark_dirty_data(pDev);
 		melis_udisk_part_flush_dirty_data(pDev, udisk_buff, udisk_part_backup_offset);
-		
-//		memset(udisk_buff_backup, 0x00, udisk_part_size + udisk_part_crc_size);
-//		rt_device_read(dev, pDev->offset, udisk_buff_backup, udisk_part_size + udisk_part_crc_size);
-//		__log("%s %d  actual_crc:%x\n", __func__, __LINE__, calc_crc32(udisk_buff_backup, udisk_part_size));
-//		__log("%s %d  crc:%x\n", __func__, __LINE__, *(__u32 *)(udisk_buff_backup + udisk_part_size));
-
-//		memset(udisk_buff_backup, 0x00, udisk_part_size + udisk_part_crc_size);
-//		rt_device_read(dev, pDev->offset + udisk_part_backup_offset, udisk_buff_backup, udisk_part_size + udisk_part_crc_size);
-//		__log("%s %d  actual_crc_backup:%x\n", __func__, __LINE__, calc_crc32(udisk_buff_backup, udisk_part_size));
-//		__log("%s %d  backup_crc:%x\n", __func__, __LINE__, *(__u32 *)(udisk_buff_backup + udisk_part_size));
-//		check(udisk_buff_backup, 1, udisk_part_size);
 	}
 	memcpy(udisk_buff_backup, udisk_buff, udisk_part_size + udisk_part_crc_size);
 	rt_device_close(dev);
-//	__log("%s %d %s end\n", __func__, __LINE__, __func__);
 	return 0;
 }
 static __u32 udisk_dev_virtual_read(void *pbuffer, __u32 block, __u32 n, __hdle hdev)
@@ -926,16 +915,16 @@ static int register_blk_device(rt_device_t dev)
         else
         {
 			register_part(dev, part);
-#ifdef 	CONFIG_MELIS_LEGACY_DRIVER_MAN		
-			if (!strcmp(part->name, "ROOTFS"))
+#ifdef CONFIG_MELIS_LEGACY_DRIVER_MAN
+            if (!strcmp(part->name, "ROOTFS"))
             {
                 int melis_spinor_part_init(struct part *);
                 melis_spinor_part_init(part);
             } 
-			else if (!strcmp(part->name, "UDISK"))
+            else if (!strcmp(part->name, "UDISK"))
             {
-				int melis_spinor_part_init(struct part *);
-				melis_spinor_part_init(part);
+                int melis_spinor_part_init(struct part *);
+                melis_spinor_part_init(part);
             }
 #endif			
         }

@@ -44,5 +44,10 @@ config DRIVERS_SDC_CDPIN_PRESENT_VAL
     int "sdc card detect pin present value"
 	default 0
 
+config DRIVERS_SDMMC_FS
+    bool "support SDMMC filesystem"
+    select COMPONENT_ELMFAT
+    default y
+
 endif
 endmenu

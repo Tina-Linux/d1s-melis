@@ -142,5 +142,6 @@ int cmd_audiocodec_dump(int argc, char *argv[])
 {
 	/*TODO, add read,write function */
 	sunxi_audiocodec_reg_dump();
+	return 0;
 }
 FINSH_FUNCTION_EXPORT_CMD(cmd_audiocodec_dump, audiocodec, audiocodec dump reg);

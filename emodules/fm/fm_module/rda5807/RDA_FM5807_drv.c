@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include "epdk.h"
 #include  "drv_fm_i.h"
 
@@ -15,10 +46,10 @@ typedef short int               int16;
 #define ADRR            0x21
 
 
-//#define                 _SHARE_CRYSTAL_24MHz_   //¹²ÓÃ24MHz¾§Õñ£¬Çë´ò¿ª´Ëºê
-//#define                 _SHARE_CRYSTAL_12MHz_   //¹²ÓÃ12MHz¾§Õñ£¬Çë´ò¿ª´Ëºê
-#define                 _SHARE_CRYSTAL_32KHz_   //¹²ÓÃ32KHz¾§Õñ£¬Çë´ò¿ª´Ëºê
-//#define                 _FM_STEP_50K_           //50K²½½ø£¬Çë´ò¿ª´Ëºê
+//#define                 _SHARE_CRYSTAL_24MHz_   //å…±ç”¨24MHzæ™¶æŒ¯ï¼Œè¯·æ‰“å¼€æ­¤å®
+//#define                 _SHARE_CRYSTAL_12MHz_   //å…±ç”¨12MHzæ™¶æŒ¯ï¼Œè¯·æ‰“å¼€æ­¤å®
+#define                 _SHARE_CRYSTAL_32KHz_   //å…±ç”¨32KHzæ™¶æŒ¯ï¼Œè¯·æ‰“å¼€æ­¤å®
+//#define                 _FM_STEP_50K_           //50Kæ­¥è¿›ï¼Œè¯·æ‰“å¼€æ­¤å®
 
 /***************************************************
 RDA5807P interfaces
@@ -293,7 +324,7 @@ uint8 RDA5807N_initialization_reg[] =
 
 __bool OperationRDAFM_2w(__u8 rw,  __u8 *data, __s32 n_byte)
 {
-    __twi_dev_para_ex_t  piic;        //ÒªĞ´ÈëTEA5767µÄÊı¾İ
+    __twi_dev_para_ex_t  piic;        //è¦å†™å…¥TEA5767çš„æ•°æ®
     __s32 ret;
     __u8 addr = 0xff;
     eLIBs_memset(&piic, 0, sizeof(__twi_dev_para_ex_t));
@@ -565,7 +596,7 @@ uint8 RDA5807P_GetSigLvl(int16 curf)
     uint8 RDA5807P_reg_data[4] = {0};
     OperationRDAFM_2w(READ, &(RDA5807P_reg_data[0]), 4);
     esKRNL_TimeDly(5);    //Dealy 50 ms
-    return (RDA5807P_reg_data[2] >> 1); /*·µ»Ørssi*/
+    return (RDA5807P_reg_data[2] >> 1); /*è¿”å›rssi*/
 }
 
 /**
@@ -718,10 +749,10 @@ static __u16 min_freq = 0;
 /**********************************************
 * function:      fm_area_choose
 *
-* description:   µØÇøÑ¡Ôñ£¬Çø±ğ²»Í¬µÄÆğÊ¼ºÍÖÕÖ¹
-*                ÆµÂÊ
+* description:   åœ°åŒºé€‰æ‹©ï¼ŒåŒºåˆ«ä¸åŒçš„èµ·å§‹å’Œç»ˆæ­¢
+*                é¢‘ç‡
 *
-* notes:         ÊäÈëÕıÈ·µØÇø·µ»Ø³É¹¦£¬·ñÔòÊ§°Ü
+* notes:         è¾“å…¥æ­£ç¡®åœ°åŒºè¿”å›æˆåŠŸï¼Œå¦åˆ™å¤±è´¥
 *
 **********************************************/
 __s32 fm_area_choose(__s32 area, void *pbuffer)
@@ -754,8 +785,8 @@ __s32 fm_area_choose(__s32 area, void *pbuffer)
 /**********************************************
 * function:      fm_manual_search
 *
-* description:   ÊÖ¶¯ËÑË÷£¬Ê¹ÓÃfm_play
-*                ·µ»ØÖµÊÇÏÂÒ»¸öËÑË÷ÆµÂÊµã
+* description:   æ‰‹åŠ¨æœç´¢ï¼Œä½¿ç”¨fm_play
+*                è¿”å›å€¼æ˜¯ä¸‹ä¸€ä¸ªæœç´¢é¢‘ç‡ç‚¹
 *
 * notes:
 *
@@ -769,7 +800,7 @@ __s32 fm_manual_search(__s32 freq, __u32 search_dir)
 /**********************************************
 * function:      fm_stereo_choose
 *
-* description:   ÒôÖÊÑ¡Ôñ£¬Á¢ÌåÉùºÍÆÕÍ¨ÉùÒô
+* description:   éŸ³è´¨é€‰æ‹©ï¼Œç«‹ä½“å£°å’Œæ™®é€šå£°éŸ³
 *
 * notes:
 *
@@ -781,7 +812,7 @@ __s32 fm_stereo_choose(__s32 audio_method)
 /**********************************************
 * function:      fm_mute
 *
-* description:   ¾²Òô¹¦ÄÜ
+* description:   é™éŸ³åŠŸèƒ½
 *
 * notes:
 *
@@ -795,11 +826,11 @@ __s32 fm_mute(__s32 voice_onoff)
 /**********************************************
 * function:      fm_play
 *
-* description:   ¸ù¾İÊäÈëµÄÆµÂÊ£¬²¥·Å´ËÆµÂÊµÄ
-*                µçÌ¨½ÚÄ¿£¬¼´Ê¹Ã»ÓĞ½ÚÄ¿Ö»ÓĞ
-*                ÔëÒô£¬ÕÕÑù²¥³ö
+* description:   æ ¹æ®è¾“å…¥çš„é¢‘ç‡ï¼Œæ’­æ”¾æ­¤é¢‘ç‡çš„
+*                ç”µå°èŠ‚ç›®ï¼Œå³ä½¿æ²¡æœ‰èŠ‚ç›®åªæœ‰
+*                å™ªéŸ³ï¼Œç…§æ ·æ’­å‡º
 *
-* notes:         Ö»·µ»Ø³É¹¦
+* notes:         åªè¿”å›æˆåŠŸ
 *
 **********************************************/
 __s32 fm_play(__s32 curFreq)
@@ -885,8 +916,8 @@ __s32  fm_get_status(void)
 /**********************************************
 * function:      fm_signal_level
 *
-* description:   ĞÅºÅÇ¿¶ÈÑ¡Ôñ£¬ÒªÇóĞÅºÅÇ¿´óÔ½¸ß£¬ÊÕµ½µÄµçÌ¨Ô½ÉÙ
-*                   ÒªÇóĞÅºÅÇ¿´óÔ½¸ß£¬ÊÕµ½µÄµçÌ¨Ô½¶à£¬µ«ÎŞĞ§µçÌ¨Ò²¶à
+* description:   ä¿¡å·å¼ºåº¦é€‰æ‹©ï¼Œè¦æ±‚ä¿¡å·å¼ºå¤§è¶Šé«˜ï¼Œæ”¶åˆ°çš„ç”µå°è¶Šå°‘
+*                   è¦æ±‚ä¿¡å·å¼ºå¤§è¶Šé«˜ï¼Œæ”¶åˆ°çš„ç”µå°è¶Šå¤šï¼Œä½†æ— æ•ˆç”µå°ä¹Ÿå¤š
 *
 * notes:
 *

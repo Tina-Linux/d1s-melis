@@ -1,6 +1,37 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <stdlib.h>
 #include <log.h>
-#include <list.h>
+#include <aw_list.h>
 #include "drv_audio.h"
 #include "mod_audio.h"
 #include <sunxi_hal_common.h>
@@ -181,8 +212,7 @@ static __s32 _do_with_IO_Ctrl_cmd_SET_PARA(sunxi_driver_audio_t *pUsr,
 #elif defined CONFIG_SOC_SUN20IW1P1
     if (pAudioFmt->bps != 16 && pAudioFmt->bps != 20)
     {
-        __wrn("woidth is only support 16 bit or 20 bit, now is [%d]", pAudioFmt->bps);
-        return EPDK_FAIL;
+        __wrn("bps:%d", pAudioFmt->bps);
     }
 #endif
 
@@ -200,6 +230,9 @@ static __s32 _do_with_IO_Ctrl_cmd_SET_PARA(sunxi_driver_audio_t *pUsr,
 		    break;
 	    case 24:
 		    pUsr->mgr->format = SND_PCM_FORMAT_S24_LE;
+		    break;
+        case 32:
+		    pUsr->mgr->format = SND_PCM_FORMAT_S32_LE;
 		    break;
 	    default:
 		    __err("%u bits not supprot\n", pAudioFmt->bps);
@@ -537,6 +570,7 @@ rt_err_t audio_play_open(rt_device_t dev, rt_uint16_t oflag)
     unsigned char i = 0;
     sunxi_driver_audio_t *pusr = NULL, *pvfy = NULL;
     audio_play_dev_usr_t *ppUser = NULL;
+    char *card_name = NULL;
 
 	__wrn("[PLAY]audio_play_open,dev:%p,%d\n",dev,dev->device_id);
 
@@ -564,17 +598,31 @@ rt_err_t audio_play_open(rt_device_t dev, rt_uint16_t oflag)
 	}
     hal_assert(pvfy == pusr);
 
-    err = alsa_open_pcm(pusr->mgr, SOUND_CARD_AUDIOCODEC, 1);
+    switch (pusr->dev_id)
+    {
+    case 0:
+        card_name = SOUND_CARD_AUDIOCODEC;
+        break;
+    case 2:
+        card_name = SOUND_CARD_SNDDAUDIO1;
+        break;
+    default:
+        card_name = SOUND_CARD_AUDIOCODEC;
+        break;
+    }
+
+    err = alsa_open_pcm(pusr->mgr, card_name, 1);
     if (err < 0) {
         __err("audio play device open error: %d", err);
         return err;
     }
-
+#if 0
     err = alsa_set_pcm_params(pusr->mgr);
     if (err < 0) {
 		__err("audio set pcm param error:%d\n", err);
 		return err;
 	}
+#endif
     if (pusr->dev_info.aplay_para.usr[i].used)
     {
         __wrn("usr %d is used!", i);
@@ -703,7 +751,8 @@ rt_size_t audio_play_write(rt_device_t dev, rt_off_t pos, const void *buffer, rt
     wakeup_sgdma(&pusr->dev_info.aplay_para, ppUser);
 #endif
 
-  //  tmpSampDataSize = CircleBufRead(tmpBuf, tmpDmaBuf, tmpDmaSize);
+    //tmpSampDataSize = CircleBufRead(tmpBuf, tmpDmaBuf, tmpDmaSize);
+    //__log("size:%d(/%d)", size, pusr->mgr->frameBytes);
     if (size > 0)
     {
         frames = size / pusr->mgr->frameBytes;
@@ -850,7 +899,7 @@ rt_err_t audio_play_control(rt_device_t dev, int cmd, void *arg)
             return EPDK_OK;
         }
 
-        case AUDIO_DEV_CMD_DRAIN:		//ÓÃÀ´µÈ»º³åÇøÊý¾Ý²¥Íê
+        case AUDIO_DEV_CMD_DRAIN:		//ç”¨æ¥ç­‰ç¼“å†²åŒºæ•°æ®æ’­å®Œ
         {
             __wrn("AUDIO_DEV_CMD_FLUSH_BUF");
 			audio_cmd_drain(pusr->mgr);
@@ -893,7 +942,7 @@ rt_err_t audio_play_control(rt_device_t dev, int cmd, void *arg)
             __msg("audio_play_write");
             break;//end case
 
-        case AUDIO_DEV_CMD_MUTE:   // onoff  :1 ¾²Òô   : 0 ²»¾²Òô
+        case AUDIO_DEV_CMD_MUTE:   // onoff  :1 é™éŸ³   : 0 ä¸é™éŸ³
         {
             #if 0
             BSP_ADDA_Mute_OnOff(aux);
@@ -908,6 +957,13 @@ rt_err_t audio_play_control(rt_device_t dev, int cmd, void *arg)
                 }
             }
             #endif
+            return EPDK_OK;
+        }
+
+        case AUDIO_DEV_CMD_ENABLE_HUB_MOD:
+        {
+            __msg("AUDIO_DEV_CMD_ENABLE_HUB_MOD");
+            alsa_mixer_set_hub_mode(pusr->mgr, aux);
             return EPDK_OK;
         }
 

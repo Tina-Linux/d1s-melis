@@ -1,1 +1,0 @@
-obj-y += ion_memmanager.o

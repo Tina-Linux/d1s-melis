@@ -36,5 +36,4 @@ extern struct snd_pcm_ops sunxi_pcm_ops;
 extern int sunxi_pcm_new(struct snd_pcm *pcm);
 extern void sunxi_pcm_free(struct snd_pcm *pcm);
 
-
 #endif /* __SUNXI_PCM_H */

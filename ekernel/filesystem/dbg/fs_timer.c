@@ -1,20 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                                File system module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2011-2014, Sunny China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : fsys_timer.c
-* By      : Sunny
-* Version : v1.0
-* Date    : 2011-3-8
-* Descript: timer for file system debug.
-* Update  : date                auther      ver     notes
-*           2011-3-8 14:42:59   Sunny       1.0     Create this file.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "fsys_debug.h"
 #include "fs_timer.h"
@@ -89,7 +102,7 @@ static int __strtol(const char *nptr, char **endptr, int base)
    const char *p = nptr;
    long ret;
    char ch;
-   unsigned long Overflow;  //���
+   unsigned long Overflow;  //溢出
    int sign = 0, flag;
 
 
@@ -98,7 +111,7 @@ static int __strtol(const char *nptr, char **endptr, int base)
 	   return 0;
    }
 
-   /*����ǰ�����Ŀո񣬲��ж��������š�*/
+   /*跳过前面多余的空格，并判断正负符号。*/
    do{
 	  ch = *p++;
    } while (ch == ' ');
@@ -112,7 +125,7 @@ static int __strtol(const char *nptr, char **endptr, int base)
 
    for (ret = 0, flag = 0;; ch = *p++)
    {
-	  /*�ѵ�ǰ�ַ�ת��Ϊ��Ӧ��������Ҫ��ֵ��*/
+	  /*把当前字符转换为相应运算中需要的值。*/
 	   if (_isdigit(ch)){
 		   ch -= '0';
 		   ret *= base;
@@ -120,20 +133,20 @@ static int __strtol(const char *nptr, char **endptr, int base)
 	   }else
 		   break;
 
-	   /*���������������ñ�־λ���Ժ��������㡣*/
+	   /*如果产生溢出，则置标志位，以后不再做计算。*/
 	   if (ret > Overflow){
 		   flag = -1;
 	   }
    }
 
-   /* ���������򷵻���Ӧ��Overflow�ķ�ֵ��û����������Ƿ���λΪ������ת��Ϊ������*/
+   /* 如果溢出，则返回相应的Overflow的峰值。没有溢出，如是符号位为负，则转换为负数。*/
    if (flag < 0){
 	  ret = sign ? LONG_MIN : LONG_MAX;
    }else if (sign){
 	  ret = -ret;
    }
 
-   /*���ַ�����Ϊ�գ���*endptr����ָ��nptr��������ָ��ֵ������*endptr����nptr���׵�ַ��*/
+   /*如字符串不为空，则*endptr等于指向nptr结束符的指针值；否则*endptr等于nptr的首地址。*/
    if (endptr != NULL){
 	  *endptr = (char *)(flag ? (p - 1) : nptr);
    }

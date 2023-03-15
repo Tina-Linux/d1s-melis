@@ -3,9 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <time.h>
-#include <rtthread.h>
 #include <hal_mem.h>
-#include <log.h>
 #include <video/sunxi_display2.h>
 #include "disp_layer_cfg.h"
 #include "disp_mem.h"
@@ -558,5 +556,5 @@ int parse_cmdline_and_set_config(int argc, char **argv)
 
 
 
-FINSH_FUNCTION_EXPORT_ALIAS(parse_cmdline_and_set_config, disp_layer_cfg, disp set layer);
+FINSH_FUNCTION_EXPORT_ALIAS(parse_cmdline_and_set_config, disp_layer_cfg, disp_set_layer);
 

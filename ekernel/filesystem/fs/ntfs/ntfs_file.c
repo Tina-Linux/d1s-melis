@@ -21,6 +21,11 @@ static __s32 ntfs_file_open(struct inode *finode, struct file *filp)
 
     ntfs_inode *ni = NTFS_I(finode);
 
+    if (ni->da)
+    {
+        return res;
+    }
+
     ni->da = ntfs_attr_open(
                  ni,
                  AT_DATA,

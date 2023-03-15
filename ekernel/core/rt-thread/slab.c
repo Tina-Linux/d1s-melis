@@ -13,6 +13,7 @@
  * 2010-07-13     Bernard      fix RT_ALIGN issue found by kuronca
  * 2010-10-23     yi.qiu       add module memory allocator
  * 2010-12-18     yi.qiu       fix zone release bug
+ * 2020-07-18     Zeng Zhijin  support slab_debug and KASan
  */
 
 /*
@@ -1511,7 +1512,7 @@ void __internal_free(void *ptr)
 
     if (z->z_nfree > z->z_nmax)
     {
-        rt_kprintf("slab error: nfree %d, nmax %d,chunksz %d, freeptr 0x%08x.\n", z->z_nfree, z->z_nmax, z->z_chunksize, (rt_uint32_t)ptr);
+        rt_kprintf("slab error: nfree %d, nmax %d,chunksz %d, freeptr %p.\n", z->z_nfree, z->z_nmax, z->z_chunksize, ptr);
         z->z_nfree = z->z_nmax;
         z->z_nused = 0;
         heap_unlock(lock_value);
@@ -1987,5 +1988,5 @@ void slab_info(void)
 }
 
 #endif
-void *k_calloc(rt_uint32_t count, rt_uint32_t size) __attribute__((alias("rt_calloc")));
-void *k_realloc(void *mem_address, rt_uint32_t newsize)__attribute__((alias("rt_realloc")));
+void *k_calloc(rt_size_t count, rt_size_t size) __attribute__((alias("rt_calloc")));
+void *k_realloc(void *ptr, rt_size_t size) __attribute__((alias("rt_realloc")));

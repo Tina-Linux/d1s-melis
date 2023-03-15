@@ -34,7 +34,11 @@
 #define __TPADC_SUN8IW20_H__
 
 #define TPADC_BASE		0x02009c00
+#ifdef CONFIG_SOC_SUN20IW1
 #define SUNXI_RISCV_GIC		16
+#else
+#define SUNXI_RISCV_GIC		0
+#endif
 #define SUNXI_TPADC_IRQ		(94 - SUNXI_RISCV_GIC)
 
 #define OSC_24MHZ		(24000000UL)

@@ -15,7 +15,9 @@
 
 #include "platform_ce.h"
 
+#ifndef BIT
 #define BIT(nr)		(1UL << (nr))
+#endif
 
 #define AES_MIN_KEY_SIZE       16
 

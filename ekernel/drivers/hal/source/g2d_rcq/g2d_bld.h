@@ -50,5 +50,6 @@ __s32 bld_rop2_set(struct blender_submodule *p_bld, __u32 rop_cmd);
 struct blender_submodule *
 g2d_bld_submodule_setup(struct g2d_mixer_frame *p_frame);
 __s32 bld_porter_duff(struct blender_submodule *p_bld, __u32 cmd);
-
+__s32 bld_fc_set(struct blender_submodule *p_bld, __u32 sel, g2d_rect rect,
+		    int premul, __u32 color);
 #endif /*End of file*/

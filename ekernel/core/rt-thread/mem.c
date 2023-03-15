@@ -120,9 +120,9 @@ static rt_uint8_t *heap_ptr;
 static struct heap_mem *heap_end;
 
 #ifdef ARCH_CPU_64BIT
-#define MIN_SIZE 24
+#define MIN_SIZE 16
 #else
-#define MIN_SIZE 12
+#define MIN_SIZE 8
 #endif
 
 #define MIN_SIZE_ALIGNED     RT_ALIGN(MIN_SIZE, RT_ALIGN_SIZE)
@@ -272,7 +272,7 @@ void rt_system_heap_init(void *begin_addr, void *end_addr)
  *
  * @return pointer to allocated memory or NULL if no free memory was found.
  */
-void *rt_malloc(rt_size_t size)
+void *__internal_malloc(rt_size_t size)
 {
     rt_size_t ptr, ptr2;
     struct heap_mem *mem, *mem2;
@@ -427,7 +427,7 @@ void *rt_malloc(rt_size_t size)
 
     return RT_NULL;
 }
-RTM_EXPORT(rt_malloc);
+RTM_EXPORT(__internal_malloc);
 
 /**
  * This function will change the previously allocated memory block.
@@ -566,7 +566,7 @@ RTM_EXPORT(rt_calloc);
  *
  * @param rmem the address of memory which will be released
  */
-void rt_free(void *rmem)
+void __internal_free(void *rmem)
 {
     struct heap_mem *mem;
 
@@ -632,7 +632,7 @@ void rt_free(void *rmem)
     plug_holes(mem);
     rt_sem_release(&heap_sem);
 }
-RTM_EXPORT(rt_free);
+RTM_EXPORT(__internal_free);
 
 #ifdef RT_MEM_STATS
 void rt_memory_info(rt_uint32_t *total,

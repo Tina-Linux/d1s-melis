@@ -30,11 +30,16 @@
 * OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <stdio.h>
+#include <string.h>
 #include <sound/snd_core.h>
 #include <sound/snd_pcm.h>
 #include <sound/snd_dma.h>
 #include <sound/dma_wrap.h>
 #include "sunxi-pcm.h"
+
+#ifdef CONFIG_SND_PLATFORM_SUNXI_MAD
+#include "sunxi-mad.h"
+#endif
 
 #ifndef sunxi_slave_id
 #define sunxi_slave_id(d, s) (((d)<<16) | (s))
@@ -100,14 +105,18 @@ int sunxi_pcm_new(struct snd_pcm *pcm)
 	if (pcm->streams[SNDRV_PCM_STREAM_PLAYBACK]) {
 		ret = sunxi_pcm_preallocate_dma_buffer(pcm,
 						SNDRV_PCM_STREAM_PLAYBACK);
-		if (ret != 0)
+		if (ret != 0) {
+			snd_err("dma buffer malloc failed\n");
 			goto err;
+		}
 	}
 	if (pcm->streams[SNDRV_PCM_STREAM_CAPTURE]) {
 		ret = sunxi_pcm_preallocate_dma_buffer(pcm,
 						SNDRV_PCM_STREAM_CAPTURE);
-		if (ret != 0)
+		if (ret != 0) {
+			snd_err("dma buffer malloc failed\n");
 			goto err;
+		}
 	}
 err:
 	return 0;
@@ -165,13 +174,11 @@ static int sunxi_pcm_hw_params(struct snd_pcm_substream *substream,
 	int ret;
 	struct snd_card *card = substream->pcm->card;
 	struct snd_dai *cpu_dai = card->platform->cpu_dai;
-//	struct dmaengine_pcm_runtime_data *prtd = substream->runtime->private_data;
 	struct dma_chan *chan = snd_dmaengine_pcm_get_chan(substream);
 	struct dma_slave_config slave_config = {0};
 	struct sunxi_dma_params *dmap;
 #ifdef CONFIG_SND_PLATFORM_SUNXI_MAD
-	struct snd_platform *platform = cpu_dai->component;
-	unsigned int mad_bind = 0;
+	bool mad_bind = false;
 #endif
 
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
@@ -186,19 +193,32 @@ static int sunxi_pcm_hw_params(struct snd_pcm_substream *substream,
 	}
 	slave_config.dst_maxburst = dmap->dst_maxburst;
 	slave_config.src_maxburst = dmap->src_maxburst;
+
 #ifdef CONFIG_SND_PLATFORM_SUNXI_MAD
 	if (substream->stream == SNDRV_PCM_STREAM_CAPTURE) {
-		if (!strncmp(card->name, "snddmic", 7)) {
-			struct sunxi_dmic_info *sunxi_dmic = platform->private_data;
-			mad_bind = sunxi_dmic->mad_priv.mad_bind;
+		if (!strncmp(card->name, "audiocodecadc", 13)) {
+			ret = sunxi_mad_bind_get(MAD_PATH_CODECADC, &mad_bind);
+			if (ret) {
+				mad_bind = false;
+				snd_err("get mad_bind failed, path: %d\n", MAD_PATH_CODECADC);
+			}
+		} else if (!strncmp(card->name, "snddmic", 7)) {
+			ret = sunxi_mad_bind_get(MAD_PATH_DMIC, &mad_bind);
+			if (ret) {
+				mad_bind = false;
+				snd_err("get mad_bind failed, path: %d\n", MAD_PATH_DMIC);
+			}
 		} else if (!strncmp(card->name, "snddaudio0", 10)) {
-			struct sunxi_daudio_info *sunxi_daudio = platform->private_data;
-			mad_bind = sunxi_daudio->mad_priv.mad_bind;
+			ret = sunxi_mad_bind_get(MAD_PATH_I2S0, &mad_bind);
+			if (ret) {
+				mad_bind = false;
+				snd_err("get mad_bind failed, path: %d\n", MAD_PATH_I2S0);
+			}
 		}
-		printf(SNDRV_LOG_COLOR_BLUE "mad_bind[%s]: %s\n" SNDRV_LOG_COLOR_NONE,
-				card->name, mad_bind ? "On":"Off");
-		if (mad_bind == 1)
+		snd_info("mad_bind[%s]: %s\n", card->name, mad_bind ? "On":"Off");
+		if (mad_bind) {
 			slave_config.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+		}
 	}
 #endif
 
@@ -209,8 +229,7 @@ static int sunxi_pcm_hw_params(struct snd_pcm_substream *substream,
 	} else {
 		slave_config.src_addr = (unsigned long)dmap->dma_addr;
 		slave_config.dst_addr_width = slave_config.src_addr_width;
-		slave_config.slave_id = sunxi_slave_id(0,
-						dmap->dma_drq_type_num);
+		slave_config.slave_id = sunxi_slave_id(0, dmap->dma_drq_type_num);
 	}
 	snd_info("src_addr:%p, dst_addr:%p, drq_type:%d\n",
 		slave_config.src_addr, slave_config.dst_addr,
@@ -236,7 +255,7 @@ static int sunxi_pcm_hw_free(struct snd_pcm_substream *substream)
 
 static int sunxi_pcm_trigger(struct snd_pcm_substream *substream, int cmd)
 {
-	snd_print(" stream:%u, cmd:%u\n", substream->stream, cmd);
+	snd_info("stream:%u, cmd:%u\n", substream->stream, cmd);
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
 		switch (cmd) {
 		case SNDRV_PCM_TRIGGER_START:

@@ -55,11 +55,11 @@ struct messagebox *msgbox_init_sx(enum msgbox_direction dir)
 	msg_ops_init_sx(mb);
 
 	if (dir == MSGBOX_DIRECTION_CPU) {
-		irq_request(SUNXI_DSP_IRQ_MSGBOX0_DSP, msg_irq_handler_sx, mb);
-		irq_enable(SUNXI_DSP_IRQ_MSGBOX0_DSP);
+		hal_request_irq(SUNXI_DSP_IRQ_MSGBOX0_DSP, msg_irq_handler_sx, "msgbox-dsp", mb);
+		hal_enable_irq(SUNXI_DSP_IRQ_MSGBOX0_DSP);
 	} else {
-		irq_request(SUNXI_DSP_IRQ_R_MSGBOX_DSP, msg_irq_handler_sx, mb);
-		irq_enable(SUNXI_DSP_IRQ_R_MSGBOX_DSP);
+		hal_request_irq(SUNXI_DSP_IRQ_R_MSGBOX_DSP, msg_irq_handler_sx, "msgbox-dsp-s"mb);
+		hal_enable_irq(SUNXI_DSP_IRQ_R_MSGBOX_DSP);
 	}
 
 	return mb;
@@ -67,7 +67,7 @@ struct messagebox *msgbox_init_sx(enum msgbox_direction dir)
 
 void msgbox_uninit_sx(struct messagebox *mb)
 {
-	irq_free(SUNXI_DSP_IRQ_MSGBOX0_DSP);
+	hal_free_irq(SUNXI_DSP_IRQ_MSGBOX0_DSP);
 	vPortFree(mb);
 }
 

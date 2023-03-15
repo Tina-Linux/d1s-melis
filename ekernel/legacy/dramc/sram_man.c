@@ -1,28 +1,42 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                             SRAM Manager Module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2006-2011, kevin.z China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : sram_man.c
-* By      : kevin.z
-* Version : v1.0
-* Date    : 2010-12-23 13:15
-* Descript:
-* Update  : date                auther      ver     notes
-*           2010-12-23 13:15    kevin.z     1.0     build the file;
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <kapi.h>
 #include <string.h>
 #include <port.h>
 #include <log.h>
 #include "sram_man.h"
-#include <rtthread.h>
 #include <arch.h>
+
+#include <hal_mem.h>
 
 static csp_sram_blk_manager     SramBlkManager;
 
@@ -40,7 +54,7 @@ static csp_sram_blk_manager     SramBlkManager;
 * By        :   holigun
 * Version   :   V1.00
 * Description :
-*       ”…”⁄SRAMª˘±æ…œ Ù”⁄ƒ≥–©ƒ£øÈµƒ∂¿’º∫Ûª®‘∞£¨À˘“‘√ª”–±ÿ“™Õ≥“ªπ‹¿Ì£¨’‚¿Ô÷ªÃ·π©–Èƒ‚µÿ÷∑µƒ≤È—Ø∑˛ŒÒ.
+*       Áî±‰∫éSRAMÂü∫Êú¨‰∏äÂ±û‰∫éÊüê‰∫õÊ®°ÂùóÁöÑÁã¨Âç†ÂêéËä±Âõ≠ÔºåÊâÄ‰ª•Ê≤°ÊúâÂøÖË¶ÅÁªü‰∏ÄÁÆ°ÁêÜÔºåËøôÈáåÂè™Êèê‰æõËôöÊãüÂú∞ÂùÄÁöÑÊü•ËØ¢ÊúçÂä°.
 *         just for aw1619
 * History    :
 *               <author>            <date>              <note>
@@ -126,7 +140,7 @@ int32_t sram_exit(void)
 *             SRAM_get_virt_base
 *
 *  Description:
-*       get virt base address£¨for extension
+*       get virt base addressÔºåfor extension
 *
 *  Parameters:
 *
@@ -182,7 +196,7 @@ int32_t sram_zone_info_get(uint32_t zone_index, struct sram_zone_info *p_zone_in
     {
         return EBSP_FALSE;
     }
-    rt_memset(p_zone_info, 0, sizeof(csp_sram_zone_info_t));
+    memset(p_zone_info, 0, sizeof(csp_sram_zone_info_t));
     p_zone_info->zone_id = (csp_sram_zone_id_t)zone_index;
 
     return EBSP_TRUE;
@@ -310,7 +324,7 @@ int32_t mem_sram_init(void)
     sram_init();
 
     //clear sram block manager
-    rt_memset((void *)&SramBlkManager, 0, sizeof(csp_sram_blk_manager));
+    memset((void *)&SramBlkManager, 0, sizeof(csp_sram_blk_manager));
 
     //request memory for sram block manager
     SramBlkManager.nBlkCnt = sram_zone_number_get();
@@ -321,14 +335,14 @@ int32_t mem_sram_init(void)
         return EPDK_FAIL;
     }
 
-    SramBlkManager.pBlkLst = (csp_sram_blk_node_t *)rt_malloc(SramBlkManager.nBlkCnt * sizeof(csp_sram_blk_node_t));
+    SramBlkManager.pBlkLst = (csp_sram_blk_node_t *)hal_malloc(SramBlkManager.nBlkCnt * sizeof(csp_sram_blk_node_t));
     if (SramBlkManager.pBlkLst == (csp_sram_blk_node_t *)0)
     {
         __wrn("request memory for sram manager failed!");
         mem_sram_exit();
         return EPDK_FAIL;
     }
-    rt_memset((void *)SramBlkManager.pBlkLst, 0, SramBlkManager.nBlkCnt * sizeof(csp_sram_blk_node_t));
+    memset((void *)SramBlkManager.pBlkLst, 0, SramBlkManager.nBlkCnt * sizeof(csp_sram_blk_node_t));
 
     for (i = 0; i < SramBlkManager.nBlkCnt; i++)
     {
@@ -379,7 +393,7 @@ int32_t mem_sram_exit(void)
         }
 
         //release memory
-        rt_free((void *)SramBlkManager.pBlkLst);
+        hal_free((void *)SramBlkManager.pBlkLst);
         SramBlkManager.pBlkLst = 0;
     }
 
@@ -547,8 +561,3 @@ int32_t esMEM_SramRelBlk(intptr_t* hSram)
 
     return result;
 }
-
-
-
-
-

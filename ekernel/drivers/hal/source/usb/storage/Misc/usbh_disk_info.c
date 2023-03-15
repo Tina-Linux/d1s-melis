@@ -12,26 +12,24 @@
 * Version       : 1.0
 *
 * Date          : 2009.08.18
-*
-* Description   : hostÖ§³Öº£Á¿´æ´¢ÀàÊ±ºòµÄ¶ÁĞ´×´¿ö»ñÈ¡
+
+* Description   : hostæ”¯æŒæµ·é‡å­˜å‚¨ç±»æ—¶å€™çš„è¯»å†™çŠ¶å†µè·å–
 *
 * History       :
 *
 *
 ********************************************************************************************************************
 */
-#include  "usb_os_platform.h"
-#include  "list_head_ext.h"
-#include  "usbh_disk_info.h"
-#include  "error.h"
-#include  "usb_msc_i.h"
+#include "usb_list.h"
+#include "usb_msc_i.h"
+#include "usbh_disk_info.h"
 
-static usbh_disk_info_t usbh_disk_info;  /* handle */
-static unsigned int  usb_disk_status = 0;         /* disk status */
+static usbh_disk_info_t usbh_disk_info;	 /* handle */
+static unsigned int usb_disk_status = 0; /* disk status */
 
 static int usbh_disk_GetDeviceInfo(usbh_disk_info_t *disk_info,
-                                     char *DeviceName,
-                                     usbhDeivceInfo_t *usbhDeivceInfo);
+				   char *DeviceName,
+				   usbhDeivceInfo_t *usbhDeivceInfo);
 
 /*
 *********************************************************************
@@ -44,16 +42,18 @@ static int usbh_disk_GetDeviceInfo(usbh_disk_info_t *disk_info,
 * Returns:
 *    void
 * note:
-*    ÎŞ
+*    æ— 
 *
 *********************************************************************
 */
 void set_usbh_disk_status(unsigned int status)
 {
-    unsigned int cpu_sr = 0;
-    ENTER_CRITICAL(cpu_sr);
-    usb_disk_status = status;
-    EXIT_CRITICAL(cpu_sr);
+	unsigned int cpu_sr = 0;
+	// ENTER_CRITICAL(cpu_sr);
+	hal_interrupt_disable();
+	usb_disk_status = status;
+	hal_interrupt_enable();
+	// EXIT_CRITICAL(cpu_sr);
 }
 
 /*
@@ -67,13 +67,36 @@ void set_usbh_disk_status(unsigned int status)
 * Returns:
 *    void
 * note:
-*    ÎŞ
+*    æ— 
 *
 *********************************************************************
 */
 unsigned int get_usbh_disk_status(void)
 {
-    return usb_disk_status;
+	return usb_disk_status;
+}
+
+#ifdef CONFIG_OS_MELIS
+/*
+*********************************************************************
+*                     usbh_disk_info_open
+*
+* Description:
+*
+* Arguments:
+*
+* Returns:
+*
+* note:
+*
+*
+*********************************************************************
+*/
+static void *usbh_disk_info_open(void *open_arg, uint32_t mode)
+{
+	usbh_disk_info_t *info = &usbh_disk_info;
+	info->cnt++;
+	return (void *)info;
 }
 
 /*
@@ -91,11 +114,17 @@ unsigned int get_usbh_disk_status(void)
 *
 *********************************************************************
 */
-static void *  usbh_disk_info_open(void *open_arg, uint32_t mode)
+static int32_t usbh_disk_info_close(void *hDev)
 {
-    usbh_disk_info_t *info = &usbh_disk_info;
-    info->cnt++;
-    return (void *)info;
+	usbh_disk_info_t *info = &usbh_disk_info;
+
+	if (hDev != (void *)info) {
+		hal_log_err("PANIC : usbh_disk_info_close() : handle error\n");
+		return EPDK_FAIL;
+	}
+
+	info->cnt--;
+	return EPDK_OK;
 }
 
 /*
@@ -113,40 +142,10 @@ static void *  usbh_disk_info_open(void *open_arg, uint32_t mode)
 *
 *********************************************************************
 */
-static int32_t usbh_disk_info_close(void * hDev)
+static uint32_t usbh_disk_info_read(void *pBuffer, uint32_t blk, uint32_t n, void *hDev)
 {
-    usbh_disk_info_t *info = &usbh_disk_info;
-
-    if (hDev != (void *)info)
-    {
-        hal_log_err("PANIC : usbh_disk_info_close() : handle error\n");
-        return EPDK_FAIL;
-    }
-
-    info->cnt--;
-    return EPDK_OK;
-}
-
-
-/*
-*********************************************************************
-*                     usbh_disk_info_open
-*
-* Description:
-*
-* Arguments:
-*
-* Returns:
-*
-* note:
-*
-*
-*********************************************************************
-*/
-static uint32_t usbh_disk_info_read(void *pBuffer, uint32_t blk, uint32_t n, void * hDev)
-{
-    hal_log_err("WARN : usbh_disk_info_read() : can read nothing\n");
-    return 0;
+	hal_log_err("WARN : usbh_disk_info_read() : can read nothing\n");
+	return 0;
 }
 
 /*
@@ -164,10 +163,10 @@ static uint32_t usbh_disk_info_read(void *pBuffer, uint32_t blk, uint32_t n, voi
 *
 *********************************************************************
 */
-static uint32_t usbh_disk_info_write(const void *pBuffer, uint32_t blk, uint32_t n, void * hDev)
+static uint32_t usbh_disk_info_write(const void *pBuffer, uint32_t blk, uint32_t n, void *hDev)
 {
-    hal_log_err("WARN : usbh_disk_info_write() : can write nothing\n");
-    return 0;
+	hal_log_err("WARN : usbh_disk_info_write() : can write nothing\n");
+	return 0;
 }
 
 /*
@@ -185,53 +184,126 @@ static uint32_t usbh_disk_info_write(const void *pBuffer, uint32_t blk, uint32_t
 *
 *********************************************************************
 */
-static int32_t usbh_disk_info_ioctrl(void * hDev, uint32_t Cmd, long Aux, void *pBuffer)
+static int32_t usbh_disk_info_ioctrl(void *hDev, uint32_t Cmd, long Aux, void *pBuffer)
 {
-    usbh_disk_info_t *info = &usbh_disk_info;
+	usbh_disk_info_t *info = &usbh_disk_info;
 
-    if (hDev != (void *)info)
-    {
-        hal_log_err("ERR : handle error, (0x%x, 0x%x)\n", hDev, info);
-        return EPDK_FAIL;
-    }
+	if (hDev != (void *)info) {
+		hal_log_err("ERR : handle error, (0x%x, 0x%x)\n", hDev, info);
+		return EPDK_FAIL;
+	}
 
-    switch (Cmd)
-    {
-        case USB_DEVICE_INFO_USER_CMD_GET_DISK_STATUS:  //read¶ÁÈ¡µ±Ç°ËùÓĞlunµÄ¶ÁĞ´×´Ì¬
-        {
-            unsigned int *p_status = (unsigned int *)pBuffer;
+	switch (Cmd) {
+	case USB_DEVICE_INFO_USER_CMD_GET_DISK_STATUS:	// readè¯»å–å½“å‰æ‰€æœ‰lunçš„è¯»å†™çŠ¶æ€
+	{
+		unsigned int *p_status = (unsigned int *)pBuffer;
 
-            if (pBuffer == NULL)
-            {
-                hal_log_err("PANIC : usbh_disk_info_ioctrl() : buff == NULL, error\n");
-                return EPDK_FAIL;
-            }
+		if (pBuffer == NULL) {
+			hal_log_err("PANIC : usbh_disk_info_ioctrl() : buff == NULL, error\n");
+			return EPDK_FAIL;
+		}
 
-            *p_status = get_usbh_disk_status();
-        }
-        break;
+		*p_status = get_usbh_disk_status();
+	} break;
 
-        case USB_DEVICE_INFO_USER_CMD_GET_DEVICE_INFO:
-            return usbh_disk_GetDeviceInfo(&usbh_disk_info, (char *)Aux, (usbhDeivceInfo_t *)pBuffer);
+	case USB_DEVICE_INFO_USER_CMD_GET_DEVICE_INFO:
+		return usbh_disk_GetDeviceInfo(&usbh_disk_info, (char *)Aux, (usbhDeivceInfo_t *)pBuffer);
 
-        //break;
+		// break;
 
-        default:
-            hal_log_err("ERR : usbh_disk_info_ioctrl(), unkown cmd(0x%x)\n", Cmd);
-            return EPDK_FAIL;
-    }
+	default:
+		hal_log_err("ERR : usbh_disk_info_ioctrl(), unkown cmd(0x%x)\n", Cmd);
+		return EPDK_FAIL;
+	}
 
-    return EPDK_OK;
+	return EPDK_OK;
 }
 
-static __dev_devop_t usbh_disk_info_op =
-{
-    usbh_disk_info_open,
-    usbh_disk_info_close,
-    usbh_disk_info_read,
-    usbh_disk_info_write,
-    usbh_disk_info_ioctrl
+static __dev_devop_t usbh_disk_info_op ={
+	usbh_disk_info_open,
+	usbh_disk_info_close,
+	usbh_disk_info_read,
+	usbh_disk_info_write,
+	usbh_disk_info_ioctrl
 };
+#elif defined(CONFIG_KERNEL_FREERTOS)
+
+static int usbh_disk_info_open(struct devfs_node *node)
+{
+	usbh_disk_info_t *info = &usbh_disk_info;
+	info->cnt++;
+	return 1;
+}
+
+static int32_t usbh_disk_info_close(struct devfs_node *node)
+{
+	usbh_disk_info_t *info = &usbh_disk_info;
+
+	if (node->private != (void *)info) {
+		hal_log_err("PANIC : usbh_disk_info_close() : handle error\n");
+		return EPDK_FAIL;
+	}
+
+	info->cnt--;
+	return EPDK_OK;
+}
+
+static uint32_t usbh_disk_info_read(struct devfs_node *node,
+				    uint32_t addr,
+				    uint32_t size,
+				    void *data)
+{
+	hal_log_err("WARN : usbh_disk_info_read() : can read nothing\n");
+	return 0;
+}
+
+static uint32_t usbh_disk_info_write(struct devfs_node *node,
+				     uint32_t addr,
+				     uint32_t size,
+				     void *data)
+{
+	hal_log_err("WARN : usbh_disk_info_write() : can write nothing\n");
+	return 0;
+}
+
+static int32_t usbh_disk_info_ioctrl(struct devfs_node *node, int Cmd, void *args[2])
+{
+	usbh_disk_info_t *info = &usbh_disk_info;
+
+	long Aux = (long)args[0];
+	void *pBuffer = args[1];
+
+	if (node->private != (void *)info) {
+		hal_log_err("ERR : handle error, (0x%x)\n", info);
+		return EPDK_FAIL;
+	}
+
+	switch (Cmd) {
+	case USB_DEVICE_INFO_USER_CMD_GET_DISK_STATUS:	// readè¯»å–å½“å‰æ‰€æœ‰lunçš„è¯»å†™çŠ¶æ€
+	{
+		unsigned int *p_status = (unsigned int *)pBuffer;
+
+		if (pBuffer == NULL) {
+			hal_log_err("PANIC : usbh_disk_info_ioctrl() : buff == NULL, error\n");
+			return EPDK_FAIL;
+		}
+
+		*p_status = get_usbh_disk_status();
+	} break;
+
+	case USB_DEVICE_INFO_USER_CMD_GET_DEVICE_INFO:
+		return usbh_disk_GetDeviceInfo(&usbh_disk_info, (char *)Aux,
+					       (usbhDeivceInfo_t *)pBuffer);
+
+	default:
+		hal_log_err("ERR : usbh_disk_info_ioctrl(), unkown cmd(0x%x)\n", Cmd);
+		return EPDK_FAIL;
+	}
+
+	return EPDK_OK;
+}
+
+#endif
 
 /*
 *********************************************************************
@@ -253,14 +325,13 @@ static __dev_devop_t usbh_disk_info_op =
 */
 void usbh_disk_SaveDeviceInfo(usbh_disk_device_info_t *device_info)
 {
-    usbh_disk_info_t *disk_info = &usbh_disk_info;
+	usbh_disk_info_t *disk_info = &usbh_disk_info;
 
-    if (device_info == NULL)
-    {
+	if (device_info == NULL) {
 		hal_log_err("ERR: input error\n");
-        return ;
-    }
-    list_head_malloc_and_add((void *)device_info, &(disk_info->device_list));
+		return;
+	}
+	list_head_malloc_and_add((void *)device_info, &(disk_info->device_list));
 }
 
 /*
@@ -283,15 +354,14 @@ void usbh_disk_SaveDeviceInfo(usbh_disk_device_info_t *device_info)
 */
 void usbh_disk_FreeDeviceInfo(usbh_disk_device_info_t *device_info)
 {
-    usbh_disk_info_t *disk_info = &usbh_disk_info;
+	usbh_disk_info_t *disk_info = &usbh_disk_info;
 
-    if (device_info == NULL)
-    {
-        hal_log_err("ERR: input error\n");
-        return ;
-    }
+	if (device_info == NULL) {
+		hal_log_err("ERR: input error\n");
+		return;
+	}
 
-    list_del_node_by_data((void *)device_info, &(disk_info->device_list));
+	list_del_node_by_data((void *)device_info, &(disk_info->device_list));
 }
 
 /*
@@ -313,56 +383,53 @@ void usbh_disk_FreeDeviceInfo(usbh_disk_device_info_t *device_info)
 *********************************************************************
 */
 static int usbh_disk_GetDeviceInfo(usbh_disk_info_t *disk_info,
-                                     char *DeviceName,
-                                     usbhDeivceInfo_t *usbhDeivceInfo)
+				   char *DeviceName,
+				   usbhDeivceInfo_t *usbhDeivceInfo)
 {
-    struct usb_list_head *head      = NULL;
-    struct usb_list_head *list_now  = NULL;
-    struct usb_list_head *list_next = NULL;
-    usbh_disk_device_info_t *device_info = NULL;
-    unsigned int is_find = 0;
+	struct usb_list_head *head = NULL;
+	struct usb_list_head *list_now = NULL;
+	struct usb_list_head *list_next = NULL;
+	usbh_disk_device_info_t *device_info = NULL;
+	unsigned int is_find = 0;
 
-    if (DeviceName == NULL || disk_info == NULL)
-    {
-        hal_log_err("ERR: input error\n");
-        return EPDK_FAIL;
-    }
+	if (DeviceName == NULL || disk_info == NULL) {
+		hal_log_err("ERR: input error\n");
+		return EPDK_FAIL;
+	}
 
-    head = &(disk_info->device_list);
-    list_now = head->next;
+	head = &(disk_info->device_list);
+	list_now = head->next;
 
-    while (head != list_now)
-    {
-        list_next = list_now->next;
-        device_info = (usbh_disk_device_info_t *)list_now->data;
+	while (head != list_now) {
+		list_next = list_now->next;
+		device_info = (usbh_disk_device_info_t *)list_now->data;
 
-        if (device_info)
-        {
-            /* ÕÒµ½¶ÔÓ¦µÄÉè±¸ */
-            if (strcmp(DeviceName, device_info->DeviceName) == 0)
-            {
-                memcpy(usbhDeivceInfo, &device_info->DeivceInfo, sizeof(usbhDeivceInfo_t));
-                is_find = 1;
-            }
-        }
+		if (device_info) {
+			/* æ‰¾åˆ°å¯¹åº”çš„è®¾å¤‡ */
+			if (strcmp(DeviceName, device_info->DeviceName) == 0) {
+				memcpy(usbhDeivceInfo, &device_info->DeivceInfo,
+				       sizeof(usbhDeivceInfo_t));
+				is_find = 1;
+			}
+		}
 
-        list_now = list_next;
-    }
+		list_now = list_next;
+	}
 
-    if (is_find)
-    {
-        return EPDK_OK;
-    }
+	if (is_find) {
+		return EPDK_OK;
+	}
 
-    return EPDK_FAIL;
+	return EPDK_FAIL;
 }
 
+#ifdef CONFIG_OS_MELIS
 /*
 *********************************************************************
 *                     usbh_disk_info_open
 *
 * Description:
-*     sdĞÅÏ¢Éè±¸£¬Ä¿Ç°Ö÷ÒªÓÃÓÚ¼à²âsdÉè±¸µÄ¶ÁĞ´Çé¿ö
+*     sdä¿¡æ¯è®¾å¤‡ï¼Œç›®å‰ä¸»è¦ç”¨äºç›‘æµ‹sdè®¾å¤‡çš„è¯»å†™æƒ…å†µ
 * Arguments:
 *
 * Returns:
@@ -374,19 +441,19 @@ static int usbh_disk_GetDeviceInfo(usbh_disk_info_t *disk_info,
 */
 int usbh_disk_info_reg(void)
 {
-    usbh_disk_info_t *info = &usbh_disk_info;
-    usb_disk_status = 0;
-    memset(info, 0, sizeof(usbh_disk_info_t));
-    USB_INIT_LIST_HEAD(&info->device_list);
-	info->reghandle = esDEV_DevReg(DEV_CLASS_USERDEF, USB_DEVICE_INFO_NAME, &usbh_disk_info_op, NULL);
+	usbh_disk_info_t *info = &usbh_disk_info;
+	usb_disk_status = 0;
+	memset(info, 0, sizeof(usbh_disk_info_t));
+	USB_INIT_LIST_HEAD(&info->device_list);
+	info->reghandle = esDEV_DevReg(DEV_CLASS_USERDEF, USB_DEVICE_INFO_NAME,
+					&usbh_disk_info_op, NULL);
 
-    if (info->reghandle == NULL)
-    {
-        hal_log_err("ERR: register to the block layer failed.\n");
-        return -1;
-    }
+	if (info->reghandle == NULL) {
+		hal_log_err("ERR: register to the block layer failed.\n");
+		return -1;
+	}
 
-    return 0;
+	return 0;
 }
 
 /*
@@ -394,7 +461,7 @@ int usbh_disk_info_reg(void)
 *                     usbh_disk_info_open
 *
 * Description:
-*     sdĞÅÏ¢Éè±¸£¬Ä¿Ç°Ö÷ÒªÓÃÓÚ¼à²âsdÉè±¸µÄ¶ÁĞ´Çé¿ö
+*     sdä¿¡æ¯è®¾å¤‡ï¼Œç›®å‰ä¸»è¦ç”¨äºç›‘æµ‹sdè®¾å¤‡çš„è¯»å†™æƒ…å†µ
 * Arguments:
 *
 * Returns:
@@ -406,18 +473,67 @@ int usbh_disk_info_reg(void)
 */
 int usbh_disk_info_unreg(void)
 {
-    usbh_disk_info_t *info = &usbh_disk_info;
-    int ret = 0;
+	usbh_disk_info_t *info = &usbh_disk_info;
+	int ret = 0;
 
-    if (info->reghandle == NULL)
-    {
-        hal_log_err("ERR: usbh_disk_info_unreg: info->reghandle == NULL\n");
-        return -1;
-    }
+	if (info->reghandle == NULL) {
+		hal_log_err("ERR: usbh_disk_info_unreg: info->reghandle == NULL\n");
+		return -1;
+	}
 
 	ret = esDEV_DevUnreg(info->reghandle);
-    memset(info, 0, sizeof(usbh_disk_info_t));
-    return ret;
+	memset(info, 0, sizeof(usbh_disk_info_t));
+	return ret;
+}
+#elif defined(CONFIG_KERNEL_FREERTOS)
+int usbh_disk_info_reg(void)
+{
+	struct devfs_node *dev_node = NULL;
+	int ret = -1;
+
+	usbh_disk_info_t *info = &usbh_disk_info;
+	usb_disk_status = 0;
+	memset(info, 0, sizeof(usbh_disk_info_t));
+	USB_INIT_LIST_HEAD(&info->device_list);
+
+	dev_node = hal_malloc(sizeof(*dev_node));
+	if (!dev_node) {
+		return -1;
+	}
+	memset(dev_node, 0, sizeof(*dev_node));
+	dev_node->open = usbh_disk_info_open;
+	dev_node->close = usbh_disk_info_close;
+	dev_node->read = (void *)usbh_disk_info_read;
+	dev_node->write = (void *)usbh_disk_info_write;
+	dev_node->name = USB_DEVICE_INFO_NAME;
+	dev_node->alias = USB_DEVICE_INFO_NAME;
+	dev_node->private = info;
+	dev_node->size = 1;
+
+	ret = devfs_add_node(dev_node);
+	if (ret) {
+		hal_log_err("ERR: register to the block layer failed.\n");
+		return -1;
+	}
+	info->reghandle = dev_node;
+
+	return 0;
 }
 
+int usbh_disk_info_unreg(void)
+{
+	usbh_disk_info_t *info = &usbh_disk_info;
+	int ret = 0;
 
+	if (info->reghandle == NULL) {
+		hal_log_err("ERR: usbh_disk_info_unreg: info->reghandle == NULL\n");
+		return -1;
+	}
+
+	devfs_del_node(info->reghandle);
+	memset(info, 0, sizeof(usbh_disk_info_t));
+	hal_free(info->reghandle);
+	return ret;
+}
+
+#endif

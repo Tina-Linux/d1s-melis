@@ -43,6 +43,7 @@ s32 plat_get_irq_no(u32 index, u32 *data)
 	return 0;
 }
 
+#ifndef CONFIG_ARCH_SUN8IW19
 s32 plat_get_clk(char *name, hal_clk_id_t *data)
 {
 	static int init_get_clk = 0;
@@ -51,7 +52,11 @@ s32 plat_get_clk(char *name, hal_clk_id_t *data)
 	if (!init_get_clk) {
 		for (i = 0; i < g_clk_no_len; ++i) {
 			g_clk_no[i].clk = hal_clock_get(HAL_SUNXI_CCU, g_clk_no[i].clk_id);
+#if defined(CONFIG_ARCH_SUN20IW2)
+			g_clk_no[i].clk_parent = hal_clock_get(HAL_SUNXI_AON_CCU, g_clk_no[i].clk_parent_id);
+#else
 			g_clk_no[i].clk_parent = hal_clock_get(HAL_SUNXI_CCU, g_clk_no[i].clk_parent_id);
+#endif
 			g_clk_no[i].rst = hal_reset_control_get(HAL_SUNXI_RESET, g_clk_no[i].rst_id);
 		}
 		init_get_clk = 1;
@@ -65,6 +70,15 @@ s32 plat_get_clk(char *name, hal_clk_id_t *data)
 	*data = g_clk_no[i].clk_id;
 	return 0;
 }
+#else
+s32 plat_get_clk(u32 index, hal_clk_id_t *data)
+{
+	if (index >= g_clk_no_len || !data)
+		return -1;
+	*data = g_clk_no[index].clk_id;
+	return 0;
+}
+#endif
 
 s32 plat_get_clk_parent(hal_clk_id_t clk, hal_clk_id_t *parent)
 {
@@ -84,6 +98,7 @@ s32 plat_get_clk_from_id(hal_clk_id_t clk_id, hal_clk_t *clk, struct reset_contr
 {
 	u32 i = 0;
 	*rst = NULL;
+#ifndef CONFIG_ARCH_SUN8IW19
 	for (i = 0; i < g_clk_no_len; ++i) {
 		if (g_clk_no[i].clk_id == clk_id) {
 			*clk = g_clk_no[i].clk;
@@ -93,6 +108,9 @@ s32 plat_get_clk_from_id(hal_clk_id_t clk_id, hal_clk_t *clk, struct reset_contr
 			*clk = g_clk_no[i].clk_parent;
 		}
 	}
+#else
+	*clk = clk_id;
+#endif
 
 	return (i == g_clk_no_len) ? -1 : 0;
 

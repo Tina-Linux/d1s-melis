@@ -19,13 +19,13 @@
 *
 ********************************************************************************************************************
 */
-#include  "usbh_buff_manager.h"
-#include  "usb_msc_i.h"
-#include  "Scsi2.h"
-#include  "BlkDev.h"
-#include  "CD.h"
-#include  "error.h"
+#include "usbh_buff_manager.h"
+#include "usb_msc_i.h"
+#include "BlkDev.h"
+#include "Scsi2.h"
+#include "CD.h"
 
+#ifdef CONFIG_OS_MELIS
 /*
 *******************************************************************************
 *                     DiskOpen
@@ -37,34 +37,32 @@
 *
 *
 * Return value:
-*    0  £∫≥…π¶
-*   !0  £∫ ß∞‹
+*    0  ÔºöÊàêÂäü
+*   !0  ÔºöÂ§±Ë¥•
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
 static void *DiskOpen(void *open_arg, uint32_t mode)
 {
-    __UsbBlkDev_t *BlkDev = NULL;
+	__UsbBlkDev_t *BlkDev = NULL;
 
-    if (open_arg == NULL)
-    {
-        hal_log_err("ERR: DiskOpen: input error, open_arg = %x", open_arg);
-        return NULL;
-    }
+	if (open_arg == NULL) {
+		hal_log_err("ERR: DiskOpen: input error, open_arg = %x", open_arg);
+		return NULL;
+	}
 
-    BlkDev = (__UsbBlkDev_t *)open_arg;
+	BlkDev = (__UsbBlkDev_t *)open_arg;
 
-    if (BlkDev->Magic != USB_BLK_DEV_MAGIC)
-    {
-        hal_log_err("ERR: DiskOpen: BlkDev Magic(%x) is invalid", BlkDev->Magic);
-        return NULL;
-    }
+	if (BlkDev->Magic != USB_BLK_DEV_MAGIC) {
+		hal_log_err("ERR: DiskOpen: BlkDev Magic(%x) is invalid", BlkDev->Magic);
+		return NULL;
+	}
 
-    BlkDev->used++;
-    return (void *)open_arg;
+	BlkDev->used++;
+	return (void *)open_arg;
 }
 
 /*
@@ -78,34 +76,32 @@ static void *DiskOpen(void *open_arg, uint32_t mode)
 *
 *
 * Return value:
-*    0  £∫≥…π¶
-*   !0  £∫ ß∞‹
+*    0  ÔºöÊàêÂäü
+*   !0  ÔºöÂ§±Ë¥•
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
-static int32_t DiskClose(void * hDev)
+static int32_t DiskClose(void *hDev)
 {
-    __UsbBlkDev_t *BlkDev = NULL;
+	__UsbBlkDev_t *BlkDev = NULL;
 
-    if (hDev == NULL)
-    {
-        hal_log_err("ERR: DiskClose: input error, hDev = %x", hDev);
-        return EPDK_FAIL;
-    }
+	if (hDev == NULL) {
+		hal_log_err("ERR: DiskClose: input error, hDev = %x", hDev);
+		return EPDK_FAIL;
+	}
 
-    BlkDev = (__UsbBlkDev_t *)hDev;
+	BlkDev = (__UsbBlkDev_t *)hDev;
 
-    if (BlkDev->Magic != USB_BLK_DEV_MAGIC)
-    {
-        hal_log_err("ERR: DiskClose: BlkDev Magic(%x) is invalid", BlkDev->Magic);
-        return EPDK_FAIL;
-    }
+	if (BlkDev->Magic != USB_BLK_DEV_MAGIC) {
+		hal_log_err("ERR: DiskClose: BlkDev Magic(%x) is invalid", BlkDev->Magic);
+		return EPDK_FAIL;
+	}
 
-    BlkDev->used--;
-    return EPDK_OK;
+	BlkDev->used--;
+	return EPDK_OK;
 }
 
 /*
@@ -119,114 +115,100 @@ static int32_t DiskClose(void * hDev)
 *
 *
 * Return value:
-*    0  £∫≥…π¶
-*   !0  £∫ ß∞‹
+*    0  ÔºöÊàêÂäü
+*   !0  ÔºöÂ§±Ë¥•
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
-static unsigned int __DiskRead(void *pBuffer, unsigned int blk, unsigned int n, void * hDev)
+static unsigned int __DiskRead(void *pBuffer, unsigned int blk, unsigned int n, void *hDev)
 {
-    __UsbBlkDev_t *BlkDev = NULL;
-    __mscLun_t *mscLun = NULL;
-    unsigned int cmd_version = 10;   /* ƒ¨»œŒ™10 */
-    int ret = 0;
+	__UsbBlkDev_t *BlkDev = NULL;
+	__mscLun_t *mscLun = NULL;
+	unsigned int cmd_version = 10; /* ÈªòËÆ§‰∏∫10 */
+	int ret = 0;
 
-    if (hDev == NULL)
-    {
-        hal_log_err("ERR: __DiskRead: input error, hDev = %x", hDev);
-        return EPDK_FAIL;
-    }
+	if (hDev == NULL) {
+		hal_log_err("ERR: __DiskRead: input error, hDev = %x", hDev);
+		return EPDK_FAIL;
+	}
 
-    if (n == 0)
-    {
-        hal_log_err("ERR: __DiskRead: the read length can not be zero");
-        return EPDK_FAIL;
-    }
+	if (n == 0) {
+		hal_log_err("ERR: __DiskRead: the read length can not be zero");
+		return EPDK_FAIL;
+	}
 
-    //DMSG_MSC_TEST("__DiskRead: Blk = %d, N = %d, LastBlk = %d", blk, n, (blk + n));
-    BlkDev = (__UsbBlkDev_t *)hDev;
+	// DMSG_MSC_TEST("__DiskRead: Blk = %d, N = %d, LastBlk = %d", blk, n, (blk + n));
+	BlkDev = (__UsbBlkDev_t *)hDev;
 
-    if (BlkDev->Magic != USB_BLK_DEV_MAGIC)
-    {
-        hal_log_err("ERR: __DiskRead: BlkDev Magic(%x) is invalid", BlkDev->Magic);
-        return EPDK_FAIL;
-    }
+	if (BlkDev->Magic != USB_BLK_DEV_MAGIC) {
+		hal_log_err("ERR: __DiskRead: BlkDev Magic(%x) is invalid", BlkDev->Magic);
+		return EPDK_FAIL;
+	}
 
-    /* »Áπ˚√ª”–◊¢≤·disk…Ë±∏, æÕ≤ªƒ‹πª∂¡ ˝æ› */
-    if (!BlkDev->is_RegDisk)
-    {
-        hal_log_err("ERR: __DiskRead: Not reged Disk, can not read");
-        return EPDK_FAIL;
-    }
+	/* Â¶ÇÊûúÊ≤°ÊúâÊ≥®ÂÜådiskËÆæÂ§á, Â∞±‰∏çËÉΩÂ§üËØªÊï∞ÊçÆ */
+	if (!BlkDev->is_RegDisk) {
+		hal_log_err("ERR: __DiskRead: Not reged Disk, can not read");
+		return EPDK_FAIL;
+	}
 
-    mscLun = BlkDev->Lun;
+	mscLun = BlkDev->Lun;
 
-    if (mscLun == NULL)
-    {
-        hal_log_err("ERR: __DiskRead: mscLun == NULL");
-        return EPDK_FAIL;
-    }
+	if (mscLun == NULL) {
+		hal_log_err("ERR: __DiskRead: mscLun == NULL");
+		return EPDK_FAIL;
+	}
 
-    /* »Áπ˚ΩÈ÷ ≤ª¥Ê‘⁄, æÕ≤ªƒ‹πª¥”…Ë±∏∂¡ ˝æ› */
-    if (!mscLun->MediaPresent)
-    {
-        hal_log_err("ERR: __DiskRead: media is not present, __DiskRead failed");
-        return EPDK_FAIL;
-    }
+	/* Â¶ÇÊûú‰ªãË¥®‰∏çÂ≠òÂú®, Â∞±‰∏çËÉΩÂ§ü‰ªéËÆæÂ§áËØªÊï∞ÊçÆ */
+	if (!mscLun->MediaPresent) {
+		hal_log_err("ERR: __DiskRead: media is not present, __DiskRead failed");
+		return EPDK_FAIL;
+	}
 
-    if ((blk + n) > mscLun->disk_info.capacity)
-    {
-        hal_log_err("ERR: __DiskRead: block(%x, %x) is adjacence max capacity(%x)", blk, n, mscLun->disk_info.capacity);
-        return EPDK_FAIL;
-    }
+	if ((blk + n) > mscLun->disk_info.capacity) {
+		hal_log_err("ERR: __DiskRead: block(%x, %x) is adjacence max capacity(%x)", blk, n,
+			    mscLun->disk_info.capacity);
+		return EPDK_FAIL;
+	}
 
-    //set_usbh_disk_status(USB_STORAGE_DEVICE_STATUS_READ);
-    /*
-        if(mscLun->mscDev->SubClass == USBMSC_SUBCLASS_SCSI){
-            if(mscLun->disk_info.capacity > 0xffffffff){
-                cmd_version = 16;
-            }else if(mscLun->disk_info.capacity > 0x1fffff){
-                cmd_version = 10;
-            }else{
-                cmd_version = 6;
-            }
-        }else{
-            cmd_version = 10;
-        }
-    */
-    /* ƒø«∞À˘º˚µƒUSB…Ë±∏¿Ô√Ê∂º π”√µƒ «10◊÷Ω⁄√¸√˚£¨∂¯«“–≠“ÈπÊ∂®µƒ «10/12◊÷Ω⁄√¸¡Ó */
-    cmd_version = 10;
-    hal_sem_wait(mscLun->Lock);
+	// set_usbh_disk_status(USB_STORAGE_DEVICE_STATUS_READ);
+	/*
+	if (mscLun->mscDev->SubClass == USBMSC_SUBCLASS_SCSI) {
+		if (mscLun->disk_info.capacity > 0xffffffff) {
+			cmd_version = 16;
+		} else if (mscLun->disk_info.capacity > 0x1fffff) {
+			cmd_version = 10;
+		} else {
+			cmd_version = 6;
+		}
+	} else {
+		cmd_version = 10;
+	}
+	*/
+	/* ÁõÆÂâçÊâÄËßÅÁöÑUSBËÆæÂ§áÈáåÈù¢ÈÉΩ‰ΩøÁî®ÁöÑÊòØ10Â≠óËäÇÂëΩÂêçÔºåËÄå‰∏îÂçèËÆÆËßÑÂÆöÁöÑÊòØ10/12Â≠óËäÇÂëΩ‰ª§ */
+	cmd_version = 10;
+	hal_sem_wait(mscLun->Lock);
 
-    if (cmd_version == 16)
-    {
-        ret = ScsiRead(mscLun, 16, blk, n, pBuffer,
-                       (n * (mscLun->disk_info.sector_size)));
-    }
-    else if (cmd_version == 10)
-    {
-        ret = ScsiRead(mscLun, 10, blk, n, pBuffer,
-                       (n * (mscLun->disk_info.sector_size)));
-    }
-    else
-    {
-        ret = ScsiRead(mscLun, 6, blk, n, pBuffer,
-                       (n * (mscLun->disk_info.sector_size)));
-    }
+	if (cmd_version == 16) {
+		ret = ScsiRead(mscLun, 16, blk, n, pBuffer, (n * (mscLun->disk_info.sector_size)));
+	} else if (cmd_version == 10) {
+		ret = ScsiRead(mscLun, 10, blk, n, pBuffer, (n * (mscLun->disk_info.sector_size)));
+	} else {
+		ret = ScsiRead(mscLun, 6, blk, n, pBuffer, (n * (mscLun->disk_info.sector_size)));
+	}
 
-    hal_sem_post(mscLun->Lock);
-    //set_usbh_disk_status(USB_STORAGE_DEVICE_STATUS_IDLE);
+	hal_sem_post(mscLun->Lock);
+	// set_usbh_disk_status(USB_STORAGE_DEVICE_STATUS_IDLE);
 
-    if (ret != 0)
-    {
-        hal_log_err("ERR: ScsiRead%d failed. DevNo = %d, blk = %d, n = %d", cmd_version, BlkDev->DevNo, blk, n);
-        return EPDK_FAIL;
-    }
+	if (ret != 0) {
+		hal_log_err("ERR: ScsiRead%d failed. DevNo = %d, blk = %d, n = %d",
+			    cmd_version, BlkDev->DevNo, blk, n);
+		return EPDK_FAIL;
+	}
 
-    return n;
+	return n;
 }
 
 /*
@@ -240,120 +222,108 @@ static unsigned int __DiskRead(void *pBuffer, unsigned int blk, unsigned int n, 
 *
 *
 * Return value:
-*    0  £∫≥…π¶
-*   !0  £∫ ß∞‹
+*    0  ÔºöÊàêÂäü
+*   !0  ÔºöÂ§±Ë¥•
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
-static unsigned int __DiskWrite(const void *pBuffer, unsigned int blk, unsigned int n, void * hDev)
+static unsigned int __DiskWrite(const void *pBuffer, unsigned int blk, unsigned int n, void *hDev)
 {
-    __UsbBlkDev_t *BlkDev = NULL;
-    __mscLun_t *mscLun = NULL;
-    unsigned int cmd_version = 10;   /* ƒ¨»œŒ™10 */
-    int ret = 0;
+	__UsbBlkDev_t *BlkDev = NULL;
+	__mscLun_t *mscLun = NULL;
+	unsigned int cmd_version = 10; /* ÈªòËÆ§‰∏∫10 */
+	int ret = 0;
 
-    if (hDev == NULL)
-    {
-        hal_log_err("ERR: __DiskWrite: input error, hDev = %x", hDev);
-        return 0;
-    }
+	if (hDev == NULL) {
+		hal_log_err("ERR: __DiskWrite: input error, hDev = %x", hDev);
+		return 0;
+	}
 
-    if (n == 0)
-    {
-        hal_log_err("ERR: __DiskWrite: the write length can not be zero");
-        return 0;
-    }
+	if (n == 0) {
+		hal_log_err("ERR: __DiskWrite: the write length can not be zero");
+		return 0;
+	}
 
-    //DMSG_MSC_TEST("__DiskWrite: Blk = %d, N = %d, LastBlk = %d", blk, n, (blk + n));
-    BlkDev = (__UsbBlkDev_t *)hDev;
+	// DMSG_MSC_TEST("__DiskWrite: Blk = %d, N = %d, LastBlk = %d", blk, n, (blk + n));
+	BlkDev = (__UsbBlkDev_t *)hDev;
 
-    if (BlkDev->Magic != USB_BLK_DEV_MAGIC)
-    {
-        hal_log_err("ERR: __DiskWrite: BlkDev Magic(%x) is invalid", BlkDev->Magic);
-        return 0;
-    }
+	if (BlkDev->Magic != USB_BLK_DEV_MAGIC) {
+		hal_log_err("ERR: __DiskWrite: BlkDev Magic(%x) is invalid", BlkDev->Magic);
+		return 0;
+	}
 
-    /* »Áπ˚√ª”–◊¢≤·disk…Ë±∏, æÕ≤ªƒ‹πª∂¡ ˝æ› */
-    if (!BlkDev->is_RegDisk)
-    {
-        hal_log_err("ERR: __DiskWrite: Not reged Disk, can not read");
-        return 0;
-    }
+	/* Â¶ÇÊûúÊ≤°ÊúâÊ≥®ÂÜådiskËÆæÂ§á, Â∞±‰∏çËÉΩÂ§üËØªÊï∞ÊçÆ */
+	if (!BlkDev->is_RegDisk) {
+		hal_log_err("ERR: __DiskWrite: Not reged Disk, can not read");
+		return 0;
+	}
 
-    mscLun = BlkDev->Lun;
+	mscLun = BlkDev->Lun;
 
-    if (mscLun == NULL)
-    {
-        hal_log_err("ERR: __DiskWrite: mscLun == NULL");
-        return 0;
-    }
+	if (mscLun == NULL) {
+		hal_log_err("ERR: __DiskWrite: mscLun == NULL");
+		return 0;
+	}
 
-    /* »Áπ˚ΩÈ÷ ≤ª¥Ê‘⁄, æÕ≤ªƒ‹πªÕ˘…Ë±∏–¥ ˝æ› */
-    if (!mscLun->MediaPresent)
-    {
-        hal_log_err("ERR: __DiskWrite: media is not present, __DiskWrite failed");
-        return 0;
-    }
+	/* Â¶ÇÊûú‰ªãË¥®‰∏çÂ≠òÂú®, Â∞±‰∏çËÉΩÂ§üÂæÄËÆæÂ§áÂÜôÊï∞ÊçÆ */
+	if (!mscLun->MediaPresent) {
+		hal_log_err("ERR: __DiskWrite: media is not present, __DiskWrite failed");
+		return 0;
+	}
 
-    if (mscLun->WriteProtect)
-    {
-        hal_log_err("ERR: __DiskWrite: device is protect, can't write");
-        return 0;
-    }
+	if (mscLun->WriteProtect) {
+		hal_log_err("ERR: __DiskWrite: device is protect, can't write");
+		return 0;
+	}
 
-    if ((blk + n) > mscLun->disk_info.capacity)
-    {
-        hal_log_err("ERR: __DiskWrite: block(%x, %x) is adjacence max capacity(%x)", blk, n, mscLun->disk_info.capacity);
-        return 0;
-    }
+	if ((blk + n) > mscLun->disk_info.capacity) {
+		hal_log_err("ERR: __DiskWrite: block(%x, %x) is adjacence max capacity(%x)",
+			    blk, n, mscLun->disk_info.capacity);
+		return 0;
+	}
 
-    //set_usbh_disk_status(USB_STORAGE_DEVICE_STATUS_WRITE);
-    /*
-        if(mscLun->mscDev->SubClass == USBMSC_SUBCLASS_SCSI){
-            if(mscLun->disk_info.capacity > 0xffffffff){
-                cmd_version = 16;
-            }else if(mscLun->disk_info.capacity > 0x1fffff){
-                cmd_version = 10;
-            }else{
-                cmd_version = 6;
-            }
-        }else{
-            cmd_version = 10;
-        }
-    */
-    /* ƒø«∞À˘º˚µƒUSB…Ë±∏¿Ô√Ê∂º π”√µƒ «10◊÷Ω⁄√¸√˚£¨∂¯«“–≠“ÈπÊ∂®µƒ «10/12◊÷Ω⁄√¸¡Ó */
-    cmd_version = 10;
-    hal_sem_wait(mscLun->Lock);
+	// set_usbh_disk_status(USB_STORAGE_DEVICE_STATUS_WRITE);
+	/*
+	if (mscLun->mscDev->SubClass == USBMSC_SUBCLASS_SCSI) {
+		if (mscLun->disk_info.capacity > 0xffffffff) {
+			cmd_version = 16;
+		} else if (mscLun->disk_info.capacity > 0x1fffff) {
+			cmd_version = 10;
+		} else {
+			cmd_version = 6;
+		}
+	} else {
+		cmd_version = 10;
+	}
+	*/
+	/* ÁõÆÂâçÊâÄËßÅÁöÑUSBËÆæÂ§áÈáåÈù¢ÈÉΩ‰ΩøÁî®ÁöÑÊòØ10Â≠óËäÇÂëΩÂêçÔºåËÄå‰∏îÂçèËÆÆËßÑÂÆöÁöÑÊòØ10/12Â≠óËäÇÂëΩ‰ª§ */
+	cmd_version = 10;
+	hal_sem_wait(mscLun->Lock);
 
-    if (cmd_version == 16)
-    {
-        ret = ScsiWrite(mscLun, 16, blk, n, (void *)pBuffer,
-                        (n * (mscLun->disk_info.sector_size)));
-    }
-    else if (cmd_version == 10)
-    {
-        ret = ScsiWrite(mscLun, 10, blk, n, (void *)pBuffer,
-                        (n * (mscLun->disk_info.sector_size)));
-    }
-    else
-    {
-        ret = ScsiWrite(mscLun, 6, blk, n, (void *)pBuffer,
-                        (n * (mscLun->disk_info.sector_size)));
-    }
+	if (cmd_version == 16) {
+		ret = ScsiWrite(mscLun, 16, blk, n, (void *)pBuffer,
+				(n * (mscLun->disk_info.sector_size)));
+	} else if (cmd_version == 10) {
+		ret = ScsiWrite(mscLun, 10, blk, n, (void *)pBuffer,
+				(n * (mscLun->disk_info.sector_size)));
+	} else {
+		ret = ScsiWrite(mscLun, 6, blk, n, (void *)pBuffer,
+				(n * (mscLun->disk_info.sector_size)));
+	}
 
-    hal_sem_post(mscLun->Lock);
-    //set_usbh_disk_status(USB_STORAGE_DEVICE_STATUS_IDLE);
+	hal_sem_post(mscLun->Lock);
+	// set_usbh_disk_status(USB_STORAGE_DEVICE_STATUS_IDLE);
 
-    if (ret != 0)
-    {
-        hal_log_err("ERR: ScsiWrite%d failed. DevNo = %d, blk = %d, n = %d", cmd_version, BlkDev->DevNo, blk, n);
-        return 0;
-    }
+	if (ret != 0) {
+		hal_log_err("ERR: ScsiWrite%d failed. DevNo = %d, blk = %d, n = %d",
+			    cmd_version, BlkDev->DevNo, blk, n);
+		return 0;
+	}
 
-    return n;
+	return n;
 }
 
 #if 1
@@ -362,87 +332,79 @@ static unsigned int __DiskWrite(const void *pBuffer, unsigned int blk, unsigned 
 *                     DiskRead
 *
 * Description:
-*    …Ë±∏∂¡
+*    ËÆæÂ§áËØª
 *
 * Parameters:
-*    pBuffer    :  output. ◊∞‘ÿ∂¡ªÿ¿¥µƒ ˝æ›
-*    blk        :  input.  ∆ º…»«¯
-*    n          :  input.  …»«¯∏ˆ ˝
-*    hDev       :  input.  …Ë±∏
+*    pBuffer    :  output. Ë£ÖËΩΩËØªÂõûÊù•ÁöÑÊï∞ÊçÆ
+*    blk        :  input.  Ëµ∑ÂßãÊâáÂå∫
+*    n          :  input.  ÊâáÂå∫‰∏™Êï∞
+*    hDev       :  input.  ËÆæÂ§á
 *
 * Return value:
-*    0  £∫≥…π¶
-*   !0  £∫ ß∞‹
+*    0  ÔºöÊàêÂäü
+*   !0  ÔºöÂ§±Ë¥•
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
-static uint32_t DiskRead(void *pBuffer, uint32_t blk, uint32_t n, void * hDev)
+static uint32_t DiskRead(void *pBuffer, uint32_t blk, uint32_t n, void *hDev)
 {
-    __UsbBlkDev_t *BlkDev = NULL;
-    __mscLun_t *mscLun = NULL;
-    unsigned int cnt = 0;
+	__UsbBlkDev_t *BlkDev = NULL;
+	__mscLun_t *mscLun = NULL;
+	unsigned int cnt = 0;
 
-    if (hDev == NULL)
-    {
-        hal_log_err("ERR: DiskRead: input error, hDev = %x", hDev);
-        return 0;
-    }
+	if (hDev == NULL) {
+		hal_log_err("ERR: DiskRead: input error, hDev = %x", hDev);
+		return 0;
+	}
 
-    //DMSG_MSC_TEST("DiskRead: Blk = %d, N = %d, LastBlk = %d", blk, n, (blk + n));
-    BlkDev = (__UsbBlkDev_t *)hDev;
+	// DMSG_MSC_TEST("DiskRead: Blk = %d, N = %d, LastBlk = %d", blk, n, (blk + n));
+	BlkDev = (__UsbBlkDev_t *)hDev;
 
-    if (BlkDev->Magic != USB_BLK_DEV_MAGIC)
-    {
-        hal_log_err("ERR: DiskRead: BlkDev Magic(%x) is invalid", BlkDev->Magic);
-        return 0;
-    }
+	if (BlkDev->Magic != USB_BLK_DEV_MAGIC) {
+		hal_log_err("ERR: DiskRead: BlkDev Magic(%x) is invalid", BlkDev->Magic);
+		return 0;
+	}
 
-    mscLun = BlkDev->Lun;
+	mscLun = BlkDev->Lun;
 
-    if (mscLun == NULL)
-    {
-        hal_log_err("ERR: DiskRead: mscLun == NULL");
-        return 0;
-    }
+	if (mscLun == NULL) {
+		hal_log_err("ERR: DiskRead: mscLun == NULL");
+		return 0;
+	}
 
-    if ((blk + n) > mscLun->disk_info.capacity)
-    {
-        hal_log_err("ERR: DiskRead: block(%x, %x) is adjacence max capacity(%x)", blk, n, mscLun->disk_info.capacity);
-        return 0;
-    }
+	if ((blk + n) > mscLun->disk_info.capacity) {
+		hal_log_err("ERR: DiskRead: block(%x, %x) is adjacence max capacity(%x)", blk, n,
+			    mscLun->disk_info.capacity);
+		return 0;
+	}
 
-    /* 1°¢lba0 ≤ª‘§∂¡
-       2°¢±æ¥Œ∂¡–¥≥§∂»≥¨π˝¡À◊Ó¥Û»›¡ø£¨≤ª‘§∂¡
+	/* 1„ÄÅlba0 ‰∏çÈ¢ÑËØª
+       2„ÄÅÊú¨Ê¨°ËØªÂÜôÈïøÂ∫¶Ë∂ÖËøá‰∫ÜÊúÄÂ§ßÂÆπÈáèÔºå‰∏çÈ¢ÑËØª
     */
-    if ((blk != 0)
-        && ((blk + (USBH_TEMP_BUFFER_MAX_LEN / mscLun->disk_info.sector_size)) < mscLun->disk_info.capacity))
-    {
-        cnt = usbh_msc_special_read((void *)pBuffer,
-                                    blk,
-                                    n,
-                                    hDev,
-                                    BlkDev->DevNo,
-                                    mscLun->disk_info.sector_size,
-                                    (void *)__DiskRead);
-    }
-    else
-    {
-        hal_log_info("DiskRead: block(%x, %x) is adjacence max capacity(%x), can't use special write",
-                  blk, n, mscLun->disk_info.capacity);
-        cnt = __DiskRead(pBuffer, blk, n, hDev);
-    }
+	if ((blk != 0) && ((blk + (USBH_TEMP_BUFFER_MAX_LEN / mscLun->disk_info.sector_size)) < mscLun->disk_info.capacity)) {
+		cnt = usbh_msc_special_read((void *)pBuffer,
+					    blk,
+					    n,
+					    hDev,
+					    BlkDev->DevNo,
+					    mscLun->disk_info.sector_size,
+					    (void *)__DiskRead);
+	} else {
+		hal_log_info("DiskRead: block(%x, %x) is adjacence max capacity(%x), can't use special write",
+			     blk, n, mscLun->disk_info.capacity);
+		cnt = __DiskRead(pBuffer, blk, n, hDev);
+	}
 
-    if (cnt != n)
-    {
-        hal_log_err("ERR: DiskRead failed, want(%d) != real(%d)", n, cnt);
-        return 0;
-    }
+	if (cnt != n) {
+		hal_log_err("ERR: DiskRead failed, want(%d) != real(%d)", n, cnt);
+		return 0;
+	}
 
-    //DMSG_MSC_TEST("read end");
-    return n;
+	// DMSG_MSC_TEST("read end");
+	return n;
 }
 
 /*
@@ -450,100 +412,92 @@ static uint32_t DiskRead(void *pBuffer, uint32_t blk, uint32_t n, void * hDev)
 *                     DiskWrite
 *
 * Description:
-*    …Ë±∏–¥
+*    ËÆæÂ§áÂÜô
 *
 * Parameters:
-*    pBuffer    :  input. “™–¥µƒ ˝æ›
-*    blk        :  input. ∆ º…»«¯
-*    n          :  input. …»«¯∏ˆ ˝
-*    hDev       :  input. …Ë±∏
+*    pBuffer    :  input. Ë¶ÅÂÜôÁöÑÊï∞ÊçÆ
+*    blk        :  input. Ëµ∑ÂßãÊâáÂå∫
+*    n          :  input. ÊâáÂå∫‰∏™Êï∞
+*    hDev       :  input. ËÆæÂ§á
 *
 * Return value:
-*    0  £∫≥…π¶
-*   !0  £∫ ß∞‹
+*    0  ÔºöÊàêÂäü
+*   !0  ÔºöÂ§±Ë¥•
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
-static uint32_t DiskWrite(const void *pBuffer, uint32_t blk, uint32_t n, void * hDev)
+static uint32_t DiskWrite(const void *pBuffer, uint32_t blk, uint32_t n, void *hDev)
 {
-    __UsbBlkDev_t *BlkDev = NULL;
-    __mscLun_t *mscLun = NULL;
-    unsigned int cnt = 0;
+	__UsbBlkDev_t *BlkDev = NULL;
+	__mscLun_t *mscLun = NULL;
+	unsigned int cnt = 0;
 
-    if (hDev == NULL)
-    {
-        hal_log_err("ERR: DiskWrite: input error, hDev = %x", hDev);
-        return 0;
-    }
+	if (hDev == NULL) {
+		hal_log_err("ERR: DiskWrite: input error, hDev = %x", hDev);
+		return 0;
+	}
 
-    //DMSG_MSC_TEST("DiskWrite: Blk = %d, N = %d, LastBlk = %d", blk, n, (blk + n));
-    BlkDev = (__UsbBlkDev_t *)hDev;
+	// DMSG_MSC_TEST("DiskWrite: Blk = %d, N = %d, LastBlk = %d", blk, n, (blk + n));
+	BlkDev = (__UsbBlkDev_t *)hDev;
 
-    if (BlkDev->Magic != USB_BLK_DEV_MAGIC)
-    {
-        hal_log_err("ERR: DiskWrite: BlkDev Magic(%x) is invalid", BlkDev->Magic);
-        return 0;
-    }
+	if (BlkDev->Magic != USB_BLK_DEV_MAGIC) {
+		hal_log_err("ERR: DiskWrite: BlkDev Magic(%x) is invalid", BlkDev->Magic);
+		return 0;
+	}
 
-    mscLun = BlkDev->Lun;
+	mscLun = BlkDev->Lun;
 
-    if (mscLun == NULL)
-    {
-        hal_log_err("ERR: __DiskWrite: mscLun == NULL");
-        return 0;
-    }
+	if (mscLun == NULL) {
+		hal_log_err("ERR: __DiskWrite: mscLun == NULL");
+		return 0;
+	}
 
-    if ((blk + n) > mscLun->disk_info.capacity)
-    {
-        hal_log_err("ERR: DiskWrite: block(%x, %x) is adjacence max capacity(%x)", blk, n, mscLun->disk_info.capacity);
-        return 0;
-    }
+	if ((blk + n) > mscLun->disk_info.capacity) {
+		hal_log_err("ERR: DiskWrite: block(%x, %x) is adjacence max capacity(%x)",
+			    blk, n, mscLun->disk_info.capacity);
+		return 0;
+	}
 
-    /* 1°¢lba0 ≤ª‘§∂¡
-       2°¢±æ¥Œ∂¡–¥≥§∂»≥¨π˝¡À◊Ó¥Û»›¡ø£¨≤ª‘§∂¡
+	/* 1„ÄÅlba0 ‰∏çÈ¢ÑËØª
+       2„ÄÅÊú¨Ê¨°ËØªÂÜôÈïøÂ∫¶Ë∂ÖËøá‰∫ÜÊúÄÂ§ßÂÆπÈáèÔºå‰∏çÈ¢ÑËØª
     */
-    if ((blk != 0)
-        && ((blk + (USBH_TEMP_BUFFER_MAX_LEN / mscLun->disk_info.sector_size)) < mscLun->disk_info.capacity))
-    {
-        cnt = usbh_msc_special_write((void *)pBuffer,
-                                     blk,
-                                     n,
-                                     hDev,
-                                     BlkDev->DevNo,
-                                     mscLun->disk_info.sector_size,
-                                     (void *)__DiskWrite);
-    }
-    else
-    {
-        hal_log_info("DiskWrite: block(%x, %x) is adjacence max capacity(%x), can't use special write",
-                  blk, n, mscLun->disk_info.capacity);
-        set_usbh_temp_buff_invalid_by_dev(BlkDev->DevNo);
-        cnt = __DiskWrite(pBuffer, blk, n, hDev);
-    }
+	if ((blk != 0) && ((blk + (USBH_TEMP_BUFFER_MAX_LEN / mscLun->disk_info.sector_size)) < mscLun->disk_info.capacity)) {
+		cnt = usbh_msc_special_write((void *)pBuffer,
+					     blk,
+					     n,
+					     hDev,
+					     BlkDev->DevNo,
+					     mscLun->disk_info.sector_size,
+					     (void *)__DiskWrite);
+	} else {
+		hal_log_info("DiskWrite: block(%x, %x) is adjacence max capacity(%x), can't use special write",
+			     blk, n, mscLun->disk_info.capacity);
+		set_usbh_temp_buff_invalid_by_dev(BlkDev->DevNo);
+		cnt = __DiskWrite(pBuffer, blk, n, hDev);
+	}
 
-    if (cnt != n)
-    {
-        hal_log_err("ERR: DiskWrite failed, want(%d) != real(%d)", n, cnt);
-        return 0;
-    }
+	if (cnt != n) {
+		hal_log_err("ERR: DiskWrite failed, want(%d) != real(%d)", n, cnt);
+		return 0;
+	}
 
-    //DMSG_MSC_TEST("write end");
-    return n;
+	// DMSG_MSC_TEST("write end");
+	return n;
 }
 
 #else
 
-static unsigned int DiskRead(void *pBuffer, unsigned int blk, unsigned int n, void * hDev)
+static unsigned int DiskRead(void *pBuffer, unsigned int blk, unsigned int n, void *hDev)
 {
-    return __DiskRead(pBuffer, blk, n, hDev);
+	return __DiskRead(pBuffer, blk, n, hDev);
 }
 
-static unsigned int DiskWrite(const void *pBuffer, unsigned int blk, unsigned int n, void * hDev)
+static unsigned int DiskWrite(const void *pBuffer, unsigned int blk, unsigned int n, void *hDev)
 {
-    return __DiskWrite(pBuffer, blk, n, hDev);
+	return __DiskWrite(pBuffer, blk, n, hDev);
 }
 
 #endif
@@ -559,94 +513,472 @@ static unsigned int DiskWrite(const void *pBuffer, unsigned int blk, unsigned in
 *
 *
 * Return value:
-*    0  £∫≥…π¶
-*   !0  £∫ ß∞‹
+*    0  ÔºöÊàêÂäü
+*   !0  ÔºöÂ§±Ë¥•
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
-static int32_t DiskIoctl(void * hDev, uint32_t Cmd, long Aux, void *pBuffer)
+static int32_t DiskIoctl(void *hDev, uint32_t Cmd, long Aux, void *pBuffer)
 {
-    __UsbBlkDev_t *BlkDev = NULL;
-    __mscLun_t *mscLun = NULL;
-    unsigned int ret = 0;
+	__UsbBlkDev_t *BlkDev = NULL;
+	__mscLun_t *mscLun = NULL;
+	unsigned int ret = 0;
 
-    if (hDev == NULL)
-    {
-        hal_log_err("ERR: DiskIoctl: input error, hDev = %x", hDev);
-        return EPDK_FAIL;
-    }
+	if (hDev == NULL) {
+		hal_log_err("ERR: DiskIoctl: input error, hDev = %x", hDev);
+		return EPDK_FAIL;
+	}
 
-    BlkDev = (__UsbBlkDev_t *)hDev;
+	BlkDev = (__UsbBlkDev_t *)hDev;
 
-    if (BlkDev->Magic != USB_BLK_DEV_MAGIC)
-    {
-        hal_log_err("ERR: DiskIoctl: BlkDev Magic(%x) is invalid", BlkDev->Magic);
-        return EPDK_FAIL;
-    }
+	if (BlkDev->Magic != USB_BLK_DEV_MAGIC) {
+		hal_log_err("ERR: DiskIoctl: BlkDev Magic(%x) is invalid", BlkDev->Magic);
+		return EPDK_FAIL;
+	}
 
-    mscLun = BlkDev->Lun;
+	mscLun = BlkDev->Lun;
 
-    if (mscLun == NULL)
-    {
-        hal_log_err("ERR: DiskIoctl: mscLun == NULL");
-        return EPDK_FAIL;
-    }
+	if (mscLun == NULL) {
+		hal_log_err("ERR: DiskIoctl: mscLun == NULL");
+		return EPDK_FAIL;
+	}
 
-    /* ”…”⁄øÈ…Ë±∏≤ª÷ß≥÷π‚«˝…Ë±∏, “Ú¥À’‚¿ÔæÕ÷ªƒ‹◊ˆ∏ˆ¡Ÿ ±∞Ê±æ */
-    if (mscLun->DeviceType == SCSI_DEVICE_CDROM)
-    {
-        ret = CDIOCtrl(BlkDev, Cmd, Aux, pBuffer);
+	/* Áî±‰∫éÂùóËÆæÂ§á‰∏çÊîØÊåÅÂÖâÈ©±ËÆæÂ§á, Âõ†Ê≠§ËøôÈáåÂ∞±Âè™ËÉΩÂÅö‰∏™‰∏¥Êó∂ÁâàÊú¨ */
+	if (mscLun->DeviceType == SCSI_DEVICE_CDROM) {
+		ret = CDIOCtrl(BlkDev, Cmd, Aux, pBuffer);
 
-        if (ret == EPDK_OK)
-        {
-            hal_log_err("[CD_ROM]: Cmd(%x) is USB CD_ROM command");
-            return EPDK_OK;
-        }
-    }
+		if (ret == EPDK_OK) {
+			hal_log_err("[CD_ROM]: Cmd(%x) is USB CD_ROM command");
+			return EPDK_OK;
+		}
+	}
 
-    switch (Cmd)
-    {
-        case DEV_CMD_GET_INFO:
-        {
-            if (!pBuffer)
-            {
-                hal_log_err("ERR : usb storage disk ,pBuffer == NULL");
-                return EPDK_FAIL;
-            }
+	switch (Cmd) {
+	case DEV_CMD_GET_INFO: {
+		if (!pBuffer) {
+			hal_log_err("ERR : usb storage disk ,pBuffer == NULL");
+			return EPDK_FAIL;
+		}
 
-            ((__dev_blkinfo_t *)pBuffer)->hiddennum = 0;
-            ((__dev_blkinfo_t *)pBuffer)->headnum   = 0;
-            ((__dev_blkinfo_t *)pBuffer)->secnum    = 0;
-            ((__dev_blkinfo_t *)pBuffer)->partsize  = mscLun->disk_info.capacity;
-            ((__dev_blkinfo_t *)pBuffer)->secsize   = mscLun->disk_info.sector_size;
-            hal_log_info("[usb storage]: DEV_CMD_GET_INFO, capacity = %dM, sector = %d",
-                      ((mscLun->disk_info.capacity) >> 11), mscLun->disk_info.sector_size);
-        }
-        break;
+		((__dev_blkinfo_t *)pBuffer)->hiddennum = 0;
+		((__dev_blkinfo_t *)pBuffer)->headnum = 0;
+		((__dev_blkinfo_t *)pBuffer)->secnum = 0;
+		((__dev_blkinfo_t *)pBuffer)->partsize = mscLun->disk_info.capacity;
+		((__dev_blkinfo_t *)pBuffer)->secsize = mscLun->disk_info.sector_size;
+		hal_log_info("[usb storage]: DEV_CMD_GET_INFO, capacity = %dM, sector = %d",
+			     ((mscLun->disk_info.capacity) >> 11), mscLun->disk_info.sector_size);
+	} break;
 
-        case DEV_CMD_GET_STATUS:
-            return EPDK_OK;
+	case DEV_CMD_GET_STATUS:
+		return EPDK_OK;
 
-        case DEV_IOC_USR_FLUSH_CACHE:
-            return EPDK_OK;
+	case DEV_IOC_USR_FLUSH_CACHE:
+		return EPDK_OK;
 
-        case DEV_CDROM_LAST_WRITTEN:
-            return EPDK_FAIL;
+	case DEV_CDROM_LAST_WRITTEN:
+		return EPDK_FAIL;
 
-        case DEV_CDROM_MULTISESSION:
-            return EPDK_FAIL;
+	case DEV_CDROM_MULTISESSION:
+		return EPDK_FAIL;
 
-        default:
-            hal_log_err("WARN : DiskIoctl ,cmd = %x ,not support now", Cmd);
-            return EPDK_FAIL;
-    }
+	default:
+		hal_log_err("WARN : DiskIoctl ,cmd = %x ,not support now", Cmd);
+		return EPDK_FAIL;
+	}
 
-    return EPDK_OK;
+	return EPDK_OK;
+}
+#elif defined(CONFIG_KERNEL_FREERTOS)
+
+static int DiskOpen(struct devfs_node *dev_node)
+{
+	__UsbBlkDev_t *BlkDev = NULL;
+
+	BlkDev = (__UsbBlkDev_t *)(dev_node->private);
+
+	if (BlkDev->Magic != USB_BLK_DEV_MAGIC) {
+		hal_log_err("ERR: DiskOpen: BlkDev Magic(%x) is invalid", BlkDev->Magic);
+		return 0;
+	}
+
+	BlkDev->used++;
+	return 1;
 }
 
+static int DiskClose(struct devfs_node *dev_node)
+{
+	__UsbBlkDev_t *BlkDev = NULL;
+
+	BlkDev = (__UsbBlkDev_t *)(dev_node->private);
+
+	if (BlkDev->Magic != USB_BLK_DEV_MAGIC) {
+		hal_log_err("ERR: DiskClose: BlkDev Magic(%x) is invalid", BlkDev->Magic);
+		return EPDK_FAIL;
+	}
+
+	BlkDev->used--;
+	return EPDK_OK;
+}
+
+static unsigned int __DiskRead(const void *pBuffer,
+			       uint32_t blk,
+			       uint32_t n,
+			       struct devfs_node *node)
+{
+	__UsbBlkDev_t *BlkDev = NULL;
+	__mscLun_t *mscLun = NULL;
+	unsigned int cmd_version = 10; /* ÈªòËÆ§‰∏∫10 */
+	int ret = 0;
+
+	if (n == 0) {
+		hal_log_err("ERR: __DiskRead: the read length can not be zero");
+		return EPDK_FAIL;
+	}
+
+	// DMSG_MSC_TEST("__DiskRead: Blk = %d, N = %d, LastBlk = %d", blk, n, (blk + n));
+	BlkDev = (__UsbBlkDev_t *)(node->private);
+
+	if (BlkDev->Magic != USB_BLK_DEV_MAGIC) {
+		hal_log_err("ERR: __DiskRead: BlkDev Magic(%x) is invalid", BlkDev->Magic);
+		return EPDK_FAIL;
+	}
+
+	/* Â¶ÇÊûúÊ≤°ÊúâÊ≥®ÂÜådiskËÆæÂ§á, Â∞±‰∏çËÉΩÂ§üËØªÊï∞ÊçÆ */
+	if (!BlkDev->is_RegDisk) {
+		hal_log_err("ERR: __DiskRead: Not reged Disk, can not read");
+		return EPDK_FAIL;
+	}
+
+	mscLun = BlkDev->Lun;
+
+	if (mscLun == NULL) {
+		hal_log_err("ERR: __DiskRead: mscLun == NULL");
+		return EPDK_FAIL;
+	}
+
+	/* Â¶ÇÊûú‰ªãË¥®‰∏çÂ≠òÂú®, Â∞±‰∏çËÉΩÂ§ü‰ªéËÆæÂ§áËØªÊï∞ÊçÆ */
+	if (!mscLun->MediaPresent) {
+		hal_log_err("ERR: __DiskRead: media is not present, __DiskRead failed");
+		return EPDK_FAIL;
+	}
+
+	if ((blk + n) > mscLun->disk_info.capacity) {
+		hal_log_err("ERR: __DiskRead: block(%x, %x) is adjacence max capacity(%x)",
+			    blk, n, mscLun->disk_info.capacity);
+		return EPDK_FAIL;
+	}
+
+	// set_usbh_disk_status(USB_STORAGE_DEVICE_STATUS_READ);
+	/*
+	if (mscLun->mscDev->SubClass == USBMSC_SUBCLASS_SCSI) {
+		if (mscLun->disk_info.capacity > 0xffffffff) {
+			cmd_version = 16;
+		} else if (mscLun->disk_info.capacity > 0x1fffff) {
+			cmd_version = 10;
+		} else {
+			cmd_version = 6;
+		}
+	} else {
+		cmd_version = 10;
+	}
+	*/
+	/* ÁõÆÂâçÊâÄËßÅÁöÑUSBËÆæÂ§áÈáåÈù¢ÈÉΩ‰ΩøÁî®ÁöÑÊòØ10Â≠óËäÇÂëΩÂêçÔºåËÄå‰∏îÂçèËÆÆËßÑÂÆöÁöÑÊòØ10/12Â≠óËäÇÂëΩ‰ª§ */
+	cmd_version = 10;
+	hal_sem_wait(mscLun->Lock);
+
+	if (cmd_version == 16) {
+		ret = ScsiRead(mscLun, 16, blk, n, (void *)pBuffer, (n * (mscLun->disk_info.sector_size)));
+	} else if (cmd_version == 10) {
+		ret = ScsiRead(mscLun, 10, blk, n, (void *)pBuffer, (n * (mscLun->disk_info.sector_size)));
+	} else {
+		ret = ScsiRead(mscLun, 6, blk, n, (void *)pBuffer, (n * (mscLun->disk_info.sector_size)));
+	}
+
+	hal_sem_post(mscLun->Lock);
+	// set_usbh_disk_status(USB_STORAGE_DEVICE_STATUS_IDLE);
+
+	if (ret != 0) {
+		hal_log_err("ERR: ScsiRead%d failed. DevNo = %d, blk = %d, n = %d", cmd_version,
+			    BlkDev->DevNo, blk, n);
+		return EPDK_FAIL;
+	}
+
+	return n;
+}
+
+static unsigned int __DiskWrite(const void *pBuffer,
+				uint32_t blk,
+				uint32_t n,
+				struct devfs_node *node)
+{
+	__UsbBlkDev_t *BlkDev = NULL;
+	__mscLun_t *mscLun = NULL;
+	unsigned int cmd_version = 10; /* ÈªòËÆ§‰∏∫10 */
+	int ret = 0;
+
+	if (n == 0) {
+		hal_log_err("ERR: __DiskWrite: the write length can not be zero");
+		return 0;
+	}
+
+	// DMSG_MSC_TEST("__DiskWrite: Blk = %d, N = %d, LastBlk = %d", blk, n, (blk + n));
+	BlkDev = (__UsbBlkDev_t *)(node->private);
+
+	if (BlkDev->Magic != USB_BLK_DEV_MAGIC) {
+		hal_log_err("ERR: __DiskWrite: BlkDev Magic(%x) is invalid", BlkDev->Magic);
+		return 0;
+	}
+
+	/* Â¶ÇÊûúÊ≤°ÊúâÊ≥®ÂÜådiskËÆæÂ§á, Â∞±‰∏çËÉΩÂ§üËØªÊï∞ÊçÆ */
+	if (!BlkDev->is_RegDisk) {
+		hal_log_err("ERR: __DiskWrite: Not reged Disk, can not read");
+		return 0;
+	}
+
+	mscLun = BlkDev->Lun;
+
+	if (mscLun == NULL) {
+		hal_log_err("ERR: __DiskWrite: mscLun == NULL");
+		return 0;
+	}
+
+	/* Â¶ÇÊûú‰ªãË¥®‰∏çÂ≠òÂú®, Â∞±‰∏çËÉΩÂ§üÂæÄËÆæÂ§áÂÜôÊï∞ÊçÆ */
+	if (!mscLun->MediaPresent) {
+		hal_log_err("ERR: __DiskWrite: media is not present, __DiskWrite failed");
+		return 0;
+	}
+
+	if (mscLun->WriteProtect) {
+		hal_log_err("ERR: __DiskWrite: device is protect, can't write");
+		return 0;
+	}
+
+	if ((blk + n) > mscLun->disk_info.capacity) {
+		hal_log_err("ERR: __DiskWrite: block(%x, %x) is adjacence max capacity(%x)", blk, n,
+			    mscLun->disk_info.capacity);
+		return 0;
+	}
+
+	// set_usbh_disk_status(USB_STORAGE_DEVICE_STATUS_WRITE);
+	/*
+	if (mscLun->mscDev->SubClass == USBMSC_SUBCLASS_SCSI) {
+		if (mscLun->disk_info.capacity > 0xffffffff) {
+			cmd_version = 16;
+		} else if (mscLun->disk_info.capacity > 0x1fffff) {
+			cmd_version = 10;
+		} else {
+			cmd_version = 6;
+		}
+	} else {
+		cmd_version = 10;
+	}
+	*/
+	/* ÁõÆÂâçÊâÄËßÅÁöÑUSBËÆæÂ§áÈáåÈù¢ÈÉΩ‰ΩøÁî®ÁöÑÊòØ10Â≠óËäÇÂëΩÂêçÔºåËÄå‰∏îÂçèËÆÆËßÑÂÆöÁöÑÊòØ10/12Â≠óËäÇÂëΩ‰ª§ */
+	cmd_version = 10;
+	hal_sem_wait(mscLun->Lock);
+
+	if (cmd_version == 16) {
+		ret = ScsiWrite(mscLun, 16, blk, n, (void *)pBuffer,
+				(n * (mscLun->disk_info.sector_size)));
+	} else if (cmd_version == 10) {
+		ret = ScsiWrite(mscLun, 10, blk, n, (void *)pBuffer,
+				(n * (mscLun->disk_info.sector_size)));
+	} else {
+		ret = ScsiWrite(mscLun, 6, blk, n, (void *)pBuffer,
+				(n * (mscLun->disk_info.sector_size)));
+	}
+
+	hal_sem_post(mscLun->Lock);
+	// set_usbh_disk_status(USB_STORAGE_DEVICE_STATUS_IDLE);
+
+	if (ret != 0) {
+		hal_log_err("ERR: ScsiWrite%d failed. DevNo = %d, blk = %d, n = %d",
+			    cmd_version, BlkDev->DevNo, blk, n);
+		return 0;
+	}
+
+	return n;
+}
+
+unsigned int DiskRead(struct devfs_node *node, uint32_t blk, uint32_t n, const void *pBuffer)
+{
+	__UsbBlkDev_t *BlkDev = NULL;
+	__mscLun_t *mscLun = NULL;
+	unsigned int cnt = 0;
+
+	// DMSG_MSC_TEST("DiskRead: Blk = %d, N = %d, LastBlk = %d", blk, n, (blk + n));
+	BlkDev = (__UsbBlkDev_t *)(node->private);
+
+	if (BlkDev->Magic != USB_BLK_DEV_MAGIC) {
+		hal_log_err("ERR: DiskRead: BlkDev Magic(%x) is invalid", BlkDev->Magic);
+		return 0;
+	}
+
+	mscLun = BlkDev->Lun;
+
+	if (mscLun == NULL) {
+		hal_log_err("ERR: DiskRead: mscLun == NULL");
+		return 0;
+	}
+
+	if ((blk + n) > mscLun->disk_info.capacity) {
+		hal_log_err("ERR: DiskRead: block(%x, %x) is adjacence max capacity(%x)",
+			    blk, n, mscLun->disk_info.capacity);
+		return 0;
+	}
+
+	/* 1„ÄÅlba0 ‰∏çÈ¢ÑËØª
+       2„ÄÅÊú¨Ê¨°ËØªÂÜôÈïøÂ∫¶Ë∂ÖËøá‰∫ÜÊúÄÂ§ßÂÆπÈáèÔºå‰∏çÈ¢ÑËØª
+    */
+	if ((blk != 0) && ((blk + (USBH_TEMP_BUFFER_MAX_LEN / mscLun->disk_info.sector_size)) < mscLun->disk_info.capacity)) {
+		cnt = usbh_msc_special_read((void *)pBuffer,
+					    blk,
+					    n,
+					    node,
+					    BlkDev->DevNo,
+					    mscLun->disk_info.sector_size,
+					    (void *)__DiskRead);
+	} else {
+		hal_log_info("DiskRead: block(%x, %x) is adjacence max capacity(%x), can't use special write",
+			     blk, n, mscLun->disk_info.capacity);
+		cnt = __DiskRead(pBuffer, blk, n, node);
+	}
+
+	if (cnt != n) {
+		hal_log_err("ERR: DiskRead failed, want(%d) != real(%d)", n, cnt);
+		return 0;
+	}
+
+	// DMSG_MSC_TEST("read end");
+	return n;
+}
+
+unsigned int DiskWrite(struct devfs_node *node, uint32_t blk, uint32_t n, const void *pBuffer)
+{
+	__UsbBlkDev_t *BlkDev = NULL;
+	__mscLun_t *mscLun = NULL;
+	unsigned int cnt = 0;
+
+	// DMSG_MSC_TEST("DiskWrite: Blk = %d, N = %d, LastBlk = %d", blk, n, (blk + n));
+	BlkDev = (__UsbBlkDev_t *)(node->private);
+
+	if (BlkDev->Magic != USB_BLK_DEV_MAGIC) {
+		hal_log_err("ERR: DiskWrite: BlkDev Magic(%x) is invalid", BlkDev->Magic);
+		return 0;
+	}
+
+	mscLun = BlkDev->Lun;
+
+	if (mscLun == NULL) {
+		hal_log_err("ERR: __DiskWrite: mscLun == NULL");
+		return 0;
+	}
+
+	if ((blk + n) > mscLun->disk_info.capacity) {
+		hal_log_err("ERR: DiskWrite: block(%x, %x) is adjacence max capacity(%x)",
+			    blk, n, mscLun->disk_info.capacity);
+		return 0;
+	}
+
+	/* 1„ÄÅlba0 ‰∏çÈ¢ÑËØª
+       2„ÄÅÊú¨Ê¨°ËØªÂÜôÈïøÂ∫¶Ë∂ÖËøá‰∫ÜÊúÄÂ§ßÂÆπÈáèÔºå‰∏çÈ¢ÑËØª
+    */
+	if ((blk != 0) && ((blk + (USBH_TEMP_BUFFER_MAX_LEN / mscLun->disk_info.sector_size)) < mscLun->disk_info.capacity)) {
+		cnt = usbh_msc_special_write((void *)pBuffer,
+					     blk,
+					     n,
+					     node,
+					     BlkDev->DevNo,
+					     mscLun->disk_info.sector_size,
+					     (void *)__DiskWrite);
+	} else {
+		hal_log_info("DiskWrite: block(%x, %x) is adjacence max capacity(%x), can't use special write",
+			     blk, n, mscLun->disk_info.capacity);
+		set_usbh_temp_buff_invalid_by_dev(BlkDev->DevNo);
+		cnt = __DiskWrite(pBuffer, blk, n, node);
+	}
+
+	if (cnt != n) {
+		hal_log_err("ERR: DiskWrite failed, want(%d) != real(%d)", n, cnt);
+		return 0;
+	}
+
+	// DMSG_MSC_TEST("write end");
+	return n;
+}
+
+static int32_t DiskIoctl(struct devfs_node *node, int Cmd, void *args[2])
+{
+	__UsbBlkDev_t *BlkDev = NULL;
+	__mscLun_t *mscLun = NULL;
+	unsigned int ret = 0;
+	long Aux = (long)args[0];
+	void *pBuffer = args[1];
+
+	BlkDev = (__UsbBlkDev_t *)(node->private);
+
+	if (BlkDev->Magic != USB_BLK_DEV_MAGIC) {
+		hal_log_err("ERR: DiskIoctl: BlkDev Magic(%x) is invalid", BlkDev->Magic);
+		return EPDK_FAIL;
+	}
+
+	mscLun = BlkDev->Lun;
+
+	if (mscLun == NULL) {
+		hal_log_err("ERR: DiskIoctl: mscLun == NULL");
+		return EPDK_FAIL;
+	}
+
+	/* Áî±‰∫éÂùóËÆæÂ§á‰∏çÊîØÊåÅÂÖâÈ©±ËÆæÂ§á, Âõ†Ê≠§ËøôÈáåÂ∞±Âè™ËÉΩÂÅö‰∏™‰∏¥Êó∂ÁâàÊú¨ */
+	if (mscLun->DeviceType == SCSI_DEVICE_CDROM) {
+		ret = CDIOCtrl(BlkDev, Cmd, Aux, pBuffer);
+
+		if (ret == EPDK_OK) {
+			hal_log_err("[CD_ROM]: Cmd(%x) is USB CD_ROM command");
+			return EPDK_OK;
+		}
+	}
+
+	switch (Cmd) {
+	case DEV_CMD_GET_INFO: {
+		if (!pBuffer) {
+			hal_log_err("ERR : usb storage disk ,pBuffer == NULL");
+			return EPDK_FAIL;
+		}
+
+		((__dev_blkinfo_t *)pBuffer)->hiddennum = 0;
+		((__dev_blkinfo_t *)pBuffer)->headnum = 0;
+		((__dev_blkinfo_t *)pBuffer)->secnum = 0;
+		((__dev_blkinfo_t *)pBuffer)->partsize = mscLun->disk_info.capacity;
+		((__dev_blkinfo_t *)pBuffer)->secsize = mscLun->disk_info.sector_size;
+		hal_log_info("[usb storage]: DEV_CMD_GET_INFO, capacity = %dM, sector = %d",
+			     ((mscLun->disk_info.capacity) >> 11), mscLun->disk_info.sector_size);
+	} break;
+
+	case DEV_CMD_GET_STATUS:
+		return EPDK_OK;
+
+	case DEV_IOC_USR_FLUSH_CACHE:
+		return EPDK_OK;
+
+	case DEV_CDROM_LAST_WRITTEN:
+		return EPDK_FAIL;
+
+	case DEV_CDROM_MULTISESSION:
+		return EPDK_FAIL;
+
+	default:
+		hal_log_err("WARN : DiskIoctl ,cmd = %x ,not support now", Cmd);
+		return EPDK_FAIL;
+	}
+
+	return EPDK_OK;
+}
+
+#endif
 /*
 *******************************************************************************
 *                     UsbBlkDevAllocInit
@@ -658,76 +990,83 @@ static int32_t DiskIoctl(void * hDev, uint32_t Cmd, long Aux, void *pBuffer)
 *
 *
 * Return value:
-*    0  £∫≥…π¶
-*   !0  £∫ ß∞‹
+*    0  ÔºöÊàêÂäü
+*   !0  ÔºöÂ§±Ë¥•
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
-#define  USB_STORAGE_DEV_NAME       "SCSI_DISK"
-#define  USB_CDROM_DEV_NAME         "USB_CDROM" 
+#define USB_STORAGE_DEV_NAME "SCSI_DISK"
+#define USB_CDROM_DEV_NAME "USB_CDROM"
 
 __UsbBlkDev_t *UsbBlkDevAllocInit(__mscLun_t *mscLun)
 {
-    __UsbBlkDev_t *BlkDev = NULL;
-    unsigned char temp_buff[32];
-    unsigned int temp = 0;
+	__UsbBlkDev_t *BlkDev = NULL;
+	unsigned char temp_buff[32];
+	unsigned int temp = 0;
 
-    if (mscLun == NULL)
-    {
-        hal_log_err("ERR: UsbBlkDevAllocInit: input error");
-        return NULL;
-    }
+	if (mscLun == NULL) {
+		hal_log_err("ERR: UsbBlkDevAllocInit: input error");
+		return NULL;
+	}
 
-    //--<1>--create a block device
-    BlkDev = (__UsbBlkDev_t *)hal_malloc(sizeof(__UsbBlkDev_t));
+	//--<1>--create a block device
+	BlkDev = (__UsbBlkDev_t *)hal_malloc(sizeof(__UsbBlkDev_t));
 
-    if (BlkDev == NULL)
-    {
-        hal_log_err("ERR: UsbBlkDevAllocInit: USB_OS_MALLOC failed");
-        return NULL;
-    }
+	if (BlkDev == NULL) {
+		hal_log_err("ERR: UsbBlkDevAllocInit: USB_OS_MALLOC failed");
+		return NULL;
+	}
 
-    memset(BlkDev, 0, sizeof(__UsbBlkDev_t));
-    BlkDev->Lun = mscLun;
-    //--<2>--create lock
-    //--<3>--create DevNo
-    BlkDev->DevNo = (mscLun->LunNo * 1) + (mscLun->mscDev->mscDevNo * 10);
+	memset(BlkDev, 0, sizeof(__UsbBlkDev_t));
+	BlkDev->Lun = mscLun;
+	//--<2>--create lock
+	//--<3>--create DevNo
+	BlkDev->DevNo = (mscLun->LunNo * 1) + (mscLun->mscDev->mscDevNo * 10);
 
-    //--<4>--create sub device name
-    if (mscLun->DeviceType == SCSI_DEVICE_CDROM)
-    {
-        memcpy((void *)BlkDev->DevName, USB_CDROM_DEV_NAME, strlen(USB_CDROM_DEV_NAME));
-        strcat((char *)BlkDev->DevName, "_");
-    }
-    else
-    {
-        memcpy((void *)BlkDev->DevName, USB_STORAGE_DEV_NAME, strlen(USB_STORAGE_DEV_NAME));
-        strcat((char *)BlkDev->DevName, "_");
-    }
+	//--<4>--create sub device name
+	if (mscLun->DeviceType == SCSI_DEVICE_CDROM) {
+		memcpy((void *)BlkDev->DevName, USB_CDROM_DEV_NAME, strlen(USB_CDROM_DEV_NAME));
+		strcat((char *)BlkDev->DevName, "_");
+	} else {
+		memcpy((void *)BlkDev->DevName, USB_STORAGE_DEV_NAME, strlen(USB_STORAGE_DEV_NAME));
+		strcat((char *)BlkDev->DevName, "_");
+	}
 
-    /* usb controler number */
-    temp = 0;
-    memset(temp_buff, 0, 32);
-    Usb_uint2str_dec(temp, (char *)temp_buff);
-    strcat((char *)BlkDev->DevName, (const char *)temp_buff);
-    /* mscDevNo */
-    memset(temp_buff, 0, 32);
-    Usb_uint2str_dec(mscLun->mscDev->mscDevNo, (char *)temp_buff);
-    strcat((char *)BlkDev->DevName, (const char *)temp_buff);
-    /* LunNo */
-    memset(temp_buff, 0, 32);
-    Usb_uint2str_dec(mscLun->LunNo, (char *)temp_buff);
-    strcat((char *)BlkDev->DevName, (const char *)temp_buff);
-    /* init device operation function */
-    BlkDev->DiskOp.Open  = DiskOpen;
-    BlkDev->DiskOp.Close = DiskClose;
-    BlkDev->DiskOp.Read  = DiskRead;
-    BlkDev->DiskOp.Write = DiskWrite;
-    BlkDev->DiskOp.Ioctl = DiskIoctl;
-    return BlkDev;
+	/* usb controler number */
+	temp = 0;
+	memset(temp_buff, 0, 32);
+	Usb_uint2str_dec(temp, (char *)temp_buff);
+	strcat((char *)BlkDev->DevName, (const char *)temp_buff);
+	/* mscDevNo */
+	memset(temp_buff, 0, 32);
+	Usb_uint2str_dec(mscLun->mscDev->mscDevNo, (char *)temp_buff);
+	strcat((char *)BlkDev->DevName, (const char *)temp_buff);
+	/* LunNo */
+	memset(temp_buff, 0, 32);
+	Usb_uint2str_dec(mscLun->LunNo, (char *)temp_buff);
+	strcat((char *)BlkDev->DevName, (const char *)temp_buff);
+	/* init device operation function */
+#ifdef CONFIG_OS_MELIS
+	BlkDev->DiskOp.Open = DiskOpen;
+	BlkDev->DiskOp.Close = DiskClose;
+	BlkDev->DiskOp.Read = DiskRead;
+	BlkDev->DiskOp.Write = DiskWrite;
+	BlkDev->DiskOp.Ioctl = DiskIoctl;
+#elif defined(CONFIG_KERNEL_FREERTOS)
+	BlkDev->dev_node.open = DiskOpen;
+	BlkDev->dev_node.close = DiskClose;
+	BlkDev->dev_node.read = (void *)DiskRead;
+	BlkDev->dev_node.write = (void *)DiskWrite;
+	BlkDev->dev_node.ioctl = (void *)DiskIoctl;
+	BlkDev->dev_node.name = BlkDev->DevName;
+	BlkDev->dev_node.alias = BlkDev->DevName;
+	BlkDev->dev_node.private = BlkDev;
+	BlkDev->dev_node.size = 1;
+#endif
+	return BlkDev;
 }
 
 /*
@@ -741,29 +1080,30 @@ __UsbBlkDev_t *UsbBlkDevAllocInit(__mscLun_t *mscLun)
 *
 *
 * Return value:
-*    0  £∫≥…π¶
-*   !0  £∫ ß∞‹
+*    0  ÔºöÊàêÂäü
+*   !0  ÔºöÂ§±Ë¥•
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
 int UsbBlkDevFree(__UsbBlkDev_t *BlkDev)
 {
-    if (BlkDev == NULL)
-    {
-        hal_log_err("ERR: UsbBlkDevFree: input error");
-        return -1;
-    }
-
-    BlkDev->DiskOp.Open  = NULL;
-    BlkDev->DiskOp.Close = NULL;
-    BlkDev->DiskOp.Read  = NULL;
-    BlkDev->DiskOp.Write = NULL;
-    BlkDev->DiskOp.Ioctl = NULL;
-    hal_free(BlkDev);
-    return 0;
+	if (BlkDev == NULL) {
+		hal_log_err("ERR: UsbBlkDevFree: input error");
+		return -1;
+	}
+#ifdef CONFIG_OS_MELIS
+	BlkDev->DiskOp.Open = NULL;
+	BlkDev->DiskOp.Close = NULL;
+	BlkDev->DiskOp.Read = NULL;
+	BlkDev->DiskOp.Write = NULL;
+	BlkDev->DiskOp.Ioctl = NULL;
+#elif defined(CONFIG_KERNEL_FREERTOS)
+#endif
+	hal_free(BlkDev);
+	return 0;
 }
 
 /*
@@ -786,102 +1126,100 @@ int UsbBlkDevFree(__UsbBlkDev_t *BlkDev)
 */
 static void PrintDevStatus(unsigned char *FunName, int status)
 {
-    hal_log_info("FunName: %s,", FunName);
+	hal_log_info("FunName: %s,", FunName);
 
-    switch (status)
-    {
-        case  USB_STATUS_SUCCESS:
-            hal_log_info("USB_STATUS_SUCCESS");
-            break;
+	switch (status) {
+	case USB_STATUS_SUCCESS:
+		hal_log_info("USB_STATUS_SUCCESS");
+		break;
 
-        case  USB_STATUS_DEVICE_DISCONNECTED:
-            hal_log_info("USB_STATUS_DEVICE_DISCONNECTED");
-            break;
+	case USB_STATUS_DEVICE_DISCONNECTED:
+		hal_log_info("USB_STATUS_DEVICE_DISCONNECTED");
+		break;
 
-        case USB_STATUS_IO_TIMEOUT:
-            hal_log_info("USB_STATUS_IO_TIMEOUT");
-            break;
+	case USB_STATUS_IO_TIMEOUT:
+		hal_log_info("USB_STATUS_IO_TIMEOUT");
+		break;
 
-        case USB_STATUS_IO_DEVICE_ERROR:
-            hal_log_info("USB_STATUS_IO_DEVICE_ERROR");
-            break;
+	case USB_STATUS_IO_DEVICE_ERROR:
+		hal_log_info("USB_STATUS_IO_DEVICE_ERROR");
+		break;
 
-        case USB_STATUS_DEVICE_BUSY:
-            hal_log_info("USB_STATUS_DEVICE_BUSY");
-            break;
+	case USB_STATUS_DEVICE_BUSY:
+		hal_log_info("USB_STATUS_DEVICE_BUSY");
+		break;
 
-        case USB_STATUS_BUFFER_TOO_SMALL:
-            hal_log_info("USB_STATUS_BUFFER_TOO_SMALL");
-            break;
+	case USB_STATUS_BUFFER_TOO_SMALL:
+		hal_log_info("USB_STATUS_BUFFER_TOO_SMALL");
+		break;
 
-        case USB_STATUS_INVALID_COMMAND:
-            hal_log_info("USB_STATUS_INVALID_COMMAND");
-            break;
+	case USB_STATUS_INVALID_COMMAND:
+		hal_log_info("USB_STATUS_INVALID_COMMAND");
+		break;
 
-        case USB_STATUS_INVALID_FIELD_IN_COMMAND:
-            hal_log_info("USB_STATUS_INVALID_FIELD_IN_COMMAND");
-            break;
+	case USB_STATUS_INVALID_FIELD_IN_COMMAND:
+		hal_log_info("USB_STATUS_INVALID_FIELD_IN_COMMAND");
+		break;
 
-        case USB_STATUS_LOGICAL_BLOCK_ADDRESS_OUT_OF_RANGE:
-            hal_log_info("USB_STATUS_LOGICAL_BLOCK_ADDRESS_OUT_OF_RANGE");
-            break;
+	case USB_STATUS_LOGICAL_BLOCK_ADDRESS_OUT_OF_RANGE:
+		hal_log_info("USB_STATUS_LOGICAL_BLOCK_ADDRESS_OUT_OF_RANGE");
+		break;
 
-        case USB_STATUS_MEDIA_NOT_PRESENT:
-            hal_log_info("USB_STATUS_MEDIA_NOT_PRESENT");
-            break;
+	case USB_STATUS_MEDIA_NOT_PRESENT:
+		hal_log_info("USB_STATUS_MEDIA_NOT_PRESENT");
+		break;
 
-        case USB_STATUS_NOT_READY_TO_READY_TRANSITION:
-            hal_log_info("USB_STATUS_NOT_READY_TO_READY_TRANSITION");
-            break;
+	case USB_STATUS_NOT_READY_TO_READY_TRANSITION:
+		hal_log_info("USB_STATUS_NOT_READY_TO_READY_TRANSITION");
+		break;
 
-        case USB_STATUS_UNRECOGNIZED_MEDIA:
-            hal_log_info("USB_STATUS_UNRECOGNIZED_MEDIA");
-            break;
+	case USB_STATUS_UNRECOGNIZED_MEDIA:
+		hal_log_info("USB_STATUS_UNRECOGNIZED_MEDIA");
+		break;
 
-        case USB_STATUS_UNKOWN_ERROR:
-            hal_log_info("USB_STATUS_UNKOWN_ERROR");
-            break;
+	case USB_STATUS_UNKOWN_ERROR:
+		hal_log_info("USB_STATUS_UNKOWN_ERROR");
+		break;
 
-        default:
-            hal_log_info("unkonw status %d", status);
-			break;
-    }
+	default:
+		hal_log_info("unkonw status %d", status);
+		break;
+	}
 
-    return ;
+	return;
 }
 
 static void Pr__s32DiskInfo(__UsbBlkDev_t *BlkDev)
 {
-    __mscLun_t *mscLun = NULL;
+	__mscLun_t *mscLun = NULL;
 
-    if (BlkDev == NULL)
-    {
-        hal_log_err("ERR: Pr__s32DiskInfo: input error, BlkDev = %x", BlkDev);
-        return ;
-    }
+	if (BlkDev == NULL) {
+		hal_log_err("ERR: Pr__s32DiskInfo: input error, BlkDev = %x", BlkDev);
+		return;
+	}
 
-    mscLun = BlkDev->Lun;
+	mscLun = BlkDev->Lun;
 
-    if (mscLun == NULL)
-    {
-        hal_log_err("ERR: UnitReady: mscLun == NULL");
-        return ;
-    }
+	if (mscLun == NULL) {
+		hal_log_err("ERR: UnitReady: mscLun == NULL");
+		return;
+	}
 
-    hal_log_info("-----------------Disk Information-----------------");
-    hal_log_info("WriteProtect = %d", mscLun->WriteProtect);
-    hal_log_info("MediaPresent = %d", mscLun->MediaPresent);
-    hal_log_info("WCE          = %d", mscLun->WCE);
-    hal_log_info("RCD          = %d", mscLun->RCD);
-    hal_log_info("capacity     = %dM, sector number = %d", (mscLun->disk_info.capacity * 512) / (1024 * 1024), mscLun->disk_info.capacity);
-    hal_log_info("sector_size  = %d", mscLun->disk_info.sector_size);
-    hal_log_info("DevNo        = %d", BlkDev->DevNo);
-    hal_log_info("ClassName    = %s", BlkDev->ClassName);
-    hal_log_info("DevName      = %s", BlkDev->DevName);
-    hal_log_info("--------------------------------------------------");
-    return ;
+	hal_log_info("-----------------Disk Information-----------------");
+	hal_log_info("WriteProtect = %d", mscLun->WriteProtect);
+	hal_log_info("MediaPresent = %d", mscLun->MediaPresent);
+	hal_log_info("WCE          = %d", mscLun->WCE);
+	hal_log_info("RCD          = %d", mscLun->RCD);
+	hal_log_info("capacity     = %lldM, sector number = %d",
+		     ((unsigned long long)mscLun->disk_info.capacity * 512) / (1024 * 1024),
+		     mscLun->disk_info.capacity);
+	hal_log_info("sector_size  = %d", mscLun->disk_info.sector_size);
+	hal_log_info("DevNo        = %d", BlkDev->DevNo);
+	hal_log_info("ClassName    = %s", BlkDev->ClassName);
+	hal_log_info("DevName      = %s", BlkDev->DevName);
+	hal_log_info("--------------------------------------------------");
+	return;
 }
-
 
 /*
 *******************************************************************************
@@ -903,73 +1241,62 @@ static void Pr__s32DiskInfo(__UsbBlkDev_t *BlkDev)
 */
 static void WaitForDeviceReady(__UsbBlkDev_t *BlkDev)
 {
-    __mscLun_t *mscLun = NULL;
-    unsigned int Repeat = 10;
-    int ret = USB_STATUS_SUCCESS;
+	__mscLun_t *mscLun = NULL;
+	unsigned int Repeat = 1;
+	int ret = USB_STATUS_SUCCESS;
 
-    if (BlkDev == NULL)
-    {
-        hal_log_err("ERR: UnitReady: input error");
-        return ;
-    }
+	if (BlkDev == NULL) {
+		hal_log_err("ERR: UnitReady: input error");
+		return;
+	}
 
-    mscLun = BlkDev->Lun;
+	mscLun = BlkDev->Lun;
 
-    if (mscLun == NULL)
-    {
-        hal_log_err("ERR: UnitReady: mscLun == NULL");
-        return ;
-    }
+	if (mscLun == NULL) {
+		hal_log_err("ERR: UnitReady: mscLun == NULL");
+		return;
+	}
 
-    hal_sem_wait(mscLun->Lock);
-    /* Unit Ready? */
-    ret = ScsiTestUnitReady(mscLun);
+	hal_sem_wait(mscLun->Lock);
+	/* Unit Ready? */
+	ret = ScsiTestUnitReady(mscLun);
 
-    if (ret == USB_STATUS_SUCCESS)
-    {
-        goto end;
-    }
-    else if (mscLun->DeviceType == SCSI_DEVICE_CDROM)
-    {
-        PrintDevStatus("ScsiTestUnitReady", ret);
-        ScsiStartStopUnit(mscLun, 0, 1);
-    }
+	if (ret == USB_STATUS_SUCCESS) {
+		goto end;
+	} else if (mscLun->DeviceType == SCSI_DEVICE_CDROM) {
+		PrintDevStatus("ScsiTestUnitReady", ret);
+		ScsiStartStopUnit(mscLun, 0, 1);
+	}
 
-    /* wait for unit ready */
-    do
-    {
-        ret = ScsiTestUnitReady(mscLun);
+	/* wait for unit ready */
+	do {
+		ret = ScsiTestUnitReady(mscLun);
 
-        if (ret == USB_STATUS_INVALID_COMMAND)
-        {
-            hal_log_err("ERR: Device Not Support ScsiTestUnitReady command");
-            PrintDevStatus("ScsiTestUnitReady", ret);
-            break;
-        }
+		if (ret == USB_STATUS_INVALID_COMMAND) {
+			hal_log_err("ERR: Device Not Support ScsiTestUnitReady command");
+			PrintDevStatus("ScsiTestUnitReady", ret);
+			break;
+		}
 
-        /* ≈–∂œmediaµƒ◊¥Ã¨ */
-        if (ret != USB_STATUS_SUCCESS)
-        {
-            mscLun->MediaPresent = 0;
-        }
-        else if ((ret == USB_STATUS_SUCCESS && !(mscLun->MediaPresent)))
-        {
-            hal_log_info("Media not Present, but ScsiTestUnitReady command is successful,"
-                      " Repeat = %d", Repeat);
-            mscLun->MediaPresent = 1;
-        }
+		/* Âà§Êñ≠mediaÁöÑÁä∂ÊÄÅ */
+		if (ret != USB_STATUS_SUCCESS) {
+			mscLun->MediaPresent = 0;
+		} else if ((ret == USB_STATUS_SUCCESS && !(mscLun->MediaPresent))) {
+			hal_log_info("Media not Present, but ScsiTestUnitReady command is successful,"
+				     " Repeat = %d", Repeat);
+			mscLun->MediaPresent = 1;
+		}
 
-        --Repeat;
+		--Repeat;
 
-        if (USB_STATUS_SUCCESS != ret && Repeat != 0)
-        {
-            hal_msleep(1000);
-        }
-    } while (Repeat && !(mscLun->MediaPresent));
+		if (USB_STATUS_SUCCESS != ret && Repeat != 0) {
+			// hal_msleep(1000);
+		}
+	} while (Repeat && !(mscLun->MediaPresent));
 
 end:
-    hal_sem_post(mscLun->Lock);
-    return ;
+	hal_sem_post(mscLun->Lock);
+	return;
 }
 
 /*
@@ -992,42 +1319,36 @@ end:
 */
 static void ReadCapacity(__UsbBlkDev_t *BlkDev)
 {
-    __mscLun_t *mscLun = NULL;
-    int ret = 0;
+	__mscLun_t *mscLun = NULL;
+	int ret = 0;
 
-    if (BlkDev == NULL)
-    {
-        hal_log_err("ERR: UnitReady: input error");
-        return ;
-    }
+	if (BlkDev == NULL) {
+		hal_log_err("ERR: UnitReady: input error");
+		return;
+	}
 
-    mscLun = BlkDev->Lun;
+	mscLun = BlkDev->Lun;
 
-    if (mscLun == NULL)
-    {
-        hal_log_err("ERR: UnitReady: mscLun == NULL");
-        return ;
-    }
+	if (mscLun == NULL) {
+		hal_log_err("ERR: UnitReady: mscLun == NULL");
+		return;
+	}
 
-    if (mscLun->MediaPresent)
-    {
-        hal_sem_wait(mscLun->Lock);
-        ret = ScsiReadCapacity(mscLun);
+	if (mscLun->MediaPresent) {
+		hal_sem_wait(mscLun->Lock);
+		ret = ScsiReadCapacity(mscLun);
 
-        if (ret != USB_STATUS_SUCCESS)
-        {
-            hal_log_err("ERR: ScsiReadCapacity failed");
-            PrintDevStatus("ScsiReadCapacity", ret);
-        }
+		if (ret != USB_STATUS_SUCCESS) {
+			hal_log_err("ERR: ScsiReadCapacity failed");
+			PrintDevStatus("ScsiReadCapacity", ret);
+		}
 
-        hal_sem_post(mscLun->Lock);
-    }
-    else
-    {
-        hal_log_err("ERR: media is not present, ReadCapacity failed");
-    }
+		hal_sem_post(mscLun->Lock);
+	} else {
+		hal_log_err("ERR: media is not present, ReadCapacity failed");
+	}
 
-    return ;
+	return;
 }
 
 /*
@@ -1035,7 +1356,7 @@ static void ReadCapacity(__UsbBlkDev_t *BlkDev)
 *                     ReadProtectFlag
 *
 * Description:
-*    ªÒµ√…Ë±∏–¥±£ª§±Í÷æŒª
+*    Ëé∑ÂæóËÆæÂ§áÂÜô‰øùÊä§Ê†áÂøó‰Ωç
 *
 * Parameters:
 *
@@ -1050,100 +1371,84 @@ static void ReadCapacity(__UsbBlkDev_t *BlkDev)
 */
 static void ReadProtectFlag(__UsbBlkDev_t *BlkDev)
 {
-    __mscLun_t *mscLun = NULL;
-    __BlockDevSpecPara_t *DevSpecPara = NULL;
-    unsigned int cmd_version = 6;   /* ƒ¨»œ π”√mode sense 6 */
-    int ret = 0;
-    unsigned int ActLen = 0;
-    unsigned char  buffer[SCSI_MODE_SENSE_MAX_DATA_LEN];
+	__mscLun_t *mscLun = NULL;
+	__BlockDevSpecPara_t *DevSpecPara = NULL;
+	unsigned int cmd_version = 6; /* ÈªòËÆ§‰ΩøÁî®mode sense 6 */
+	int ret = 0;
+	unsigned int ActLen = 0;
+	unsigned char buffer[SCSI_MODE_SENSE_MAX_DATA_LEN]  __attribute__((aligned(64)));
 
-    if (BlkDev == NULL)
-    {
-        hal_log_err("ERR: UnitReady: input error");
-        return ;
-    }
+	if (BlkDev == NULL) {
+		hal_log_err("ERR: UnitReady: input error");
+		return;
+	}
 
-    mscLun = BlkDev->Lun;
+	mscLun = BlkDev->Lun;
 
-    if (mscLun == NULL)
-    {
-        hal_log_err("ERR: UnitReady: mscLun == NULL");
-        return ;
-    }
+	if (mscLun == NULL) {
+		hal_log_err("ERR: UnitReady: mscLun == NULL");
+		return;
+	}
 
-    if ((mscLun->mscDev->SubClass != USBMSC_SUBCLASS_SCSI) || (mscLun->DeviceType == SCSI_DEVICE_CDROM))
-    {
-        cmd_version = 10;
-    }
+	if ((mscLun->mscDev->SubClass != USBMSC_SUBCLASS_SCSI)
+	    || (mscLun->DeviceType == SCSI_DEVICE_CDROM)) {
+		cmd_version = 10;
+	}
 
-    memset(buffer, 0, SCSI_MODE_SENSE_MAX_DATA_LEN);
-    hal_sem_wait(mscLun->Lock);
+	memset(buffer, 0, SCSI_MODE_SENSE_MAX_DATA_LEN);
+	hal_sem_wait(mscLun->Lock);
 
-    /* send mode sense command */
-    if (cmd_version == 6)
-    {
-        ret = ScsiModeSense6(mscLun,
-                             MODE_PAGE_ALL_PAGES,
-                             ((mscLun->DeviceType == SCSI_DEVICE_CDROM) ? 1 : 0),
-                             (void *)buffer,
-                             SCSI_MODE_SENSE_MAX_DATA_LEN,
-                             &ActLen);
+	/* send mode sense command */
+	if (cmd_version == 6) {
+		ret = ScsiModeSense6(mscLun,
+				     MODE_PAGE_ALL_PAGES,
+				     ((mscLun->DeviceType == SCSI_DEVICE_CDROM) ? 1 : 0),
+				     (void *)buffer,
+				     SCSI_MODE_SENSE_MAX_DATA_LEN,
+				     &ActLen);
 
-        if (ret == USB_STATUS_INVALID_COMMAND)
-        {
-            cmd_version = 10;
-        }
-        else if (ret != USB_STATUS_SUCCESS)
-        {
-            hal_log_err("ERR: ScsiModeSense6 failed");
-            PrintDevStatus("ScsiModeSense6", ret);
-            cmd_version = 0;
-        }
-    }
+		if (ret == USB_STATUS_INVALID_COMMAND) {
+			cmd_version = 10;
+		} else if (ret != USB_STATUS_SUCCESS) {
+			hal_log_err("ERR: ScsiModeSense6 failed");
+			PrintDevStatus("ScsiModeSense6", ret);
+			cmd_version = 0;
+		}
+	}
 
-    if (cmd_version == 10)
-    {
-        ret = ScsiModeSense10(mscLun,
-                              MODE_PAGE_ALL_PAGES,
-                              ((mscLun->DeviceType == SCSI_DEVICE_CDROM) ? 1 : 0),
-                              (void *)buffer,
-                              SCSI_MODE_SENSE_MAX_DATA_LEN,
-                              &ActLen);
+	if (cmd_version == 10) {
+		ret = ScsiModeSense10(mscLun,
+				      MODE_PAGE_ALL_PAGES,
+				      ((mscLun->DeviceType == SCSI_DEVICE_CDROM) ? 1 : 0),
+				      (void *)buffer,
+				      SCSI_MODE_SENSE_MAX_DATA_LEN,
+				      &ActLen);
 
-        if (ret != USB_STATUS_SUCCESS)
-        {
-            hal_log_err("ERR: ScsiModeSense10 failed");
-            PrintDevStatus("ScsiModeSense10", ret);
-            cmd_version = 0;
-        }
-    }
+		if (ret != USB_STATUS_SUCCESS) {
+			hal_log_err("ERR: ScsiModeSense10 failed");
+			PrintDevStatus("ScsiModeSense10", ret);
+			cmd_version = 0;
+		}
+	}
 
-    /* parse mode sense data */
-    if (ActLen)
-    {
-        if (cmd_version == 6)
-        {
-            DevSpecPara = (__BlockDevSpecPara_t *) & (buffer[2]);
-            mscLun->WriteProtect = DevSpecPara->WP;
-        }
-        else if (cmd_version == 10)
-        {
-            DevSpecPara = (__BlockDevSpecPara_t *) & (buffer[3]);
-            mscLun->WriteProtect = DevSpecPara->WP;
-        }
-        else
-        {
-            mscLun->WriteProtect = 0;
-        }
-    }
-    else   /* if deivce not have 0x3f page, then no mode sense data */
-    {
-        hal_log_err("ReadProtectFlag: no mode sense data");
-        mscLun->WriteProtect = 0;
-    }
+	/* parse mode sense data */
+	if (ActLen) {
+		if (cmd_version == 6) {
+			DevSpecPara = (__BlockDevSpecPara_t *)&(buffer[2]);
+			mscLun->WriteProtect = DevSpecPara->WP;
+		} else if (cmd_version == 10) {
+			DevSpecPara = (__BlockDevSpecPara_t *)&(buffer[3]);
+			mscLun->WriteProtect = DevSpecPara->WP;
+		} else {
+			mscLun->WriteProtect = 0;
+		}
+	} else { /* if deivce not have 0x3f page, then no mode sense data */
+		hal_log_err("ReadProtectFlag: no mode sense data");
+		mscLun->WriteProtect = 0;
+	}
 
-    hal_sem_post(mscLun->Lock);
-    return ;
+	hal_sem_post(mscLun->Lock);
+	return;
 }
 
 /*
@@ -1166,116 +1471,96 @@ static void ReadProtectFlag(__UsbBlkDev_t *BlkDev)
 */
 static void ReadCacheType(__UsbBlkDev_t *BlkDev)
 {
-    __mscLun_t *mscLun = NULL;
-    unsigned int cmd_version = 6;   /* ƒ¨»œ π”√mode sense 6 */
-    int ret = 0;
-    unsigned char  buffer[SCSI_MODE_SENSE_MAX_DATA_LEN];
-    unsigned int ActLen = 0;
-    unsigned int CachepageValid = 0;
-    unsigned int CachepageAddr = 0;
+	__mscLun_t *mscLun = NULL;
+	unsigned int cmd_version = 6; /* ÈªòËÆ§‰ΩøÁî®mode sense 6 */
+	int ret = 0;
+	unsigned char buffer[SCSI_MODE_SENSE_MAX_DATA_LEN] __attribute__((aligned(64)));
+	unsigned int ActLen = 0;
+	unsigned int CachepageValid = 0;
+	unsigned int CachepageAddr = 0;
 
-    if (BlkDev == NULL)
-    {
-        hal_log_err("ERR: UnitReady: input error");
-        return ;
-    }
+	if (BlkDev == NULL) {
+		hal_log_err("ERR: UnitReady: input error");
+		return;
+	}
 
-    mscLun = BlkDev->Lun;
+	mscLun = BlkDev->Lun;
 
-    if (mscLun == NULL)
-    {
-        hal_log_err("ERR: UnitReady: mscLun == NULL");
-        return ;
-    }
+	if (mscLun == NULL) {
+		hal_log_err("ERR: UnitReady: mscLun == NULL");
+		return;
+	}
 
-    if ((mscLun->mscDev->SubClass != USBMSC_SUBCLASS_SCSI) || (mscLun->DeviceType == SCSI_DEVICE_CDROM))
-    {
-        cmd_version = 10;
-    }
+	if ((mscLun->mscDev->SubClass != USBMSC_SUBCLASS_SCSI)
+	    || (mscLun->DeviceType == SCSI_DEVICE_CDROM)) {
+		cmd_version = 10;
+	}
 
-    memset(buffer, 0, SCSI_MODE_SENSE_MAX_DATA_LEN);
-    hal_sem_wait(mscLun->Lock);
+	memset(buffer, 0, SCSI_MODE_SENSE_MAX_DATA_LEN);
+	hal_sem_wait(mscLun->Lock);
 
-    /* send mode sense command */
-    if (cmd_version == 6)
-    {
-        ret = ScsiModeSense6(mscLun,
-                             MODE_PAGE_WCACHING_PAGE,
-                             ((mscLun->DeviceType == SCSI_DEVICE_CDROM) ? 1 : 0),
-                             (void *)buffer,
-                             SCSI_MODE_SENSE_MAX_DATA_LEN,
-                             &ActLen);
+	/* send mode sense command */
+	if (cmd_version == 6) {
+		ret = ScsiModeSense6(mscLun,
+				     MODE_PAGE_WCACHING_PAGE,
+				     ((mscLun->DeviceType == SCSI_DEVICE_CDROM) ? 1 : 0),
+				     (void *)buffer,
+				     SCSI_MODE_SENSE_MAX_DATA_LEN,
+				     &ActLen);
 
-        if (ret == USB_STATUS_INVALID_COMMAND)
-        {
-            cmd_version = 10;
-        }
-        else if (ret != USB_STATUS_SUCCESS)
-        {
-            hal_log_err("ERR: ScsiModeSense6 failed");
-            PrintDevStatus("ScsiModeSense6", ret);
-            cmd_version = 0;
-        }
-    }
+		if (ret == USB_STATUS_INVALID_COMMAND) {
+			cmd_version = 10;
+		} else if (ret != USB_STATUS_SUCCESS) {
+			hal_log_err("ERR: ScsiModeSense6 failed");
+			PrintDevStatus("ScsiModeSense6", ret);
+			cmd_version = 0;
+		}
+	}
 
-    if (cmd_version == 10)
-    {
-        ret = ScsiModeSense10(mscLun,
-                              MODE_PAGE_WCACHING_PAGE,
-                              ((mscLun->DeviceType == SCSI_DEVICE_CDROM) ? 1 : 0),
-                              (void *)buffer,
-                              SCSI_MODE_SENSE_MAX_DATA_LEN,
-                              &ActLen);
+	if (cmd_version == 10) {
+		ret = ScsiModeSense10(mscLun,
+				      MODE_PAGE_WCACHING_PAGE,
+				      ((mscLun->DeviceType == SCSI_DEVICE_CDROM) ? 1 : 0),
+				      (void *)buffer,
+				      SCSI_MODE_SENSE_MAX_DATA_LEN,
+				      &ActLen);
 
-        if (ret != USB_STATUS_SUCCESS)
-        {
-            hal_log_err("ERR: ScsiModeSense10 failed");
-            PrintDevStatus("ScsiModeSense10", ret);
-            cmd_version = 0;
-        }
-    }
+		if (ret != USB_STATUS_SUCCESS) {
+			hal_log_err("ERR: ScsiModeSense10 failed");
+			PrintDevStatus("ScsiModeSense10", ret);
+			cmd_version = 0;
+		}
+	}
 
-    /* parse mode sense data */
-    if (ActLen)
-    {
-        if (cmd_version == 6)
-        {
-            CachepageAddr  = 4;
-            CachepageValid = 1;
-        }
-        else if (cmd_version == 10)
-        {
-            CachepageAddr  = 8;
-            CachepageValid = 1;
-        }
-        else
-        {
-            CachepageAddr  = 0;
-            CachepageValid = 0;
-        }
+	/* parse mode sense data */
+	if (ActLen) {
+		if (cmd_version == 6) {
+			CachepageAddr = 4;
+			CachepageValid = 1;
+		} else if (cmd_version == 10) {
+			CachepageAddr = 8;
+			CachepageValid = 1;
+		} else {
+			CachepageAddr = 0;
+			CachepageValid = 0;
+		}
 
-        if (CachepageValid)
-        {
-            mscLun->WCE = (buffer[CachepageAddr + 2] & 0x04) ? 1 : 0;   /* bit2 */
-            mscLun->RCD = (buffer[CachepageAddr + 2] & 0x01) ? 1 : 0;   /* bit0 */
-        }
-        else
-        {
-            mscLun->WCE = 0;
-            mscLun->RCD = 0;
-        }
-    }
-    else   /* if deivce not have cahe page, then no mode sense data */
-    {
-        hal_log_err("ReadCacheType: no mode sense data");
-        mscLun->WCE = 0;
-        mscLun->RCD = 0;
-    }
+		if (CachepageValid) {
+			mscLun->WCE = (buffer[CachepageAddr + 2] & 0x04) ? 1 : 0; /* bit2 */
+			mscLun->RCD = (buffer[CachepageAddr + 2] & 0x01) ? 1 : 0; /* bit0 */
+		} else {
+			mscLun->WCE = 0;
+			mscLun->RCD = 0;
+		}
+	} else { /* if deivce not have cahe page, then no mode sense data */
+		hal_log_err("ReadCacheType: no mode sense data");
+		mscLun->WCE = 0;
+		mscLun->RCD = 0;
+	}
 
-    hal_sem_post(mscLun->Lock);
-    return ;
+	hal_sem_post(mscLun->Lock);
+	return;
 }
-
 
 /*
 *******************************************************************************
@@ -1288,62 +1573,59 @@ static void ReadCacheType(__UsbBlkDev_t *BlkDev)
 *
 *
 * Return value:
-*    0  £∫≥…π¶
-*   !0  £∫ ß∞‹
+*    0  ÔºöÊàêÂäü
+*   !0  ÔºöÂ§±Ë¥•
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
 void GetDiskInfo(__UsbBlkDev_t *BlkDev)
 {
-    __mscLun_t *mscLun = NULL;
+	__mscLun_t *mscLun = NULL;
 
-    if (BlkDev == NULL)
-    {
-        hal_log_err("ERR: GetDiskInfo: input error");
-        return ;
-    }
+	if (BlkDev == NULL) {
+		hal_log_err("ERR: GetDiskInfo: input error");
+		return;
+	}
 
-    mscLun = BlkDev->Lun;
+	mscLun = BlkDev->Lun;
 
-    if (mscLun == NULL)
-    {
-        hal_log_err("ERR: GetDiskInfo: mscLun == NULL");
-        return ;
-    }
+	if (mscLun == NULL) {
+		hal_log_err("ERR: GetDiskInfo: mscLun == NULL");
+		return;
+	}
 
-    mscLun->MediaPresent          = 1;
-    mscLun->WriteProtect          = 0;
-    mscLun->WCE                   = 0;
-    mscLun->RCD                   = 0;
-    mscLun->disk_info.capacity    = 0;
-    mscLun->disk_info.sector_size = 0;
-    /* check unit is ready? */
-    WaitForDeviceReady(BlkDev);
+	mscLun->MediaPresent          = 1;
+	mscLun->WriteProtect          = 0;
+	mscLun->WCE                   = 0;
+	mscLun->RCD                   = 0;
+	mscLun->disk_info.capacity    = 0;
+	mscLun->disk_info.sector_size = 0;
+	/* check unit is ready? */
+	WaitForDeviceReady(BlkDev);
 
-    if (!mscLun->MediaPresent)
-    {
-        hal_log_err("ERR: can not get disk info, for unit is not ready");
-        mscLun->MediaPresent          = 0;
-        mscLun->WriteProtect          = 0;
-        mscLun->WCE                   = 0;
-        mscLun->RCD                   = 0;
-        mscLun->disk_info.capacity    = 0;
-        mscLun->disk_info.sector_size = 0;
-        return;
-    }
+	if (!mscLun->MediaPresent) {
+		hal_log_err("ERR: can not get disk info, for unit is not ready");
+		mscLun->MediaPresent = 0;
+		mscLun->WriteProtect = 0;
+		mscLun->WCE = 0;
+		mscLun->RCD = 0;
+		mscLun->disk_info.capacity = 0;
+		mscLun->disk_info.sector_size = 0;
+		return;
+	}
 
-    /* read capacity */
-    ReadCapacity(BlkDev);
-    /* Lun «∑Ò–¥±£ª§? */
-    ReadProtectFlag(BlkDev);
-    /* Lun «∑Ò¥¯cache? */
-    ReadCacheType(BlkDev);
-    Pr__s32DiskInfo(BlkDev);
-//	printf("%s %d %s\n", __FILE__, __LINE__, __func__);
-    return ;
+	/* read capacity */
+	ReadCapacity(BlkDev);
+	/* LunÊòØÂê¶ÂÜô‰øùÊä§? */
+	ReadProtectFlag(BlkDev);
+	/* LunÊòØÂê¶Â∏¶cache? */
+	ReadCacheType(BlkDev);
+	Pr__s32DiskInfo(BlkDev);
+	//	printf("%s %d %s\n", __FILE__, __LINE__, __func__);
+	return;
 }
 
 /*
@@ -1366,29 +1648,26 @@ void GetDiskInfo(__UsbBlkDev_t *BlkDev)
 */
 void ShutDown(__UsbBlkDev_t *BlkDev)
 {
-    __mscLun_t *mscLun = NULL;
+	__mscLun_t *mscLun = NULL;
 
-    if (BlkDev == NULL)
-    {
-        hal_log_err("ERR: GetDiskInfo: input error");
-        return ;
-    }
+	if (BlkDev == NULL) {
+		hal_log_err("ERR: GetDiskInfo: input error");
+		return;
+	}
 
-    mscLun = BlkDev->Lun;
+	mscLun = BlkDev->Lun;
 
-    if (mscLun == NULL)
-    {
-        hal_log_err("ERR: GetDiskInfo: mscLun == NULL");
-        return ;
-    }
+	if (mscLun == NULL) {
+		hal_log_err("ERR: GetDiskInfo: mscLun == NULL");
+		return;
+	}
 
-    /* sync cache */
-    if (mscLun->WCE)
-    {
-        ScsiSynchronizeCache(mscLun);
-    }
+	/* sync cache */
+	if (mscLun->WCE) {
+		ScsiSynchronizeCache(mscLun);
+	}
 
-    return ;
+	return;
 }
 
 /*
@@ -1402,86 +1681,93 @@ void ShutDown(__UsbBlkDev_t *BlkDev)
 *
 *
 * Return value:
-*    0  £∫≥…π¶
-*   !0  £∫ ß∞‹
+*    0  ÔºöÊàêÂäü
+*   !0  ÔºöÂ§±Ë¥•
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
+
+extern int usb_msc_elmfat_unmount(const char *base_path, void *node);
+extern int usb_msc_elmfat_mount(const char *dev, const char *base_path);
 int UsbBlkDevReg(__UsbBlkDev_t *BlkDev, unsigned char *ClassName, unsigned int RegDisk)
 {
-extern unsigned int hub_GetHubSeries(struct usb_host_virt_dev *udev);
-extern unsigned int hub_GetHubNo(struct usb_host_virt_dev *udev);
+	extern unsigned int hub_GetHubSeries(struct usb_device * udev);
+	extern unsigned int hub_GetHubNo(struct usb_device * udev);
 
-    if (BlkDev == NULL || ClassName == NULL)
-    {
-        hal_log_err("ERR: UsbBlkDevInit: input error");
-        return -1;
-    }
+	if (BlkDev == NULL || ClassName == NULL) {
+		hal_log_err("ERR: UsbBlkDevInit: input error");
+		return -1;
+	}
 
-    //∏¸–¬±Í÷æŒª
-    BlkDev->Magic = USB_BLK_DEV_MAGIC;
+	//Êõ¥Êñ∞Ê†áÂøó‰Ωç
+	BlkDev->Magic = USB_BLK_DEV_MAGIC;
 
-    if (RegDisk)
-    {
-        BlkDev->is_RegDisk = 1;
-    }
+	if (RegDisk) {
+		BlkDev->is_RegDisk = 1;
+	}
 
-    strncpy((char *)BlkDev->ClassName, (const char *)ClassName, strlen((const char *)ClassName));
-    /* save deivce info */
-    memset(&BlkDev->device_info, 0, sizeof(usbh_disk_device_info_t));
-    strcpy((char *)BlkDev->device_info.Classname, (char *)BlkDev->ClassName);
-    strcpy((char *)BlkDev->device_info.DeviceName, (char *)BlkDev->DevName);
-    strcpy((char *)BlkDev->device_info.DeivceInfo.Vender, (char *)BlkDev->Lun->Vendor);
-    strcpy((char *)BlkDev->device_info.DeivceInfo.Product, (char *)BlkDev->Lun->Product);
-    strcpy((char *)BlkDev->device_info.DeivceInfo.Serial, (char *)BlkDev->Lun->Revision);
+	strncpy((char *)BlkDev->ClassName, (const char *)ClassName, strlen((const char *)ClassName));
+	/* save deivce info */
+	memset(&BlkDev->device_info, 0, sizeof(usbh_disk_device_info_t));
+	strcpy((char *)BlkDev->device_info.Classname, (char *)BlkDev->ClassName);
+	strcpy((char *)BlkDev->device_info.DeviceName, (char *)BlkDev->DevName);
+	strcpy((char *)BlkDev->device_info.DeivceInfo.Vender, (char *)BlkDev->Lun->Vendor);
+	strcpy((char *)BlkDev->device_info.DeivceInfo.Product, (char *)BlkDev->Lun->Product);
+	strcpy((char *)BlkDev->device_info.DeivceInfo.Serial, (char *)BlkDev->Lun->Revision);
 
-	BlkDev->device_info.DeivceInfo.HubPortNo = (hub_GetHubNo(BlkDev->Lun->mscDev->pusb_dev) & 0x0f)
-	        | ((hub_GetHubSeries(BlkDev->Lun->mscDev->pusb_dev) & 0x0f) << 8);
+	BlkDev->device_info.DeivceInfo.HubPortNo
+	    = (hub_GetHubNo(BlkDev->Lun->mscDev->pusb_dev) & 0x0f)
+	      | ((hub_GetHubSeries(BlkDev->Lun->mscDev->pusb_dev) & 0x0f) << 8);
 
-    if ((BlkDev->Lun->DeviceType == SCSI_DEVICE_DIRECT_ACCESS) && (BlkDev->Lun->RemoveAble == 0))
-    {
-        BlkDev->device_info.DeivceInfo.DeviceType = USB_STORAGE_DEVICE_TYPE_HDD;
-    }
-    else if ((BlkDev->Lun->DeviceType == SCSI_DEVICE_DIRECT_ACCESS) && BlkDev->Lun->RemoveAble)
-    {
-        BlkDev->device_info.DeivceInfo.DeviceType = USB_STORAGE_DEVICE_TYPE_UDISK;
-    }
-    else if (BlkDev->Lun->DeviceType == SCSI_DEVICE_CDROM)
-    {
-        BlkDev->device_info.DeivceInfo.DeviceType = USB_STORAGE_DEVICE_TYPE_CDROM;
-    }
-    else
-    {
-        BlkDev->device_info.DeivceInfo.DeviceType = USB_STORAGE_DEVICE_TYPE_UNKOWN;
-    }
+	if ((BlkDev->Lun->DeviceType == SCSI_DEVICE_DIRECT_ACCESS) && (BlkDev->Lun->RemoveAble == 0)) {
+		BlkDev->device_info.DeivceInfo.DeviceType = USB_STORAGE_DEVICE_TYPE_HDD;
+	} else if ((BlkDev->Lun->DeviceType == SCSI_DEVICE_DIRECT_ACCESS) && BlkDev->Lun->RemoveAble) {
+		BlkDev->device_info.DeivceInfo.DeviceType = USB_STORAGE_DEVICE_TYPE_UDISK;
+	} else if (BlkDev->Lun->DeviceType == SCSI_DEVICE_CDROM) {
+		BlkDev->device_info.DeivceInfo.DeviceType = USB_STORAGE_DEVICE_TYPE_CDROM;
+	} else {
+		BlkDev->device_info.DeivceInfo.DeviceType = USB_STORAGE_DEVICE_TYPE_UNKOWN;
+	}
 
 	printf("Classname  = %s\n", BlkDev->device_info.Classname);
-	printf("DevName  = %s\n", BlkDev->DevName);
+	printf("DevName    = %s\n", BlkDev->DevName);
 	printf("DeviceName = %s\n", BlkDev->device_info.DeviceName);
 	printf("Vender     = %s\n", BlkDev->device_info.DeivceInfo.Vender);
 	printf("Product    = %s\n", BlkDev->device_info.DeivceInfo.Product);
 	printf("Serial     = %s\n", BlkDev->device_info.DeivceInfo.Serial);
 	printf("HubPortNo  = %d\n", BlkDev->device_info.DeivceInfo.HubPortNo);
 	printf("DeviceType = %d\n", BlkDev->device_info.DeivceInfo.DeviceType);
-    usbh_disk_SaveDeviceInfo(&BlkDev->device_info);
-    /* reg disk */
-    BlkDev->DevRegHdle = esDEV_DevReg((const char *)ClassName, (const char *)BlkDev->DevName, &(BlkDev->DiskOp), (void *)BlkDev);
+	usbh_disk_SaveDeviceInfo(&BlkDev->device_info);
+#ifdef CONFIG_OS_MELIS
+	/* reg disk */
+	BlkDev->DevRegHdle = esDEV_DevReg((const char *)ClassName, (const char *)BlkDev->DevName,
+					  &(BlkDev->DiskOp), (void *)BlkDev);
 
-    if (BlkDev->DevRegHdle == NULL)
-    {
-        hal_log_err("ERR: Block device register failed.");
-        BlkDev->Magic = 0;
-        BlkDev->is_RegDisk = 0;
-        return USB_ERR_UNKOWN_ERROR;
-    }
+	if (BlkDev->DevRegHdle == NULL) {
+		hal_log_err("ERR: Block device register failed.");
+		BlkDev->Magic = 0;
+		BlkDev->is_RegDisk = 0;
+		return USB_ERR_UNKOWN_ERROR;
+	}
+#elif defined(CONFIG_KERNEL_FREERTOS)
+	BlkDev->dev_node.size = (uint64_t)BlkDev->Lun->disk_info.capacity * BlkDev->Lun->disk_info.sector_size;
+	if (devfs_add_node(&(BlkDev->dev_node))) {
+		hal_log_err("ERR: Block device register failed.");
+		BlkDev->Magic = 0;
+		BlkDev->is_RegDisk = 0;
+		return USB_ERR_UNKOWN_ERROR;
+	}
+	BlkDev->DevRegHdle = &(BlkDev->dev_node);
+	usb_msc_elmfat_mount(BlkDev->dev_node.name, "/usb_msc");
+#endif
 
-    printf("..............................................................................\n");
-    printf("[USB Disk]: Register new device, class = [%s], dev = [%s]\n", BlkDev->ClassName, BlkDev->DevName);
-    printf("..............................................................................\n");
-    return USB_ERR_SUCCESS;
+	printf("..............................................................................\n");
+	printf("[USB Disk]: Register new device, class = [%s], dev = [%s]\n", BlkDev->ClassName, BlkDev->DevName);
+	printf("..............................................................................\n");
+	return USB_ERR_SUCCESS;
 }
 
 /*
@@ -1495,46 +1781,44 @@ extern unsigned int hub_GetHubNo(struct usb_host_virt_dev *udev);
 *
 *
 * Return value:
-*    0  £∫≥…π¶
-*   !0  £∫ ß∞‹
+*    0  ÔºöÊàêÂäü
+*   !0  ÔºöÂ§±Ë¥•
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
 int UsbBlkDevUnReg(__UsbBlkDev_t *BlkDev)
 {
-    if (BlkDev == NULL)
-    {
+	if (BlkDev == NULL) {
 		hal_log_err("ERR: UsbBlkDevUnReg: input error");
-        return -1;
-        //return USB_ERR_BAD_ARGUMENTS;
-    }
+		return -1;
+		// return USB_ERR_BAD_ARGUMENTS;
+	}
 
-    if (BlkDev->DevRegHdle)
-    {
-        hal_log_info("..............................................................................");
-        hal_log_info("[USB Disk]: UnRegister old device, class = [%s], dev = [%s]", BlkDev->ClassName, BlkDev->DevName);
-        hal_log_info("..............................................................................");
-        usbh_disk_FreeDeviceInfo(&BlkDev->device_info);
-        esDEV_DevUnreg(BlkDev->DevRegHdle);
-        BlkDev->DevRegHdle = NULL;
-        BlkDev->is_RegDisk = 0;
-        memset(BlkDev->ClassName, 0, USB_BULK_DISK_MAX_NAME_LEN);
-    }
-    else
-    {
-        hal_log_err("ERR: UsbBlkDevUnReg: DevRegHdle = NULL");
-        //return USB_ERR_BAD_ARGUMENTS;
-        return -1;
-    }
+	if (BlkDev->DevRegHdle) {
+		hal_log_info("..............................................................................");
+		hal_log_info("[USB Disk]: UnRegister old device, class = [%s], dev = [%s]", BlkDev->ClassName, BlkDev->DevName);
+		hal_log_info("..............................................................................");
+		usbh_disk_FreeDeviceInfo(&BlkDev->device_info);
+#ifdef CONFIG_OS_MELIS
+		esDEV_DevUnreg(BlkDev->DevRegHdle);
+#elif defined(CONFIG_KERNEL_FREERTOS)
+		usb_msc_elmfat_unmount("/usb_msc", &(BlkDev->dev_node));
+		devfs_del_node(BlkDev->DevRegHdle);
+#endif
+		BlkDev->DevRegHdle = NULL;
+		BlkDev->is_RegDisk = 0;
+		memset(BlkDev->ClassName, 0, USB_BULK_DISK_MAX_NAME_LEN);
+	} else {
+		hal_log_err("ERR: UsbBlkDevUnReg: DevRegHdle = NULL");
+		// return USB_ERR_BAD_ARGUMENTS;
+		return -1;
+	}
 
-    set_usbh_temp_buff_invalid_by_dev(BlkDev->DevNo);
-    BlkDev->Magic = 0;
-    return 0;
-	//return USB_ERR_SUCCESS;
-
+	set_usbh_temp_buff_invalid_by_dev(BlkDev->DevNo);
+	BlkDev->Magic = 0;
+	return 0;
+	// return USB_ERR_SUCCESS;
 }
-
-

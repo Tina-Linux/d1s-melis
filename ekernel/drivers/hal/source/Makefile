@@ -3,6 +3,8 @@ obj-$(CONFIG_DRIVERS_UART) += uart/
 obj-$(CONFIG_DRIVERS_REGULATOR) += regulator/
 obj-$(CONFIG_DRIVERS_RTC) += rtc/
 obj-$(CONFIG_DRIVERS_SPI) += spi/
+obj-$(CONFIG_DRIVERS_DBI) += dbi/
+obj-$(CONFIG_DRIVERS_SPILCD) += spilcd/
 obj-$(CONFIG_DRIVERS_WATCHDOG) += watchdog/
 obj-$(CONFIG_DRIVERS_GPIO) += gpio/
 obj-$(CONFIG_DRIVERS_SPINOR) += spinor/
@@ -17,7 +19,6 @@ obj-$(CONFIG_DRIVERS_USB) += usb/
 obj-$(CONFIG_DISP2_SUNXI) += disp2/
 obj-$(CONFIG_DRIVERS_G2D) += g2d_rcq/
 obj-$(CONFIG_DRIVERS_DI) += sunxi-di/
-obj-$(CONFIG_DRIVERS_EFUSE) += efuse/
 obj-$(CONFIG_DRIVERS_THERMAL) += thermal/
 obj-$(CONFIG_DRIVERS_CE) += ce/
 obj-$(CONFIG_DRIVERS_EISE) += eise/
@@ -32,4 +33,14 @@ obj-$(CONFIG_DRIVERS_CIR) += cir/
 obj-$(CONFIG_DRIVERS_TPADC) += tpadc/
 obj-$(CONFIG_DRIVERS_MBUS) += mbus/
 obj-$(CONFIG_SUNXI_DI) += sunxi-di/
+obj-$(CONFIG_DRIVERS_TRNG) += trng/
+obj-$(CONFIG_DRIVERS_SYSCTL) += sysctl/
 obj-y += common/
+obj-$(CONFIG_DRIVERS_RCCAL) += rccal/
+obj-$(CONFIG_DRIVERS_VIN) += vin/
+obj-$(CONFIG_DRIVERS_POWER) += power/
+obj-$(CONFIG_DRIVERS_LSPSRAM) += lspsram/
+
+ifeq ($(CONFIG_KERNEL_FREERTOS), y)
+subdir-ccflags-y += -I components/common/aw/pm/include
+endif

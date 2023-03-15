@@ -41,6 +41,9 @@
 #include <hal_sem.h>
 #include <hal_mem.h>
 #include <hal_mutex.h>
+#ifdef CONFIG_COMPONENTS_PM
+#include <pm_devops.h>
+#endif
 
 static LIST_HEAD(gCardList);
 
@@ -119,6 +122,7 @@ int snd_schd_timeout(snd_schd_t schd, long ms)
 	snd_print("\n");
 	schd->waiting = 1;
 	ret = hal_sem_timedwait(schd->sem, timeout);
+	schd->waiting = 0;
 	if (ret == 0)
 		return 0;
 	return -1;
@@ -392,12 +396,12 @@ static int soc_pcm_hw_params(struct snd_pcm_substream *substream,
 		goto _end_lock;
 	}
 
-	ret = soc_dai_set_sysclk(cpu_dai, 0, freq, 0);
+	ret = soc_dai_set_sysclk(cpu_dai, 0, freq, substream->stream);
 	if (ret < 0) {
 		snd_err("cpu_dai set sysclk failed\n");
 		goto _end_lock;
 	}
-	ret = soc_dai_set_sysclk(codec_dai, 0, freq, 0);
+	ret = soc_dai_set_sysclk(codec_dai, 0, freq, substream->stream);
 	if (ret < 0) {
 		snd_err("codec_dai set sysclk failed\n");
 		goto _end_lock;
@@ -924,7 +928,7 @@ static inline void add_controls(struct snd_ctl *ctl, struct snd_kcontrol *contro
 			break;
 		case SND_CTL_ELEM_TYPE_ENUMERATED:
 			if (control->mask == SND_CTL_ENUM_AUTO_MASK)
-				control->mask = ((1 << __pcm_ffs(control->items)) - 1);
+				control->mask = ((1 << __fls(control->items-1)) - 1);
 			if (!control->get)
 				control->get = snd_ctl_enum_get;
 			if (!control->set)
@@ -1000,7 +1004,7 @@ int snd_ctl_add_elem(struct snd_ctl *ctl, struct snd_ctl_info *info)
 		info->count = 1;
 	}
 	control->dynamic = 1;
-	control->name = (const unsigned char *)snd_strdup((void *)info->name);
+	control->name = (const char *)snd_strdup((void *)info->name);
 	if (!control->name) {
 		snd_err("no memory\n");
 		goto err;
@@ -1228,6 +1232,9 @@ static struct snd_platform *snd_platform_register(int type)
 	}
 	switch (type) {
 		case SND_PLATFORM_TYPE_CPUDAI:
+		case SND_PLATFORM_TYPE_CPUDAI_DAC:
+		case SND_PLATFORM_TYPE_CPUDAI_ADC:
+			arg = type;
 			ret = snd_platform_cpudai_register(platform, arg);
 			break;
 		case SND_PLATFORM_TYPE_DAUDIO0:
@@ -1327,13 +1334,111 @@ int snd_card_get_number(void)
 	return (c->num + 1);
 }
 
-int snd_card_register(const char *name,
-		snd_codec_t *codec,
-		int platform_type)
+#ifdef CONFIG_COMPONENTS_PM
+extern int snd_pcm_do_suspend(struct snd_pcm_substream *substream, int state);
+extern int snd_pcm_do_resume(struct snd_pcm_substream *substream, int state);
+
+static int snd_card_suspend(struct pm_device *dev, suspend_mode_t mode)
+{
+	int i = 0;
+	int card_num = 0;
+	struct snd_card *card = NULL;
+	struct snd_pcm *pcm;
+	struct snd_pcm_substream *substream;
+
+	snd_print("\n");
+
+	card_num = snd_card_get_number();
+	if (card_num <= 0) {
+		snd_print("no registered card...\n");
+		return 0;
+	}
+
+	for (i = 0; i < card_num; i++) {
+		card = snd_card_find_by_num(i);
+		if (!card) {
+			snd_err("card_num:%d not find.\n", i);
+			return 0;
+		}
+		list_for_each_entry(pcm, &card->devices, list) {
+			substream = pcm->streams[SNDRV_PCM_STREAM_PLAYBACK];
+			if (substream != NULL) {
+				snd_pcm_do_suspend(substream, SNDRV_PCM_TRIGGER_SUSPEND);
+			} else {
+				snd_print("Playback stream is NULL\n");
+			}
+			substream = pcm->streams[SNDRV_PCM_STREAM_CAPTURE];
+			if (substream != NULL) {
+				snd_pcm_do_suspend(substream, SNDRV_PCM_TRIGGER_SUSPEND);
+			} else {
+				snd_print("Capture stream is NULL\n");
+			}
+		}
+	}
+
+	return 0;
+}
+
+static int snd_card_resume(struct pm_device *dev, suspend_mode_t mode)
+{
+	int i = 0;
+	int card_num = 0;
+	struct snd_card *card = NULL;
+	struct snd_pcm *pcm;
+	struct snd_pcm_substream *substream;
+
+	snd_print("\n");
+
+	card_num = snd_card_get_number();
+	if (card_num <= 0) {
+		snd_print("no registered card...\n");
+		return 0;
+	}
+
+	for (i = 0; i < card_num; i++) {
+		card = snd_card_find_by_num(i);
+		if (!card) {
+			snd_err("card_num:%d not find.\n", i);
+			return 0;
+		}
+		list_for_each_entry(pcm, &card->devices, list) {
+			substream = pcm->streams[SNDRV_PCM_STREAM_PLAYBACK];
+			if (substream != NULL) {
+				snd_pcm_do_resume(substream, SNDRV_PCM_TRIGGER_RESUME);
+			} else {
+				snd_print("Playback stream is NULL\n");
+			}
+			substream = pcm->streams[SNDRV_PCM_STREAM_CAPTURE];
+			if (substream != NULL) {
+				snd_pcm_do_resume(substream, SNDRV_PCM_TRIGGER_RESUME);
+			} else {
+				snd_print("Capture stream is NULL\n");
+			}
+		}
+	}
+
+	return 0;
+}
+
+struct pm_devops pm_snd_card_ops = {
+	.suspend	= snd_card_suspend,
+	.resume		= snd_card_resume,
+};
+
+struct pm_device pm_snd_card = {
+	.name = "snd_card",
+	.ops = &pm_snd_card_ops,
+};
+#endif
+
+int snd_card_register(const char *name, snd_codec_t *codec, int platform_type)
 {
 	int ret = 0;
 	struct snd_card *card= NULL;
 	struct snd_platform *platform = NULL;
+#ifdef CONFIG_COMPONENTS_PM
+	static bool pm_register_once = false;
+#endif
 
 	snd_print("\n");
 	if (!codec)
@@ -1415,6 +1520,18 @@ int snd_card_register(const char *name,
 
 	card->num = snd_card_get_number();
 	list_add(&card->list, &gCardList);
+
+#ifdef CONFIG_COMPONENTS_PM
+	if (!pm_register_once) {
+		ret = pm_devops_register(&pm_snd_card);
+		if (ret) {
+			snd_err("pm_devops_register snd_card failed\n");
+		} else {
+			pm_register_once = true;
+			snd_print("pm_devops_register snd_card once success\n");
+		}
+	}
+#endif
 
 	snd_print("register card:%s success.\n", name);
 

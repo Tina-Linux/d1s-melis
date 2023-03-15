@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #ifndef _DRV_AUDIO_H_
 #define _DRV_AUDIO_H_
 
@@ -7,8 +38,10 @@
 #include "audio_rec.h"
 #include <typedef.h>
 #include <kapi.h>
+#include <speex_resampler.h>
 
 #define SOUND_CARD_AUDIOCODEC   "audiocodec"
+#define SOUND_CARD_SNDDAUDIO1   "snddaudio1"
 
 // for v459
 // for play
@@ -28,7 +61,13 @@
 #define ADC2_SWITCH_ONOFF     "MIC2 input switch"         // PGA switch
 #define ADC3_SWITCH_ONOFF     "MIC3 input switch"         // PGA switch
 
+#define AUDIO_CODEC_TX_HUB_MODE  "tx hub mode"
+#define AUDIO_CODEC_RX_SYNC_MODE "rx sync mode"
 
+#define DAUDIO_TX_HUB_MODE       "tx hub mode"
+#define DAUDIO_RX_SYNC_MODE      "rx sync mode"
+
+#define DAUDIO_LOOPBACK_EN       "loopback debug"
 
 
 #ifdef CONFIG_SOC_SUN8IW19P1
@@ -63,6 +102,11 @@ typedef struct AUDIO_CONFIG_MGR{
 	unsigned int capture_duration;
 	unsigned int can_paused;
 	snd_ctl_info_t *mixerInfo;
+    SpeexResamplerState *resampler;
+    int nTargetSampleRate;
+    int nTargetChannels;
+    void *buffer_out;
+    int buffer_out_size;
 } audio_config_mgr_t;
 
 typedef struct SUNXI_DRIVER_AUDIO
@@ -118,6 +162,9 @@ extern ssize_t alsa_read_pcm(audio_config_mgr_t *pcmMgr, void *data, size_t rcou
 extern ssize_t alsa_write_pcm(audio_config_mgr_t *pcmMgr, void *data, size_t wcount);
 extern int alsa_mixer_set_volume(audio_config_mgr_t *pcmMgr, int playFlag, int channel, long value);
 extern int alsa_mixer_get_volume(audio_config_mgr_t *pcmMgr, int playFlag, long *value);
+extern int alsa_mixer_set_cap_rx_sync_mode(audio_config_mgr_t *pcmMgr,  int value);
+extern int alsa_mixer_set_hub_mode(audio_config_mgr_t *pcmMgr,  int value);
+extern int alsa_mixer_set_daudio_loopback_enable(audio_config_mgr_t *pcmMgr,  int value);
 extern int audio_cmd_start(audio_config_mgr_t *pcmMgr);
 extern int audio_cmd_stop(audio_config_mgr_t *pcmMgr);
 extern int audio_cmd_pause(audio_config_mgr_t *pcmMgr);

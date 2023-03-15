@@ -19,11 +19,10 @@
 *
 ********************************************************************************************************************
 */
-#ifndef  __USB_MSC_H__
-#define  __USB_MSC_H__
+#ifndef __USB_MSC_H__
+#define __USB_MSC_H__
 
 int mscInit(void);
 int mscExit(void);
 
-#endif   //__USB_MSC_H__
-
+#endif	//__USB_MSC_H__

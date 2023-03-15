@@ -34,9 +34,12 @@
 #include <hal_dma.h>
 #include <sound/snd_core.h>
 #include <sound/snd_pcm.h>
-/* #include <sound/sunxi-codec.h> */
-#include "../codecs/sunxi-codec.h"
+#include <sound/codecs/sunxi-codec.h>
 #include "sunxi-pcm.h"
+
+#ifdef CONFIG_SND_PLATFORM_SUNXI_MAD
+#include "sunxi-mad.h"
+#endif
 
 struct sunxi_cpudai_info {
 	struct sunxi_dma_params playback_dma_param;
@@ -73,6 +76,79 @@ static int sunxi_cpudai_platform_probe(struct snd_platform *platform)
 	return 0;
 }
 
+#if defined(CONFIG_SND_CODEC_AUDIOCODEC_DAC)
+static int sunxi_cpudai_platform_probe_dac(struct snd_platform *platform)
+{
+	struct sunxi_cpudai_info *info = NULL;
+
+	snd_print("\n");
+	if (!platform->cpu_dai)
+		return -1;
+
+	info = snd_malloc(sizeof(struct sunxi_cpudai_info));
+	if (!info) {
+		snd_err("no memory\n");
+		return -ENOMEM;
+	}
+	platform->private_data = (void *)info;
+	/* dma para */
+	info->playback_dma_param.dma_addr = (dma_addr_t)(SUNXI_CODEC_BASE_ADDR + SUNXI_DAC_TXDATA);
+	info->playback_dma_param.dma_drq_type_num = DRQDST_AUDIO_CODEC;
+	info->playback_dma_param.dst_maxburst = 4;
+	info->playback_dma_param.src_maxburst = 4;
+
+	info->capture_dma_param.dma_addr = (dma_addr_t)(SUNXI_CODEC_BASE_ADDR + AC_DAC_LBFIFO);
+	info->capture_dma_param.dma_drq_type_num = DRQSRC_CODEC_DAC_RX;
+	info->capture_dma_param.dst_maxburst = 4;
+	info->capture_dma_param.src_maxburst = 4;
+
+	platform->cpu_dai->component = platform;
+
+	return 0;
+}
+#else
+static int sunxi_cpudai_platform_probe_dac(struct snd_platform *platform)
+{
+	(void)platform;
+	snd_err("api is disable\n");
+	return 0;
+}
+#endif
+
+#if defined(CONFIG_SND_CODEC_AUDIOCODEC_ADC)
+static int sunxi_cpudai_platform_probe_adc(struct snd_platform *platform)
+{
+	struct sunxi_cpudai_info *info = NULL;
+
+	snd_print("\n");
+	if (!platform->cpu_dai)
+		return -1;
+
+	info = snd_malloc(sizeof(struct sunxi_cpudai_info));
+	if (!info) {
+		snd_err("no memory\n");
+		return -ENOMEM;
+	}
+	platform->private_data = (void *)info;
+	/* dma para */
+	info->capture_dma_param.dma_addr = (dma_addr_t)(SUNXI_CODEC_BASE_ADDR + SUNXI_ADC_RXDATA);
+	info->capture_dma_param.dma_drq_type_num = DRQSRC_AUDIO_CODEC;
+	info->capture_dma_param.dst_maxburst = 4;
+	info->capture_dma_param.src_maxburst = 4;
+
+	platform->cpu_dai->component = platform;
+
+	return 0;
+}
+#else
+static int sunxi_cpudai_platform_probe_adc(struct snd_platform *platform)
+{
+	(void)platform;
+	snd_err("api is disable\n");
+	return 0;
+}
+#endif
+
 static int sunxi_cpudai_platform_remove(struct snd_platform *platform)
 {
 	struct sunxi_cpudai_info *info = NULL;
@@ -84,20 +160,85 @@ static int sunxi_cpudai_platform_remove(struct snd_platform *platform)
 	return 0;
 }
 
-static int sunxi_cpudai_startup(struct snd_pcm_substream *substream,
-				struct snd_dai *dai)
+#ifdef CONFIG_SND_PLATFORM_SUNXI_MAD
+static int sunxi_cpudai_mad_startup(struct snd_pcm_substream *substream, struct snd_dai *dai)
+{
+	struct snd_platform *platform = snd_soc_dai_get_component(dai);
+	struct sunxi_cpudai_info *info = platform->private_data;
+	int ret = 0;
+	bool mad_bind = false;
+
+	(void)substream;
+
+	snd_print("mad\n");
+
+	ret = sunxi_mad_bind_get(MAD_PATH_CODECADC, &mad_bind);
+	if (ret) {
+		mad_bind = false;
+		snd_err("get mad_bind failed, path: %d\n", MAD_PATH_CODECADC);
+	}
+
+	if (mad_bind) {
+		snd_print("mad bind\n");
+		sunxi_sram_dma_config(&info->capture_dma_param);
+		return 0;
+	}
+
+	snd_print("mad unbind\n");
+
+	info->capture_dma_param.dma_addr = (dma_addr_t)(SUNXI_CODEC_BASE_ADDR + SUNXI_ADC_RXDATA);
+	info->capture_dma_param.dma_drq_type_num = DRQSRC_AUDIO_CODEC;
+
+	return 0;
+}
+#endif
+
+static int sunxi_cpudai_startup(struct snd_pcm_substream *substream, struct snd_dai *dai)
 {
 	struct snd_platform *platform = snd_soc_dai_get_component(dai);
 	struct sunxi_cpudai_info *info = platform->private_data;
 
 	snd_print("\n");
-	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
+
+	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
 		dai->playback_dma_data = &info->playback_dma_param;
-	else
+	} else {
+#ifdef CONFIG_SND_PLATFORM_SUNXI_MAD
+		snd_print("mad\n");
+		sunxi_cpudai_mad_startup(substream, dai);
+#endif
 		dai->capture_dma_data = &info->capture_dma_param;
+	}
 
 	return 0;
 }
+
+#ifdef CONFIG_SND_PLATFORM_SUNXI_MAD
+static void sunxi_cpudai_mad_shutdown(struct snd_pcm_substream *substream, struct snd_dai *dai)
+{
+	struct snd_platform *platform = snd_soc_dai_get_component(dai);
+	struct sunxi_cpudai_info *info = platform->private_data;
+
+	(void)substream;
+
+	snd_print("mad\n");
+
+	/*if not use mad again*/
+	info->capture_dma_param.dma_addr = (dma_addr_t)(SUNXI_CODEC_BASE_ADDR + SUNXI_ADC_RXDATA);
+	info->capture_dma_param.dma_drq_type_num = DRQSRC_AUDIO_CODEC;
+}
+#endif
+
+static void sunxi_cpudai_shutdown(struct snd_pcm_substream *substream, struct snd_dai *dai)
+{
+#ifdef CONFIG_SND_PLATFORM_SUNXI_MAD
+	snd_print("mad\n");
+
+	if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)
+		sunxi_cpudai_mad_shutdown(substream, dai);
+#endif
+}
+
 #if 0
 static int sunxi_cpudai_probe(struct snd_dai *dai)
 {
@@ -108,12 +249,13 @@ static int sunxi_cpudai_probe(struct snd_dai *dai)
 
 static struct snd_dai_ops sunxi_cpudai_dai_ops = {
 	.startup = sunxi_cpudai_startup,
+	.shutdown = sunxi_cpudai_shutdown,
 };
 
 static struct snd_dai sunxi_cpudai = {
 	.id		= 1,
 	.name		= "audiocodec-cpudai",
-	/*.probe		= sunxi_cpudai_probe,*/
+	/*.probe	= sunxi_cpudai_probe,*/
 	.playback	= {
 		.stream_name	= "Playback",
 		.channels_min	= 1,
@@ -133,7 +275,8 @@ static struct snd_dai sunxi_cpudai = {
 		.rates		= SNDRV_PCM_RATE_8000_48000
 				| SNDRV_PCM_RATE_KNOT,
 		.formats	= SNDRV_PCM_FMTBIT_S16_LE
-				| SNDRV_PCM_FMTBIT_S24_LE,
+				| SNDRV_PCM_FMTBIT_S24_LE
+				| SNDRV_PCM_FMTBIT_S32_LE,
 		.rate_min	= 8000,
 		.rate_max	= 48000,
 	},
@@ -167,11 +310,25 @@ int snd_platform_cpudai_register(struct snd_platform *platform, int arg)
 	}
 	memcpy(platform->cpu_dai, &sunxi_cpudai, sizeof(struct snd_dai));
 
-	platform->probe = sunxi_cpudai_platform_probe;
+	switch (arg) {
+		case SND_PLATFORM_TYPE_CPUDAI:
+			platform->probe = sunxi_cpudai_platform_probe;
+			break;
+		case SND_PLATFORM_TYPE_CPUDAI_DAC:
+			platform->probe = sunxi_cpudai_platform_probe_dac;
+			break;
+		case SND_PLATFORM_TYPE_CPUDAI_ADC:
+			platform->probe = sunxi_cpudai_platform_probe_adc;
+			break;
+		default:
+			goto err_platform_type;
+	}
 	platform->remove = sunxi_cpudai_platform_remove;
 
 	return 0;
 
+err_platform_type:
+	snd_free(platform->cpu_dai);
 err_cpu_dai_malloc:
 	snd_free(platform->name);
 	return ret;

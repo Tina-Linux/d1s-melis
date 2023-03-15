@@ -80,7 +80,7 @@ u32 intc_get_current_interrupt(void);
 s32 intc_set_mask(u32 intno, u32 mask);
 s32 intc_set_group_config(u32 grp_irq_num, u32 mask);
 
-s32 isr_default(int dummy, void *arg);
+s32 isr_default(void *arg);
 
 /*pointer of register list*/
 extern struct intc_regs *pintc_regs;

@@ -1,18 +1,33 @@
 /*
-**********************************************************************************************************************
-*                                                   ePDK
-*                                  the Easy Portable/Player Development Kit
-*                                              eLibC sub-system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                (c) Copyright 2007-2008, Steven.ZGJ.China
-*                                           All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : stdio.c
-* By      : steven.ZGJ
-* Version : V1.00
-* Purpose : used for ascii c file system
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
-**********************************************************************************************************************
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <typedef.h>
 #include <kapi.h>
@@ -525,7 +540,7 @@ __s32 eLIBs_DirEnt2Size(ES_DIRENT *pDirEnt)
 * @param - pDirEnt : directory entry read out by readdir() function
 * @return - A timestamp is packed value with the following format:
 *            0-4  Second divided by 2
-*            5-10  Minute (0 ¨C 59)
+*            5-10  Minute (0 â€“ 59)
 *           11-15  Hour (0-23)
 *           16-20  Day of month (1-31)
 *           21-24  Month (January  1; February  2 etc)
@@ -1049,8 +1064,8 @@ __s32 eLIBs_GetPTName(const char *partname, char *ptn)
 * ELIBS_PART_FMT_FORMATED      1    formated
 **********************************************************************************************************************
 */
-#define     LIB_PARTSTATUS_RAWUSED     (1<<2)      /* Ö±½Ó·ÖÇøÊ¹ÓÃ    */
-#define     LIB_PARTATTR_FS            (1<<4)      /* ·ÖÇø´øÓÐ¿ÉÊ¶±ðµÄÎÄ¼þÏµÍ³ */
+#define     LIB_PARTSTATUS_RAWUSED     (1<<2)      /* ç›´æŽ¥åˆ†åŒºä½¿ç”¨    */
+#define     LIB_PARTATTR_FS            (1<<4)      /* åˆ†åŒºå¸¦æœ‰å¯è¯†åˆ«çš„æ–‡ä»¶ç³»ç»Ÿ */
 __s32 eLIBs_IsPartFormated(const char *partname)
 {
     struct kstatpt buf;
@@ -1964,4 +1979,5 @@ __s32 eLIBs_GetDate(void *date)
 int32_t eLIBs_setfs(char *partname, uint32_t cmd, int32_t aux, char *para)
 {
     esFSYS_setfs(partname, cmd, aux, para);
+    return 0;
 }

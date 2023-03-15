@@ -95,29 +95,29 @@
 
 #define TVE_GET_REG_BASE(sel)			(tve_reg_base[sel])
 #define TVE_WUINT32(sel, offset, value) \
-	(*((u32 *)(TVE_GET_REG_BASE(sel) + (offset))) = (value))
+	(*((volatile u32 *)(TVE_GET_REG_BASE(sel) + (offset))) = (value))
 #define TVE_RUINT32(sel, offset) \
-	(*((u32 *)(TVE_GET_REG_BASE(sel) + (offset))))
+	(*((volatile u32 *)(TVE_GET_REG_BASE(sel) + (offset))))
 #define TVE_SET_BIT(sel, offset, bit) \
-	(*((u32 *)(TVE_GET_REG_BASE(sel) + (offset))) |= (bit))
+	(*((volatile u32 *)(TVE_GET_REG_BASE(sel) + (offset))) |= (bit))
 #define TVE_CLR_BIT(sel, offset, bit) \
-	(*((u32 *)(TVE_GET_REG_BASE(sel) + (offset))) &= (~(bit)))
+	(*((volatile u32 *)(TVE_GET_REG_BASE(sel) + (offset))) &= (~(bit)))
 #define TVE_INIT_BIT(sel, offset, c, s) \
-	(*((u32 *)(TVE_GET_REG_BASE(sel) + (offset))) = \
-(((*(u32 *)(TVE_GET_REG_BASE(sel) + (offset))) & (~(c))) | (s)))
+	(*((volatile u32 *)(TVE_GET_REG_BASE(sel) + (offset))) = \
+(((*(volatile u32 *)(TVE_GET_REG_BASE(sel) + (offset))) & (~(c))) | (s)))
 
 #define TVE_TOP_GET_REG_BASE()		(tve_top_reg_base[0])
 #define TVE_TOP_WUINT32(offset, value) \
-	(*((u32 *)(TVE_TOP_GET_REG_BASE() + (offset))) = (value))
+	(*((volatile u32 *)(TVE_TOP_GET_REG_BASE() + (offset))) = (value))
 #define TVE_TOP_RUINT32(offset) \
-	(*((u32 *)(TVE_TOP_GET_REG_BASE() + (offset))))
+	(*((volatile u32 *)(TVE_TOP_GET_REG_BASE() + (offset))))
 #define TVE_TOP_SET_BIT(offset, bit) \
-	(*((u32 *)(TVE_TOP_GET_REG_BASE() + (offset))) |= (bit))
+	(*((volatile u32 *)(TVE_TOP_GET_REG_BASE() + (offset))) |= (bit))
 #define TVE_TOP_CLR_BIT(offset, bit) \
-	(*((u32 *)(TVE_TOP_GET_REG_BASE() + (offset))) &= (~(bit)))
+	(*((volatile u32 *)(TVE_TOP_GET_REG_BASE() + (offset))) &= (~(bit)))
 #define TVE_TOP_INIT_BIT(offset, c, s) \
-	(*((u32 *)(TVE_TOP_GET_REG_BASE() + (offset))) = \
-(((*(u32 *)(TVE_TOP_GET_REG_BASE() + (offset))) & (~(c))) | (s)))
+	(*((volatile u32 *)(TVE_TOP_GET_REG_BASE() + (offset))) = \
+(((*(volatile u32 *)(TVE_TOP_GET_REG_BASE() + (offset))) & (~(c))) | (s)))
 
 s32 tve_low_set_reg_base(u32 sel, void *address);
 s32 tve_low_set_top_reg_base(void *address);

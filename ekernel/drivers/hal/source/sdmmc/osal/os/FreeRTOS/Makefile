@@ -1,24 +1,6 @@
-#
-# Rules for building library
-#
-
-# ----------------------------------------------------------------------------
-# common rules
-# ----------------------------------------------------------------------------
-ROOT_PATH := ../../../..
-
-include $(ROOT_PATH)/gcc.mk
-
-# ----------------------------------------------------------------------------
-# library and objects
-# ----------------------------------------------------------------------------
-LIBS = libos.a
-
-DIRS := .
-
-SRCS := $(basename $(foreach dir,$(DIRS),$(wildcard $(dir)/*.[csS])))
-
-OBJS := $(addsuffix .o,$(SRCS))
-
-# library make rules
-include $(LIB_MAKE_RULES)
+obj-y += os_debug.o
+obj-y += os_mutex.o
+obj-y += os_queue.o
+obj-y += os_semaphore.o
+obj-y += os_thread.o
+obj-y += os_timer.o

@@ -167,4 +167,10 @@ config LCD_SUPPORT_VVX07H005A10
 	default n
 	---help---
 		If you want to support VVX07H005A10 panel for display driver, select it.
-	
+
+config LCD_SUPPORT_TFT08006
+	bool "LCD support TFT08006 panel"
+	default y
+	---help---
+		If you want to support TFT08006 panel for display driver, select it.
+

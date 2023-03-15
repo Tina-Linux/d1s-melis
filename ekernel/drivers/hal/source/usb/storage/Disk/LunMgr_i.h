@@ -19,8 +19,8 @@
 *
 ********************************************************************************************************************
 */
-#ifndef  __LUNMGR_I_H__
-#define  __LUNMGR_I_H__
+#ifndef __LUNMGR_I_H__
+#define __LUNMGR_I_H__
 
 int DiskProbe(__mscLun_t *mscLun);
 int DiskRemove(__mscLun_t *mscLun);
@@ -28,7 +28,4 @@ int DiskRemove(__mscLun_t *mscLun);
 int CDProbe(__mscLun_t *mscLun);
 int CDRemove(__mscLun_t *mscLun);
 
-
-#endif   //__LUNMGR_I_H__
-
-
+#endif	//__LUNMGR_I_H__

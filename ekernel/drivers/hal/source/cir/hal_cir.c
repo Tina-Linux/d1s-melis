@@ -37,11 +37,12 @@
 #include <hal_reset.h>
 #include <hal_cfg.h>
 #include <script.h>
-
 #include "common_cir.h"
 #include "platform_cir.h"
 #include "sunxi_hal_cir.h"
 
+/* define this macro when debugging is required */
+/* #define CONFIG_DRIVERS_IR_DEBUG */
 #ifdef CONFIG_DRIVERS_IR_DEBUG
 #define CIR_INFO(fmt, arg...) printf("%s()%d " fmt, __func__, __LINE__, ##arg)
 #else
@@ -49,6 +50,8 @@
 #endif
 
 #define CIR_ERR(fmt, arg...) printf("%s()%d " fmt, __func__, __LINE__, ##arg)
+
+#define CIR_STR_SIZE 32
 
 static uint32_t base[CIR_MASTER_NUM] = {
 	SUNXI_IRADC_PBASE,
@@ -59,10 +62,10 @@ static uint32_t irq[CIR_MASTER_NUM] = {
 };
 
 static cir_gpio_t pin[CIR_MASTER_NUM] = {
-	{GPIOB(7), 5, 0},
+	{IRADC_PIN, IR_MUXSEL, 0},
 };
 
-sunxi_cir_t sunxi_cir[CIR_MASTER_NUM];
+static sunxi_cir_t sunxi_cir[CIR_MASTER_NUM];
 
 void sunxi_cir_callback_register(cir_port_t port, cir_callback_t callback)
 {
@@ -70,7 +73,7 @@ void sunxi_cir_callback_register(cir_port_t port, cir_callback_t callback)
 	cir->callback = callback;
 }
 
-static irqreturn_t sunxi_cir_handler(int irq, void *dev)
+static hal_irqreturn_t sunxi_cir_handler(void *dev)
 {
 	sunxi_cir_t *cir = (sunxi_cir_t *)dev;
 
@@ -78,7 +81,6 @@ static irqreturn_t sunxi_cir_handler(int irq, void *dev)
 	uint32_t reg_data, i = 0;
 
 	int_flag = readl(cir->base + CIR_RXSTA);
-
 
 	writel(int_flag, cir->base + CIR_RXSTA);
 
@@ -309,9 +311,9 @@ void sunxi_cir_module_enable(cir_port_t port, int8_t enable)
 	writel(reg_val, cir->base + CIR_CTRL);
 }
 
-static int sunxi_cir_gpio_init(sunxi_cir_t *cir)
+static int sunxi_cir_sys_gpio_init(sunxi_cir_t *cir)
 {
-
+#ifdef CONFIG_DRIVER_SYSCONFIG
 	user_gpio_set_t irpin = {0};
 	cir_gpio_t pin_cir;
 
@@ -323,7 +325,9 @@ static int sunxi_cir_gpio_init(sunxi_cir_t *cir)
 	pin_cir.disable_mux = 0;
 
 	return hal_gpio_pinmux_set_function(pin_cir.gpio, pin_cir.enable_mux);
-
+#endif
+	CIR_ERR("not support sys_config format \n");
+	return -1;
 }
 
 static int sunxi_cir_gpio_exit(sunxi_cir_t *cir)
@@ -380,10 +384,68 @@ static int sunxi_cir_clk_init(sunxi_cir_t *cir)
 
 	return 0;
 }
+#elif defined(CONFIG_ARCH_SUN20IW2)
+static int sunxi_cir_clk_init(sunxi_cir_t *cir)
+{
+	hal_reset_type_t cir_rx_reset_type = HAL_SUNXI_RESET;
+	hal_reset_id_t cir_rx_reset_id = RST_IRRX;
+
+	cir->cir_reset = hal_reset_control_get(cir_rx_reset_type, cir_rx_reset_id);
+	if (hal_reset_control_deassert(cir->cir_reset)) {
+		CIR_ERR("cir reset deassert failed\n");
+		printf("cir reset deassert failed\n");
+	}
+
+	hal_clk_type_t	clk_type = HAL_SUNXI_CCU;
+
+	cir->b_clk_id = CLK_IRRX;
+	cir->m_clk_id = CLK_IR_RX;
+
+	cir->bclk = hal_clock_get(clk_type, cir->b_clk_id);
+	if (hal_clock_enable(cir->bclk)) {
+		CIR_ERR("cir bclk enabled failed\n");
+		printf("cir bclk failed\n");
+	}
+
+	cir->mclk = hal_clock_get(clk_type, cir->m_clk_id);
+	if (hal_clock_enable(cir->mclk)) {
+		CIR_ERR("cir mclk enabled failed\n");
+		printf("cir mclk failed\n");
+	}
+
+	return 0;
+}
+#elif defined(CONFIG_ARCH_SUN55IW3)
+static int sunxi_cir_clk_init(sunxi_cir_t *cir)
+{
+	hal_reset_type_t cir_rx_reset_type = HAL_SUNXI_RESET;
+	hal_reset_id_t cir_rx_reset_id = RST_BUS_IRRX;
+
+	cir->cir_reset = hal_reset_control_get(cir_rx_reset_type, cir_rx_reset_id);
+	if (hal_reset_control_deassert(cir->cir_reset)) {
+		CIR_ERR("cir reset deassert failed\n");
+	}
+
+	hal_clk_type_t	clk_type = HAL_SUNXI_CCU;
+
+	cir->b_clk_id = CLK_BUS_IRRX;
+	cir->m_clk_id = CLK_IRRX;
+
+	cir->bclk = hal_clock_get(clk_type, cir->b_clk_id);
+	if (hal_clock_enable(cir->bclk)) {
+		CIR_ERR("cir bclk enabled failed\n");
+	}
+
+	cir->mclk = hal_clock_get(clk_type, cir->m_clk_id);
+	if (hal_clock_enable(cir->mclk)) {
+		CIR_ERR("cir mclk enabled failed\n");
+	}
+
+	return 0;
+}
 #else
 static int sunxi_cir_clk_init(sunxi_cir_t *cir)
 {
-	int ret = 0;
 	int TEST_CLK_TYPE = 1;
 	int TEST_CLK_DATA = 1;
 	int TEST_RESET_TYPE = 1;
@@ -430,8 +492,21 @@ static int sunxi_cir_clk_exit(sunxi_cir_t *cir)
 
 	return 0;
 }
-#else
+#elif defined(CONFIG_ARCH_SUN20IW2) || defined(CONFIG_ARCH_SUN55IW3)
+static int sunxi_cir_clk_exit(sunxi_cir_t *cir)
+{
+	hal_clock_disable(cir->mclk);
+	hal_clock_put(cir->mclk);
 
+	hal_clock_disable(cir->bclk);
+	hal_clock_put(cir->bclk);
+
+	hal_reset_control_assert(cir->cir_reset);
+	hal_reset_control_put(cir->cir_reset);
+
+	return 0;
+}
+#else
 static int sunxi_cir_clk_exit(sunxi_cir_t *cir)
 {
 	hal_clock_disable(cir->test_clk);
@@ -443,27 +518,51 @@ static int sunxi_cir_clk_exit(sunxi_cir_t *cir)
 	return 0;
 }
 #endif
+
 static cir_status_t sunxi_cir_hw_init(sunxi_cir_t *cir)
 {
+	cir_status_t ret;
+	cir_gpio_t *cir_pin = cir->pin;
+
 	if (sunxi_cir_clk_init(cir))
 		return CIR_CLK_ERR;
 
-	if (sunxi_cir_gpio_init(cir))
-		return CIR_PIN_ERR;
+	if (sunxi_cir_sys_gpio_init(cir)) {
+		ret = hal_gpio_pinmux_set_function(cir_pin->gpio, cir_pin->enable_mux);
+		if (ret) {
+			CIR_ERR("pinctrl init error\n");
+			return CIR_PIN_ERR;
+		}
+	}
 
-	if (request_irq(cir->irq, sunxi_cir_handler, 0, "cir-irq", cir)) {
-		printf("cir request irq err\n");
+	sunxi_cir_mode_enable(cir->port, true);
+	/* clear reg */
+	writel(0x0, cir->base + CIR_CONFIG);
+	sunxi_cir_sample_clock_select(cir->port, CIR_CLK_DIV256);
+	sunxi_cir_sample_idle_threshold(cir->port, RXIDLE_VAL);
+	sunxi_cir_sample_active_threshold(cir->port, ACTIVE_T_SAMPLE);
+	sunxi_cir_sample_noise_threshold(cir->port, CIR_NOISE_THR_NEC);
+	sunxi_cir_signal_invert(cir->port, true);
+	/* clear irq */
+	writel(0xef, cir->base + CIR_RXSTA);
+	sunxi_cir_irq_enable(cir->port, true);
+	sunxi_cir_fifo_level(cir->port, 20);
+	sunxi_cir_mode_config(cir->port, CIR_BOTH_PULSE);
+	sunxi_cir_module_enable(cir->port, true);
+
+	if (hal_request_irq(cir->irq, sunxi_cir_handler, "cir", cir) < 0) {
+		CIR_ERR("cir request irq err\n");
 		return CIR_IRQ_ERR;
 	}
-	enable_irq(cir->irq);
+	hal_enable_irq(cir->irq);
 
 	return CIR_OK;
 }
 
 static void sunxi_cir_hw_exit(sunxi_cir_t *cir)
 {
-	disable_irq(cir->irq);
-	free_irq(cir->irq, cir);
+	hal_disable_irq(cir->irq);
+	hal_free_irq(cir->irq);
 	sunxi_cir_gpio_exit(cir);
 	sunxi_cir_clk_exit(cir);
 }
@@ -472,7 +571,7 @@ static void sunxi_cir_hw_exit(sunxi_cir_t *cir)
 void sunxi_cir_suspend(cir_port_t port)
 {
 	sunxi_cir_t *cir = &sunxi_cir[port];
-	disable_irq(cir->irq);
+	hal_disable_irq(cir->irq);
 	hal_clock_disable(cir->bclk);
 	hal_clock_disable(cir->mclk);
 	sunxi_cir_gpio_exit(cir);
@@ -483,19 +582,71 @@ void sunxi_cir_suspend(cir_port_t port)
 void sunxi_cir_resume(cir_port_t port)
 {
 	sunxi_cir_t *cir = &sunxi_cir[port];
-	sunxi_cir_gpio_init(cir);
+	if (sunxi_cir_sys_gpio_init(cir))
+		hal_gpio_pinmux_set_function(cir_pin->gpio, cir_pin->enable_mux);
+
 	sunxi_cir_clk_init(cir);
 
-	enable_irq(cir->irq);
+	hal_enable_irq(cir->irq);
 
 	return;
 }
+#endif
+
+#ifdef CONFIG_COMPONENTS_PM
+static inline void sunxi_irrx_save_regs(sunxi_cir_t *chip)
+{
+	int i;
+
+	for (i = 0; i < ARRAY_SIZE(sunxi_irrx_regs_offset); i++)
+		chip->regs_backup[i] = readl(chip->base + sunxi_irrx_regs_offset[i]);
+}
+
+static inline void sunxi_irrx_restore_regs(sunxi_cir_t *chip)
+{
+	int i;
+
+	for (i = 0; i < ARRAY_SIZE(sunxi_irrx_regs_offset); i++)
+		writel(chip->regs_backup[i], chip->base + sunxi_irrx_regs_offset[i]);
+}
+
+static int hal_cir_resume(struct pm_device *dev, suspend_mode_t mode)
+{
+	sunxi_cir_t *cir = (sunxi_cir_t *)dev->data;
+	cir_gpio_t *cir_pin = cir->pin;
+
+	sunxi_cir_clk_init(cir);
+	if (sunxi_cir_sys_gpio_init(cir))
+		hal_gpio_pinmux_set_function(cir_pin->gpio, cir_pin->enable_mux);
+	sunxi_irrx_restore_regs(cir);
+	hal_enable_irq(cir->irq);
+	CIR_INFO("hal cir resume\n");
+	return 0;
+}
+
+static int hal_cir_suspend(struct pm_device *dev, suspend_mode_t mode)
+{
+	sunxi_cir_t *cir = (sunxi_cir_t *)dev->data;
+
+	hal_disable_irq(cir->irq);
+	sunxi_irrx_save_regs(cir);
+	sunxi_cir_gpio_exit(cir);
+	sunxi_cir_clk_exit(cir);
+	CIR_INFO("hal cir suspend\n");
+	return 0;
+}
+
+struct pm_devops pm_cir_ops = {
+	.suspend = hal_cir_suspend,
+	.resume = hal_cir_resume,
+};
 #endif
 
 cir_status_t sunxi_cir_init(cir_port_t port)
 {
 	sunxi_cir_t *cir = &sunxi_cir[port];
 	cir_status_t ret = 0;
+	char *devicename;
 
 	cir->port = port;
 	cir->base = base[port];
@@ -510,13 +661,25 @@ cir_status_t sunxi_cir_init(cir_port_t port)
 		return ret;
 	}
 
+#ifdef CONFIG_COMPONENTS_PM
+	devicename = hal_malloc(CIR_STR_SIZE);
+	snprintf(devicename, CIR_STR_SIZE, "cir%d_dev", port);
+	cir->pm.name = devicename;
+	cir->pm.ops = &pm_cir_ops;
+	cir->pm.data = cir;
+	pm_devops_register(&cir->pm);
+#endif
 	return ret;
 }
 
 void sunxi_cir_deinit(cir_port_t port)
 {
 	sunxi_cir_t *cir = &sunxi_cir[port];
-	cir->status = 0;
 
+#ifdef CONFIG_COMPONENTS_PM
+	pm_devops_unregister(&cir->pm);
+	hal_free((void *)cir->pm.name);
+#endif
 	sunxi_cir_hw_exit(cir);
+	cir->status = 0;
 }

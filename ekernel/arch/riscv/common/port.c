@@ -1,165 +1,45 @@
 /*
- * =====================================================================================
- *
- *       Filename:  port.c
- *
- *    Description:
- *
- *        Version:  1.0
- *        Created:  2020年06月08日 18时47分07秒
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  Zeng Zhijin
- *   Organization:
- *
- * =====================================================================================
- */
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <stdlib.h>
 #include <rtthread.h>
 #include <port.h>
 #include <csr.h>
 #include <irqflags.h>
-
-/* ----------------------------------------------------------------------------*/
-/**
- * @brief  awos_task_create <create task with specify parameter>
- *
- * @param name, thread name,
- * @param entry, entry function point of the task.
- * @param parameter, parameter for  'entry'
- * @param stack_size, stack size for stack.
- * @param priority, prority of the thread.
- * @param tick, time slice of the task, round-robin scheduler.
- *
- * @return
- *    -task handle if success.
- *    -NULL if faulre.
- */
-/* ----------------------------------------------------------------------------*/
-__hdle awos_task_create(const char *name, void (*entry)(void *parameter), \
-                        void *parameter, uint32_t stack_size, uint8_t priority, \
-                        uint32_t tick)
-{
-    rt_thread_t thr;
-
-    thr = rt_thread_create(name, entry, parameter, stack_size, priority, tick);
-
-    RT_ASSERT(thr != RT_NULL);
-    rt_thread_startup(thr);
-
-    return (__hdle)thr;
-}
-
-/* ----------------------------------------------------------------------------*/
-/**
- * @brief  awos_task_delete <delete a task from system scheduler structure.>
- *
- * @param thread, handle for specify thread.
- *
- * @return
- *    -0 if success.
- */
-/* ----------------------------------------------------------------------------*/
-int32_t awos_task_delete(__hdle thread)
-{
-    RT_ASSERT(thread != RT_NULL);
-    if (thread == rt_thread_self())
-    {
-        void rt_thread_exit(void);
-        rt_thread_exit();
-        CODE_UNREACHABLE;
-    }
-    else
-    {
-        rt_thread_delete((rt_thread_t)thread);
-    }
-
-    return 0;
-}
-
-/* ----------------------------------------------------------------------------*/
-/**
- * @brief  awos_task_self <return thread hanlde of current context.>
- *
- * @return
- *    -[hdl], hdl of current context thread handle.
- *    -NULL, if faiulre.
- */
-/* ----------------------------------------------------------------------------*/
-__hdle awos_task_self(void)
-{
-    return (__hdle)rt_thread_self();
-}
-
-/* ----------------------------------------------------------------------------*/
-/** @brief  awos_arch_irq_trap_enter <enter interrupt log.> */
-/* ----------------------------------------------------------------------------*/
-void awos_arch_irq_trap_enter(void)
-{
-    rt_interrupt_enter();
-}
-
-/* ----------------------------------------------------------------------------*/
-/** @brief  awos_arch_irq_trap_leave <leave interrupt log.> */
-/* ----------------------------------------------------------------------------*/
-void awos_arch_irq_trap_leave(void)
-{
-    rt_interrupt_leave();
-}
-
-/* ----------------------------------------------------------------------------*/
-/** @brief  awos_arch_tick_increase <system tick increase, must be invokded in
- *          timier irq context.>
- */
-/* ----------------------------------------------------------------------------*/
-void awos_arch_tick_increase(void)
-{
-    rt_tick_increase();
-}
-
-/* ----------------------------------------------------------------------------*/
-/**
- * @brief  awos_arch_isin_irq <judge whether in irq context>
- *
- * @return
- *   -0: in task environment
- *   -1: in interrupt environment.
- */
-/* ----------------------------------------------------------------------------*/
-uint8_t awos_arch_isin_irq(void)
-{
-    return rt_interrupt_get_nest() ?  1 : 0;
-}
-
-/* ----------------------------------------------------------------------------*/
-/**
- * @brief  k_malloc_align <alloc memory meet specify alignment.>
- *
- * @param[in] size, memory size need to alloc.
- * @param[in] align, aligment needs.
- *
- * @return
- *    -NULL, if faulre.
- *    -[ptr], address if success.
- */
-/* ----------------------------------------------------------------------------*/
-void *k_malloc_align(uint32_t size, uint32_t align)
-{
-    return rt_malloc_align(size, align);
-}
-
-/* ----------------------------------------------------------------------------*/
-/**
- * @brief  k_free_align <free align>
- *
- * @param[in] ptr, the memory start address need to free.
- */
-/* ----------------------------------------------------------------------------*/
-void k_free_align(void *ptr, uint32_t size)
-{
-    return rt_free_align(ptr);
-}
+#include <excep.h>
+#include <cpuport.h>
+#include <typedef.h>
+#include <debug.h>
+#include <rtdef.h>
+#include <compiler.h>
 
 unsigned long awos_arch_lock_irq(void)
 {
@@ -196,4 +76,116 @@ void local_irq_enable(void)
 void local_irq_disable(void)
 {
     arch_local_irq_disable();
+}
+
+void finish_task_switch(rt_thread_t ARG_UNUSED(last));
+void ret_from_create_c(unsigned long *frsp, unsigned long *tosp)
+{
+    rt_thread_t last =  RT_NULL;
+    rt_thread_t curr =  RT_NULL;
+
+    /* thread fn of entry. */
+    register long s1 __asm__("s1");
+    /* thread paramter of entry. */
+    register long s2 __asm__("s2");
+    /* thread exit entry. */
+    register long s3 __asm__("s3");
+
+    void (*entry)(void *) = (void (*)(void *))s1;
+    void (*exity)(void)   = (void (*)(void))s3;
+    void *parameter       = (void *)s2;
+
+    if (frsp == RT_NULL)
+    {
+        rt_kprintf("scheduler startup\n");
+    }
+    else
+    {
+        last = rt_container_of(frsp, struct rt_thread, sp);
+    }
+
+    finish_task_switch(last);
+
+    curr = rt_container_of(tosp, struct rt_thread, sp);
+    if (last == rt_thread_self())
+    {
+        software_break();
+    }
+    else if (curr != rt_thread_self())
+    {
+        software_break();
+    }
+
+    // enable local irq.
+    //arch_local_irq_enable();
+    if (irqs_disabled())
+    {
+        software_break();
+    }
+
+    if (exity != rt_thread_exit)
+    {
+        software_break();
+    }
+
+    if (entry)
+    {
+        entry(parameter);
+    }
+    else
+    {
+        software_break();
+    }
+
+    exity();
+
+    /* never come here */
+    CODE_UNREACHABLE;
+}
+
+/**
+ * This function will initialize thread stack
+ *
+ * @param tentry the entry of thread
+ * @param parameter the parameter of entry
+ * @param stack_addr the beginning stack address
+ * @param texit the function will be called when thread exit
+ *
+ * @return stack address
+ */
+uint8_t *awos_arch_stack_init(void *tentry, void *parameter, uint8_t *stack_addr, void *texit)
+{
+    rt_uint8_t         *stk;
+    switch_ctx_regs_t *frame;
+
+    stk  = stack_addr + sizeof(rt_ubase_t);
+    stk  = (rt_uint8_t *)RT_ALIGN_DOWN((rt_ubase_t)stk, REGBYTES);
+    stk -= sizeof(switch_ctx_regs_t);
+
+    frame = (switch_ctx_regs_t *)stk;
+
+    frame->ra      = (rt_ubase_t)ret_from_create_c;
+
+    // ABI take as FP, so cant pass parameter by S0.
+    frame->s[0]    = (rt_ubase_t) -1;
+    frame->s[1]    = (rt_ubase_t)tentry;
+    frame->s[2]    = (rt_ubase_t)parameter;
+    frame->s[3]    = (rt_ubase_t)texit;
+    frame->s[4]    = (rt_ubase_t)0xdeadbeef;
+    frame->s[5]    = (rt_ubase_t)0xdeadbeef;
+    frame->s[6]    = (rt_ubase_t)0xdeadbeef;
+    frame->s[7]    = (rt_ubase_t)0xdeadbeef;
+    frame->s[8]    = (rt_ubase_t)0xdeadbeef;
+    frame->s[9]    = (rt_ubase_t)0xdeadbeef;
+    frame->s[10]   = (rt_ubase_t)0xdeadbeef;
+    frame->s[11]   = (rt_ubase_t)0xdeadbeef;
+
+    // Restore Previous Interrupt Enable and Previous Privledge level status.
+#ifdef CONFIG_RV_MACHINE_MODE
+    frame->sstatus = MR_MPP | MR_MPIE | SR_FS_CLEAN; /*  Supervisor, irqs on, Initial fpu for ready to use */
+#else
+    frame->sstatus = SR_SPP | SR_SPIE | SR_FS_CLEAN; /*  Supervisor, irqs on, Initial fpu for ready to use */
+#endif
+
+    return stk;
 }

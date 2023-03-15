@@ -41,7 +41,7 @@
 
 #define IS_ERR_OR_NULL(pointer) (pointer == NULL)
 
-int debug_mask = DEBUG_LEVEL_INFO;
+int debug_mask = DEBUG_LEVEL_ERR;
 static struct di_driver_data *di_drvdata;
 static unsigned int di_debug_mode;
 
@@ -332,7 +332,7 @@ static int di_drv_wait4finish(
 			return ret ? ret : -ETIME;
 		} else if (wait_con != DI_PROC_STATE_FINISH) {
 			DI_ERR("wait4finish(%luns) err, ret=%ld, con=%u\n",
-				wait4finish, ret, wait_con);
+				wait4finish, ret, (unsigned int)wait_con);
 			return ret ? ret : -wait_con;
 		}
 	}
@@ -365,18 +365,13 @@ int di_drv_process_fb(struct di_client *c)
 	return ret;
 }
 
-static irqreturn_t di_irq_handler(int irq, void *dev_id)
+static hal_irqreturn_t di_irq_handler(void *dev_id)
 {
 	struct di_driver_data *drvdata = dev_id;
 	u32 flags;
 	struct di_client *c;
 	int wait_con;
 	u32 hw_state;
-
-	if (irq != drvdata->irq_no) {
-		DI_ERR("invalid irq no:%d %d\n", irq, drvdata->irq_no);
-		return IRQ_NONE;
-	}
 
 	flags = hal_spin_lock_irqsave(&drvdata->queue_lock);
 
@@ -420,7 +415,7 @@ static irqreturn_t di_irq_handler(int irq, void *dev_id)
 irq_out:
 	hal_spin_unlock_irqrestore(&drvdata->queue_lock, flags);
 
-	return IRQ_HANDLED;
+	return HAL_IRQ_OK;
 }
 
 /* unload resources of di device */
@@ -463,13 +458,13 @@ static int di_parse_dt(struct di_driver_data *drvdata)
 
 	/* irq */
 	drvdata->irq_no = SUNXI_IRQ_DI;
-	ret = request_irq(drvdata->irq_no, di_irq_handler, 0, "di", drvdata);
+	ret = hal_request_irq(drvdata->irq_no, di_irq_handler, "di", drvdata);
 	if (ret) {
 		DI_ERR("devm_request_irq failed\n");
 		goto err_out;
 	}
 
-	enable_irq(SUNXI_IRQ_DI);
+	hal_enable_irq(SUNXI_IRQ_DI);
 
 	DI_DEBUG("di irq_no=%u\n", drvdata->irq_no);
 

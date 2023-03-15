@@ -1,25 +1,38 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                           Interrupt manage Module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2006-2010, kevin.z China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : sys_int.c
-* By      : kevin.z
-* Version : v1.0
-* Date    : 2010-11-24 16:45
-* Descript:
-* Update  : date                auther      ver     notes
-*           2010-11-24 16:45    kevin.z     1.0     build the file.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <arch.h>
 #include <log.h>
 #include "ktype.h"
-#include "interrupt.h"
+#include <hal_interrupt.h>
 
 
 /*
@@ -58,7 +71,7 @@ int32_t esINT_SetIRQPrio(uint32_t irqno, uint32_t prio)
 */
 int32_t esINT_EnableINT(uint32_t irqno)
 {
-    enable_irq(irqno);
+    hal_enable_irq(irqno);
     return EPDK_OK;
 }
 
@@ -78,7 +91,7 @@ int32_t esINT_EnableINT(uint32_t irqno)
 */
 int32_t esINT_DisableINT(uint32_t irqno)
 {
-    disable_irq(irqno);
+    hal_disable_irq(irqno);
 
     return EPDK_OK;
 }
@@ -105,7 +118,7 @@ int32_t esINT_InsISR(uint32_t irq, char* name, void *handler, void *argv)
     int32_t    ret = 0;
 
     cpu_sr = awos_arch_lock_irq();
-    ret = request_irq(irq, handler, 0, (name == NULL)?"noname":name, argv);
+    ret = hal_request_irq(irq, handler, (name == NULL)?"noname":name, argv);
     awos_arch_unlock_irq(cpu_sr);
 
     return ret;
@@ -126,12 +139,12 @@ int32_t esINT_InsISR(uint32_t irq, char* name, void *handler, void *argv)
 * Note       :
 *********************************************************************************************************
 */
-int32_t esINT_UniISR(uint32_t irq, void *dev_id)
+int32_t esINT_UniISR(uint32_t irq)
 {
     unsigned long cpu_sr;
 
     cpu_sr = awos_arch_lock_irq();
-    free_irq(irq, dev_id);
+    hal_free_irq(irq);
     awos_arch_unlock_irq(cpu_sr);
     return EPDK_OK;
 }
@@ -181,4 +194,3 @@ int32_t esINT_UniFIR(uint32_t fiqno, __pISR_t pFirMain, __pCBK_t pFirTail)
 {
     return EPDK_OK;
 }
-

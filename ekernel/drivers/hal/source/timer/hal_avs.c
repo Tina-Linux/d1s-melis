@@ -148,7 +148,9 @@ int hal_avs_init(hal_avs_id_t id)
     avs->enable = 1;
     avs->clk = hal_clock_get(SUNXI_AVS_CLK_TYPE, SUNXI_AVS_CLK);
 
-    AVS_INFO("avs_clk:%d", avs->clk);
+#if defined(CONFIG_DRIVERS_SUNXI_CLK)
+    AVS_INFO("avs_clk:%u", avs->clk);
+#endif
     hal_clock_enable(avs->clk);
 
     return 0;

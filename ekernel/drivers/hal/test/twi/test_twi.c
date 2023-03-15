@@ -63,8 +63,12 @@ static int cmd_test_twi(int argc, const char **argv)
     port = strtol(argv[1], NULL, 0);
     addr = strtol(argv[2], NULL, 0);
     reg_addr = strtol(argv[3], NULL, 0);
+    if (argv[5])
+    {
+        reg_val = strtol(argv[5], NULL, 0);
+    }
 
-    while ((c = getopt(argc, (char *const *)argv, "r:w")) != -1)
+    while ((c = getopt(argc, (char *const *)argv, "rw")) != -1)
 	{
         switch (c)
         {
@@ -75,9 +79,9 @@ static int cmd_test_twi(int argc, const char **argv)
             case 'w':
 				hal_log_info("twi write test");
                 rw = TEST_WRITE;
-                reg_val = strtol(argv[5], NULL, 0);
+                //reg_val = strtol(argv[5], NULL, 0);
                 break;
-			default:
+	default:
 				hal_log_err("invalid param!");
         }
     }
@@ -109,8 +113,9 @@ static int cmd_test_twi(int argc, const char **argv)
 
 	hal_log_info("Twi test finish");
 
-    hal_twi_uninit(port);
-	
+	//hal_twi_uninit(port);
+
+	hal_log_info("Twi test1 finish");
     return 0;
 }
 

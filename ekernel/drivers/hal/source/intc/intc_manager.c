@@ -183,7 +183,7 @@ s32 uninstall_isr(u32 intno, __pISR_hdle_t pisr)
 	/*intno can't beyond then IRQ_SOURCE_MAX */
 	/* ASSERT(intno < IRQ_SOUCE_MAX); */
 
-	if (isr_table[intno].pisr == pisr) {
+	if (isr_table[intno].pisr) {
 		/*uninstall isr */
 		isr_table[intno].pisr = isr_default;
 		isr_table[intno].parg = NULL;
@@ -220,7 +220,7 @@ s32 interrupt_entry(void)
 	 * process interrupt by call isr,
 	 * not support shared intterrupt.
 	 */
-	(isr_table[intno].pisr) (0, isr_table[intno].parg);
+	(isr_table[intno].pisr) (isr_table[intno].parg);
 
 	return OK;
 }
@@ -249,7 +249,7 @@ s32 interrupt_clear_pending(u32 intno)
 	return OK;
 }
 
-s32 isr_default(int dummy, void *arg)
+s32 isr_default(void *arg)
 {
 	return true;
 }

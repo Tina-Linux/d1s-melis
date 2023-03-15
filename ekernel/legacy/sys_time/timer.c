@@ -1,31 +1,46 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                              Time manage Module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2006-2010, kevin.z China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : timer.c
-* By      : kevin.z
-* Version : v2.0
-* Date    : 2010-11-25 13:45
-* Descript:
-* Update  : date                auther      ver     notes
-*           2010-11-25 13:45    kevin.z     2.0     modify the file.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#include <string.h>
+
 #include "sys_time_i.h"
 #include <port.h>
 #include <sys_time.h>
 #include <sys_int.h>
-#include <string.h>
 #include <log.h>
 #include <arch.h>
-#include <rtthread.h>
 #include <sunxi_hal_timer.h>
 #include <sunxi_drv_timer.h>
+
+#include <hal_mem.h>
 
 static __time_tmr_node_t*    TimeTmr[TIMER_NUM];
 
@@ -117,7 +132,7 @@ int32_t esTIME_RequestTimer(__csp_timer_req_type_t *tmrType, __pCBK_t pHdlr, voi
         return -1;
     }
 
-    tmpTmr = (__time_tmr_node_t *)rt_malloc(sizeof(__time_tmr_node_t));
+    tmpTmr = (__time_tmr_node_t *)hal_malloc(sizeof(__time_tmr_node_t));
     if (NULL == TimeTmr[i])
     {
         __err("request memory for timer failed!");
@@ -126,7 +141,7 @@ int32_t esTIME_RequestTimer(__csp_timer_req_type_t *tmrType, __pCBK_t pHdlr, voi
    
     tmpTmr  = TimeTmr[i];
 
-    rt_memset(tmpTmr, 0, sizeof(__time_tmr_node_t));
+    memset(tmpTmr, 0, sizeof(__time_tmr_node_t));
 
     //initialise timer node
     tmpTmr->timerId     = i;
@@ -138,7 +153,7 @@ int32_t esTIME_RequestTimer(__csp_timer_req_type_t *tmrType, __pCBK_t pHdlr, voi
     tmpTmr->pArg        = pArg;
     if (pUsr)
     {
-        rt_strncpy(tmpTmr->pUsr, pUsr, TIMER_USER_NAME_SIZE - 1);
+        strncpy(tmpTmr->pUsr, pUsr, TIMER_USER_NAME_SIZE - 1);
     }
 
     /*modified the global varietiy in lock_irq conditions*/
@@ -182,7 +197,7 @@ int32_t esTIME_RequestTimer(__csp_timer_req_type_t *tmrType, __pCBK_t pHdlr, voi
 _error:
     if(TimeTmr[i])
     {
-        rt_free(TimeTmr[i]);
+        hal_free(TimeTmr[i]);
         TimeTmr[i]  = NULL;
     }
     return -1;
@@ -215,7 +230,7 @@ int32_t esTIME_ReleaseTimer(int32_t timer_id)
         //uninstall timer interrupt handle
         drv_timer_irq_free(tmpNode->nIrqNo);
         //release memory resource
-        rt_free((void *)tmpNode);
+        hal_free((void *)tmpNode);
 
         /*only disable irq and free handle? do not stop the timer????*/
         return EPDK_OK;
@@ -310,4 +325,3 @@ uint32_t esTIME_QuerryTimer(int32_t timer_id)
     drv_timer_get_counter(timer_id, &value);
     return value;
 }
-

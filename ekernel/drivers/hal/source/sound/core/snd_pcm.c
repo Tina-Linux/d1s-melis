@@ -39,6 +39,9 @@
 #include <sound/snd_misc.h>
 #include <errno.h>
 #include <sound/pcm_common.h>
+#ifdef CONFIG_COMPONENTS_PM
+#include <pm_devops.h>
+#endif
 
 /* #define XRUN_DEBUG */
 #ifdef XRUN_DEBUG
@@ -51,7 +54,7 @@
 
 static void xrun(struct snd_pcm_substream *substream);
 
-
+#ifndef CONFIG_SND_CORE_TINY
 static int snd_pcm_hw_rule_add(struct snd_pcm_runtime *runtime, unsigned int cond,
 		int var, snd_pcm_hw_rule_func_t func, void *private, int dep, ...)
 {
@@ -158,15 +161,15 @@ static int snd_pcm_hw_constraint_minmax(struct snd_pcm_runtime *runtime,
 	t.range.integer = 0;
 	return snd_range_refine(constrs_interval(constrs, var), &t);
 }
+#endif
 
 static int snd_pcm_hw_constrains_init(struct snd_pcm_substream *substream)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
 	struct snd_pcm_hw_constrains *constrains = &runtime->hw_constrains;
 	int i;
-	int err;
 
-#if 0
+#ifdef CONFIG_SND_CORE_TINY
 	for (i = SND_PCM_HW_PARAM_FIRST_MASK; i <= SND_PCM_HW_PARAM_LAST_MASK; i++) {
 		constrains->intervals[i].mask = 0xff;
 	}
@@ -175,6 +178,8 @@ static int snd_pcm_hw_constrains_init(struct snd_pcm_substream *substream)
 		constrains->intervals[i].range.max = UINT_MAX;
 	}
 #else
+	int err;
+
 	for (i = SND_PCM_HW_PARAM_FIRST_MASK; i <= SND_PCM_HW_PARAM_LAST_MASK; i++) {
 		snd_mask_any(constrs_interval(constrains, i));
 	}
@@ -293,6 +298,7 @@ static int snd_pcm_hw_constrains_init(struct snd_pcm_substream *substream)
 	return 0;
 }
 
+#ifndef CONFIG_SND_CORE_TINY
 static int snd_pcm_hw_constrains_complete(struct snd_pcm_substream *substream)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
@@ -373,6 +379,7 @@ static int snd_pcm_hw_constrains_complete(struct snd_pcm_substream *substream)
 
 	return 0;
 }
+#endif
 
 static int snd_pcm_release_substream(struct snd_pcm *pcm, int stream)
 {
@@ -495,12 +502,13 @@ static int snd_pcm_open_substream(struct snd_pcm *pcm, int stream)
 		goto error;
 
 	substream->hw_opened = 1;
-
+#ifndef CONFIG_SND_CORE_TINY
 	ret = snd_pcm_hw_constrains_complete(substream);
 	if (ret < 0) {
 		snd_err("snd_pcm_hw_constrains_complete failed\n");
 		goto error;
 	}
+#endif
 
 	return ret;
 
@@ -538,6 +546,29 @@ static void snd_pcm_dump_params(struct snd_pcm_runtime *runtime)
 	snd_print("------------------------\n");
 	return ;
 }
+
+/*
+ * mode, 0:clean+invalid, 1:invalid
+ *
+ */
+static void do_align_dcache_control(int mode, unsigned long addr, unsigned int len)
+{
+	unsigned long align_value = 0;
+
+	align_value = addr & (CACHELINE_LEN - 1);
+	if (align_value) {
+		addr &= ~(CACHELINE_LEN - 1);
+		len += align_value;
+	}
+	if (len % CACHELINE_LEN != 0)
+		len = ((len / CACHELINE_LEN) + 1) * CACHELINE_LEN;
+	if (mode == 0)
+		hal_dcache_clean_invalidate(addr, len);
+	else
+		hal_dcache_invalidate(addr, len);
+	return;
+}
+
 
 
 static inline int snd_pcm_running(struct snd_pcm_substream *substream)
@@ -584,6 +615,11 @@ static void snd_pcm_playback_silence(struct snd_pcm_substream *substream, snd_pc
 		}
 		frames = runtime->buffer_size - runtime->silence_filled;
 	}
+	if (frames > runtime->buffer_size) {
+		xrun_debug("frames:%lu,new_hw_ptr:%lu,hw_ptr:%lu,boundary:%lu,buffer_size:%lu\n",
+			   frames, new_hw_ptr, ofs, runtime->boundary, runtime->buffer_size);
+		return;
+	}
 	if (frames == 0)
 		return;
 	ofs = runtime->silence_start % runtime->buffer_size;
@@ -599,7 +635,7 @@ static void snd_pcm_playback_silence(struct snd_pcm_substream *substream, snd_pc
 
 		snd_pcm_format_set_silence(runtime->format, hwbuf, transfer * runtime->channels);
 		/* flush cache */
-		hal_dcache_clean_invalidate((uintptr_t)hwbuf, frames_to_bytes(runtime, transfer));
+		do_align_dcache_control(0, (unsigned long)hwbuf, frames_to_bytes(runtime, transfer));
 		runtime->silence_filled += transfer;
 		frames -= transfer;
 		ofs = 0;
@@ -835,6 +871,39 @@ static int snd_pcm_stop(struct snd_pcm_substream *substream, int state)
 	return 0;
 }
 
+#ifdef CONFIG_COMPONENTS_PM
+int snd_pcm_do_suspend(struct snd_pcm_substream *substream, int state)
+{
+	struct snd_pcm_runtime *runtime = substream->runtime;
+
+	/* FIXME: the open/close code should lock this as well */
+	if (!runtime) {
+		snd_print("unruning\n");
+		return 0;
+	}
+
+	if (snd_pcm_running(substream))
+		substream->ops->trigger(substream, SNDRV_PCM_TRIGGER_SUSPEND);
+
+	return 0;
+}
+
+int snd_pcm_do_resume(struct snd_pcm_substream *substream, int state)
+{
+	struct snd_pcm_runtime *runtime = substream->runtime;
+
+	/* FIXME: the open/close code should lock this as well */
+	if (!runtime) {
+		snd_print("unruning\n");
+		return 0;
+	}
+
+	substream->ops->trigger(substream, SNDRV_PCM_TRIGGER_RESUME);
+
+	return 0;
+}
+#endif
+
 static void xrun(struct snd_pcm_substream *substream)
 {
 	struct snd_pcm_runtime *runtime = substream->runtime;
@@ -979,7 +1048,7 @@ static int snd_pcm_lib_write_transfer(struct snd_pcm_substream *substream,
 			hwbuf, hwbuf+frames_to_bytes(runtime, frames),
 			frames_to_bytes(runtime, frames));
 		/* flush cache */
-		hal_dcache_clean_invalidate((uintptr_t)hwbuf, frames_to_bytes(runtime, frames));
+		do_align_dcache_control(0, (unsigned long)hwbuf, frames_to_bytes(runtime, frames));
 	}
 	return 0;
 }
@@ -1087,8 +1156,6 @@ _end_unlock:
 	return xfer > 0 ? (snd_pcm_sframes_t)xfer : err;
 }
 
-
-
 static int snd_pcm_lib_read_transfer(struct snd_pcm_substream *substream,
 					unsigned int hwoff,
 					unsigned long data, unsigned int off,
@@ -1108,7 +1175,7 @@ static int snd_pcm_lib_read_transfer(struct snd_pcm_substream *substream,
 				hwbuf,
 				frames_to_bytes(runtime, frames),
 				frames);
-		hal_dcache_invalidate((uintptr_t)hwbuf, frames_to_bytes(runtime, frames));
+		do_align_dcache_control(1, (unsigned long)hwbuf, frames_to_bytes(runtime, frames));
 		memcpy(buf, hwbuf, frames_to_bytes(runtime, frames));
 	}
 
@@ -1326,6 +1393,10 @@ int ksnd_pcm_stream_info(int card_num, int device_num, int stream)
 	printf("buffer_size:     %ld\n", runtime->buffer_size);
 	printf("hw_ptr:          0x%lx\n", runtime->status->hw_ptr);
 	printf("appl_ptr:        0x%lx\n", runtime->control->appl_ptr);
+	printf("start_threshold: %ld\n", runtime->start_threshold);
+	printf("stop_threshold:  %ld\n", runtime->stop_threshold);
+	printf("silence_size:    %ld\n", runtime->silence_size);
+
 	snd_mutex_unlock(pcm->open_mutex);
 	return 0;
 }
@@ -1415,6 +1486,7 @@ int ksnd_pcm_release(int card_num, int device_num, int stream)
 	return ret;
 }
 
+#ifndef CONFIG_SND_CORE_TINY
 
 #if 0
 #define RULES_DEBUG
@@ -1586,11 +1658,26 @@ int ksnd_pcm_hw_refine(void *substream_handle, void *params_wrapper)
 	return 0;
 }
 
+#else
+int ksnd_pcm_hw_refine(void *substream_handle, void *params_wrapper)
+{
+	struct snd_pcm_substream *substream = substream_handle;
+	struct snd_pcm_hw_params *params = params_wrapper;
+	struct snd_pcm_runtime *runtime = substream->runtime;
+	struct snd_pcm_hw_constrains *cons = &runtime->hw_constrains;
+
+	snd_print("\n");
+	memcpy(params, cons, sizeof(struct snd_pcm_hw_constrains));
+
+	return 0;
+}
+#endif
+
 #define is_range_of_hw_constrains(param, cons, type) \
 ((param->intervals[type].range.min >= cons->intervals[type].range.min) && \
 (param->intervals[type].range.min <= cons->intervals[type].range.max))
 
-#if 0
+#ifdef CONFIG_SND_CORE_TINY
 static int snd_hw_constrains_check(struct snd_pcm_substream *substream,
 		struct snd_pcm_hw_params *params)
 {
@@ -1600,10 +1687,10 @@ static int snd_hw_constrains_check(struct snd_pcm_substream *substream,
 	if (!(params->intervals[SND_PCM_HW_PARAM_FORMAT].mask &
 		cons->intervals[SND_PCM_HW_PARAM_FORMAT].mask)) {
 		snd_err("hw_params format invalid."
-			"params mask:0x%lx, hw_cons mask:0x%lx\n",
+			"params mask:0x%x, hw_cons mask:0x%x\n",
 			params->intervals[SND_PCM_HW_PARAM_FORMAT].mask,
 			cons->intervals[SND_PCM_HW_PARAM_FORMAT].mask);
-		return -1;
+		return -EFAULT;
 	}
 
 	params->intervals[SND_PCM_HW_PARAM_FRAME_BITS].range.min =
@@ -1727,12 +1814,12 @@ static int snd_hw_constrains_check(struct snd_pcm_substream *substream,
 	for (i = SND_PCM_HW_PARAM_CHANNELS; i <= SND_PCM_HW_PARAM_LAST_INTERVAL; i++) {
 		if (!is_range_of_hw_constrains(params, cons, i)) {
 			snd_err("hw_params %d type invalid."
-				"params min:%lu,max:%lu, hw_cons min:%lu,max:%lu\n",
+				"params min:%u,max:%u, hw_cons min:%u,max:%u\n",
 				i, params->intervals[i].range.min,
 				params->intervals[i].range.max,
 				cons->intervals[i].range.min,
 				cons->intervals[i].range.max);
-			return -1;
+			return -EINVAL;
 		}
 	}
 
@@ -1740,6 +1827,7 @@ static int snd_hw_constrains_check(struct snd_pcm_substream *substream,
 }
 #endif
 
+#ifndef CONFIG_SND_CORE_TINY
 static int snd_pcm_hw_param_value(struct snd_pcm_hw_params *params,
 		snd_pcm_hw_param_t var, int *dir)
 {
@@ -1843,6 +1931,7 @@ static int snd_pcm_hw_params_choose(struct snd_pcm_substream *pcm,
 	}
 	return 0;
 }
+#endif
 
 int ksnd_pcm_hw_params(void *substream_handle, void *params_wrapper)
 {
@@ -1851,6 +1940,7 @@ int ksnd_pcm_hw_params(void *substream_handle, void *params_wrapper)
 	struct snd_pcm_runtime *runtime = substream->runtime;
 	struct snd_pcm_hw_params *params = params_wrapper;
 	unsigned int bits;
+	snd_pcm_uframes_t frames;
 
 	snd_lock_debug("\n");
 	snd_pcm_stream_lock_irq(substream);
@@ -1866,7 +1956,7 @@ int ksnd_pcm_hw_params(void *substream_handle, void *params_wrapper)
 	}
 	snd_pcm_stream_unlock_irq(substream);
 
-#if 0
+#ifdef CONFIG_SND_CORE_TINY
 	ret = snd_hw_constrains_check(substream, params);
 	if (ret < 0) {
 		snd_err("hw params invalid\n");
@@ -1903,7 +1993,12 @@ int ksnd_pcm_hw_params(void *substream_handle, void *params_wrapper)
 	bits *= runtime->channels;
 	runtime->frame_bits = bits;
 	/* bits should be 8bit align */
-	runtime->min_align = bits/8;
+	frames = 1;
+	while (bits % 8 != 0) {
+		bits *= 2;
+		frames *= 2;
+	}
+	runtime->min_align = frames;
 
 	/* default sw params */
 	runtime->control->avail_min = runtime->period_size;
@@ -2399,9 +2494,9 @@ void ksnd_pcm_hw_mmap_dcache_update(void *substream_handle, snd_pcm_uframes_t of
 	char *hwbuf = (char *)(runtime->dma_addr + frames_to_bytes(runtime, offset));
 
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
-		hal_dcache_clean_invalidate((uintptr_t)hwbuf, frames_to_bytes(runtime, size));
+		do_align_dcache_control(0, (unsigned long)hwbuf, frames_to_bytes(runtime, size));
 	} else {
-		hal_dcache_invalidate((uintptr_t)hwbuf, frames_to_bytes(runtime, size));
+		do_align_dcache_control(1, (unsigned long)hwbuf, frames_to_bytes(runtime, size));
 	}
 }
 

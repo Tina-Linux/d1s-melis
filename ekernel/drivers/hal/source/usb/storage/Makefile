@@ -1,4 +1,6 @@
-subdir-ccflags-y +=     -I$(srctree)/ekernel/drivers/hal/source/usb/include
+subdir-ccflags-y += -I drivers/hal/source/usb/storage/include
+subdir-ccflags-y += -I drivers/hal/source/usb/core
+
 obj-y += Class/
 obj-y += Disk/
 obj-y += Misc/

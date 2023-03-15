@@ -29,19 +29,18 @@
 * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 * OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#include "sunxi_hal_htimer.h"
-#include "hal_clk.h"
+#include <hal_clk.h>
+#include <sunxi_hal_htimer.h>
 #include "sunxi_htimer.h"
 
 void hal_htimer_init(void)
 {
     int ret;
-    ret = hal_clock_enable(HAL_CLK_PERIPH_HSTIMER);
+
+    ret = sunxi_htimer_clk_init();
     if (ret < 0)
-    {
-        printf("clk enable error,error num %d\n!", ret);
         return;
-    }
+
     sunxi_htimer_init();
 }
 

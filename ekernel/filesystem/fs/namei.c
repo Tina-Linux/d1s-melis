@@ -1,20 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                                  File System
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2011-2014, Sunny China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : namei.c
-* By      : Sunny
-* Version : v1.0
-* Date    : 2011-1-15
-* Descript: name lookup of vfs, code is extracted from linux.
-* Update  : date                auther      ver     notes
-*           2011-3-15 15:51:36  Sunny       1.0     Create this file.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "limits.h"
 #include "fs.h"
@@ -1628,7 +1641,7 @@ struct file *do_sys_open(const char *filename, int flags, int mode, struct super
     char *tmp;
     int namei_flags;
 
-    /* ÔÚÎÄ¼þÏµÍ³ÄÚ²¿·ÖÅäÎÄ¼þÃû¿Õ¼ä²¢¸´ÖÆÓÃ»§¿Õ¼ä´«À´µÄÎÄ¼þÃû×Ö·û´® */
+    /* åœ¨æ–‡ä»¶ç³»ç»Ÿå†…éƒ¨åˆ†é…æ–‡ä»¶åç©ºé—´å¹¶å¤åˆ¶ç”¨æˆ·ç©ºé—´ä¼ æ¥çš„æ–‡ä»¶åå­—ç¬¦ä¸² */
     tmp = getname(filename);
     if (IS_ERR(PTR_ERR(tmp)))
     {
@@ -1641,17 +1654,17 @@ struct file *do_sys_open(const char *filename, int flags, int mode, struct super
         namei_flags++;
     }
 
-    /* Ê¼ÖÕ´Ó¸ùÄ¿Â¼¿ªÊ¼ */
+    /* å§‹ç»ˆä»Žæ ¹ç›®å½•å¼€å§‹ */
     nd.dentry = dget(sb->s_root);
 
-    /* ¶ÔÃ¿¼¶Ä¿Â¼½øÐÐ´ò¿ª±éÀú */
+    /* å¯¹æ¯çº§ç›®å½•è¿›è¡Œæ‰“å¼€éåŽ† */
     ret = open_namei(tmp, namei_flags, mode, &nd);
     if (!ret)  /* == EPDK_OK */
     {
         retval = nameidata_to_filp(&nd, flags);
     }
 
-    /* ÊÍ·ÅÎÄ¼þÃû¿Õ¼ä */
+    /* é‡Šæ”¾æ–‡ä»¶åç©ºé—´ */
     putname(tmp);
 
     return retval;
@@ -1661,7 +1674,7 @@ __s32 filp_close(struct file *pfile)
 {
     int retval = 0;
 
-    /* flushÎÄ¼þµÄËùÓÐ»º´æ */
+    /* flushæ–‡ä»¶çš„æ‰€æœ‰ç¼“å­˜ */
     if (pfile->f_op && pfile->f_op->flush)
     {
         retval = pfile->f_op->flush(pfile);
@@ -1671,7 +1684,7 @@ __s32 filp_close(struct file *pfile)
         goto out;
     }
 
-    /* ÎÄ¼þÏµÍ³close */
+    /* æ–‡ä»¶ç³»ç»Ÿclose */
     if (pfile->f_op && pfile->f_op->close)
     {
         retval = pfile->f_op->close(pfile);
@@ -1681,13 +1694,13 @@ __s32 filp_close(struct file *pfile)
         goto out;
     }
 
-    /* °²È«Æð¼û£¬»ØÐ´´ÅÅÌÉÏµÄËùÓÐ»º´æ(ÔÝÊ±) */
+    /* å®‰å…¨èµ·è§ï¼Œå›žå†™ç£ç›˜ä¸Šçš„æ‰€æœ‰ç¼“å­˜(æš‚æ—¶) */
     if (pfile->f_dentry && pfile->f_dentry->d_sb)
     {
         retval = fsync_dev(pfile->f_dentry->d_sb);
     }
 
-    /* Ïú»Ùstruct fileÊý¾Ý½á¹¹£¬²¢µÝ¼õdentryµÄÒýÓÃ¼ÆÊý */
+    /* é”€æ¯struct fileæ•°æ®ç»“æž„ï¼Œå¹¶é€’å‡dentryçš„å¼•ç”¨è®¡æ•° */
     fput(pfile);
 
 out:
@@ -1741,7 +1754,7 @@ void fput(struct file *file)
         file->f_op->release(inode, file);
     }
 
-    /* ±ê¼ÇfileÎªËÀ½Úµã */
+    /* æ ‡è®°fileä¸ºæ­»èŠ‚ç‚¹ */
     file->f_dentry = NULL;
     files[file->f_fd] = NULL;
     file_free(file);

@@ -41,20 +41,21 @@
 
 int channel = -1;
 
-int gpadc_irq_callback(uint32_t dada_type, uint32_t data)
+int sunxigpadc_irq_callback(uint32_t dada_type, uint32_t data)
 {
     int vol_data;
     data = ((VOL_RANGE / 4096) * data);
     vol_data = data / 1000;
     printf("channel %d vol data: %d\n", channel, vol_data);
-    hal_gpadc_channel_exit(channel);
-    hal_gpadc_deinit();
+    //hal_gpadc_channel_exit(channel);
+    //hal_gpadc_deinit();
     return 0;
 }
 
 int cmd_test_gpadc(int argc, char **argv)
 {
     int ret = -1;
+    uint32_t vol_data;
 
     printf("Run gpadc test\n");
 
@@ -79,7 +80,10 @@ int cmd_test_gpadc(int argc, char **argv)
     }
 
     hal_gpadc_channel_init(channel);
-    hal_gpadc_register_callback(channel, gpadc_irq_callback);
+    //hal_gpadc_register_callback(channel, sunxigpadc_irq_callback);
+
+    vol_data = gpadc_read_channel_data(channel);
+    printf("channel %d vol data is %u\n", channel, vol_data);
 
     return 0;
 }

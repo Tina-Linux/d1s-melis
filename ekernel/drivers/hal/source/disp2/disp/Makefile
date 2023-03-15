@@ -45,5 +45,7 @@ obj-$(CONFIG_LCD_SUPPORT_ILI9881C) += lcd/ili9881c.o
 obj-$(CONFIG_LCD_SUPPORT_TM_DSI_PANEL) += lcd/tm_dsi_panel.o
 obj-$(CONFIG_LCD_SUPPORT_ST7789V_CPU) += lcd/st7789v_cpu.o
 obj-$(CONFIG_LCD_SUPPORT_VVX07H005A10) += lcd/VVX07H005A10.o
+obj-$(CONFIG_LCD_SUPPORT_TFT08006) += lcd/tft08006.o
 
 obj-y += $(obj_low)
+obj-$(CONFIG_COMMAND_PQD) += pq/drv_pq.o pq/pq_common.o

@@ -4,6 +4,10 @@ config DRIVERS_MBUS
     bool "enable mbus driver"
         default y
 
+config DRIVERS_AHB
+    bool "enable top matrix(ahb) driver"
+	default n
+
 if DRIVERS_MBUS
 	config DRIVERS_MBUS_GPU_BW
 	    bool "mbus gpu bandwidth"
@@ -17,8 +21,20 @@ if DRIVERS_MBUS
 	config DRIVERS_MBUS_DMA_BW
 	    bool "mbus dma bandwidth"
 		default n
+	config DRIVERS_MBUS_DMA0_BW
+	    bool "mbus dma0 bandwidth"
+		default n
+	config DRIVERS_MBUS_DMA1_BW
+	    bool "mbus dma1 bandwidth"
+		default n
 	config DRIVERS_MBUS_CE_BW
 	    bool "mbus ce bandwidth"
+		default n
+	config DRIVERS_MBUS_DE_BW
+	    bool "mbus de bandwidth"
+		default n
+	config DRIVERS_MBUS_VE_BW
+	    bool "mbus ve bandwidth"
 		default n
 	config DRIVERS_MBUS_TVD_BW
 	    bool "mbus tvd bandwidth"
@@ -44,5 +60,11 @@ config HAL_TEST_MBUS
     bool "enable mbus hal APIs test command"
     depends on DRIVERS_MBUS
         default n
+
+config HAL_TEST_AHB
+    bool "enable ahb hal APIs test command"
+    depends on DRIVERS_AHB
+        default n
+
 
 endmenu

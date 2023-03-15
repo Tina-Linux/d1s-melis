@@ -1,6 +1,10 @@
-subdir-ccflags-y +=	-I$(srctree)/ekernel/drivers/include \
-			-I$(srctree)/ekernel/core/rt-thread/include \
-			-I$(srctree)/ekernel/drivers/hal/source/disp2/soc
+subdir-ccflags-y += -I drivers/include
+subdir-ccflags-y += -I drivers/hal/source/disp2/soc
+
+ifeq ($(CONFIG_OS_MELIIS), y)
+subdir-ccflags-y += -I $(srctree)/ekernel/core/rt-thread/include
+endif
+
 obj-y += disp/
 obj-y += soc/
 obj-$(CONFIG_TV_DISP2_SUNXI) += tv/

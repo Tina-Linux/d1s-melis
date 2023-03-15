@@ -24,15 +24,28 @@ struct disp_manager_private_data {
 	bool color_range_modified;
 	struct disp_manager_data *cfg;
 
-	 s32 (*shadow_protect)(u32 disp, bool protect);
+	s32 (*shadow_protect)(u32 disp, bool protect);
 
 	u32 reg_base;
 	u32 irq_no;
 	u32 clk;
+#ifndef CONFIG_ARCH_SUN8IW19
 	u32 clk_bus;
+#if defined(CONFIG_ARCH_SUN20IW2)
+	u32 clk_mbus;
+#endif
+#endif
+#if defined(CONFIG_ARCH_SUN50IW10)
+	u32 clk1;
+#endif
 	u32 clk_parent;
+#ifdef CONFIG_ARCH_SUN8IW19
+	u32 extra_clk;
+#endif
 
+#ifndef CONFIG_ARCH_SUN8IW19
 	u32 clk_dpss;
+#endif
 	unsigned int layers_using;
 	bool sync;
 	bool force_sync;
@@ -780,6 +793,29 @@ struct disp_manager *disp_get_layer_manager(u32 disp)
 	return &mgrs[disp];
 }
 
+int disp_get_current_output_format_by_device_type(u32 disp)
+{
+	struct disp_manager *mgr = NULL;
+
+	mgr = disp_get_layer_manager(disp);
+
+	// default: DE_YUV format
+	if (!mgr)
+		return DE_YUV;
+
+	if (!mgr->device)
+		return DE_YUV;
+
+	switch (mgr->device->type) {
+	case DISP_OUTPUT_TYPE_TV:
+		return DE_YUV;
+	case DISP_OUTPUT_TYPE_LCD:
+		return DE_RGB;
+	default:
+		return DE_YUV;
+	}
+}
+
 static struct disp_manager_private_data *disp_mgr_get_priv(struct disp_manager
 							   *mgr)
 {
@@ -863,6 +899,7 @@ static s32 disp_mgr_clk_exit(struct disp_manager *mgr)
 	return 0;
 }
 
+#ifndef CONFIG_ARCH_SUN8IW19
 static s32 disp_mgr_clk_enable(struct disp_manager *mgr)
 {
 	struct disp_manager_private_data *mgrp = disp_mgr_get_priv(mgr);
@@ -905,6 +942,12 @@ static s32 disp_mgr_clk_enable(struct disp_manager *mgr)
 	if (ret != 0)
 		DE_WRN("fail enable mgr's clk_bus!\n");
 
+#if defined(CONFIG_ARCH_SUN20IW2)
+	ret = disp_sys_clk_enable(mgrp->clk_mbus);
+	if (ret != 0)
+		DE_WRN("fail enable mgr's clk_mbus!\n");
+#endif
+
 	if (mgrp->clk_dpss) {
 		ret = disp_sys_clk_enable(mgrp->clk_dpss);
 		if (ret) {
@@ -915,7 +958,92 @@ static s32 disp_mgr_clk_enable(struct disp_manager *mgr)
 
 	return ret;
 }
+#else
+static s32 disp_mgr_clk_enable(struct disp_manager *mgr)
+{
+	struct disp_manager_private_data *mgrp = disp_mgr_get_priv(mgr);
+	int ret = 0;
+	unsigned long de_freq = 0;
+#if defined(CONFIG_ARCH_SUN50IW10)
+	unsigned long de1_freq = 0;
+#endif
 
+	if ((mgr == NULL) || (mgrp == NULL)) {
+		DE_WRN("NULL hdl!\n");
+		return -1;
+	}
+
+	disp_sys_clk_set_parent(mgrp->clk, mgrp->clk_parent);
+
+	if (mgr->get_clk_rate && mgrp->clk) {
+		DE_INF("set DE rate to %u\n", mgr->get_clk_rate(mgr));
+		de_freq = mgr->get_clk_rate(mgr);
+		disp_sys_clk_set_rate(mgrp->clk, de_freq);
+		if (de_freq != disp_sys_clk_get_rate(mgrp->clk)) {
+			if (mgrp->clk_parent)
+				disp_sys_clk_set_rate(mgrp->clk_parent, de_freq);
+			disp_sys_clk_set_rate(mgrp->clk, de_freq);
+			if (de_freq != disp_sys_clk_get_rate(mgrp->clk)) {
+				DE_WRN("Set DE clk fail\n");
+				return -1;
+			}
+		}
+	}
+
+
+	DE_INF("mgr %d clk enable\n", mgr->disp);
+	ret = disp_sys_clk_enable(mgrp->clk);
+	if (ret != 0)
+		DE_WRN("fail enable mgr's clock!\n");
+
+	if (mgrp->extra_clk) {
+		ret = disp_sys_clk_enable(mgrp->extra_clk);
+		if (ret != 0)
+			DE_WRN("fail enable mgr's extra_clk!\n");
+	}
+
+#if defined(CONFIG_ARCH_SUN50IW10)
+	disp_sys_clk_set_parent(mgrp->clk1, mgrp->clk_parent);
+
+	if (mgr->get_clk_rate && mgrp->clk1) {
+		DE_INF("set DE rate to %u\n", mgr->get_clk_rate(mgr));
+		de1_freq = mgr->get_clk_rate(mgr);
+		disp_sys_clk_set_rate(mgrp->clk1, de1_freq);
+		if (de1_freq != disp_sys_clk_get_rate(mgrp->clk1)) {
+			if (mgrp->clk_parent)
+				disp_sys_clk_set_rate(mgrp->clk_parent, de1_freq);
+			disp_sys_clk_set_rate(mgrp->clk1, de1_freq);
+			if (de1_freq != disp_sys_clk_get_rate(mgrp->clk1)) {
+				DE_WRN("Set DE clk fail\n");
+				return -1;
+			}
+		}
+	}
+
+
+	DE_INF("mgr %d clk enable\n", mgr->disp);
+	ret = disp_sys_clk_enable(mgrp->clk1);
+	if (ret != 0)
+		DE_WRN("fail enable mgr's clock!\n");
+
+	if (mgrp->dpss0_clk) {
+		ret = disp_sys_clk_enable(mgrp->dpss0_clk);
+		if (ret != 0)
+			DE_WRN("fail enable mgr's dpss0_clk!\n");
+	}
+	if (mgrp->dpss1_clk) {
+		ret = disp_sys_clk_enable(mgrp->dpss1_clk);
+		if (ret != 0)
+			DE_WRN("fail enable mgr's dpss1_clk!\n");
+	}
+#endif
+
+	return ret;
+}
+
+#endif
+
+#ifndef CONFIG_ARCH_SUN8IW19
 static s32 disp_mgr_clk_disable(struct disp_manager *mgr)
 {
 	struct disp_manager_private_data *mgrp = disp_mgr_get_priv(mgr);
@@ -926,11 +1054,41 @@ static s32 disp_mgr_clk_disable(struct disp_manager *mgr)
 	}
 	disp_sys_clk_disable(mgrp->clk);
 	disp_sys_clk_disable(mgrp->clk_bus);
+#if defined(CONFIG_ARCH_SUN20IW2)
+	disp_sys_clk_disable(mgrp->clk_mbus);
+#endif
 	if(mgrp->clk_dpss)
 		disp_sys_clk_disable(mgrp->clk_dpss);
 
 	return 0;
 }
+#else
+static s32 disp_mgr_clk_disable(struct disp_manager *mgr)
+{
+	struct disp_manager_private_data *mgrp = disp_mgr_get_priv(mgr);
+
+	if ((mgr == NULL) || (mgrp == NULL)) {
+		DE_WRN("NULL hdl!\n");
+		return -1;
+	}
+
+	if (mgrp->extra_clk)
+		disp_sys_clk_disable(mgrp->extra_clk);
+
+	disp_sys_clk_disable(mgrp->clk);
+
+#if defined(CONFIG_ARCH_SUN50IW10)
+	if (mgrp->dpss0_clk)
+		disp_sys_clk_disable(mgrp->dpss0_clk);
+	if (mgrp->dpss1_clk)
+		disp_sys_clk_disable(mgrp->dpss1_clk);
+
+	disp_sys_clk_disable(mgrp->clk1);
+#endif
+
+	return 0;
+}
+#endif
 
 /* Return: unit(hz) */
 static s32 disp_mgr_get_clk_rate(struct disp_manager *mgr)
@@ -1570,7 +1728,7 @@ static s32 disp_mgr_disable(struct disp_manager *mgr)
 	disp_delay_ms(5);
 
 	disp_al_manager_exit(mgr->disp);
-	disp_mgr_clk_disable(mgr);
+	//disp_mgr_clk_disable(mgr);
 	disp_sys_mutex_unlock(&mgr_mlock);
 
 	return 0;
@@ -1702,9 +1860,24 @@ s32 disp_init_mgr(struct disp_bsp_init_para *para)
 		mgrp->cfg = &mgr_cfgs[disp];
 		mgrp->irq_no = para->irq_no[DISP_MOD_DE];
 		mgrp->shadow_protect = para->shadow_protect;
+#ifndef CONFIG_ARCH_SUN8IW19
 		mgrp->clk = para->clk_de[disp];
 		mgrp->clk_bus = para->clk_bus_de[disp];
+#if defined(CONFIG_ARCH_SUN20IW2)
+		mgrp->clk_mbus = para->clk_mbus_de[disp];
+#endif
 		mgrp->clk_dpss = para->clk_bus_dpss_top[disp];
+#else
+		mgrp->clk = para->mclk[DISP_MOD_DE];
+#if defined(CONFIG_ARCH_SUN50IW10)
+		mgrp->clk1 = para->mclk[DISP_MOD_DE1];
+		mgrp->dpss0_clk = para->mclk[DISP_MOD_DPSS0];
+		mgrp->dpss1_clk = para->mclk[DISP_MOD_DPSS1];
+#endif
+#if defined(HAVE_DEVICE_COMMON_MODULE)
+		mgrp->extra_clk = para->mclk[DISP_MOD_DEVICE];
+#endif
+#endif
 		mgr->enable = disp_mgr_enable;
 		mgr->disable = disp_mgr_disable;
 		mgr->is_enabled = disp_mgr_is_enabled;
@@ -1770,4 +1943,10 @@ s32 disp_exit_mgr(void)
 	disp_sys_free(mgrs);
 
 	return 0;
+}
+void disp_pq_force_flush(int disp)
+{
+	if (mgrs != NULL && disp < bsp_disp_feat_get_num_screens()) {
+		disp_mgr_force_apply(&mgrs[disp]);
+	}
 }

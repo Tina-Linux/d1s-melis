@@ -15,7 +15,9 @@
  */
 
 #include "disp_display.h"
+#ifdef CONFIG_OS_MELIS
 #include <misc/support.h>
+#endif
 #include <hal_atomic.h>
 
 hal_spinlock_t disp_lock;
@@ -688,7 +690,7 @@ s32 bsp_disp_shadow_protect(u32 disp, bool protect)
 		gdisp.screen[disp].cfg_cnt--;
 		hal_spin_unlock_irqrestore(&disp_lock, gdisp.screen[disp].flag_lock);
 	}
-	__inf("sel=%d, protect:%d,  cnt=%d\n", disp, protect,
+	DE_INF("sel=%d, protect:%d,  cnt=%d\n", disp, protect,
 	      gdisp.screen[disp].cfg_cnt);
 	return DIS_SUCCESS;
 }

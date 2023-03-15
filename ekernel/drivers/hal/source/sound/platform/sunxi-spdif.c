@@ -29,22 +29,54 @@
 * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 * OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#include <hal_timer.h>
 #include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <hal_dma.h>
+#include <hal_cmd.h>
+#include <hal_timer.h>
+#ifdef CONFIG_COMPONENTS_PM
+#include <pm_devops.h>
+#endif
 #include <sound/snd_core.h>
 #include <sound/snd_pcm.h>
 #include <sound/snd_dma.h>
 #include <sound/dma_wrap.h>
-#include <hal_dma.h>
-#include <hal_cmd.h>
+#include <sound/common/snd_sunxi_common.h>
 
 #include "sunxi-pcm.h"
 #include "sunxi-spdif.h"
+
+static struct audio_reg_label sunxi_reg_labels[] = {
+	REG_LABEL(SUNXI_SPDIF_CTL),
+	REG_LABEL(SUNXI_SPDIF_TXCFG),
+	REG_LABEL(SUNXI_SPDIF_RXCFG),
+	REG_LABEL(SUNXI_SPDIF_INT_STA),
+	/* REG_LABEL(SUNXI_SPDIF_RXFIFO), */
+	REG_LABEL(SUNXI_SPDIF_FIFO_CTL),
+	REG_LABEL(SUNXI_SPDIF_FIFO_STA),
+	REG_LABEL(SUNXI_SPDIF_INT),
+	/* REG_LABEL(SUNXI_SPDIF_TXFIFO), */
+	REG_LABEL(SUNXI_SPDIF_TXCNT),
+	REG_LABEL(SUNXI_SPDIF_RXCNT),
+	REG_LABEL(SUNXI_SPDIF_TXCH_STA0),
+	REG_LABEL(SUNXI_SPDIF_TXCH_STA1),
+	REG_LABEL(SUNXI_SPDIF_RXCH_STA0),
+	REG_LABEL(SUNXI_SPDIF_RXCH_STA1),
+#ifdef CONFIG_SND_SUNXI_SPDIF_RX_IEC61937
+	REG_LABEL(SUNXI_SPDIF_EXP_CTL),
+	REG_LABEL(SUNXI_SPDIF_EXP_ISTA),
+	REG_LABEL(SUNXI_SPDIF_EXP_INFO0),
+	REG_LABEL(SUNXI_SPDIF_EXP_INFO1),
+	REG_LABEL(SUNXI_SPDIF_EXP_DBG0),
+	REG_LABEL(SUNXI_SPDIF_EXP_DBG1),
+	REG_LABEL(SUNXI_SPDIF_EXP_VER),
+#endif
+	REG_LABEL_END,
+};
 
 static const struct spdif_rate sample_rate_orig[] = {
 	{22050,  0xB},
@@ -114,8 +146,7 @@ static int sunxi_spdif_set_audio_mode(struct snd_kcontrol *kcontrol,
 	if (kcontrol->private_data_type == SND_MODULE_PLATFORM) {
 		struct snd_platform *platform = kcontrol->private_data;
 		struct sunxi_spdif_info *sunxi_spdif = platform->private_data;
-		snd_platform_update_bits(platform, SUNXI_SPDIF_TXCFG,
-			(0x1 << TXCFG_CHAN_STA_EN), (value << TXCFG_CHAN_STA_EN));
+
 		snd_platform_update_bits(platform, SUNXI_SPDIF_TXCFG,
 			(0x1 << TXCFG_DATA_TYPE), (value << TXCFG_DATA_TYPE));
 		snd_platform_update_bits(platform, SUNXI_SPDIF_TXCH_STA0,
@@ -339,8 +370,13 @@ static void sunxi_spdif_init(struct snd_platform *platform)
 			(CTL_RXTL_MASK << FIFO_CTL_RXTL),
 			(CTL_RXTL_DEFAULT << FIFO_CTL_RXTL));
 
+	snd_platform_update_bits(platform, SUNXI_SPDIF_TXCFG,
+			1 << TXCFG_CHAN_STA_EN, 1 << TXCFG_CHAN_STA_EN);
+
 	snd_platform_write(platform, SUNXI_SPDIF_TXCH_STA0, 0x2 << TXCHSTA0_CHNUM);
 	snd_platform_write(platform, SUNXI_SPDIF_TXCH_STA0, 0x2 << RXCHSTA0_CHNUM);
+
+	snd_platform_update_bits(platform, SUNXI_SPDIF_CTL, 1 << CTL_GEN_EN, 0 << CTL_GEN_EN);
 }
 
 static int sunxi_spdif_hw_params(struct snd_pcm_substream *substream,
@@ -484,13 +520,16 @@ static int sunxi_spdif_hw_params(struct snd_pcm_substream *substream,
 static int sunxi_spdif_set_sysclk(struct snd_dai *dai, int clk_id,
 						unsigned int freq, int dir)
 {
+	int ret;
 	struct snd_platform *platform = dai->component;
 	struct sunxi_spdif_info *sunxi_spdif = platform->private_data;
 
 	snd_print("\n");
-	if (hal_clk_set_rate(sunxi_spdif->pllclk, freq)) {
-		snd_err("set pllclk %u failed\n", freq);
-		return -EINVAL;
+
+	ret = snd_sunxi_spdif_clk_set_rate(&sunxi_spdif->clk, dir, freq, freq);
+	if (ret < 0) {
+		snd_err("snd_sunxi_spdif_clk_set_rate failed\n");
+		return -1;
 	}
 
 	return 0;
@@ -539,9 +578,9 @@ static int sunxi_spdif_trigger(struct snd_pcm_substream *substream,
 				int cmd, struct snd_dai *dai)
 {
 	struct snd_platform *platform = dai->component;
-	unsigned int ret;
+	int ret = 0;
 
-	snd_print("\n");
+	snd_print("stream:%u, cmd:%u\n", substream->stream, cmd);
 	switch (cmd) {
 	case	SNDRV_PCM_TRIGGER_START:
 	case	SNDRV_PCM_TRIGGER_RESUME:
@@ -663,86 +702,6 @@ static struct snd_dai sunxi_spdif_dai = {
 	.ops = &sunxi_spdif_dai_ops,
 };
 
-static int sunxi_spdif_clk_init(struct snd_platform *platform)
-{
-	struct sunxi_spdif_info *sunxi_spdif = platform->private_data;
-	hal_reset_type_t reset_type = HAL_SUNXI_RESET;
-	hal_clk_type_t clk_type = HAL_SUNXI_CCU;
-	int ret;
-
-	snd_print("\n");
-	sunxi_spdif->pllclk = hal_clock_get(clk_type, SUNXI_SPDIF_CLK_PLL_AUDIO);
-	sunxi_spdif->moduleclk = hal_clock_get(clk_type, SUNXI_SPDIF_CLK_SPDIF);
-	sunxi_spdif->busclk = hal_clock_get(clk_type, SUNXI_SPDIF_CLK_BUS);
-	sunxi_spdif->rstclk = hal_reset_control_get(reset_type, SUNXI_SPDIF_CLK_RST);
-#ifdef CONFIG_SND_SUNXI_SPDIF_RX_IEC61937
-	sunxi_spdif->pllclk1 = hal_clock_get(clk_type, SUNXI_SPDIF_CLK_PLL_AUDIO1);
-	sunxi_spdif->pllclk1_div = hal_clock_get(clk_type, SUNXI_SPDIF_CLK_PLL_AUDIO1_DIV);
-	sunxi_spdif->moduleclk_rx = hal_clock_get(clk_type, SUNXI_SPDIF_CLK_SPDIF_RX);
-#endif
-
-	ret = hal_clk_set_parent(sunxi_spdif->moduleclk, sunxi_spdif->pllclk);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("sunxi_spdif clk_set_parent failed.\n");
-		goto err_spdif_moduleclk_set_parent;
-	}
-#ifdef CONFIG_SND_SUNXI_SPDIF_RX_IEC61937
-	ret = hal_clk_set_parent(sunxi_spdif->moduleclk_rx, sunxi_spdif->pllclk1_div);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("sunxi_spdif clk_set_parent failed.\n");
-		goto err_spdif_moduleclk_set_parent;
-	}
-#endif
-
-	ret = hal_reset_control_deassert(sunxi_spdif->rstclk);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("spdif clk_deassert rstclk failed.\n");
-		goto err_spdif_pllclk_enable;
-	}
-
-	ret = hal_clock_enable(sunxi_spdif->busclk);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("spdif clk_enable busclk failed.\n");
-		goto err_spdif_pllclk_enable;
-	}
-	ret = hal_clock_enable(sunxi_spdif->pllclk);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("spdif clk_enable pllclk failed.\n");
-		goto err_spdif_pllclk_enable;
-	}
-	ret = hal_clock_enable(sunxi_spdif->moduleclk);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("spdif clk_enable moduleclk failed.\n");
-		goto err_spdif_moduleclk_enable;
-	}
-#ifdef CONFIG_SND_SUNXI_SPDIF_RX_IEC61937
-	ret = hal_clock_enable(sunxi_spdif->pllclk1);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("spdif clk_enable pllclk1 failed.\n");
-		goto err_spdif_pllclk_enable;
-	}
-	ret = hal_clock_enable(sunxi_spdif->pllclk1_div);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("spdif clk_enable pllclk1 div failed.\n");
-		goto err_spdif_pllclk_enable;
-	}
-	ret = hal_clock_enable(sunxi_spdif->moduleclk_rx);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("spdif clk_enable moduleclk rx failed.\n");
-		goto err_spdif_moduleclk_enable;
-	}
-#endif
-
-	return 0;
-
-err_spdif_moduleclk_enable:
-	hal_clock_disable(sunxi_spdif->pllclk);
-err_spdif_pllclk_enable:
-err_spdif_moduleclk_set_parent:
-	snd_free(sunxi_spdif);
-	return ret;
-}
-
 static void sunxi_spdif_gpio_init(bool enable)
 {
 	snd_print("\n");
@@ -769,8 +728,76 @@ static void sunxi_spdif_gpio_init(bool enable)
 	}
 }
 
+/* suspend and resume */
+#ifdef CONFIG_COMPONENTS_PM
+static unsigned int snd_read_func(void *data, unsigned int reg)
+{
+	struct snd_platform *platform;
+
+	if (!data) {
+		snd_err("data is invailed\n");
+		return 0;
+	}
+
+	platform = data;
+	return snd_platform_read(platform, reg);
+}
+
+static void snd_write_func(void *data, unsigned int reg, unsigned int val)
+{
+	struct snd_platform *platform;
+
+	if (!data) {
+		snd_err("data is invailed\n");
+		return;
+	}
+
+	platform = data;
+	snd_platform_write(platform, reg, val);
+}
+
+static int sunxi_spdif_suspend(struct pm_device *dev, suspend_mode_t mode)
+{
+	struct snd_platform *platform = dev->data;
+	struct sunxi_spdif_info *sunxi_spdif = platform->private_data;
+
+	snd_print("\n");
+
+	snd_sunxi_save_reg(sunxi_reg_labels, (void *)platform, snd_read_func);
+	snd_sunxi_spdif_clk_disable(&sunxi_spdif->clk);
+
+	return 0;
+}
+
+static int sunxi_spdif_resume(struct pm_device *dev, suspend_mode_t mode)
+{
+	struct snd_platform *platform = dev->data;
+	struct sunxi_spdif_info *sunxi_spdif = platform->private_data;
+
+	snd_print("\n");
+
+	snd_sunxi_spdif_clk_enable(&sunxi_spdif->clk);
+	sunxi_spdif_init(platform);
+	snd_sunxi_echo_reg(sunxi_reg_labels, (void *)platform, snd_write_func);
+
+	return 0;
+}
+
+struct pm_devops pm_spdif_ops = {
+	.suspend = sunxi_spdif_suspend,
+	.resume = sunxi_spdif_resume,
+};
+
+struct pm_device pm_spdif = {
+	.name = "sndspdif",
+	.ops = &pm_spdif_ops,
+};
+#endif
+
+/* spdif probe */
 static int sunxi_spdif_platform_probe(struct snd_platform *platform)
 {
+	int ret;
 	struct sunxi_spdif_info *sunxi_spdif;
 
 	snd_print("\n");
@@ -786,7 +813,11 @@ static int sunxi_spdif_platform_probe(struct snd_platform *platform)
 	platform->mem_base = (void *)SUNXI_SPDIF_MEMBASE;
 
 	/* clk */
-	sunxi_spdif_clk_init(platform);
+	ret = snd_sunxi_spdif_clk_init(&sunxi_spdif->clk);
+	if (ret != 0) {
+		snd_err("snd_sunxi_spdif_clk_init failed\n");
+		goto err_spdif_set_clock;
+	}
 
 	/* pinctrl */
 	sunxi_spdif_gpio_init(true);
@@ -804,7 +835,20 @@ static int sunxi_spdif_platform_probe(struct snd_platform *platform)
 			(dma_addr_t)platform->mem_base + SUNXI_SPDIF_RXFIFO;
 	sunxi_spdif->capture_dma_param.dma_drq_type_num = DRQSRC_SPDIF;
 
+#ifdef CONFIG_COMPONENTS_PM
+	pm_spdif.data = (void *)platform;
+	ret = pm_devops_register(&pm_spdif);
+	if (ret) {
+		snd_err("pm_devops_register failed\n");
+	}
+#endif
+
 	return 0;
+
+err_spdif_set_clock:
+	snd_sunxi_spdif_clk_exit(&sunxi_spdif->clk);
+
+	return -1;
 }
 
 static int sunxi_spdif_platform_remove(struct snd_platform *platform)
@@ -816,24 +860,7 @@ static int sunxi_spdif_platform_remove(struct snd_platform *platform)
 	if (!sunxi_spdif)
 		return 0;
 
-	hal_clock_disable(sunxi_spdif->busclk);
-	hal_clock_disable(sunxi_spdif->moduleclk);
-	hal_clock_disable(sunxi_spdif->pllclk);
-	hal_clock_put(sunxi_spdif->busclk);
-	hal_clock_put(sunxi_spdif->moduleclk);
-	hal_clock_put(sunxi_spdif->pllclk);
-#ifdef CONFIG_SND_SUNXI_SPDIF_RX_IEC61937
-	hal_clock_disable(sunxi_spdif->moduleclk_rx);
-	hal_clock_disable(sunxi_spdif->pllclk1_div);
-	hal_clock_disable(sunxi_spdif->pllclk1);
-	hal_clock_put(sunxi_spdif->moduleclk_rx);
-	hal_clock_put(sunxi_spdif->pllclk1_div);
-	hal_clock_put(sunxi_spdif->pllclk1);
-#endif
-	hal_reset_control_assert(sunxi_spdif->rstclk);
-	hal_reset_control_put(sunxi_spdif->rstclk);
-
-	sunxi_spdif_gpio_init(false);
+	snd_sunxi_spdif_clk_exit(&sunxi_spdif->clk);
 
 	snd_free(sunxi_spdif);
 	platform->private_data = NULL;
@@ -887,41 +914,6 @@ err_cpu_dai_malloc:
 }
 
 #ifdef SUNXI_SPDIF_DEBUG_REG
-#define REG_LABEL(constant)		{#constant, constant}
-#define REG_LABEL_END			{NULL, 0}
-
-static struct spdif_label {
-	const char *name;
-	const unsigned int address;
-	/*int value;*/
-} reg_labels[] = {
-	REG_LABEL(SUNXI_SPDIF_CTL),
-	REG_LABEL(SUNXI_SPDIF_TXCFG),
-	REG_LABEL(SUNXI_SPDIF_RXCFG),
-	REG_LABEL(SUNXI_SPDIF_INT_STA),
-	REG_LABEL(SUNXI_SPDIF_RXFIFO),
-	REG_LABEL(SUNXI_SPDIF_FIFO_CTL),
-	REG_LABEL(SUNXI_SPDIF_FIFO_STA),
-	REG_LABEL(SUNXI_SPDIF_INT),
-	REG_LABEL(SUNXI_SPDIF_TXFIFO),
-	REG_LABEL(SUNXI_SPDIF_TXCNT),
-	REG_LABEL(SUNXI_SPDIF_RXCNT),
-	REG_LABEL(SUNXI_SPDIF_TXCH_STA0),
-	REG_LABEL(SUNXI_SPDIF_TXCH_STA1),
-	REG_LABEL(SUNXI_SPDIF_RXCH_STA0),
-	REG_LABEL(SUNXI_SPDIF_RXCH_STA1),
-#ifdef CONFIG_SND_SUNXI_SPDIF_RX_IEC61937
-	REG_LABEL(SUNXI_SPDIF_EXP_CTL),
-	REG_LABEL(SUNXI_SPDIF_EXP_ISTA),
-	REG_LABEL(SUNXI_SPDIF_EXP_INFO0),
-	REG_LABEL(SUNXI_SPDIF_EXP_INFO1),
-	REG_LABEL(SUNXI_SPDIF_EXP_DBG0),
-	REG_LABEL(SUNXI_SPDIF_EXP_DBG1),
-	REG_LABEL(SUNXI_SPDIF_EXP_VER),
-#endif
-	REG_LABEL_END,
-};
-
 /* for debug */
 #include <console.h>
 int cmd_spdif_dump(void)
@@ -932,11 +924,11 @@ int cmd_spdif_dump(void)
 
 	membase = (void *)SUNXI_SPDIF_MEMBASE;
 
-	while (reg_labels[i].name != NULL) {
+	while (sunxi_reg_labels[i].name != NULL) {
 		printf("%-20s[0x%03x]: 0x%-10x\n",
-			reg_labels[i].name,
-			reg_labels[i].address,
-			snd_readl(membase + reg_labels[i].address));
+			sunxi_reg_labels[i].name,
+			sunxi_reg_labels[i].address,
+			snd_readl(membase + sunxi_reg_labels[i].address));
 		i++;
 	}
 }

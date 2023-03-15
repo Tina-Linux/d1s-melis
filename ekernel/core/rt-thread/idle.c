@@ -31,9 +31,17 @@
 
 #ifndef IDLE_THREAD_STACK_SIZE
 #if defined (RT_USING_IDLE_HOOK) || defined(RT_USING_HEAP)
+#ifndef CONFIG_KASAN
 #define IDLE_THREAD_STACK_SIZE  (1024 * 8)
 #else
 #define IDLE_THREAD_STACK_SIZE  (1024 * 8)
+#endif
+#else
+#ifndef CONFIG_KASAN
+#define IDLE_THREAD_STACK_SIZE  (1024 * 8)
+#else
+#define IDLE_THREAD_STACK_SIZE  (1024 * 8)
+#endif
 #endif
 #endif
 

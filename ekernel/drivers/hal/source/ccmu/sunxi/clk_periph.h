@@ -34,8 +34,6 @@
 
 #include "clk.h"
 
-#define ARRAY_SIZE(a) sizeof(a)/sizeof(a[0])
-
 #define SUNXI_CLK_PERIPH_CONFIG(name, _mux_reg, _mux_shift, _mux_width,  \
                                 _div_reg, _div_mshift, _div_mwidth, _div_nshift, _div_nwidth,   \
                                 _gate_flags, _enable_reg, _reset_reg, _bus_gate_reg, _drm_gate_reg, \

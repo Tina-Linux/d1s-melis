@@ -23,16 +23,49 @@ menu "Drivers Setup"
 		default 115200
 		range 9600 115200
 	menu "net drivers"
-		config XR829
-			bool "xr829 wifi driver"
-			select LWIP
+		menuconfig XRADIO
 			default n
+			bool "xradio driver"
+		if XRADIO
+		config XRADIO_CTRL
+			bool "Enable xradio ctrl"
+			help
+				this will use xradio ctrl.
+		choice CHIP
+			default XR829
+			prompt "Xradio chip"
+			help
+				Specify the xradio chip.
+		config XR819
+			bool "Enable xr819 driver"
+			help
+				this will use xr819 chip.
+		config XR829
+			bool "Enable xr829 driver"
+			help
+				this will use xr829 chip.
+		endchoice
+		config XR829_40M_FW
+			bool "Use Firmware 40M for XR829"
+			depends on XR829
+			default y
+			help
+				this will use xr829 chip
+		config XRADIO_ETF
+			bool "Enable XRADIO ETF Mode"
+			depends on XR829
+			default n
+			help
+				this will enable etf mode
+		endif
+
 		config AP6203
 			bool "brcm ap6203 wifi driver"
 			select LWIP
 			default n
 	endmenu
 
+if DRIVER_SDMMC
 	config SUPPORT_SDMMC_CACHE
 		bool "support sdmmc cache"
 		default n
@@ -59,6 +92,7 @@ menu "Drivers Setup"
 		depends on SUPPORT_SDMMC_CACHE
 		help
 			"Add Sdmmc Cache Information Command"
+endif
 
 	source "ekernel/drivers/hal/source/disp2/Kconfig"
 #	source "ekernel/drivers/drv/legacy/Kconfig"
@@ -83,7 +117,6 @@ menu "Drivers Setup"
 	source "ekernel/drivers/hal/source/gpadc/Kconfig"
 	source "ekernel/drivers/hal/source/usb/Kconfig"
 	source "ekernel/drivers/hal/source/g2d_rcq/Kconfig"
-	source "ekernel/drivers/hal/source/efuse/Kconfig"
 	source "ekernel/drivers/hal/source/thermal/Kconfig"
 	source "ekernel/drivers/hal/source/ce/Kconfig"
 	source "ekernel/drivers/hal/source/eise/Kconfig"
@@ -94,6 +127,8 @@ menu "Drivers Setup"
 	source "ekernel/drivers/hal/source/tpadc/Kconfig"
 	source "ekernel/drivers/hal/source/mbus/Kconfig"
 	source "ekernel/drivers/hal/source/sunxi-di/Kconfig"
+	source "ekernel/drivers/hal/source/msgbox/Kconfig"
+	source "ekernel/drivers/hal/source/vin/Kconfig"
 	endmenu
 
 endmenu

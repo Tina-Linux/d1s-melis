@@ -32,6 +32,8 @@
 #ifndef _SUN8IW20_CODEC_H
 #define _SUN8IW20_CODEC_H
 
+#include "sound/common/snd_sunxi_rxsync.h"
+
 #define SUNXI_CODEC_BASE_ADDR	(0x02030000ul)
 #define SUNXI_CODEC_IRQ                41
 #define SUNXI_CODEC_JACK_DET   GPIOE(9)
@@ -157,6 +159,7 @@
 #define SUNXI_ADCR_REG		0x304
 #define SUNXI_DAC_REG		0x310
 #define SUNXI_MICBIAS_REG	0x318
+#define SUNXI_RAMP_REG		0x31C
 #define SUNXI_BIAS_REG		0x320
 #define SUNXI_HEADPHONE_REG	0x324
 #define SUNXI_HMIC_CTRL		0x328
@@ -223,6 +226,8 @@
 #define ADCFDT			26
 #define ADCDFEN			25
 #define RX_FIFO_MODE		24
+#define RX_SYNC_EN_STA		21
+#define RX_SYNC_EN		20
 #define RX_SAMPLE_BITS		16
 #define RX_FIFO_TRG_LEVEL	4
 #define ADC_DRQ_EN		3
@@ -312,10 +317,10 @@
 #define FMINR_EN		(27)
 #define FMINL_GAIN		(26)
 #define FMINR_GAIN		(26)
-#define LIENINL_EN		(23)
-#define LIENINR_EN		(23)
-#define LIENINL_GAIN		(22)
-#define LIENINR_GAIN		(22)
+#define LINEINL_EN		(23)
+#define LINEINR_EN		(23)
+#define LINEINL_GAIN		(22)
+#define LINEINR_GAIN		(22)
 #define ADC_PGA_CTL_RCM		(18)
 #define ADC_PGA_IN_VCM_CTL	(16)
 #define IOPADC			(14)
@@ -391,9 +396,16 @@ struct sunxi_codec_param {
 	uint8_t adchpf_cfg;
 	uint8_t dacdrc_cfg;
 	uint8_t dachpf_cfg;
-	bool adc1_flag;
-	bool adc2_flag;
-	bool adc3_flag;
+	uint8_t pb_audio_route;
+	uint8_t cap_audio_route;
+	uint8_t adc1_flag;
+	uint8_t adc2_flag;
+	uint8_t adc3_flag;
+	bool rx_sync_en;
+	bool rx_sync_ctl;
+	int16_t rx_sync_id;
+	rx_sync_domain_t rx_sync_domain;
+	bool hp_detect_used;
 };
 
 struct sunxi_codec_info {
@@ -408,8 +420,8 @@ struct sunxi_codec_info {
 
 	uint32_t irq;
 	struct sunxi_codec_param param;
-	/* used to flag the playback or capture stream: 0->playback; 1->capture */
-	int stream_type;
+
+	int chip_ver;
 };
 
 #endif /* __SUN8IW20_CODEC_H */

@@ -70,7 +70,7 @@ static inline void ir_clr_intsta(uint32_t reg_base, uint32_t bitmap)
     hal_writel(tmp, reg_base + IR_RXINTS_REG);
 }
 
-static irqreturn_t ir_handler(int irq, void *dev)
+static hal_irqreturn_t ir_handler(void *dev)
 {
     hal_ir_t *ir = (hal_ir_t *)dev;
     uint32_t intsta, dcnt;
@@ -107,7 +107,7 @@ static irqreturn_t ir_handler(int irq, void *dev)
         ir->callback(IR_RXINTS_RXPE, reg_data);
     }
 
-    return IRQ_HANDLED;
+    return HAL_IRQ_OK;
 }
 
 static void ir_mode_set(uint32_t reg_base, enum ir_mode set_mode)
@@ -338,12 +338,12 @@ int hal_ir_init(void)
     }
 
     hal_ir_reg_cfg(ir->reg_base);
-    if (request_irq(ir->irq_num, ir_handler, 0, "ir", ir))
+    if (hal_request_irq(ir->irq_num, ir_handler, "ir", ir))
     {
         IRADC_ERR("ir request irq failed\n");
         return IR_IRQ_ERR;
     }
-    enable_irq(ir->irq_num);
+    hal_enable_irq(ir->irq_num);
 
     return IR_OK;
 }

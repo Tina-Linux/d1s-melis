@@ -3,7 +3,7 @@ menu "Melis Legacy Support"
 config  MELIS_LEGACY_DRIVER_MAN
         bool "Support Melis Legacy Driver Management"
         select DEVFS
-        default n
+		default n
 
 config  LEGACY_DMS_DEV
         bool "Support Melis Legacy DMS Device"
@@ -20,6 +20,11 @@ config  LEGACY_RAMDISK_DEV
         depends on MELIS_LEGACY_DRIVER_MAN
         default n
 
+config  LEGACY_HOTPLUG
+        bool "Support Melis Legacy Hot Plug"
+        depends on MELIS_LEGACY_DRIVER_MAN
+        default n
+
 config  MELIS_MODULE
         bool "Support melis module"
         select MELIS_VIRTUAL_FILESYSTEM
@@ -27,8 +32,20 @@ config  MELIS_MODULE
 		
 config  SUPPORT_TOUCHPANEL
         bool "Support touch panel"
-        default n
-		
+		default n
+if SUPPORT_TOUCHPANEL
+		choice
+			prompt "touch pannel select"
+			default RTP
+			help
+			Select the Touch pannel to compile.
+		config RTP_SECLET
+			bool "RTP_seclettion"
+		config CTP_SECLET
+			bool "CTP_seclettion"
+		endchoice
+endif
+
 config  SUPPORT_MOUSE
         bool "Support mouse"
         default n		

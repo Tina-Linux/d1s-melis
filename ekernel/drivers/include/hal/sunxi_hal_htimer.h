@@ -34,6 +34,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <interrupt.h>
+#include <timer/platform_timer.h>
+
 //#include <stdbool.h>
 
 
@@ -44,7 +46,8 @@
 
 typedef enum {
 	HAL_HRTIMER0,
-	HAL_HRTIMER1
+	HAL_HRTIMER1,
+	HAL_HRTIMER_NUM
 }hal_htimer_id;
 
 /** This enum defines the return type of timer API. */

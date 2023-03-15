@@ -56,8 +56,16 @@ extern "C" {
 #define UART_USR (0x7c)         /* status register */
 #define UART_TFL (0x80)         /* transmit FIFO level */
 #define UART_RFL (0x84)         /* RFL */
-#define UART_HALT (0xa4)        /* halt tx register */
-#define UART_RS485 (0xc0)       /* RS485 control and status register */
+#define UART_HALT (0xA4)        /* halt tx register */
+#define UART_DBG_DLL (0xB0)     /*  */
+#define UART_DBG_DLH (0xB4)     /*  */
+#define UART_RS485 (0xC0)       /* RS485 control and status register */
+#define RS485_ADDR_MATCH (0xC4) /*  */
+#define BUS_IDLE_CHK (0xC8)     /*  */
+#define TX_DLY (0xCC)           /*  */
+#define UART_BDCR (0xD4)        /*  */
+#define UART_BDCLR (0xD8)       /*  */
+#define UART_BDCHR (0xDC)       /*  */
 
 /*
  * register bit field define

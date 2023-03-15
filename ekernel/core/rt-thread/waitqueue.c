@@ -49,9 +49,10 @@ void rt_wqueue_wakeup(rt_wqueue_t *queue, void *key)
     struct rt_list_node *node;
     struct rt_wqueue_node *entry;
 
+    level = rt_hw_interrupt_disable();
+
     queue_list = &(queue->waiting_list);
 
-    level = rt_hw_interrupt_disable();
     /* set wakeup flag in the queue */
     queue->flag = RT_WQ_FLAG_WAKEUP;
 

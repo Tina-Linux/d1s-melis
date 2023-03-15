@@ -35,8 +35,13 @@
 
 #define SUNXI_SPI0_PBASE         (0x04025000ul) /* 4K */
 #define SUNXI_SPI1_PBASE         (0x04026000ul) /* 4K */
+#ifdef CONFIG_SOC_SUN20IW1
 #define SUNXI_IRQ_SPI0                 31
 #define SUNXI_IRQ_SPI1                 32
+#else
+#define SUNXI_IRQ_SPI0                 47
+#define SUNXI_IRQ_SPI1                 48
+#endif
 
 #define SPI_MAX_NUM 2
 #define SPI0_PARAMS \

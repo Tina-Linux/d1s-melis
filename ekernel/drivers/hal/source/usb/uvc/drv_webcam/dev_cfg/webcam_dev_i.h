@@ -22,16 +22,13 @@
 
 #include "dev_webcam_i.h"
 
+extern __webcam_mode_t webcam_mode;	        //绗﹀悎鐢ㄦ埛璁剧疆鐨勫綋鍓嶇殑webcam_mode
+extern __webcam_mode_all_t webcam_mode_all;     //鎵�鏈夎缃殑webcam_mode
 
-extern __webcam_mode_t webcam_mode;   								//符合用户设置的当前的webcam_mode
-extern __webcam_mode_all_t webcam_mode_all;   						//所有设置的webcam_mode
+extern __s32 webcam_dev_init(void);
 
-
-extern __s32  webcam_dev_init(void);
-
-extern __s32  webcam_dev_exit(void);
+extern __s32 webcam_dev_exit(void);
 
 extern __s32 webcam_dev_set_mode(__u32 mode);
 
 #endif
-

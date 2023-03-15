@@ -5,7 +5,6 @@
 #include <time.h>
 #include <pthread.h>
 #include <errno.h>
-#include <unistd.h>
 #include <hal_timer.h>
 #include <sunxi_hal_common.h>
 
@@ -23,8 +22,14 @@ struct syspart {
 };
 
 static const struct syspart syspart[] = {
+#ifdef CONFIG_ARCH_SUN20IW2
+    {"boot0", 64 * 1024},
+    {"boot0-bk", 64 * 1024},
+    {"gpt", 16 * 1024},
+#else
     /* contain boot0 and gpt, gpt offset is (128-16)k */
-    {"boot0", 128 * 1024},
+    {"boot0", CONFIG_COMPONENTS_AW_BLKPART_LOGICAL_OFFSET * 1024},
+#endif
 };
 
 static struct blkpart norblk;
@@ -118,7 +123,6 @@ int get_rtos_toc_package_size(void *gpt_buf, char *name, int page_bytes)
     if (strncmp(head->name, "sunxi-", 6))
         goto out;
 
-#define ALIGN_UP(size, align) (((size) + (align) - 1) & ~((align) - 1))
     len = ALIGN_UP(head->valid_len, page_bytes);
 
 out:
@@ -151,7 +155,191 @@ out:
 
 #endif
 
-static int nor_blkpart_init(void)
+int get_xip_part_offset(void)
+{
+    int ret, index;
+    char *gpt_buf;
+    struct nor_flash *nor;
+    struct gpt_part *gpt_part;
+    struct part *part;
+    int start_sector;
+    int sectors;
+
+    nor = get_nor_flash();
+    if (!nor || !nor->info)
+        return -EBUSY;
+
+#ifdef CONFIG_FLASHC_CPU_XFER_ONLY
+    gpt_buf = malloc(GPT_TABLE_SIZE);
+#else
+    gpt_buf = dma_alloc_coherent(GPT_TABLE_SIZE);
+#endif
+    if (!gpt_buf) {
+        ret = -ENOMEM;
+        goto err;
+    }
+    memset(gpt_buf, 0, GPT_TABLE_SIZE);
+
+    ret = nor_get_gpt(gpt_buf, GPT_TABLE_SIZE);
+    if (ret) {
+        SPINOR_ERR("get gpt from nor flash failed - %d\n", ret);
+        ret = -EIO;
+        goto err;
+    }
+    ret = get_part_info_by_name(gpt_buf, "rtos-xip", &start_sector, &sectors);
+err:
+#ifdef CONFIG_FLASHC_CPU_XFER_ONLY
+    free(gpt_buf);
+#else
+    dma_free_coherent(gpt_buf);
+#endif
+    return start_sector * 512;
+}
+
+#ifdef CONFIG_AMP_FLASH_STUB
+int nor_blkpart_init(void)
+{
+    int ret, index;
+    char *gpt_buf;
+    struct gpt_part *gpt_part;
+    struct part *part;
+
+    unsigned int page_size;
+    unsigned int blk_size;
+    unsigned int total_size;
+
+    gpt_buf = malloc(GPT_TABLE_SIZE);
+    if (!gpt_buf) {
+        ret = -ENOMEM;
+        goto err;
+    }
+    memset(gpt_buf, 0, GPT_TABLE_SIZE);
+
+    ret = nor_get_gpt(gpt_buf, GPT_TABLE_SIZE);
+    if (ret) {
+        SPINOR_ERR("get gpt from nor flash failed - %d\n", ret);
+        goto err;
+    }
+
+    nor_ioctrl(NOR_IOCTRL_GET_PAGE_SIZE, &page_size, 4);
+    nor_ioctrl(NOR_IOCTRL_GET_BLK_SIZE, &blk_size, 4);
+    nor_ioctrl(NOR_IOCTRL_GET_TOTAL_SIZE, &total_size, 4);
+
+    memset(&norblk, 0, sizeof(struct blkpart));
+    norblk.name = "nor";
+    norblk.page_bytes = page_size;
+#ifdef CONFIG_DRIVERS_SPINOR_CACHE
+    norblk.erase = nor_cache_erase;
+    norblk.program = nor_cache_write;
+    norblk.read = nor_cache_read;
+    norblk.sync = nor_cache_sync;
+#else
+    norblk.erase = nor_erase;
+    norblk.program = nor_write;
+    norblk.read = nor_read;
+    norblk.sync = NULL;
+#endif
+    norblk.noncache_erase = nor_erase;
+    norblk.noncache_program = nor_write;
+    norblk.noncache_read = nor_read;
+    norblk.total_bytes = total_size;
+    norblk.blk_bytes = blk_size;
+
+    ret = gpt_part_cnt(gpt_buf);
+    if (ret < 0) {
+        SPINOR_ERR("get part count from gpt failed\n");
+#ifdef CONFIG_COMPONENTS_AW_BLKPART_NO_GPT
+        printf("when no gpt, hardcode 2 part, 0-2M:rtos 2M-end:UDISK\n");
+        norblk.n_parts = 2;
+        norblk.parts = malloc(norblk.n_parts * sizeof(struct part));
+        part = &norblk.parts[0];
+        snprintf(part->name, MAX_BLKNAME_LEN, "%s", "rtos");
+        part->bytes = 2*1024*1024;
+        part->off = 0;
+        part = &norblk.parts[1];
+        part->bytes = norblk.total_bytes - 2*1024*1024;
+        part->off = 2*1024*1024;
+        snprintf(part->name, MAX_BLKNAME_LEN, "%s", "UDISK");
+        ret = add_blkpart(&norblk);
+        if (ret)
+                goto free_parts;
+        return 0;
+#else
+        goto err;
+#endif
+    }
+#ifdef CONFIG_RESERVE_IMAGE_PART
+    norblk.n_parts = ret + ARRAY_SIZE(syspart) + 2;
+#else
+    norblk.n_parts = ret + ARRAY_SIZE(syspart);
+#endif
+    norblk.parts = malloc(norblk.n_parts * sizeof(struct part));
+    if (!norblk.parts)
+        goto err;
+    SPINOR_INFO("total %u part\n", norblk.n_parts);
+
+    for (index = 0; index < ARRAY_SIZE(syspart); index++) {
+        part = &norblk.parts[index];
+        part->bytes = syspart[index].bytes;
+        part->off = BLKPART_OFF_APPEND;
+        strcpy(part->name, syspart[index].name);
+    }
+
+    foreach_gpt_part(gpt_buf, gpt_part) {
+        part = &norblk.parts[index++];
+        part->bytes = gpt_part->sects << SECTOR_SHIFT;
+        part->off = BLKPART_OFF_APPEND;
+        snprintf(part->name, MAX_BLKNAME_LEN, "%s", gpt_part->name);
+#ifdef CONFIG_RESERVE_IMAGE_PART
+        if (!strcmp("rtosA", part->name) || !strcmp("rtosB", part->name)) {
+            int rtos_index = index - 1;
+            struct part *last_part = part;
+            int toc_package_size = get_rtos_toc_package_size(gpt_buf, last_part->name, norblk.page_bytes);
+            int rtos_offset = get_rtos_offset(gpt_buf, last_part->name);
+            if (toc_package_size > 0 && rtos_offset > 0) {
+                part = &norblk.parts[index++];
+                part->bytes = norblk.parts[rtos_index].bytes - toc_package_size;
+                part->off = rtos_offset + toc_package_size;
+                if (!strcmp("rtosA", last_part->name))
+                    snprintf(part->name, MAX_BLKNAME_LEN, "%s", "reserveA");
+                else
+                    snprintf(part->name, MAX_BLKNAME_LEN, "%s", "reserveB");
+            } else {
+                norblk.n_parts --;
+            }
+        }
+#endif
+    }
+    norblk.parts[--index].bytes = BLKPART_SIZ_FULL;
+
+    ret = add_blkpart(&norblk);
+    if (ret)
+        goto free_parts;
+
+    /* check bytes align */
+    for (index = 0; index < norblk.n_parts; index++) {
+        part = &norblk.parts[index];
+        if (part->bytes % blk_size) {
+            SPINOR_ERR("part %s with bytes %u should align to block size %u\n",
+                    part->name, part->bytes, blk_size);
+            goto del_blk;
+        }
+    }
+
+    free(gpt_buf);
+    return 0;
+
+del_blk:
+    del_blkpart(&norblk);
+free_parts:
+    free(norblk.parts);
+err:
+    free(gpt_buf);
+    SPINOR_ERR("init blkpart for nor failed - %d\n", ret);
+    return ret;
+}
+#else
+int nor_blkpart_init(void)
 {
     int ret, index;
     char *gpt_buf;
@@ -199,7 +387,25 @@ static int nor_blkpart_init(void)
     ret = gpt_part_cnt(gpt_buf);
     if (ret < 0) {
         SPINOR_ERR("get part count from gpt failed\n");
+#ifdef CONFIG_COMPONENTS_AW_BLKPART_NO_GPT
+        printf("when no gpt, hardcode 2 part, 0-2M:rtos 2M-end:UDISK\n");
+        norblk.n_parts = 2;
+        norblk.parts = malloc(norblk.n_parts * sizeof(struct part));
+        part = &norblk.parts[0];
+        snprintf(part->name, MAX_BLKNAME_LEN, "%s", "rtos");
+        part->bytes = 2*1024*1024;
+        part->off = 0;
+        part = &norblk.parts[1];
+        part->bytes = norblk.total_bytes - 2*1024*1024;
+        part->off = 2*1024*1024;
+        snprintf(part->name, MAX_BLKNAME_LEN, "%s", "UDISK");
+        ret = add_blkpart(&norblk);
+        if (ret)
+                goto free_parts;
+        return 0;
+#else
         goto err;
+#endif
     }
 #ifdef CONFIG_RESERVE_IMAGE_PART
     norblk.n_parts = ret + ARRAY_SIZE(syspart) + 2;
@@ -271,6 +477,7 @@ err:
     SPINOR_ERR("init blkpart for nor failed - %d\n", ret);
     return ret;
 }
+#endif
 
 int32_t hal_spinor_init(sunxi_hal_spinor_signal_event_t cb_event)
 {

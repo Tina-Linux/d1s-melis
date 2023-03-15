@@ -6,12 +6,12 @@
 
  * DISCLAIMER
  * THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
- * IF YOU NEED TO INTEGRATE THIRD PARTY¡¯S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
- * IN ALLWINNERS¡¯SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+ * IF YOU NEED TO INTEGRATE THIRD PARTYÂ¡Â¯S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+ * IN ALLWINNERSÂ¡Â¯SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
  * ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
  * ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
  * COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
- * YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY¡¯S TECHNOLOGY.
+ * YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYÂ¡Â¯S TECHNOLOGY.
 
 
  * THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
@@ -29,39 +29,87 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include <hal_interrupt.h>
-#include <hal_clk.h>
 #include <sunxi_hal_gpadc.h>
-#include <hal_reset.h>
+#include <hal_timer.h>
+#ifdef CONFIG_COMPONENTS_PM
+#include <pm_devops.h>
+#endif
 
 hal_gpadc_t hal_gpadc;
 
-#if defined(CONFIG_SOC_SUN20IW1)
+#if defined(CONFIG_SOC_SUN20IW1) || defined(CONFIG_ARCH_SUN8IW20)
 static hal_gpadc_status_t hal_gpadc_clk_init(hal_gpadc_t *gpadc)
 {
-	hal_clk_type_t clk_type = HAL_SUNXI_CCU;
-	hal_clk_id_t gpadc_clk_id = gpadc->bus_clk;
-	hal_clk_t mclk;
+    hal_clk_type_t clk_type = HAL_SUNXI_CCU;
+    hal_clk_id_t gpadc_clk_id = gpadc->bus_clk;
 
-	hal_reset_type_t reset_type = HAL_SUNXI_RESET;
-	hal_reset_id_t gpadc_reset_id = gpadc->rst_clk;
-	struct reset_control *reset;
+    hal_reset_type_t reset_type = HAL_SUNXI_RESET;
+    hal_reset_id_t gpadc_reset_id = gpadc->rst_clk;
 
-	mclk = hal_clock_get(clk_type, gpadc_clk_id);
-	if(hal_clock_enable(mclk))
-	{
-		GPADC_ERR("gpadc clk enable failed!\n");
-		return GPADC_ERROR;
-	}
-	gpadc->mbus_clk = mclk;
+    gpadc->reset = hal_reset_control_get(reset_type, gpadc_reset_id);
+    if (hal_reset_control_reset(gpadc->reset))
+    {
+        GPADC_ERR("gpadc reset deassert failed!\n");
+        return GPADC_ERROR;
+    }
 
-	reset = hal_reset_control_get(reset_type, gpadc_reset_id);
-	if (hal_reset_control_deassert(reset))
-	{
-		GPADC_ERR("gpadc reset deassert failed!\n");
-		return GPADC_ERROR;
-	}
-	hal_reset_control_put(reset);
-	return GPADC_OK;
+    gpadc->mbus_clk = hal_clock_get(clk_type, gpadc_clk_id);
+    if (hal_clock_enable(gpadc->mbus_clk))
+    {
+        GPADC_ERR("gpadc clk enable failed!\n");
+        return GPADC_ERROR;
+    }
+
+    return GPADC_OK;
+}
+#elif defined(CONFIG_ARCH_SUN20IW2)
+static hal_gpadc_status_t hal_gpadc_clk_init(hal_gpadc_t *gpadc)
+{
+    hal_clk_type_t clk_type = HAL_SUNXI_AON_CCU;
+    hal_clk_id_t gpadc_clk_id = gpadc->bus_clk;
+
+    hal_clk_id_t gpadc_clk_id1 = CLK_GPADC_CTRL;
+
+    hal_reset_type_t reset_type = HAL_SUNXI_AON_RESET;
+    hal_reset_id_t gpadc_reset_id = gpadc->rst_clk;
+
+    gpadc->reset = hal_reset_control_get(reset_type, gpadc_reset_id);
+    if (hal_reset_control_reset(gpadc->reset))
+    {
+        GPADC_ERR("gpadc reset deassert failed!\n");
+        return GPADC_ERROR;
+    }
+
+    gpadc->mbus_clk = hal_clock_get(clk_type, gpadc_clk_id);
+    if (hal_clock_enable(gpadc->mbus_clk))
+    {
+        GPADC_ERR("gpadc clk enable failed!\n");
+        return GPADC_ERROR;
+    }
+
+    gpadc->mbus_clk1 = hal_clock_get(clk_type, gpadc_clk_id1);
+    if (hal_clock_enable(gpadc->mbus_clk1))
+    {
+        GPADC_ERR("gpadc clk1 enable failed!\n");
+        return GPADC_ERROR;
+    }
+
+    return GPADC_OK;
+}
+#elif defined(CONFIG_ARCH_SUN20IW3)
+static hal_gpadc_status_t hal_gpadc_clk_init(hal_gpadc_t *gpadc)
+{
+    hal_clk_type_t clk_type = HAL_SUNXI_CCU;
+    hal_clk_id_t gpadc_clk_id = HAL_CLK_PERIPH_GPADC;
+
+    gpadc->mclk = hal_clock_get(clk_type, gpadc_clk_id);
+    if(hal_clock_enable(gpadc->mclk))
+    {
+        GPADC_ERR("gpadc clk enable failed!\n");
+        return GPADC_ERROR;
+    }
+
+    return GPADC_OK;
 }
 #else
 static hal_gpadc_status_t hal_gpadc_clk_init(hal_gpadc_t *gpadc)
@@ -83,9 +131,29 @@ static hal_gpadc_status_t hal_gpadc_clk_init(hal_gpadc_t *gpadc)
 }
 #endif
 
+static void hal_gpadc_clk_exit(hal_gpadc_t *gpadc)
+{
+    hal_disable_irq(gpadc->irq_num);
+#if defined(CONFIG_SOC_SUN20IW1) || defined(CONFIG_ARCH_SUN8IW20)
+    hal_clock_disable(gpadc->mbus_clk);
+    hal_reset_control_assert(gpadc->reset);
+#elif defined(CONFIG_ARCH_SUN20IW2)
+    hal_clock_disable(gpadc->mbus_clk);
+    hal_clock_disable(gpadc->mbus_clk1);
+    hal_reset_control_assert(gpadc->reset);
+#else
+    hal_clock_disable(gpadc->mclk);
+#endif
+}
+
 static int gpadc_channel_check_valid(hal_gpadc_channel_t channal)
 {
     hal_gpadc_t *gpadc = &hal_gpadc;
+
+#if defined(CONFIG_ARCH_SUN20IW2)
+    if (channal == 12)
+        return 0;
+#endif
 
     return channal < gpadc->channel_num ? 0 : -1 ;
 }
@@ -186,6 +254,11 @@ static void gpadc_channel_enable_highirq(hal_gpadc_channel_t channal)
 
 }
 
+void gpadc_key_enable_highirq(hal_gpadc_channel_t channal)
+{
+    gpadc_channel_enable_highirq(channal);
+}
+
 static void gpadc_channel_disable_highirq(hal_gpadc_channel_t channal)
 {
     uint32_t reg_val;
@@ -195,6 +268,11 @@ static void gpadc_channel_disable_highirq(hal_gpadc_channel_t channal)
     reg_val &= ~(1 << channal);
     writel(reg_val, (unsigned long)(gpadc->reg_base) + GP_DATAH_INTC_REG);
 
+}
+
+void gpadc_key_disable_highirq(hal_gpadc_channel_t channal)
+{
+    gpadc_channel_disable_highirq(channal);
 }
 
 static void gpadc_channel_compare_highdata(hal_gpadc_channel_t channal,
@@ -253,6 +331,73 @@ static void gpadc_mode_select(uint32_t reg_base,
     reg_val |= (mode << 18);
     writel(reg_val, (unsigned long)(reg_base) + GP_CTRL_REG);
 }
+
+#if defined(CONFIG_ARCH_SUN20IW2)
+static void gpadc_datairq_enable(uint32_t reg_base)
+{
+    uint32_t reg_val = 0;
+
+    reg_val = readl((unsigned long)(reg_base) + GP_FIFO_INTC_REG);
+    reg_val |= FIFO_DATA_IRQ_EN;
+    writel(reg_val, (unsigned long)(reg_base) + GP_FIFO_INTC_REG);
+}
+
+static void gpadc_datairq_disable(uint32_t reg_base)
+{
+    uint32_t reg_val = 0;
+
+    reg_val = readl((unsigned long)(reg_base) + GP_FIFO_INTC_REG);
+    reg_val &= ~FIFO_DATA_IRQ_EN;
+    writel(reg_val, (unsigned long)(reg_base) + GP_FIFO_INTC_REG);
+}
+
+static void gpadc_vbat_det_enable(uint32_t reg_base)
+{
+    uint32_t reg_val = 0;
+
+    reg_val = readl((unsigned long)(reg_base) + GP_CTRL_REG);
+    reg_val |= GP_VBAT_DET_EN;
+    writel(reg_val, (unsigned long)(reg_base) + GP_CTRL_REG);
+}
+
+static void gpadc_vbat_det_disable(uint32_t reg_base)
+{
+    uint32_t reg_val = 0;
+
+    reg_val = readl((unsigned long)(reg_base) + GP_CTRL_REG);
+    reg_val &= ~GP_VBAT_DET_EN;
+    writel(reg_val, (unsigned long)(reg_base) + GP_CTRL_REG);
+}
+
+static void gpadc_vref_mode_select(uint32_t reg_base, u32 flag)
+{
+    uint32_t reg_val = 0;
+
+    reg_val = readl((unsigned long)(reg_base) + GP_CTRL_REG);
+    reg_val &= ~GP_VREF_MODE_SEL;
+    reg_val |= flag << 1;
+    writel(reg_val, (unsigned long)(reg_base) + GP_CTRL_REG);
+}
+
+/* enable gpadc ldo function, true:enable, false:disable */
+static void gpadc_ldo_enable(uint32_t reg_base)
+{
+    uint32_t reg_val = 0;
+
+    reg_val = readl((unsigned long)(reg_base) + GP_CTRL_REG);
+    reg_val |= GP_ADC_LDO_EN;
+    writel(reg_val, (unsigned long)(reg_base) + GP_CTRL_REG);
+}
+
+static void gpadc_ldo_disable(uint32_t reg_base)
+{
+    uint32_t reg_val = 0;
+
+    reg_val = readl((unsigned long)(reg_base) + GP_CTRL_REG);
+    reg_val &= ~GP_ADC_LDO_EN;
+    writel(reg_val, (unsigned long)(reg_base) + GP_CTRL_REG);
+}
+#endif /* CONFIG_ARCH_SUN20IW2 */
 
 /* enable gpadc function, true:enable, false:disable */
 static void gpadc_enable(uint32_t reg_base)
@@ -324,13 +469,27 @@ static int gpadc_read_data(uint32_t reg_base, hal_gpadc_channel_t channal)
     return readl((unsigned long)(reg_base) + GP_CH0_DATA_REG + 4 * channal) & GP_CH_DATA_MASK;
 }
 
+uint32_t gpadc_read_channel_data(hal_gpadc_channel_t channel)
+{
+    int data;
+    uint32_t vol_data;
+    hal_gpadc_t *gpadc = &hal_gpadc;
+
+    data = gpadc_read_data(gpadc->reg_base, channel);
+    data = ((VOL_RANGE / 4096) * data);
+    vol_data = data / 1000;
+    GPADC_INFO("channel %d vol data: %u\n", channel, vol_data);
+
+    return vol_data;
+}
+
 int hal_gpadc_callback(uint32_t data_type, uint32_t data)
 {
-    GPADC_INFO("gpadc interrupt, data_type is %ld", data_type);
+    GPADC_INFO("gpadc interrupt, data_type is %u", data_type);
     return 0;
 }
 
-static irqreturn_t gpadc_handler(int irq, void *dev)
+static hal_irqreturn_t gpadc_handler(void *dev)
 {
     hal_gpadc_t *gpadc = (hal_gpadc_t *)dev;
 
@@ -354,7 +513,7 @@ static irqreturn_t gpadc_handler(int irq, void *dev)
         if (reg_low & (1 << i) & reg_enable_low)
         {
             data = gpadc_read_data(gpadc->reg_base, i);
-            gpadc_channel_enable_highirq(i);
+            //gpadc_channel_enable_highirq(i);
 
             if (gpadc->callback[i])
             {
@@ -364,7 +523,7 @@ static irqreturn_t gpadc_handler(int irq, void *dev)
 
         if (reg_high & (1 << i) & reg_enable_high)
         {
-            gpadc_channel_disable_highirq(i);
+            //gpadc_channel_disable_highirq(i);
             gpadc->callback[i](GPADC_UP, data);
         }
     }
@@ -406,7 +565,7 @@ hal_gpadc_status_t hal_gpadc_channel_init(hal_gpadc_channel_t channal)
     gpadc_channel_enable_lowirq(channal);
     gpadc_channel_compare_lowdata(channal, COMPARE_LOWDATA);
     gpadc_channel_compare_highdata(channal, COMPARE_HIGDATA);
-
+    hal_msleep(4);
     return GPADC_OK;
 }
 
@@ -426,7 +585,7 @@ hal_gpadc_status_t hal_gpadc_channel_exit(hal_gpadc_channel_t channal)
     return GPADC_OK;
 }
 
-static void hal_gpadc_setup(hal_gpadc_t *gpadc)
+static int hal_gpadc_setup(hal_gpadc_t *gpadc)
 {
     uint8_t i;
 
@@ -434,9 +593,12 @@ static void hal_gpadc_setup(hal_gpadc_t *gpadc)
     gpadc->channel_num = CHANNEL_NUM;
     gpadc->irq_num = SUNXI_GPADC_IRQ;
     gpadc->sample_rate = DEFAULT_SR;
-#if defined(CONFIG_SOC_SUN20IW1)
+#if defined(CONFIG_SOC_SUN20IW1) || defined(CONFIG_ARCH_SUN8IW20)
     gpadc->bus_clk = CLK_BUS_GPADC;
     gpadc->rst_clk = RST_BUS_GPADC;
+#elif defined(CONFIG_ARCH_SUN20IW2)
+    gpadc->bus_clk = CLK_GPADC;
+    gpadc->rst_clk = RST_GPADC;
 #else
     gpadc->pclk = HAL_CLK_SRC_HOSC24M;
     gpadc->mclk = HAL_CLK_PERIPH_GPADC;
@@ -447,14 +609,20 @@ static void hal_gpadc_setup(hal_gpadc_t *gpadc)
     {
         gpadc->callback[i] = hal_gpadc_callback;
     }
+
+    if (hal_request_irq(gpadc->irq_num, gpadc_handler, "gpadc", gpadc) < 0)
+    {
+        return GPADC_IRQ_ERROR;
+    }
+
+    return GPADC_OK;
 };
 
-int hal_gpadc_init(void)
+static int hal_gpadc_hw_init(hal_gpadc_t *gpadc)
 {
-    hal_gpadc_t *gpadc = &hal_gpadc;
-
-
-    hal_gpadc_setup(gpadc);
+#if defined(CONFIG_ARCH_SUN20IW2)
+    unsigned long rate;
+#endif
 
     if (hal_gpadc_clk_init(gpadc))
     {
@@ -463,32 +631,119 @@ int hal_gpadc_init(void)
     }
 
     GPADC_INFO("gpadc set sample rate");
+#if defined(CONFIG_ARCH_SUN20IW2)
+    rate = hal_clk_get_rate(gpadc->mbus_clk1);
+    gpadc_sample_rate_set(gpadc->reg_base, rate, gpadc->sample_rate);
+#else
     gpadc_sample_rate_set(gpadc->reg_base, OSC_24MHZ, gpadc->sample_rate);
-
-    if (request_irq(gpadc->irq_num, gpadc_handler, IRQF_NO_SUSPEND, "gpadc", gpadc))
-    {
-        return GPADC_IRQ_ERROR;
-    }
-
-    enable_irq(gpadc->irq_num);
-
+#endif
     GPADC_INFO("gpadc enable calibration");
     gpadc_calibration_enable(gpadc->reg_base);
     gpadc_mode_select(gpadc->reg_base, gpadc->mode);
+
+#if defined(CONFIG_ARCH_SUN20IW2)
+    gpadc_vbat_det_enable(gpadc->reg_base);
+    gpadc_vref_mode_select(gpadc->reg_base, 0x1);
+    gpadc_ldo_enable(gpadc->reg_base);
+    usleep(100);
+#endif
+
     gpadc_enable(gpadc->reg_base);
 
+    hal_enable_irq(gpadc->irq_num);
+
+    return GPADC_OK;
+}
+
+static void hal_gpadc_hw_exit(hal_gpadc_t *gpadc)
+{
+    hal_disable_irq(gpadc->irq_num);
+    gpadc_disable(gpadc->reg_base);
+    hal_gpadc_clk_exit(gpadc);
+}
+
+#ifdef CONFIG_COMPONENTS_PM
+static inline void hal_gpadc_save_regs(hal_gpadc_t *gpadc)
+{
+    int i;
+
+    for (i = 0; i < ARRAY_SIZE(hal_gpadc_regs_offset); i++)
+        gpadc->regs_backup[i] = readl((unsigned long)(gpadc->reg_base) + hal_gpadc_regs_offset[i]);
+}
+
+static inline void hal_gpadc_restore_regs(hal_gpadc_t *gpadc)
+{
+    int i;
+
+    for (i = 0; i < ARRAY_SIZE(hal_gpadc_regs_offset); i++)
+        writel(gpadc->regs_backup[i], (unsigned long)(gpadc->reg_base) + hal_gpadc_regs_offset[i]);
+}
+
+static int hal_gpadc_resume(struct pm_device *dev, suspend_mode_t mode)
+{
+    hal_gpadc_t *gpadc = &hal_gpadc;
+
+    hal_gpadc_hw_init(gpadc);
+    hal_gpadc_restore_regs(gpadc);
+    GPADC_INFO("hal gpadc resume\n");
+    return 0;
+}
+
+static int hal_gpadc_suspend(struct pm_device *dev, suspend_mode_t mode)
+{
+    hal_gpadc_t *gpadc = &hal_gpadc;
+
+    hal_gpadc_save_regs(gpadc);
+    hal_gpadc_hw_exit(gpadc);
+    GPADC_INFO("hal gpadc suspend\n");
+    return 0;
+}
+
+struct pm_devops pm_gpadc_ops = {
+    .suspend = hal_gpadc_suspend,
+    .resume  = hal_gpadc_resume,
+};
+
+struct pm_device pm_gpadc = {
+    .name = "sunxi_gpadc",
+    .ops  = &pm_gpadc_ops,
+};
+#endif
+
+int hal_gpadc_init(void)
+{
+    hal_gpadc_t *gpadc = &hal_gpadc;
+    int err;
+
+    err = hal_gpadc_setup(gpadc);
+    if (err)
+    {
+        GPADC_ERR("gpadc setup failed\n");
+        return GPADC_ERROR;
+    }
+
+    err = hal_gpadc_hw_init(gpadc);
+    if (err)
+    {
+        GPADC_ERR("gpadc init hw failed\n");
+        return GPADC_ERROR;
+    }
+
+#ifdef CONFIG_COMPONENTS_PM
+    pm_devops_register(&pm_gpadc);
+#endif
     return GPADC_OK;
 }
 
 hal_gpadc_status_t hal_gpadc_deinit(void)
 {
-    disable_irq(hal_gpadc.irq_num);
-#if defined(CONFIG_SOC_SUN20IW1)
-    hal_clock_disable(hal_gpadc.mbus_clk);
-#else
-    hal_clock_disable(hal_gpadc.mclk);
+    hal_gpadc_t *gpadc = &hal_gpadc;
+
+#ifdef CONFIG_COMPONENTS_PM
+    pm_devops_unregister(&pm_gpadc);
 #endif
+
+    hal_gpadc_hw_exit(gpadc);
+
     return GPADC_OK;
 }
-
-//device_initcall(hal_gpadc_init);

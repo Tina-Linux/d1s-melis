@@ -11,7 +11,7 @@
 *
 * Date			:  2013/03/26
 *
-* Description	:  USB VIDEO CONTROL Driver÷–∂‘USBΩ”ø⁄…Ë±∏µƒ¥¶¿Ì
+* Description	:  USB VIDEO CONTROL Driver‰∏≠ÂØπUSBÊé•Âè£ËÆæÂ§áÁöÑÂ§ÑÁêÜ
 *
 * Others		:  NULL
 *
@@ -24,22 +24,7 @@
 #ifndef __USB_UVC_DRIVER_H__
 #define __USB_UVC_DRIVER_H__
 
-
-
-
-extern __s32 uvc_probe(UVCDev_t *UVCDev, const struct usb_drv_dev_match_table *id);
+extern __s32 uvc_probe(UVCDev_t *UVCDev, const struct usb_device_id *id);
 extern void uvc_disconnect(UVCDev_t *UVCDev);
 
-
-
-
-
-
-
-
-
-
-
-
-#endif//__USB_UVC_DRIVER_H__
-
+#endif	//__USB_UVC_DRIVER_H__

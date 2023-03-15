@@ -17,47 +17,49 @@
 */
 #ifndef _WEBCAM_LINKLIST_MANAGER_H_
 #define _WEBCAM_LINKLIST_MANAGER_H_
-#include "typedef.h"
+
+#include "usb_os_platform.h"
 #include "drv_webcam.h"
 
-//Á´±íÊµÏÖ·½Ê½2
+//é“¾è¡¨å®ç°æ–¹å¼2
 /*******************************************************************************
-¹ØÓÚ Á´±íÊµÏÖ·½Ê½2 µÄËµÃ÷:
-(1). Ò»¸öÏß³Ìvdrv_task() ºÍÒ»¸öÖĞ¶Ï´¦Àí³ÌĞòwebcam_irq_handle()»á²Ù×÷2¸öÁ´±ífull2ºÍfree2
-     Òò´ËĞèÒª×ö»¥³â¡£
-(2). ¿¼ÂÇµ½ISRÊÇ²»»á±»´ò¶ÏµÄ£¬ËùÒÔÖ»ĞèÒª¶Ôvdrv_task()²Ù×÷Éæ¼°µÄº¯Êı×ö»¥³â´¦Àí¾ÍĞĞÁË
+å…³äº é“¾è¡¨å®ç°æ–¹å¼2 çš„è¯´æ˜:
+(1). ä¸€ä¸ªçº¿ç¨‹vdrv_task() å’Œä¸€ä¸ªä¸­æ–­å¤„ç†ç¨‹åºwebcam_irq_handle()ä¼šæ“ä½œ2ä¸ªé“¾è¡¨full2å’Œfree2
+     å› æ­¤éœ€è¦åšäº’æ–¥ã€‚
+(2). è€ƒè™‘åˆ°ISRæ˜¯ä¸ä¼šè¢«æ‰“æ–­çš„ï¼Œæ‰€ä»¥åªéœ€è¦å¯¹vdrv_task()æ“ä½œæ¶‰åŠçš„å‡½æ•°åšäº’æ–¥å¤„ç†å°±è¡Œäº†
     full2_insert( isr ), wt
     full2_delete( vdrv_task ), rd
     free2_insert( vdrv_task ), wt
     free2_delete( isr ), rd
 
-    ËùÒÔ£¬Ö»ĞèÒª¶Ôfull2_delete()ºÍfree2_insert()×ö»¥³â´¦Àí¾ÍĞĞÁË¡£ËùÎ½»¥³â£¬Ò²¾ÍÊÇ
-    ÔÚ´¦ÀíÇ°£¬°ÑÒ»Ğ©¿ÉÄÜ»á±»¸Ä±äµÄ±äÁ¿¼ÇÏÂÀ´¶øÒÑ¡£
+    æ‰€ä»¥ï¼Œåªéœ€è¦å¯¹full2_delete()å’Œfree2_insert()åšäº’æ–¥å¤„ç†å°±è¡Œäº†ã€‚æ‰€è°“äº’æ–¥ï¼Œä¹Ÿå°±æ˜¯
+    åœ¨å¤„ç†å‰ï¼ŒæŠŠä¸€äº›å¯èƒ½ä¼šè¢«æ”¹å˜çš„å˜é‡è®°ä¸‹æ¥è€Œå·²ã€‚
 *******************************************************************************/
 
-#define FRMID_CNT (WEBCAM_BUFFER_NUM+1)
+#define FRMID_CNT (WEBCAM_BUFFER_NUM + 1)
 
-typedef enum{
-    WEBCAM_LISTTYPE_FREE = 0,
-    WEBCAM_LISTTYPE_FULL = 1,
+typedef enum {
+	WEBCAM_LISTTYPE_FREE = 0,
+	WEBCAM_LISTTYPE_FULL = 1,
 } WEBCAM_LINKLIST_TYPE;
+
 typedef struct tag_WEBCAM_LINKLIST_MANAGER __webcam_linklist_manager_t;
-typedef void    (*WEBCAM_LINKLIST_MANAGER_Initial)     (__webcam_linklist_manager_t *thiz, WEBCAM_LINKLIST_TYPE type);
-typedef __s32   (*WEBCAM_LINKLIST_MANAGER_Insert)      (__webcam_linklist_manager_t *thiz, __s32 frame_id);
-typedef __s32   (*WEBCAM_LINKLIST_MANAGER_Delete)      (__webcam_linklist_manager_t *thiz);
-typedef __s32   (*WEBCAM_LINKLIST_MANAGER_Exit)        (__webcam_linklist_manager_t *thiz);
-typedef struct tag_WEBCAM_LINKLIST_MANAGER
-{
-    WEBCAM_LINKLIST_TYPE list_type;
-    __s32 frmid_array[FRMID_CNT];  //´æindexºÅµÄÊı×é,  indexÊÇ__webcam_frame_t webcam_frame[WEBCAM_BUFFER_NUM]µÄindex
-    __s32 wt;
-    __s32 rd;
-    WEBCAM_LINKLIST_MANAGER_Initial    initial;
-    WEBCAM_LINKLIST_MANAGER_Insert     insert_element;
-    WEBCAM_LINKLIST_MANAGER_Delete     delete_element;
-    WEBCAM_LINKLIST_MANAGER_Exit       exit;
-} __webcam_linklist_manager_t; //Ö»ÔÊĞíÊ¹ÓÃWEBCAM_BUFFER_NUM¸öÔªËØ£¬±ÜÃâwt,rdÖØºÏÊ±µÄÆçÒå(Âú»¹ÊÇ¿Õ).
-extern __webcam_linklist_manager_t* webcam_linklist_manager_init(void);
+typedef void (*WEBCAM_LINKLIST_MANAGER_Initial)		(__webcam_linklist_manager_t *thiz, WEBCAM_LINKLIST_TYPE type);
+typedef __s32 (*WEBCAM_LINKLIST_MANAGER_Insert)		(__webcam_linklist_manager_t *thiz, __s32 frame_id);
+typedef __s32 (*WEBCAM_LINKLIST_MANAGER_Delete)		(__webcam_linklist_manager_t *thiz);
+typedef __s32 (*WEBCAM_LINKLIST_MANAGER_Exit)		(__webcam_linklist_manager_t *thiz);
 
-#endif  /* _WEBCAM_LINKLIST_MANAGER_H_ */
+typedef struct tag_WEBCAM_LINKLIST_MANAGER {
+	WEBCAM_LINKLIST_TYPE list_type;
+	__s32 frmid_array[FRMID_CNT];  //å­˜indexå·çš„æ•°ç»„,  indexæ˜¯__webcam_frame_t webcam_frame[WEBCAM_BUFFER_NUM]çš„index
+	__s32 wt;
+	__s32 rd;
+	WEBCAM_LINKLIST_MANAGER_Initial initial;
+	WEBCAM_LINKLIST_MANAGER_Insert insert_element;
+	WEBCAM_LINKLIST_MANAGER_Delete delete_element;
+	WEBCAM_LINKLIST_MANAGER_Exit exit;
+} __webcam_linklist_manager_t;	//åªå…è®¸ä½¿ç”¨WEBCAM_BUFFER_NUMä¸ªå…ƒç´ ï¼Œé¿å…wt,rdé‡åˆæ—¶çš„æ­§ä¹‰(æ»¡è¿˜æ˜¯ç©º).
 
+extern __webcam_linklist_manager_t *webcam_linklist_manager_init(void);
+
+#endif /* _WEBCAM_LINKLIST_MANAGER_H_ */

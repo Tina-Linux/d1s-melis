@@ -34,9 +34,12 @@
 #include <stdint.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/time.h>
 
 #include <hal_log.h>
 #include <hal_cmd.h>
+#include <hal_mem.h>
+#include <hal_timer.h>
 #include <sunxi_hal_spi.h>
 
 #define TEST_READ 0
@@ -53,12 +56,12 @@ static int cmd_test_spi(int argc, const char **argv)
 
     if (argc < 3)
     {
-        hal_log_info("Usage:");
-        hal_log_info("\tspi <port> <-r|-w>");
+        printf("Usage:\n");
+        printf("\thal_spi <port> <-r|-w>\n");
         return -1;
     }
 
-    hal_log_info("Run spi test");
+    printf("Run spi test\n");
 
     port = strtol(argv[1], NULL, 0);
     while ((c = getopt(argc, (char *const *)argv, "r:w")) != -1)
@@ -78,18 +81,19 @@ static int cmd_test_spi(int argc, const char **argv)
     cfg.slave_port = HAL_SPI_MASTER_SLAVE_0;
     cfg.cpha = HAL_SPI_MASTER_CLOCK_PHASE0;
     cfg.cpol = HAL_SPI_MASTER_CLOCK_POLARITY0;
+    cfg.sip = 0;
     hal_spi_init(port, &cfg);
     if (rw == TEST_READ)
     {
         hal_spi_read(port, rbuf, 10);
-        hal_log_info("rbuf: %s", rbuf);
+        printf("rbuf: %s\n", rbuf);
     }
     else if (rw == TEST_WRITE)
     {
         hal_spi_write(port, tbuf, 10);
     }
 
-    hal_log_info("Spi test finish");
+    printf("Spi test finish\n");
 
     hal_spi_deinit(port);
 
@@ -97,3 +101,174 @@ static int cmd_test_spi(int argc, const char **argv)
 }
 
 FINSH_FUNCTION_EXPORT_CMD(cmd_test_spi, hal_spi, spi hal APIs tests)
+
+static int cmd_test_spi_quad(int argc, const char **argv)
+{
+    hal_spi_master_port_t  port;
+    hal_spi_master_config_t cfg;
+    char tbuf[10]={0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x20};
+    char rbuf[10];
+    char rw = 1;
+    int c;
+
+    if (argc < 2)
+    {
+        printf("Usage:\n");
+        printf("\thal_spi_quad <port> \n");
+        return -1;
+    }
+
+    printf("Run spi quad test\n");
+
+    port = strtol(argv[1], NULL, 0);
+
+    cfg.clock_frequency = 5000000;
+    cfg.slave_port = HAL_SPI_MASTER_SLAVE_0;
+    cfg.cpha = HAL_SPI_MASTER_CLOCK_PHASE0;
+    cfg.cpol = HAL_SPI_MASTER_CLOCK_POLARITY0;
+    cfg.sip = 0;
+    hal_spi_init(port, &cfg);
+    hal_spi_master_transfer_t tr;
+    tr.tx_buf = tbuf;
+    tr.tx_len = 10;
+    tr.rx_buf = rbuf;
+    tr.rx_len = 0;
+    tr.tx_nbits = SPI_NBITS_QUAD;
+    tr.tx_single_len = 10;
+    tr.dummy_byte = 0;
+    hal_spi_xfer(port, &tr);
+
+    printf("Spi test finish\n");
+
+    hal_spi_deinit(port);
+
+    return 0;
+}
+
+FINSH_FUNCTION_EXPORT_CMD(cmd_test_spi_quad, hal_spi_quad, spi hal APIs tests)
+
+static int cmd_test_spi_loop(int argc, const char **argv)
+{
+    hal_spi_master_port_t  port;
+    hal_spi_master_config_t cfg;
+    hal_spi_master_transfer_t tr;
+    char *tbuf = NULL;
+    char *rbuf = NULL;
+    int size = 0;
+    int i, j, loop;
+    struct timeval start, end;
+    int sucess = 0, failed = 0;
+    unsigned long time = 0;
+	double tr_speed = 0.0f;
+
+    if (argc < 2)
+    {
+        printf("Usage:\n");
+        printf("\thal_spi_pm init <port> <freq> \n");
+        printf("\thal_spi_pm deinit <port> \n");
+        printf("\thal_spi_pm loop_test <port> <size> <loop_times> \n");
+        return -1;
+    }
+
+    printf("Run spi loop test\n");
+
+    port = strtol(argv[2], NULL, 0);
+
+    if (!strcmp(argv[1], "init"))
+    {
+        cfg.clock_frequency = strtol(argv[3], NULL, 0);
+        cfg.slave_port = HAL_SPI_MASTER_SLAVE_0;
+        cfg.cpha = HAL_SPI_MASTER_CLOCK_PHASE0;
+        cfg.cpol = HAL_SPI_MASTER_CLOCK_POLARITY0;
+        cfg.sip = 0;
+        cfg.flash = 0;
+        hal_spi_init(port, &cfg);
+    }
+    else if (!strcmp(argv[1], "deinit"))
+    {
+        hal_spi_deinit(port);
+    }
+    else if (!strcmp(argv[1], "loop_test"))
+    {
+        size = strtol(argv[3], NULL, 0);
+        loop = strtol(argv[4], NULL, 0);
+        tbuf = hal_malloc(size);
+        rbuf = hal_malloc(size);
+        if (!(tbuf && rbuf))
+        {
+            printf("Request buffer size %d failed\n", size);
+            return 0;
+        }
+
+        /* Init buffer data */
+        for (i = 0; i < size; i++)
+        {
+            tbuf[i] = i & 0xFF;
+        }
+
+        tr.tx_buf = tbuf;
+        tr.tx_len = size;
+        tr.tx_nbits = SPI_NBITS_SINGLE;
+        tr.tx_single_len = size;
+        tr.rx_buf = rbuf;
+        tr.rx_len = size;
+        tr.rx_nbits = SPI_NBITS_SINGLE;
+
+        for (i = 0; i < loop; i++)
+        {
+            printf("loop test round %d\n", i);
+
+            if (tr.tx_len <= 32)
+            {
+                printf("tbuf: ");
+                for (j = 0; j < tr.tx_len; j++)
+                {
+                    printf("%02X ", tr.tx_buf[j]);
+                }
+                printf("\n");
+            }
+
+            memset(tr.rx_buf, 0, tr.rx_len);
+            gettimeofday(&start, NULL);
+            hal_spi_xfer(port, &tr);
+            gettimeofday(&end, NULL);
+
+            if (tr.rx_len <= 32)
+            {
+                printf("rbuf: ");
+                for (j = 0; j < tr.rx_len; j++)
+                {
+                    printf("%02X ", tr.rx_buf[j]);
+                }
+                printf("\n");
+            }
+
+            if (!memcmp(tr.tx_buf, tr.rx_buf, size))
+            {
+                sucess++;
+                time += (1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec);
+                printf("compare with tbuf rbuf %d : pass\n", size);
+            }
+            else
+            {
+                failed++;
+                printf("compare with tbuf rbuf %d : failed\n", size);
+            }
+
+            hal_msleep(5);
+        }
+
+        hal_free((void *)tbuf);
+        hal_free((void *)rbuf);
+
+        printf("compare buffer total %d : sucess %d, failed %d\n", loop, sucess, failed);
+        tr_speed = ((double)(size*sucess) / 1024.0f / 1024.0f) / ((double)time / 1000.0f / 1000.0f);
+        printf("Transfer %d take %ld us (%lf MB/s)\n", size*sucess, time, tr_speed);
+    }
+
+    printf("Spi test finish\n");
+
+    return 0;
+}
+
+FINSH_FUNCTION_EXPORT_CMD(cmd_test_spi_loop, hal_spi_loop, spi hal APIs tests)

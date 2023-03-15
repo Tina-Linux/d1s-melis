@@ -83,18 +83,18 @@ int aes_test(void)
 	uint8_t *enc_buffer = 0;
 	uint32_t enc_len = 0;
 	uint32_t blk_num = 0;
-	uint8_t iv_next[AES_BLOCK_SIZE] = {0};
+	__aligned(CACHELINE_LEN) uint8_t iv_next[AES_BLOCK_SIZE] = {0};
 	uint8_t *(*aes_enc[])[5] = {aes_ecb, aes_cbc, aes_ctr, aes_cbc, aes_ofb, aes_cfb8};
 	crypto_aes_req_ctx_t *aes_ctx = NULL;
 
-	aes_ctx = (crypto_aes_req_ctx_t *)hal_malloc_align(sizeof(crypto_aes_req_ctx_t), CE_ALIGN_SIZE);
+	aes_ctx = (crypto_aes_req_ctx_t *)hal_malloc_align(sizeof(crypto_aes_req_ctx_t), max(CE_ALIGN_SIZE, CACHELINE_LEN));
 	if (aes_ctx == NULL) {
 		printf (" malloc data buffer fail\n");
 		return -1;
 	}
 	memset(aes_ctx, 0x0, sizeof(crypto_aes_req_ctx_t));
 
-	aes_ctx->dst_buffer = (u8 *)hal_malloc_align(512, CE_ALIGN_SIZE);
+	aes_ctx->dst_buffer = (u8 *)hal_malloc_align(512, max(CE_ALIGN_SIZE, CACHELINE_LEN));
 	if (aes_ctx->dst_buffer == NULL) {
 		printf (" malloc dest buffer fail\n");
 		ret = -1;
@@ -142,7 +142,7 @@ int aes_test(void)
 
 				// openssl enc do not support cts, so create enc data manually.
 				if (m == AES_MODE_CTS){
-					enc_buffer = (uint8_t *)hal_malloc(enc_len);
+					enc_buffer = (uint8_t *)hal_malloc_align(enc_len, max(CE_ALIGN_SIZE, CACHELINE_LEN));
 					if (enc_buffer == NULL) {
 						printf ("malloc ctr buffer fail\n");
 						ret = -1;
@@ -195,7 +195,7 @@ int aes_test(void)
 
 				if (m == AES_MODE_CTS) {
 					if (enc_buffer)
-						hal_free(enc_buffer);
+						hal_free_align(enc_buffer);
 				}
 
 				printf("###############AES, mode: %d, ksize %d, src len %d, pass###############\n\n\n", m, aes_key_len[i], aes_src_len[j]);
@@ -209,7 +209,7 @@ out:
 	}
 	if (m == AES_MODE_CTS) {
 		if (enc_buffer)
-			hal_free(enc_buffer);
+			hal_free_align(enc_buffer);
 	}
 
 	hal_free_align(aes_ctx);
@@ -229,7 +229,7 @@ int hash_test(void)
 	uint8_t *(*hash_digest[]) = {hash_md5, hash_sha1, hash_sha224, hash_sha256, hash_sha384, hash_sha512};
 	crypto_hash_req_ctx_t *hash_ctx = NULL;
 
-	hash_ctx = (crypto_hash_req_ctx_t *)hal_malloc_align(sizeof(crypto_hash_req_ctx_t), CE_ALIGN_SIZE);
+	hash_ctx = (crypto_hash_req_ctx_t *)hal_malloc_align(sizeof(crypto_hash_req_ctx_t), max(CE_ALIGN_SIZE, CACHELINE_LEN));
 	if (hash_ctx == NULL) {
 		printf (" malloc hash_ctx fail\n");
 		ret = -1;
@@ -237,7 +237,7 @@ int hash_test(void)
 	}
 
 	/*malloc dst buf*/
-	dst_data = (u8 *)hal_malloc_align(data_size, CE_ALIGN_SIZE);
+	dst_data = (u8 *)hal_malloc_align(data_size, max(CE_ALIGN_SIZE, CACHELINE_LEN));
 	if (dst_data == NULL) {
 		printf (" malloc dst buffer fail\n");
 		ret = -1;
@@ -246,6 +246,7 @@ int hash_test(void)
 
 	for (i = HASH_METHOD_MD5; i < HASH_METHOD_SHA512 + 1; i++) {
 		for (j = 0; j < sizeof(hash_src_len)/sizeof(hash_src_len[0]); j++) {
+			memset(hash_ctx, 0x0, sizeof(crypto_hash_req_ctx_t));
 			hash_ctx->src_buffer = hash_src[j];
 			hash_ctx->src_length = hash_src_len[j];
 			memset(dst_data, 0x0, data_size);
@@ -313,21 +314,21 @@ out:
 	return ret;
 }
 
-
+#ifndef CONFIG_ARCH_SUN20IW2
 int rng_test(void)
 {
 	int ret = 0;
 	int i = 0;
 	uint8_t *rng_buf = NULL;
 	uint32_t rng_size[] = {16, 31, 32, 8100};
-	uint8_t key[24] = {
+	__aligned(CACHELINE_LEN) uint8_t key[24] = {
 		0xa1, 0xb7, 0x78, 0xf7, 0xbf, 0x2c, 0xfa, 0xad, 0x6a, 0x46, 0x79, 0xc2, 0xd2, 0x9c, 0x45, 0x1f,
 		0x3f, 0xcb, 0xef, 0xa5, 0x4e, 0x0e, 0xc3, 0x51
 	};
 	uint32_t key_len = 24;
 	crypto_rng_req_ctx_t *rng_ctx = NULL;
 
-	rng_ctx = (crypto_rng_req_ctx_t *)hal_malloc(sizeof(crypto_rng_req_ctx_t));
+	rng_ctx = (crypto_rng_req_ctx_t *)hal_malloc_align(sizeof(crypto_rng_req_ctx_t), max(CE_ALIGN_SIZE, CACHELINE_LEN));
 	if (rng_ctx == NULL) {
 		printf (" malloc rng ctx fail\n");
 		ret = -1;
@@ -335,13 +336,15 @@ int rng_test(void)
 	}
 
 	/*malloc trng buf*/
-	rng_buf = (u8 *)hal_malloc(8192);
+	rng_buf = (u8 *)hal_malloc_align(8192, max(CE_ALIGN_SIZE, CACHELINE_LEN));
 	if (rng_buf == NULL) {
 		printf ("malloc rng buffer fail\n");
 		ret = -1;
 		goto out;
 	}
 
+#ifndef CE_FPGA_TEST
+	/* FPGA do not support TRNG, so enable CE_FPGA_TEST when do CE FPGA verification */
 	/*TRNG test*/
 	for (i = 0; i < sizeof(rng_size)/sizeof(uint32_t); i++) {
 		printf("############TRNG, len: %d, begin#############\n", rng_size[i]);
@@ -362,6 +365,7 @@ int rng_test(void)
 #endif
 		printf("############TRNG, len: %d, pass#############\n\n\n", rng_size[i]);
 	}
+#endif
 
 	/*PRNG test*/
 	for (i = 0; i < sizeof(rng_size)/sizeof(uint32_t); i++) {
@@ -386,22 +390,30 @@ int rng_test(void)
 
 out:
 	if (rng_ctx)
-		hal_free(rng_ctx);
+		hal_free_align(rng_ctx);
 
 	if (rng_buf)
-		hal_free(rng_buf);
+		hal_free_align(rng_buf);
 
 	return ret;
 }
+#else
+int rng_test(void)
+{
+	printf("sun20iw2 crypto engine do not support rng, please use hal_trng.\n");
+
+	return 0;
+}
+#endif
 
 int rsa_test(void)
 {
 	int ret = 0;
 	int i = 0;
-	uint8_t dst_buffer[256] = {0};
+	__aligned(CACHELINE_LEN) uint8_t dst_buffer[256] = {0};
 	crypto_rsa_req_ctx_t *rsa_ctx = NULL;
 
-	rsa_ctx = (crypto_rsa_req_ctx_t *)hal_malloc_align(sizeof(crypto_rsa_req_ctx_t), CE_ALIGN_SIZE);
+	rsa_ctx = (crypto_rsa_req_ctx_t *)hal_malloc_align(sizeof(crypto_rsa_req_ctx_t), max(CE_ALIGN_SIZE, CACHELINE_LEN));
 	if (rsa_ctx == NULL) {
 		printf (" malloc rsa ctx fail\n");
 		return -1;
@@ -642,6 +654,55 @@ out:
 	return ret;
 }
 
+#ifndef configAPPLICATION_NORMAL_PRIORITY
+#define configAPPLICATION_NORMAL_PRIORITY (15)
+#endif
+static void aes_task( void * pvParameters )
+{
+	int ret = 0;
+
+	ret = aes_test();
+	if (ret) {
+		printf("ERROR: aes test failed\n");
+	}
+
+	vTaskDelete(NULL);
+}
+static void hash_task( void * pvParameters )
+{
+	int ret = 0;
+
+	ret = hash_test();
+	if (ret) {
+		printf("ERROR: hash test failed\n");
+	}
+
+	vTaskDelete(NULL);
+}
+static void rsa_task( void * pvParameters )
+{
+	int ret = 0;
+
+	ret = rsa_test();
+	if (ret) {
+		printf("ERROR: rsa test failed\n");
+	}
+
+	vTaskDelete(NULL);
+}
+static void rng_task( void * pvParameters )
+{
+
+	int ret = 0;
+
+	ret = rng_test();
+	if (ret) {
+		printf("ERROR: rng test failed\n");
+	}
+
+	vTaskDelete(NULL);
+}
+
 int cmd_test_ce(int argc, const char *argv[])
 {
 	int ret = 0;
@@ -654,21 +715,52 @@ int cmd_test_ce(int argc, const char *argv[])
 
 	sunxi_ce_init();
 
-	if (strcmp(argv[1], "aes") == 0)
+	if (strcmp(argv[1], "aes") == 0) {
 		ret = aes_test();
-	else if (strcmp(argv[1], "hash") == 0)
+	} else if (strcmp(argv[1], "hash") == 0) {
 		ret = hash_test();
-	else if (strcmp(argv[1], "rsa") == 0)
+	} else if (strcmp(argv[1], "rsa") == 0) {
 		ret = rsa_test();
-	else if (strcmp(argv[1], "rng") == 0)
+	} else if (strcmp(argv[1], "rng") == 0) {
 		ret = rng_test();
-	else {
+	} else if (strcmp(argv[1], "all") == 0) {
+		TaskHandle_t task0, task1, task2, task3;
+		portBASE_TYPE ret0, ret1, ret2, ret3;
+
+		printf("******************************************************\n");
+		printf("* NOTE: please enable CE_NO_IRQ when doing this test *\n");
+		printf("******************************************************\n");
+
+		ret0 = xTaskCreate(aes_task, (signed portCHAR *) "aes test", 4096, NULL, configAPPLICATION_NORMAL_PRIORITY, &task0);
+		if (ret0 != pdPASS) {
+			printf("create aes task failed\n");
+			return -1;
+		}
+		ret1 = xTaskCreate(hash_task, (signed portCHAR *) "hash test", 4096, NULL, configAPPLICATION_NORMAL_PRIORITY, &task1);
+		if (ret1 != pdPASS) {
+			printf("create hash task failed\n");
+			return -1;
+		}
+		ret2 = xTaskCreate(rsa_task, (signed portCHAR *) "rsa test", 4096, NULL, configAPPLICATION_NORMAL_PRIORITY, &task2);
+		if (ret2 != pdPASS) {
+			printf("create rsa task failed\n");
+			return -1;
+		}
+		ret3 = xTaskCreate(rng_task, (signed portCHAR *) "rng test", 4096, NULL, configAPPLICATION_NORMAL_PRIORITY, &task3);
+		if (ret3 != pdPASS) {
+			printf("create rng task failed\n");
+			return -1;
+		}
+
+	} else {
 		printf("Parameter Error!\n");
-		printf("Usage: hal_ce <aes|hash|rsa|rng>\n");
+		printf("Usage: hal_ce <aes|hash|rsa|rng|all>\n");
 		ret = -1;
 	}
 
-	sunxi_ce_uninit();
+	if (strcmp(argv[1], "all")) {
+		sunxi_ce_uninit();
+	}
 
 	return ret;
 }

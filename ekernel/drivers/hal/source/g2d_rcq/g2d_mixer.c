@@ -147,8 +147,6 @@ static __s32 g2d_fillrectangle(struct g2d_mixer_frame *p_frame,
 
 	/* set the input layer */
 	g2d_vlayer_set(p_frame->ovl_v, 0, dst, NOT_AVOID_PREMUL);
-	/* set the fill color value */
-	g2d_ovl_v_fc_set(p_frame->ovl_v, color_value);
 
 	if (dst->format >= G2D_FORMAT_IYUV422_V0Y1U0Y0) {
 		g2d_vsu_para_set(p_frame->scal, dst->format, dst->clip_rect.w,
@@ -175,7 +173,9 @@ static __s32 g2d_fillrectangle(struct g2d_mixer_frame *p_frame,
 	rect0.y = 0;
 	rect0.w = dst->clip_rect.w;
 	rect0.h = dst->clip_rect.h;
-	bld_in_set(p_frame->bld, 0, rect0, dst->bpremul);
+
+	bld_fc_set(p_frame->bld, 1, rect0, dst->bpremul, dst->color);
+	bld_porter_duff(p_frame->bld, G2D_BLD_SRCOVER);
 	bld_cs_set(p_frame->bld, dst->format);
 
 	/* ROP sel ch0 pass */
@@ -231,12 +231,24 @@ static __s32 g2d_bsp_bld(struct g2d_mixer_frame *p_frame, g2d_image_enh *src,
 			pr_err("[BLD] not support two yuv layer!\n");
 			goto OUT;
 		} else {
-			/* YUV_XXX->YUV444->RGB overlay size */
-			g2d_ovl_v_calc_coarse(p_frame->ovl_v, src->format, dst->clip_rect.w,
-						dst->clip_rect.h, dst->clip_rect.w,
-						dst->clip_rect.h, &midw, &midh);
-			g2d_vsu_para_set(p_frame->scal, src->format, midw, midh,
-					dst->clip_rect.w, dst->clip_rect.h, dst->alpha);
+			/**
+			 * YUV_XXX->YUV444->RGB overlay size.
+			 * If the user configures the resize of g2d_image_enh,
+			 * the resize variable is the out size after scaler.
+			 */
+			if (src->resize.w != 0 && src->resize.h != 0) {
+				g2d_ovl_v_calc_coarse(p_frame->ovl_v, src->format, src->clip_rect.w,
+							src->clip_rect.h, src->resize.w,
+							src->resize.h, &midw, &midh);
+				g2d_vsu_para_set(p_frame->scal, src->format, midw, midh,
+						src->resize.w, src->resize.h, dst->alpha);
+			} else {
+				g2d_ovl_v_calc_coarse(p_frame->ovl_v, src->format, dst->clip_rect.w,
+							dst->clip_rect.h, dst->clip_rect.w,
+							dst->clip_rect.h, &midw, &midh);
+				g2d_vsu_para_set(p_frame->scal, src->format, midw, midh,
+	    					dst->clip_rect.w, dst->clip_rect.h, dst->alpha);
+			}
 
 			if (src->clip_rect.w <= 1280 && src->clip_rect.h <= 720) {
 				bld_csc_reg_set(p_frame->bld, 0, G2D_YUV2RGB_601);
@@ -248,6 +260,16 @@ static __s32 g2d_bsp_bld(struct g2d_mixer_frame *p_frame, g2d_image_enh *src,
 		if (src2->format > G2D_FORMAT_BGRA1010102) {
 			pr_err("[BLD] please use ch0(src0) to set YUV layer!\n");
 			goto OUT;
+		}
+
+		// do scale
+		if (src->resize.w != 0 && src->resize.h != 0) {
+			g2d_ovl_v_calc_coarse(p_frame->ovl_v, src->format, src->clip_rect.w,
+						src->clip_rect.h, src->resize.w,
+						src->resize.h, &midw, &midh);
+
+			g2d_vsu_para_set(p_frame->scal, src->format, midw, midh,
+						src->resize.w, src->resize.h, src->alpha);
 		}
 	}
 
@@ -264,6 +286,11 @@ static __s32 g2d_bsp_bld(struct g2d_mixer_frame *p_frame, g2d_image_enh *src,
 	rect0.y = 0;
 	rect0.w = dst->clip_rect.w;/* overlay size */
 	rect0.h = dst->clip_rect.h;
+
+	if (src->resize.w != 0 && src->resize.h != 0) {
+		rect0.w = src->resize.w;
+		rect0.h = src->resize.h;
+	}
 
 	rect1.x = 0;
 	rect1.y = 0;

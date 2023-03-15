@@ -1,29 +1,40 @@
 /*
-**********************************************************************************************************************
-*                                                    ePDK
-*                                    the Easy Portable/Player Develop Kits
-*                                              eMOD Sub-System
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                   (c) Copyright 2007-2009, Steven.ZGJ.China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* Moudle  : lemon
-* File    : Shadow.c
-* Purpose : shadow for SFT
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
 *
-* By      : Zhao Jingman
-* Version : v1.0
-* Date    : 2009-1-6 11:55:42
-**********************************************************************************************************************
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
-
 /***************************************************************
-    ◊÷ÃÂ“ı”∞ µœ÷∫Ø ˝shadow£¨ ‰»ÎŒ™¥Ê¥¢Œƒ◊÷µƒbuffer£¨¥´»ÎµƒΩ”ø⁄
-    Œ™£∫char * in,µ„’Ûµƒ≥§width£¨µ„’ÛµƒøÌheight,“‘º∞µ„’Û√ø“ª––
-    µƒ◊÷Ω⁄ ˝linebytes°£
+    Â≠ó‰ΩìÈò¥ÂΩ±ÂÆûÁé∞ÂáΩÊï∞shadowÔºåËæìÂÖ•‰∏∫Â≠òÂÇ®ÊñáÂ≠óÁöÑbufferÔºå‰º†ÂÖ•ÁöÑÊé•Âè£
+    ‰∏∫Ôºöchar * in,ÁÇπÈòµÁöÑÈïøwidthÔºåÁÇπÈòµÁöÑÂÆΩheight,‰ª•ÂèäÁÇπÈòµÊØè‰∏ÄË°å
+    ÁöÑÂ≠óËäÇÊï∞linebytes„ÄÇ
 
-     ˝æ›¿‡–Õ£∫
+    Êï∞ÊçÆÁ±ªÂûãÔºö
     U32  :  unsigned int
     U8   :  unsigned char
 ***************************************************************/
@@ -83,7 +94,7 @@ void shadow(U32 *pBuffer, U32 xsize, U32 ysize)
     orange_memset((U8 *)pBuffer, 0, xsize * ysize * 4);
     shadow_smooth((U32 *)lptemp, pBuffer, xsize, ysize);
 
-    //‘≠ ºÕºœÒ∑¥…´¥¶¿Ì
+    //ÂéüÂßãÂõæÂÉèÂèçËâ≤Â§ÑÁêÜ
     for (y = 0; y < ysize; y++)
     {
         for (x = 0; x < xsize; x++)
@@ -133,17 +144,17 @@ static void shadow_move(U32 *in, U32 *out, U32 xsize, U32 ysize)
         }
     }
 
-    for (i = 0; i < ysize; i++)  // ––(≥˝»•±ﬂ‘µº∏––)
+    for (i = 0; i < ysize; i++)  // Ë°å(Èô§ÂéªËæπÁºòÂá†Ë°å)
     {
-        for (j = 0; j < xsize ; j++)// ¡–(≥˝»•±ﬂ‘µº∏¡–)
+        for (j = 0; j < xsize ; j++)// Âàó(Èô§ÂéªËæπÁºòÂá†Âàó)
         {
-            // ÷∏œÚDIBµ⁄i––£¨µ⁄j ∏ˆœÛÀÿµƒ÷∏’Î
+            // ÊåáÂêëDIBÁ¨¨iË°åÔºåÁ¨¨j ‰∏™Ë±°Á¥†ÁöÑÊåáÈíà
             src = (U8 *)in + xsize * 4 * (i) + 4 * j ;
             num = *(src + 3);
 
             if (num != 0)
             {
-                // ÷∏œÚ–¬DIBµ⁄i––£¨µ⁄j∏ˆœÛÀÿµƒ÷∏’Î
+                // ÊåáÂêëÊñ∞DIBÁ¨¨iË°åÔºåÁ¨¨j‰∏™Ë±°Á¥†ÁöÑÊåáÈíà
                 dest = (U8 *) out + xsize * 4 * ((i + (step + 1))) + 4 * (j + step);
                 *(unsigned char *)(dest + 3) = (unsigned char) num;
             }
@@ -162,25 +173,25 @@ static void shadow_smooth(U32 *in, U32 *out, U32 xsize, U32 ysize)
     U32     k;
     U32     l;
 
-    /*  for(i = 1; i < ysize - 4 + 2 + 1; i++)  // ––(≥˝»•±ﬂ‘µº∏––)
+    /*  for(i = 1; i < ysize - 4 + 2 + 1; i++)  // Ë°å(Èô§ÂéªËæπÁºòÂá†Ë°å)
         {
-    //µ⁄“ª∏ˆ ˝æ›µ„µƒ¥¶¿Ì
+    //Á¨¨‰∏Ä‰∏™Êï∞ÊçÆÁÇπÁöÑÂ§ÑÁêÜ
             Result=0;
             j = 1;
-            // ÷∏œÚ–¬DIBµ⁄i––£¨µ⁄j∏ˆœÛÀÿµƒ÷∏’Î
+            // ÊåáÂêëÊñ∞DIBÁ¨¨iË°åÔºåÁ¨¨j‰∏™Ë±°Á¥†ÁöÑÊåáÈíà
             dest = (U8 *)out + xsize*4*i + 4 * j;
             for (k = 0; k < 4 ; k++)
             {
                 for (l = 0; l < 4 ; l++)
                 {
-                    // ÷∏œÚDIBµ⁄i - iTempMY + k––£¨µ⁄j - iTempMX + l∏ˆœÛÀÿµƒ÷∏’Î
+                    // ÊåáÂêëDIBÁ¨¨i - iTempMY + kË°åÔºåÁ¨¨j - iTempMX + l‰∏™Ë±°Á¥†ÁöÑÊåáÈíà
                     src = (U8 *)in + xsize*4*(  i - 2 + k)+4*(j-2+l);
-                    // ±£¥ÊœÛÀÿ÷µ
+                    // ‰øùÂ≠òË±°Á¥†ÂÄº
                     Result += (* (src+3)) ;
                 }
             }
 
-            Tmp = Result/20;                    // ≥À…œœµ ˝
+            Tmp = Result/20;                    // ‰πò‰∏äÁ≥ªÊï∞
             if(Tmp > 255)
             {
                 * (dest+3) = (U8 )255;
@@ -191,38 +202,38 @@ static void shadow_smooth(U32 *in, U32 *out, U32 xsize, U32 ysize)
                 * (dest+3) = (U8) (Tmp);
             }
 
-    //÷Æ∫Ûµƒ ˝æ›µ„µƒ¥¶¿Ì£¨¿˚”√ƒ£∞Â∆Ω“∆£¨ºÚªØ‘ÀÀ„
-            for(j=j+1; j < xsize - 4 + 2 + 1; j++)// ¡–(≥˝»•±ﬂ‘µº∏¡–)
+    //‰πãÂêéÁöÑÊï∞ÊçÆÁÇπÁöÑÂ§ÑÁêÜÔºåÂà©Áî®Ê®°ÊùøÂπ≥ÁßªÔºåÁÆÄÂåñËøêÁÆó
+            for(j=j+1; j < xsize - 4 + 2 + 1; j++)// Âàó(Èô§ÂéªËæπÁºòÂá†Âàó)
             {
-                // ÷∏œÚ–¬DIBµ⁄i––£¨µ⁄j∏ˆœÛÀÿµƒ÷∏’Î
+                // ÊåáÂêëÊñ∞DIBÁ¨¨iË°åÔºåÁ¨¨j‰∏™Ë±°Á¥†ÁöÑÊåáÈíà
                 dest = (U8 *)out  + xsize*4*i +4 * j;
 
-                // ÷∏œÚ‘¥DIBµ⁄ i - 2 ––£¨µ⁄j-3 ∏ˆœÛÀÿµƒ÷∏’Î
+                // ÊåáÂêëÊ∫êDIBÁ¨¨ i - 2 Ë°åÔºåÁ¨¨j-3 ‰∏™Ë±°Á¥†ÁöÑÊåáÈíà
                 src = (U8 *)in + xsize*4*( i - 2 )+4*(j-3);
                 Result -= *(src+3) ;
-                // ÷∏œÚ‘¥DIBµ⁄ i -1 ––£¨µ⁄j-3 ∏ˆœÛÀÿµƒ÷∏’Î
+                // ÊåáÂêëÊ∫êDIBÁ¨¨ i -1 Ë°åÔºåÁ¨¨j-3 ‰∏™Ë±°Á¥†ÁöÑÊåáÈíà
                 src += xsize*4;
                 Result -= *(src+3) ;
-                // ÷∏œÚ‘¥DIBµ⁄ i   ––£¨µ⁄j-3 ∏ˆœÛÀÿµƒ÷∏’Î
+                // ÊåáÂêëÊ∫êDIBÁ¨¨ i   Ë°åÔºåÁ¨¨j-3 ‰∏™Ë±°Á¥†ÁöÑÊåáÈíà
                 src += xsize*4;
                 Result -= *(src+3) ;
-                // ÷∏œÚ‘¥DIBµ⁄ i + 1   ––£¨µ⁄j-3 ∏ˆœÛÀÿµƒ÷∏’Î
+                // ÊåáÂêëÊ∫êDIBÁ¨¨ i + 1   Ë°åÔºåÁ¨¨j-3 ‰∏™Ë±°Á¥†ÁöÑÊåáÈíà
                 src += xsize*4;
                 Result -= *(src+3) ;
-                // ÷∏œÚ‘¥DIBµ⁄ i + 1  ––£¨µ⁄j + 1 ∏ˆœÛÀÿµƒ÷∏’Î
+                // ÊåáÂêëÊ∫êDIBÁ¨¨ i + 1  Ë°åÔºåÁ¨¨j + 1 ‰∏™Ë±°Á¥†ÁöÑÊåáÈíà
                 src += 4*4;
                 Result += *(src+3) ;
-                // ÷∏œÚ‘¥DIBµ⁄ i  ––£¨µ⁄j + 1 ∏ˆœÛÀÿµƒ÷∏’Î
+                // ÊåáÂêëÊ∫êDIBÁ¨¨ i  Ë°åÔºåÁ¨¨j + 1 ‰∏™Ë±°Á¥†ÁöÑÊåáÈíà
                 src -= xsize*4;
                 Result += *(src+3) ;
-                // ÷∏œÚ‘¥DIBµ⁄ i - 1 ––£¨µ⁄j + 1 ∏ˆœÛÀÿµƒ÷∏’Î
+                // ÊåáÂêëÊ∫êDIBÁ¨¨ i - 1 Ë°åÔºåÁ¨¨j + 1 ‰∏™Ë±°Á¥†ÁöÑÊåáÈíà
                 src -= xsize*4;
                 Result += *(src+3) ;
-                // ÷∏œÚ‘¥DIBµ⁄ i - 2 ––£¨µ⁄j + 1 ∏ˆœÛÀÿµƒ÷∏’Î
+                // ÊåáÂêëÊ∫êDIBÁ¨¨ i - 2 Ë°åÔºåÁ¨¨j + 1 ‰∏™Ë±°Á¥†ÁöÑÊåáÈíà
                 src -= xsize*4;
                 Result += *(src+3) ;
 
-                Tmp = Result/20;                    // ≥À…œœµ ˝
+                Tmp = Result/20;                    // ‰πò‰∏äÁ≥ªÊï∞
                 if(Tmp > 255)
                 {
                     * (dest+3)= (U8 )255;
@@ -235,27 +246,27 @@ static void shadow_smooth(U32 *in, U32 *out, U32 xsize, U32 ysize)
             }
         }*/
 
-    for (i = 2; i < (ysize - 4 + 2 + 1); i++)    // ––(≥˝»•±ﬂ‘µº∏––)
+    for (i = 2; i < (ysize - 4 + 2 + 1); i++)    // Ë°å(Èô§ÂéªËæπÁºòÂá†Ë°å)
     {
         for (j = 2; j < (xsize - 4 + 2 + 1); j++)
         {
             Result = 0;
-            // ÷∏œÚ–¬DIBµ⁄i––£¨µ⁄j∏ˆœÛÀÿµƒ÷∏’Î
+            // ÊåáÂêëÊñ∞DIBÁ¨¨iË°åÔºåÁ¨¨j‰∏™Ë±°Á¥†ÁöÑÊåáÈíà
             dest = (unsigned char *)out +  xsize * 4 * (i) + 4 * j;
 
             for (k = 0; k < 4; k++)
             {
                 for (l = 0; l < 4; l++)
                 {
-                    // ÷∏œÚDIBµ⁄i - iTempMY + k––£¨µ⁄j - iTempMX + l∏ˆœÛÀÿµƒ÷∏’Î
+                    // ÊåáÂêëDIBÁ¨¨i - iTempMY + kË°åÔºåÁ¨¨j - iTempMX + l‰∏™Ë±°Á¥†ÁöÑÊåáÈíà
                     src = (unsigned  char *)in + xsize * 4 * (
                               i - 2 + k) + 4 * (j - 2 + l);
-                    // ±£¥ÊœÛÀÿ÷µ
+                    // ‰øùÂ≠òË±°Á¥†ÂÄº
                     Result += (* (unsigned char *)(src + 3));
                 }
             }
 
-            Tmp = Result / 20;                  // ≥À…œœµ ˝
+            Tmp = Result / 20;                  // ‰πò‰∏äÁ≥ªÊï∞
 
             if (Tmp > 255)
             {

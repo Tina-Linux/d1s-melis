@@ -45,10 +45,11 @@ static int cmd_test_pwm(int argc, char **argv)
     struct pwm_config *config;
     uint8_t port;
     uint8_t ns;
+    ulong period, duty;
 
-    if (argc < 2)
+    if (argc < 4)
     {
-        hal_log_info("Usage: pwm port");
+        hal_log_info("Usage: pwm port | duty | period");
         return -1;
     }
 
@@ -56,11 +57,15 @@ static int cmd_test_pwm(int argc, char **argv)
 
     port = strtol(argv[1], NULL, 0);
     hal_log_info("port = %d", port);
+    duty = strtoul(argv[2], NULL, 0);
+    hal_log_info("duty = %d", duty);
+    period = strtoul(argv[3], NULL, 0);
+    hal_log_info("period = %d", period);
 
     config = (struct pwm_config *)malloc(sizeof(struct pwm_config));
 
-    config->duty_ns   = 7000000;
-    config->period_ns = 10000000;
+    config->duty_ns   = duty;
+    config->period_ns = period;
     config->polarity  = PWM_POLARITY_NORMAL;
     hal_log_info("duty_ns = %d \n", config->duty_ns);
     hal_log_info("period_ns = %d \n", config->period_ns);

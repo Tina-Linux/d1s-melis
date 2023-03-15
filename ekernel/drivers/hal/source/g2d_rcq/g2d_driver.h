@@ -18,7 +18,12 @@
 
 #ifndef __G2D_DRIVER_H
 #define __G2D_DRIVER_H
+
+#ifdef CONFIG_KERNEL_FREERTOS
+#include <aw_types.h>
+#else
 #include <typedef.h>
+#endif
 #include <errno.h>
 
 
@@ -315,6 +320,11 @@ typedef struct {
 	unsigned int y;
 } g2d_coor;
 
+typedef struct {
+	__u32 w;
+	__u32 h;
+} g2d_size;
+
 /* image struct */
 typedef struct {
 	int		 bbuff;
@@ -327,6 +337,7 @@ typedef struct {
 	__u32		 align[3];
 
 	g2d_rect	 clip_rect;
+	g2d_size	 resize;
 	g2d_coor	 coor;
 
 	__u32		 gamut;

@@ -17,6 +17,9 @@ struct regulator_ops{
 	int (*disable) (struct regulator_dev *);
 	int (*set_voltage) (struct regulator_dev *, int target_uV);
 	int (*get_voltage) (struct regulator_dev *, int *vol_uV);
+	int (*set_en) (struct regulator_dev *, unsigned int flags);
+	int (*set_voltage_ext) (struct regulator_dev *, int target_uV, unsigned int status);
+	int (*get_voltage_ext) (struct regulator_dev *, int *vol_uV,  unsigned int status);
 };
 
 struct regulator_dev{
@@ -45,6 +48,8 @@ struct regulator_desc {
 	const struct regulator_linear_range *linear_ranges;
 	int n_linear_ranges;
 	int *vtable;
+	int vol_act_mask;
+	int vol_slp_mask;
 };
 
 #define AXP_DESC(min, max, step1, vreg, vmask, ereg, emask)\
@@ -113,6 +118,31 @@ struct regulator_desc {
 	.uV_step        = _step_uV,                                     \
 }
 
+/* soc_regulators */
+
+#define SOC_DESC(min, max, step1, vreg, vmask_act, vmask_slp, ereg, emask)\
+{                                             \
+	.min_uv       = (int)min * 1000,             \
+	.max_uv       = (int)max * 1000,             \
+	.step1_uv     = (int)step1 * 1000,           \
+	.vol_reg      = (int)vreg,                     \
+	.vol_act_mask    = (int)vmask_act,                  \
+	.vol_slp_mask    = (int)vmask_slp,                  \
+	.enable_reg   = (int)ereg,                     \
+	.enable_mask  = (int)emask,                  \
+}
+
+#define SOC_DESC_RANGES(_ranges, vreg, vmask_act, vmask_slp, ereg, emask)\
+{                                             \
+	.vol_reg      = (int)vreg,                     \
+	.vol_act_mask    = (int)vmask_act,                  \
+	.vol_slp_mask    = (int)vmask_slp,                  \
+	.linear_ranges  = (_ranges),              \
+	.n_linear_ranges = ARRAY_SIZE(_ranges),           \
+	.enable_reg   = (int)ereg,                     \
+	.enable_mask  = (int)emask,                  \
+}
+
 /* for request_flag */
 #define TWI_PORT_SHIFT		8
 #define AXP_ADDR_SHIFT		12
@@ -133,6 +163,25 @@ enum REGULATOR_TYPE_ENUM{
 	AXP2101_REGULATOR,
 	PWM_REGULATOR,
 	GPIO_REGULATOR,
+	SOC_REGULATOR,
+	UNKNOWN_REGULATOR,
+};
+
+enum SOC_REGULATOR_STATUS_ENUM{
+	ACT_MODE,
+	SLEEP_MODE,
+};
+
+enum SOC_REGULATOR_DCDC_SET_ENUM{
+	DCDC_DEFAULT = 1,
+	DCDC_OPEN,
+	DCDC_CLOSE,
+};
+
+enum SOC_REGULATOR_LDO_EXT_SET_ENUM{
+	LDO_EXT_OFF,
+	LDO_EXT_WITH_TOP_LDO,
+	LDO_EXT_ALWAYS_ON,
 };
 
 /*
@@ -215,6 +264,51 @@ static inline int hal_regulator_disable(struct regulator_dev *rdev)
 
 	return 0;
 }
+/* ext */
+static inline int hal_regulator_get_voltage_ext(struct regulator_dev *rdev,
+						 int *vol_uV, unsigned int status)
+{
+    if(rdev && rdev->ops && rdev->ops->get_voltage_ext)
+	{
+		return rdev->ops->get_voltage_ext(rdev, vol_uV, status);
+	}
+	else
+	{
+		hal_soft_break();
+		hal_log_err("fatal error.");
+	}
+	return 0;
+}
+
+static inline int hal_regulator_set_voltage_ext(struct regulator_dev *rdev,
+						 int target_uV, unsigned int status)
+{
+    if(rdev && rdev->ops && rdev->ops->set_voltage_ext)
+	{
+		return rdev->ops->set_voltage_ext(rdev, target_uV, status);
+	}
+	else
+	{
+		hal_soft_break();
+		hal_log_err("fatal error.");
+	}
+	return 0;
+}
+
+static inline int hal_regulator_set_able(struct regulator_dev *rdev, unsigned int flags)
+{
+    if(rdev && rdev->ops && rdev->ops->set_en)
+	{
+		return rdev->ops->set_en(rdev, flags);
+	}
+	else
+	{
+		hal_soft_break();
+		hal_log_err("fatal error.");
+	}
+	return 0;
+}
+
 int hal_regulator_get(unsigned int request_flag, struct regulator_dev *rdev);
 /* TODO fix void type */
 /* TODO fix void type */
@@ -238,11 +332,25 @@ enum REGULATOR_ID_ENUM {
 };
 extern const struct regulator_desc axp2101_regulators[];
 
+enum REGULATOR_SOC_ID_ENUM {
+	SOC_ID_DCDC = 0,
+	SOC_ID_RTC,
+	SOC_ID_EXT_LDO,
+	SOC_ID_TOP_LDO,
+	SOC_ID_AON_LDO,
+	SOC_ID_APP_LDO,
+	SOC_ID_DSP_LDO,
+	SOC_ID_MAX,
+};
+extern const struct regulator_desc soc_regulators[];
+
 int hal_axp_twi_init(struct regulator_dev *rdev);
+int hal_soc_regulator_init(void);
 /*int hal_axp_byte_read(struct regulator_dev *rdev, u8 reg, u8 *reg_val);
 int hal_axp_byte_write(struct regulator_dev *rdev, u8 reg, u8 reg_val);
 int hal_axp_byte_update(struct regulator_dev *rdev, u8 reg, u8 val, u8 mask);
 */
+
 #ifdef __cplusplus
 }
 #endif

@@ -60,4 +60,12 @@ struct sunxi_spi_params_t {
 #include "platform/spi_sun8iw20.h"
 #endif
 
+#if defined(CONFIG_ARCH_SUN20IW2)
+#include "platform/spi_sun20iw2.h"
+#endif
+
+#if defined(CONFIG_ARCH_SUN8IW21) || defined(CONFIG_ARCH_SUN20IW3)
+#include "platform/spi_sun8iw21.h"
+#endif
+
 #endif /* __PLATFORM_SPI_H__ */

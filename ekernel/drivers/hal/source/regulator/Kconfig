@@ -4,4 +4,8 @@ config DRIVERS_REGULATOR
     bool "enable regulator driver"
         default y
 
+config HAL_TEST_REGULATOR
+	bool "regulator test"
+	depends on DRIVERS_REGULATOR
+		default y
 endmenu

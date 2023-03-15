@@ -2,8 +2,8 @@
 ********************************************************************************
 *                                USB UVC Driver
 *
-*                (c) Copyright 2006-2010, All winners Co,Ld. 
-*                        All Right Reserved 
+*                (c) Copyright 2006-2010, All winners Co,Ld.
+*                        All Right Reserved
 *
 * FileName		:  UVC.c
 *
@@ -11,7 +11,7 @@
 *
 * Date			:  2013/03/26
 *
-* Description	:  USB VIDEO CONTROL Driver÷–∂‘USBΩ”ø⁄…Ë±∏µƒ¥¶¿Ì
+* Description	:  USB VIDEO CONTROL Driver‰∏≠ÂØπUSBÊé•Âè£ËÆæÂ§áÁöÑÂ§ÑÁêÜ
 *
 * Others		:  NULL
 *
@@ -21,12 +21,10 @@
 *
 ********************************************************************************
 */
-#ifndef  __UVC_H__
-#define  __UVC_H__
-#include "typedef.h"
+#ifndef __UVC_H__
+#define __UVC_H__
 
 __s32 UVCInit(void);
 __s32 UVCExit(void);
 
-#endif   //__UVC_H__
-
+#endif	//__UVC_H__

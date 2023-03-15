@@ -19,6 +19,7 @@ mainmenu "Melis3.x SDK Configuration"
 
 source "ekernel/Kconfig"
 source "emodules/Kconfig"
+source "elibrary/Kconfig"
 source "Kconfig.melis"
 source "Kconfig.platform"
 source "livedesk/Kconfig"

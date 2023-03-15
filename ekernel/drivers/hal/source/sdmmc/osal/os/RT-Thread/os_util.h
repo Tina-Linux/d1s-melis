@@ -37,6 +37,7 @@
 #include "os_time.h"
 #include "os_debug.h"
 #include "sunxi_hal_common.h"
+#include "hal_interrupt.h"
 
 /* check if in ISR context or not */
 static __always_inline int OS_IsISRContext(void)

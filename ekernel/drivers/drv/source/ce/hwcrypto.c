@@ -11,7 +11,6 @@
 #include <rtthread.h>
 #include <rtdevice.h>
 #include <hwcrypto.h>
-#include <log.h>
 
 /**
  * @brief           Setting context type (Direct calls are not recommended)
@@ -102,13 +101,11 @@ struct rt_hwcrypto_ctx *rt_hwcrypto_ctx_create(struct rt_hwcrypto_device *device
     /* Parameter checking */
     if (device == RT_NULL || obj_size < sizeof(struct rt_hwcrypto_ctx))
     {
-        __err("fatal error. parameter is null.");
         return RT_NULL;
     }
     ctx = rt_malloc(obj_size);
     if (ctx == RT_NULL)
     {
-        __err("fatal error.alloc failure.");
         return ctx;
     }
     rt_memset(ctx, 0, obj_size);
@@ -118,7 +115,6 @@ struct rt_hwcrypto_ctx *rt_hwcrypto_ctx_create(struct rt_hwcrypto_device *device
     {
         rt_free(ctx);
         ctx = RT_NULL;
-        __err("fatal error.create failure.");
     }
     return ctx;
 }

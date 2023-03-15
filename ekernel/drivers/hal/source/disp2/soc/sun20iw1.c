@@ -85,7 +85,7 @@ struct clk_info_t g_clk_no[] = {
 	{
 		"clk_tcon1",
 		CLK_TCON_TV,
-		CLK_PLL_VIDEO0_4X,
+		CLK_PLL_VIDEO1,
 		RST_BUS_TCON_TV,
 		NULL,
 		NULL,

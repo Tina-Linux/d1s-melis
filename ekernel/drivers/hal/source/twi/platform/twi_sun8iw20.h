@@ -35,7 +35,11 @@
 #define __TWI_SUN8IW20_H__
 
 /** the irq of each TWI **/
+#ifdef CONFIG_SOC_SUN20IW1
 #define SUNXI_GIC_START 16
+#else
+#define SUNXI_GIC_START 0
+#endif
 
 /** the base address of TWI*/
 #define SUNXI_TWI0_PBASE 0x02502000

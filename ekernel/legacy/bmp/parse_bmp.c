@@ -1,28 +1,39 @@
 /*
-*************************************************************************************
-*                                   eGon
-*                           Application Of eGon2.0
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*               (c) Copyright 2006-2010, All winners Co,Ld.
-*                           All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File Name     : Parse_Picture.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
-* Author        : javen
 *
-* Description   : Í¼Æ¬½âÎö
-*
-* History       :
-*      <author>         <time>          <version >          <desc>
-*       javen          2010-09-10          1.0            create this file
-*
-*************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "parse_bmp.h"
 #include "bmp.h"
 #include <string.h>
 #include <log.h>
+#include <hal_mem.h>
 
 #define spcl_size_align( x, y )         ( ( (x) + (y) - 1 ) & ~( (y) - 1 ) )
 #define abs(x) (x) >= 0 ? (x):-(x)
@@ -32,12 +43,12 @@
 *                     Parse_Pic_BMP_ByBuffer
 *
 * Description:
-*    ½âÎö´æ·ÅÔÚÄÚ´æÖÐµÄÍ¼Æ¬
+*    è§£æžå­˜æ”¾åœ¨å†…å­˜ä¸­çš„å›¾ç‰‡
 *
 * Parameters:
-*    Pic_Buffer     :  input.  ´æ·ÅÍ¼Æ¬µÄÈë¿Ú
-*    Pic_BufferSize :  input.  »º³åÇø´óÐ¡
-*    PictureInfo    :  output. Í¼Æ¬½âÎöºóµÄÐÅÏ¢
+*    Pic_Buffer     :  input.  å­˜æ”¾å›¾ç‰‡çš„å…¥å£
+*    Pic_BufferSize :  input.  ç¼“å†²åŒºå¤§å°
+*    PictureInfo    :  output. å›¾ç‰‡è§£æžåŽçš„ä¿¡æ¯
 *
 * Return value:
 *    void
@@ -69,13 +80,13 @@ int32_t Parse_Pic_BMP_ByBuffer(void *Pic_Buffer, uint32_t Pic_BufferSize, Pictur
 *                     Parse_Pic_BMP
 *
 * Description:
-*    ÒÔÂ·¾¶ÃûÀ´½âÎöÍ¼Æ¬, ²¢ÇÒ°Ñ½âÎö´¦ÀíµÄÍ¼Æ¬¿½±´µ½Ö¸¶¨µÄµØÖ·£¬
-* Èç¹ûÖ¸¶¨µÄµØÖ·ÎªNULL, Ôò¿ÉÒÔ´æ·ÅÔÚÈÎºÎµØÖ·¡£
+*    ä»¥è·¯å¾„åæ¥è§£æžå›¾ç‰‡, å¹¶ä¸”æŠŠè§£æžå¤„ç†çš„å›¾ç‰‡æ‹·è´åˆ°æŒ‡å®šçš„åœ°å€ï¼Œ
+* å¦‚æžœæŒ‡å®šçš„åœ°å€ä¸ºNULL, åˆ™å¯ä»¥å­˜æ”¾åœ¨ä»»ä½•åœ°å€ã€‚
 *
 * Parameters:
-*    Path           :  input.  Í¼Æ¬Â·¾¶
-*    PictureInfo    :  output. Í¼Æ¬½âÎöºóµÄÐÅÏ¢
-*    Addr           :  input.  ´æ·Å½âÎöºóµÄÍ¼Æ¬,
+*    Path           :  input.  å›¾ç‰‡è·¯å¾„
+*    PictureInfo    :  output. å›¾ç‰‡è§£æžåŽçš„ä¿¡æ¯
+*    Addr           :  input.  å­˜æ”¾è§£æžåŽçš„å›¾ç‰‡,
 *
 * Return value:
 *    void
@@ -110,7 +121,7 @@ int32_t Parse_Pic_BMP_ByPath(char *Path, Picture_t *PictureInfo, void *Addr)
     }
     else
     {
-        PictureInfo->Buffer = (void *)rt_malloc(PictureInfo->BufferSize);
+        PictureInfo->Buffer = (void *)hal_malloc(PictureInfo->BufferSize);
     }
     if (PictureInfo->Buffer == NULL)
     {
@@ -159,7 +170,7 @@ int32_t Parse_Pic_BMP_ByRam(uint32_t base, uint32_t size, Picture_t *PictureInfo
     }
     else
     {
-        PictureInfo->Buffer = (void *)rt_malloc(PictureInfo->BufferSize);
+        PictureInfo->Buffer = (void *)hal_malloc(PictureInfo->BufferSize);
     }
     if (PictureInfo->Buffer == NULL)
     {

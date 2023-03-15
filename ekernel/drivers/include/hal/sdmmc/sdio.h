@@ -30,18 +30,14 @@
 #ifndef _DRIVER_CHIP_SDMMC_SDIO_H_
 #define _DRIVER_CHIP_SDMMC_SDIO_H_
 
+#include <sunxi_hal_common.h>
 #include "card.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#undef readl
-#undef writel
-
 #define printk printf
-#define readl hal_readl
-#define writel hal_writel
 
 #ifdef CONFIG_USE_SDIO
 /*

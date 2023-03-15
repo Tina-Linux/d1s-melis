@@ -14,13 +14,75 @@ config 64BIT
 	help
 		processor supports 64bit mode.
 
+choice
+    prompt "RISCV bit mode"
+	default RV64
+
+config RV64
+	bool  "CPU Support rv64bit ISA"
+	depends on RISCV
+	help
+		processor supports rv64bit mode.
+
+config RV32
+	bool  "CPU Support rv32bit ISA"
+	depends on RISCV
+	help
+		processor supports rv32bit mode.
+endchoice
+
+config RV_MACHINE_MODE
+	bool "Kernel Run In Machine Mode"
+	depends on RISCV
+	default n
+
+config RV_CLINT
+	bool "Kernel CLINT Driver"
+	depends on RISCV
+	default n
+
+config RV_PLIC
+	bool "Kernel PLIC Driver"
+	depends on RISCV
+	default y
+
+config RV_SBI
+	bool "Support RISC-V SBI"
+	depends on RISCV
+	default y
+
+config SBI_PATH
+    string  "sbi binary path"
+	default "projects/f133-evb-board/sbi-bin/sbi.bin"
+	depends on RV_SBI
+	help
+		"sbi binary will be included to kernel"
+
 config CPU_DCACHE_DISABLE
-        bool  "Disable RISCV CPU Dcache"
+    bool  "Disable RISCV CPU Dcache"
 	default n
 	depends on RISCV
 	help
 		Disable RISCV CPU Dcache.
 
-source ekernel/arch/riscv/sbi/Kconfig
+config ARCH_RISCV_FPU
+    bool  "CPU Support FPU"
+	default n
+	depends on RISCV
+	help
+		CPU Spuuort RISCV FPU.
+
+choice
+	prompt "Selete Float Point Format"
+	default FPU_DOUBLE
+config FPU_FLOAT
+	bool "Use Singal float"
+	depends on ARCH_RISCV_FPU
+config FPU_DOUBLE
+	bool "Use Double float"
+	depends on ARCH_RISCV_FPU
+endchoice
+
+source "ekernel/arch/riscv/sunxi/Kconfig"
 
 endmenu

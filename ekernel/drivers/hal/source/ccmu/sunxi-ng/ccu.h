@@ -48,9 +48,13 @@ struct clk_ops;
 #define BIT(x) (1 << (x))
 
 #define BITS_PER_LONGS 32
+
+#ifndef GENMASK
 #define GENMASK(h, l) \
     (((~(0)) - ((1) << (l)) + 1) & \
      (0x00ffffffff >> (BITS_PER_LONGS - 1 - (h))))
+#endif
+
 #define DIV_ROUND_UP_ULL(n, d) (((n) + (d) - 1) / (d))
 /*
  * flags used across common struct clk.  these flags should only affect the

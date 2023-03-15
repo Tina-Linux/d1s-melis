@@ -389,5 +389,11 @@ config CHECK_PREEMPT_LEVEL_IN_IPC
     help
       "Add assert to check whether enter critical"
 
+config AW_CHECK_MELIS_TASK_EXIT
+    bool "Check allwinner melis task exit whether is illegal"
+    default y
+    help
+      "Check whether the exit function is illegal"
+
 endmenu
 source "ekernel/core/rt-thread/Kconfig.scheduler"

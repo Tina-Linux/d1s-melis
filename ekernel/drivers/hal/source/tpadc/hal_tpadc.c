@@ -452,7 +452,7 @@ static hal_tpadc_status_t hal_tpadc_clk_exit(hal_tpadc_t *tpadc)
 }
 
 /* the rtpadc tpadc mode interface */
-static irqreturn_t tpadc_handler(int irq, void *dev)
+static hal_irqreturn_t tpadc_handler(void *dev)
 {
 	hal_tpadc_t *tpadc = (hal_tpadc_t *)dev;
 	u32  reg_val;
@@ -533,13 +533,13 @@ hal_tpadc_status_t hal_tpadc_init(void)
 
     sunxi_tpadc_clear_pending(tpadc->reg_base);
 
-    if (request_irq(tpadc->irq_num, tpadc_handler, 0, "tpadc", tpadc))
+    if (hal_request_irq(tpadc->irq_num, tpadc_handler, "tpadc", tpadc))
     {
         TPADC_ERR("tpadc request irq(%d) failed \n", tpadc->irq_num);
 	return TPADC_ERROR;
     }
 
-    enable_irq(tpadc->irq_num);
+    hal_enable_irq(tpadc->irq_num);
 
     TPADC_INFO("tpadc init success");
 
@@ -551,7 +551,7 @@ hal_tpadc_status_t hal_tpadc_exit(void)
     hal_tpadc_t *tpadc = &hal_tpadc;
 
     sunxi_irq_disable(tpadc->reg_base);
-    free_irq(tpadc->irq_num, tpadc);
+    hal_free_irq(tpadc->irq_num);
 	hal_tpadc_clk_exit(tpadc);
 
     return TPADC_OK;
@@ -578,7 +578,7 @@ hal_tpadc_status_t hal_tpadc_suspend(void)
 }
 
 /* the rtpadc adc mode interface*/
-static irqreturn_t tpadc_adc_handler(int irq, void *dev)
+static hal_irqreturn_t tpadc_adc_handler(void *dev)
 {
 	hal_tpadc_t *tpadc = (hal_tpadc_t *)dev;
 	u32 reg_val;
@@ -671,13 +671,13 @@ hal_tpadc_status_t hal_tpadc_adc_init(void)
 
     sunxi_tpadc_clear_pending(tpadc->reg_base);
 
-    if (request_irq(tpadc->irq_num, tpadc_adc_handler, 0, "tpadc", tpadc))
+    if (hal_request_irq(tpadc->irq_num, tpadc_adc_handler, "tpadc_adc", tpadc))
     {
         TPADC_ERR("tpadc request irq(%d) failed \n", tpadc->irq_num);
 	return TPADC_ERROR;
     }
 
-    enable_irq(tpadc->irq_num);
+    hal_enable_irq(tpadc->irq_num);
 
     TPADC_INFO("tpadc init success");
 
@@ -702,7 +702,7 @@ hal_tpadc_status_t hal_tpadc_adc_exit()
     hal_tpadc_t *tpadc = &hal_tpadc;
 
     sunxi_irq_disable(tpadc->reg_base);
-    free_irq(tpadc->irq_num, tpadc);
+    hal_free_irq(tpadc->irq_num);
 
     hal_clock_disable(tpadc->bus_clk);
     hal_clock_put(tpadc->bus_clk);

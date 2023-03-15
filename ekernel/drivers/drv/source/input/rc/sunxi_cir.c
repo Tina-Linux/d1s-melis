@@ -50,6 +50,92 @@
 #define CIR_UNIT_24M_DIV256		(10700)
 
 static hal_cir_info_t cir_info[CIR_MASTER_NUM];
+#if 1
+#include <kapi.h>
+#include "ir_keymap.h"
+extern int32_t console_LKeyDevEvent(__input_dev_t *dev, uint32_t type, uint32_t code, int32_t value);
+
+__u32 *ir_solution_keymapping = NULL;
+/*
+****************************************************************************************************
+*
+*  FunctionName:           lradckey_keydown
+*
+*  Description:
+*              Press the key and call ioctrl to send the key press message. Callback function.
+*
+*  Parameters:
+*       keyvalue :
+*
+*  Return value:
+*  
+*  Notes:
+*
+****************************************************************************************************
+*/
+static  void irkey_keydown(__u32 keyvalue)
+{
+	__inf("irkey_keydown keyvalue= %x",ir_solution_keymapping[keyvalue]);
+	console_LKeyDevEvent(NULL,	EV_KEY, ir_solution_keymapping[keyvalue],	1);
+	console_LKeyDevEvent(NULL,	EV_SYN,  0,  0);
+
+    return;
+}
+
+/*
+****************************************************************************************************
+*
+*  FunctionName:           lradckey_keyup
+*
+*  Description:
+*              Press the key up and call ioctrl to send the key up message. Callback function.
+*
+*  Parameters:
+*       keyvalue :
+*
+*  Return value:
+*  
+*  Notes:
+*
+****************************************************************************************************
+*/
+static  void irkey_keyup(__u32 keyvalue)
+{
+	hal_cir_info_t *ir_key = NULL;
+	ir_key = &cir_info[0];
+
+	ir_key->press_cnt = 0;
+	__inf("irkey_keyup =%x",ir_solution_keymapping[keyvalue]);
+	console_LKeyDevEvent(NULL,	EV_KEY, ir_solution_keymapping[keyvalue],	0);
+	console_LKeyDevEvent(NULL,	EV_SYN,  0,  0);
+	return;
+}
+static  void  aw_ir_key_keyup(hal_cir_info_t *ir_key, __u32 key_value)
+{
+	ir_key->crt_value = 0xff;
+	ir_key->pre_value = 0xff;
+
+	if (ir_key->key_up) {
+ 		ir_key->key_up(key_value);
+	}
+
+    return;
+}
+
+static void aw_ir_key_timer_do(void *pArg)
+{
+	hal_cir_info_t *ir_key = NULL;
+	ir_key = &cir_info[0];
+	aw_ir_key_keyup(ir_key, ir_key->crt_value);
+	__inf("aw_ir_key_keyup");
+	//aw_ir_key_keyup(ir_key, ir_key->crt_value);
+	//ir_key->keyup_cnt  = 0;
+	//ir_key->repeat_key = IR_REPEAT_KEY_OFF;//repeat code flag
+	//IR_DBG("key up, key = %x ", ir_key->crt_value);
+	return;
+}
+
+#endif
 
 cir_status_t hal_cir_port_is_valid(cir_port_t port)
 {
@@ -102,17 +188,17 @@ static void hal_cir_receive_data(cir_port_t port, uint32_t data)
 	pulse = data >> 7;
 	duration = data & 0x7f;
 
-	if ((info->is_receiving) && (pulse != info->pulse)) {
+	if (info->is_receiving && pulse != info->pulse) {
 		if (info->index < CIR_FIFO_SIZE)
 			info->index++;
 		else
 			return;
-
-		info->event[info->index].duration += duration * CIR_UNIT_24M_DIV256;
-		info->event[info->index].pulse = pulse;
-		info->is_receiving = true;
-		info->pulse = pulse;
 	}
+
+	info->event[info->index].duration += duration * CIR_UNIT_24M_DIV256;
+	info->event[info->index].pulse = pulse;
+	info->is_receiving = true;
+	info->pulse = pulse;
 
 }
 
@@ -172,6 +258,14 @@ void hal_cir_put_value(hal_cir_info_t *info, uint32_t scancode)
 	input_report_key(info->sunxi_ir_dev, scancode, 1);
 
 	input_sync(info->sunxi_ir_dev);
+}
+
+void hal_cir_long_press_value(hal_cir_info_t *info, uint32_t scancode)
+{
+	__inf("long_key =%x",ir_solution_keymapping[scancode]);
+	console_LKeyDevEvent(NULL,	EV_KEY, ir_solution_keymapping[scancode],	2);
+	console_LKeyDevEvent(NULL,	EV_SYN,  0,  0);
+	return;
 }
 
 #if 0
@@ -246,6 +340,26 @@ int cir_master_init(void)
 
 		sunxi_input_register_device(info->sunxi_ir_dev);
 		sunxi_cir_callback_register(port, hal_cir_handle_data);
+		info->key_down	= irkey_keydown;
+		info->key_up	= irkey_keyup;
+		info->hTimer = rt_timer_create("ir_timer", aw_ir_key_timer_do, NULL, 13, RT_TIMER_FLAG_ONE_SHOT);
+		info->crt_value = 0xff;
+		info->pre_value = 0xff;
+		info->press_cnt = 0;
+		info->user_code = NEC_IR_ADDR_CODE;/*if user_code is 0, the user code is not checked*/
+		info->valid = true;
+
+		if(info->user_code == NEC_IR_ADDR_CODE) {
+			ir_keymap[18]  = KPAD_MENU;
+			ir_keymap[64] = KPAD_RETURN;/* learning */
+			ir_keymap[170] = KPAD_UP;
+			ir_keymap[160] = KPAD_RIGHT;
+			ir_keymap[96] = KPAD_ENTER;
+			ir_keymap[122] = KPAD_LEFT;
+			ir_keymap[224] = KPAD_DOWN;
+		}
+		ir_solution_keymapping = ir_keymap;
+
 	}
 #ifdef CONFIG_STANDBY
 	register_pm_dev_notify(hal_cir_suspend, hal_cir_resume, NULL);

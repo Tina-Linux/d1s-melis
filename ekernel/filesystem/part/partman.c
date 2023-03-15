@@ -1,20 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                                  File System
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2011-2014, Sunny China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : partman.c
-* By      : Sunny
-* Version : v1.0
-* Date    : 2011-3-15
-* Descript: partition management of file system.
-* Update  : date                auther      ver     notes
-*           2011-3-15 14:58:06  Sunny       1.0     Create this file.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "errno.h"
 #include "part.h"
@@ -22,17 +35,21 @@
 #include "fsys_libs.h"
 #include <log.h>
 
-/* ×ÔÓÉ·ÖÅäµÄ·ÖÇøÁĞ±í */
+/* è‡ªç”±åˆ†é…çš„åˆ†åŒºåˆ—è¡¨ */
 __fsys_part_t   *pPartFTbl[FSYS_MAX_FPARTS] = {0};
 
-/* ÏµÍ³ÄÚ²¿¹Ì¶¨·ÖÅäµÄ·ÖÇøÁĞ±í */
+/* ç³»ç»Ÿå†…éƒ¨å›ºå®šåˆ†é…çš„åˆ†åŒºåˆ—è¡¨ */
+#ifdef CONFIG_SOC_SUN20IW1
+__fix_part_t    pPartXTbl[FSYS_MAX_XPARTS]  = { {'A', 0}, {'B', 0}, {'C', 0}, {'D', 0}, {'E', 0}, {'W', 0}, {'X', 0}, {'Y', 0}, {'Z', 0} };
+#else
 __fix_part_t    pPartXTbl[FSYS_MAX_XPARTS]  = { {'A', 0}, {'B', 0}, {'C', 0}, {'D', 0}, {'W', 0}, {'X', 0}, {'Y', 0}, {'Z', 0} };
+#endif
 
-/* ·½°¸ÓÃ»§×Ô¶¨Òå·ÖÇøµÄ·ÖÇøÁĞ±í */
+/* æ–¹æ¡ˆç”¨æˆ·è‡ªå®šä¹‰åˆ†åŒºçš„åˆ†åŒºåˆ—è¡¨ */
 __fix_part_t    pPartUTbl[FSYS_MAX_UPARTS]  = { {'U', 0}, {'V', 0} };
 
 static __hdle   mnt_parts_tid   = NULL;
-static __hdle   pContolSem      = NULL;         /* ·ÖÇø¹ÒÔØÏß³Ì»½ĞÑ¡¢Ë¯Ãß¿ØÖÆËø */
+static __hdle   pContolSem      = NULL;         /* åˆ†åŒºæŒ‚è½½çº¿ç¨‹å”¤é†’ã€ç¡çœ æ§åˆ¶é” */
 __hdle          CurhNode        = NULL;
 __hdle          pPartSem        = NULL;         /* for lock parts table */
 __fsys_pd_t     *pPDRoot        = NULL;
@@ -51,10 +68,10 @@ static void mnt_parts_task(void *p_arg)
 {
     while (1)
     {
-        /* ¹ÒÔØ·ÖÇøÏß³ÌÖ÷¶¯Ë¯Ãß */
+        /* æŒ‚è½½åˆ†åŒºçº¿ç¨‹ä¸»åŠ¨ç¡çœ  */
         esKRNL_SemPend(pContolSem, 0, NULL);
 
-        /* ÊÕµ½·ÖÇø¹ÒÔØÍ¨Öª£¬Ïß³Ì±»»½ĞÑ£¬¿ªÊ¼¹ÒÔØµ±Ç°Éè±¸½Úµã */
+        /* æ”¶åˆ°åˆ†åŒºæŒ‚è½½é€šçŸ¥ï¼Œçº¿ç¨‹è¢«å”¤é†’ï¼Œå¼€å§‹æŒ‚è½½å½“å‰è®¾å¤‡èŠ‚ç‚¹ */
         __mount_parts(CurhNode);
     }
 }
@@ -64,14 +81,14 @@ int32_t fsys_vpart_init(void)
     uint32_t    err = 0;
 
     /************************************************************/
-    /*  ´´½¨Ïß³Ì»½ĞÑ¡¢Ë¯Ãß¿ØÖÆĞÅºÅÁ¿£¬                          */
-    /*  ·ÖÇø¹ÒÔØÏß³Ì´´½¨ºó´¦ÓÚË¯Ãß×´Ì¬£¬                        */
-    /*  Ö»ÓĞ¹ÒÔØ·ÖÇøÊ±²ÅÖ÷¶¯»½ĞÑ                                */
+    /*  åˆ›å»ºçº¿ç¨‹å”¤é†’ã€ç¡çœ æ§åˆ¶ä¿¡å·é‡ï¼Œ                          */
+    /*  åˆ†åŒºæŒ‚è½½çº¿ç¨‹åˆ›å»ºåå¤„äºç¡çœ çŠ¶æ€ï¼Œ                        */
+    /*  åªæœ‰æŒ‚è½½åˆ†åŒºæ—¶æ‰ä¸»åŠ¨å”¤é†’                                */
     /************************************************************/
     pContolSem  = esKRNL_SemCreate(0);
     err         = !pContolSem;
 
-    /* ·ÖÇø²Ù×÷»¥³âËø */
+    /* åˆ†åŒºæ“ä½œäº’æ–¥é” */
     pPartSem    = esKRNL_SemCreate(1);
     err         |= !pPartSem;
 
@@ -81,15 +98,13 @@ int32_t fsys_vpart_init(void)
         return EPDK_FAIL;
     }
 
-    /* ³õÊ¼»¯Ê±Ã»ÓĞ¹ÒÔØÉè±¸½Úµã */
+    /* åˆå§‹åŒ–æ—¶æ²¡æœ‰æŒ‚è½½è®¾å¤‡èŠ‚ç‚¹ */
     CurhNode = NULL;
 
     /************************************************************/
-    /*  ´´½¨·ÖÇø¹ÒÔØÏß³Ì                                        */
+    /*  åˆ›å»ºåˆ†åŒºæŒ‚è½½çº¿ç¨‹                                        */
     /************************************************************/
-
-	/*notes:  stack size too low, ntfs disk check log file will  fail, do not reduce this stach size*/
-    mnt_parts_tid = awos_task_create("fs-pmnt", mnt_parts_task, NULL, 0x4000, RT_TIMER_THREAD_PRIO - 1, 10);
+    mnt_parts_tid = awos_task_create("mnt_task", mnt_parts_task, NULL, 0x4000, CONFIG_RT_TIMER_THREAD_PRIO - 1, 10);
 
     return mnt_parts_tid ? EPDK_OK : EPDK_FAIL;
 }
@@ -123,7 +138,7 @@ int32_t fsys_vpart_exit(void)
 *             fsys_regist_part
 *
 *  Description:
-*   ×¢²á¿éÉè±¸µ½ÎÄ¼şÏµÍ³ÖĞ
+*   æ³¨å†Œå—è®¾å¤‡åˆ°æ–‡ä»¶ç³»ç»Ÿä¸­
 *
 *  Parameters:
 *   pFullName   - Fully qualified name.
@@ -143,7 +158,7 @@ int32_t esFSYS_pdreg(__hdle hPD)
 
     esKRNL_SemPend(pPartSem, 0, NULL);
 
-    /* ÅĞ¶ÏÎÄ¼şÏµÍ³ÊÇ·ñÒÑ¾­±»×¢²á */
+    /* åˆ¤æ–­æ–‡ä»¶ç³»ç»Ÿæ˜¯å¦å·²ç»è¢«æ³¨å†Œ */
     for (p = pPDRoot; p; p = p->next)
     {
         if (strcmp(p->name, pd->name) == 0)
@@ -154,11 +169,11 @@ int32_t esFSYS_pdreg(__hdle hPD)
         }
     }
 
-    /* ½«Çı¶¯ÖÃÎª0¸öuser                                        */
+    /* å°†é©±åŠ¨ç½®ä¸º0ä¸ªuser                                        */
     pd->nUsr    = 0;
-    /* ½«Çı¶¯ÖÃÎªÓĞĞ§Çı¶¯                                       */
+    /* å°†é©±åŠ¨ç½®ä¸ºæœ‰æ•ˆé©±åŠ¨                                       */
     pd->status  = PD_STAT_ACTIVE;
-    /* ½«Çı¶¯¹Ò½Óµ½pPDRootÉÏ                                    */
+    /* å°†é©±åŠ¨æŒ‚æ¥åˆ°pPDRootä¸Š                                    */
     pd->next    = pPDRoot;
     pPDRoot     = pd;
     res         = EPDK_OK;
@@ -174,7 +189,7 @@ out:
 *             fsys_regist_part
 *
 *  Description:
-*   °Î³ı¿éÉè±¸
+*   æ‹”é™¤å—è®¾å¤‡
 *
 *  Parameters:
 *   pFullName   - Fully qualified name.
@@ -226,16 +241,27 @@ out:
 *             esFSYS_mntparts
 *
 *  Description:
-*   ×¢²á¿éÉè±¸µ½ÎÄ¼şÏµÍ³ÖĞ
+*   æ³¨å†Œå—è®¾å¤‡åˆ°æ–‡ä»¶ç³»ç»Ÿä¸­
 *
 *  Parameters:
-*   hNode       - Éè±¸½Úµã¾ä±ú.
+*   hNode       - è®¾å¤‡èŠ‚ç‚¹å¥æŸ„.
 *
 *  Return value:
 *   EPDK_OK     - registered ok
 *   EPDK_FAIL   - fail.
 ******************************************************************
 */
+__attribute__((weak)) int32_t blockdev_unregister_callback(int32_t u_arg, int32_t s_arg) {
+	//do nothing
+	return 0;
+}
+__attribute__((weak)) int32_t blockdev_register_callback(int32_t u_arg, int32_t s_arg) {
+	//do nothing
+	return 0;
+}
+
+
+
 static int32_t __mount_parts(__hdle hNode)
 {
     int32_t         i, j, res;
@@ -256,7 +282,7 @@ static int32_t __mount_parts(__hdle hNode)
     }
 
     /************************************************************/
-    /* Ê¶±ğÉè±¸ÉÏµÄ·ÖÇø¸öÊı                                     */
+    /* è¯†åˆ«è®¾å¤‡ä¸Šçš„åˆ†åŒºä¸ªæ•°                                     */
     /************************************************************/
     hDev    = esDEV_Open(hNode, 0);
     if (!hDev)
@@ -282,14 +308,14 @@ static int32_t __mount_parts(__hdle hNode)
         esDEV_Ioctl(hDev, DEV_IOC_SYS_GET_OPENARGS, 0, &openargs);
         if (openargs)
         {
-            last_lun = (uint32_t)(openargs);
+            last_lun = (uint32_t)(long)(openargs);
         }
         else
         {
             last_lun = 1;
         }
     }
-    else//Èç¹ûÊÇÆäËüÀàĞÍÉè±¸£¬ÔòÄ¬ÈÏÊÇ×îºóÒ»¸öÅÌ
+    else//å¦‚æœæ˜¯å…¶å®ƒç±»å‹è®¾å¤‡ï¼Œåˆ™é»˜è®¤æ˜¯æœ€åä¸€ä¸ªç›˜
     {
         last_lun = 1;
     }
@@ -305,11 +331,11 @@ static int32_t __mount_parts(__hdle hNode)
     {
         if (pPD->Ops.identify && pPD->status == PD_STAT_ACTIVE)
         {
-            /* ÓÉÓÚÒªµ÷ÓÃidentifyº¯Êı,ĞèÒª½«pdµÄÊ¹ÓÃÕß¼ÓÒ»  */
+            /* ç”±äºè¦è°ƒç”¨identifyå‡½æ•°,éœ€è¦å°†pdçš„ä½¿ç”¨è€…åŠ ä¸€  */
             pPD->nUsr++;
 
             nPart   = pPD->Ops.identify(hDev);
-            /* ÓÉÓÚµ÷ÓÃidentifyº¯Êı½áÊø,ĞèÒª½«pdµÄÊ¹ÓÃÕß¼õÒ» */
+            /* ç”±äºè°ƒç”¨identifyå‡½æ•°ç»“æŸ,éœ€è¦å°†pdçš„ä½¿ç”¨è€…å‡ä¸€ */
             pPD->nUsr--;
         }
 
@@ -331,7 +357,7 @@ static int32_t __mount_parts(__hdle hNode)
     __log("nPart = %d.", nPart);
 
     /************************************************************/
-    /* ×°ÔØ·ÖÇø                                                 */
+    /* è£…è½½åˆ†åŒº                                                 */
     /************************************************************/
     for (i = 0; i < nPart; i++)
     {
@@ -340,9 +366,9 @@ static int32_t __mount_parts(__hdle hNode)
         uint8_t         buf[12] = {0};
 
         /********************************************************/
-        /* Éú³ÉpartÊı¾İ½á¹¹                              */
+        /* ç”Ÿæˆpartæ•°æ®ç»“æ„                              */
         /********************************************************/
-        /* »ñÈ¡·ÖÇøÊı¾İ½á¹¹ÄÚ´æ */
+        /* è·å–åˆ†åŒºæ•°æ®ç»“æ„å†…å­˜ */
         pPart = calloc(1, sizeof(__fsys_part_t));
         if (!pPart)
         {
@@ -354,11 +380,11 @@ static int32_t __mount_parts(__hdle hNode)
 
         pPart->last_lun     = last_lun;
 
-        /* ´ò¿ªÉè±¸£¬»ñµÃ¾ä±ú */
+        /* æ‰“å¼€è®¾å¤‡ï¼Œè·å¾—å¥æŸ„ */
         hDev    = esDEV_Open(hNode, 0);
         if (!hDev)
         {
-            /* ÊÍ·Å·ÖÅäµÄÄÚ´æ¿Õ¼ä */
+            /* é‡Šæ”¾åˆ†é…çš„å†…å­˜ç©ºé—´ */
             free(pPart);
 
             __log("device cannot be opened!");
@@ -367,7 +393,7 @@ static int32_t __mount_parts(__hdle hNode)
             goto out;
         }
 
-        /* ÉèÖÃ·ÖÇøÃû */
+        /* è®¾ç½®åˆ†åŒºå */
         strncpy(pPart->dname, devname, MAX_PART_NAME_LEN);
 
         k   = strlen(pPart->dname);
@@ -375,7 +401,7 @@ static int32_t __mount_parts(__hdle hNode)
 
         strncpy(&pPart->dname[k], buf, MAX_PART_NAME_LEN - k - 1);
 
-        /* ¼ÇÂ¼Éè±¸¾ä±ú£¬½ÚµãºÍ·ÖÇøºÅ */
+        /* è®°å½•è®¾å¤‡å¥æŸ„ï¼ŒèŠ‚ç‚¹å’Œåˆ†åŒºå· */
         pPart->hNode        = hNode;
         pPart->hDev         = hDev;
         pPart->Unit         = i;
@@ -384,21 +410,21 @@ static int32_t __mount_parts(__hdle hNode)
         pPart->updateflag   = EPDK_FALSE;
 
         /********************************************************/
-        /* ¹Ò½Ó·ÖÇøÇı¶¯                                         */
+        /* æŒ‚æ¥åˆ†åŒºé©±åŠ¨                                         */
         /********************************************************/
-        /* ÓÉÓÚÒªµ÷ÓÃmountº¯Êı,ĞèÒª½«pdÊ¹ÓÃÕß¼Ó1 */
+        /* ç”±äºè¦è°ƒç”¨mountå‡½æ•°,éœ€è¦å°†pdä½¿ç”¨è€…åŠ 1 */
         pPD->nUsr++;
 
-        /* mount·ÖÇø */
+        /* mountåˆ†åŒº */
         if (pPD->Ops.mount(pPart) == EPDK_FAIL)
         {
-            /* ÓÉÓÚmountÊ§°Ü,ĞèÒª½«pdÊ¹ÓÃÕß¼õ1 */
+            /* ç”±äºmountå¤±è´¥,éœ€è¦å°†pdä½¿ç”¨è€…å‡1 */
             if (pPD->nUsr)
             {
                 pPD->nUsr--;
             }
 
-            /* ÊÍ·Å·ÖÅäµÄÄÚ´æ¿Õ¼ä */
+            /* é‡Šæ”¾åˆ†é…çš„å†…å­˜ç©ºé—´ */
             free(pPart);
             esDEV_Close(hDev);
             __log("part mount fail!");
@@ -408,11 +434,11 @@ static int32_t __mount_parts(__hdle hNode)
         pPart->pPD  = pPD;
 
         /********************************************************/
-        /* ½«·ÖÇø¹Ò½Óµ½·ÖÇø±íÖĞ                                 */
+        /* å°†åˆ†åŒºæŒ‚æ¥åˆ°åˆ†åŒºè¡¨ä¸­                                 */
         /********************************************************/
         pPart->letter   = 0xff;
 
-        if (dletter == PART_LETTER_FREE) /* ×ÔÓÉ·ÖÅäµÄ·ÖÇø */
+        if (dletter == PART_LETTER_FREE) /* è‡ªç”±åˆ†é…çš„åˆ†åŒº */
         {
             for (j = 0; j < FSYS_MAX_FPARTS; j++)
             {
@@ -430,7 +456,7 @@ static int32_t __mount_parts(__hdle hNode)
                 __log("too many parts!");
             }
         }
-        else if (dletter == PART_LETTER_USER) /* ·½°¸ÓÃ»§×Ô¶¨ÒåµÄ·ÖÇø */
+        else if (dletter == PART_LETTER_USER) /* æ–¹æ¡ˆç”¨æˆ·è‡ªå®šä¹‰çš„åˆ†åŒº */
         {
             for (j = FSYS_MAX_UPARTS - 1; j >= 0; j--)
             {
@@ -447,7 +473,7 @@ static int32_t __mount_parts(__hdle hNode)
                 __log("too many user define parts!");
             }
         }
-        else /* ÏµÍ³ÄÚ²¿¹Ì¶¨·ÖÅäµÄ·ÖÇø */
+        else /* ç³»ç»Ÿå†…éƒ¨å›ºå®šåˆ†é…çš„åˆ†åŒº */
         {
             for (j = 0; j < FSYS_MAX_XPARTS; j++)
             {
@@ -473,7 +499,7 @@ static int32_t __mount_parts(__hdle hNode)
             }
         }
 
-        /* ·ÖÅä·ÖÇøÅÌ·ûÊ§°Ü */
+        /* åˆ†é…åˆ†åŒºç›˜ç¬¦å¤±è´¥ */
         if (pPart->letter == 0xff)
         {
             pPD->Ops.unmount(pPart, 1);
@@ -486,15 +512,29 @@ static int32_t __mount_parts(__hdle hNode)
         }
 
         /********************************************************/
-        /* ¹Ò½Ó·ÖÇøÎÄ¼şÏµÍ³                                     */
+        /* æŒ‚æ¥åˆ†åŒºæ–‡ä»¶ç³»ç»Ÿ                                     */
         /********************************************************/
         pPart->status   = FSYS_PARTSTATUS_UNUSED;
         if (devattrib & DEV_NODE_ATTR_FS)
         {
             if (esFSYS_mntfs(pPart) == EPDK_OK)
             {
+		__epos_kmsg_t *msg = NULL;
                 pPart->status   = FSYS_PARTSTATUS_FSUSED;
                 pPart->attr     |= FSYS_PARTATTR_FS;
+
+		msg = (__epos_kmsg_t *)malloc(sizeof(__epos_kmsg_t));
+		if (msg) {
+			memset(msg, 0x00, sizeof(__epos_kmsg_t));
+			msg->target		= KMSG_TGT_CALLBACK;
+			msg->message		= 0;
+			msg->prio		= KMSG_PRIO_HIGH;
+			msg->l.cb		= blockdev_register_callback;
+			msg->h.cb_u_arg		= pPart->letter;
+			esKRNL_SemPost(pPartSem);
+			esKSRV_SendMsgEx((void *)msg);
+			esKRNL_SemPend(pPartSem, 0, NULL);
+		}
             }
             else
             {
@@ -507,7 +547,7 @@ static int32_t __mount_parts(__hdle hNode)
     res     = EPDK_OK;
 
 out:
-    /* ¹ÒÔØ·ÖÇø½áÊø */
+    /* æŒ‚è½½åˆ†åŒºç»“æŸ */
     CurhNode    = NULL;
     esKRNL_SemPost(pPartSem);
     return res;
@@ -519,10 +559,10 @@ out:
 *             esFSYS_blkdevreg
 *
 *  Description:
-*   ×¢²á¿éÉè±¸µ½ÎÄ¼şÏµÍ³ÖĞ
+*   æ³¨å†Œå—è®¾å¤‡åˆ°æ–‡ä»¶ç³»ç»Ÿä¸­
 *
 *  Parameters:
-*   hNode       - Éè±¸½Úµã¾ä±ú.
+*   hNode       - è®¾å¤‡èŠ‚ç‚¹å¥æŸ„.
 *
 *  Return value:
 *   EPDK_OK     - registered ok
@@ -537,7 +577,7 @@ int32_t esFSYS_mntparts(__hdle hNode)
     esKRNL_SemPend(pPartSem, 0, NULL);
 
     /************************************************************/
-    /* ´ò¿ªÉè±¸£¬»ñÈ¡Éè±¸ÊôĞÔ                                   */
+    /* æ‰“å¼€è®¾å¤‡ï¼Œè·å–è®¾å¤‡å±æ€§                                   */
     /************************************************************/
     hDev    = esDEV_Open(hNode, 0);
     if (!hDev)
@@ -554,14 +594,14 @@ int32_t esFSYS_mntparts(__hdle hNode)
     if (devattrib & DEV_NODE_ATTR_SYNMNT)
     {
         /************************************************************/
-        /* Í¬²½¹ÒÔØÉè±¸½Úµã£¬Ö±½Ó¹ÒÔØÉè±¸·ÖÇø                       */
+        /* åŒæ­¥æŒ‚è½½è®¾å¤‡èŠ‚ç‚¹ï¼Œç›´æ¥æŒ‚è½½è®¾å¤‡åˆ†åŒº                       */
         /************************************************************/
         __mount_parts(hNode);
     }
     else
     {
         /************************************************************/
-        /* Òì²½¹ÒÔØÉè±¸½Úµã£¬»½ĞÑ·ÖÇø¹ÒÔØÏß³Ì¹ÒÔØÉè±¸½Úµã·ÖÇø       */
+        /* å¼‚æ­¥æŒ‚è½½è®¾å¤‡èŠ‚ç‚¹ï¼Œå”¤é†’åˆ†åŒºæŒ‚è½½çº¿ç¨‹æŒ‚è½½è®¾å¤‡èŠ‚ç‚¹åˆ†åŒº       */
         /************************************************************/
         CurhNode    = hNode;
         wakeup_mnt_thread();
@@ -577,10 +617,10 @@ int32_t esFSYS_mntparts(__hdle hNode)
 *             esFSYS_blkdevunreg
 *
 *  Description:
-*   °Î³ı¿éÉè±¸
+*   æ‹”é™¤å—è®¾å¤‡
 *
 *  Parameters:
-*   hNode       - Éè±¸½Úµã
+*   hNode       - è®¾å¤‡èŠ‚ç‚¹
 *
 *  Return value:
 *   <0          - Unable to find the device.
@@ -603,7 +643,7 @@ int32_t esFSYS_umntparts(__hdle hNode, uint32_t force)
 	}
 
     /************************************************************/
-    /* ²âÊÔ·ÖÇøÉÏµÄÎÄ¼şÏµÍ³ÊÇ·ñ¿ÉÒÔ¶³½á²¢ÊµÊ©¶³½á               */
+    /* æµ‹è¯•åˆ†åŒºä¸Šçš„æ–‡ä»¶ç³»ç»Ÿæ˜¯å¦å¯ä»¥å†»ç»“å¹¶å®æ–½å†»ç»“               */
     /************************************************************/
     match_i = 0;
     for (i = 0; i < FSYS_MAX_FPARTS; i++)
@@ -638,12 +678,29 @@ int32_t esFSYS_umntparts(__hdle hNode, uint32_t force)
             match_i++;
         }
     }
+    for (i = 0; i < match_i; i ++) {
+		__epos_kmsg_t *msg = NULL;
+
+		msg = (__epos_kmsg_t *)malloc(sizeof(__epos_kmsg_t));
+		if (msg)
+		{
+			memset(msg, 0x00, sizeof(__epos_kmsg_t));
+			msg->target			= KMSG_TGT_CALLBACK;
+			msg->message		= 0;
+			msg->prio			= KMSG_PRIO_HIGH;
+			msg->l.cb			= blockdev_unregister_callback;
+			msg->h.cb_u_arg		= pParts[i]->letter;
+			esKRNL_SemPost(pPartSem);
+			esKSRV_SendMsgEx((void *)msg);
+			esKRNL_SemPend(pPartSem, 0, NULL);
+		}
+	}
 
     for (i = 0; i < match_i; i ++)
     {
         if (test_and_freeze_partfs(pParts[i]->hFSPrivate) && !force)
         {
-            /* ·ÖÇøÃ¦£¬ÎŞ·¨¶³½á£¬Ğ¶ÔØ¿éÉè±¸·ÖÇø²Ù×÷ÖĞ¶Ï     */
+            /* åˆ†åŒºå¿™ï¼Œæ— æ³•å†»ç»“ï¼Œå¸è½½å—è®¾å¤‡åˆ†åŒºæ“ä½œä¸­æ–­     */
             for (j = 0; j < i; j++)
             {
                 unfreezepart(pParts[j]->hFSPrivate);
@@ -655,7 +712,7 @@ int32_t esFSYS_umntparts(__hdle hNode, uint32_t force)
     }
 
     /************************************************************/
-    /* Ğ¶ÔØÉè±¸ÉÏµÄËùÓĞµÄ·ÖÇøµÄÎÄ¼şÏµÍ³                 */
+    /* å¸è½½è®¾å¤‡ä¸Šçš„æ‰€æœ‰çš„åˆ†åŒºçš„æ–‡ä»¶ç³»ç»Ÿ                 */
     /************************************************************/
     for (i = 0; i < match_i; i++)
     {
@@ -665,7 +722,7 @@ int32_t esFSYS_umntparts(__hdle hNode, uint32_t force)
             continue;
         }
 
-        /* Ğ¶ÔØ·ÖÇøÉÏµÄÎÄ¼şÏµÍ³                                 */
+        /* å¸è½½åˆ†åŒºä¸Šçš„æ–‡ä»¶ç³»ç»Ÿ                                 */
         ret = esFSYS_umntfs(pPart, force);
         if (ret != EPDK_OK)
             __log("unexpect error when unload partfs, force==%d, part:%c", force, pPart->letter);
@@ -676,7 +733,7 @@ int32_t esFSYS_umntparts(__hdle hNode, uint32_t force)
     }
 
     /************************************************************/
-    /* ÊÍ·ÅÉè±¸ÉÏµÄËùÓĞµÄ·ÖÇøµÄ·ÖÇøÇı¶¯                         */
+    /* é‡Šæ”¾è®¾å¤‡ä¸Šçš„æ‰€æœ‰çš„åˆ†åŒºçš„åˆ†åŒºé©±åŠ¨                         */
     /************************************************************/
     for (i = 0; i < match_i; i++)
     {
@@ -684,13 +741,13 @@ int32_t esFSYS_umntparts(__hdle hNode, uint32_t force)
 
         pPart = pParts[i];
 
-        /* ´Ó·ÖÇøÇı¶¯ÉÏunmount·ÖÇø                              */
+        /* ä»åˆ†åŒºé©±åŠ¨ä¸Šunmountåˆ†åŒº                              */
         if (pPart->pPD && pPart->pPD->Ops.unmount)
         {
             busy |= !!pPart->pPD->Ops.unmount(pPart, force);
 
-            /* Íê³É·ÖÇøĞ¶ÔØÔòÏú»Ù·ÖÇø¾ä±ú£¬·ñÔòÓÉ·ÖÇøÕ¼ÓÃÕßÏú»Ù·Ö
-               Çø¾ä±ú                                           */
+            /* å®Œæˆåˆ†åŒºå¸è½½åˆ™é”€æ¯åˆ†åŒºå¥æŸ„ï¼Œå¦åˆ™ç”±åˆ†åŒºå ç”¨è€…é”€æ¯åˆ†
+               åŒºå¥æŸ„                                           */
             if (busy && force)
             {
                 __log("unexpect error when unmount part%c, force==%d", pPart->letter, force);

@@ -22,8 +22,51 @@
 #include "ce_reg.h"
 #include "platform_ce.h"
 
+#ifdef CONFIG_ARCH_SUN20IW2
+#include <hal_reset.h>
+static int sunxi_ce_clk_init(bool enable)
+{
+    hal_clk_status_t ret;
+    hal_reset_type_t reset_type = HAL_SUNXI_RESET;
+    u32  reset_id;
+    hal_clk_type_t clk_type = HAL_SUNXI_CCU;
+    hal_clk_id_t clk_id;
+    hal_clk_t clk;
+    struct reset_control *reset;
+
+    clk_id = SUNXI_CLK_CE;
+    reset_id = SUNXI_RST_CE;
+    if (enable)
+    {
+        reset = hal_reset_control_get(reset_type, reset_id);
+        hal_reset_control_deassert(reset);
+        hal_reset_control_put(reset);
+
+        hal_clock_enable(hal_clock_get(clk_type, SUNXI_CLK_MBUS_CE));
+        clk = hal_clock_get(clk_type, clk_id);
+        ret = hal_clock_enable(clk);
+        if (ret != HAL_CLK_STATUS_OK)
+            CE_ERR("CE clock enable failed.\n");
+    }
+    else
+    {
+        clk = hal_clock_get(clk_type, clk_id);
+        ret = hal_clock_disable(clk);
+        if (ret != HAL_CLK_STATUS_OK)
+            CE_ERR("CE clock disable failed.\n");
+        hal_clock_disable(hal_clock_get(clk_type, SUNXI_CLK_MBUS_CE));
+        hal_clock_put(clk);
+    }
+
+    return ret;
+}
+#endif
+
 void hal_ce_clock_init(void)
 {
+#ifdef CONFIG_ARCH_SUN20IW2
+	sunxi_ce_clk_init(1);
+#else
 	uint32_t  reg_val;
 
 	reg_val = readl(CCMU_CE_CLK_REG);
@@ -63,17 +106,26 @@ void hal_ce_clock_init(void)
 	reg_val = readl(MBUS_MAT_CLK_GATING_REG);
 	reg_val |= 1 << 2;
 	writel(reg_val, MBUS_MAT_CLK_GATING_REG);
+#endif
 }
 
 
 uint32_t ce_readl(uint32_t offset)
 {
+#ifdef CONFIG_ARCH_SUN20IW2
+	return readl(CE_NS_BASE_REG + offset);
+#else
 	return readl(CE_S_BASE_REG + offset);
+#endif
 }
 
 static void ce_writel(uint32_t offset, uint32_t val)
 {
+#ifdef CONFIG_ARCH_SUN20IW2
+	writel(val, CE_NS_BASE_REG + offset);
+#else
 	writel(val, CE_S_BASE_REG + offset);
+#endif
 }
 
 uint32_t hal_ce_reg_rd(uint32_t offset)
@@ -174,7 +226,7 @@ void hal_ce_key_set(char *key, int size, ce_task_desc_t *task)
 
 	hal_ce_keyselect_set(key_sel, task);
 	hal_ce_keysize_set(size, task);
-	task->key_addr = (uint32_t)__va_to_pa((uint32_t)key);
+	task->key_addr = (uint32_t)__va_to_pa((intptr_t)key);
 }
 
 void hal_ce_pending_clear(int flow)
@@ -213,7 +265,7 @@ void hal_ce_md_get(char *dst, char *src, int size)
 
 void hal_ce_iv_set(char *iv, int size, ce_task_desc_t *task)
 {
-	task->iv_addr = (uint32_t)__va_to_pa((uint32_t)iv);
+	task->iv_addr = (uint32_t)__va_to_pa((intptr_t)iv);
 }
 
 void hal_ce_iv_mode_set(int mode, ce_task_desc_t *task)
@@ -228,7 +280,7 @@ void hal_ce_cntsize_set(int size, ce_task_desc_t *task)
 
 void hal_ce_cnt_set(char *cnt, int size, ce_task_desc_t *task)
 {
-	task->ctr_addr = (uint32_t)__va_to_pa((uint32_t)cnt);
+	task->ctr_addr = (uint32_t)__va_to_pa((intptr_t)cnt);
 	hal_ce_cntsize_set(CE_CTR_SIZE_128, task);
 }
 
@@ -254,7 +306,8 @@ void hal_ce_xts_last(ce_task_desc_t *task)
 
 void hal_ce_method_set(int dir, int type, ce_task_desc_t *task)
 {
-	task->comm_ctl |= dir << CE_COMM_CTL_OP_DIR_SHIFT;
+	if (dir != 0)
+		task->comm_ctl |= 1 << CE_COMM_CTL_OP_DIR_SHIFT;
 	task->comm_ctl |= type << CE_COMM_CTL_METHOD_SHIFT;
 }
 

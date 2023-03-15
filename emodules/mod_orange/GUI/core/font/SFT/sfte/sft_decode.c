@@ -1,30 +1,33 @@
 /*
-************************************************************************************************************************
-*                                                       SFTE 2.0
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                             Copyright(C), 2006-2009, SoftWinners Microelectronic Co., Ltd.
-*                                                  All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File Name   : sft_decode.c
-*
-* Author      : Bayden.Chen
-*
-* Version     : 1.1.0
-*
-* Date        : 2009.11.23
-*
-* Description :
-*
-* Others      : None at present.
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
 *
-* History     :
-*
-*  <Author>        <time>       <version>      <description>
-*
-* Gary.Wang      2009.11.23       1.1.0        build the file
-*
-************************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef __sft_decode_c
 #define __sft_decode_c
@@ -59,7 +62,7 @@ typedef struct
     char head[8];
     __s32 block_size_start_offset;
     __s32 data_start_offset;
-    __s32 file_size;//ÎÄ¼þ½âÑ¹Ëõºó×Ü´óÐ¡
+    __s32 file_size;//æ–‡ä»¶è§£åŽ‹ç¼©åŽæ€»å¤§å°
     __s32 block_size;
     __s32 block_cnt;
     __s32 max_compress_block_size;
@@ -69,7 +72,7 @@ typedef struct
 {
     ES_FILE *fp;
     __s32 type;//0: normal file 1: compress file
-    __s32 offset;//Ñ¹ËõÎÄ¼þµÄµ±Ç°ÎÄ¼þÖ¸ÕëÎ»ÖÃ£¬Ïà¶ÔÓÚÎÄ¼þ¿ªÊ¼Î»ÖÃ
+    __s32 offset;//åŽ‹ç¼©æ–‡ä»¶çš„å½“å‰æ–‡ä»¶æŒ‡é’ˆä½ç½®ï¼Œç›¸å¯¹äºŽæ–‡ä»¶å¼€å§‹ä½ç½®
     char *pmax_compress_block_buf;
     char *puncompress_block_buf;
     sft_c_header_t sft_c_header;
@@ -469,7 +472,7 @@ __size sft_fread(void *pbuf, __size size, __size num, ES_FILE *fp)
             goto err;
         }
 
-        //¶ÁÈ¡µÚÒ»¿é
+        //è¯»å–ç¬¬ä¸€å—
         block_size = sft_fp->sft_c_header.block_size;
         block_index = start_read_pos / block_size;
         inter_offset = start_read_pos % block_size;
@@ -497,7 +500,7 @@ __size sft_fread(void *pbuf, __size size, __size num, ES_FILE *fp)
         total_size_read += read_size;
         start_read_pos += read_size;
 
-        //¶ÁÈ¡ÖÐ¼äÍêÕûµÄ¿é
+        //è¯»å–ä¸­é—´å®Œæ•´çš„å—
         while (total_size_to_read >= block_size
                && start_read_pos < sft_fp->sft_c_header.file_size)
         {
@@ -525,7 +528,7 @@ __size sft_fread(void *pbuf, __size size, __size num, ES_FILE *fp)
             }
         }
 
-        //¶ÁÈ¡×îºóÒ»¿é
+        //è¯»å–æœ€åŽä¸€å—
         if (total_size_to_read > 0
             && start_read_pos < sft_fp->sft_c_header.file_size)
         {

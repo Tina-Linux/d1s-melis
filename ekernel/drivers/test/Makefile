@@ -1,5 +1,11 @@
 subdir-ccflags-y += -I$(srctree)/ekernel/drivers/include/  \
-                    -I$(srctree)/include/melis/emodules/mod_orange/
+                    -I$(srctree)/include/melis/emodules/mod_orange/ \
+                    -I$(srctree)/ekernel/drivers/hal/source/sunxi-di/drv_div1xx/ \
+                    -I$(srctree)/ekernel/drivers/hal/source/sunxi-di/include/\
+                    -I$(srctree)/ekernel/components/avframework/v4l2/include/ \
+                    -I$(srctree)/ekernel/components/avframework/v4l2/include/uapi \
+                    -I$(srctree)/ekernel/components/aw/mmap\
+                    -I$(srctree)/ekernel/drivers/drv/source/disp2/soc
 
 obj-$(CONFIG_SUNXI_SPINOR_TEST) += test_spinor.o
 obj-$(CONFIG_SUNXI_PART_TEST) += test_part.o
@@ -13,6 +19,7 @@ obj-$(CONFIG_SUNXI_SPI_TEST) += test_spi.o
 obj-$(CONFIG_SUNXI_RTC_TEST) += test_rtc.o
 obj-$(CONFIG_SUNXI_UART_TEST) += test_uart.o
 obj-$(CONFIG_SUNXI_G2D_TEST) += test_g2d_scale_job.o test_g2d_blend.o test_g2d_yu.o
+obj-$(CONFIG_SUNXI_G2D_TEST) += test_g2d.o
 obj-$(CONFIG_SUNXI_WILLOW_TEST) += test_willow.o
 obj-$(CONFIG_SUNXI_CE_TEST) += test_ce.o
 obj-$(CONFIG_SUNXI_CEDAR_TEST) += test_video_play.o
@@ -26,5 +33,8 @@ obj-$(CONFIG_SUNXI_RTP_TEST) += test_rtp.o
 obj-$(CONFIG_SUNXI_STANDBY_TEST) += test_standby.o
 obj-$(CONFIG_SUNXI_WDT_TEST) += test_watchdog.o
 obj-$(CONFIG_SUNXI_APPLETS_TEST) += test_applets.o
+obj-$(CONFIG_SUNXI_AUDIO_TEST) += test_audio_rec_play.o
+obj-$(CONFIG_SUNXI_AEC_TEST) += aec/
+obj-$(CONFIG_SUNXI_MOD_VIDEO_PLAY_TEST) += mod_video_play_test.o
 
 obj-y += network/

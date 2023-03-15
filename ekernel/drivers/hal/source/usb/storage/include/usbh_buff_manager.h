@@ -16,66 +16,66 @@
 * Description   :
 *
 * History       :
-*     v1.0  holi  2008.11.22 - ¶ÁĞ´ËÙ¶È¿ì, µ«ÊÇÖ»Ö§³Öµ¥¸ölun
-*     v2.0  javen 2009.08.19 - Ö§³Ö¶à¸ölun ºÍ ¶àÖÖÀàĞÍµÄÉè±¸
+*     v1.0  holi  2008.11.22 - è¯»å†™é€Ÿåº¦å¿«, ä½†æ˜¯åªæ”¯æŒå•ä¸ªlun
+*     v2.0  javen 2009.08.19 - æ”¯æŒå¤šä¸ªlun å’Œ å¤šç§ç±»å‹çš„è®¾å¤‡
 ********************************************************************************************************************
 */
 #ifndef _USBH_BUFF_MANAGER_H_
 #define _USBH_BUFF_MANAGER_H_
 
-typedef void       *__hdle;
+#ifndef DATA_TYPE_X___hdle
+#define DATA_TYPE_X___hdle
+typedef void *__hdle;
+#endif
 
-/* usb host ÁÙÊ± buffer */
-typedef struct tag_usbh_temp_buff
-{
-    unsigned int num;            /* bufferÔÚÕû¸öbuffer¹ÜÀíÀïÃæµÄºÅÂë     */
+/* usb host ä¸´æ—¶ buffer */
+typedef struct tag_usbh_temp_buff {
+	unsigned int num; /* bufferåœ¨æ•´ä¸ªbufferç®¡ç†é‡Œé¢çš„å·ç  */
 
-    unsigned int dev_id;         /* Éè±¸id, È·¶¨Éè±¸Éí·İµÄÎ¨Ò»±êÊ¶       */
-    unsigned int start_lba;      /* ÆğÊ¼ÉÈÇø                             */
-    unsigned int end_lba;        /* ½áÊøÉÈÇø, ×îºóÒ»¸öÓĞĞ§ÉÈÇø           */
-    unsigned int sector_size;    /* ÉÈÇø´óĞ¡                             */
+	unsigned int dev_id;	  /* è®¾å¤‡id, ç¡®å®šè®¾å¤‡èº«ä»½çš„å”¯ä¸€æ ‡è¯† */
+	unsigned int start_lba;	  /* èµ·å§‹æ‰‡åŒº */
+	unsigned int end_lba;	  /* ç»“æŸæ‰‡åŒº, æœ€åä¸€ä¸ªæœ‰æ•ˆæ‰‡åŒº */
+	unsigned int sector_size; /* æ‰‡åŒºå¤§å° */
 
-    unsigned int used_time;      /* ±»ÎÄ¼şÏµÍ³Ê¹ÓÃµÄ´ÎÊı                 */
+	unsigned int used_time; /* è¢«æ–‡ä»¶ç³»ç»Ÿä½¿ç”¨çš„æ¬¡æ•° */
 
-    void *buff;         /* ´æ·Å´ÓÉè±¸¶ÁÈ¡µÄÊı¾İ                 */
-    unsigned int buff_len;       /* bufferµÄ´óĞ¡                         */
+	void *buff;	       /* å­˜æ”¾ä»è®¾å¤‡è¯»å–çš„æ•°æ® */
+	unsigned int buff_len; /* bufferçš„å¤§å° */
 
-    unsigned int is_valid;       /* Õâ¸öbuffµÄÄÚÈİÊÇ·ñÓĞĞ§               */
-    unsigned int is_busy;        /* ·ÀÖ¹buffÕıÔÚ½ÓÊÕdeviceÊı¾İ£¬µ«ÊÇ
-                           ÓÖ±»usbh_buff_managerÉèÖÃÎªÎŞĞ§      */
+	unsigned int is_valid; /* è¿™ä¸ªbuffçš„å†…å®¹æ˜¯å¦æœ‰æ•ˆ */
+	unsigned int is_busy;  /* é˜²æ­¢buffæ­£åœ¨æ¥æ”¶deviceæ•°æ®ï¼Œä½†æ˜¯
+				åˆè¢«usbh_buff_managerè®¾ç½®ä¸ºæ— æ•ˆ */
+
 } usbh_temp_buff_t;
 
+#define USBH_TEMP_BUFFER_MAX_NUM	8	      // bufferçš„ä¸ªæ•°, å…ˆåˆ†4ä¸ªï¼Œä¸å¤Ÿç”¨å†åŠ 
+#define USBH_TEMP_BUFFER_MAX_LEN	(32 * 1024)  // 32k, å¿…é¡»æ˜¯kçš„å€æ•°, å› ä¸ºè¦palloc
 
-#define  USBH_TEMP_BUFFER_MAX_NUM    8              //bufferµÄ¸öÊı, ÏÈ·Ö4¸ö£¬²»¹»ÓÃÔÙ¼Ó
-#define  USBH_TEMP_BUFFER_MAX_LEN    (32 * 1024)    //32k, ±ØĞëÊÇkµÄ±¶Êı, ÒòÎªÒªpalloc
+typedef struct tag_usbh_buff_manager {
+	unsigned int temp_buff_len; /* ä¸´æ—¶buffçš„å¤§å°, å®ƒå†³å®šäº†usbh_temp_buff_té‡Œbuff_lençš„å¤§å° */
+	unsigned int temp_buff_nr; /* ä¸´æ—¶buffçš„ä¸ªæ•° */
 
-typedef struct tag_usbh_buff_manager
-{
-    unsigned int temp_buff_len;    /* ÁÙÊ±buffµÄ´óĞ¡, Ëü¾ö¶¨ÁËusbh_temp_buff_tÀïbuff_lenµÄ´óĞ¡ */
-    unsigned int temp_buff_nr;     /* ÁÙÊ±buffµÄ¸öÊı */
-
-    usbh_temp_buff_t buff_array[USBH_TEMP_BUFFER_MAX_NUM];
+	usbh_temp_buff_t buff_array[USBH_TEMP_BUFFER_MAX_NUM];
 } usbh_buff_manager_t;
-
 
 //------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------
 int usbh_msc_special_read(void *pBuffer,
-                          unsigned int blk,
-                          unsigned int n,
-                          __hdle hDev,
-                          unsigned int dev_id,
-                          unsigned int secter_size,
-                          void *blk_read_entry);
+			  unsigned int blk,
+			  unsigned int n,
+			  __hdle hDev,
+			  unsigned int dev_id,
+			  unsigned int secter_size,
+			  void *blk_read_entry);
 
 int usbh_msc_special_write(void *pBuffer,
-                           unsigned int blk,
-                           unsigned int n,
-                           __hdle hDev,
-                           unsigned int dev_id,
-                           unsigned int secter_size,
-                           void *blk_write_entry);
+			   unsigned int blk,
+			   unsigned int n,
+			   __hdle hDev,
+			   unsigned int dev_id,
+			   unsigned int secter_size,
+			   void *blk_write_entry);
 
 int set_usbh_temp_buff_invalid_by_dev(unsigned int dev_id);
 int set_all_usbh_temp_buff_invalid(void);
@@ -84,8 +84,3 @@ int init_usbh_buff_manager(void);
 int exit_usbh_buff_manager(void);
 
 #endif
-
-
-
-
-

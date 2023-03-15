@@ -42,57 +42,15 @@
 #include <aw-alsa-lib/control.h>
 #include "common.h"
 #include "wav_parser.h"
+#include <hal_time.h>
 #include <hal_timer.h>
 
 unsigned int g_capture_loop_enable = 0;
 static unsigned int g_capture_then_play = 0;
-static char *g_pcm_name;
+static char g_pcm_name[32];
 extern unsigned int g_verbose;
 extern int aplay(const char *card_name, snd_pcm_format_t format, unsigned int rate,
-			unsigned int channels, const char *data, unsigned int datalen);
-static int pcm_read(snd_pcm_t *handle, const char *data, snd_pcm_uframes_t frames_total, unsigned int frame_bytes)
-{
-	int ret = 0;
-	snd_pcm_sframes_t size;
-	snd_pcm_uframes_t frames_loop = 160;
-	snd_pcm_uframes_t frames_count = 0;
-	snd_pcm_uframes_t frames = 0;
-	unsigned int offset = 0;
-
-	while (1) {
-		if ((frames_total - frames_count) < frames_loop)
-			frames = frames_total - frames_count;
-		if (frames == 0)
-			frames = frames_loop;
-		/*printf("snd_pcm_readi %ld frames\n", frames);*/
-		size = snd_pcm_readi(handle, (void *)(data + offset), frames);
-		if (size < 0)
-			printf("snd_pcm_readi return %ld\n", size);
-		if (size == -EAGAIN) {
-			/* retry */
-			hal_usleep(10000);
-			continue;
-		} else if (size == -EPIPE) {
-			xrun(handle);
-			continue;
-		} else if (size == -ESTRPIPE) {
-
-			continue;
-		} else if (size < 0) {
-			printf("-----snd_pcm_readi failed!!, return %ld\n", size);
-			ret = (int)size;
-			goto err;
-		}
-		offset += (size * frame_bytes);
-		frames_count += size;
-		frames -= size;
-		if (frames_total == frames_count)
-			break;
-		/*printf("frames_count = %ld, frames_total = %ld\n", frames_count, frames_total);*/
-	}
-err:
-	return frames_count > 0 ? frames_count : ret;
-}
+		 unsigned int channels, const char *data, unsigned int datalen);
 
 /*
  * arg0: arecord
@@ -104,7 +62,7 @@ err:
  * arg6: len
  */
 static int arecord(const char *card_name, snd_pcm_format_t format, unsigned int rate,
-			unsigned int channels, const void *data, unsigned int datalen)
+		   unsigned int channels, const void *data, unsigned int datalen)
 {
 	int ret = 0;
 	snd_pcm_t *handle;
@@ -201,8 +159,6 @@ int capture_fs_wav(audio_mgr_t *mgr, const char *path)
 	unsigned int chunk_bytes, frame_bytes = 0;
 	int save_fs = 0;
 	struct stat statbuf;
-	char *temp_wav_file = NULL;
-	unsigned int temp_wav_file_off = 0;
 
 	printf("card:		%s\n", g_pcm_name);
 	printf("period_size:	%ld\n", mgr->period_size);
@@ -252,12 +208,6 @@ int capture_fs_wav(audio_mgr_t *mgr, const char *path)
 			printf("please set capture duration..\n");
 			goto err;
 		}
-		printf("malloc rest=%ld\n", rest);
-		temp_wav_file = malloc(rest);
-		if (!temp_wav_file) {
-			printf("no memory for temp_wav_file\n");
-			goto err;
-		}
 	}
 	while ((rest > 0 || g_capture_loop_enable) && !mgr->in_aborting) {
 		long f = mgr->period_size;
@@ -270,10 +220,14 @@ int capture_fs_wav(audio_mgr_t *mgr, const char *path)
 			printf("pcm read error, return %ld\n", f);
 			break;
 		}
-		if (path && temp_wav_file != NULL) {
-			memcpy(temp_wav_file + temp_wav_file_off, audiobuf, c);
-			temp_wav_file_off += c;
+		if (save_fs && fd > 0) {
+			ret = write(fd, audiobuf, c);
+			if (ret != c) {
+				printf("write audiobuf to wav file failed, return %d\n", ret);
+				goto err;
+			}
 		}
+
 		if (rest > 0)
 			rest -= c;
 		written += c;
@@ -292,26 +246,12 @@ err:
 	}
 
 	if (save_fs && fd > 0 && ret == 0) {
-		int size;
-		printf("please wait...writing data(%u bytes) into %s\n", temp_wav_file_off, path);
-		size = write(fd, temp_wav_file, temp_wav_file_off);
-		if (size != temp_wav_file_off) {
-			printf("write temp_wav_file failed, return %d\n", size);
-			goto err1;
-		}
-		printf("write finish...\n");
-	}
-
-	if (save_fs && fd > 0 && ret == 0) {
 		resize_wav(&header, written);
 		lseek(fd, 0, SEEK_SET);
 		write(fd, &header, sizeof(header));
 	}
 
-err1:
 	if (save_fs) {
-		if (temp_wav_file != NULL)
-			free(temp_wav_file);
 		if (fd > 0)
 			close(fd);
 	}
@@ -342,7 +282,6 @@ int cmd_arecord(int argc, char ** argv)
 	int c;
 	unsigned int bits = 16;
 	audio_mgr_t *audio_mgr = NULL;
-	g_pcm_name = "default";
 	g_verbose = 0;
 	g_capture_then_play = 0;
 
@@ -353,11 +292,13 @@ int cmd_arecord(int argc, char ** argv)
 	/* default param */
 	audio_mgr->rate = 16000;
 	audio_mgr->channels = 3;
+	strncpy(g_pcm_name, "default", sizeof(g_pcm_name));
 
+	optind = 0;
 	while ((c = getopt(argc, argv, "D:r:f:c:p:b:d:khlvt")) != -1) {
 		switch (c) {
 		case 'D':
-			g_pcm_name = optarg;
+			strncpy(g_pcm_name, optarg, sizeof(g_pcm_name));
 			break;
 		case 'r':
 			audio_mgr->rate = atoi(optarg);

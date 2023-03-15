@@ -19,11 +19,7 @@
 *
 ********************************************************************************************************************
 */
-#include  "usb_os_platform.h"
-#include  "error.h"
-#include  "usb_msc_i.h"
-#include  "mscTransport.h"
-#include  "mscProtocol.h"
+#include "usb_msc_i.h"
 
 /*
 *******************************************************************************
@@ -45,18 +41,16 @@
 */
 int mscQIC157Command(__mscDev_t *mscDev, __ScsiCmnd_t *ScsiCmnd)
 {
-    if (mscDev == NULL || ScsiCmnd == NULL)
-    {
-        ////DMSG_PANIC("ERR: mscQIC157Command: mscDev = %x, ScsiCmnd = %x\n", mscDev, ScsiCmnd);
-        return USB_ERR_BAD_ARGUMENTS;
-    }
+	if (mscDev == NULL || ScsiCmnd == NULL) {
+		////DMSG_PANIC("ERR: mscQIC157Command: mscDev = %x, ScsiCmnd = %x\n", mscDev, ScsiCmnd);
+		return USB_ERR_BAD_ARGUMENTS;
+	}
 
-    /* ÐÞÕýÃüÁî */
-    //not support
-    /* ´«Êä */
-    return mscDev->Transport(mscDev, ScsiCmnd);
+	/* ä¿®æ­£å‘½ä»¤ */
+	// not support
+	/* ä¼ è¾“ */
+	return mscDev->Transport(mscDev, ScsiCmnd);
 }
-
 
 /*
 *******************************************************************************
@@ -78,18 +72,16 @@ int mscQIC157Command(__mscDev_t *mscDev, __ScsiCmnd_t *ScsiCmnd)
 */
 int mscATAPICommand(__mscDev_t *mscDev, __ScsiCmnd_t *ScsiCmnd)
 {
-    if (mscDev == NULL || ScsiCmnd == NULL)
-    {
-        ////DMSG_PANIC("ERR: mscATAPICommand: mscDev = %x, ScsiCmnd = %x\n", mscDev, ScsiCmnd);
-        return USB_ERR_BAD_ARGUMENTS;
-    }
+	if (mscDev == NULL || ScsiCmnd == NULL) {
+		////DMSG_PANIC("ERR: mscATAPICommand: mscDev = %x, ScsiCmnd = %x\n", mscDev, ScsiCmnd);
+		return USB_ERR_BAD_ARGUMENTS;
+	}
 
-    /* ÐÞÕýÃüÁî */
-    //not support
-    /* ´«Êä */
-    return mscDev->Transport(mscDev, ScsiCmnd);
+	/* ä¿®æ­£å‘½ä»¤ */
+	// not support
+	/* ä¼ è¾“ */
+	return mscDev->Transport(mscDev, ScsiCmnd);
 }
-
 
 /*
 *******************************************************************************
@@ -111,18 +103,16 @@ int mscATAPICommand(__mscDev_t *mscDev, __ScsiCmnd_t *ScsiCmnd)
 */
 int mscUFICommand(__mscDev_t *mscDev, __ScsiCmnd_t *ScsiCmnd)
 {
-    if (mscDev == NULL || ScsiCmnd == NULL)
-    {
-        //DMSG_PANIC("ERR: mscUFICommand: mscDev = %x, ScsiCmnd = %x\n", mscDev, ScsiCmnd);
-        return USB_ERR_BAD_ARGUMENTS;
-    }
+	if (mscDev == NULL || ScsiCmnd == NULL) {
+		// DMSG_PANIC("ERR: mscUFICommand: mscDev = %x, ScsiCmnd = %x\n", mscDev, ScsiCmnd);
+		return USB_ERR_BAD_ARGUMENTS;
+	}
 
-    /* ÐÞÕýÃüÁî */
-    //not support
-    /* ´«Êä */
-    return mscDev->Transport(mscDev, ScsiCmnd);
+	/* ä¿®æ­£å‘½ä»¤ */
+	// not support
+	/* ä¼ è¾“ */
+	return mscDev->Transport(mscDev, ScsiCmnd);
 }
-
 
 /*
 *******************************************************************************
@@ -144,16 +134,13 @@ int mscUFICommand(__mscDev_t *mscDev, __ScsiCmnd_t *ScsiCmnd)
 */
 int mscScsiCommand(__mscDev_t *mscDev, __ScsiCmnd_t *ScsiCmnd)
 {
-    if (mscDev == NULL || ScsiCmnd == NULL)
-    {
-        //DMSG_PANIC("ERR: mscScsiCommand: mscDev = %x, ScsiCmnd = %x\n", mscDev, ScsiCmnd);
-        return USB_ERR_BAD_ARGUMENTS;
-    }
+	if (mscDev == NULL || ScsiCmnd == NULL) {
+		//DMSG_PANIC("ERR: mscScsiCommand: mscDev = %x, ScsiCmnd = %x\n", mscDev, ScsiCmnd);
+		return USB_ERR_BAD_ARGUMENTS;
+	}
 
-    /* ÐÞÕýÃüÁî */
-    //not support
-    /* ´«Êä */
-    return mscDev->Transport(mscDev, ScsiCmnd);
+	/* ä¿®æ­£å‘½ä»¤ */
+	// not support
+	/* ä¼ è¾“ */
+	return mscDev->Transport(mscDev, ScsiCmnd);
 }
-
-

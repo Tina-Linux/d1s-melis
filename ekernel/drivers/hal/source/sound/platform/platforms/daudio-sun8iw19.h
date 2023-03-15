@@ -166,6 +166,16 @@ enum sunxi_pcm_adc_i2s_mode {
 	ADC_I2S_RUNNING = 2,
 };
 
+struct sunxi_daudio_clk {
+	struct reset_control *rstclk;
+
+	hal_clk_t pllclk;
+	hal_clk_t moduleclk;
+	hal_clk_t busclk;
+	hal_clk_t pllclk1;
+	hal_clk_t asrcclk;
+};
+
 void sunxi_daudio_rx_drq_enable(bool enable);
 
 #endif	/* __SUN8IW19_DAUDIO_H_ */

@@ -462,9 +462,15 @@ s32 dsi_dcs_rd(u32 sel, u8 cmd, u8 *para_p, u32 *num_p)
 		count++;
 		dsi_delay_us(100);
 	}
-	if (count >= 50)
+
+	if (count >= 50) {
 		dsi_dev[sel]->dsi_basic_ctl0.bits.inst_st = 0;
 
+		dsi_dev[sel]->dsi_gctl.bits.dsi_en = 0;
+		dsi_dev[sel]->dsi_gctl.bits.dsi_en = 1;
+	}
+
+	/* Reading data from mipi-dsi register */
 	if (dsi_dev[sel]->dsi_cmd_ctl.bits.rx_flag) {
 		if (dsi_dev[sel]->dsi_cmd_ctl.bits.rx_overflow)
 			return -1;
@@ -754,13 +760,7 @@ __s32 dsi_dphy_open(__u32 sel, struct disp_panel_para *panel)
 	dphy_dev[sel]->dphy_ana3.bits.endiv = 1;
 	dphy_dev[sel]->dphy_ana2.bits.enck_cpu = 1;
 	dphy_dev[sel]->dphy_ana1.bits.reg_vttmode = 1;
-#ifdef CONFIG_ARCH_SUN50IW10
-	i = readl(ioremap(0x03000024, 4));
-	if ((i & 0x00000007) > 0)
-		dphy_dev[sel]->dphy_ana1.dwval |= 0x00000020;
-	else
-		dphy_dev[sel]->dphy_ana1.dwval &= 0xffffffDf;
-#endif
+
 	dphy_dev[sel]->dphy_ana2.bits.enp2s_cpu = lane_den;
 
 	dphy_dev[sel]->dphy_gctl.bits.module_en = 1;

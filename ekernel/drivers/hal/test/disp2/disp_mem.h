@@ -21,6 +21,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#include <hal_cmd.h>
 #include <video/sunxi_display2.h>
 
 int disp_mem(u32 mem_id, u32 width, u32 height, u32 clear_flag, char *filename);

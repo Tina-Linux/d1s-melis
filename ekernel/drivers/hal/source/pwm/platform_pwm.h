@@ -41,8 +41,20 @@
 #include "platform/pwm_sun8iw19.h"
 #endif
 
-#if defined(CONFIG_SOC_SUN20IW1) /* RISC-V */
+#if defined(CONFIG_SOC_SUN20IW1) || defined(CONFIG_ARCH_SUN8IW20)
 #include "platform/pwm_sun8iw20.h"
+#endif
+
+#if defined(CONFIG_ARCH_SUN20IW2)
+#include "platform/pwm_sun20iw2.h"
+#endif
+
+#if defined(CONFIG_ARCH_SUN20IW3)
+#include "platform/pwm_sun20iw3.h"
+#endif
+
+#if defined(CONFIG_ARCH_SUN55IW3)
+#include "platform/pwm_sun55iw3.h"
 #endif
 
 #endif /* __PLATFORM_PWM_H__ */

@@ -1,33 +1,45 @@
 /*
- * ===========================================================================================
- *
- *       Filename:  swi.c
- *
- *    Description:  syscall entry definition.
- *
- *        Version:  Melis3.0
- *         Create:  2018-04-24 11:11:07
- *       Revision:  none
- *       Compiler:  GCC:version 7.2.1 20170904 (release),ARM/embedded-7-branch revision 255204
- *
- *         Author:  caozilong@allwinnertech.com
- *   Organization:  BU1-PSW
- *  Last Modified:  2020-07-27 18:32:34
- *
- * ===========================================================================================
- */
-
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <typedef.h>
 #include <rtthread.h>
-#include <kconfig.h>
 #include <mod_defs.h>
 #include <stdio.h>
 #include <sys/stat.h>
 #include <rthw.h>
 #include <kapi.h>
-#include <debug.h>
+#include <hal_debug.h>
 #include <arch.h>
 #include <log.h>
+#include <mman.h>
 
 #ifdef CONFIG_DEBUG_BACKTRACE
 #include <backtrace.h>
@@ -36,10 +48,14 @@
 extern const unsigned long SWIHandler_entity_NLIBOPS[];
 extern const unsigned long SWIHandler_entity_PTHREAD[];
 
+#ifdef CONFIG_NETWORK
+extern const unsigned long SWIHandler_entity_LWIP[];
+#endif
+
 void syscall_trap(void)
 {
     __err("syscall not support! from %p.", __builtin_return_address(0));
-    software_break();
+    hal_sys_abort();
 }
 
 void esKRNL_DumpStack(void)
@@ -159,6 +175,9 @@ const unsigned long SWIHandler_entity_KRNL[] =
 #ifdef CONFIG_DEBUG_BACKTRACE
     (const unsigned long)backtrace                                     ,// 86 *
 #endif
+    (const unsigned long)mmap                                          ,// 87 *
+    (const unsigned long)select                                        ,// 88
+    (const unsigned long)esKRNL_Ioctrl                                 ,// 89 *
 };
 
 /*SWIHandler_MEMS_t*/
@@ -206,63 +225,63 @@ const unsigned long SWIHandler_entity_MEMS[] =
 /*SWIHandler_FSYS_t*/
 const unsigned long SWIHandler_entity_FSYS[] =
 {
-    (const unsigned long)esFSYS_clearpartupdateflag                      ,// 0 * 
-    (const unsigned long)esFSYS_closedir                                 ,// 1   
-    (const unsigned long)esFSYS_fclose                                   ,// 2   
-    (const unsigned long)esFSYS_fd2file                                  ,// 3   
-    (const unsigned long)esFSYS_ferrclr                                  ,// 4   
-    (const unsigned long)esFSYS_ferror                                   ,// 5 * 
-    (const unsigned long)esFSYS_file2fd                                  ,// 6   
-    (const unsigned long)esFSYS_fioctrl                                  ,// 7   
-    (const unsigned long)esFSYS_fopen                                    ,// 8   
-    (const unsigned long)esFSYS_format                                   ,// 9   
+    (const unsigned long)esFSYS_clearpartupdateflag                      ,// 0 *
+    (const unsigned long)esFSYS_closedir                                 ,// 1
+    (const unsigned long)esFSYS_fclose                                   ,// 2
+    (const unsigned long)esFSYS_fd2file                                  ,// 3
+    (const unsigned long)esFSYS_ferrclr                                  ,// 4
+    (const unsigned long)esFSYS_ferror                                   ,// 5 *
+    (const unsigned long)esFSYS_file2fd                                  ,// 6
+    (const unsigned long)esFSYS_fioctrl                                  ,// 7
+    (const unsigned long)esFSYS_fopen                                    ,// 8
+    (const unsigned long)esFSYS_format                                   ,// 9
     (const unsigned long)esFSYS_fread                                    ,// 10 *
-    (const unsigned long)esFSYS_fsdbg                                    ,// 11  
-    (const unsigned long)esFSYS_fseek                                    ,// 12  
-    (const unsigned long)esFSYS_fseekex                                  ,// 13  
-    (const unsigned long)esFSYS_fsreg                                    ,// 14  
+    (const unsigned long)esFSYS_fsdbg                                    ,// 11
+    (const unsigned long)esFSYS_fseek                                    ,// 12
+    (const unsigned long)esFSYS_fseekex                                  ,// 13
+    (const unsigned long)esFSYS_fsreg                                    ,// 14
     (const unsigned long)esFSYS_fstat                                    ,// 15 *
-    (const unsigned long)esFSYS_fsunreg                                  ,// 16  
-    (const unsigned long)esFSYS_fsync                                    ,// 17  
-    (const unsigned long)esFSYS_ftell                                    ,// 18  
-    (const unsigned long)esFSYS_ftellex                                  ,// 19  
+    (const unsigned long)esFSYS_fsunreg                                  ,// 16
+    (const unsigned long)esFSYS_fsync                                    ,// 17
+    (const unsigned long)esFSYS_ftell                                    ,// 18
+    (const unsigned long)esFSYS_ftellex                                  ,// 19
     (const unsigned long)esFSYS_ftruncate                                ,// 20 *
-    (const unsigned long)esFSYS_fwrite                                   ,// 21  
-    (const unsigned long)esFSYS_getfscharset                             ,// 22  
-    (const unsigned long)esFSYS_mkdir                                    ,// 23  
-    (const unsigned long)esFSYS_mntfs                                    ,// 24  
+    (const unsigned long)esFSYS_fwrite                                   ,// 21
+    (const unsigned long)esFSYS_getfscharset                             ,// 22
+    (const unsigned long)esFSYS_mkdir                                    ,// 23
+    (const unsigned long)esFSYS_mntfs                                    ,// 24
     (const unsigned long)esFSYS_mntparts                                 ,// 25 *
-    (const unsigned long)esFSYS_open                                     ,// 26  
-    (const unsigned long)esFSYS_opendir                                  ,// 27  
-    (const unsigned long)esFSYS_partfslck                                ,// 28  
-    (const unsigned long)esFSYS_partfsunlck                              ,// 29  
+    (const unsigned long)esFSYS_open                                     ,// 26
+    (const unsigned long)esFSYS_opendir                                  ,// 27
+    (const unsigned long)esFSYS_partfslck                                ,// 28
+    (const unsigned long)esFSYS_partfsunlck                              ,// 29
     (const unsigned long)esFSYS_pclose                                   ,// 30 *
-    (const unsigned long)esFSYS_pdreg                                    ,// 31  
-    (const unsigned long)esFSYS_pdunreg                                  ,// 32  
-    (const unsigned long)esFSYS_perrclr                                  ,// 33  
-    (const unsigned long)esFSYS_perror                                   ,// 34  
+    (const unsigned long)esFSYS_pdreg                                    ,// 31
+    (const unsigned long)esFSYS_pdunreg                                  ,// 32
+    (const unsigned long)esFSYS_perrclr                                  ,// 33
+    (const unsigned long)esFSYS_perror                                   ,// 34
     (const unsigned long)esFSYS_pioctrl                                  ,// 35 *
-    (const unsigned long)esFSYS_popen                                    ,// 36  
-    (const unsigned long)esFSYS_pread                                    ,// 37  
-    (const unsigned long)esFSYS_premove                                  ,// 38  
-    (const unsigned long)esFSYS_prename                                  ,// 39  
+    (const unsigned long)esFSYS_popen                                    ,// 36
+    (const unsigned long)esFSYS_pread                                    ,// 37
+    (const unsigned long)esFSYS_premove                                  ,// 38
+    (const unsigned long)esFSYS_prename                                  ,// 39
     (const unsigned long)esFSYS_pwrite                                   ,// 40 *
-    (const unsigned long)esFSYS_querypartupdateflag                      ,// 41  
-    (const unsigned long)esFSYS_readdir                                  ,// 42  
-    (const unsigned long)esFSYS_remove                                   ,// 43  
-    (const unsigned long)esFSYS_rename                                   ,// 44  
+    (const unsigned long)esFSYS_querypartupdateflag                      ,// 41
+    (const unsigned long)esFSYS_readdir                                  ,// 42
+    (const unsigned long)esFSYS_remove                                   ,// 43
+    (const unsigned long)esFSYS_rename                                   ,// 44
     (const unsigned long)esFSYS_rewinddir                                ,// 45 *
-    (const unsigned long)esFSYS_rmdir                                    ,// 46  
-    (const unsigned long)esFSYS_setfs                                    ,// 47  
-    (const unsigned long)esFSYS_statfs                                   ,// 48  
-    (const unsigned long)esFSYS_statpt                                   ,// 49  
+    (const unsigned long)esFSYS_rmdir                                    ,// 46
+    (const unsigned long)esFSYS_setfs                                    ,// 47
+    (const unsigned long)esFSYS_statfs                                   ,// 48
+    (const unsigned long)esFSYS_statpt                                   ,// 49
     (const unsigned long)esFSYS_umntparts                                ,// 50 *
-    (const unsigned long)esFSYS_umntfs                                   ,// 51  
-};                                                                        
-                                                                          
-/*SWIHandler_EXEC_t*/                                                     
-const unsigned long SWIHandler_entity_EXEC[] =                            
-{                                                                         
+    (const unsigned long)esFSYS_umntfs                                   ,// 51
+};
+
+/*SWIHandler_EXEC_t*/
+const unsigned long SWIHandler_entity_EXEC[] =
+{
     (const unsigned long)syscall_trap       ,//esEXEC_PCreate,
     (const unsigned long)syscall_trap       ,//esEXEC_PDel,
     (const unsigned long)syscall_trap       ,//esEXEC_PDelReq,
@@ -568,6 +587,122 @@ const unsigned long SWIHandler_entity_CONFIG[] =
     (const unsigned long)esCFG_GetGPIOSecData_Ex,
 };
 
+#ifdef CONFIG_KASAN
+
+#define DEFINE_SYSCALL_FUNCTION(size) \
+	void k__asan_load##size(unsigned long addr) \
+    {  \
+        __asan_load##size(addr); \
+	} \
+   	void k__asan_load##size##_noabort(unsigned long addr) \
+    {  \
+        __asan_load##size##_noabort(addr); \
+	} \
+    void k__asan_store##size(unsigned long addr) \
+    {  \
+        __asan_store##size(addr); \
+	} \
+   	void k__asan_store##size##_noabort(unsigned long addr) \
+    {  \
+        __asan_store##size##_noabort(addr); \
+	}
+
+DEFINE_SYSCALL_FUNCTION(1);
+DEFINE_SYSCALL_FUNCTION(2);
+DEFINE_SYSCALL_FUNCTION(4);
+DEFINE_SYSCALL_FUNCTION(8);
+DEFINE_SYSCALL_FUNCTION(16);
+
+void k__asan_loadN(unsigned long addr, size_t size)
+{
+    __asan_loadN(addr, size);
+}
+
+void k__asan_loadN_noabort(unsigned long addr, size_t size)
+{
+    __asan_loadN(addr, size);
+}
+
+void k__asan_storeN(unsigned long addr, size_t size)
+{
+    __asan_loadN(addr, size);
+}
+
+void k__asan_storeN_noabort(unsigned long addr, size_t size)
+{
+    __asan_loadN(addr, size);
+}
+
+void k__asan_poison_stack_memory(const void* addr, size_t size)
+{
+    __asan_poison_stack_memory(addr, size);
+}
+
+void k__asan_unpoison_stack_memory(const void* addr, size_t size)
+{
+    __asan_poison_stack_memory(addr, size);
+}
+
+void k__asan_alloca_poison(const void* addr, size_t size)
+{
+    __asan_alloca_poison(addr, size);
+}
+
+void k__asan_alloca_unpoison(const void* addr, size_t size)
+{
+    __asan_allocas_unpoison(addr, size);
+}
+
+void k__asan_handle_no_return(void)
+{
+	__asan_handle_no_return();
+}
+
+void k__asan_register_globals(void *globals, size_t size)
+{
+    __asan_register_globals(globals, size);
+}
+
+void k__asan_unregister_globals(void *globals, size_t size)
+{
+    __asan_unregister_globals(globals, size);
+}
+
+const unsigned long SWIHandler_entity_KASANOPS[] =
+{
+    (const unsigned long) k__asan_load1                  ,
+    (const unsigned long) k__asan_load2                  ,
+    (const unsigned long) k__asan_load4                  ,
+    (const unsigned long) k__asan_load8                  ,
+    (const unsigned long) k__asan_load16                 ,
+    (const unsigned long) k__asan_loadN                  ,
+    (const unsigned long) k__asan_store1                 ,
+    (const unsigned long) k__asan_store2                 ,
+    (const unsigned long) k__asan_store4                 ,
+    (const unsigned long) k__asan_store8                 ,
+    (const unsigned long) k__asan_store16                ,
+    (const unsigned long) k__asan_storeN                 ,
+    (const unsigned long) k__asan_load1_noabort          ,
+    (const unsigned long) k__asan_load2_noabort          ,
+    (const unsigned long) k__asan_load4_noabort          ,
+    (const unsigned long) k__asan_load8_noabort          ,
+    (const unsigned long) k__asan_load16_noabort         ,
+    (const unsigned long) k__asan_loadN_noabort          ,
+    (const unsigned long) k__asan_store1_noabort         ,
+    (const unsigned long) k__asan_store2_noabort         ,
+    (const unsigned long) k__asan_store4_noabort         ,
+    (const unsigned long) k__asan_store8_noabort         ,
+    (const unsigned long) k__asan_store16_noabort        ,
+    (const unsigned long) k__asan_storeN_noabort         ,
+    (const unsigned long) k__asan_poison_stack_memory    ,
+    (const unsigned long) k__asan_alloca_poison          ,
+    (const unsigned long) k__asan_alloca_unpoison        ,
+	(const unsigned long) k__asan_handle_no_return       ,
+	(const unsigned long) k__asan_register_globals       ,
+	(const unsigned long) k__asan_unregister_globals     ,
+};
+#endif
+
 /*SWIHandler_SWIT_t*/
 const unsigned long melis_syscall_table[] =
 {
@@ -597,7 +732,15 @@ const unsigned long melis_syscall_table[] =
     (const unsigned long)SWIHandler_entity_INPUT        ,   // void *SWIHandler_INPUT       ;
     (const unsigned long)SWIHandler_entity_CONFIG       ,   // void *SWIHandler_CONFIG      ;
     (const unsigned long)SWIHandler_entity_PTHREAD      ,   // void *SWIHandler_PTHREAD     ;
-    (const unsigned long)SWIHandler_entity_NLIBOPS      ,   // void *SWIHandler_NLIBOPS    ;
+    (const unsigned long)SWIHandler_entity_NLIBOPS      ,   // void *SWIHandler_NLIBFOPS    ;
+
+#ifdef CONFIG_NETWORK
+    (const unsigned long)SWIHandler_entity_LWIP         ,   // void *SWIHandler_LWIP        ;
+#endif
+
+#ifdef CONFIG_KASAN
+    (const unsigned long)SWIHandler_entity_KASANOPS     ,   // void *SWIHandler_KASANOPS    ;
+#endif
 };
 
 #ifdef CONFIG_RISCV
@@ -612,8 +755,8 @@ unsigned long esSYSCALL_function(irq_regs_t *regs, void *reserved)
 
     if(func)
     {
-        regs->x1    = regs->sepc + 4;
-        regs->sepc  = (*((unsigned long*)pfunc_addr));
+        regs->x1    = regs->epc + 4;
+        regs->epc  = (*((unsigned long*)pfunc_addr));
     }
     else
     {

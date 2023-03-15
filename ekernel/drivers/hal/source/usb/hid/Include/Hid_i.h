@@ -2,8 +2,8 @@
 ********************************************************************************
 *                                USB Hid Driver
 *
-*                (c) Copyright 2006-2010, All winners Co,Ld. 
-*                        All Right Reserved 
+*                (c) Copyright 2006-2010, All winners Co,Ld.
+*                        All Right Reserved
 *
 * FileName		:  Hid_i.h
 *
@@ -11,86 +11,91 @@
 *
 * Date			:  2010/06/02
 *
-* Description	:  Hid DriverÖĞ¶ÔUSB½Ó¿ÚÉè±¸µÄÃèÊö
+* Description	:  Hid Driverä¸­å¯¹USBæ¥å£è®¾å¤‡çš„æè¿°
 *
 * Others		:  NULL
 *
 * History:
 *		<time> 			<author>	 <version >		<desc>
-*	   2010.06.02		Javen			1.0			build this file 
+*	   2010.06.02		Javen			1.0			build this file
 *
 ********************************************************************************
 */
-#ifndef  __HID_I_H__
-#define  __HID_I_H__
-#include <hal_osal.h>
+#ifndef __HID_I_H__
+#define __HID_I_H__
+
+#include "HidSpec.h"
+
+#include "usb_gen_hub.h"
+#include "usb_core_base.h"
+#include "mod_devicetable.h"
 
 //---------------------------------------------------------
-//  Ô¤¶¨Òå
+//  é¢„å®šä¹‰
 //---------------------------------------------------------
 struct _HidRequest;
 struct _HidDev;
 struct _usbHidReport;
 
 //----------------------------------------------------------------------
-// 
+//
 //
 //----------------------------------------------------------------------
 /* input, output, feature */
 #define USB_HID_MAX_FIELDS 		64
-typedef struct _usbHidField{
-	/* FieldÓÃÍ¾ */
-	unsigned int physical;				/* physical usage for this field 					*/
-	unsigned int logical;				/* logical usage for this field 					*/
-	unsigned int application;			/* application usage for this field 				*/
-	usbHidUsage_t *usage;		/* usage table for this function 					*/
-	unsigned int maxusage;				/* maximum usage index	 							*/
-	unsigned int flags;				/* main-item flags (i.e. volatile,array,constant) 	*/
-	unsigned int report_offset;		/* bit offset in the report 						*/
-	unsigned int report_size;			/* size of this field in the report 				*/
-	unsigned int report_count;			/* number of this field in the report 				*/
-	unsigned int report_type;			/* (input,output,feature) 							*/
-	unsigned int *value;				/* last known value(s) 								*/
-	int logical_minimum;		/* ×îĞ¡Âß¼­Öµ 										*/
-	int logical_maximum;		/* ×î´óÂß¼­Öµ 										*/
-	int physical_minimum;		/* ×îĞ¡ÎïÀíÖµ 										*/
-	int physical_maximum;		/* ×î´óÎïÀíÖµ 										*/
-	int unit_exponent;		/* µ¥Î»Ö¸Êı 										*/
-	unsigned int unit;					/* µ¥Î» 											*/
+typedef struct _usbHidField {
+	/* Fieldç”¨é€” */
+	unsigned int physical;	    /* physical usage for this field */
+	unsigned int logical;	    /* logical usage for this field */
+	unsigned int application;   /* application usage for this field */
+	usbHidUsage_t *usage;	    /* usage table for this function */
+	unsigned int maxusage;	    /* maximum usage index */
+	unsigned int flags;	    /* main-item flags (i.e. volatile,array,constant) */
+	unsigned int report_offset; /* bit offset in the report */
+	unsigned int report_size;   /* size of this field in the report */
+	unsigned int report_count;  /* number of this field in the report */
+	unsigned int report_type;   /* (input,output,feature) */
+	unsigned int *value;	    /* last known value(s) */
+	int logical_minimum;	    /* æœ€å°é€»è¾‘å€¼ */
+	int logical_maximum;	    /* æœ€å¤§é€»è¾‘å€¼ */
+	int physical_minimum;	    /* æœ€å°ç‰©ç†å€¼ */
+	int physical_maximum;	    /* æœ€å¤§ç‰©ç†å€¼ */
+	int unit_exponent;	    /* å•ä½æŒ‡æ•° */
+	unsigned int unit;	    /* å•ä½ */
 
-	/* FieldÊôĞÔ */
-	unsigned int Index;				/* ndex into report->field[] 						*/
-	struct _usbHidReport *HidReport; /* field ËùÊôµÄ HID report 					*/
-}usbHidField_t;
+	/* Fieldå±æ€§ */
+	unsigned int Index;		 /* ndex into report->field[] */
+	struct _usbHidReport *HidReport; /* field æ‰€å±çš„ HID report */
+} usbHidField_t;
 
-#define  USB_HID_REPORT_TYPES		3  	/* ±¨¸æµÄÖÖÀà 		*/
-#define  USB_HID_REPORT_MAX_NUM		256	/* ±¨¸æµÄ×î´ó¸öÊı 	*/
+#define USB_HID_REPORT_TYPES		3		/* æŠ¥å‘Šçš„ç§ç±» */
+#define USB_HID_REPORT_MAX_NUM		256		/* æŠ¥å‘Šçš„æœ€å¤§ä¸ªæ•° */
 
-/* Éè±¸±¨¸æ¶¨Òå£¬ÓĞinput, output, featureµÈ3ÖÖ */
-typedef struct _usbHidReport{
-	unsigned int Id;									/* id of this report 			*/
-	unsigned int Type;									/* report type,  				*/
+/* è®¾å¤‡æŠ¥å‘Šå®šä¹‰ï¼Œæœ‰input, output, featureç­‰3ç§ */
+typedef struct _usbHidReport {
+	unsigned int Id;   /* id of this report */
+	unsigned int Type; /* report type */
 
-	unsigned int Maxfield;								/* maximum valid field index 	*/
-	usbHidField_t *Field[USB_HID_MAX_FIELDS];	/* fields of the report 		*/
+	unsigned int Maxfield;			  /* maximum valid field index */
+	usbHidField_t *Field[USB_HID_MAX_FIELDS]; /* fields of the report */
 
-	unsigned int Size;									/* size of the report (bits) 	*/
-}usbHidReport_t;
+	unsigned int Size; /* size of the report (bits) */
+} usbHidReport_t;
 
-/* Éè±¸µÄËùÓĞ±¨¸æ */
-typedef struct _usbHidReportEnum{
-	unsigned int numbered;   /* reprotÊÇ·ñ´æÔÚ */
+/* è®¾å¤‡çš„æ‰€æœ‰æŠ¥å‘Š */
+typedef struct _usbHidReportEnum {
+	unsigned int numbered; /* reprotæ˜¯å¦å­˜åœ¨ */
 
-    unsigned int ReportNum;  /* ÓĞĞ§µÄReportµÄ¸öÊı */
+	unsigned int ReportNum; /* æœ‰æ•ˆçš„Reportçš„ä¸ªæ•° */
 	usbHidReport_t *Report[USB_HID_REPORT_MAX_NUM];
-}usbHidReportEnum_t;
+} usbHidReportEnum_t;
 
-#define  USB_HID_GLOBAL_STACK_SIZE 			4
-#define  USB_HID_COLLECTION_STACK_SIZE 		4
+#define USB_HID_GLOBAL_STACK_SIZE		4
+#define USB_HID_COLLECTION_STACK_SIZE	4
 typedef struct _usbHidParser {
 	usbHidGlobalItems_t global;
 	usbHidGlobalItems_t global_stack[USB_HID_GLOBAL_STACK_SIZE];
-	unsigned int  global_stack_ptr;
+	unsigned int global_stack_ptr;
 
 	usbHidLocalItems_t local;
 
@@ -98,117 +103,115 @@ typedef struct _usbHidParser {
 	unsigned int collection_stack_ptr;
 
 	struct _HidDev *HidDev;
-}usbHidParser_t;
+} usbHidParser_t;
 
-
-/* hidÊÂ¼şÔÚhid DATAÀïµÄÆ«ÒÆÁ¿ */
-typedef struct _usbHidEvnetExcursion{
+/* hidäº‹ä»¶åœ¨hid DATAé‡Œçš„åç§»é‡ */
+typedef struct _usbHidEvnetExcursion {
 	unsigned int BitOffset;
 	unsigned int BitCount;
-}usbHidEvnetExcursion_t;
+} usbHidEvnetExcursion_t;
 
 //---------------------------------------------------------
-// 
+//
 //---------------------------------------------------------
 
 /* Hid device state */
-typedef enum _HidDev_state{
-	HID_DEV_OFFLINE= 0,			/* HidDevÒÑ¾­°Î³ö 		*/
-	HID_DEV_ONLINE,				/* HidDevÒÑ¾­Ìí¼Ó 		*/
-	HID_DEV_DIED,				/* HidDev²»¿ÉÓÃ 		*/
-	HID_DEV_RESET				/* HidDevÕıÔÚ±»reset 	*/
-}HidDev_State_t;
+typedef enum _HidDev_state {
+	HID_DEV_OFFLINE = 0, /* HidDevå·²ç»æ‹”å‡º */
+	HID_DEV_ONLINE,	     /* HidDevå·²ç»æ·»åŠ  */
+	HID_DEV_DIED,	     /* HidDevä¸å¯ç”¨ */
+	HID_DEV_RESET	     /* HidDevæ­£åœ¨è¢«reset */
+} HidDev_State_t;
 
 /* USB Hid device type */
-//#define  USB_HID_DEVICE_TYPE_UNKOWN		0x00	/* Î´ÖªÉè±¸ */
-//#define  USB_HID_DEVICE_TYPE_KEYBOARD	0x01	/* ¼üÅÌ 	*/
-//#define  USB_HID_DEVICE_TYPE_MOUSE		0x02	/* Êó±ê 	*/
+//#define  USB_HID_DEVICE_TYPE_UNKOWN		0x00	/* æœªçŸ¥è®¾å¤‡ */
+//#define  USB_HID_DEVICE_TYPE_KEYBOARD	0x01	/* é”®ç›˜ */
+//#define  USB_HID_DEVICE_TYPE_MOUSE		0x02	/* é¼ æ ‡ */
 
-typedef int (* Hid_SoftReset)(struct _HidDev *HidDev);
-typedef int (* Hid_ResetRecovery)(struct _HidDev *HidDev);
-typedef int (* Hid_Transport)(struct _HidDev *HidDev, struct _HidRequest *HidReq);
-typedef int (* Hid_StopTransport)(struct _HidDev *HidDev);
+typedef int (*Hid_SoftReset)(struct _HidDev *HidDev);
+typedef int (*Hid_ResetRecovery)(struct _HidDev *HidDev);
+typedef int (*Hid_Transport)(struct _HidDev *HidDev, struct _HidRequest *HidReq);
+typedef int (*Hid_StopTransport)(struct _HidDev *HidDev);
 
-typedef int (* HidClientProbe)(struct _HidDev *);
-typedef int (* HidClientRemove)(struct _HidDev *);
+typedef int (*HidClientProbe)(struct _HidDev *);
+typedef int (*HidClientRemove)(struct _HidDev *);
 
-/* ÃèÊöUSB½Ó¿ÚµÄĞÅÏ¢ */
-typedef struct _HidDev{
-	struct usb_host_virt_dev *pusb_dev;		/* mscDev ¶ÔÓ¦µÄPublic USB Device 	*/
-	struct usb_interface	 *pusb_intf;	/* Public usb interface 			*/
+/* æè¿°USBæ¥å£çš„ä¿¡æ¯ */
+typedef struct _HidDev {
+	struct usb_device *pusb_dev; /* mscDev å¯¹åº”çš„Public USB Device */
+	struct usb_interface *pusb_intf;    /* Public usb interface */
 
 	/* device information */
-	unsigned char InterfaceNo;						/* ½Ó¿ÚºÅ 							*/
-	unsigned char SubClass; 							/* ×ÓÀà 							*/
-	unsigned char Protocol; 							/* ´«ÊäĞ­Òé 						*/
-	unsigned int DevType;							/* Éè±¸ÀàĞÍ 						*/
-	unsigned int DevNo; 							/* Éè±¸ÔÚ hid ¹ÜÀíÖĞµÄ±àºÅ			*/
+	unsigned char InterfaceNo; /* æ¥å£å· */
+	unsigned char SubClass;	   /* å­ç±» */
+	unsigned char Protocol;	   /* ä¼ è¾“åè®® */
+	unsigned int DevType;	   /* è®¾å¤‡ç±»å‹ */
+	unsigned int DevNo;	   /* è®¾å¤‡åœ¨ hid ç®¡ç†ä¸­çš„ç¼–å· */
 
 	/* device manager */
-	HidDev_State_t State;					/* Devµ±Ç°Ëù´¦µÄÁ¬½Ó×´Ì¬ 			*/
+	HidDev_State_t State; /* Devå½“å‰æ‰€å¤„çš„è¿æ¥çŠ¶æ€ */
 
-	unsigned char *ReportDesc;						/* ×°ÔØÕâHidÉè±¸µÄreportÃèÊö·û 		*/
-	unsigned int ReportSize;						/* reportÃèÊö·ûµÄ´óĞ¡ 				*/
+	unsigned char *ReportDesc; /* è£…è½½è¿™Hidè®¾å¤‡çš„reportæè¿°ç¬¦ */
+	unsigned int ReportSize;   /* reportæè¿°ç¬¦çš„å¤§å° */
 
-	usbHidCollectionItems_t *collection;		/* List of HID collections 				*/
-	unsigned collection_size;					/* Number of allocated hid_collections 	*/
-	unsigned maxcollection;						/* Number of parsed collections 		*/
-	unsigned maxapplication;					/* Number of applications 				*/
-	usbHidReportEnum_t HidReportEnum[USB_HID_REPORT_TYPES];		/* Éè±¸µÄ±¨¸æĞÅÏ¢ 		*/
+	usbHidCollectionItems_t *collection; /* List of HID collections */
+	unsigned collection_size;	     /* Number of allocated hid_collections */
+	unsigned maxcollection;		     /* Number of parsed collections */
+	unsigned maxapplication;	     /* Number of applications */
+	usbHidReportEnum_t HidReportEnum[USB_HID_REPORT_TYPES]; /* è®¾å¤‡çš„æŠ¥å‘Šä¿¡æ¯ */
 
 	/* transport */
-	unsigned int CtrlIn; 							/* ctrl in  pipe					*/
-	unsigned int CtrlOut; 							/* ctrl out pipe					*/
-	unsigned int IntIn;							/* interrupt in pipe 				*/
-	unsigned char  EpInterval;						/* int ´«ÊäÖ÷»ú²éÑ¯Éè±¸µÄÖÜÆÚ   	*/
-	unsigned int OnceTransferLength;				/* ÖĞ¶ÏepµÄ×î´ó´«Êä°ü´óĞ¡ 			*/
+	unsigned int CtrlIn;		 /* ctrl in  pipe */
+	unsigned int CtrlOut;		 /* ctrl out pipe */
+	unsigned int IntIn;		 /* interrupt in pipe */
+	unsigned char EpInterval;	 /* int ä¼ è¾“ä¸»æœºæŸ¥è¯¢è®¾å¤‡çš„å‘¨æœŸ */
+	unsigned int OnceTransferLength; /* ä¸­æ–­epçš„æœ€å¤§ä¼ è¾“åŒ…å¤§å° */
 
-	unsigned int busy;								/* Ö÷»úÊÇ·ñÕıÔÚ´¦ÀíÃüÁî 			*/
-	struct urb *CurrentUrb;					/* USB requests	 					*/
-	hal_sem_t UrbWait;			/* wait for Urb done 				*/
-	struct usb_ctrlrequest *CtrlReq;		/* control requests	 				*/
+	unsigned int busy;		 /* ä¸»æœºæ˜¯å¦æ­£åœ¨å¤„ç†å‘½ä»¤ */
+	struct urb *CurrentUrb;		 /* USB requests */
+	hal_sem_t UrbWait;		 /* wait for Urb done */
+	struct usb_ctrlrequest *CtrlReq; /* control requests */
 
-    /* USB½Ó¿Ú²Ù×÷ */
-	Hid_SoftReset 	  SoftReset;			/* Èí¸´Î»£¬Ö»ÊÇÇå³ı hid device µÄ×´Ì¬ */
-	Hid_ResetRecovery ResetRecovery;		/* reset device 					*/
-	Hid_Transport 	  Transport;			/* ´«Êä 							*/
-	Hid_StopTransport StopTransport;		/* ÖĞÖ¹´«Êä 						*/
+	/* USBæ¥å£æ“ä½œ */
+	Hid_SoftReset SoftReset;	 /* è½¯å¤ä½ï¼Œåªæ˜¯æ¸…é™¤ hid device çš„çŠ¶æ€ */
+	Hid_ResetRecovery ResetRecovery; /* reset device */
+	Hid_Transport Transport;	 /* ä¼ è¾“ */
+	Hid_StopTransport StopTransport; /* ä¸­æ­¢ä¼ è¾“ */
 
-	/* HidÉè±¸²Ù×÷ */
-	HidClientProbe  ClientProbe;
+	/* Hidè®¾å¤‡æ“ä½œ */
+	HidClientProbe ClientProbe;
 	HidClientRemove ClientRemove;
 
-	void *Extern;							/* ¶ÔÓ¦¾ßÌåµÄhidÉè±¸, Èçmouse, keyboard */
-}HidDev_t;
+	void *Extern; /* å¯¹åº”å…·ä½“çš„hidè®¾å¤‡, å¦‚mouse, keyboard */
+} HidDev_t;
 
-typedef void (* HidClientDone)(struct _HidRequest *);
+typedef void (*HidClientDone)(struct _HidRequest *);
 
-/* Hid ´«ÊäÇëÇó */
-typedef struct _HidRequest{
+/* Hid ä¼ è¾“è¯·æ±‚ */
+typedef struct _HidRequest {
 	HidDev_t *HidDev;
 
-	void *buffer;							/* Data buffer 					*/
-	unsigned int DataTransferLength;				/* Size of data buffer 			*/
-	unsigned int ActualLength;						/* actual transport length		*/
+	void *buffer;			 /* Data buffer */
+	unsigned int DataTransferLength; /* Size of data buffer */
+	unsigned int ActualLength;	 /* actual transport length */
 
 	HidClientDone Done;
-	unsigned int Result;							/* Ö´ĞĞ½á¹û						*/
+	unsigned int Result; /* æ‰§è¡Œç»“æœ */
 
-	void *Extern;							/* ¶ÔÓ¦¾ßÌåµÄhidÉè±¸, Èçmouse, keyboard */
-}HidRequest_t;
+	void *Extern; /* å¯¹åº”å…·ä½“çš„hidè®¾å¤‡, å¦‚mouse, keyboard */
+} HidRequest_t;
 
 //-----------------------------------------------------
-//  Hid ´«Êä½á¹û
+//  Hid ä¼ è¾“ç»“æœ
 //-----------------------------------------------------
-#define  USB_HID_TRANSPORT_SUCCESS				0x00  /* ´«Êä³É¹¦ 			*/
+#define USB_HID_TRANSPORT_SUCCESS		0x00 /* ä¼ è¾“æˆåŠŸ */
 
-#define  USB_HID_TRANSPORT_DEVICE_DISCONNECT	0x01  /* Éè±¸¶Ï¿ª 			*/
-#define  USB_HID_TRANSPORT_DEVICE_RESET			0x02  /* Éè±¸¸´Î» 			*/
-#define  USB_HID_TRANSPORT_PIPE_HALT			0x03  /* ´«Êä¹ÜµÀÒì³£ 		*/
-#define  USB_HID_TRANSPORT_CANCEL_CMD			0x04  /* Èí¼şÖĞÖ¹´Ë´Î´«Êä 	*/
+#define USB_HID_TRANSPORT_DEVICE_DISCONNECT	0x01 /* è®¾å¤‡æ–­å¼€ */
+#define USB_HID_TRANSPORT_DEVICE_RESET		0x02 /* è®¾å¤‡å¤ä½ */
+#define USB_HID_TRANSPORT_PIPE_HALT		0x03 /* ä¼ è¾“ç®¡é“å¼‚å¸¸ */
+#define USB_HID_TRANSPORT_CANCEL_CMD		0x04 /* è½¯ä»¶ä¸­æ­¢æ­¤æ¬¡ä¼ è¾“ */
 
-#define  USB_HID_TRANSPORT_UNKOWN_ERR			0xFF  /* Î´Öª´íÎó 			*/
-
+#define USB_HID_TRANSPORT_UNKOWN_ERR		0xFF /* æœªçŸ¥é”™è¯¯ */
 
 //-----------------------------------------------------
 //
@@ -216,6 +219,4 @@ typedef struct _HidRequest{
 int HidSentRequest(HidRequest_t *HidReq);
 int HidGetInputReport(HidDev_t *HidDev, unsigned int Usagepage, unsigned int Usage, unsigned int *BitOffset, unsigned int *BitCount);
 
-
-#endif   //__HID_I_H__
-
+#endif //__HID_I_H__

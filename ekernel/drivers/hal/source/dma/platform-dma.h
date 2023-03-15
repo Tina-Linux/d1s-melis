@@ -45,5 +45,14 @@
 #if defined(CONFIG_ARCH_SUN50IW11)
 #include "platform/dma-sun50iw11.h"
 #endif
+#if defined(CONFIG_ARCH_SUN20IW2)
+#include "platform/dma-sun20iw2.h"
+#endif
+#if defined(CONFIG_ARCH_SUN20IW3)
+#include "platform/dma-sun20iw3.h"
+#endif
+#if defined(CONFIG_ARCH_SUN55IW3)
+#include "platform/dma-sun55iw3.h"
+#endif
 
 #endif /* __DMA_PLATFORM_H__ */

@@ -14,7 +14,8 @@ extern "C"
 #include <queue.h>
 typedef QueueHandle_t hal_mailbox_t;
 typedef QueueHandle_t hal_queue_t;
-#else
+#elif defined(CONFIG_RTTKERNEL)
+
 #include <rtthread.h>
 #include <workqueue.h>
 #include <waitqueue.h>
@@ -31,9 +32,9 @@ int hal_workqueue_dowork(hal_workqueue *queue, hal_work *work);
 void hal_wqueue_init(hal_wqueue_t *queue);
 int  hal_wqueue_wait(hal_wqueue_t *queue, int condition, int timeout);
 void hal_wqueue_wakeup(hal_wqueue_t *queue, void *key);
-
+#else
+#error "can not support unknown platform"
 #endif
-
 
 enum IPC_MAILBOX_CMD
 {
@@ -55,6 +56,7 @@ int hal_queue_send(hal_queue_t queue, void *buffer);
 int hal_queue_send_wait(hal_queue_t queue, void *buffer, int timeout);
 int hal_queue_recv(hal_queue_t queue, void *buffer, int timeout);
 int hal_is_queue_empty(hal_queue_t queue);
+int hal_queue_len(hal_queue_t queue);
 
 #ifdef __cplusplus
 }

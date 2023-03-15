@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-#include <rtthread.h>
 #include <hal_mem.h>
 #include <hal_cmd.h>
 #include "dev_disp.h"

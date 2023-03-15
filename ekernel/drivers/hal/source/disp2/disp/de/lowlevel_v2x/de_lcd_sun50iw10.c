@@ -241,15 +241,31 @@ s32 tcon_de_attach(u32 tcon_index, u32 de_index)
 			tcon_real_index += 2;
 	}
 #if defined(CONFIG_INDEPENDENT_DE)
-	if (de_index == 0)
+	/* DE1 and DE0 cannot be connected to the same TCON*/
+	if (de_index == 0) {
+		if (lcd_top[1]->tcon_de_perh.bits.de_port1_perh == tcon_real_index)
+			lcd_top[1]->tcon_de_perh.bits.de_port1_perh =
+			    lcd_top[0]->tcon_de_perh.bits.de_port0_perh;
 		lcd_top[0]->tcon_de_perh.bits.de_port0_perh = tcon_real_index;
-	else if (de_index == 1)
+	} else if (de_index == 1) {
+		if (lcd_top[0]->tcon_de_perh.bits.de_port0_perh == tcon_real_index)
+			lcd_top[0]->tcon_de_perh.bits.de_port0_perh =
+			    lcd_top[1]->tcon_de_perh.bits.de_port1_perh;
 		lcd_top[1]->tcon_de_perh.bits.de_port1_perh = tcon_real_index;
+	}
 #else
-	if (de_index == 0)
+	/* DE1 and DE0 cannot be connected to the same TCON*/
+	if (de_index == 0) {
+		if (lcd_top[0]->tcon_de_perh.bits.de_port1_perh == tcon_real_index)
+			lcd_top[0]->tcon_de_perh.bits.de_port1_perh =
+			    lcd_top[0]->tcon_de_perh.bits.de_port0_perh;
 		lcd_top[0]->tcon_de_perh.bits.de_port0_perh = tcon_real_index;
-	else if (de_index == 1)
+	} else if (de_index == 1) {
+		if (lcd_top[0]->tcon_de_perh.bits.de_port0_perh == tcon_real_index)
+			lcd_top[0]->tcon_de_perh.bits.de_port0_perh =
+			    lcd_top[0]->tcon_de_perh.bits.de_port1_perh;
 		lcd_top[0]->tcon_de_perh.bits.de_port1_perh = tcon_real_index;
+	}
 #endif
 
 	return 0;

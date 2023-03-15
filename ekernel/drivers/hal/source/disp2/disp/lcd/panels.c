@@ -107,6 +107,9 @@ struct __lcd_panel *panel_array[] = {
 	&VVX07H005A10_panel,
 #endif
 
+#ifdef CONFIG_LCD_SUPPORT_TFT08006
+	&tft08006_panel,
+#endif
 
 	NULL,
 };

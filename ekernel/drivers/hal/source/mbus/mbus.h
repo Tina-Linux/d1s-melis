@@ -30,7 +30,7 @@
  */
 
 #ifndef __MBUS_H
-#define __MBUS_Ho
+#define __MBUS_H
 
 #include <stdint.h>
 #include "platform_mbus.h"
@@ -48,7 +48,15 @@ uint32_t mbus_get_dsp_sys_ddr(void);
 uint32_t mbus_get_iommu_ddr(void);
 uint32_t mbus_get_di_ddr(void);
 uint32_t mbus_get_g2d_ddr(void);
+uint32_t mbus_get_dma0_ddr(void);
+uint32_t mbus_get_dma1_ddr(void);
 void mbus_pmu_enable(void);
+uint32_t mbus_get_window(void);
 
+uint32_t mbus_get_ce_ddr(void);
+uint32_t mbus_get_dsp_sys_ddr(void);
+uint32_t mbus_get_disp_ddr(void);
+uint32_t mbus_get_mahb_ddr(void);
+uint32_t mbus_get_dma_ddr(void);
 
 #endif

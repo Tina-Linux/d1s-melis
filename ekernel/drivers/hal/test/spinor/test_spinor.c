@@ -101,7 +101,7 @@ static int cmd_test_spinor(int argc, const char **argv)
     uint32_t addr = 3 * 1024 *1024;
     uint32_t len = 4 * 1024;
 
-    printf("Run spinor test");
+    printf("Run spinor test\n");
 
     ret = hal_spinor_init(0);
     if (ret)
@@ -122,9 +122,9 @@ static int cmd_test_spinor(int argc, const char **argv)
 
     printf("read data:\n");
 	ret = hal_spinor_read_data(addr, buf, 512);
-    if (ret <= 0)
+    if (ret)
     {
-        printf("spinor read data failed\n");
+        printf("spinor read data failed, ret %d\n", ret);
         ret = -1;
         goto error;
     }
@@ -143,7 +143,7 @@ static int cmd_test_spinor(int argc, const char **argv)
     printf("write data:\n");
     memset(buf, 0xa5, 512);
     ret = hal_spinor_program_data(addr, buf, 512);
-    if (ret <= 0)
+    if (ret)
     {
         printf("spinor write data failed\n");
         ret = -1;
@@ -153,7 +153,7 @@ static int cmd_test_spinor(int argc, const char **argv)
     printf("after write data:\n");
     memset(buf, 0, 512);
     ret = hal_spinor_read_data(addr, buf, 512);
-    if (ret <= 0)
+    if (ret)
     {
         printf("spinor read data failed\n");
         ret = -1;

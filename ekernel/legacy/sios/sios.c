@@ -1,20 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                                 Sios Module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2006-2010, kevin.z China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : sios.c
-* By      : kevin.z
-* Version : v1.0
-* Date    : 2010-11-19 13:37
-* Descript:
-* Update  : date                auther      ver     notes
-*           2010-11-19 13:37    kevin.z     1.1     build the file.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <kapi.h>
 #include <log.h>
@@ -22,7 +35,7 @@
 #include <port.h>
 #include "dfs_posix.h"
 #include "rtthread.h"
-#include "../aw/multi_console/cli_console.h"
+#include "../../components/aw/multi_console/cli_console.h"
 
 #define SIOS_BUFFER_LEN     2048
 typedef struct SIOS_BUFFER
@@ -114,7 +127,7 @@ int32_t SIOS_putstrtofile(const char *str)
         {
             CopyLen = SiosBuffer.BufferLen - SiosBuffer.BufferPos;
         }
-        rt_memcpy(pDst, pSrc, CopyLen);
+        memcpy(pDst, pSrc, CopyLen);
         SiosBuffer.BufferPos += CopyLen;
         Left -= CopyLen;
         pDst += CopyLen;
@@ -175,7 +188,7 @@ void esSIOS_putstr(const char *str)
         }
     }
 #endif
-    return cli_console_write(get_clitask_console(), str, rt_strlen(str));
+    return cli_console_write(get_clitask_console(), str, strlen(str));
 }
 
 

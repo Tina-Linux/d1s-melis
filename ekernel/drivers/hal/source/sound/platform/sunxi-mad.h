@@ -33,42 +33,11 @@
 #define __SUNXI_MAD_H_
 
 #include <aw_common.h>
-#include <hal_clk.h>
 #include <hal_dma.h>
-#include <snd_core.h>
-#include <snd_pcm.h>
-#include <snd_io.h>
+#include <sound/snd_core.h>
+#include <sound/snd_pcm.h>
 
 #include "sunxi-pcm.h"
-
-/* memory mapping */
-#define MAD_BASE SUNXI_MAD_PBASE
-#define MAD_SRAM_DMA_SRC_ADDR SUNXI_MAD_SRAM_PBASE
-
-#ifdef CONFIG_ARCH_SUN8IW18P1
-/* SUN8IW18P1 should not be setup. */
-#undef MAD_CLK_ALWAYS_ON
-//#undef SUNXI_LPSD_CLK_ALWAYS_ON
-#define SUNXI_LPSD_CLK_ALWAYS_ON
-#undef SUNXI_MAD_DATA_INT_USE
-//#define SUNXI_MAD_DATA_INT_USE
-#define SUNXI_MAD_SRAM_SUSPEND_RESET
-
-/* 128k bytes */
-#define MAD_SRAM_SIZE_VALUE 0x80
-#endif
-
-/*memory mapping*/
-#ifndef MAD_BASE
-#define MAD_BASE (0x05400000)
-#endif
-#ifndef MAD_SRAM_DMA_SRC_ADDR
-#define MAD_SRAM_DMA_SRC_ADDR (0x05480000)
-#endif
-/* 128k bytes */
-#ifndef MAD_SRAM_SIZE_VALUE
-#define MAD_SRAM_SIZE_VALUE 0x80
-#endif
 
 enum mad_sram_bmode {
         MAD_SRAM_BMODE_NORMAL = 0,
@@ -76,17 +45,14 @@ enum mad_sram_bmode {
 };
 
 enum mad_path_sel {
-        MAD_PATH_NONE = 0,
-        MAD_PATH_I2S0 = 1,
-        MAD_PATH_CODEC = 2,
-        MAD_PATH_DMIC = 3,
-        MAD_PATH_I2S1 = 4,
-        MAD_PATH_I2S2 = 5,
+	MAD_PATH_NONE = 0,
+	MAD_PATH_CODEC,
+	MAD_PATH_CODECADC,
+	MAD_PATH_DMIC,
+	MAD_PATH_I2S0,
+	MAD_PATH_I2S1,
+	MAD_PATH_I2S2,
 };
-
-#ifdef CONFIG_ARCH_SUN8IW18P1
-#undef SUNXI_MAD_DATA_INT_USE
-#endif
 
 #define EVT_MAX_SIZE            256
 #define SUNXI_NETLINK_MAD       30
@@ -252,10 +218,6 @@ enum mad_path_sel {
 /*MAD_CFG_ERR mask*/
 #define MAD_CFG_ERR_MASK                0x3
 
-/* for mad clk*/
-#define MAD_SRAM_BMODE_CTRL 24
-#define SRAM_BMODE_CTRL_REG 0x3000004
-
 enum sunxi_mad_standby_debug_flag {
 	SUNXI_MAD_DEBUG_STANDBY_NULL = 0,
 	SUNXI_MAD_DEBUG_STANDBY_SUSPEND = 1,
@@ -309,7 +271,7 @@ enum sunxi_mad_wakeup_flag {
 
 struct sunxi_mad_priv {
 	struct sunxi_mad_info *sunxi_mad;
-	unsigned int mad_bind;
+	//unsigned int mad_bind;
 	unsigned int mad_suspend;
 	/* mad params */
 	unsigned int sample_rate;
@@ -318,15 +280,22 @@ struct sunxi_mad_priv {
 	unsigned int audio_src_chan_num;
 };
 
-struct sunxi_mad_info {
-	hal_clk_id_t mad_clk;
-	hal_clk_id_t mad_cfg_clk;
-	hal_clk_id_t mad_ad_clk;
-	hal_clk_id_t lpsd_clk;
-	hal_clk_id_t pll_clk;
-	hal_clk_id_t hosc_clk;
+struct sunxi_mad_bind {
+	bool mad_bind_codecadc;
+	bool mad_bind_dmic;
+	bool mad_bind_i2s0;
+	bool mad_bind_i2s1;
+	bool mad_bind_i2s2;
+};
 
-	freert_spinlock_t resume_spin;
+#if defined(CONFIG_ARCH_SUN20IW2)
+#include "platforms/mad-sun20iw2.h"
+#endif
+
+struct sunxi_mad_info {
+	struct sunxi_mad_clk clk;
+
+	/* freert_spinlock_t resume_spin; */
 
 	unsigned int pll_audio_src_used;
 	unsigned int hosc_src_used;
@@ -341,7 +310,7 @@ struct sunxi_mad_info {
 	unsigned int sram_rd_point;
 	unsigned int audio_src_path;
 
-	unsigned int mad_bind;
+	//unsigned int mad_bind;
 
 	int status;
 	unsigned int wakeup_flag;
@@ -352,9 +321,14 @@ struct sunxi_mad_info {
 	unsigned int ref_count;
 
 	struct sunxi_mad_priv mad_priv;
+	struct sunxi_mad_bind mad_bind;
 
 	void *private_data;
 };
+
+/* for mad bind */
+int sunxi_mad_bind_set(enum mad_path_sel path_sel, bool enable);
+int sunxi_mad_bind_get(enum mad_path_sel path_sel, bool *enable);
 
 int sunxi_mad_sram_set_reset_flag(enum sunxi_mad_sram_reset_flag reset_flag);
 enum sunxi_mad_sram_reset_flag sunxi_mad_sram_get_reset_flag(void);
@@ -386,7 +360,7 @@ void sunxi_lpsd_chan_sel(unsigned int num);
 void sunxi_mad_audio_src_chan_num(unsigned int num);
 void sunxi_sram_dma_config(struct sunxi_dma_params *capture_dma_param);
 int sunxi_mad_hw_params(unsigned int mad_channels, unsigned int sample_rate);
-int sunxi_mad_audio_source_sel(unsigned int path_sel, unsigned int enable);
+int sunxi_mad_audio_source_sel(enum mad_path_sel path_sel, unsigned int enable);
 int sunxi_mad_suspend_external(void);
 int sunxi_mad_resume_external(void);
 void sunxi_mad_dma_enable(bool enable);
@@ -401,6 +375,6 @@ void sunxi_mad_schd_wakeup(SemaphoreHandle_t semaphore);
 #endif
 
 /* for probe mad module */
-int sunxi_mad_platform_probe(struct snd_platform *platform);
-int sunxi_mad_platform_remove(struct snd_platform *platform);
+int sunxi_mad_platform_probe();
+int sunxi_mad_platform_remove();
 #endif /* SUNXI_MAD_H */

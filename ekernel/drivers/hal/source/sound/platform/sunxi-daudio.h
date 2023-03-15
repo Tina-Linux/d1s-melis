@@ -39,6 +39,7 @@
 #include <sound/snd_core.h>
 #include <sound/snd_pcm.h>
 #include <sound/snd_io.h>
+#include "sound/common/snd_sunxi_rxsync.h"
 
 #define DAUDIO_NAME_LEN		(26)
 
@@ -88,8 +89,8 @@
 #define SUNXI_DAUDIO_ASRC_MBISTSTA      0xA0
 
 /* SUNXI_DAUDIO_CTL:0x00 */
-#define RX_SYNC_EN			21
-#define RX_EN_MUX			20
+#define RX_SYNC_EN_STA			21
+#define RX_SYNC_EN			20
 #define	BCLK_OUT			18
 #define	LRCK_OUT			17
 #define	LRCKR_CTL			16
@@ -351,21 +352,25 @@ enum sunxi_daudio_clk_parent {
 };
 
 struct sunxi_daudio_param {
-       uint8_t tdm_num;
-       uint8_t daudio_master;
-       uint8_t audio_format;
-       uint8_t signal_inversion;
-       uint16_t pcm_lrck_period;
-       uint8_t msb_lsb_first:1;
-       uint8_t sign_extend:2;
-       uint8_t tx_data_mode:2;
-       uint8_t rx_data_mode:2;
-       uint8_t slot_width_select;
-       uint8_t frametype;
-       uint8_t tdm_config;
-       uint16_t mclk_div;
-       uint16_t playback_pcm_kbytes;
-       uint16_t capture_pcm_kbytes;
+	uint8_t tdm_num;
+	uint8_t daudio_master;
+	uint8_t audio_format;
+	uint8_t signal_inversion;
+	uint16_t pcm_lrck_period;
+	uint8_t msb_lsb_first:1;
+	uint8_t sign_extend:2;
+	uint8_t tx_data_mode:2;
+	uint8_t rx_data_mode:2;
+	uint8_t slot_width_select;
+	uint8_t frametype;
+	uint8_t tdm_config;
+	uint16_t mclk_div;
+	uint16_t playback_pcm_kbytes;
+	uint16_t capture_pcm_kbytes;
+	bool rx_sync_en;
+	bool rx_sync_ctl;
+	int16_t rx_sync_id;
+	rx_sync_domain_t rx_sync_domain;
 };
 
 struct daudio_pinctrl {
@@ -374,29 +379,11 @@ struct daudio_pinctrl {
 	uint8_t driv_level;
 };
 
-struct sunxi_daudio_info {
-	struct snd_platform *platform;
-
-	hal_clk_t pllclk;
-	hal_clk_t moduleclk;
-	hal_clk_t busclk;
-	hal_clk_t pllclk1;
-	hal_clk_t asrcclk;
-
-	struct reset_control *rstclk;
-
-	struct daudio_pinctrl *pinctrl;
-	uint8_t pinctrl_num;
-
-	struct sunxi_daudio_param param;
-	struct sunxi_dma_params playback_dma_param;
-	struct sunxi_dma_params capture_dma_param;
-
-	uint8_t global_enable;
-	unsigned int hub_mode;
-	bool playback_en;
-	bool capture_en;
-	int asrc_en;
+struct pa_config {
+	gpio_pin_t pin;
+	gpio_data_t level;
+	uint16_t msleep;
+	bool used;
 };
 
 #if defined(CONFIG_ARCH_SUN8IW18P1)
@@ -408,6 +395,30 @@ struct sunxi_daudio_info {
 #if defined(CONFIG_ARCH_SUN8IW20) || defined(CONFIG_SOC_SUN20IW1)
 #include "platforms/daudio-sun8iw20.h"
 #endif
+#if defined(CONFIG_ARCH_SUN20IW2)
+#include "platforms/daudio-sun20iw2.h"
+#endif
+#if defined(CONFIG_ARCH_SUN55IW3)
+#include "platforms/daudio-sun55iw3.h"
+#endif
 
+struct sunxi_daudio_info {
+	struct snd_platform *platform;
+	struct sunxi_daudio_clk clk;
+	struct daudio_pinctrl *pinctrl;
+	uint8_t pinctrl_num;
+	struct pa_config *pa_cfg;
+	uint8_t pa_cfg_num;
+
+	struct sunxi_daudio_param param;
+	struct sunxi_dma_params playback_dma_param;
+	struct sunxi_dma_params capture_dma_param;
+
+	uint8_t global_enable;
+	unsigned int hub_mode;
+	bool playback_en;
+	bool capture_en;
+	int asrc_en;
+};
 
 #endif	/* __SUNXI_DAUDIO_H_ */

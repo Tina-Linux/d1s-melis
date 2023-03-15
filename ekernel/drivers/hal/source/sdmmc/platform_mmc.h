@@ -35,7 +35,10 @@
 
 /* external peripheral interrupt */
 #define GIC_SRC_SPI(_n)      (32 + (_n))
+
+#ifndef BIT
 #define BIT(nr)                 (1UL << (nr))
+#endif
 
 #if defined(CONFIG_ARCH_SUN8IW18P1)
 #include "platform/mmc_sun8iw18p1.h"
@@ -45,9 +48,12 @@
 #include "platform/mmc_sun8iw19p1.h"
 #endif
 
-#if defined(CONFIG_SOC_SUN20IW1)
+#if defined(CONFIG_SOC_SUN20IW1) || defined(CONFIG_ARCH_SUN8IW20)
 #include "platform/mmc_sun20iw1p1.h"
 #endif
 
+#if defined(CONFIG_ARCH_SUN20IW2)
+#include "platform/mmc_sun20iw2p1.h"
+#endif
 
 #endif /* __PLATFORM_TWI_H__ */

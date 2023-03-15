@@ -6,15 +6,21 @@ extern "C"
 {
 #endif
 
-#ifdef CONFIG_KERNEL_FREERTOS
+#include "barrier.h"
+
+#if defined(CONFIG_KERNEL_FREERTOS)
 
 #include <FreeRTOSConfig.h>
 #define hal_soft_break soft_break
 
-#else
+#elif defined(CONFIG_OS_MELIS)
 
 #include <debug.h>
 #define hal_soft_break software_break
+
+#else
+
+#define hal_soft_break
 
 #endif
 

@@ -164,7 +164,7 @@ extern "C" {
 #endif
 
 #define SDMMC_DRIVER_NAME "sunxi-mmc"
-#define SDMMC_DRIVER_RIVISION "v0.28 2021-08-24 16:50"
+#define SDMMC_DRIVER_RIVISION "v0.29 2022-09-01 16:50"
 #define SDMMC_DRIVER_VERSION "SD/MMC/SDIO Host Controller Driver(" SDMMC_DRIVER_RIVISION ")"
 
 #ifdef __cplusplus

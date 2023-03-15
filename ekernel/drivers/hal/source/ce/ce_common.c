@@ -37,18 +37,23 @@
 #include <hal_osal.h>
 #include <hal_sem.h>
 #include <hal_timer.h>
+#ifdef CONFIG_COMPONENTS_PM
+#include <pm_devops.h>
+#endif
 #include <sunxi_hal_ce.h>
 #include "ce_common.h"
 #include "hal_ce.h"
 #include "ce_reg.h"
 #include "platform_ce.h"
 
-//#define CE_NO_IRQ
-#define IRQ_DONE		(0x5A5A)
+#define CE_NO_IRQ
 #define CE_WAIT_TIME	(50000)
 
+#ifndef CE_NO_IRQ
 static hal_sem_t ce_sem;
+#endif
 //static rt_wqueue_t ce_wqueue;
+static int sunxi_ce_init_flag = 0;
 
 void ce_print_hex(char *_data, int _len, void *_addr)
 {
@@ -91,7 +96,46 @@ void ce_print_task_info(ce_task_desc_t *task)
 	CE_DBG("task->dst[0].len = 0x%lx\n", task->dst[0].len);
 }
 
-static irqreturn_t ce_irq_handler(int irq, void *dev_id)
+#ifdef CONFIG_COMPONENTS_PM
+static int sunxi_ce_suspend(struct pm_device *dev, suspend_mode_t mode)
+{
+#ifndef CE_NO_IRQ
+	hal_disable_irq(SUNXI_IRQ_CE);
+#endif
+
+	//hal_ce_clock_init(0);
+
+	printf("ce suspend\n");
+        return 0;
+}
+
+static int sunxi_ce_resume(struct pm_device *dev, suspend_mode_t mode)
+{
+	hal_ce_clock_init();
+
+#ifndef CE_NO_IRQ
+	hal_enable_irq(SUNXI_IRQ_CE);
+#endif
+
+	printf("ce resume\n");
+        return 0;
+}
+
+struct pm_devops pm_ce_ops = {
+	.suspend = sunxi_ce_suspend,
+	.resume = sunxi_ce_resume,
+};
+
+struct pm_device pm_ce = {
+	.name = "sunxi_ce",
+	.ops = &pm_ce_ops,
+};
+
+#endif
+
+
+#ifndef CE_NO_IRQ
+static hal_irqreturn_t ce_irq_handler(void *data)
 {
 	int i;
 	int ret;
@@ -114,29 +158,36 @@ static irqreturn_t ce_irq_handler(int irq, void *dev_id)
 		}
 	}
 
-	return IRQ_HANDLED;
+	return HAL_IRQ_OK;
 }
-
 
 static int ce_irq_request(void)
 {
 	uint32_t irqn = SUNXI_IRQ_CE;
 
-	if (request_irq(irqn, ce_irq_handler, 0, "crypto", NULL) < 0) {
+	if (hal_request_irq(irqn, ce_irq_handler, "crypto", NULL) < 0) {
 		CE_ERR("Cannot request IRQ\n");
 		return -1;
 	}
 
-	enable_irq(irqn);
+	hal_enable_irq(irqn);
 
 	return 0;
 }
+#endif
 
 int sunxi_ce_init(void)
 {
 	int ret = 0;
 
 	hal_ce_clock_init();
+
+	if (sunxi_ce_init_flag) {
+		CE_DBG("ce is already inited\n");
+		return 0;
+	}
+
+#ifndef CE_NO_IRQ
 	ret = ce_irq_request();
 	if (ret < 0) {
 		return -1;
@@ -147,21 +198,41 @@ int sunxi_ce_init(void)
 		CE_ERR("hal_sem_create fail\n");
 		return -1;
 	}
+#endif
 
 #if 0
 	rt_wqueue_init(&ce_wqueue);
 #endif
+
+
+#ifdef CONFIG_COMPONENTS_PM
+	pm_devops_register(&pm_ce);
+#endif
+
+	sunxi_ce_init_flag = 1;
 
 	return 0;
 }
 
 int sunxi_ce_uninit(void)
 {
+	if (!sunxi_ce_init_flag) {
+		CE_DBG("ce is already uninited\n");
+		return 0;
+	}
+
+#ifndef CE_NO_IRQ
 	if (ce_sem)
 		hal_sem_delete(ce_sem);
 
-	free_irq(SUNXI_IRQ_CE, NULL);
+	hal_free_irq(SUNXI_IRQ_CE);
+#endif
 
+#ifdef CONFIG_COMPONENTS_PM
+	pm_devops_unregister(&pm_ce);
+#endif
+
+	sunxi_ce_init_flag = 0;
 	return 0;
 }
 
@@ -176,9 +247,9 @@ static ce_task_desc_t *ce_aes_config(uint32_t dir, uint32_t type, uint32_t mode,
 				uint8_t *key_buf, uint32_t key_length)
 {
 	ce_task_desc_t *task = NULL;
-	uint32_t flow = 1;
+	uint32_t flow = 0;
 
-	task = (ce_task_desc_t *)hal_malloc(sizeof(ce_task_desc_t));
+	task = (ce_task_desc_t *)hal_malloc_align(sizeof(ce_task_desc_t), max(CE_ALIGN_SIZE, CACHELINE_LEN));
 	if (task == NULL) {
 		CE_ERR("hal_malloc fail\n");
 		return NULL;
@@ -284,12 +355,13 @@ static int ce_aes_start(crypto_aes_req_ctx_t *req_ctx)
 
 #ifdef CE_NO_IRQ
 	hal_ce_wait_finish(task->chan_id);
+	hal_ce_pending_clear(task->chan_id);
 #else
 #if 1
 	ret = hal_sem_timedwait(ce_sem, CE_WAIT_TIME);
 	if (ret != 0) {
 		CE_ERR("Timed out\n");
-		hal_free(task);
+		hal_free_align(task);
 		return HAL_AES_TIME_OUT;
 	}
 #else
@@ -297,19 +369,19 @@ static int ce_aes_start(crypto_aes_req_ctx_t *req_ctx)
 #endif
 #endif
 
-	hal_dcache_invalidate((uint32_t)req_ctx->dst_buffer, src_len + req_ctx->padding_len);
+	hal_dcache_invalidate((unsigned long)req_ctx->dst_buffer, src_len + req_ctx->padding_len);
 
 	hal_ce_irq_disable(task->chan_id);
 
 	if (hal_ce_get_erro() > 0) {
 		CE_ERR("error\n");
 		hal_ce_reg_printf();
-		hal_free(task);
+		hal_free_align(task);
 		return HAL_AES_CRYPTO_ERROR;
 	}
 
 	CE_DBG("do_aes_crypto sucess\n");
-	hal_free(task);
+	hal_free_align(task);
 	return HAL_AES_STATUS_OK;
 }
 
@@ -335,9 +407,9 @@ static int ce_aes_check_ctx_vaild(crypto_aes_req_ctx_t *req_ctx)
 		return HAL_AES_INPUT_ERROR;
 	}
 
-	if ((((u32)req_ctx->src_buffer & (CE_ALIGN_SIZE - 1)) != 0)
-			|| (((u32)req_ctx->dst_buffer & (CE_ALIGN_SIZE - 1)) != 0)
-			|| (((u32)req_ctx->key & (CE_ALIGN_SIZE - 1)) != 0)) {
+	if ((((intptr_t)req_ctx->src_buffer & (CE_ALIGN_SIZE - 1)) != 0)
+			|| (((intptr_t)req_ctx->dst_buffer & (CE_ALIGN_SIZE - 1)) != 0)
+			|| (((intptr_t)req_ctx->key & (CE_ALIGN_SIZE - 1)) != 0)) {
 		CE_ERR("input buffer is not %d align\n", CE_ALIGN_SIZE);
 		return HAL_AES_INPUT_ERROR;
 	}
@@ -483,7 +555,7 @@ static int ce_hash_start(crypto_hash_req_ctx_t *req_ctx)
 
 	src_word_len = src_length >> 2;
 
-	task = (ce_task_desc_t *)hal_malloc(sizeof(ce_task_desc_t));
+	task = (ce_task_desc_t *)hal_malloc_align(sizeof(ce_task_desc_t), max(CE_ALIGN_SIZE, CACHELINE_LEN));
 	if (task == NULL) {
 		CE_ERR("hal_malloc fail\n");
 		return HAL_HASH_MALLOC_ERROR;
@@ -501,30 +573,31 @@ static int ce_hash_start(crypto_hash_req_ctx_t *req_ctx)
 	}
 
 	if (src_word_len != 0) {
-		task->src[0].addr = (uint32_t)__va_to_pa((uint32_t)req_ctx->src_buffer);
+		task->src[0].addr = (uint32_t)__va_to_pa((intptr_t)req_ctx->src_buffer);
 		task->src[0].len = src_word_len;
-		task->src[1].addr = (uint32_t)__va_to_pa((uint32_t)req_ctx->padding);
+		task->src[1].addr = (uint32_t)__va_to_pa((intptr_t)req_ctx->padding);
 		task->src[1].len = req_ctx->padding_len >> 2;
 	} else {
-		task->src[0].addr = (uint32_t)__va_to_pa((uint32_t)req_ctx->padding);
+		task->src[0].addr = (uint32_t)__va_to_pa((intptr_t)req_ctx->padding);
 		task->src[0].len = req_ctx->padding_len >> 2;
 	}
-	task->dst[0].addr = (uint32_t)__va_to_pa((uint32_t)req_ctx->dst_buffer);
+	task->dst[0].addr = (uint32_t)__va_to_pa((intptr_t)req_ctx->dst_buffer);
 	task->dst[0].len = req_ctx->dst_length >> 2;
 	task->next = 0;
 
-	hal_dcache_clean((uint32_t)task, sizeof(ce_task_desc_t));
-	hal_dcache_clean((uint32_t)req_ctx->src_buffer, req_ctx->src_length);
-	hal_dcache_clean((uint32_t)req_ctx->padding, req_ctx->padding_len);
-	hal_dcache_clean((uint32_t)req_ctx->dst_buffer, req_ctx->dst_length);
+	hal_dcache_clean((intptr_t)task, sizeof(ce_task_desc_t));
+	hal_dcache_clean((intptr_t)req_ctx->src_buffer, req_ctx->src_length);
+	hal_dcache_clean((intptr_t)req_ctx->padding, req_ctx->padding_len);
+	hal_dcache_clean((intptr_t)req_ctx->dst_buffer, req_ctx->dst_length);
 	//FlushCacheAll();
 	//ce_print_task_info(task);
-	hal_ce_set_task((uint32_t)task);
+	hal_ce_set_task((intptr_t)task);
 	hal_ce_irq_enable(task->chan_id);
 	hal_ce_ctrl_start();
 
 #ifdef CE_NO_IRQ
 	hal_ce_wait_finish(task->chan_id);
+	hal_ce_pending_clear(task->chan_id);
 #else
 	ret = hal_sem_timedwait(ce_sem, CE_WAIT_TIME);
 	if (ret != 0) {
@@ -533,7 +606,7 @@ static int ce_hash_start(crypto_hash_req_ctx_t *req_ctx)
 		goto fail;
 	}
 #endif
-	hal_dcache_invalidate((uint32_t)req_ctx->dst_buffer, req_ctx->dst_length);
+	hal_dcache_invalidate((unsigned long)req_ctx->dst_buffer, req_ctx->dst_length);
 
 	if (hal_ce_get_erro() > 0) {
 		hal_ce_reg_printf();
@@ -541,18 +614,18 @@ static int ce_hash_start(crypto_hash_req_ctx_t *req_ctx)
 		goto fail;
 	}
 	//ce_print_hex((char *)task->dst[0].addr, (task->dst[0].len * 4), (char *)task->dst[0].addr);
-	/*ce_reg_printf();*/
+	//hal_ce_reg_printf();
 
 	hal_ce_irq_disable(task->chan_id);
 	memcpy(req_ctx->md, req_ctx->dst_buffer, req_ctx->dst_length);
 	req_ctx->md_size = req_ctx->dst_length;
-	hal_free(task);
+	hal_free_align(task);
 
 	return HAL_HASH_STATUS_OK;
 
 fail:
 	if (task) {
-		hal_free(task);
+		hal_free_align(task);
 	}
 	return ret;
 }
@@ -564,8 +637,8 @@ static int ce_hash_check_ctx_valid(crypto_hash_req_ctx_t *req_ctx)
 		return HAL_HASH_INPUT_ERROR;
 	}
 
-	if ((((u32)req_ctx->dst_buffer & (CE_ALIGN_SIZE - 1)) != 0)
-		|| (((u32)req_ctx->src_buffer & (CE_ALIGN_SIZE - 1)) != 0)) {
+	if ((((intptr_t)req_ctx->dst_buffer & (CE_ALIGN_SIZE - 1)) != 0)
+		|| (((intptr_t)req_ctx->src_buffer & (CE_ALIGN_SIZE - 1)) != 0)) {
 		CE_ERR("input buffer addr is not %d align\n", CE_ALIGN_SIZE);
 		return HAL_HASH_INPUT_ERROR;
 	}
@@ -666,7 +739,7 @@ static int ce_rsa_start(crypto_rsa_req_ctx_t *req_ctx)
 	bitwidth_byte_len = req_ctx->bitwidth >> 3;
 	bitwidth_word_len = req_ctx->bitwidth >> 5;
 
-	p_src = hal_malloc(bitwidth_byte_len);
+	p_src = hal_malloc_align(bitwidth_byte_len, max(CE_ALIGN_SIZE, CACHELINE_LEN));
 	if (p_src == NULL) {
 		CE_ERR("rsa src hal_malloc fail\n");
 		ret =  HAL_RSA_MALLOC_ERROR;
@@ -675,7 +748,7 @@ static int ce_rsa_start(crypto_rsa_req_ctx_t *req_ctx)
 	memset(p_src, 0x0, bitwidth_byte_len);
 	ce_rsa_sw_padding(p_src, req_ctx->src_buffer, req_ctx->src_length, bitwidth_byte_len);
 
-	p_n = hal_malloc(bitwidth_byte_len);
+	p_n = hal_malloc_align(bitwidth_byte_len, max(CE_ALIGN_SIZE, CACHELINE_LEN));
 	if (p_n == NULL) {
 		CE_ERR("rsa key n hal_malloc fail\n");
 		ret =  HAL_RSA_MALLOC_ERROR;
@@ -685,7 +758,7 @@ static int ce_rsa_start(crypto_rsa_req_ctx_t *req_ctx)
 	ce_rsa_sw_padding(p_n, req_ctx->key_n, req_ctx->n_len, bitwidth_byte_len);
 
 	if (req_ctx->key_d) {
-		p_d = hal_malloc(bitwidth_byte_len);
+		p_d = hal_malloc_align(bitwidth_byte_len, max(CE_ALIGN_SIZE, CACHELINE_LEN));
 		if (p_d == NULL) {
 			CE_ERR("rsa key d hal_malloc fail\n");
 			ret =  HAL_RSA_MALLOC_ERROR;
@@ -696,7 +769,7 @@ static int ce_rsa_start(crypto_rsa_req_ctx_t *req_ctx)
 		req_ctx->key_d = p_d;
 	}
 
-	p_dst = hal_malloc(bitwidth_byte_len);
+	p_dst = hal_malloc_align(bitwidth_byte_len, max(CE_ALIGN_SIZE, CACHELINE_LEN));
 	if (p_dst == NULL) {
 		CE_ERR("hal_malloc fail\n");
 		ret =  HAL_RSA_MALLOC_ERROR;
@@ -704,7 +777,7 @@ static int ce_rsa_start(crypto_rsa_req_ctx_t *req_ctx)
 	}
 	memset(p_dst, 0x0, bitwidth_byte_len);
 
-	task = (ce_task_desc_t *)hal_malloc(sizeof(ce_task_desc_t));
+	task = (ce_task_desc_t *)hal_malloc_align(sizeof(ce_task_desc_t), max(CE_ALIGN_SIZE, CACHELINE_LEN));
 	if (task == NULL) {
 		CE_ERR("rt_malloc_align fail\n");
 		ret =  HAL_RSA_MALLOC_ERROR;
@@ -716,38 +789,39 @@ static int ce_rsa_start(crypto_rsa_req_ctx_t *req_ctx)
 	hal_ce_pending_clear(chan_id);
 	hal_ce_method_set(req_ctx->dir, req_ctx->type, task);
 	hal_ce_rsa_width_set(req_ctx->bitwidth, task);
-	task->iv_addr = (uint32_t)__va_to_pa((uint32_t)p_n);
+	task->iv_addr = (uint32_t)__va_to_pa((intptr_t)p_n);
 	if (req_ctx->key_d)
-		task->key_addr = (uint32_t)__va_to_pa((uint32_t)p_d);
+		task->key_addr = (uint32_t)__va_to_pa((intptr_t)p_d);
 	else
-		task->key_addr = (uint32_t)__va_to_pa((uint32_t)req_ctx->key_e);
+		task->key_addr = (uint32_t)__va_to_pa((intptr_t)req_ctx->key_e);
 
 	hal_ce_data_len_set(bitwidth_byte_len, task);
 
-	task->src[0].addr = (uint32_t)__va_to_pa((uint32_t)p_src);
+	task->src[0].addr = (uint32_t)__va_to_pa((intptr_t)p_src);
 	task->src[0].len = bitwidth_word_len;
 
-	task->dst[0].addr = (uint32_t)__va_to_pa((uint32_t)p_dst);
+	task->dst[0].addr = (uint32_t)__va_to_pa((intptr_t)p_dst);
 	task->dst[0].len = bitwidth_word_len;
 	task->next = 0;
 
-	hal_dcache_clean((uint32_t)task, sizeof(ce_task_desc_t));
-	hal_dcache_clean((uint32_t)p_src, bitwidth_byte_len);
-	hal_dcache_clean((uint32_t)p_n, bitwidth_byte_len);
+	hal_dcache_clean((intptr_t)task, sizeof(ce_task_desc_t));
+	hal_dcache_clean((intptr_t)p_src, bitwidth_byte_len);
+	hal_dcache_clean((intptr_t)p_n, bitwidth_byte_len);
 	if (req_ctx->key_d)
-		hal_dcache_clean((uint32_t)p_d, bitwidth_byte_len);
+		hal_dcache_clean((intptr_t)p_d, bitwidth_byte_len);
 	else
-		hal_dcache_clean((uint32_t)req_ctx->key_e, bitwidth_byte_len);
-	hal_dcache_clean((uint32_t)p_dst, bitwidth_byte_len);
+		hal_dcache_clean((intptr_t)req_ctx->key_e, bitwidth_byte_len);
+	hal_dcache_clean((intptr_t)p_dst, bitwidth_byte_len);
 
 	//FlushCacheAll();
 	/*ce_print_task_info(task);*/
-	hal_ce_set_task((uint32_t)task);
+	hal_ce_set_task((intptr_t)task);
 	hal_ce_irq_enable(task->chan_id);
 	hal_ce_ctrl_start();
 
 #ifdef CE_NO_IRQ
 	hal_ce_wait_finish(task->chan_id);
+	hal_ce_pending_clear(task->chan_id);
 #else
 	ret = hal_sem_timedwait(ce_sem, CE_WAIT_TIME);
 	if (ret != 0) {
@@ -757,7 +831,7 @@ static int ce_rsa_start(crypto_rsa_req_ctx_t *req_ctx)
 	}
 #endif
 
-	hal_dcache_invalidate((uint32_t)p_dst, bitwidth_byte_len);
+	hal_dcache_invalidate((unsigned long)p_dst, bitwidth_byte_len);
 
 	/*ce_reg_printf();*/
 	if (hal_ce_get_erro() > 0) {
@@ -772,19 +846,19 @@ static int ce_rsa_start(crypto_rsa_req_ctx_t *req_ctx)
 
 fail:
 	if (p_src)
-		hal_free(p_src);
+		hal_free_align(p_src);
 
 	if (p_n)
-		hal_free(p_n);
+		hal_free_align(p_n);
 
 	if (p_d)
-		hal_free(p_d);
+		hal_free_align(p_d);
 
 	if (p_dst)
-		hal_free(p_dst);
+		hal_free_align(p_dst);
 
 	if (task)
-		hal_free(task);
+		hal_free_align(task);
 
 	return ret;
 }
@@ -796,11 +870,11 @@ static int ce_rsa_check_ctx_valid(crypto_rsa_req_ctx_t *req_ctx)
 		return HAL_RSA_INPUT_ERROR;
 	}
 
-	if ((((u32)req_ctx->key_n & (CE_ALIGN_SIZE - 1)) != 0)
-		|| (((u32)req_ctx->key_e & (CE_ALIGN_SIZE - 1)) != 0)
-		|| (((u32)req_ctx->key_d & (CE_ALIGN_SIZE - 1)) != 0)
-		|| (((u32)req_ctx->src_buffer & (CE_ALIGN_SIZE - 1)) != 0)
-		|| (((u32)req_ctx->dst_buffer & (CE_ALIGN_SIZE - 1)) != 0)) {
+	if ((((intptr_t)req_ctx->key_n & (CE_ALIGN_SIZE - 1)) != 0)
+		|| (((intptr_t)req_ctx->key_e & (CE_ALIGN_SIZE - 1)) != 0)
+		|| (((intptr_t)req_ctx->key_d & (CE_ALIGN_SIZE - 1)) != 0)
+		|| (((intptr_t)req_ctx->src_buffer & (CE_ALIGN_SIZE - 1)) != 0)
+		|| (((intptr_t)req_ctx->dst_buffer & (CE_ALIGN_SIZE - 1)) != 0)) {
 			printf("rsa req_ctx buffer is not %d align\n", CE_ALIGN_SIZE);
 			return HAL_RSA_INPUT_ERROR;
 	}
@@ -846,7 +920,7 @@ int do_rsa_crypto(crypto_rsa_req_ctx_t *req_ctx)
 int do_rng_gen(crypto_rng_req_ctx_t *req_ctx)
 {
 	int ret = 0;
-	uint8_t chan_id = 2;
+	uint8_t chan_id = 3;
 	uint32_t dst_len = 0;
 	uint8_t *dst_buf = NULL;
 	ce_task_desc_t *task = NULL;
@@ -867,14 +941,14 @@ int do_rng_gen(crypto_rng_req_ctx_t *req_ctx)
 		goto fail;
 	}
 
-	dst_buf = (uint8_t *)hal_malloc(dst_len);
+	dst_buf = (uint8_t *)hal_malloc_align(dst_len, max(CE_ALIGN_SIZE, CACHELINE_LEN));
 	if (dst_buf == NULL) {
 		CE_ERR("hal_malloc dst_buf fail\n");
 		ret = HAL_RNG_MALLOC_ERROR;
 		goto fail;
 	}
 
-	task = (ce_task_desc_t *)hal_malloc(sizeof(ce_task_desc_t));
+	task = (ce_task_desc_t *)hal_malloc_align(sizeof(ce_task_desc_t), max(CE_ALIGN_SIZE, CACHELINE_LEN));
 	if (task == NULL) {
 		CE_ERR("hal_malloc task fail\n");
 		ret = HAL_RNG_MALLOC_ERROR;
@@ -892,7 +966,7 @@ int do_rng_gen(crypto_rng_req_ctx_t *req_ctx)
 		/* must set the seed add in prng */
 		if (req_ctx->key && (req_ctx->key_len == 24)) {
 			hal_ce_key_set(req_ctx->key, req_ctx->key_len, task);
-			hal_dcache_clean((uint32_t)req_ctx->key, req_ctx->key_len);
+			hal_dcache_clean((intptr_t)req_ctx->key, req_ctx->key_len);
 		} else {
 			CE_ERR("Error: RRNG must set seed, and the seed size must be 24!\n");
 			ret = HAL_RNG_INPUT_ERROR;
@@ -903,19 +977,20 @@ int do_rng_gen(crypto_rng_req_ctx_t *req_ctx)
 	task->src[0].addr = 0;
 	task->src[0].len = 0;
 
-	task->dst[0].addr = (uint32_t)__va_to_pa((uint32_t)dst_buf);
+	task->dst[0].addr = (uint32_t)__va_to_pa((intptr_t)dst_buf);
 	task->dst[0].len = dst_len >> 2;
 
-	hal_dcache_clean((uint32_t)task, sizeof(ce_task_desc_t));
-	hal_dcache_clean((uint32_t)dst_buf, dst_len);
+	hal_dcache_clean((intptr_t)task, sizeof(ce_task_desc_t));
+	hal_dcache_clean((intptr_t)dst_buf, dst_len);
 
 	//ce_print_task_info(task);
-	hal_ce_set_task((uint32_t)task);
+	hal_ce_set_task((intptr_t)task);
 	hal_ce_irq_enable(task->chan_id);
 	hal_ce_ctrl_start();
 
 #ifdef CE_NO_IRQ
 	hal_ce_wait_finish(task->chan_id);
+	hal_ce_pending_clear(task->chan_id);
 #else
 	ret = hal_sem_timedwait(ce_sem, CE_WAIT_TIME);
 	if (ret != 0) {
@@ -924,10 +999,10 @@ int do_rng_gen(crypto_rng_req_ctx_t *req_ctx)
 		goto fail;
 	}
 #endif
-	hal_dcache_invalidate((uint32_t)dst_buf, dst_len);
+	hal_dcache_invalidate((unsigned long)dst_buf, dst_len);
 
 	if (req_ctx->mode == CE_METHOD_PRNG) {
-		hal_dcache_invalidate((uint32_t)req_ctx->key, req_ctx->key_len);
+		hal_dcache_invalidate((unsigned long)req_ctx->key, req_ctx->key_len);
 	}
 
 	if (hal_ce_get_erro() > 0) {
@@ -942,17 +1017,17 @@ int do_rng_gen(crypto_rng_req_ctx_t *req_ctx)
 
 	hal_ce_irq_disable(task->chan_id);
 
-	hal_free(task);
-	hal_free(dst_buf);
+	hal_free_align(task);
+	hal_free_align(dst_buf);
 	return HAL_RNG_STATUS_OK;
 
 fail:
 	if (task) {
-		hal_free(task);
+		hal_free_align(task);
 	}
 
 	if (dst_buf) {
-		hal_free(task);
+		hal_free_align(task);
 	}
 
 	return ret;

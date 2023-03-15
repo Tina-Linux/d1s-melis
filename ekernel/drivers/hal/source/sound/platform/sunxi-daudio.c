@@ -29,25 +29,70 @@
 * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 * OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#include <hal_timer.h>
 #include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <hal_dma.h>
+#include <hal_timer.h>
+#ifdef CONFIG_COMPONENTS_PM
+#include <pm_devops.h>
+#endif
 #include <sound/snd_core.h>
 #include <sound/snd_pcm.h>
 #include <sound/snd_dma.h>
 #include <sound/dma_wrap.h>
-#include <hal_dma.h>
-#ifdef CONFIG_OS_MELIS
+#include <sound/common/snd_sunxi_common.h>
+#ifdef CONFIG_DRIVER_SYSCONFIG
 #include <hal_cfg.h>
 #include <script.h>
 #endif
 
 #include "sunxi-pcm.h"
 #include "sunxi-daudio.h"
+
+#if defined(SUNXI_DAUDIO_DEBUG_REG) || defined(CONFIG_COMPONENTS_PM)
+static struct audio_reg_label sunxi_reg_labels[] = {
+	REG_LABEL(SUNXI_DAUDIO_CTL),
+	REG_LABEL(SUNXI_DAUDIO_FMT0),
+	REG_LABEL(SUNXI_DAUDIO_FMT1),
+	REG_LABEL(SUNXI_DAUDIO_INTSTA),
+	/* REG_LABEL(SUNXI_DAUDIO_RXFIFO), */
+	REG_LABEL(SUNXI_DAUDIO_FIFOCTL),
+	REG_LABEL(SUNXI_DAUDIO_FIFOSTA),
+	REG_LABEL(SUNXI_DAUDIO_INTCTL),
+	/* REG_LABEL(SUNXI_DAUDIO_TXFIFO), */
+	REG_LABEL(SUNXI_DAUDIO_CLKDIV),
+	REG_LABEL(SUNXI_DAUDIO_TXCNT),
+	REG_LABEL(SUNXI_DAUDIO_RXCNT),
+	REG_LABEL(SUNXI_DAUDIO_CHCFG),
+	REG_LABEL(SUNXI_DAUDIO_TX0CHSEL),
+	REG_LABEL(SUNXI_DAUDIO_TX1CHSEL),
+	REG_LABEL(SUNXI_DAUDIO_TX2CHSEL),
+	REG_LABEL(SUNXI_DAUDIO_TX3CHSEL),
+	REG_LABEL(SUNXI_DAUDIO_TX0CHMAP0),
+	REG_LABEL(SUNXI_DAUDIO_TX0CHMAP1),
+	REG_LABEL(SUNXI_DAUDIO_TX1CHMAP0),
+	REG_LABEL(SUNXI_DAUDIO_TX1CHMAP1),
+	REG_LABEL(SUNXI_DAUDIO_TX2CHMAP0),
+	REG_LABEL(SUNXI_DAUDIO_TX2CHMAP1),
+	REG_LABEL(SUNXI_DAUDIO_TX3CHMAP0),
+	REG_LABEL(SUNXI_DAUDIO_TX3CHMAP1),
+	REG_LABEL(SUNXI_DAUDIO_RXCHSEL),
+	REG_LABEL(SUNXI_DAUDIO_RXCHMAP0),
+	REG_LABEL(SUNXI_DAUDIO_RXCHMAP1),
+	REG_LABEL(SUNXI_DAUDIO_RXCHMAP2),
+	REG_LABEL(SUNXI_DAUDIO_RXCHMAP3),
+	REG_LABEL(SUNXI_DAUDIO_DEBUG),
+	REG_LABEL_END,
+};
+#endif
+static int snd_sunxi_pa_pin_init(struct snd_platform *platform);
+/*static void snd_sunxi_pa_pin_exit(struct snd_platform *platform);*/
+static int snd_sunxi_pa_pin_enable(struct snd_platform *platform);
+static void snd_sunxi_pa_pin_disable(struct snd_platform *platform);
 
 static void sunxi_daudio_txctrl_enable(struct snd_platform *platform, bool enable)
 {
@@ -104,6 +149,21 @@ static int sunxi_daudio_global_enable(struct snd_platform *platform, bool enable
 	return 0;
 }
 
+static void sunxi_rx_sync_enable(void *data, bool enable)
+{
+	struct snd_dai *dai = data;
+	struct snd_platform *platform = dai->component;
+
+	if (enable) {
+		snd_platform_update_bits(platform, SUNXI_DAUDIO_CTL,
+					 1 << RX_SYNC_EN_STA, 1 << RX_SYNC_EN_STA);
+	} else {
+		snd_platform_update_bits(platform, SUNXI_DAUDIO_CTL,
+					 1 << RX_SYNC_EN_STA, 0 << RX_SYNC_EN_STA);
+	}
+
+}
+
 static int sunxi_daudio_startup(struct snd_pcm_substream *substream,
 				struct snd_dai *dai)
 {
@@ -111,10 +171,13 @@ static int sunxi_daudio_startup(struct snd_pcm_substream *substream,
 	struct sunxi_daudio_info *sunxi_daudio = platform->private_data;
 
 	snd_print("\n");
-	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
+	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
 		dai->playback_dma_data = &sunxi_daudio->playback_dma_param;
-	else
+	} else {
 		dai->capture_dma_data = &sunxi_daudio->capture_dma_param;
+	}
+
+	snd_sunxi_pa_pin_enable(platform);
 
 	return 0;
 }
@@ -268,18 +331,15 @@ static int sunxi_daudio_hw_params(struct snd_pcm_substream *substream,
 static int sunxi_daudio_set_sysclk(struct snd_dai *dai,
 				int clk_id, unsigned int freq, int dir)
 {
+	int ret;
 	struct snd_platform *platform = dai->component;
 	struct sunxi_daudio_info *sunxi_daudio = platform->private_data;
 
 	snd_print("\n");
-	if (hal_clk_set_rate(sunxi_daudio->moduleclk, freq)) {
-		snd_err("set pllclk rate %u failed\n", freq);
-		return -EINVAL;
-	}
-
-	if (hal_clk_set_rate(sunxi_daudio->asrcclk, 98304000)) {
-		snd_err("set pllclk rate %u failed\n", freq);
-		return -EINVAL;
+	ret = snd_sunxi_daudio_clk_set_rate(&sunxi_daudio->clk, dir, freq, freq);
+	if (ret < 0) {
+		snd_err("snd_sunxi_daudio_clk_set_rate failed\n");
+		return -1;
 	}
 
 	return 0;
@@ -512,6 +572,10 @@ static int sunxi_daudio_trigger(struct snd_pcm_substream *substream,
 			sunxi_daudio_rxctrl_enable(platform, true);
 			/* Global enable I2S/TDM module */
 			sunxi_daudio_global_enable(platform, true);
+			if (sunxi_daudio->param.rx_sync_en && sunxi_daudio->param.rx_sync_ctl) {
+				sunxi_rx_sync_control(sunxi_daudio->param.rx_sync_domain,
+						      sunxi_daudio->param.rx_sync_id, true);
+			}
 		}
 		break;
 	case SNDRV_PCM_TRIGGER_STOP:
@@ -528,6 +592,10 @@ static int sunxi_daudio_trigger(struct snd_pcm_substream *substream,
 			sunxi_daudio_rxctrl_enable(platform, false);
 			/* Global enable I2S/TDM module */
 			sunxi_daudio_global_enable(platform, false);
+			if (sunxi_daudio->param.rx_sync_en && sunxi_daudio->param.rx_sync_ctl) {
+				sunxi_rx_sync_control(sunxi_daudio->param.rx_sync_domain,
+						      sunxi_daudio->param.rx_sync_id, false);
+			}
 		}
 		break;
 	default:
@@ -544,8 +612,10 @@ static void sunxi_daudio_shutdown(struct snd_pcm_substream *substream,
 	struct sunxi_daudio_info *sunxi_daudio = platform->private_data;
 
 	snd_print("\n");
-	if ((substream->stream == SNDRV_PCM_STREAM_PLAYBACK) &&
-		(sunxi_daudio->hub_mode)) {
+
+	snd_sunxi_pa_pin_disable(platform);
+
+	if ((substream->stream == SNDRV_PCM_STREAM_PLAYBACK) && (sunxi_daudio->hub_mode)) {
 		snd_platform_update_bits(platform, SUNXI_DAUDIO_CTL,
 				(1 << SDO0_EN) | (1 << CTL_TXEN),
 				(0 << SDO0_EN) | (0 << CTL_TXEN));
@@ -673,6 +743,9 @@ static int sunxi_daudio_init(struct snd_platform *platform)
 				(0x3 << RX_PDM),
 				(param->rx_data_mode << RX_PDM));
 
+	snd_platform_update_bits(platform, SUNXI_DAUDIO_CTL,
+				 1 <<  RX_SYNC_EN, 0 << RX_SYNC_EN);
+
 	return sunxi_daudio_mclk_setting(platform);
 }
 
@@ -718,8 +791,7 @@ static struct snd_dai sunxi_daudio_dai = {
 	.ops		= &sunxi_daudio_dai_ops,
 };
 
-static int sunxi_daudio_get_hub_mode(struct snd_kcontrol *kcontrol,
-				struct snd_ctl_info *info)
+static int sunxi_get_tx_hub_mode(struct snd_kcontrol *kcontrol, struct snd_ctl_info *info)
 {
 	unsigned int reg_val;
 	unsigned long value = 0;
@@ -736,8 +808,7 @@ static int sunxi_daudio_get_hub_mode(struct snd_kcontrol *kcontrol,
 		reg_val = snd_platform_read(platform, SUNXI_DAUDIO_FIFOCTL);
 		value = ((reg_val & (1 << HUB_EN)) ? 1 : 0);
 	} else {
-		snd_err("invalid kcontrol data type = %d.\n",
-				kcontrol->private_data_type);
+		snd_err("invalid kcontrol data type = %d.\n", kcontrol->private_data_type);
 		return -EINVAL;
 	}
 
@@ -746,8 +817,7 @@ static int sunxi_daudio_get_hub_mode(struct snd_kcontrol *kcontrol,
 	return 0;
 }
 
-static int sunxi_daudio_set_hub_mode(struct snd_kcontrol *kcontrol,
-				unsigned long value)
+static int sunxi_set_tx_hub_mode(struct snd_kcontrol *kcontrol, unsigned long value)
 {
 	snd_print("\n");
 	if (kcontrol->type != SND_CTL_ELEM_TYPE_ENUMERATED) {
@@ -765,14 +835,81 @@ static int sunxi_daudio_set_hub_mode(struct snd_kcontrol *kcontrol,
 		struct sunxi_daudio_info *sunxi_daudio = platform->private_data;
 
 		snd_platform_update_bits(platform, SUNXI_DAUDIO_FIFOCTL,
-				(1 << HUB_EN), (value << HUB_EN));
+					 1 << HUB_EN, value << HUB_EN);
 		sunxi_daudio->hub_mode = value;
 	} else {
-		snd_err("invalid kcontrol data type = %d.\n",
-				kcontrol->private_data_type);
+		snd_err("invalid kcontrol data type = %d.\n", kcontrol->private_data_type);
 	}
-	snd_info("mask:0x%x, items:%d, value:0x%x\n",
-			kcontrol->mask, kcontrol->items, value);
+	snd_info("mask:0x%x, items:%d, value:0x%x\n", kcontrol->mask, kcontrol->items, value);
+
+	return 0;
+}
+
+static int sunxi_get_rx_sync_mode(struct snd_kcontrol *kcontrol, struct snd_ctl_info *info)
+{
+	unsigned long value = 0;
+
+	snd_print("\n");
+	if (kcontrol->type != SND_CTL_ELEM_TYPE_ENUMERATED) {
+		snd_err("invalid kcontrol type = %d.\n", kcontrol->type);
+		return -EINVAL;
+	}
+
+	if (kcontrol->private_data_type == SND_MODULE_PLATFORM) {
+		struct snd_platform *platform = kcontrol->private_data;
+		struct sunxi_daudio_info *sunxi_daudio = platform->private_data;
+
+		value = sunxi_daudio->param.rx_sync_ctl;
+	} else {
+		snd_err("invalid kcontrol data type = %d.\n", kcontrol->private_data_type);
+		return -EINVAL;
+	}
+
+	snd_kcontrol_to_snd_ctl_info(kcontrol, info, value);
+
+	return 0;
+}
+
+static int sunxi_set_rx_sync_mode(struct snd_kcontrol *kcontrol, unsigned long value)
+{
+	struct snd_platform *platform = kcontrol->private_data;
+	struct sunxi_daudio_info *sunxi_daudio = platform->private_data;
+	struct sunxi_daudio_param *param = &sunxi_daudio->param;
+
+	snd_print("\n");
+	if (kcontrol->type != SND_CTL_ELEM_TYPE_ENUMERATED) {
+		snd_err("invalid kcontrol type = %d.\n", kcontrol->type);
+		return -EINVAL;
+	}
+
+	if (value >= kcontrol->items) {
+		snd_err("invalid kcontrol items = %ld.\n", value);
+		return -EINVAL;
+	}
+
+	if (kcontrol->private_data_type != SND_MODULE_PLATFORM) {
+		snd_err("invalid kcontrol data type = %d.\n", kcontrol->private_data_type);
+		return 0;
+	}
+
+	if (value) {
+		if (param->rx_sync_ctl) {
+			return 0;
+		}
+		param->rx_sync_ctl = true;
+		snd_platform_update_bits(platform, SUNXI_DAUDIO_CTL, 1 <<  RX_SYNC_EN, 1 << RX_SYNC_EN);
+		sunxi_rx_sync_startup(param->rx_sync_domain, param->rx_sync_id, (void *)platform->cpu_dai,
+				      sunxi_rx_sync_enable);
+	} else {
+		if (!param->rx_sync_ctl) {
+			return 0;
+		}
+		sunxi_rx_sync_shutdown(param->rx_sync_domain, param->rx_sync_id);
+		snd_platform_update_bits(platform, SUNXI_DAUDIO_CTL, 1 <<  RX_SYNC_EN, 0 << RX_SYNC_EN);
+		sunxi_daudio->param.rx_sync_ctl = false;
+	}
+
+	snd_info("mask:0x%x, items:%d, value:0x%x\n", kcontrol->mask, kcontrol->items, value);
 
 	return 0;
 }
@@ -836,136 +973,34 @@ static int sunxi_daudio_set_asrc_function(struct snd_kcontrol *kcontrol,
 	return 0;
 }
 
-static const char * const daudio_format_function[] = {
-			"hub_disable", "hub_enable"};
+static const char *sunxi_switch_text[] = {"Off", "On"};
 
 /* pcm Audio Mode Select */
 static struct snd_kcontrol sunxi_daudio_controls[] = {
-	SND_CTL_ENUM_EXT("sunxi daudio audio hub mode",
-		ARRAY_SIZE(daudio_format_function), daudio_format_function,
-		SND_CTL_ENUM_AUTO_MASK,
-		sunxi_daudio_get_hub_mode, sunxi_daudio_set_hub_mode),
-	SND_CTL_KCONTROL("sunxi daudio loopback debug", SUNXI_DAUDIO_CTL, LOOP_EN, 0x1),
+	SND_CTL_ENUM_EXT("tx hub mode",
+			 ARRAY_SIZE(sunxi_switch_text), sunxi_switch_text,
+			 SND_CTL_ENUM_AUTO_MASK,
+			 sunxi_get_tx_hub_mode,
+			 sunxi_set_tx_hub_mode),
+	SND_CTL_ENUM_EXT("rx sync mode",
+			 ARRAY_SIZE(sunxi_switch_text), sunxi_switch_text,
+			 SND_CTL_ENUM_AUTO_MASK,
+			 sunxi_get_rx_sync_mode,
+			 sunxi_set_rx_sync_mode),
+	SND_CTL_ENUM("loopback debug",
+		     ARRAY_SIZE(sunxi_switch_text), sunxi_switch_text,
+		     SUNXI_DAUDIO_CTL, LOOP_EN),
 	SND_CTL_ENUM_EXT("sunxi daudio asrc function",
-		ARRAY_SIZE(daudio_format_function), daudio_format_function,
-		SND_CTL_ENUM_AUTO_MASK,
-		sunxi_daudio_get_asrc_function, sunxi_daudio_set_asrc_function),
+			 ARRAY_SIZE(sunxi_switch_text), sunxi_switch_text,
+			 SND_CTL_ENUM_AUTO_MASK,
+			 sunxi_daudio_get_asrc_function,
+			 sunxi_daudio_set_asrc_function),
 };
-
-static int sunxi_daudio_clk_init(struct snd_platform *platform)
-{
-	struct sunxi_daudio_info *sunxi_daudio = platform->private_data;
-	hal_reset_type_t reset_type = HAL_SUNXI_RESET;
-	hal_clk_type_t clk_type = HAL_SUNXI_CCU;
-	int ret;
-
-	snd_print("\n");
-	switch (sunxi_daudio->param.tdm_num) {
-	case 0:
-		sunxi_daudio->moduleclk = hal_clock_get(clk_type, SUNXI_DAUDIO_CLK_I2S0);
-		sunxi_daudio->busclk = hal_clock_get(clk_type, SUNXI_DAUDIO_CLK_BUS_I2S0);
-		sunxi_daudio->rstclk = hal_reset_control_get(reset_type, SUNXI_DAUDIO_CLK_RST_I2S0);
-		break;
-	case 1:
-		sunxi_daudio->moduleclk = hal_clock_get(clk_type, SUNXI_DAUDIO_CLK_I2S1);
-		sunxi_daudio->busclk = hal_clock_get(clk_type, SUNXI_DAUDIO_CLK_BUS_I2S1);
-		sunxi_daudio->rstclk = hal_reset_control_get(reset_type, SUNXI_DAUDIO_CLK_RST_I2S1);
-		break;
-#if DAUDIO_NUM_MAX > 2
-	case 2:
-		sunxi_daudio->moduleclk = hal_clock_get(clk_type, SUNXI_DAUDIO_CLK_I2S2);
-		sunxi_daudio->busclk = hal_clock_get(clk_type, SUNXI_DAUDIO_CLK_BUS_I2S2);
-		sunxi_daudio->rstclk = hal_reset_control_get(reset_type, SUNXI_DAUDIO_CLK_RST_I2S2);
-		break;
-#endif
-#if DAUDIO_NUM_MAX > 3
-	case 3:
-		sunxi_daudio->moduleclk = hal_clock_get(clk_type, SUNXI_DAUDIO_CLK_I2S3);
-		sunxi_daudio->busclk = hal_clock_get(clk_type, SUNXI_DAUDIO_CLK_BUS_I2S3);
-		sunxi_daudio->rstclk = hal_reset_control_get(reset_type, SUNXI_DAUDIO_CLK_RST_I2S3);
-		break;
-#endif
-	default:
-		snd_err("tdm_num:%u overflow\n", sunxi_daudio->param.tdm_num);
-		ret = -EFAULT;
-		goto err_daudio_get_moduleclk;
-	}
-
-	sunxi_daudio->pllclk = hal_clock_get(clk_type, SUNXI_DAUDIO_CLK_PLL_AUDIO);
-	sunxi_daudio->pllclk1 = hal_clock_get(clk_type, SUNXI_DAUDIO_CLK_PLL_AUDIO1);
-	sunxi_daudio->asrcclk = hal_clock_get(clk_type, SUNXI_DAUDIO_CLK_I2S_ASRC);
-
-	ret = hal_clk_set_parent(sunxi_daudio->asrcclk, sunxi_daudio->pllclk1);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("daudio[%d] asrc clk_set_parent failed.\n",
-			sunxi_daudio->param.tdm_num);
-		goto err_daudio_moduleclk_set_parent;
-	}
-
-	ret = hal_clk_set_parent(sunxi_daudio->moduleclk, sunxi_daudio->pllclk);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("daudio[%d] clk_set_parent failed.\n",
-			sunxi_daudio->param.tdm_num);
-		goto err_daudio_moduleclk_set_parent;
-	}
-
-	ret = hal_reset_control_deassert(sunxi_daudio->rstclk);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("daudio clk_deassert rstclk failed.\n");
-		goto err_daudio_rstclk_deassert;
-	}
-
-	ret = hal_clock_enable(sunxi_daudio->busclk);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("daudio bus clk_enable busclk failed.\n");
-		goto err_daudio_busclk_enable;
-	}
-	ret = hal_clock_enable(sunxi_daudio->pllclk);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("daudio%d clk_enable pllclk failed.\n",
-			sunxi_daudio->param.tdm_num);
-		goto err_daudio_pllclk_enable;
-	}
-	ret = hal_clock_enable(sunxi_daudio->moduleclk);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("daudio%d clk_enable moduleclk failed.\n",
-			sunxi_daudio->param.tdm_num);
-		goto err_daudio_moduleclk_enable;
-	}
-	ret = hal_clock_enable(sunxi_daudio->pllclk1);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("daudio%d clk_enable pllclk1 failed.\n",
-			sunxi_daudio->param.tdm_num);
-		goto err_daudio_moduleclk_enable;
-	}
-	ret = hal_clock_enable(sunxi_daudio->asrcclk);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("daudio%d clk_enable asrcclk failed.\n",
-			sunxi_daudio->param.tdm_num);
-		goto err_daudio_moduleclk_enable;
-	}
-
-	return 0;
-
-err_daudio_moduleclk_enable:
-	hal_clock_disable(sunxi_daudio->pllclk);
-	hal_clock_put(sunxi_daudio->pllclk);
-err_daudio_pllclk_enable:
-	hal_clock_disable(sunxi_daudio->busclk);
-	hal_clock_put(sunxi_daudio->busclk);
-err_daudio_busclk_enable:
-	hal_reset_control_assert(sunxi_daudio->rstclk);
-	hal_reset_control_put(sunxi_daudio->rstclk);
-err_daudio_rstclk_deassert:
-err_daudio_moduleclk_set_parent:
-err_daudio_get_moduleclk:
-	return ret;
-}
 
 static int sunxi_daudio_gpio_init(struct snd_platform *platform, bool enable)
 {
-#ifdef CONFIG_OS_MELIS
 	struct sunxi_daudio_info *sunxi_daudio = platform->private_data;
+#ifdef CONFIG_DRIVER_SYSCONFIG
 	user_gpio_set_t gpio_cfg[6] = {0};
 	int count, i, ret = 0;
 	char daudio_name[16];
@@ -974,9 +1009,7 @@ static int sunxi_daudio_gpio_init(struct snd_platform *platform, bool enable)
 	sprintf(daudio_name, "daudio%d", sunxi_daudio->param.tdm_num);
 	count = Hal_Cfg_GetGPIOSecKeyCount(daudio_name);
 	if (!count) {
-		snd_err("[daudio%d] not support in sys_config\n",
-			sunxi_daudio->param.tdm_num);
-		return -1;
+		snd_err("[daudio%d] sys_config has no GPIO\n", sunxi_daudio->param.tdm_num);
 	}
 	Hal_Cfg_GetGPIOSecData(daudio_name, gpio_cfg, count);
 
@@ -1001,11 +1034,329 @@ static int sunxi_daudio_gpio_init(struct snd_platform *platform, bool enable)
 
 	return ret;
 #else
-	snd_err("[daudio%d] not support sys_config format\n", sunxi_daudio->param.tdm_num);
-	return -1;
+	int i, ret;
+
+	switch (sunxi_daudio->param.tdm_num) {
+	default:
+	case 0:
+		sunxi_daudio->pinctrl = daudio0_pinctrl;
+		sunxi_daudio->pinctrl_num = ARRAY_SIZE(daudio0_pinctrl);
+		break;
+#if DAUDIO_NUM_MAX > 1
+	case 1:
+		sunxi_daudio->pinctrl = daudio1_pinctrl;
+		sunxi_daudio->pinctrl_num = ARRAY_SIZE(daudio1_pinctrl);
+		break;
+#endif
+#if DAUDIO_NUM_MAX > 2
+	case 2:
+		sunxi_daudio->pinctrl = daudio2_pinctrl;
+		sunxi_daudio->pinctrl_num = ARRAY_SIZE(daudio2_pinctrl);
+		break;
+#endif
+#if DAUDIO_NUM_MAX > 3
+	case 3:
+		sunxi_daudio->pinctrl = daudio3_pinctrl;
+		sunxi_daudio->pinctrl_num = ARRAY_SIZE(daudio3_pinctrl);
+		break;
+#endif
+	}
+	snd_print("daudio%d pinctrl_num = %d.\n", sunxi_daudio->param.tdm_num, sunxi_daudio->pinctrl_num);
+
+	if (enable) {
+		for (i = 0; i < sunxi_daudio->pinctrl_num; i++) {
+			ret = hal_gpio_pinmux_set_function(sunxi_daudio->pinctrl[i].gpio_pin,
+						sunxi_daudio->pinctrl[i].mux);
+			if (ret != 0) {
+				snd_err("daudio%d pinmux[%d] set failed.\n",
+						sunxi_daudio->param.tdm_num,
+						sunxi_daudio->pinctrl[i].gpio_pin);
+			}
+			ret = hal_gpio_set_driving_level(sunxi_daudio->pinctrl[i].gpio_pin,
+						sunxi_daudio->pinctrl[i].driv_level);
+			if (ret != 0) {
+				snd_err("daudio%d driv_level = %d set failed.\n",
+						sunxi_daudio->param.tdm_num,
+						sunxi_daudio->pinctrl[i].driv_level);
+			}
+		}
+	} else {
+		for (i = 0; i < sunxi_daudio->pinctrl_num; i++) {
+			ret = hal_gpio_pinmux_set_function(sunxi_daudio->pinctrl[i].gpio_pin,
+						GPIO_MUXSEL_DISABLED);
+			if (ret != 0) {
+				snd_err("daudio%d pinmux[%d] set failed.\n",
+						sunxi_daudio->param.tdm_num,
+						sunxi_daudio->pinctrl[i].gpio_pin);
+			}
+		}
+	}
+
+	return 0;
 #endif
 }
 
+static int snd_sunxi_pa_pin_init(struct snd_platform *platform)
+{
+	struct sunxi_daudio_info *sunxi_daudio = platform->private_data;
+
+	sunxi_daudio->pa_cfg = daudio_pa_cfg;
+	sunxi_daudio->pa_cfg_num = ARRAY_SIZE(daudio_pa_cfg);
+
+	snd_sunxi_pa_pin_disable(platform);
+
+	return 0;
+}
+#if 0
+static void snd_sunxi_pa_pin_exit(struct snd_platform *platform)
+{
+	UNUSED(platform);
+}
+#endif
+
+static int snd_sunxi_pa_pin_enable(struct snd_platform *platform)
+{
+	struct sunxi_daudio_info *sunxi_daudio = platform->private_data;
+	struct pa_config *pa_cfg = sunxi_daudio->pa_cfg;
+	int i;
+
+	if (!pa_cfg)
+		return 0;
+
+	for (i = 0; i < sunxi_daudio->pa_cfg_num; i++) {
+		if (!pa_cfg[i].used)
+			continue;
+		hal_gpio_set_direction(pa_cfg[i].pin, GPIO_MUXSEL_OUT);
+		hal_gpio_set_data(pa_cfg[i].pin, pa_cfg[i].level);
+		hal_msleep(pa_cfg[i].msleep);
+	}
+
+	return 0;
+}
+
+static void snd_sunxi_pa_pin_disable(struct snd_platform *platform)
+{
+	struct sunxi_daudio_info *sunxi_daudio = platform->private_data;
+	struct pa_config *pa_cfg = sunxi_daudio->pa_cfg;
+	int i;
+
+	if (!pa_cfg)
+		return;
+
+	for (i = 0; i < sunxi_daudio->pa_cfg_num; i++) {
+		if (!pa_cfg[i].used)
+			continue;
+		hal_gpio_set_direction(pa_cfg->pin, GPIO_MUXSEL_OUT);
+		hal_gpio_set_data(pa_cfg->pin, !pa_cfg->level);
+	}
+}
+
+/* suspend and resume */
+#ifdef CONFIG_COMPONENTS_PM
+static unsigned int snd_read_func(void *data, unsigned int reg)
+{
+	struct snd_platform *platform;
+
+	if (!data) {
+		snd_err("data is invailed\n");
+		return 0;
+	}
+
+	platform = data;
+	return snd_platform_read(platform, reg);
+}
+
+static void snd_write_func(void *data, unsigned int reg, unsigned int val)
+{
+	struct snd_platform *platform;
+
+	if (!data) {
+		snd_err("data is invailed\n");
+		return;
+	}
+
+	platform = data;
+	snd_platform_write(platform, reg, val);
+}
+
+static int sunxi_daudio_suspend(struct pm_device *dev, suspend_mode_t mode)
+{
+	struct snd_platform *platform = dev->data;
+	struct sunxi_daudio_info *sunxi_daudio = platform->private_data;
+
+	snd_print("\n");
+
+	snd_sunxi_save_reg(sunxi_reg_labels, (void *)platform, snd_read_func);
+	snd_sunxi_daudio_clk_disable(&sunxi_daudio->clk);
+
+	return 0;
+}
+
+static int sunxi_daudio_resume(struct pm_device *dev, suspend_mode_t mode)
+{
+	struct snd_platform *platform = dev->data;
+	struct sunxi_daudio_info *sunxi_daudio = platform->private_data;
+
+	snd_print("\n");
+
+	snd_sunxi_daudio_clk_enable(&sunxi_daudio->clk, sunxi_daudio->param.tdm_num);
+	sunxi_daudio_init(platform);
+	snd_sunxi_echo_reg(sunxi_reg_labels, (void *)platform, snd_write_func);
+
+	return 0;
+}
+
+struct pm_devops pm_daudio_ops = {
+	.suspend = sunxi_daudio_suspend,
+	.resume = sunxi_daudio_resume,
+};
+
+struct pm_device pm_daudio = {
+	.name = "snddaudio",
+	.ops = &pm_daudio_ops,
+};
+#endif
+
+static int sunxi_daudio_param_set(struct sunxi_daudio_param *param, int tdm_num)
+{
+	char daudio_name[16];
+	int ret;
+#ifdef CONFIG_DRIVER_SYSCONFIG
+	int32_t tmp_val;
+#endif
+
+	snd_print("\n");
+
+	if (tdm_num > DAUDIO_NUM_MAX) {
+		snd_err("tdm_num:%u overflow.\n", tdm_num);
+		ret = -EFAULT;
+	}
+
+#ifdef CONFIG_DRIVER_SYSCONFIG
+	snprintf(daudio_name, 8,"daudio%d", tdm_num);
+	ret = Hal_Cfg_GetKeyValue(daudio_name, "tdm_num", (int32_t *)&tmp_val, 1);
+	if (ret) {
+		snd_print("daudio:tdm_num miss.\n");
+		param->tdm_num = daudio_param[tdm_num].tdm_num;
+	} else {
+		param->tdm_num = tmp_val;
+	}
+	if (param->tdm_num > DAUDIO_NUM_MAX) {
+		snd_err("tdm_num:%u overflow.\n", param->tdm_num);
+		ret = -EFAULT;
+	}
+
+	ret = Hal_Cfg_GetKeyValue(daudio_name, "pcm_lrck_period", (int32_t *)&tmp_val, 1);
+	if (ret) {
+		snd_print("daudio:pcm_lrck_period miss.\n");
+		param->pcm_lrck_period = daudio_param[tdm_num].pcm_lrck_period;
+	} else {
+		param->pcm_lrck_period = tmp_val;
+	}
+
+	ret = Hal_Cfg_GetKeyValue(daudio_name, "slot_width_select", (int32_t *)&tmp_val, 1);
+	if (ret) {
+		snd_print("daudio:slot_width_select miss.\n");
+		param->slot_width_select = daudio_param[tdm_num].slot_width_select;
+	} else {
+		param->slot_width_select = tmp_val;
+	}
+
+	ret = Hal_Cfg_GetKeyValue(daudio_name, "msb_lsb_first", (int32_t *)&tmp_val, 1);
+	if (ret) {
+		snd_print("daudio:msb_lsb_first miss.\n");
+		param->msb_lsb_first = daudio_param[tdm_num].msb_lsb_first;
+	} else {
+		param->msb_lsb_first = tmp_val;
+	}
+
+	ret = Hal_Cfg_GetKeyValue(daudio_name, "frametype", (int32_t *)&tmp_val, 1);
+	if (ret) {
+		snd_print("daudio:frametype miss.\n");
+		param->frametype = daudio_param[tdm_num].frametype;
+	} else {
+		param->frametype = tmp_val;
+	}
+
+	ret = Hal_Cfg_GetKeyValue(daudio_name, "tx_data_mode", (int32_t *)&tmp_val, 1);
+	if (ret) {
+		snd_print("daudio:tx_data_mode miss.\n");
+		param->tx_data_mode = daudio_param[tdm_num].tx_data_mode;
+	} else {
+		param->tx_data_mode = tmp_val;
+	}
+
+	ret = Hal_Cfg_GetKeyValue(daudio_name, "rx_data_mode", (int32_t *)&tmp_val, 1);
+	if (ret) {
+		snd_print("daudio:rx_data_mode miss.\n");
+		param->rx_data_mode = daudio_param[tdm_num].rx_data_mode;
+	} else {
+		param->rx_data_mode = tmp_val;
+	}
+
+	ret = Hal_Cfg_GetKeyValue(daudio_name, "tdm_config", (int32_t *)&tmp_val, 1);
+	if (ret) {
+		snd_print("daudio:tdm_config miss.\n");
+		param->tdm_config = daudio_param[tdm_num].tdm_config;
+	} else {
+		param->tdm_config = tmp_val;
+	}
+
+	ret = Hal_Cfg_GetKeyValue(daudio_name, "mclk_div", (int32_t *)&tmp_val, 1);
+	if (ret) {
+		snd_print("daudio:mclk_div miss.\n");
+		param->mclk_div = daudio_param[tdm_num].mclk_div;
+	} else {
+		param->mclk_div = tmp_val;
+	}
+
+	ret = Hal_Cfg_GetKeyValue(daudio_name, "rx_sync_en", (int32_t *)&tmp_val, 1);
+	if (ret) {
+		snd_print("daudio:rx_sync_en miss.\n");
+		param->rx_sync_en = daudio_param[tdm_num].rx_sync_en;
+	} else {
+		param->rx_sync_en = tmp_val;
+	}
+
+	ret = Hal_Cfg_GetKeyValue(daudio_name, "rx_sync_ctl", (int32_t *)&tmp_val, 1);
+	if (ret) {
+		snd_print("daudio:rx_sync_ctl miss.\n");
+		param->rx_sync_ctl = daudio_param[tdm_num].rx_sync_ctl;
+	} else {
+		param->rx_sync_ctl = tmp_val;
+	}
+
+	ret = Hal_Cfg_GetKeyValue(daudio_name, "daudio_master", (int32_t *)&tmp_val, 1);
+	if (ret) {
+		snd_print("daudio:daudio_master miss.\n");
+		param->daudio_master = daudio_param[tdm_num].daudio_master;
+	} else {
+		param->daudio_master = tmp_val;
+	}
+
+	ret = Hal_Cfg_GetKeyValue(daudio_name, "audio_format", (int32_t *)&tmp_val, 1);
+	if (ret) {
+		snd_print("daudio:audio_format miss.\n");
+		param->audio_format = daudio_param[tdm_num].audio_format;
+	} else {
+		param->audio_format = tmp_val;
+	}
+
+	ret = Hal_Cfg_GetKeyValue(daudio_name, "signal_inversion", (int32_t *)&tmp_val, 1);
+	if (ret) {
+		snd_print("daudio:signal_inversion miss.\n");
+		param->signal_inversion = daudio_param[tdm_num].signal_inversion;
+	} else {
+		param->signal_inversion = tmp_val;
+	}
+#else
+	*param = daudio_param[tdm_num];
+#endif
+
+	return 0;
+}
+
+/* daudio probe */
 static int sunxi_daudio_platform_probe(struct snd_platform *platform)
 {
 	int tdm_num = platform->type - SND_PLATFORM_TYPE_DAUDIO0;
@@ -1023,21 +1374,33 @@ static int sunxi_daudio_platform_probe(struct snd_platform *platform)
 	platform->cpu_dai->component = platform;
 	sunxi_daudio->platform = platform;
 
-	/* parser para */
-	sunxi_daudio->param = daudio_param[tdm_num];
-	if (tdm_num > DAUDIO_NUM_MAX) {
-		snd_err("tdm_num:%u overflow.\n", sunxi_daudio->param.tdm_num);
+	ret = sunxi_daudio_param_set(&sunxi_daudio->param, tdm_num);
+	if (ret) {
 		ret = -EFAULT;
 		goto err_daudio_get_param;
+	}
+
+	if (sunxi_daudio->param.rx_sync_en) {
+		sunxi_daudio->param.rx_sync_domain = RX_SYNC_SYS_DOMAIN;
+		sunxi_daudio->param.rx_sync_id =
+			sunxi_rx_sync_probe(sunxi_daudio->param.rx_sync_domain);
+		if (sunxi_daudio->param.rx_sync_id < 0) {
+			snd_err("sunxi_rx_sync_probe failed.\n");
+			return -EINVAL;
+		}
+		snd_info("sunxi_rx_sync_probe successful. domain=%d, id=%d\n",
+			 sunxi_daudio->param.rx_sync_domain, sunxi_daudio->param.rx_sync_id);
 	}
 
 	/* mem base */
 	platform->mem_base = (void *)SUNXI_DAUDIO_BASE + (0x1000 * sunxi_daudio->param.tdm_num);
 
 	/* clk */
-	ret = sunxi_daudio_clk_init(platform);
-	if (ret != 0)
+	ret = snd_sunxi_daudio_clk_init(&sunxi_daudio->clk, sunxi_daudio->param.tdm_num);
+	if (ret != 0) {
+		snd_err("snd_sunxi_daudio_clk_init failed\n");
 		goto err_daudio_set_clock;
+	}
 
 	/* pinctrl */
 	sunxi_daudio_gpio_init(platform, true);
@@ -1061,10 +1424,12 @@ static int sunxi_daudio_platform_probe(struct snd_platform *platform)
 		SUNXI_DAUDIO_DRQDST(sunxi_daudio, 0);
 		SUNXI_DAUDIO_DRQSRC(sunxi_daudio, 0);
 		break;
+#if DAUDIO_NUM_MAX > 1
 	case 1:
 		SUNXI_DAUDIO_DRQDST(sunxi_daudio, 1);
 		SUNXI_DAUDIO_DRQSRC(sunxi_daudio, 1);
 		break;
+#endif
 #if DAUDIO_NUM_MAX > 2
 	case 2:
 		SUNXI_DAUDIO_DRQDST(sunxi_daudio, 2);
@@ -1083,10 +1448,21 @@ static int sunxi_daudio_platform_probe(struct snd_platform *platform)
 		goto err_daudio_tdm_num_over;
 	}
 
+	snd_sunxi_pa_pin_init(platform);
+
+#ifdef CONFIG_COMPONENTS_PM
+	pm_daudio.data = (void *)platform;
+	ret = pm_devops_register(&pm_daudio);
+	if (ret) {
+		snd_err("pm_devops_register failed\n");
+	}
+#endif
+
 	return 0;
 
 err_daudio_tdm_num_over:
 err_daudio_set_clock:
+	snd_sunxi_daudio_clk_exit(&sunxi_daudio->clk);
 err_daudio_get_param:
 	snd_free(sunxi_daudio);
 	return ret;
@@ -1101,19 +1477,10 @@ static int sunxi_daudio_platform_remove(struct snd_platform *platform)
 	if (!sunxi_daudio)
 		return 0;
 
-	hal_clock_disable(sunxi_daudio->busclk);
-	hal_clock_disable(sunxi_daudio->moduleclk);
-	hal_clock_disable(sunxi_daudio->pllclk);
-	hal_clock_put(sunxi_daudio->busclk);
-	hal_clock_put(sunxi_daudio->moduleclk);
-	hal_clock_put(sunxi_daudio->pllclk);
-	hal_clock_disable(sunxi_daudio->pllclk1);
-	hal_clock_disable(sunxi_daudio->asrcclk);
-	hal_clock_put(sunxi_daudio->pllclk1);
-	hal_clock_put(sunxi_daudio->asrcclk);
-	hal_reset_control_assert(sunxi_daudio->rstclk);
-	hal_reset_control_put(sunxi_daudio->rstclk);
+	if (sunxi_daudio->param.rx_sync_en)
+		sunxi_rx_sync_remove(sunxi_daudio->param.rx_sync_domain);
 
+	snd_sunxi_daudio_clk_exit(&sunxi_daudio->clk);
 	sunxi_daudio_gpio_init(platform, false);
 
 	snd_free(sunxi_daudio);
@@ -1176,43 +1543,6 @@ err_cpu_dai_malloc:
 /* #define SUNXI_DAUDIO_DEBUG_REG */
 
 #ifdef SUNXI_DAUDIO_DEBUG_REG
-
-#define REG_LABEL(constant)		{#constant, constant}
-#define REG_LABEL_END			{NULL, 0}
-static struct daudio_label {
-	const char *name;
-	const unsigned int address;
-	/*int value;*/
-} reg_labels[] = {
-	REG_LABEL(SUNXI_DAUDIO_CTL),
-	REG_LABEL(SUNXI_DAUDIO_FMT0),
-	REG_LABEL(SUNXI_DAUDIO_FMT1),
-	REG_LABEL(SUNXI_DAUDIO_INTSTA),
-	REG_LABEL(SUNXI_DAUDIO_FIFOCTL),
-	REG_LABEL(SUNXI_DAUDIO_FIFOSTA),
-	REG_LABEL(SUNXI_DAUDIO_INTCTL),
-	REG_LABEL(SUNXI_DAUDIO_CLKDIV),
-	REG_LABEL(SUNXI_DAUDIO_TXCNT),
-	REG_LABEL(SUNXI_DAUDIO_RXCNT),
-	REG_LABEL(SUNXI_DAUDIO_CHCFG),
-	REG_LABEL(SUNXI_DAUDIO_TX0CHSEL),
-	REG_LABEL(SUNXI_DAUDIO_TX0CHMAP0),
-	REG_LABEL(SUNXI_DAUDIO_TX0CHMAP1),
-	REG_LABEL(SUNXI_DAUDIO_TX1CHMAP0),
-	REG_LABEL(SUNXI_DAUDIO_TX1CHMAP1),
-	REG_LABEL(SUNXI_DAUDIO_TX2CHMAP0),
-	REG_LABEL(SUNXI_DAUDIO_TX2CHMAP1),
-	REG_LABEL(SUNXI_DAUDIO_TX3CHMAP0),
-	REG_LABEL(SUNXI_DAUDIO_TX3CHMAP1),
-	REG_LABEL(SUNXI_DAUDIO_RXCHSEL),
-	REG_LABEL(SUNXI_DAUDIO_RXCHMAP0),
-	REG_LABEL(SUNXI_DAUDIO_RXCHMAP1),
-	REG_LABEL(SUNXI_DAUDIO_RXCHMAP2),
-	REG_LABEL(SUNXI_DAUDIO_RXCHMAP3),
-	REG_LABEL(SUNXI_DAUDIO_DEBUG),
-	REG_LABEL_END,
-};
-
 /* for debug */
 int cmd_daudio_dump(int argc, char *argv[])
 {
@@ -1225,11 +1555,11 @@ int cmd_daudio_dump(int argc, char *argv[])
 	}
 	membase = (void *)SUNXI_DAUDIO_BASE + (0x1000 * daudio_num);
 
-	while (reg_labels[i].name != NULL) {
+	while (sunxi_reg_labels[i].name != NULL) {
 		printf("%-20s[0x%03x]: 0x%-10x\n",
-			reg_labels[i].name,
-			reg_labels[i].address,
-			snd_readl(membase + reg_labels[i].address));
+			sunxi_reg_labels[i].name,
+			sunxi_reg_labels[i].address,
+			snd_readl(membase + sunxi_reg_labels[i].address));
 		i++;
 	}
 }

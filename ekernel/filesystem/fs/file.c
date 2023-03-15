@@ -1,22 +1,34 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                                  File System
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2011-2014, Sunny China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : file.c
-* By      : Sunny
-* Version : v1.0
-* Date    : 2011-1-15
-* Descript: file operations of vfs, code is extracted from linux.
-* Update  : date                auther      ver     notes
-*           2011-3-15 15:18:23  Sunny       1.0     Create this file.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "fs.h"
 #include "file.h"
 #include "namei.h"
@@ -116,7 +128,7 @@ __hdle esFSYS_fopen(const char *pFileName, const char *pMode)
         return NULL;
     }
 
-    /* ´ò¿ªµÄÎÄ¼ş¸öÊıÊÇ·ñÒÑ¾­´ïµ½ÉÏÏŞ */
+    /* æ‰“å¼€çš„æ–‡ä»¶ä¸ªæ•°æ˜¯å¦å·²ç»è¾¾åˆ°ä¸Šé™ */
     cpu_sr  = awos_arch_lock_irq();
 
     temp_open_nr    = ++nr_files;
@@ -125,12 +137,12 @@ __hdle esFSYS_fopen(const char *pFileName, const char *pMode)
 
     if (temp_open_nr >= NR_MAXOPEN)
     {
-        fs_log_warning("max file or dir handle reached!\n");
+        __err("max file or dir handle reached!\n");
         error   = -EMFILE;
         goto dec_out;
     }
 
-    /*  ·ÖÎö´ò¿ªÄ£Ê½ */
+    /*  åˆ†ææ‰“å¼€æ¨¡å¼ */
     if (epdk_mode_to_flag_trans(pMode, &flags) == FAIL)
     {
         fs_log_warning("mode not supported!\n");
@@ -138,7 +150,7 @@ __hdle esFSYS_fopen(const char *pFileName, const char *pMode)
         goto dec_out;
     }
 
-    /* »ñÈ¡ÓÉpFileNameÂ·¾¶ÃûÖĞµÄÅÌ·ûÖ¸¶¨µÄ·ÖÇøÖ¸Õë£¬²¢ÎöÈ¡ÅÌ·ûÒÔÍâµÄÂ·¾¶Ãû */
+    /* è·å–ç”±pFileNameè·¯å¾„åä¸­çš„ç›˜ç¬¦æŒ‡å®šçš„åˆ†åŒºæŒ‡é’ˆï¼Œå¹¶æå–ç›˜ç¬¦ä»¥å¤–çš„è·¯å¾„å */
     sb = path_to_sb(pFileName, &realname);
     if (!sb)
     {
@@ -147,7 +159,7 @@ __hdle esFSYS_fopen(const char *pFileName, const char *pMode)
         goto dec_out;
     }
 
-    /* ĞéÄâÎÄ¼şÏµÍ³´ò¿ª²Ù×÷ÄÚ²¿Á÷³Ì */
+    /* è™šæ‹Ÿæ–‡ä»¶ç³»ç»Ÿæ‰“å¼€æ“ä½œå†…éƒ¨æµç¨‹ */
     retval  = do_sys_open(realname, flags, 0, sb);
 
     if (IS_ERR_OR_NULL(PTR_ERR(retval)))
@@ -161,7 +173,7 @@ __hdle esFSYS_fopen(const char *pFileName, const char *pMode)
         fs_log_trace0("fd:%d,", retval->f_fd);
     }
 
-    /* ³É¹¦´ò¿ªÎÄ¼ş */
+    /* æˆåŠŸæ‰“å¼€æ–‡ä»¶ */
     goto out;
 
 dec_out:
@@ -198,7 +210,7 @@ int32_t esFSYS_open(const char *name, int32_t flag, int32_t prems)
         return 0;
     }
 
-    /* ´ò¿ªµÄÎÄ¼ş¸öÊıÊÇ·ñÒÑ¾­´ïµ½ÉÏÏŞ */
+    /* æ‰“å¼€çš„æ–‡ä»¶ä¸ªæ•°æ˜¯å¦å·²ç»è¾¾åˆ°ä¸Šé™ */
     cpu_sr = awos_arch_lock_irq();
 
     temp_open_nr = ++nr_files;
@@ -207,12 +219,12 @@ int32_t esFSYS_open(const char *name, int32_t flag, int32_t prems)
 
     if (temp_open_nr >= NR_MAXOPEN)
     {
-        fs_log_warning("max file or dir handle reached!\n");
+        __err("max file or dir handle reached!\n");
         error = -EMFILE;
         goto dec_out;
     }
 
-    /* »ñÈ¡ÓÉpFileNameÂ·¾¶ÃûÖĞµÄÅÌ·ûÖ¸¶¨µÄ·ÖÇøÖ¸Õë£¬²¢ÎöÈ¡ÅÌ·ûÒÔÍâµÄÂ·¾¶Ãû */
+    /* è·å–ç”±pFileNameè·¯å¾„åä¸­çš„ç›˜ç¬¦æŒ‡å®šçš„åˆ†åŒºæŒ‡é’ˆï¼Œå¹¶æå–ç›˜ç¬¦ä»¥å¤–çš„è·¯å¾„å */
     sb = path_to_sb(name, &realname);
     if (!sb)
     {
@@ -221,7 +233,7 @@ int32_t esFSYS_open(const char *name, int32_t flag, int32_t prems)
         goto dec_out;
     }
 
-    /* ĞéÄâÎÄ¼şÏµÍ³´ò¿ª²Ù×÷ÄÚ²¿Á÷³Ì */
+    /* è™šæ‹Ÿæ–‡ä»¶ç³»ç»Ÿæ‰“å¼€æ“ä½œå†…éƒ¨æµç¨‹ */
     retval = do_sys_open(realname, flag, 0, sb);
 
     if (IS_ERR_OR_NULL(PTR_ERR(retval)))
@@ -237,7 +249,7 @@ int32_t esFSYS_open(const char *name, int32_t flag, int32_t prems)
         fs_log_trace0("fd:%d,", retval->f_fd);
     }
 
-    /* ³É¹¦´ò¿ªÎÄ¼ş */
+    /* æˆåŠŸæ‰“å¼€æ–‡ä»¶ */
     goto out;
 
 dec_out:
@@ -270,9 +282,9 @@ int32_t esFSYS_fclose(__hdle hFile)
 {
     int retval  = EPDK_FAIL;
 
-    /* ¹Ø±ÕËÀÎÄ¼şÎª·Ç·¨²Ù×÷,
-     * µ±¿éÉè±¸±»°Î³öÊ±file->f_dentry½«»á±»ĞŞ¸ÄÎªNULL,
-     * f_dentry±»ÊÍ·Åµô,´ËÊ±¹Ø±ÕÎÄ¼şÊÓÎªºÏ·¨²Ù×÷.
+    /* å…³é—­æ­»æ–‡ä»¶ä¸ºéæ³•æ“ä½œ,
+     * å½“å—è®¾å¤‡è¢«æ‹”å‡ºæ—¶file->f_dentryå°†ä¼šè¢«ä¿®æ”¹ä¸ºNULL,
+     * f_dentryè¢«é‡Šæ”¾æ‰,æ­¤æ—¶å…³é—­æ–‡ä»¶è§†ä¸ºåˆæ³•æ“ä½œ.
      * By sunny at 2010-10-11.
      */
     if (!hFile)
@@ -291,7 +303,7 @@ int32_t esFSYS_fclose(__hdle hFile)
     retval  = filp_close((struct file *)hFile);
     unmount_check(NULL);
 
-    /* ÎÄ¼şÊı¼õÒ» */
+    /* æ–‡ä»¶æ•°å‡ä¸€ */
     nr_files--;
     if (retval && retval != EPDK_FAIL)
     {
@@ -370,7 +382,7 @@ int32_t esFSYS_fsync(__hdle hFile)
         return EPDK_FAIL;
     }
 
-    /* ÎÄ¼ş²»Ê±ÒÔĞ´µÄ·½Ê½´ò¿ª */
+    /* æ–‡ä»¶ä¸æ—¶ä»¥å†™çš„æ–¹å¼æ‰“å¼€ */
     if (!(file->f_mode & FMODE_WRITE))
     {
         fs_log_warning("%s is not open by write mode.\n", file->f_dentry->d_name.name);
@@ -378,7 +390,7 @@ int32_t esFSYS_fsync(__hdle hFile)
         goto out;
     }
 
-    /* ÊÇ·ñÊÇËÀµÄ·ÖÇøÎÄ¼şÏµÍ³ */
+    /* æ˜¯å¦æ˜¯æ­»çš„åˆ†åŒºæ–‡ä»¶ç³»ç»Ÿ */
     if (! file->f_dentry)
     {
         err = -EDEADLK;
@@ -425,7 +437,7 @@ int32_t esFSYS_remove(const char *pFileName)
         return EPDK_FAIL;
     }
 
-    /* »ñÈ¡ÓÉpFileNameÂ·¾¶ÃûÖĞµÄÅÌ·ûÖ¸¶¨µÄ·ÖÇøÖ¸Õë£¬²¢ÎöÈ¡ÅÌ·ûÒÔÍâµÄÂ·¾¶Ãû */
+    /* è·å–ç”±pFileNameè·¯å¾„åä¸­çš„ç›˜ç¬¦æŒ‡å®šçš„åˆ†åŒºæŒ‡é’ˆï¼Œå¹¶æå–ç›˜ç¬¦ä»¥å¤–çš„è·¯å¾„å */
     sb  = path_to_sb(pFileName, &realname);
 
     if (!sb)
@@ -521,7 +533,7 @@ uint32_t esFSYS_fread(void *pData, uint32_t Size, uint32_t N, __hdle hFile)
     debug_timerclr(alltime);
     debug_timerstart(oneaccesstime);
 
-    /* ÊÇ·ñÊÇËÀÎÄ¼ş */
+    /* æ˜¯å¦æ˜¯æ­»æ–‡ä»¶ */
     if (!((struct file *)hFile)->f_dentry)
     {
         fs_err  = -EDEADLK;
@@ -530,7 +542,7 @@ uint32_t esFSYS_fread(void *pData, uint32_t Size, uint32_t N, __hdle hFile)
         goto out;
     }
 
-    /* ÎÄ¼ş²»Ê±ÒÔ¶ÁµÄ·½Ê½´ò¿ª */
+    /* æ–‡ä»¶ä¸æ—¶ä»¥è¯»çš„æ–¹å¼æ‰“å¼€ */
     if (!(((struct file *)hFile)->f_mode & FMODE_READ))
     {
         fs_log_warning("%s is not open by read mode.\n", ((struct file *)hFile)->f_dentry->d_name.name);
@@ -539,7 +551,7 @@ uint32_t esFSYS_fread(void *pData, uint32_t Size, uint32_t N, __hdle hFile)
         goto out;
     }
 
-    /* ÎÄ¼ş¾ä±ú¶ÔÓ¦µÄ½ÚµãÎŞfread²Ù×÷ */
+    /* æ–‡ä»¶å¥æŸ„å¯¹åº”çš„èŠ‚ç‚¹æ— freadæ“ä½œ */
     if (!((struct file *)hFile)->f_op || !((struct file *)hFile)->f_op->read)
     {
         fs_log_error("%s has no fread method.\n", ((struct file *)hFile)->f_dentry->d_name.name);
@@ -548,10 +560,10 @@ uint32_t esFSYS_fread(void *pData, uint32_t Size, uint32_t N, __hdle hFile)
         goto out;
     }
 
-    /* ·ÇÉè±¸ÎÄ¼ş */
+    /* éè®¾å¤‡æ–‡ä»¶ */
     if (((struct file *)hFile)->f_dev == 0)
     {
-        /* ÅĞ¶ÏÊÇ·ñÎª0£¬±ÜÃâ³ı0Òì³£ */
+        /* åˆ¤æ–­æ˜¯å¦ä¸º0ï¼Œé¿å…é™¤0å¼‚å¸¸ */
         total   = Size * N;
         if (!total)
         {
@@ -560,18 +572,18 @@ uint32_t esFSYS_fread(void *pData, uint32_t Size, uint32_t N, __hdle hFile)
             goto out;
         }
 
-        /* ¶ÁÈ¡total¸ö×Ö½ÚµÄÊı¾İ */
+        /* è¯»å–totalä¸ªå­—èŠ‚çš„æ•°æ® */
         ret = ((struct file *)hFile)->f_op->read((struct file *)hFile, pData, total, &(((struct file *)hFile)->f_pos));
 
         fs_log_trace0("R%d,F%d,", ret, (int)(((struct file *)hFile)->f_pos) - ret);
 
-        /* ´¦Àí·µ»ØĞÅÏ¢ */
-        if (ret < 0)/* ¶ÁÈ¡Êı¾İ´íÎó,Ö±½Ó·µ»Ø0 */
+        /* å¤„ç†è¿”å›ä¿¡æ¯ */
+        if (ret < 0)/* è¯»å–æ•°æ®é”™è¯¯,ç›´æ¥è¿”å›0 */
         {
             __err("io error, ret = %d.", ret);
             ret = 0;
         }
-        else if (ret == total) /* ¶ÁÈ¡Êı¾İ³É¹¦ */
+        else if (ret == total) /* è¯»å–æ•°æ®æˆåŠŸ */
         {
             ret = N;
         }
@@ -587,7 +599,7 @@ uint32_t esFSYS_fread(void *pData, uint32_t Size, uint32_t N, __hdle hFile)
             }
         }
     }
-    else /* Éè±¸ÎÄ¼ş */
+    else /* è®¾å¤‡æ–‡ä»¶ */
     {
         if (!N)
         {
@@ -596,7 +608,7 @@ uint32_t esFSYS_fread(void *pData, uint32_t Size, uint32_t N, __hdle hFile)
             goto out;
         }
 
-        /* ¶ÁÈ¡total¸ö×Ö½ÚµÄÊı¾İ */
+        /* è¯»å–totalä¸ªå­—èŠ‚çš„æ•°æ® */
         ret = ((struct file *)hFile)->f_op->read((struct file *)hFile, pData, N, (__s64 *)&Size);
         fs_log_trace0("R%dS,F%d,", ret, Size);
     }
@@ -633,7 +645,7 @@ uint32_t esFSYS_fwrite(const void *pData, uint32_t Size, uint32_t N, __hdle hFil
         return 0;
     }
 
-    /* ÎÄ¼ş²»Ê±ÒÔĞ´µÄ·½Ê½´ò¿ª */
+    /* æ–‡ä»¶ä¸æ—¶ä»¥å†™çš„æ–¹å¼æ‰“å¼€ */
     if (!(((struct file *)hFile)->f_mode & FMODE_WRITE))
     {
         fs_log_warning("%s is not open by write mode.\n", ((struct file *)hFile)->f_dentry->d_name.name);
@@ -642,7 +654,7 @@ uint32_t esFSYS_fwrite(const void *pData, uint32_t Size, uint32_t N, __hdle hFil
         goto out;
     }
 
-    /* ÊÇ·ñÊÇËÀµÄ·ÖÇøÎÄ¼şÏµÍ³ */
+    /* æ˜¯å¦æ˜¯æ­»çš„åˆ†åŒºæ–‡ä»¶ç³»ç»Ÿ */
     if (!((struct file *)hFile)->f_dentry)
     {
         fs_err  = -EDEADLK;
@@ -651,7 +663,7 @@ uint32_t esFSYS_fwrite(const void *pData, uint32_t Size, uint32_t N, __hdle hFil
         goto out;
     }
 
-    /* ÎÄ¼ş¾ä±ú¶ÔÓ¦µÄ½ÚµãÎŞfwrite²Ù×÷ */
+    /* æ–‡ä»¶å¥æŸ„å¯¹åº”çš„èŠ‚ç‚¹æ— fwriteæ“ä½œ */
     if (!((struct file *)hFile)->f_op || !((struct file *)hFile)->f_op->write)
     {
         fs_log_error("%s has no fwrite method.\n", ((struct file *)hFile)->f_dentry->d_name.name);
@@ -660,10 +672,10 @@ uint32_t esFSYS_fwrite(const void *pData, uint32_t Size, uint32_t N, __hdle hFil
         goto out;
     }
 
-    /* ·ÇÉè±¸ÎÄ¼ş */
+    /* éè®¾å¤‡æ–‡ä»¶ */
     if (((struct file *)hFile)->f_dev == 0)
     {
-        /* ÅĞ¶ÏÊÇ·ñÎª0£¬±ÜÃâ³ı0Òì³£ */
+        /* åˆ¤æ–­æ˜¯å¦ä¸º0ï¼Œé¿å…é™¤0å¼‚å¸¸ */
         total   = Size * N;
         if (!total)
         {
@@ -672,12 +684,12 @@ uint32_t esFSYS_fwrite(const void *pData, uint32_t Size, uint32_t N, __hdle hFil
             goto out;
         }
 
-        /* Ğ´Èëtotal×Ö½Ú¸öÊı¾İ */
+        /* å†™å…¥totalå­—èŠ‚ä¸ªæ•°æ® */
         ret = ((struct file *)hFile)->f_op->write(((struct file *)hFile), pData, total, &(((struct file *)hFile)->f_pos));
 
         fs_log_trace0("W%d,T%d,", ret, (int)((struct file *)hFile)->f_pos - ret);
 
-        /* ´¦Àí·µ»ØĞÅÏ¢ */
+        /* å¤„ç†è¿”å›ä¿¡æ¯ */
         if (ret == total)
         {
             ret = N;
@@ -698,7 +710,7 @@ uint32_t esFSYS_fwrite(const void *pData, uint32_t Size, uint32_t N, __hdle hFil
             goto out;
         }
 
-        /* ¶ÁÈ¡total¸ö×Ö½ÚµÄÊı¾İ */
+        /* è¯»å–totalä¸ªå­—èŠ‚çš„æ•°æ® */
         ret = ((struct file *)hFile)->f_op->write((struct file *)hFile, pData, N, (__s64 *)&Size);
         fs_log_trace0("W%dS,T%d,", ret, Size);
     }
@@ -964,7 +976,7 @@ void generic_fillattr(struct inode *inode, struct kstat *stat)
     stat->blksize   = (1 << inode->i_blkbits);
 }
 
-int32_t esFSYS_fioctrl(__hdle hFile, int32_t Cmd, int32_t Aux, void *pBuffer)
+int32_t esFSYS_fioctrl(__hdle hFile, int32_t Cmd, long Aux, void *pBuffer)
 {
     struct inode    *ino = NULL;
     int32_t         ret;
@@ -1068,7 +1080,7 @@ int32_t esFSYS_rename(const char *newname, const char *oldname)
         return EPDK_FAIL;
     }
 
-    /* »ñÈ¡ÓÉoldnameÂ·¾¶ÃûÖĞµÄÅÌ·ûÖ¸¶¨µÄ·ÖÇøÖ¸Õë£¬²¢ÎöÈ¡ÅÌ·ûÒÔÍâµÄÂ·¾¶Ãû */
+    /* è·å–ç”±oldnameè·¯å¾„åä¸­çš„ç›˜ç¬¦æŒ‡å®šçš„åˆ†åŒºæŒ‡é’ˆï¼Œå¹¶æå–ç›˜ç¬¦ä»¥å¤–çš„è·¯å¾„å */
     oldsb   = path_to_sb(oldname, &realoldname);
     if (!oldsb)
     {

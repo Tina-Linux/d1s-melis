@@ -1,20 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                                Config system
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2011-2014, Sunny China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : sys_config.c
-* By      : Sunny
-* Version : v1.0
-* Date    : 2011-4-28
-* Descript: system config sevice functions.
-* Update  : date                auther      ver     notes
-*           2011-4-28 20:57:56  Sunny       1.0     Create this file.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "hal_cfg.h"
 /*
@@ -54,41 +67,41 @@ int32_t Hal_Cfg_Exit(void)
 }
 /*
 *********************************************************************************************************
-*                                       ¸ù¾İÖ÷¼üÃû³ÆºÍ×Ó¼üÃû³Æ»ñÈ¡½Å±¾Êı¾İ
+*                                       æ ¹æ®ä¸»é”®åç§°å’Œå­é”®åç§°è·å–è„šæœ¬æ•°æ®
 *
 * Description:
 *
-* Arguments  : main_name    Ö÷¼üÃû³Æ
+* Arguments  : main_name    ä¸»é”®åç§°
 *
-*              sub_name     ×Ó¼üÃû³Æ
+*              sub_name     å­é”®åç§°
 *
-*              value        ´æ·ÅÊı¾İµÄbuffer
+*              value        å­˜æ”¾æ•°æ®çš„buffer
 *
-*              count        bufferµÄ×î´ó¸öÊı
+*              count        bufferçš„æœ€å¤§ä¸ªæ•°
 *
 *
-* Returns    : »ñÈ¡Êı¾İÊÇ·ñ³É¹¦
+* Returns    : è·å–æ•°æ®æ˜¯å¦æˆåŠŸ
 *
 * Notes      :
 *********************************************************************************************************
 */
 int32_t Hal_Cfg_GetKeyValue(char *SecName, char *KeyName, int32_t Value[], int32_t Count)
 {
-    return  esCFG_GetKeyValue(SecName, KeyName, (int *)Value, Count);
+    return  esCFG_GetKeyValue(SecName, KeyName, Value, Count);
 }
 
 /*
 *********************************************************************************************************
-*                                       ¸ù¾İÖ÷¼üÃû³Æ£¬»ñÈ¡Ö÷¼üÏÂµÄ×Ó¼ü×Ü¹²¸öÊı
+*                                       æ ¹æ®ä¸»é”®åç§°ï¼Œè·å–ä¸»é”®ä¸‹çš„å­é”®æ€»å…±ä¸ªæ•°
 *
 * Description:
 *
-* Arguments  : main_name    Ö÷¼üÃû³Æ
+* Arguments  : main_name    ä¸»é”®åç§°
 *
 *
 *
-* Returns    : Èç¹û³É¹¦£¬·µ»Ø×Ó¼ü¸öÊı
-*              Èç¹ûÊ§°Ü£¬·µ»Ø¸ºÊı
+* Returns    : å¦‚æœæˆåŠŸï¼Œè¿”å›å­é”®ä¸ªæ•°
+*              å¦‚æœå¤±è´¥ï¼Œè¿”å›è´Ÿæ•°
 *
 * Notes      :
 *********************************************************************************************************
@@ -100,7 +113,7 @@ int32_t Hal_Cfg_GetSecKeyCount(char *SecName)
 
 /*
 *********************************************************************************************************
-*                                       »ñÈ¡×Ü¹²Ö÷¼üµÄ¸öÊı
+*                                       è·å–æ€»å…±ä¸»é”®çš„ä¸ªæ•°
 *
 * Description:
 *
@@ -108,8 +121,8 @@ int32_t Hal_Cfg_GetSecKeyCount(char *SecName)
 *
 *
 *
-* Returns    : Èç¹û³É¹¦£¬·µ»ØÖ÷¼ü¸öÊı
-*              Èç¹ûÊ§°Ü£¬·µ»Ø¸ºÊı
+* Returns    : å¦‚æœæˆåŠŸï¼Œè¿”å›ä¸»é”®ä¸ªæ•°
+*              å¦‚æœå¤±è´¥ï¼Œè¿”å›è´Ÿæ•°
 *
 * Notes      :
 *********************************************************************************************************
@@ -121,16 +134,16 @@ int32_t Hal_Cfg_GetSecCount(void)
 
 /*
 *********************************************************************************************************
-*                                       ¸ù¾İÖ÷¼üÃû³Æ£¬»ñÈ¡Ö÷¼üÏÂµÄGPIOÀàĞÍ×Ü¹²¸öÊı
+*                                       æ ¹æ®ä¸»é”®åç§°ï¼Œè·å–ä¸»é”®ä¸‹çš„GPIOç±»å‹æ€»å…±ä¸ªæ•°
 *
 * Description:
 *
-* Arguments  : main_name    Ö÷¼üÃû³Æ
+* Arguments  : main_name    ä¸»é”®åç§°
 *
 *
 *
-* Returns    : Èç¹û³É¹¦£¬·µ»ØÖ÷¼ü¸öÊı
-*              Èç¹ûÊ§°Ü£¬·µ»Ø¸ºÊı
+* Returns    : å¦‚æœæˆåŠŸï¼Œè¿”å›ä¸»é”®ä¸ªæ•°
+*              å¦‚æœå¤±è´¥ï¼Œè¿”å›è´Ÿæ•°
 *
 * Notes      :
 *********************************************************************************************************
@@ -142,19 +155,19 @@ int32_t Hal_Cfg_GetGPIOSecKeyCount(char *GPIOSecName)
 
 /*
 *********************************************************************************************************
-*                                       ¸ù¾İÖ÷¼üÃû³Æ£¬»ñÈ¡Ö÷¼üÏÂµÄGPIOÀàĞÍµÄËùÓĞÊı¾İ
+*                                       æ ¹æ®ä¸»é”®åç§°ï¼Œè·å–ä¸»é”®ä¸‹çš„GPIOç±»å‹çš„æ‰€æœ‰æ•°æ®
 *
 * Description:
 *
-* Arguments  : main_name    Ö÷¼üÃû³Æ
+* Arguments  : main_name    ä¸»é”®åç§°
 *
-*              gpio_cfg     ´æ·ÅGPIOÊı¾İĞÅÏ¢µÄbuffer
+*              gpio_cfg     å­˜æ”¾GPIOæ•°æ®ä¿¡æ¯çš„buffer
 *
-*              gpio_count   GPIOµÄ×Ü¹²¸öÊı
+*              gpio_count   GPIOçš„æ€»å…±ä¸ªæ•°
 *
 *
-* Returns    : Èç¹û³É¹¦£¬·µ»Ø³É¹¦±êÖ¾
-*              Èç¹ûÊ§°Ü£¬·µ»Ø¸ºÊı
+* Returns    : å¦‚æœæˆåŠŸï¼Œè¿”å›æˆåŠŸæ ‡å¿—
+*              å¦‚æœå¤±è´¥ï¼Œè¿”å›è´Ÿæ•°
 *
 * Notes      :
 *********************************************************************************************************
@@ -162,4 +175,35 @@ int32_t Hal_Cfg_GetGPIOSecKeyCount(char *GPIOSecName)
 int32_t Hal_Cfg_GetGPIOSecData(char *GPIOSecName, void *pGPIOCfg, int32_t GPIONum)
 {
     return  esCFG_GetGPIOSecData(GPIOSecName, pGPIOCfg, GPIONum);
+}
+
+/*
+*********************************************************************************************************
+*                                       æ ¹æ®ä¸»é”®åç§°ã€å­é”®åç§°åŠæ•°æ®ç±»å‹è·å–å¯¹åº”æ•°æ®
+*
+* Description:
+*
+* Arguments  : MainKeyName    ä¸»é”®åç§°
+*
+               SubKeyName   å­é”®åç§°
+
+*              value     å­é”®å­˜æ”¾çš„æ•°æ®
+*
+*              type   æ•°æ®ç±»å‹
+*
+*
+* Returns    : å¦‚æœæˆåŠŸï¼Œè¿”å›æˆåŠŸæ ‡å¿—
+*              å¦‚æœå¤±è´¥ï¼Œè¿”å›è´Ÿæ•°
+*
+* Notes      :
+*********************************************************************************************************
+*/
+int32_t Hal_Cfg_GetSubKeyValue(char *MainKeyName, char *SubKeyName, void *value, int32_t type)
+{
+    return  esCFG_GetSubKeyData(MainKeyName, SubKeyName, value, type);
+}
+
+void Hal_Cfg_Dump(void)
+{
+	esCFG_Dump();
 }

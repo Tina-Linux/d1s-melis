@@ -1,4 +1,34 @@
-/* SPDX-License-Identifier: GPL-2.0 */
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #ifndef _LINUX_IRQDESC_H
 #define _LINUX_IRQDESC_H
 
@@ -8,53 +38,7 @@
 #include <stdbool.h>
 #include "irq_internal.h"
 
-/*
- * Core internal functions to deal with irq descriptors
- */
-
-//struct irq_affinity_notify;
-//struct proc_dir_entry;
-//struct module;
 struct irq_desc;
-//struct irq_domain;
-//struct pt_regs;
-
-/**
- * struct irq_desc - interrupt descriptor
- * @irq_common_data:    per irq and chip data passed down to chip functions
- * @kstat_irqs:     irq stats per cpu
- * @handle_irq:     highlevel irq-events handler
- * @preflow_handler:    handler called before the flow handler (currently used by sparc)
- * @action:     the irq action chain
- * @status:     status information
- * @core_internal_state__do_not_mess_with_it: core internal status information
- * @depth:      disable-depth, for nested irq_disable() calls
- * @wake_depth:     enable depth, for multiple irq_set_irq_wake() callers
- * @tot_count:      stats field for non-percpu irqs
- * @irq_count:      stats field to detect stalled irqs
- * @last_unhandled: aging timer for unhandled count
- * @irqs_unhandled: stats field for spurious unhandled interrupts
- * @threads_handled:    stats field for deferred spurious detection of threaded handlers
- * @threads_handled_last: comparator field for deferred spurious detection of theraded handlers
- * @lock:       locking for SMP
- * @affinity_hint:  hint to user space for preferred irq affinity
- * @affinity_notify:    context for notification of affinity changes
- * @pending_mask:   pending rebalanced interrupts
- * @threads_oneshot:    bitfield to handle shared oneshot threads
- * @threads_active: number of irqaction threads currently running
- * @wait_for_threads:   wait queue for sync_irq to wait for threaded handlers
- * @nr_actions:     number of installed actions on this descriptor
- * @no_suspend_depth:   number of irqactions on a irq descriptor with
- *          IRQF_NO_SUSPEND set
- * @force_resume_depth: number of irqactions on a irq descriptor with
- *          IRQF_FORCE_RESUME set
- * @rcu:        rcu head for delayed free
- * @kobj:       kobject used to represent this struct in sysfs
- * @request_mutex:  mutex to protect request/free before locking desc->lock
- * @dir:        /proc/irq/ procfs entry
- * @debugfs_file:   dentry for the debugfs file
- * @name:       flow handler name for /proc/interrupts output
- */
 struct irq_desc
 {
     struct irq_data     irq_data;
@@ -65,12 +49,6 @@ struct irq_desc
     const char          *dev_name;
     const char          *name;
 } ____cacheline_internodealigned_in_smp;
-
-#ifdef CONFIG_SPARSE_IRQ
-extern void irq_lock_sparse(void);
-extern void irq_unlock_sparse(void);
-#else
-#endif
 
 /*
  * Architectures call this to let the generic IRQ layer

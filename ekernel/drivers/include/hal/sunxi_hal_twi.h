@@ -2,12 +2,18 @@
 #define SUNXI_HAL_TWI_H
 
 #include "hal_sem.h"
-#include "hal_clk.h"
+#include <hal_clk.h>
+#include <hal_reset.h>
 #include "sunxi_hal_common.h"
 #include "hal_gpio.h"
 #include "sunxi_hal_regulator.h"
 #include <twi/platform_twi.h>
 #include <twi/common_twi.h>
+#include <hal_mutex.h>
+#ifdef CONFIG_COMPONENTS_PM
+#include <pm_devops.h>
+#include <pm_wakelock.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -22,6 +28,7 @@ extern "C" {
 #endif
 
 #define TWI_ERR(fmt, arg...) hal_log_err(fmt, ##arg)
+#define TWI_WARN(fmt, arg...) hal_log_warn(fmt, ##arg)
 
 typedef enum
 {
@@ -47,6 +54,7 @@ typedef enum
     TWI_MASTER_1,           /**< TWI master 1. */
     TWI_MASTER_2,           /**< TWI master 0. */
     TWI_MASTER_3,           /**< TWI master 1. */
+    TWI_MASTER_4,           /**< TWI master 4. */
     S_TWI_MASTER_0,           /**< S_TWI master 0. */
     TWI_MASTER_MAX              /**< max TWI master number, \<invalid\> */
 } twi_port_t;
@@ -95,10 +103,13 @@ typedef struct sunxi_twi
     uint32_t msgs_ptr;
     unsigned long base_addr;
     uint32_t irqnum;
+    char irqname[32];
 
     struct regulator_dev regulator;
+    struct reset_control *reset;
     hal_clk_t pclk;
     hal_clk_t mclk;
+    hal_clk_t clk;
     twi_frequency_t freq;
 
     uint32_t    pinmux;
@@ -109,6 +120,13 @@ typedef struct sunxi_twi
 
     struct sunxi_dma_chan *dma_chan;
     hal_sem_t	  dma_complete;
+
+    hal_mutex_t lock;
+
+#ifdef CONFIG_COMPONENTS_PM
+    struct pm_device pm;
+    struct wakelock wl;
+#endif
 } hal_twi_t;
 
 typedef enum
@@ -129,7 +147,7 @@ twi_status_t hal_twi_write(twi_port_t port, unsigned long pos, const void *buf, 
 twi_status_t hal_twi_read(twi_port_t port, unsigned long pos, void *buf, uint32_t size);
 //twi control
 twi_status_t hal_twi_control(twi_port_t port, hal_twi_transfer_cmd_t cmd, void *args);
-
+twi_status_t hal_twi_xfer(twi_port_t port, twi_msg_t *msgs, int32_t num);
 #ifdef __cplusplus
 }
 #endif

@@ -19,30 +19,27 @@
 *
 ********************************************************************************************************************
 */
-#ifndef  __USBH_DISK_INFO_H__
-#define  __USBH_DISK_INFO_H__
+#ifndef __USBH_DISK_INFO_H__
+#define __USBH_DISK_INFO_H__
+
 #include "mod_usbhost.h"
-#include "usb_list.h"
 
-typedef struct _usbh_disk_device_info
-{
-    char Classname[USB_HOST_MAX_STRING_LEN];    /* Éè±¸Ãû       */
-    char DeviceName[USB_HOST_MAX_STRING_LEN];   /* Éè±¸½ÚµãÃû   */
+typedef struct _usbh_disk_device_info {
+	char Classname[USB_HOST_MAX_STRING_LEN];  /* è®¾å¤‡å       */
+	char DeviceName[USB_HOST_MAX_STRING_LEN]; /* è®¾å¤‡èŠ‚ç‚¹å   */
 
-    usbhDeivceInfo_t DeivceInfo;                /* Éè±¸ĞÅÏ¢     */
+	usbhDeivceInfo_t DeivceInfo; /* è®¾å¤‡ä¿¡æ¯     */
 } usbh_disk_device_info_t;
 
-/* usbh_disk_infoÉè±¸×ÜµÄÊı¾İ½á¹¹ */
-typedef struct tag_usbh_disk_info
-{
-    unsigned int  cnt;            //´ò¿ªµÄ¸öÊı
+/* usbh_disk_infoè®¾å¤‡æ€»çš„æ•°æ®ç»“æ„ */
+typedef struct tag_usbh_disk_info {
+	unsigned int cnt;  //æ‰“å¼€çš„ä¸ªæ•°
 
-    void *reghandle;    //×¢²áµÄÉè±¸¾ä±ú
+	void *reghandle;  //æ³¨å†Œçš„è®¾å¤‡å¥æŸ„
 
-    //  usbh_disk_device_info_t device_info[USBH_DISK_INFO_MAX_DEVICE_NUMBER];
-    struct usb_list_head device_list;
+	//  usbh_disk_device_info_t device_info[USBH_DISK_INFO_MAX_DEVICE_NUMBER];
+	struct usb_list_head device_list;
 } usbh_disk_info_t;
-
 
 //-----------------------------------------------------------
 //
@@ -57,6 +54,4 @@ void usbh_disk_FreeDeviceInfo(usbh_disk_device_info_t *device_info);
 int usbh_disk_info_reg(void);
 int usbh_disk_info_unreg(void);
 
-
-#endif   //__USBH_DISK_INFO_H__
-
+#endif	//__USBH_DISK_INFO_H__

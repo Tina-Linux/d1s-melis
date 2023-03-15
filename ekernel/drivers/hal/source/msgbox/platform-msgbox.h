@@ -41,4 +41,16 @@
 #include "platform/msgbox-sun8iw20.h"
 #endif
 
+#if defined(CONFIG_SOC_SUN20IW3)
+#include "platform/msgbox-sun20iw3.h"
+#endif
+
+#if defined(CONFIG_ARCH_SUN20IW2)
+#include "platform/msgbox-sun20iw2.h"
+#endif
+
+#if defined(CONFIG_ARCH_SUN55IW3)
+#include "platform/msgbox-sun55iw3.h"
+#endif
+
 #endif /* __MSGBOX_PLATFORM_H__ */

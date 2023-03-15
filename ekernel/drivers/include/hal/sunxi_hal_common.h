@@ -1,25 +1,5 @@
-/*
- * ===========================================================================================
- *
- *       Filename:  sunxi_hal_common.h
- *
- *    Description:  Add sunxi hal common header file, common defitions used by all hal.
- *
- *        Version:  Melis3.0
- *         Create:  2019-11-14 11:38:34
- *       Revision:  none
- *       Compiler:  GCC:version 7.2.1 20170904 (release),ARM/embedded-7-branch revision 255204
- *
- *         Author:  caozilong@allwinnertech.com
- *   Organization:  BU1-PSW
- *  Last Modified:  2020-10-20 17:48:41
- *
- * ===========================================================================================
- */
 #ifndef SUNXI_HAL_COMMON_H
 #define SUNXI_HAL_COMMON_H
-
-#include <barrier.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -31,14 +11,111 @@ extern "C"
 #include <stdbool.h>
 #include <stdio.h>
 
-#undef min
-#undef max
-#define min(a, b)  ((a) < (b) ? (a) : (b))
-#define max(a,b)   ((a) < (b) ? (b) : (a))
+#ifdef CONFIG_DEBUG_BACKTRACE
+#include <backtrace.h>
+#endif
+#include <barrier.h>
 
-/* return value defines */
+#ifndef min
+#define min(a, b)  ((a) < (b) ? (a) : (b))
+#endif
+
+#ifndef max
+#define max(a,b)   ((a) < (b) ? (b) : (a))
+#endif
+
+#ifndef MIN
+#define MIN(a, b)  ((a) < (b) ? (a) : (b))
+#endif
+
+#ifndef MAX
+#define MAX(a,b)   ((a) < (b) ? (b) : (a))
+#endif
+
+#ifndef ARRAY_SIZE
+#define ARRAY_SIZE(x)       (sizeof(x) / sizeof((x)[0]))
+#endif
+
+#define __ALIGN_KERNEL(x, a) __ALIGN_KERNEL_MASK(x, (typeof(x))(a) - 1)
+#define __ALIGN_KERNEL_MASK(x, mask) (((x) + (mask)) & ~(mask))
+
+#ifndef ALIGN_UP
+#define ALIGN_UP(x, a) __ALIGN_KERNEL((x), (a))
+#endif
+
+#ifndef ALIGN_DOWN
+#define ALIGN_DOWN(x, a) __ALIGN_KERNEL((x) - ((a) - 1), (a))
+#endif
+
+#ifndef BIT
+#define BIT(x) (1 << x)
+#endif
+
+#define get_bvalue(addr)	(*((volatile unsigned char  *)(addr)))
+#define put_bvalue(addr, v)	(*((volatile unsigned char  *)(addr)) = (unsigned char)(v))
+#define get_hvalue(addr)	(*((volatile unsigned short *)(addr)))
+#define put_hvalue(addr, v)	(*((volatile unsigned short *)(addr)) = (unsigned short)(v))
+#define get_wvalue(addr)	(*((volatile unsigned int   *)(addr)))
+#define put_wvalue(addr, v)	(*((volatile unsigned int   *)(addr)) = (unsigned int)(v))
+
+#define set_byte(addr, v)    (*((volatile unsigned char  *)(addr)) |=  (unsigned char)(v))
+#define clr_byte(addr, v)    (*((volatile unsigned char  *)(addr)) &= ~(unsigned char)(v))
+#define set_half_word(addr, v)   (*((volatile unsigned short *)(addr)) |=  (unsigned short)(v))
+#define clr_half_word(addr, v)   (*((volatile unsigned short *)(addr)) &= ~(unsigned short)(v))
+#define set_word(addr, v)   (*((volatile unsigned int   *)(addr)) |=  (unsigned int)(v))
+#define clr_word(addr, v)   (*((volatile unsigned int   *)(addr)) &= ~(unsigned int)(v))
+
+#ifndef readb
+#define readb(addr)	    (*((volatile unsigned char  *)(addr)))
+#endif
+#ifndef readw
+#define readw(addr)	    (*((volatile unsigned short *)(addr)))
+#endif
+#ifndef readl
+#define readl(addr)	    (*((volatile unsigned int  *)(unsigned long)(addr)))
+#endif
+#ifndef writeb
+#define writeb(v, addr)	(*((volatile unsigned char  *)(addr)) = (unsigned char)(v))
+#endif
+#ifndef writew
+#define writew(v, addr)	(*((volatile unsigned short *)(addr)) = (unsigned short)(v))
+#endif
+#ifndef writel
+#define writel(v, addr)	(*((volatile unsigned int   *)(unsigned long)(addr)) = (unsigned int)(v))
+#endif
+
+#define cmp_wvalue(addr, v) (v == (*((volatile unsigned int *) (addr))))
+
+/* common register access operation. */
+#define hal_readb(reg)          (*(volatile uint8_t  *)(long)(reg))
+#define hal_readw(reg)          (*(volatile uint16_t *)(reg))
+#define hal_readl(reg)          (*(volatile uint32_t *)(reg))
+#define hal_writeb(value,reg)   (*(volatile uint8_t  *)(long)(reg) = (value))
+#define hal_writew(value,reg)   (*(volatile uint16_t *)(reg) = (value))
+#define hal_writel(value,reg)   (*(volatile uint32_t *)(reg) = (value))
+
+#ifndef OK
 #define OK 	(0)
+#endif
+#ifndef FAIL
 #define FAIL	(-1)
+#endif
+#ifndef TRUE
+#define TRUE	(1)
+#endif
+#ifndef FALSE
+#define	FALSE	(0)
+#endif
+#ifndef true
+#define true     1
+#endif
+#ifndef false
+#define false    0
+#endif
+
+#ifndef NULL
+#define NULL    0
+#endif
 
 #define CACHELINE_LEN (64)
 
@@ -50,19 +127,19 @@ typedef int64_t  s64;
 typedef int32_t  s32;
 typedef int16_t  s16;
 typedef int8_t   s8;
+
 #define HAL_ARG_UNUSED(NAME)   (void)(NAME)
 
 /* general function pointer defines */
-typedef s32(*__pCBK_t) (void *p_arg);			/* call-back */
-typedef s32(*__pISR_hdle_t) (int dummy, void *p_arg);	/* ISR */
+typedef s32 (*__pCBK_t) (void *p_arg);			/* call-back */
+typedef s32 (*__pISR_hdle_t) (void *p_arg);		/* ISR */
+
 typedef s32(*__pNotifier_t) (u32 message, u32 aux);	/* notifer call-back */
 typedef s32(*__pCPUExceptionHandler) (void);		/* cpu exception handler pointer */
-typedef s32(*long_jump_fn) (void *arg);
-typedef s32(*mem_long_jump_fn) (u32 arg);
 
-// Exception Dealt With.
 #define BUG() do {                                                             \
         printf("BUG: failure at %s:%d/%s()!\n", __FILE__, __LINE__, __func__); \
+        backtrace(NULL, NULL, 0, 0, printf);                                   \
         while(1);                                                              \
     } while (0)
 
@@ -83,29 +160,20 @@ typedef s32(*mem_long_jump_fn) (u32 arg);
     })
 #endif
 
-#ifdef CONFIG_KERNEL_FREERTOS
-#define in_interrupt(...)       uGetInterruptNest()
-#else
-#define in_interrupt(...)       rt_interrupt_get_nest()
-#endif
-
-#define in_nmi(...)             (0)
-
+#ifdef CONFIG_DEBUG_BACKTRACE
 #define hal_assert(ex)                                                  \
-    if (!(ex))                                                          \
-    {                                                                   \
+    if (!(ex)) {                                                        \
+        printf("%s line %d, fatal error.\n", __func__, __LINE__);       \
+        backtrace(NULL, NULL, 0, 0, printf);                            \
+        while(1);                                                       \
+    }
+#else
+#define hal_assert(ex)                                                  \
+    if (!(ex)) {                                                        \
         printf("%s line %d, fatal error.\n", __func__, __LINE__);       \
         while(1);                                                       \
     }
-
-
-// common register access operation.
-#define hal_readb(reg)          (*(volatile uint8_t  *)(long)(reg))
-#define hal_readw(reg)          (*(volatile uint16_t *)(reg))
-#define hal_readl(reg)          (*(volatile uint32_t *)(reg))
-#define hal_writeb(value,reg)   (*(volatile uint8_t  *)(long)(reg) = (value))
-#define hal_writew(value,reg)   (*(volatile uint16_t *)(reg) = (value))
-#define hal_writel(value,reg)   (*(volatile uint32_t *)(reg) = (value))
+#endif
 
 // version combine.
 #define SUNXI_HAL_VERSION_MAJOR_MINOR(major, minor)     (((major) << 8) | (minor))
@@ -134,7 +202,6 @@ typedef struct sunxi_hal_version
 // Start of driver specific errors.
 #define SUNXI_HAL_ERROR_DRVSPECIFIC     -6UL
 
-// brief General power states
 typedef enum sunxi_hal_power_state
 {
     ///< Power off: no operation possible
@@ -159,6 +226,13 @@ extern int fls(int x);
 
 void dma_free_coherent(void *addr);
 void *dma_alloc_coherent(size_t size);
+void dma_free_coherent_align(void *addr);
+void *dma_alloc_coherent_align(size_t size, int align);
+
+#ifdef CONFIG_COMPONENTS_AMP
+void *amp_align_malloc(int size);
+void amp_align_free(void *ptr);
+#endif
 
 #ifdef __cplusplus
 }

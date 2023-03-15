@@ -34,31 +34,34 @@
 #include <string.h>
 #include <stdlib.h>
 #include <hal_atomic.h>
+
 #ifndef CONFIG_KERNEL_FREERTOS
 #include <ktimer.h>
 #include <hal_cfg.h>
-#else
-#include <hal_cache.h>
 #endif
+
+#include <hal_time.h>
+#include <hal_cache.h>
+#include <hal_interrupt.h>
+#include <sunxi_hal_common.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* IRQ disable/enable */
-#define HAL_DisableIRQ()    arch_irq_disable()
-#define HAL_EnableIRQ()     arch_irq_enable()
+#define HAL_DisableIRQ()    hal_interrupt_disable()
+#define HAL_EnableIRQ()     hal_interrupt_enable()
 
 /* Check if IRQ is disabled */
-#define HAL_IsIRQDisabled() __get_PRIMASK()
+#define HAL_IsIRQDisabled() hal_interrupt_is_disable()
 
 /* Check if in ISR context or not */
-#define HAL_IsISRContext()  __get_IPSR()
+#define HAL_IsISRContext()  hal_interrupt_get_nest()
 
 extern hal_spinlock_t sdmmc_lock;
+
 /* Critical Sections */
-//#define HAL_EnterCriticalSection()      arch_irq_save()
-//#define HAL_ExitCriticalSection(flags)  arch_irq_restore(flags)
 #define HAL_EnterCriticalSection()  ({hal_spin_lock_irqsave(&sdmmc_lock);})
 #define HAL_ExitCriticalSection(f)  ({hal_spin_unlock_irqrestore(&sdmmc_lock, f);})
 #define HAL_ATMOTIC_SET(a,v)			({int flags = HAL_EnterCriticalSection();\
@@ -68,35 +71,9 @@ extern hal_spinlock_t sdmmc_lock;
 #define HAL_FlushDcacheRegion(s,len)            (hal_dcache_clean_invalidate(s,len))
 #define HAL_InvalidDcacheRegion(s,len)		(hal_dcache_invalidate(s, len))
 
-#if 0
-#define HAL_GetTimeMs()				(aos_now_ms())
-#define HAL_GetTimeUs()				(aos_now()/1000)
-//#define HAL_GetTimeUs()			(OS_GetTime()*1000)
-#define HAL_GetTimeNs()				(aos_now())
-#else
-#if 0
-#define HAL_GetTimeMs()				((rt_tick_get()*1000)/CONFIG_HZ)
-#define HAL_GetTimeUs()				((rt_tick_get()*1000*1000)/CONFIG_HZ)
-#define HAL_GetTimeNs()				((rt_tick_get()*1000*1000)/CONFIG_HZ)
-#endif
-#define HAL_GetTimeMs()				({\
-							struct timeval tv;\
-							gettimeofday(&tv, NULL);\
-							(tv.tv_usec + tv.tv_sec * 1000000ll)/1000;\
-						})
-#define HAL_GetTimeUs()				({\
-							struct timeval tv;\
-							gettimeofday(&tv, NULL);\
-							(tv.tv_usec + tv.tv_sec * 1000000ll);\
-						})
-#define HAL_GetTimeNs()				({\
-							struct timespec64  sdmmc_timeval;\
-							do_gettimeofday(&sdmmc_timeval);\
-							(sdmmc_timeval.tv_sec*1000ll*1000*1000ll + sdmmc_timeval.tv_nsec);\
-						})
-#endif
-
-
+#define HAL_GetTimeMs()			(hal_gettime_ns() / 1000 / 1000)
+#define HAL_GetTimeUs()			(hal_gettime_ns() / 1000)
+#define HAL_GetTimeNs()			(hal_gettime_ns())
 
 /* Semaphore */
 typedef OS_Semaphore_t HAL_Semaphore;
@@ -165,10 +142,7 @@ typedef OS_Mutex_t HAL_Mutex;
 #define HAL_TimeAfterEqual(a, b)    OS_TimeAfterEqual(a, b)
 #define HAL_TimeBeforeEqual(a, b)   OS_TimeBeforeEqual(a, b)
 
-#define HAL_ALIGN(x, a) __ALIGN_KERNEL((x), (a))
-#define ALIGN_DOWN(x, a) __ALIGN_KERNEL((x) - ((a)-1), (a))
-#define __ALIGN_KERNEL(x, a) __ALIGN_KERNEL_MASK(x, (typeof(x))(a)-1)
-#define __ALIGN_KERNEL_MASK(x, mask) (((x) + (mask)) & ~(mask))
+#define HAL_ALIGN(x, a) ALIGN_UP(x, a)
 
 #define OS_CACHE_ALIGN_BYTES  (64)
 
@@ -206,12 +180,12 @@ static inline void free_align_buf(void *addr)
 #define HAL_Memset(d, c, l)     memset(d, c, l)
 #define HAL_Memcmp(a, b, l)     memcmp(a, b, l)
 #define HAL_Memmove(d, s, n)    memmove(d, s, n)
-#define HAL_MallocAlign(l)      (malloc_align_buf(l))
-#define HAL_FreeAlign(p)        (free_align_buf(p))
-#ifndef CONFIG_KERNEL_FREERTOS
+#define HAL_MallocAlign(l)      (dma_alloc_coherent(l))
+#define HAL_FreeAlign(p)        (dma_free_coherent(p))
+
+#ifdef CONFIG_DRIVER_SYSCONFIG
 #define HAL_SetPin
 #endif
-
 
 #ifdef __cplusplus
 }

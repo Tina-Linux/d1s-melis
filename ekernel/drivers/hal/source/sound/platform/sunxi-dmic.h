@@ -155,7 +155,7 @@
 
 typedef struct {
 	gpio_pin_t gpio;
-	unsigned int mux;
+	int mux;
 } dmic_gpio;
 
 typedef struct {
@@ -171,22 +171,28 @@ struct dmic_rate {
 	unsigned int rate_bit;
 };
 
-struct sunxi_dmic_info {
-	struct sunxi_dma_params capture_dma_param;
-	u32 chanmap;
-	hal_clk_t pllclk;
-	hal_clk_t moduleclk;
-	hal_clk_t busclk;
-	struct reset_control *rstclk;
-};
-
 /* aw1851 */
 #ifdef CONFIG_ARCH_SUN8IW18P1
 #include "platforms/dmic-sun8iw18.h"
 #endif
 /* aw1859 */
-#ifdef CONFIG_ARCH_SUN8IW20
+#if defined(CONFIG_ARCH_SUN8IW20) || defined(CONFIG_SOC_SUN20IW1)
 #include "platforms/dmic-sun8iw20.h"
 #endif
+/* aw1883 */
+#if defined(CONFIG_ARCH_SUN20IW2)
+#include "platforms/dmic-sun20iw2.h"
+#endif
+/* aw1890 */
+#if defined(CONFIG_ARCH_SUN55IW3)
+#include "platforms/dmic-sun55iw3.h"
+#endif
+
+struct sunxi_dmic_info {
+	struct sunxi_dma_params capture_dma_param;
+	u32 chanmap;
+
+	struct sunxi_dmic_clk clk;
+};
 
 #endif /* SUNXI_DMIC_H */

@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include "epdk.h"
 #include "RDA_FM5807P_drv.h"
 #include  "drv_fm_i.h"
@@ -9,10 +40,10 @@
 
 //#define ADRW  0x20
 //#define ADRR  0x21
-#define             _SHARE_CRYSTAL_24MHz_   //����24MHz������򿪴˺�
-//#define             _SHARE_CRYSTAL_12MHz_   //����12MHz������򿪴˺�
-//#define             _SHARE_CRYSTAL_32KHz_   //����32KHz������򿪴˺�
-//#define             _FM_STEP_50K_           //50K��������򿪴˺�
+#define             _SHARE_CRYSTAL_24MHz_   //共用24MHz晶振，请打开此宏
+//#define             _SHARE_CRYSTAL_12MHz_   //共用12MHz晶振，请打开此宏
+//#define             _SHARE_CRYSTAL_32KHz_   //共用32KHz晶振，请打开此宏
+//#define             _FM_STEP_50K_           //50K步进，请打开此宏
 
 static __u16 gChipID    = 0;
 static __u8 RDA5807P_REG[10];
@@ -273,7 +304,7 @@ __u8 RDA5807N_initialization_reg[] =
 #if 0
 __bool OperationRDAFM_2w(__u8 rw,  __u8 *data, __s32 n_byte)
 {
-    __iic_dev_para_t   piic;        //Ҫд��TEA5767������
+    __iic_dev_para_t   piic;        //要写入TEA5767的数据
 
     //  return 1;
     if (rw == 1)
@@ -309,7 +340,7 @@ __bool OperationRDAFM_2w(__u8 rw,  __u8 *data, __s32 n_byte)
 #else
 __bool OperationRDAFM_2w_old(__u8 rw,  __u8 *data, __s32 n_byte)
 {
-    __twi_dev_para_ex_t  piic;        //Ҫд��TEA5767������
+    __twi_dev_para_ex_t  piic;        //要写入TEA5767的数据
     __s32 ret;
     __u8 addr = 0xff;
     eLIBs_memset(&piic, 0, sizeof(__twi_dev_para_ex_t));
@@ -388,7 +419,7 @@ __bool OperationRDAFM_2w_old(__u8 rw,  __u8 *data, __s32 n_byte)
 }
 __bool OperationRDAFM_2w(__u8 rw,  __u8 *data, __s32 n_byte)
 {
-    __twi_dev_para_ex_t  piic;        //Ҫд��TEA5767������
+    __twi_dev_para_ex_t  piic;        //要写入TEA5767的数据
     __s32 ret;
     eLIBs_memset(&piic, 0, sizeof(__twi_dev_para_ex_t));
 
@@ -434,7 +465,7 @@ __bool OperationRDAFM_2w(__u8 rw,  __u8 *data, __s32 n_byte)
 #endif
 __bool ReadRDAFM(__u8 addr, __u8 *data, __s32 n_byte)
 {
-    __twi_dev_para_ex_t  piic;        //Ҫд��TEA5767������
+    __twi_dev_para_ex_t  piic;        //要写入TEA5767的数据
     __s32 ret;
     __u8 addr1 = addr;
     eLIBs_memset(&piic, 0, sizeof(__twi_dev_para_ex_t));
@@ -479,10 +510,10 @@ static __u16 min_freq = 0;
 /**********************************************
 * function:      fm_area_choose
 *
-* description:   ����ѡ������ͬ����ʼ����ֹ
-*                Ƶ��
+* description:   地区选择，区别不同的起始和终止
+*                频率
 *
-* notes:         ������ȷ�������سɹ�������ʧ��
+* notes:         输入正确地区返回成功，否则失败
 *
 **********************************************/
 __s32 fm_area_choose(__s32 area, void *pbuffer)
@@ -515,8 +546,8 @@ __s32 fm_area_choose(__s32 area, void *pbuffer)
 /**********************************************
 * function:      fm_manual_search
 *
-* description:   �ֶ�������ʹ��fm_play
-*                ����ֵ����һ������Ƶ�ʵ�
+* description:   手动搜索，使用fm_play
+*                返回值是下一个搜索频率点
 *
 * notes:
 *
@@ -531,7 +562,7 @@ __s32 fm_manual_search(__s32 freq, __u32 search_dir)
 /**********************************************
 * function:      fm_stereo_choose
 *
-* description:   ����ѡ������������ͨ����
+* description:   音质选择，立体声和普通声音
 *
 * notes:
 *
@@ -560,7 +591,7 @@ __s32 fm_stereo_choose(__s32 audio_method)
 /**********************************************
 * function:      fm_mute
 *
-* description:   ��������
+* description:   静音功能
 *
 * notes:
 *
@@ -633,11 +664,11 @@ __u16 RDA5807P_FreqToChan(__u16 n_frequency)
 /**********************************************
 * function:      fm_play
 *
-* description:   ���������Ƶ�ʣ����Ŵ�Ƶ�ʵ�
-*                ��̨��Ŀ����ʹû�н�Ŀֻ��
-*                ��������������
+* description:   根据输入的频率，播放此频率的
+*                电台节目，即使没有节目只有
+*                噪音，照样播出
 *
-* notes:         ֻ���سɹ�
+* notes:         只返回成功
 *
 **********************************************/
 __s32 fm_play(__s32 curFreq)
@@ -785,7 +816,7 @@ __u8 RDA5807P_GetSigLvl(__u16 curf)
     __u8 RDA5807P_reg_data[4] = {0};
     OperationRDAFM_2w(READ, &(RDA5807P_reg_data[0]), 4);
     //ReadRDAFM(0x0A,RDA5807P_reg_data,4);
-    return (RDA5807P_reg_data[2] >> 1); /*����rssi*/
+    return (RDA5807P_reg_data[2] >> 1); /*返回rssi*/
 }
 
 
@@ -977,8 +1008,8 @@ __s32  fm_get_status(void)
 /**********************************************
 * function:      fm_signal_level
 *
-* description:   �ź�ǿ��ѡ��Ҫ���ź�ǿ��Խ�ߣ��յ��ĵ�̨Խ��
-*                   Ҫ���ź�ǿ��Խ�ߣ��յ��ĵ�̨Խ�࣬����Ч��̨Ҳ��
+* description:   信号强度选择，要求信号强大越高，收到的电台越少
+*                   要求信号强大越高，收到的电台越多，但无效电台也多
 *
 * notes:
 *

@@ -36,100 +36,10 @@
 //#include <FreeRTOS.h>
 #include <aw-alsa-lib/pcm.h>
 #include "common.h"
+#include <hal_time.h>
 #include <hal_timer.h>
 
-unsigned int g_verbose = 0;
-
-int set_param(snd_pcm_t *handle, snd_pcm_format_t format,
-			unsigned int rate, unsigned int channels,
-			snd_pcm_uframes_t period_size,
-			snd_pcm_uframes_t buffer_size)
-{
-	int ret = 0;
-	snd_pcm_hw_params_t *params;
-	snd_pcm_sw_params_t *sw_params;
-	snd_pcm_uframes_t period_size_tmp = period_size;
-	snd_pcm_uframes_t buffer_size_tmp = buffer_size;
-
-	/* HW params */
-	snd_pcm_hw_params_alloca(&params);
-	ret =  snd_pcm_hw_params_any(handle, params);
-	if (ret < 0) {
-		printf("no configurations available\n");
-		return ret;
-	}
-	ret = snd_pcm_hw_params_set_access(handle, params, SND_PCM_ACCESS_RW_INTERLEAVED);
-	if (ret < 0) {
-		printf("failed to set access\n");
-		return ret;
-	}
-	ret = snd_pcm_hw_params_set_format(handle, params, format);
-	if (ret < 0) {
-		printf("failed to set format\n");
-		return ret;
-	}
-	ret = snd_pcm_hw_params_set_channels(handle, params, channels);
-	if (ret < 0) {
-		printf("failed to set channels\n");
-		return ret;
-	}
-	ret = snd_pcm_hw_params_set_rate(handle, params, rate, 0);
-	if (ret < 0) {
-		printf("failed to set rate\n");
-		return ret;
-	}
-
-	ret = snd_pcm_hw_params_set_period_size_near(handle, params, &period_size_tmp, NULL);
-	if (ret < 0) {
-		printf("failed to set period size\n");
-		return ret;
-	}
-	if (period_size_tmp != period_size) {
-		printf("period size changed (request: %lu, get: %lu)\n",
-				period_size, period_size_tmp);
-		period_size = period_size_tmp;
-	}
-	ret = snd_pcm_hw_params_set_buffer_size_near(handle, params, &buffer_size_tmp);
-	if (ret < 0) {
-		printf("failed to set buffer size\n");
-		return ret;
-	}
-	if (buffer_size_tmp != buffer_size) {
-		printf("buffer size changed (request: %lu, get: %lu)\n",
-				buffer_size, buffer_size_tmp);
-		buffer_size = buffer_size_tmp;
-	}
-	ret = snd_pcm_hw_params(handle, params);
-	if (ret < 0) {
-		printf("Unable to install hw prams! (return: %d)\n", ret);
-		return ret;
-	}
-
-	/* SW params */
-	snd_pcm_sw_params_alloca(&sw_params);
-	snd_pcm_sw_params_current(handle, sw_params);
-	if (snd_pcm_stream(handle) == SND_PCM_STREAM_CAPTURE) {
-		snd_pcm_sw_params_set_start_threshold(handle, sw_params, 1);
-	} else {
-		snd_pcm_uframes_t boundary = 0;
-		snd_pcm_sw_params_get_boundary(sw_params, &boundary);
-		snd_pcm_sw_params_set_start_threshold(handle, sw_params, buffer_size);
-		/* set silence size, in order to fill silence data into ringbuffer */
-		snd_pcm_sw_params_set_silence_size(handle, sw_params, boundary);
-	}
-	snd_pcm_sw_params_set_stop_threshold(handle, sw_params, buffer_size);
-	snd_pcm_sw_params_set_avail_min(handle, sw_params, period_size);
-	ret = snd_pcm_sw_params(handle ,sw_params);
-	if (ret < 0) {
-		printf("Unable to install sw prams!\n");
-		return ret;
-	}
-
-	if (g_verbose)
-		snd_pcm_dump(handle);
-
-	return ret;
-}
+unsigned int g_verbose;
 
 void xrun(snd_pcm_t *handle)
 {
@@ -187,4 +97,191 @@ void audio_mgr_release(audio_mgr_t *mgr)
 		return;
 	}
 	free(mgr);
+}
+
+int set_param(snd_pcm_t *handle, snd_pcm_format_t format,
+			unsigned int rate, unsigned int channels,
+			snd_pcm_uframes_t period_size,
+			snd_pcm_uframes_t buffer_size)
+{
+	int ret = 0;
+	snd_pcm_hw_params_t *params;
+	snd_pcm_sw_params_t *sw_params;
+	snd_pcm_uframes_t period_size_tmp = period_size;
+	snd_pcm_uframes_t buffer_size_tmp = buffer_size;
+
+	/* HW params */
+	snd_pcm_hw_params_alloca(&params);
+	ret =  snd_pcm_hw_params_any(handle, params);
+	if (ret < 0) {
+		printf("no configurations available\n");
+		return ret;
+	}
+	ret = snd_pcm_hw_params_set_access(handle, params, SND_PCM_ACCESS_RW_INTERLEAVED);
+	if (ret < 0) {
+		printf("failed to set access\n");
+		return ret;
+	}
+	ret = snd_pcm_hw_params_set_format(handle, params, format);
+	if (ret < 0) {
+		printf("failed to set format\n");
+		return ret;
+	}
+	ret = snd_pcm_hw_params_set_channels(handle, params, channels);
+	if (ret < 0) {
+		printf("failed to set channels\n");
+		return ret;
+	}
+	ret = snd_pcm_hw_params_set_rate(handle, params, rate, 0);
+	if (ret < 0) {
+		printf("failed to set rate\n");
+		return ret;
+	}
+
+#ifdef CONFIG_SND_CORE_TINY
+	ret = snd_pcm_hw_params_set_period_size(handle, params, period_size_tmp, 0);
+	if (ret < 0) {
+		printf("failed to set period size\n");
+		return ret;
+	}
+	ret = snd_pcm_hw_params_set_buffer_size(handle, params, buffer_size_tmp);
+	if (ret < 0) {
+		printf("failed to set buffer size\n");
+		return ret;
+	}
+#else
+	ret = snd_pcm_hw_params_set_period_size_near(handle, params, &period_size_tmp, NULL);
+	if (ret < 0) {
+		printf("failed to set period size\n");
+		return ret;
+	}
+	if (period_size_tmp != period_size) {
+		printf("period size changed (request: %lu, get: %lu)\n",
+				period_size, period_size_tmp);
+		period_size = period_size_tmp;
+	}
+	ret = snd_pcm_hw_params_set_buffer_size_near(handle, params, &buffer_size_tmp);
+	if (ret < 0) {
+		printf("failed to set buffer size\n");
+		return ret;
+	}
+	if (buffer_size_tmp != buffer_size) {
+		printf("buffer size changed (request: %lu, get: %lu)\n",
+				buffer_size, buffer_size_tmp);
+		buffer_size = buffer_size_tmp;
+	}
+#endif
+	ret = snd_pcm_hw_params(handle, params);
+	if (ret < 0) {
+		printf("Unable to install hw prams! (return: %d)\n", ret);
+		return ret;
+	}
+
+	/* SW params */
+	snd_pcm_sw_params_alloca(&sw_params);
+	snd_pcm_sw_params_current(handle, sw_params);
+	if (snd_pcm_stream(handle) == SND_PCM_STREAM_CAPTURE) {
+		snd_pcm_sw_params_set_start_threshold(handle, sw_params, 1);
+	} else {
+		snd_pcm_uframes_t boundary = 0;
+		snd_pcm_sw_params_get_boundary(sw_params, &boundary);
+		snd_pcm_sw_params_set_start_threshold(handle, sw_params, buffer_size);
+		/* set silence size, in order to fill silence data into ringbuffer */
+		snd_pcm_sw_params_set_silence_size(handle, sw_params, boundary);
+	}
+	snd_pcm_sw_params_set_stop_threshold(handle, sw_params, buffer_size);
+	snd_pcm_sw_params_set_avail_min(handle, sw_params, period_size);
+	ret = snd_pcm_sw_params(handle ,sw_params);
+	if (ret < 0) {
+		printf("Unable to install sw prams!\n");
+		return ret;
+	}
+
+	if (g_verbose)
+		snd_pcm_dump(handle);
+
+	return ret;
+}
+
+int pcm_write(snd_pcm_t *handle, char *data, snd_pcm_uframes_t frames_total, unsigned int frame_bytes)
+{
+	snd_pcm_sframes_t size;
+	snd_pcm_uframes_t frames_loop = 256;
+	snd_pcm_uframes_t frames_count = 0;
+	snd_pcm_uframes_t frames = 0;
+
+	while (1) {
+		if ((frames_total - frames_count) < frames_loop)
+			frames = frames_total - frames_count;
+		if (frames == 0)
+			frames = frames_loop;
+		/*hal_usleep(500000);*/
+		size = snd_pcm_writei(handle, data, frames);
+		if (size != frames) {
+			printf("snd_pcm_writei return %ld\n", size);
+		}
+		if (size == -EAGAIN) {
+			hal_usleep(10000);
+			continue;
+		} else if (size == -EPIPE) {
+			xrun(handle);
+			continue;
+		} else if (size == -ESTRPIPE) {
+
+			continue;
+		} else if (size < 0) {
+			printf("-----snd_pcm_writei failed!!, return %ld\n", size);
+			return size;
+		}
+		data += (size * frame_bytes);
+		frames_count += size;
+		frames -= size;
+		if (frames_total == frames_count)
+			break;
+	}
+
+	return frames_count;
+}
+
+int pcm_read(snd_pcm_t *handle, const char *data, snd_pcm_uframes_t frames_total, unsigned int frame_bytes)
+{
+	int ret = 0;
+	snd_pcm_sframes_t size;
+	snd_pcm_uframes_t frames_loop = 256;
+	snd_pcm_uframes_t frames_count = 0;
+	snd_pcm_uframes_t frames = 0;
+	unsigned int offset = 0;
+
+	while (1) {
+		if ((frames_total - frames_count) < frames_loop)
+			frames = frames_total - frames_count;
+		if (frames == 0)
+			frames = frames_loop;
+		/*printf("snd_pcm_readi %ld frames\n", frames);*/
+		size = snd_pcm_readi(handle, (void *)(data + offset), frames);
+		if (size < 0)
+			printf("snd_pcm_readi return %ld\n", size);
+		if (size == -EAGAIN) {
+			/* retry */
+			hal_usleep(10000);
+			continue;
+		} else if (size == -EPIPE) {
+			xrun(handle);
+			continue;
+		} else if (size == -ESTRPIPE) {
+
+			continue;
+		} else if (size < 0) {
+			printf("-----snd_pcm_readi failed!!, return %ld\n", size);
+			ret = (int)size;
+			goto err;
+		}
+		offset += (size * frame_bytes);
+		frames_count += size;
+		frames -= size;
+		if (frames_total == frames_count)
+			break;
+	}
+err:
+	return frames_count > 0 ? frames_count : ret;
 }

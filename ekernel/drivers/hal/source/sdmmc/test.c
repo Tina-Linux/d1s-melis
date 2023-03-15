@@ -73,6 +73,15 @@ struct sdmmc_tester {
 
 static struct sdmmc_tester *sdmmc_test_info[SDC_NUM];
 
+__attribute__((weak)) void mount_sdmmc_filesystem(int card_id)
+{
+	printf("please config CONFIG_DRIVERS_SDMMC_FS=y\n");
+}
+__attribute__((weak)) void unmount_sdmmc_filesystem(int card_id)
+{
+	printf("please config CONFIG_DRIVERS_SDMMC_FS=y\n");
+}
+
 #ifdef CONFIG_DETECT_CARD
 void card_detect(uint32_t present, uint16_t sdc_id)
 {
@@ -90,7 +99,8 @@ void card_detect(uint32_t present, uint16_t sdc_id)
 			printf("mmc open fail\n");
 			return ;
 		}
-
+		
+		printf("card debug mask %x\n", sdmmc_test->card->debug_mask);
 		/* scan card for detect card is exist? */
 		if (!mmc_card_present(sdmmc_test->card)) {
 		//	if (mmc_rescan(sdmmc_test->card, sdmmc_test->card->id)) {
@@ -102,10 +112,7 @@ void card_detect(uint32_t present, uint16_t sdc_id)
 			} else {
 				printf("Initial card success\n");
 				mmc_card_close(sdmmc_test->card_id);
-#ifndef CONFIG_KERNEL_FREERTOS
-				void mount_sdmmc_filesystem(int card_id);
 				mount_sdmmc_filesystem((int)sdmmc_test->card_id);
-#endif
 				SDC_SemPost(&sdmmc_test->card_present_sem);
 			}
 		} else {
@@ -125,10 +132,7 @@ void card_detect(uint32_t present, uint16_t sdc_id)
 				mmc_card_deinit(card);
 			}
 			mmc_card_close(sdmmc_test->card_id);
-#ifndef CONFIG_KERNEL_FREERTOS
-			void unmount_sdmmc_filesystem(int card_id);
 			unmount_sdmmc_filesystem((int)sdmmc_test->card_id);
-#endif
 			mmc_card_delete(sdmmc_test->card_id);
 		}
 	}
@@ -337,33 +341,33 @@ int32_t mmc_test(uint32_t host_id, uint32_t cd_mode, uint32_t sdc_degmask, uint3
 
 #ifdef TEST_SD_WRITE
 		tick_use = OS_GetTicks();
-		err = mmc_block_write(sdmmc_test->card, sdmmc_test->wbuf, 0, 1);
+		err = mmc_block_write(sdmmc_test->card, sdmmc_test->wbuf, 0, READ_WRITE_SINGLE_SIZE/512);
 		tick_use = OS_GetTicks() - tick_use;
 		if (err) {
 			goto err_out;
 		} else {
-			printf("%s 1 block write ok, 512B use:%lu ms\n", __func__,
+			printf("%s %d block write ok, 512B use:%lu ms\n", __func__, READ_WRITE_SINGLE_SIZE/512, 
 			      HAL_PR_SZ_L((uint32_t)OS_TicksToMSecs(tick_use)));
 		}
 #endif
-		memset((void *)sdmmc_test->rbuf, 0, 512);
+		memset((void *)sdmmc_test->rbuf, 0, READ_WRITE_SINGLE_SIZE/512);
 		tick_use = OS_GetTicks();
-		err = mmc_block_read(sdmmc_test->card, sdmmc_test->rbuf, 0, 1);
+		err = mmc_block_read(sdmmc_test->card, sdmmc_test->rbuf, 0, READ_WRITE_SINGLE_SIZE/512);
 		tick_use = OS_GetTicks() - tick_use;
 		if (err) {
 			goto err_out;
 		} else {
-			printf("%s 1 block read ok, 512B use:%lu ms\n", __func__,
+			printf("%s %d block read ok, 512B use:%lu ms\n", __func__, READ_WRITE_SINGLE_SIZE/512, 
 			       HAL_PR_SZ_L((uint32_t)OS_TicksToMSecs(tick_use)));
 #ifndef TEST_SD_WRITE
 			print_hex_dump_words(sdmmc_test->rbuf, 512);
 #endif
 		}
 #ifdef TEST_SD_WRITE
-		if (memcmp((void *)sdmmc_test->wbuf, (void *)sdmmc_test->rbuf, 512)) {
+		if (memcmp((void *)sdmmc_test->wbuf, (void *)sdmmc_test->rbuf, READ_WRITE_SINGLE_SIZE/512)) {
 			goto err_out;
 		} else
-			printf("%s,%d mmc 1 block rw ok\n", __func__, __LINE__);
+			printf("%s,%d mmc %d block rw ok\n", __func__, __LINE__, READ_WRITE_SINGLE_SIZE/512);
 
 		tick_use = OS_GetTicks();
 		for (i = 0; i < READ_WRITE_TOTAL_SIZE/READ_WRITE_SINGLE_SIZE; i++) {
@@ -372,7 +376,7 @@ int32_t mmc_test(uint32_t host_id, uint32_t cd_mode, uint32_t sdc_degmask, uint3
 			if (err)
 				break;
 			if (i % 50 == 0)
-				printf("%s, wirite cnt:%lu\n", __func__, HAL_PR_SZ_L(i));
+				printf("%s, write cnt:%lu\n", __func__, HAL_PR_SZ_L(i));
 		}
 		tick_use = OS_GetTicks() - tick_use;
 		if (err) {

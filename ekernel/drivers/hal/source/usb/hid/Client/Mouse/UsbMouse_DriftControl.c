@@ -2,8 +2,8 @@
 ********************************************************************************
 *                                USB Hid Driver
 *
-*                (c) Copyright 2006-2010, All winners Co,Ld. 
-*                        All Right Reserved 
+*                (c) Copyright 2006-2010, All winners Co,Ld.
+*                        All Right Reserved
 *
 * FileName		:  UsbMouse_DriftControl.c
 *
@@ -11,28 +11,21 @@
 *
 * Date			:  2010.06.02
 *
-* Description	:  USB Mouse È¥¶¶¶¯Ëã·¨.
-*     1¡¢ËùÓĞÊó±êÊÂ¼şĞÅÏ¢Ìí¼Óµ½¶ÓÁĞÖĞ
-*     2¡¢Ã¿¸ô5ms´¦Àí¶ÓÁĞÖĞµÄËùÊÂ¼şÓĞĞÅÏ¢¡£
-*     3¡¢
+* Description	:  USB Mouse å»æŠ–åŠ¨ç®—æ³•.
+*     1ã€æ‰€æœ‰é¼ æ ‡äº‹ä»¶ä¿¡æ¯æ·»åŠ åˆ°é˜Ÿåˆ—ä¸­
+*     2ã€æ¯éš”5mså¤„ç†é˜Ÿåˆ—ä¸­çš„æ‰€äº‹ä»¶æœ‰ä¿¡æ¯ã€‚
+*     3ã€
 *
 * Others		:  NULL
 *
 * History:
 *		<time> 		<version >		<author>	 	<desc>
-*	   2010.07.16	   1.0			 Javen			build this file 
+*	   2010.07.16	   1.0			 Javen			build this file
 *
 ********************************************************************************
 */
 
-//#include  "usb_host_config.h"
-//#include  "usb_host_base_types.h"
-#include "usb_os_platform.h"
-#include "usb_host_common.h"
-#include "error.h"
-#include "HidSpec.h"
 #include "Hid_i.h"
-#include "HidFunDrv.h"
 #include "UsbMouse.h"
 #include "UsbMouse_DriftControl.h"
 
@@ -45,42 +38,43 @@
 *
 * Parameters:
 *
-* 
+*
 * Return value:
 *
 *
 * note:
-*    
+*
 *
 *******************************************************************************
 */
 static void UsbMouse_DriftTimeOut(void *parg)
 {
-    UsbMouseDriftControl_t *Drift = (UsbMouseDriftControl_t *)parg;
-	unsigned int cup_sr	= 0;
+	UsbMouseDriftControl_t *Drift = (UsbMouseDriftControl_t *)parg;
+	unsigned int cup_sr = 0;
 
-	if(Drift == NULL){
+	if (Drift == NULL) {
 		hal_log_err("ERR: input error\n");
-		return ;
+		return;
 	}
 
-    /* Èç¹ûÓĞ¿ÉÒÉµÄµã´æÔÚ£¬¾Í°Ñ¿ÉÒÉµÄµã·¢³öÈ¥ */
-	if(Drift->WaitEvent && Drift->DubiousMouseEvent.vaild) {
+	/* å¦‚æœæœ‰å¯ç–‘çš„ç‚¹å­˜åœ¨ï¼Œå°±æŠŠå¯ç–‘çš„ç‚¹å‘å‡ºå» */
+	if (Drift->WaitEvent && Drift->DubiousMouseEvent.vaild) {
 		int val = 0;
-	    ENTER_CRITICAL(cup_sr);
+		// ENTER_CRITICAL(cup_sr);
+		hal_interrupt_disable();
 		DMSG_MOUSE_TEST("TimeOut: DubiousCoordinate = %x\n", Drift->DubiousCoordinate);
 		memcpy(&Drift->CurrentMouseEvent, &Drift->DubiousMouseEvent, sizeof(UsbMouseEventUnit_t));
 		Drift->CurrentMouseEvent.vaild = 1;
-	 	EXIT_CRITICAL(cup_sr);
+		hal_interrupt_enable();
+		// EXIT_CRITICAL(cup_sr);
 
-//		UsbThreadWakeUp(Drift->ThreadSemi);
-		if (!hal_sem_getvalue(Drift->ThreadSemi, &val))
-		{
-		    hal_sem_post(Drift->ThreadSemi);
+		//		UsbThreadWakeUp(Drift->ThreadSemi);
+		if (!hal_sem_getvalue(Drift->ThreadSemi, &val)) {
+			hal_sem_post(Drift->ThreadSemi);
 		}
 	}
 
-    return;
+	return;
 }
 
 /*
@@ -92,19 +86,19 @@ static void UsbMouse_DriftTimeOut(void *parg)
 *
 * Parameters:
 *
-* 
+*
 * Return value:
 *
 *
 * note:
-*    
+*
 *
 *******************************************************************************
 */
 static unsigned int UsbMouse_IsButtonEvent(USBHMouseEvent_t *MouseEvent)
 {
-	return (MouseEvent->Button.LeftButton 
-		    || MouseEvent->Button.RightButton 
+	return (MouseEvent->Button.LeftButton
+		    || MouseEvent->Button.RightButton
 		    || MouseEvent->Button.MiddleButton
 		    || MouseEvent->Wheel);
 }
@@ -118,53 +112,53 @@ static unsigned int UsbMouse_IsButtonEvent(USBHMouseEvent_t *MouseEvent)
 *
 * Parameters:
 *
-* 
+*
 * Return value:
 *
 *
 * note:
-*    
+*
 *
 *******************************************************************************
 */
 static unsigned int UsbMouse_IsDubiousEvent(USBHMouseEvent_t *Event, UsbMouseDriftControl_t *Drift)
 {
-    unsigned int Dubious = 0;
+	unsigned int Dubious = 0;
 
-    /* Èç¹û²Î¿¼µãPreMouseEvent²»´æÔÚ, ÄÇÃ´¾Í²»ÓÃ»³ÒÉ±¾´ÎµÄµã */
-	if(Drift->PreMouseEvent.vaild == 0){
+	/* å¦‚æœå‚è€ƒç‚¹PreMouseEventä¸å­˜åœ¨, é‚£ä¹ˆå°±ä¸ç”¨æ€€ç–‘æœ¬æ¬¡çš„ç‚¹ */
+	if (Drift->PreMouseEvent.vaild == 0) {
 		return 0;
 	}
 
-	/* Èç¹ûÇ°ºóÁ½´Î X ×ø±ê²îÖµ´óÓÚ127, ÄÇÃ´¾ÍÈÏÎª±¾´ÎµÄ×ø±êÎª¿ÉÒÉµÄ×ø±ê */
-	if(absolute(Event->X - Drift->PreMouseEvent.MouseEvent.X) > USB_HID_MOUSE_DITHER_AREA){
+	/* å¦‚æœå‰åä¸¤æ¬¡ X åæ ‡å·®å€¼å¤§äº127, é‚£ä¹ˆå°±è®¤ä¸ºæœ¬æ¬¡çš„åæ ‡ä¸ºå¯ç–‘çš„åæ ‡ */
+	if (absolute(Event->X - Drift->PreMouseEvent.MouseEvent.X) > USB_HID_MOUSE_DITHER_AREA) {
 		usb_set_bit(1, (volatile uint32_t *)&Drift->DubiousCoordinate);
 		Dubious = 1;
 	}
 
-	/* Èç¹ûÇ°ºóÁ½´Î Y ×ø±ê²îÖµ´óÓÚ127, ÄÇÃ´¾ÍÈÏÎª±¾´ÎµÄ×ø±êÎª¿ÉÒÉµÄ×ø±ê */
-	if(absolute(Event->Y - Drift->PreMouseEvent.MouseEvent.Y) > USB_HID_MOUSE_DITHER_AREA){
+	/* å¦‚æœå‰åä¸¤æ¬¡ Y åæ ‡å·®å€¼å¤§äº127, é‚£ä¹ˆå°±è®¤ä¸ºæœ¬æ¬¡çš„åæ ‡ä¸ºå¯ç–‘çš„åæ ‡ */
+	if (absolute(Event->Y - Drift->PreMouseEvent.MouseEvent.Y) > USB_HID_MOUSE_DITHER_AREA) {
 		usb_set_bit(2, (volatile uint32_t *)&Drift->DubiousCoordinate);
 		Dubious = 1;
 	}
 
-	if(Dubious){
+	if (Dubious) {
 		DMSG_MOUSE_TEST("DubiousCoordinate = %x\n", Drift->DubiousCoordinate);
 	}
 
 	return Dubious;
 }
 
-/* ÅĞ¶ÏXºÍYÊÇ·ñ¶¼ÊÇÕıÊı»òÕßÊÇ·ñ¶¼ÊÇ¸ºÊı */
+/* åˆ¤æ–­Xå’ŒYæ˜¯å¦éƒ½æ˜¯æ­£æ•°æˆ–è€…æ˜¯å¦éƒ½æ˜¯è´Ÿæ•° */
 static __u32 UsbMouse_IsAccord8(__s8 x, __s8 y)
 {
-    /* ÊÇ·ñ¶¼ÊÇ¸ºÊı */
-	if(x <= 0 && y <= 0){
+	/* æ˜¯å¦éƒ½æ˜¯è´Ÿæ•° */
+	if (x <= 0 && y <= 0) {
 		return 1;
 	}
 
-    /* ÊÇ·ñ¶¼ÊÇÕıÊı */
-	if(x >= 0 && y >= 0){
+	/* æ˜¯å¦éƒ½æ˜¯æ­£æ•° */
+	if (x >= 0 && y >= 0) {
 		return 1;
 	}
 
@@ -176,11 +170,11 @@ static __u32 UsbMouse_IsAccord8(__s8 x, __s8 y)
 *                     UsbMouse_AddToDriftArray
 *
 * Description:
-*     ´Ó3¸öÊó±êÊı¾İÖĞÕÒ³ö¹ì¼£ÏàÍ¬µÄÁ½¸ö, È»ºóÈ¡Æ½¾ùÖµ¡£
+*     ä»3ä¸ªé¼ æ ‡æ•°æ®ä¸­æ‰¾å‡ºè½¨è¿¹ç›¸åŒçš„ä¸¤ä¸ª, ç„¶åå–å¹³å‡å€¼ã€‚
 *
 * Parameters:
 *
-* 
+*
 * Return value:
 *
 *
@@ -189,35 +183,43 @@ static __u32 UsbMouse_IsAccord8(__s8 x, __s8 y)
 *******************************************************************************
 */
 static int UsbMouse_AdjustCoordinate(USBHMouseEvent_t *Event1,
-                                       USBHMouseEvent_t *Event2,
-                                       USBHMouseEvent_t *Event3,
-                                       USBHMouseEvent_t *OutEvent)
+				     USBHMouseEvent_t *Event2,
+				     USBHMouseEvent_t *Event3,
+				     USBHMouseEvent_t *OutEvent)
 {
-    /* Ñ°ÕÒ X ×ø±êÉÏ·½ÏòÒ»ÖÂµÄµã */
-    if(UsbMouse_IsAccord8(Event1->X, Event2->X) 
-	   && UsbMouse_IsAccord8(Event1->X, Event3->X)){ /* 1,2,3¶¼Ò»ÖÂ */
+	/* å¯»æ‰¾ X åæ ‡ä¸Šæ–¹å‘ä¸€è‡´çš„ç‚¹ */
+	if (UsbMouse_IsAccord8(Event1->X, Event2->X) && UsbMouse_IsAccord8(Event1->X, Event3->X)) {
+		/* 1,2,3éƒ½ä¸€è‡´ */
 		OutEvent->X = (Event1->X / 3) + (Event2->X / 3) + (Event3->X / 3);
-	}else if(UsbMouse_IsAccord8(Event1->X, Event2->X)){  /* 1,2¶¼ÊÇÒ»ÖÂµÄ */
+	} else if (UsbMouse_IsAccord8(Event1->X, Event2->X)) {
+		/* 1,2éƒ½æ˜¯ä¸€è‡´çš„ */
 		OutEvent->X = Event2->X;
-	}else if(UsbMouse_IsAccord8(Event1->X, Event3->X)){  /* 1,3¶¼ÊÇÒ»ÖÂµÄ */
+	} else if (UsbMouse_IsAccord8(Event1->X, Event3->X)) {
+		/* 1,3éƒ½æ˜¯ä¸€è‡´çš„ */
 		OutEvent->X = Event3->X;
-	}else if(UsbMouse_IsAccord8(Event2->X, Event3->X)){  /* 2,3¶¼ÊÇÒ»ÖÂµÄ */
+	} else if (UsbMouse_IsAccord8(Event2->X, Event3->X)) {
+		/* 2,3éƒ½æ˜¯ä¸€è‡´çš„ */
 		OutEvent->X = (Event2->X / 2) + (Event3->X / 2);
-	}else{  /* 1,2,3¶¼²»ÊÇÒ»ÖÂµÄ */
+	} else {
+		/* 1,2,3éƒ½ä¸æ˜¯ä¸€è‡´çš„ */
 		OutEvent->X = (Event1->X / 3) + (Event2->X / 3) + (Event3->X / 3);
 	}
 
-    /* Ñ°ÕÒ Y ×ø±êÉÏ·½ÏòÒ»ÖÂµÄµã */
-    if(UsbMouse_IsAccord8(Event1->Y, Event2->Y) 
-	   && UsbMouse_IsAccord8(Event1->Y, Event3->Y)){ /* 1,2,3¶¼Ò»ÖÂ */
+	/* å¯»æ‰¾ Y åæ ‡ä¸Šæ–¹å‘ä¸€è‡´çš„ç‚¹ */
+	if (UsbMouse_IsAccord8(Event1->Y, Event2->Y) && UsbMouse_IsAccord8(Event1->Y, Event3->Y)) {
+		/* 1,2,3éƒ½ä¸€è‡´ */
 		OutEvent->Y = (Event1->Y / 3) + (Event2->Y / 3) + (Event3->Y / 3);
-	}else if(UsbMouse_IsAccord8(Event1->Y, Event2->Y)){  /* 1,2¶¼ÊÇÒ»ÖÂµÄ */
+	} else if (UsbMouse_IsAccord8(Event1->Y, Event2->Y)) {
+		/* 1,2éƒ½æ˜¯ä¸€è‡´çš„ */
 		OutEvent->Y = Event2->Y;
-	}else if(UsbMouse_IsAccord8(Event1->Y, Event3->Y)){  /* 1,3¶¼ÊÇÒ»ÖÂµÄ */
+	} else if (UsbMouse_IsAccord8(Event1->Y, Event3->Y)) {
+		/* 1,3éƒ½æ˜¯ä¸€è‡´çš„ */
 		OutEvent->Y = Event3->Y;
-	}else if(UsbMouse_IsAccord8(Event2->Y, Event3->Y)){  /* 2,3¶¼ÊÇÒ»ÖÂµÄ */
+	} else if (UsbMouse_IsAccord8(Event2->Y, Event3->Y)) {
+		/* 2,3éƒ½æ˜¯ä¸€è‡´çš„ */
 		OutEvent->Y = (Event2->Y / 2) + (Event3->Y / 2);
-	}else{  /* 1,2,3¶¼²»ÊÇÒ»ÖÂµÄ */
+	} else {
+		/* 1,2,3éƒ½ä¸æ˜¯ä¸€è‡´çš„ */
 		OutEvent->Y = (Event1->Y / 3) + (Event2->Y / 3) + (Event3->Y / 3);
 	}
 
@@ -233,66 +235,69 @@ static int UsbMouse_AdjustCoordinate(USBHMouseEvent_t *Event1,
 *
 * Parameters:
 *
-* 
+*
 * Return value:
 *
 *
 * note:
-*    
-*	1¡¢Ö»ÓĞ°´¼üÏûÏ¢£¬Ö±½Ó·¢ËÍ¸øapp¡£
 *
-*	2¡¢Ö»ÓĞwheelÏûÏ¢£¬Ö±½Ó·¢ËÍ¸øapp¡£
+*	1ã€åªæœ‰æŒ‰é”®æ¶ˆæ¯ï¼Œç›´æ¥å‘é€ç»™appã€‚
 *
-*	3¡¢Ö»ÓĞ×ø±ê£¬¾ÍÔ¤²âÊó±êµÄ¹ì¼££¬
-*      Èç¹û±¾´ÎµÄµãAºÍÉÏÒ»´ÎµÄµãBÏà²îÌ«´ó£¬ÔÚ¹æ¶¨Ê±¼äÄÚÈ¡ÏÂÒ»´ÎµÄµãC×÷²Î¿¼£¬
-*      Èç¹ûAºÍCÏà½ü£¬¾Í¶ªµôBµã£¬·¢ËÍAµãºÍCµã¸øapp£»Èç¹û¹æ¶¨Ê±¼äÄÚÃ»ÓĞÊó±êÊÂ¼ş,¾Í°ÑAµãºÍBµã¸ø·¢¸øapp¡£
+*	2ã€åªæœ‰wheelæ¶ˆæ¯ï¼Œç›´æ¥å‘é€ç»™appã€‚
 *
-*	4¡¢Èç¹û°´¼ü¡¢wheel¡¢×ø±ê²ÎÔÓÔÚÒ»Æğ£¬Óöµ½°´¼ü»òÕßwheelÊÂ¼şºó£¬
-*      °Ñµ±Ç°ËùÓĞµÄµãÈ«²¿·¢¸øapp£¬²¢ÇÒ°ÑÏÂÒ»´ÎµÄ°´¼üÌ§ÆğÏûÏ¢£¬Ò²¼°Ê±µÄ·¢ËÍ³öÈ¥¡£
+*	3ã€åªæœ‰åæ ‡ï¼Œå°±é¢„æµ‹é¼ æ ‡çš„è½¨è¿¹ï¼Œ
+*      å¦‚æœæœ¬æ¬¡çš„ç‚¹Aå’Œä¸Šä¸€æ¬¡çš„ç‚¹Bç›¸å·®å¤ªå¤§ï¼Œåœ¨è§„å®šæ—¶é—´å†…å–ä¸‹ä¸€æ¬¡çš„ç‚¹Cä½œå‚è€ƒï¼Œ
+*      å¦‚æœAå’ŒCç›¸è¿‘ï¼Œå°±ä¸¢æ‰Bç‚¹ï¼Œå‘é€Aç‚¹å’ŒCç‚¹ç»™appï¼›å¦‚æœè§„å®šæ—¶é—´å†…æ²¡æœ‰é¼ æ ‡äº‹ä»¶,å°±æŠŠAç‚¹å’ŒBç‚¹ç»™å‘ç»™appã€‚
+*
+*	4ã€å¦‚æœæŒ‰é”®ã€wheelã€åæ ‡å‚æ‚åœ¨ä¸€èµ·ï¼Œé‡åˆ°æŒ‰é”®æˆ–è€…wheeläº‹ä»¶åï¼Œ
+*      æŠŠå½“å‰æ‰€æœ‰çš„ç‚¹å…¨éƒ¨å‘ç»™appï¼Œå¹¶ä¸”æŠŠä¸‹ä¸€æ¬¡çš„æŒ‰é”®æŠ¬èµ·æ¶ˆæ¯ï¼Œä¹ŸåŠæ—¶çš„å‘é€å‡ºå»ã€‚
 *
 *******************************************************************************
-*/void UsbMouse_AddToDriftArray(usbMouse_t *usbMouse, USBHMouseEvent_t *Event)
+*/
+void UsbMouse_AddToDriftArray(usbMouse_t *usbMouse, USBHMouseEvent_t *Event)
 {
 	int val = 0;
-    UsbMouseDriftControl_t *Drift = NULL;
-	unsigned int cup_sr	= 0;
+	UsbMouseDriftControl_t *Drift = NULL;
+	unsigned int cup_sr = 0;
 
-	if(usbMouse == NULL){
+	if (usbMouse == NULL) {
 		hal_log_err("ERR: input error\n");
-		return ;
+		return;
 	}
 
 	Drift = usbMouse->Extern;
-	if(Drift == NULL){
+	if (Drift == NULL) {
 		hal_log_err("ERR: Drift == NULL\n");
-		return ;
+		return;
 	}
 
-    /* ÏÈÇ°ÓĞ°´¼ü°´ÏÂ, ÕâÀïÓöµ½Ì§Æğ¼ü, ¾Í¸ø°Ñ±¾´ÎÏûÏ¢·¢ËÍ¸øAPP */
-	if(Drift->ButtonDown){
-		/* Èç¹û±¾´Î»¹ÓĞ°´¼üÏûÏ¢, ¾Í¼ÇÂ¼ÏÂÀ´ */
-		if(UsbMouse_IsButtonEvent(Event)){
-		    DMSG_MOUSE_TEST("Had send a button down event, then a new button event come\n");
+	/* å…ˆå‰æœ‰æŒ‰é”®æŒ‰ä¸‹, è¿™é‡Œé‡åˆ°æŠ¬èµ·é”®, å°±ç»™æŠŠæœ¬æ¬¡æ¶ˆæ¯å‘é€ç»™APP */
+	if (Drift->ButtonDown) {
+		/* å¦‚æœæœ¬æ¬¡è¿˜æœ‰æŒ‰é”®æ¶ˆæ¯, å°±è®°å½•ä¸‹æ¥ */
+		if (UsbMouse_IsButtonEvent(Event)) {
+			DMSG_MOUSE_TEST("Had send a button down event, then a new button event come\n");
 			Drift->ButtonDown = 1;
-		}else{
-		    DMSG_MOUSE_TEST("Had send a button down event, then wait for button rise\n");
+		} else {
+			DMSG_MOUSE_TEST("Had send a button down event, then wait for button rise\n");
 			Drift->ButtonDown = 0;
 		}
 
 		goto SendMsg;
 	}
 
-    /* ÓĞ°´¼üÊÂ¼ş»òÕß¹öÂÖÊÂ¼ş£¬¾Í»½ĞÑÏß³Ì */
-	if(UsbMouse_IsButtonEvent(Event)){
-	    DMSG_MOUSE_TEST("have a button event\n");
+	/* æœ‰æŒ‰é”®äº‹ä»¶æˆ–è€…æ»šè½®äº‹ä»¶ï¼Œå°±å”¤é†’çº¿ç¨‹ */
+	if (UsbMouse_IsButtonEvent(Event)) {
+		DMSG_MOUSE_TEST("have a button event\n");
 
 		Drift->ButtonDown = 1;
 		goto SendMsg;
 	}
 
-    /* Èç¹ûPreMouseEventºÍdubiousMouseEvent¶¼ÓĞĞ§, ÄÇÃ´¾ÍÖ±½Ó±È½Ï */
-	if(Drift->PreMouseEvent.vaild && Drift->DubiousMouseEvent.vaild){
-	    ENTER_CRITICAL(cup_sr);
+	/* å¦‚æœPreMouseEventå’ŒdubiousMouseEventéƒ½æœ‰æ•ˆ, é‚£ä¹ˆå°±ç›´æ¥æ¯”è¾ƒ */
+	if (Drift->PreMouseEvent.vaild && Drift->DubiousMouseEvent.vaild) {
+		// ENTER_CRITICAL(cup_sr);
+		hal_interrupt_disable();
+
 		DMSG_MOUSE_TEST("------Pre------\n");
 		DMSG_MOUSE_TEST("DubiousCoordinate = %x\n", Drift->DubiousCoordinate);
 
@@ -309,7 +314,7 @@ static int UsbMouse_AdjustCoordinate(USBHMouseEvent_t *Event1,
 		DMSG_MOUSE_TEST("Pre Y        = %d\n", Drift->PreMouseEvent.MouseEvent.Y);
 		DMSG_MOUSE_TEST("Pre Wheel    = %d\n", Drift->PreMouseEvent.MouseEvent.Wheel);
 		DMSG_MOUSE_TEST("\n");
-		
+
 		DMSG_MOUSE_TEST("\n");
 		DMSG_MOUSE_TEST("dubious Button 1 = %d\n", Drift->DubiousMouseEvent.MouseEvent.Button.LeftButton);
 		DMSG_MOUSE_TEST("dubious Button 2 = %d\n", Drift->DubiousMouseEvent.MouseEvent.Button.RightButton);
@@ -339,49 +344,55 @@ static int UsbMouse_AdjustCoordinate(USBHMouseEvent_t *Event1,
 		DMSG_MOUSE_TEST("Event Y        = %d\n", Event->Y);
 		DMSG_MOUSE_TEST("Event Wheel    = %d\n", Event->Wheel);
 		DMSG_MOUSE_TEST("------Pre------\n");
-		
-	 	EXIT_CRITICAL(cup_sr);
 
-		/* Ñ°ÕÒÍ¬·½ÏòµÄÁ½¸öµã */
-		/* X×ø±ê¿ÉÒÉ */
-		UsbMouse_AdjustCoordinate(&Drift->PreMouseEvent.MouseEvent, 
-		                          &Drift->DubiousMouseEvent.MouseEvent,
-		                          Event,
-		                          Event);
+		hal_interrupt_enable();
+		// EXIT_CRITICAL(cup_sr);
+
+		/* å¯»æ‰¾åŒæ–¹å‘çš„ä¸¤ä¸ªç‚¹ */
+		/* Xåæ ‡å¯ç–‘ */
+		UsbMouse_AdjustCoordinate(&Drift->PreMouseEvent.MouseEvent,
+					  &Drift->DubiousMouseEvent.MouseEvent,
+					  Event,
+					  Event);
 
 		Drift->DubiousMouseEvent.vaild = 0;
-		Drift->PreMouseEvent.vaild     = 0;
+		Drift->PreMouseEvent.vaild = 0;
 
 		goto SendMsg;
-	}else{
-	    /* ÅĞ¶Ï±¾´Î×ø±êÊÇ·ñ¿ÉÒÉ? */
-		if(UsbMouse_IsDubiousEvent(Event, Drift) == 0){
+	} else {
+		/* åˆ¤æ–­æœ¬æ¬¡åæ ‡æ˜¯å¦å¯ç–‘? */
+		if (UsbMouse_IsDubiousEvent(Event, Drift) == 0) {
 			goto SendMsg;
-		}else{
+		} else {
 			hal_log_info("a Dubious event\n");
 
-		    ENTER_CRITICAL(cup_sr);
+			// ENTER_CRITICAL(cup_sr);
+			hal_interrupt_disable();
 			memcpy(&Drift->DubiousMouseEvent.MouseEvent, Event, sizeof(USBHMouseEvent_t));
 			Drift->DubiousMouseEvent.vaild = 1;
 			Drift->WaitEvent = 1;
-		 	EXIT_CRITICAL(cup_sr);
+			hal_interrupt_enable();
+			// EXIT_CRITICAL(cup_sr);
 		}
 	}
 
 	return;
 
 SendMsg:
-    ENTER_CRITICAL(cup_sr);
+	// ENTER_CRITICAL(cup_sr);
+	hal_interrupt_disable();
 	memcpy(&Drift->CurrentMouseEvent.MouseEvent, Event, sizeof(USBHMouseEvent_t));
 	Drift->CurrentMouseEvent.vaild = 1;
- 	EXIT_CRITICAL(cup_sr);
+	hal_interrupt_enable();
+	// EXIT_CRITICAL(cup_sr);
 
-//	UsbThreadWakeUp(Drift->ThreadSemi);
-	if (!hal_sem_getvalue(Drift->ThreadSemi, &val))
-	{
-	    hal_sem_post(Drift->ThreadSemi);
+	//	UsbThreadWakeUp(Drift->ThreadSemi);
+	if (!hal_sem_getvalue(Drift->ThreadSemi, &val)) {
+		hal_sem_post(Drift->ThreadSemi);
 	}
-//	UsbThreadSleep(Drift->notify_complete);	
+	//	UsbThreadSleep(Drift->notify_complete);
+	//	UsbThreadSleep(Drift->notify_complete);
+	//	UsbThreadSleep(Drift->notify_complete);
 	hal_sem_wait(Drift->notify_complete);
 
 	return;
@@ -392,32 +403,35 @@ SendMsg:
 *                     UsbMouse_DriftControl
 *
 * Description:
-*    Êó±êÈ¥¶¶¶¯
+*    é¼ æ ‡å»æŠ–åŠ¨
 *
 * Parameters:
-*    
-* 
+*
+*
 * Return value:
 *
 *
 * note:
-*    ÎŞ
+*    æ— 
 *
 *******************************************************************************
 */
 static int UsbMouse_DriftControl(UsbMouseDriftControl_t *Drift)
 {
 	int val = 0;
-	unsigned int cup_sr	= 0;
+	unsigned int cup_sr = 0;
 
-    /* Çå³ıµÈ´ı±êÖ¾ */
-    ENTER_CRITICAL(cup_sr);
+	/* æ¸…é™¤ç­‰å¾…æ ‡å¿— */
+	// ENTER_CRITICAL(cup_sr);
+	hal_interrupt_disable();
 	Drift->WaitEvent = 0;
- 	EXIT_CRITICAL(cup_sr);
+	hal_interrupt_enable();
+	// EXIT_CRITICAL(cup_sr);
 
 	/* sent mouse event to system */
-	if(Drift->CurrentMouseEvent.vaild){
-	    ENTER_CRITICAL(cup_sr);
+	if (Drift->CurrentMouseEvent.vaild) {
+		// ENTER_CRITICAL(cup_sr);
+		hal_interrupt_disable();
 
 		memcpy(&Drift->usbMouse->MouseEvent, &Drift->CurrentMouseEvent.MouseEvent, sizeof(USBHMouseEvent_t));
 		memcpy(&Drift->PreMouseEvent, &Drift->CurrentMouseEvent, sizeof(UsbMouseEventUnit_t));
@@ -441,16 +455,20 @@ static int UsbMouse_DriftControl(UsbMouseDriftControl_t *Drift)
 		DMSG_MOUSE_TEST("msg Wheel    = %d\n", Drift->usbMouse->MouseEvent.Wheel);
 		DMSG_MOUSE_TEST("\n");
 
-		EXIT_CRITICAL(cup_sr);
+		hal_interrupt_enable();
+		// EXIT_CRITICAL(cup_sr);
 
-		if(Drift->usbMouse->CallBack){
+		if (Drift->usbMouse->CallBack) {
+#ifdef CONFIG_OS_MELIS
 			esKRNL_CallBack((__pCBK_t)Drift->usbMouse->CallBack, (void *)&Drift->usbMouse->MouseEvent);
+#elif defined(CONFIG_KERNEL_FREERTOS)
+			printf("\n ERR: ADD TO DO FUNCTION!!\n\n");
+#endif
 		}
 	}
 
-//	UsbThreadWakeUp(Drift->notify_complete);
-	if (!hal_sem_getvalue(Drift->ThreadSemi, &val))
-	{
+	//	UsbThreadWakeUp(Drift->notify_complete);
+	if (!hal_sem_getvalue(Drift->ThreadSemi, &val)) {
 		hal_sem_post(Drift->ThreadSemi);
 	}
 
@@ -462,37 +480,36 @@ static int UsbMouse_DriftControl(UsbMouseDriftControl_t *Drift)
 *                     UsbMouse_DriftThread
 *
 * Description:
-*    
+*
 *
 * Parameters:
-*    
-* 
+*
+*
 * Return value:
 *
 *
 * note:
-*    ÎŞ
+*    æ— 
 *
 *******************************************************************************
 */
 static void UsbMouse_DriftThread(void *p_arg)
 {
-    UsbMouseDriftControl_t *Drift = (UsbMouseDriftControl_t *)p_arg;
+	UsbMouseDriftControl_t *Drift = (UsbMouseDriftControl_t *)p_arg;
 
-	if(Drift == NULL){
+	if (Drift == NULL) {
 		hal_log_err("ERR: input error\n");
-		return ;
+		return;
 	}
-
 
 	hal_sem_post(Drift->notify_complete);
 
-	while(1){
-		//--<1>--É±ËÀÏß³Ì
-//    	TryToKillThreadSelf("UsbMouse_DriftThread");
+	while (1) {
+		//--<1>--æ€æ­»çº¿ç¨‹
+		// TryToKillThreadSelf("UsbMouse_DriftThread");
 
-//		/* sleep */
-//		UsbThreadSleep(Drift->ThreadSemi);
+		// /* sleep */
+		// UsbThreadSleep(Drift->ThreadSemi);
 		kthread_stop(Drift->ThreadId);
 		hal_sem_wait(Drift->ThreadSemi);
 
@@ -509,49 +526,50 @@ static void UsbMouse_DriftThread(void *p_arg)
 *
 * Parameters:
 *
-* 
+*
 * Return value:
 *
 *
 * note:
-*    
+*
 *
 *******************************************************************************
 */
 int UsbMouse_DriftControl_Init(usbMouse_t *usbMouse)
 {
 	int status = 0;
-    UsbMouseDriftControl_t *Drift;
+	UsbMouseDriftControl_t *Drift;
 	unsigned int err = 0;
 
 	Drift = hal_malloc(sizeof(UsbMouseDriftControl_t));
-	if(Drift == NULL){
+	if (Drift == NULL) {
 		hal_log_err("ERR: hal_malloc failed\n");
 		return USB_ERR_MALLOC_FAILED;
 	}
 
 	memset(Drift, 0, sizeof(UsbMouseDriftControl_t));
 
-    /* create thread */
+	/* create thread */
 	Drift->ThreadSemi = hal_sem_create(0);
-	if(Drift->ThreadSemi == NULL){
+	if (Drift->ThreadSemi == NULL) {
 		hal_log_err("ERR: USB_OS_SemCreate ThreadSemi failed\n");
 		status = USB_ERR_CREATE_SIME_FAILED;
 		goto err0;
 	}
 
 	Drift->notify_complete = hal_sem_create(0);
-	if(Drift->notify_complete == NULL){
+	if (Drift->notify_complete == NULL) {
 		hal_log_err("ERR: USB_OS_SemCreate notify_complete failed\n");
 		status = USB_ERR_CREATE_SIME_FAILED;
 		goto err1;
 	}
 
-    /* Mouse Drift thread */
+	/* Mouse Drift thread */
 	Drift->ThreadId = kthread_create((void *)UsbMouse_DriftThread,
-									  (void *)Drift,
-								   	  "UsbMouse_DriftThread");
-    if(Drift->ThreadId == OS_NO_ERR){
+					 (void *)Drift,
+					 "UsbMouse_DriftThread",
+					 HAL_THREAD_STACK_SIZE, HAL_THREAD_PRIORITY_SYS);
+	if (Drift->ThreadId == OS_NO_ERR) {
 		hal_log_err("ERR: create MainThreadId failed\n");
 		status = USB_ERR_CREATE_THREAD_FAILED;
 		goto err2;
@@ -559,11 +577,14 @@ int UsbMouse_DriftControl_Init(usbMouse_t *usbMouse)
 
 	hal_sem_wait(Drift->notify_complete);
 
-    /* create timer */
-	Drift->TimerHdle = osal_timer_create("UsbMouse_DriftControl", UsbMouse_DriftTimeOut, (void*)Drift,
-					400, OSAL_TIMER_FLAG_PERIODIC);
+	/* create timer */
+	Drift->TimerHdle = osal_timer_create("UsbMouse_DriftControl",
+					     UsbMouse_DriftTimeOut,
+					     (void *)Drift,
+					     400,
+					     OSAL_TIMER_FLAG_PERIODIC);
 
-	if(Drift->TimerHdle == NULL){
+	if (Drift->TimerHdle == NULL) {
 		hal_log_err("ERR: create timer failed\n");
 		status = USB_ERR_CREATE_TIMER_FAILED;
 		goto err3;
@@ -571,15 +592,14 @@ int UsbMouse_DriftControl_Init(usbMouse_t *usbMouse)
 
 	osal_timer_start(Drift->TimerHdle);
 
-    /*  */
+	/*  */
 	Drift->usbMouse = usbMouse;
 	usbMouse->Extern = Drift;
 
 	return USB_ERR_SUCCESS;
 
-
 err3:
-//	UsbKillThread(Drift->ThreadId, NULL);
+	//	UsbKillThread(Drift->ThreadId, NULL);
 	kthread_stop(Drift->ThreadId);
 err2:
 	hal_sem_delete(Drift->notify_complete);
@@ -604,27 +624,27 @@ err0:
 *
 * Parameters:
 *
-* 
+*
 * Return value:
 *
 *
 * note:
-*    
+*
 *
 *******************************************************************************
 */
 int UsbMouse_DriftControl_Exit(usbMouse_t *usbMouse)
 {
-    UsbMouseDriftControl_t *Drift = NULL;
+	UsbMouseDriftControl_t *Drift = NULL;
 	unsigned int err = 0;
 
-	if(usbMouse == NULL){
+	if (usbMouse == NULL) {
 		hal_log_err("ERR: input error\n");
 		return USB_ERR_BAD_ARGUMENTS;
 	}
 
 	Drift = usbMouse->Extern;
-	if(Drift == NULL){
+	if (Drift == NULL) {
 		hal_log_err("ERR: Drift == NULL\n");
 		return USB_ERR_BAD_ARGUMENTS;
 	}
@@ -634,8 +654,8 @@ int UsbMouse_DriftControl_Exit(usbMouse_t *usbMouse)
 	osal_timer_delete(Drift->TimerHdle);
 	Drift->TimerHdle = NULL;
 
-    /* kill thread */
-//	UsbKillThread(Drift->ThreadId, Drift->ThreadSemi);
+	/* kill thread */
+	//	UsbKillThread(Drift->ThreadId, Drift->ThreadSemi);
 	kthread_stop(Drift->ThreadId);
 
 	hal_sem_delete(Drift->ThreadSemi);
@@ -649,4 +669,3 @@ int UsbMouse_DriftControl_Exit(usbMouse_t *usbMouse)
 
 	return USB_ERR_SUCCESS;
 }
-

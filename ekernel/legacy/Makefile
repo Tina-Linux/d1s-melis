@@ -5,7 +5,6 @@ obj-y += az100/
 obj-y += bmp/
 obj-y += charset/
 obj-y += clock/
-obj-y += script_config/
 #obj-y += device_man/
 obj-y += dma/
 ##obj-y += encrypt/

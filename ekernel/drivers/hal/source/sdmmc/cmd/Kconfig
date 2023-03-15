@@ -2,6 +2,6 @@ menu "sdmmc test applicaion"
 
 config SDMMC_TEST
     bool "SDMMC test applicaiton"
-        default n
+        default y
 
 endmenu

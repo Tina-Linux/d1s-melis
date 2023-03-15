@@ -1,6 +1,37 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY鈥橲 TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS鈥橲DK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY鈥橲 TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <stdlib.h>
 #include <log.h>
-#include <list.h>
+#include <aw_list.h>
 #include <sunxi_hal_common.h>
 #include "drv_audio.h"
 #include "mod_audio.h"
@@ -21,7 +52,7 @@
 static __s32 ReqResForRecDev(sunxi_driver_audio_t *pUser)
 {
     audio_rec_dev_params_t *arecDevPara = NULL;
-    
+
     if(!pUser)
     {
         __err("audio rec device is NULL");
@@ -98,7 +129,7 @@ static __s32 RelRecDevRes(sunxi_driver_audio_t *pUser)
     __s32       i;
     __u8        err;
     audio_rec_dev_params_t *arecDevPara = NULL;
-        
+
     if(!pUser)
     {
         __err("audio rec device is NULL");
@@ -206,6 +237,7 @@ rt_err_t audio_rec_open(rt_device_t dev, rt_uint16_t oflag)
     int err;
     int open_mode = 0;
     sunxi_driver_audio_t *pusr = NULL, *pvfy = NULL;
+    char *card_name = NULL;
 
 	__msg("[REC]audio_rec_open\n");
 
@@ -215,12 +247,31 @@ rt_err_t audio_rec_open(rt_device_t dev, rt_uint16_t oflag)
         return -EINVAL;
     }
 
+    if (dev->device_id >= AUDIO_REC_USER_MAX)
+    {
+        __err("not have this audio record device!");
+        return -EINVAL;
+    }
+
     pvfy = container_of(dev, sunxi_driver_audio_t, base);
     pusr = (sunxi_driver_audio_t *)dev->user_data;
 
     hal_assert(pvfy == pusr);
 
-    err = alsa_open_pcm(pusr->mgr, SOUND_CARD_AUDIOCODEC, 0);
+    switch (pusr->dev_id)
+    {
+        case 0:
+            card_name = SOUND_CARD_AUDIOCODEC;
+            break;
+        case 1:
+            card_name = SOUND_CARD_SNDDAUDIO1;
+            break;
+        default:
+            card_name = SOUND_CARD_AUDIOCODEC;
+            break;
+    }
+
+    err = alsa_open_pcm(pusr->mgr, card_name, 0);
     if (err < 0) {
         __err("audio record device open error: %d", err);
         return err;
@@ -234,9 +285,9 @@ rt_err_t audio_rec_open(rt_device_t dev, rt_uint16_t oflag)
 #endif
     //init audio record device status to idle
     pusr->dev_info.arec_para.status = AUDIO_DEV_STAT_IDLE;
-    
+
 	pusr->status = 1;
-	
+
     return EPDK_OK;
 }
 
@@ -259,69 +310,84 @@ rt_err_t audio_rec_close(rt_device_t dev)
 
     RelRecDevRes(pusr);
     pusr->status = 0;
-	
+
 	__wrn("[AUDIO_DEV_CMD_REG_USERMODE]:%d\n",pusr->dev_info.arec_para.usemode);
 	switch(pusr->dev_info.arec_para.usemode)
 	{
 		case AUDIO_REC_USR_LINEIN:
 		{
 			__wrn("disable AUDIO_REC_USR_LINEIN \n");
-			snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 23, 0);//linein L switch
-			snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 26, 0);//linein R switch
-			snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 10, 0);//linein R gain
-			snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 11, 0);//linein L gain
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"LINE input L switch",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"LINE input R switch",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"Line Left gain volume",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"Line Right gain volume",0);
+
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC1 gain volume",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC2 gain volume",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC3 gain volume",0);
+
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC1 input select",1);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC2 input select",1);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC3 input select",1);
+
 			break;
 		}
 		case AUDIO_REC_USR_FMIN:
 		{
 			__wrn("disable AUDIO_REC_USR_FMIN \n");
-			snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 22, 0);//fmin L switch
-			snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 25, 0);//fmin R switch
-			snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 8,  0);//fmin L gain (no used)
-			snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 9,  0);//fmin R gain (no used)
-			snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 13, 0);//adc1_2 gain switch
-			snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 15, 160);//adc1 gain
-			snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 16, 160);//adc2 gain
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"FM input L switch",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"FM input R switch",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"FM Left gain volume",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"FM Right gain volume",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"ADC1_2 digital volume switch",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"ADC1 digital volume",160);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"ADC2 digital volume",160);
+
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC1 gain volume",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC2 gain volume",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC3 gain volume",0);
+
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC1 input select",1);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC2 input select",1);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC3 input select",1);
+
 			break;
 		}
 		case AUDIO_REC_USR_MIC:
 		{
 			__wrn("disable AUDIO_REC_USR_MIC3 \n");
-			snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 27, 0);//mic3  switch
-			snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 5, 0);//mic1 gain switch //must be zero!
-			snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 6, 0);//mic2 gain switch //must be zero!
-			snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 7, 0);//mic3 gain switch //must be zero!
-
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC3 input switch",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC1 gain volume",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC2 gain volume",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC3 gain volume",0);
 			break;
-			//pusr->mgr->channels = 3;//代表adc序号，mic在adc3
-			//result = alsa_set_pcm_params(pusr->mgr);
 		}
         case AUDIO_REC_USR_MIXER:
         {
-            snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 23, 0);//linein L switch
-            snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 26, 0);//linein R switch
-            snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 10, 0);//linein R gain
-            snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 11, 0);//linein L gain
-            snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 22, 0);//fmin L switch
-            snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 25, 0);//fmin R switch
-            snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 8,  0);//fmin L gain (no used)
-            snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 9,  0);//fmin R gain (no used)
-            snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 13, 0);//adc1_2 gain switch
-            snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 15, 160);//adc1 gain
-            snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 16, 160);//adc2 gain
-            snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 27, 0);//mic3  switch
-            snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 5, 0);//mic1 gain switch //must be zero!
-            snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 6, 0);//mic2 gain switch //must be zero!
-            snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 7, 0);//mic3 gain switch //must be zero!
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"LINE input L switch",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"LINE input R switch",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"Line Left gain volume",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"Line Right gain volume",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"FM input L switch",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"FM input R switch",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"FM Left gain volume",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"FM Right gain volume",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"ADC1_2 digital volume switch",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"ADC1 digital volume",160);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"ADC2 digital volume",160);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC3 input switch",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC1 gain volume",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC2 gain volume",0);
+            snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC3 gain volume",0);
             break;
         }
 		default:
 		{
 			__err("not support mode:%d\n",pusr->dev_info.arec_para.usemode);
 		}
-		pusr->dev_info.arec_para.usemode = AUDIO_REC_USR_NONE; 
+		pusr->dev_info.arec_para.usemode = AUDIO_REC_USR_NONE;
 	}
-	
+
     alsa_close_pcm(pusr->mgr);
     audio_config_mgr_release(pusr->mgr);
 
@@ -385,7 +451,7 @@ rt_err_t audio_rec_control(rt_device_t dev, int cmd, void *arg)
         aux     = ubuffer[0];
         pbuffer = (unsigned long *)ubuffer[1];
     }
-    
+
     pvfy = container_of(dev, sunxi_driver_audio_t, base);
     pusr = (sunxi_driver_audio_t *)dev->user_data;
 
@@ -401,27 +467,28 @@ rt_err_t audio_rec_control(rt_device_t dev, int cmd, void *arg)
         	if(aux == AUDIO_REC_USR_LINEIN)
         	{
         	    __wrn("enble AUDIO_REC_USR_LINEIN \n");
-				snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 23, 1);//linein L switch
-				snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 26, 1);//linein R switch
-				snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 10, 1);//linein R gain
-				snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 11, 1);//linein L gain
+                snd_ctl_set(SOUND_CARD_AUDIOCODEC,"LINE input L switch",1);
+                snd_ctl_set(SOUND_CARD_AUDIOCODEC,"LINE input R switch",1);
+                snd_ctl_set(SOUND_CARD_AUDIOCODEC,"Line Right gain volume",1);
+                snd_ctl_set(SOUND_CARD_AUDIOCODEC,"Line Left gain volume",1);
         	}
         	else if(aux == AUDIO_REC_USR_FMIN)
         	{
         		__wrn("enble AUDIO_REC_USR_FMIN \n");
-				snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 22, 1);//fmin L switch
-				snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 25, 1);//fmin R switch
-				snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 8, 1);//fmin L gain (no used)
-				snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 9, 1);//fmin R gain (no used)
-				snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 13, 1);//adc1_2 gain switch
-				snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 15, 180);//adc1 gain
-                snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 16, 180);//adc2 gain
+                snd_ctl_set(SOUND_CARD_AUDIOCODEC,"FM input L switch",1);
+                snd_ctl_set(SOUND_CARD_AUDIOCODEC,"FM input R switch",1);
+                snd_ctl_set(SOUND_CARD_AUDIOCODEC,"FM Left gain volume",1);
+                snd_ctl_set(SOUND_CARD_AUDIOCODEC,"FM Right gain volume",1);
+                snd_ctl_set(SOUND_CARD_AUDIOCODEC,"ADC1_2 digital volume switch",1);
+                snd_ctl_set(SOUND_CARD_AUDIOCODEC,"ADC1 digital volume",160);
+                snd_ctl_set(SOUND_CARD_AUDIOCODEC,"ADC2 digital volume",160);
         	}
         	else if(aux == AUDIO_REC_USR_MIC)
         	{
         		__wrn("enble AUDIO_REC_USR_MIC3 \n");
-				snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 27, 1);//mic3 enable
-                snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 7, 31);//mic3 gain
+                snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC3 input switch",1);
+                snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC3 gain volume",21);
+
         	}
             else if(aux == AUDIO_REC_USR_MIXER)
         	{
@@ -430,37 +497,37 @@ rt_err_t audio_rec_control(rt_device_t dev, int cmd, void *arg)
                 __err("select = 0x%x",select);
                 if(select & AUDIO_REC_FM_L)
                 {
-                    snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 22, 1);//fmin L switch
-                    snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 13, 1);//adc1_2 gain switch
-                    snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 15, 160);//adc1 gain
+                    snd_ctl_set(SOUND_CARD_AUDIOCODEC,"FM input L switch",1);
+                    snd_ctl_set(SOUND_CARD_AUDIOCODEC,"ADC1_2 digital volume switch",1);
+                    snd_ctl_set(SOUND_CARD_AUDIOCODEC,"ADC1 digital volume",160);
                 }
                 if(select & AUDIO_REC_FM_R)
                 {
-                    snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 25, 1);//fmin R switch
-                    snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 13, 1);//adc1_2 gain switch
-                    snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 16, 160);//adc2 gain
+                    snd_ctl_set(SOUND_CARD_AUDIOCODEC,"FM input R switch",1);
+                    snd_ctl_set(SOUND_CARD_AUDIOCODEC,"ADC1_2 digital volume switch",1);
+                    snd_ctl_set(SOUND_CARD_AUDIOCODEC,"ADC2 digital volume",160);
                 }
                 if(select & AUDIO_REC_LINEIN_L)
                 {
-				    snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 23, 1);//linein L switch
-				    snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 11, 1);//linein L gain
+                    snd_ctl_set(SOUND_CARD_AUDIOCODEC,"LINE input L switch",1);
+                    snd_ctl_set(SOUND_CARD_AUDIOCODEC,"Line Left gain volume",1);
                 }
                 if(select & AUDIO_REC_LINEIN_R)
                 {
-				    snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 26, 1);//linein R switch
-				    snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 10, 1);//linein R gain
+                    snd_ctl_set(SOUND_CARD_AUDIOCODEC,"LINE input R switch",1);
+                    snd_ctl_set(SOUND_CARD_AUDIOCODEC,"Line Right gain volume",1);
                 }
                 if(select & AUDIO_REC_MIC)
                 {
-				    snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 27, 1);//mic3 enable
-                    snd_ctl_set_bynum(SOUND_CARD_AUDIOCODEC, 7, 31);//mic3 gain
+                    snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC3 input switch",1);
+                    snd_ctl_set(SOUND_CARD_AUDIOCODEC,"MIC3 gain volume",31);
                 }
         	}
         	else
         	{
 				__err("not support mode:%d\n",aux);
         	}
-        	pusr->dev_info.arec_para.usemode = aux; 
+        	pusr->dev_info.arec_para.usemode = aux;
             return EPDK_OK;
         }
 
@@ -493,7 +560,7 @@ rt_err_t audio_rec_control(rt_device_t dev, int cmd, void *arg)
             esKRNL_SemPost(pusr->dev_info.arec_para.pSemProc);
             ENABLE_OS_TASK_SWITCH();
 
-			
+
             return EPDK_OK;
         }
 
@@ -518,6 +585,9 @@ rt_err_t audio_rec_control(rt_device_t dev, int cmd, void *arg)
                 case 24:
             	    pusr->mgr->format = SND_PCM_FORMAT_S24_LE;
             	    break;
+                case 32:
+                    pusr->mgr->format = SND_PCM_FORMAT_S32_LE;
+                    break;
                 default:
             	    __err("%u bits not supprot\n", tmpAudioFmt->bps);
             	    pusr->mgr->format = SND_PCM_FORMAT_S16_LE;
@@ -528,10 +598,10 @@ rt_err_t audio_rec_control(rt_device_t dev, int cmd, void *arg)
             __wrn("use mode:%d\n",pusr->dev_info.arec_para.usemode);
             //if(pusr->dev_info.arec_para.usemode == AUDIO_REC_USR_MIC)
             //{
-			//	//pusr->mgr->channels = 3;//代表adc序号，mic在adc3
+			//	//pusr->mgr->channels = 3;//浠ｈ〃adc搴忓彿锛宮ic鍦╝dc3
 			//	__log("mic input,set adc3 enble\n");
             //}
-			//pusr->mgr->channels = 3;//代表adc序号，mic在adc3
+			//pusr->mgr->channels = 3;//浠ｈ〃adc搴忓彿锛宮ic鍦╝dc3
 
 			__log("[%d][%d][%d]\n",tmpAudioFmt->bps,tmpAudioFmt->chn,tmpAudioFmt->fs);
             result = alsa_set_pcm_params(pusr->mgr);
@@ -666,6 +736,9 @@ rt_err_t audio_rec_control(rt_device_t dev, int cmd, void *arg)
         	    case SND_PCM_FORMAT_S24_LE:
         		    size_bps = 3;
         		    break;
+                case SND_PCM_FORMAT_S32_LE:
+                    size_bps = 4;
+                    break;
         	    default:
         		    __err("%d format are not known\n", pusr->mgr->format);
         		    return EPDK_FAIL;
@@ -691,6 +764,23 @@ rt_err_t audio_rec_control(rt_device_t dev, int cmd, void *arg)
         {
             DISABLE_OS_TASK_SWITCH();
             pusr->dev_info.arec_para.pcm_cnt = aux;
+            ENABLE_OS_TASK_SWITCH();
+            return EPDK_OK;
+        }
+
+        case AUDIO_DEV_CMD_SET_CAP_RX_SYNC_MODE:
+        {
+            DISABLE_OS_TASK_SWITCH();
+            alsa_mixer_set_cap_rx_sync_mode(pusr->mgr, aux);
+            ENABLE_OS_TASK_SWITCH();
+            return EPDK_OK;
+        }
+
+        case AUDIO_DEV_CMD_ENABLE_LOOPLACK:
+        {
+            __msg("AUDIO_DEV_CMD_ENABLE_LOOPLACK");
+            DISABLE_OS_TASK_SWITCH();
+            alsa_mixer_set_daudio_loopback_enable(pusr->mgr, aux);
             ENABLE_OS_TASK_SWITCH();
             return EPDK_OK;
         }

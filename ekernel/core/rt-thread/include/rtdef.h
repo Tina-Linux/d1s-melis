@@ -238,6 +238,7 @@ struct rt_init_desc
 #define FINSH_FUNCTION_EXPORT(name, desc)
 #define FINSH_FUNCTION_EXPORT_ALIAS(name, alias, desc)
 #define FINSH_VAR_EXPORT(name, type, desc)
+#define FINSH_FUNCTION_EXPORT_CMD(name, cmd, desc)
 
 #define MSH_CMD_EXPORT(command, desc)
 #define MSH_CMD_EXPORT_ALIAS(command, alias, desc)

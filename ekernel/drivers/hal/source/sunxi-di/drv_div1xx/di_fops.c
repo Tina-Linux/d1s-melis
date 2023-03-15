@@ -20,9 +20,12 @@
 
 typedef int di_ioctl_t(struct di_client *c, void *data);
 
+static unsigned int g_c_num = 0;
 static void *private_data;
 extern struct di_client *find_client_by_num(unsigned int client_num);
 extern int di_client_destroy(void *client, void *data);
+
+static unsigned int di_client_get_number(struct di_client *c, void *data);
 
 struct di_ioctl_desc {
 	unsigned int cmd;
@@ -46,6 +49,7 @@ static const struct di_ioctl_desc di_ioctls[] = {
 
 	DI_IOCTL_DEF(DI_IOC_MEM_REQUEST, di_client_mem_request),
 	DI_IOCTL_DEF(DI_IOC_MEM_RELEASE, di_client_mem_release),
+	DI_IOCTL_DEF(DI_IOC_GET_CLIENT, di_client_get_number),
 };
 
 #define DI_IOCTL_COUNT	sizeof(di_ioctls) / sizeof(di_ioctls[0])
@@ -111,11 +115,12 @@ long sunxi_di_control(unsigned int cmd, void *arg)
 	}
 
 	if (DI_IOC_MEM_REQUEST != cmd && DI_IOC_MEM_RELEASE != cmd
-			&& DI_IOC_GET_VERSION != cmd) {
+			&& DI_IOC_GET_VERSION != cmd  && DI_IOC_GET_CLIENT != cmd ) {
 		DI_INFO("client_number : %u \n ", c_num);
 		c = find_client_by_num(c_num);
 
 		if ((c == NULL)) {
+			g_c_num = 0;
 			return -EINVAL;
 		}
 
@@ -130,6 +135,10 @@ err:
 	if (kdata != stack_kdata)
 		hal_free(kdata);
 
+	if(cmd == DI_IOC_DESTROY)
+	{
+		g_c_num = 0;
+    }
 	return ret;
 }
 
@@ -145,9 +154,13 @@ unsigned int sunxi_di_open(void)
 
 /*	snprintf(debug_name, 64, "client_%u",
 		task_pid_nr(current->group_leader));*/
-
+	if(g_c_num)
+	{
+		return 0;
+	}
 	num_lock_data = hal_spin_lock_irqsave(&num_lock);
 	c_num = client_num;
+	g_c_num = client_num;
 	snprintf(debug_name, 64, "client_%u",
 		client_num++);
 	hal_spin_unlock_irqrestore(&num_lock, num_lock_data);
@@ -155,12 +168,20 @@ unsigned int sunxi_di_open(void)
 	if (client == NULL)
 		return -EINVAL;
 	private_data = client;
-	return c_num;
+	//return c_num;
+	return 0;
 }
 
 // The logic of release di driver is included in di_client_destroy
 int sunxi_di_release(void)
 {
+	g_c_num = 0;
 	return 0;
 }
 
+static unsigned int di_client_get_number(struct di_client *c, void *data)
+{
+		unsigned int *temp = (unsigned int *)data;
+		*temp = g_c_num;
+		return 0;
+}

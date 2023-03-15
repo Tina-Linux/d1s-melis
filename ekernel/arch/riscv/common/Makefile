@@ -1,7 +1,9 @@
 obj-y += cpuport.o
 obj-y += port.o
-obj-y += epos_hdr.o
+obj-$(CONFIG_MELIS_GENERATE_HEAD) += epos_hdr.o
 obj-y += exception.o
 obj-y += misa.o
-obj-y += stack_init.o
+obj-y += clocksource.o
+obj-y += timer.o
+obj-$(CONFIG_RV_CLINT) += clint.o
 obj-$(CONFIG_DEBUG_BACKTRACE) += backtrace.o

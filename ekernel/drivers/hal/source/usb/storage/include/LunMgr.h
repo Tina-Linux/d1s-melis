@@ -19,16 +19,12 @@
 *
 ********************************************************************************************************************
 */
-#ifndef  __LUNMGR_H__
-#define  __LUNMGR_H__
+#ifndef __LUNMGR_H__
+#define __LUNMGR_H__
 
 __mscLun_t *mscLun_alloc(void);
-void  mscLun_free(__mscLun_t *mscLun);
+void mscLun_free(__mscLun_t *mscLun);
 __s32 mscLunAdd(__mscLun_t *mscLun);
 __s32 mscLunDel(__mscLun_t *mscLun);
 
-
-#endif   //__LUNMGR_H__
-
-
-
+#endif	//__LUNMGR_H__

@@ -320,7 +320,7 @@ int de_rtmx_init(unsigned int sel, uintptr_t reg_base)
 #if defined(SUPPORT_PALETTE)
 		memory = disp_sys_malloc(sizeof(struct __ovl_palette_reg_t));
 		if (memory == NULL) {
-			__wrn("malloc vi_palette overlay memory fail! size=0x%x\n",
+			DE_WRN("malloc vi_palette overlay memory fail! size=0x%x\n",
 			    (unsigned int)sizeof(struct __ovl_palette_reg_t));
 			return -1;
 		}
@@ -368,7 +368,7 @@ int de_rtmx_init(unsigned int sel, uintptr_t reg_base)
 #if defined(SUPPORT_PALETTE)
 		memory = disp_sys_malloc(sizeof(struct __ovl_palette_reg_t));
 		if (memory == NULL) {
-			__wrn("malloc ui_palette overlay memory fail! size=0x%x\n",
+			DE_WRN("malloc ui_palette overlay memory fail! size=0x%x\n",
 			    (unsigned int)sizeof(struct __ovl_palette_reg_t));
 			return -1;
 		}
@@ -388,7 +388,7 @@ int de_rtmx_init(unsigned int sel, uintptr_t reg_base)
 	for (j = 0; j < vi_chno; j++) {
 		memory = disp_sys_malloc(sizeof(struct __lbc_ovl_reg_t));
 		if (memory == NULL) {
-			__wrn("malloc lbc overlay memory fail! size=0x%x\n",
+			DE_WRN("malloc lbc overlay memory fail! size=0x%x\n",
 			      (unsigned int)sizeof(struct __lbc_ovl_reg_t));
 			return -1;
 		}
@@ -622,7 +622,7 @@ int de_rtmx_set_lay_cfg(unsigned int sel, unsigned int chno, unsigned int layno,
 	unsigned int tmp;
 	lbc_support = de_feat_is_support_lbc_by_chn(sel, chno);
 	if (lbc_support == 0 && lbc_en == 1) {
-		__wrn("rtmx%d chno%d lay%d does not supported LBC\n", sel, chno, layno);
+		DE_WRN("rtmx%d chno%d lay%d does not supported LBC\n", sel, chno, layno);
 		return 0;
 	}
 	if (lbc_en == 1) {
@@ -2419,4 +2419,17 @@ int de_rtmx_get_lay_format(unsigned int sel, unsigned int chno,
 	}
 
 	return fmt;
+}
+
+bool direct_show_after_vep(u32 sel)
+{
+	/**
+	 * When there is only one channel and only one CSC module, it is judged
+	 * that the data is directly output after passing through the CSC
+	 * module.
+	 */
+	if (de_feat_get_num_chns(sel) == 1 && de_feat_is_support_vep(sel) == 0)
+		return true;
+
+	return false;
 }

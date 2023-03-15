@@ -11,24 +11,25 @@
 # LWIP_VERSION_RC is set to LWIP_RC_RELEASE for official releases
 # LWIP_VERSION_RC is set to LWIP_RC_DEVELOPMENT for Git versions
 # Numbers 1..31 are reserved for release candidates
+#
+LWIP_PATH = $(srctree)/ekernel/components/thirdparth/net/rt-thread/lwip
+SDMMC_INC_PATH = $(srctree)/ekernel/drivers/include/hal/sdmmc
 
 # sdmmc
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/include/hal/sdmmc/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/include/hal/sdmmc/osal/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/include/hal/sdmmc/sys/
-#Cloud add
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/include/hal/sdmmc/hal
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/include/hal/sdmmc/osal
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/include/hal/sdmmc/os
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/include/hal/sdmmc/osal/RT-Thread
+subdir-ccflags-y += 	-I$(SDMMC_INC_PATH)/
+subdir-ccflags-y += 	-I$(SDMMC_INC_PATH)/sys/
+subdir-ccflags-y += 	-I$(SDMMC_INC_PATH)/hal
+subdir-ccflags-y += 	-I$(SDMMC_INC_PATH)/osal
+subdir-ccflags-y += 	-I$(SDMMC_INC_PATH)/os
+subdir-ccflags-y += 	-I$(SDMMC_INC_PATH)/osal/RT-Thread
 subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/hal/source/sdmmc
 
 # The minimum set of files needed for lwIP.
-subdir-ccflags-y += 	-I$(srctree)/ekernel/subsys/net/rt-thread/lwip/src/include/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/subsys/net/rt-thread/lwip/src/include/lwip/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/subsys/net/rt-thread/lwip/src/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/subsys/net/rt-thread/lwip/src/core/ipv4/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/subsys/net/rt-thread/lwip/src/arch/include/
+subdir-ccflags-y += 	-I$(LWIP_PATH)/src/include/
+subdir-ccflags-y += 	-I$(LWIP_PATH)/src/include/lwip/
+subdir-ccflags-y += 	-I$(LWIP_PATH)/src/
+subdir-ccflags-y += 	-I$(LWIP_PATH)/src/core/ipv4/
+subdir-ccflags-y += 	-I$(LWIP_PATH)/src/arch/include/
 
 subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/drv/source/net/brcm_wifi_libs/inc
 
@@ -50,7 +51,4 @@ obj-$(CONFIG_AP6203) += src/bcm_wifi.o \
 			src/nvram_ap6203bm.o \
 			src/sdio_wrappers.o \
 			libs/liblwip_mhd_rtthread.a
-
-
-
 

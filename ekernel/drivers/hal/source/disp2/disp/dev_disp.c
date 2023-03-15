@@ -1,11 +1,13 @@
 
 #include <aw_list.h>
-#include <rtthread.h>
-#include <init.h>
 #include <hal_reset.h>
+#ifdef CONFIG_STANDBY
 #include <melis/standby/standby.h>
+#endif
 #include "de/include.h"
 #include "dev_disp.h"
+#include "pq/drv_pq.h"
+#include <hal_time.h>
 
 struct disp_drv_info g_disp_drv;
 #define DISP_MEM_NUM 10
@@ -21,6 +23,11 @@ hal_workqueue *g_disp_work_queue;
 static u32 suspend_output_type[4] = {0};
 static u32 DISP_print = 0xffff;	/* print cmd which eq DISP_print */
 static u32 power_status_init;
+
+static hal_spinlock_t sync_finish_lock;
+static hal_spinlock_t sync_wait_lock;
+static unsigned long count[3];
+static u8 waiting[3];
 
 /*
  * 0:normal;
@@ -231,7 +238,6 @@ int disp_enhance_contrast_store(u32 disp, u32 value)
 	struct disp_enhance *enhance = NULL;
 	int real_mode = (g_enhance_mode == 3) ? 1 : g_enhance_mode;
 
-
 	num_screens = bsp_disp_feat_get_num_screens();
 	if (disp < num_screens)
 		mgr = g_disp_drv.mgr[disp];
@@ -241,6 +247,57 @@ int disp_enhance_contrast_store(u32 disp, u32 value)
 		if (enhance && enhance->set_contrast) {
 			_csc_enhance_setting[real_mode][1] = value;
 			enhance->set_contrast(enhance, value);
+		}
+		if (enhance && enhance->set_mode) {
+			enhance->set_mode(enhance, real_mode ? 0 : 1);
+			enhance->set_mode(enhance, real_mode);
+		}
+	}
+
+	return 0;
+}
+
+int disp_enhance_hue_show(u32 disp, char *buf)
+{
+	int num_screens = 2;
+	struct disp_manager *mgr = NULL;
+	struct disp_enhance *enhance = NULL;
+	int value = 0;
+	int real_mode = (g_enhance_mode == 3) ? 1 : g_enhance_mode;
+
+	num_screens = bsp_disp_feat_get_num_screens();
+	if (disp < num_screens)
+		mgr = g_disp_drv.mgr[disp];
+
+	if (mgr) {
+		enhance = mgr->enhance;
+		if (enhance && enhance->get_hue)
+			value = enhance->get_hue(enhance);
+	}
+
+	sprintf(buf, "%d %d\n", value, _csc_enhance_setting[real_mode][3]);
+	return value;
+}
+
+int disp_enhance_hue_store(u32 disp, u32 value)
+{
+	int err;
+	int num_screens = 2;
+	struct disp_manager *mgr = NULL;
+	struct disp_enhance *enhance = NULL;
+	int real_mode = (g_enhance_mode == 3) ? 1 : g_enhance_mode;
+
+	printk("real_mode = %d\n",real_mode);
+	printk("_csc_enhance_setting[real_mode][3]%d \n",_csc_enhance_setting[real_mode][3]);
+	num_screens = bsp_disp_feat_get_num_screens();
+	if (disp < num_screens)
+		mgr = g_disp_drv.mgr[disp];
+
+	if (mgr) {
+		enhance = mgr->enhance;
+		if (enhance && enhance->set_hue) {
+			_csc_enhance_setting[real_mode][3] = value;
+			enhance->set_hue(enhance, value);
 		}
 		if (enhance && enhance->set_mode) {
 			enhance->set_mode(enhance, real_mode ? 0 : 1);
@@ -800,19 +857,123 @@ static void start_work(hal_work *work, void* work_data)
 	}
 }
 
+
+s32 disp_register_sync_finish_proc(void (*proc) (u32))
+{
+	struct proc_list *new_proc;
+
+	new_proc =
+	    (struct proc_list *)disp_sys_malloc(sizeof(struct proc_list));
+	if (new_proc) {
+		new_proc->proc = proc;
+		list_add_tail(&(new_proc->list),
+			      &(g_disp_drv.sync_finish_proc_list.list));
+	} else {
+		pr_warn("malloc fail in %s\n", __func__);
+	}
+
+	return 0;
+}
+
+s32 disp_unregister_sync_finish_proc(void (*proc) (u32))
+{
+	struct proc_list *ptr, *ptrtmp;
+	unsigned long flags;
+	flags = hal_spin_lock_irqsave(&sync_finish_lock);
+	// spin_lock_irqsave(&sync_finish_lock, flags);
+	if (proc == NULL) {
+		pr_warn("hdl is NULL in %s\n", __func__);
+		return -1;
+	}
+	list_for_each_entry_safe(ptr,
+				 ptrtmp,
+				 &g_disp_drv.sync_finish_proc_list.list,
+				 list) {
+		if (ptr->proc == proc) {
+			list_del(&ptr->list);
+			disp_sys_free((void *)ptr);
+			return 0;
+		}
+	}
+	hal_spin_unlock_irqrestore(&sync_finish_lock, flags);
+
+	return -1;
+}
+
+static s32 disp_sync_finish_process(u32 screen_id)
+{
+	struct proc_list *ptr;
+
+	uint32_t flags = hal_spin_lock_irqsave(&sync_finish_lock);
+	list_for_each_entry(ptr, &g_disp_drv.sync_finish_proc_list.list, list) {
+		if (ptr->proc)
+			ptr->proc(screen_id);
+	}
+	hal_spin_unlock_irqrestore(&sync_finish_lock, flags);
+
+	return 0;
+}
+
+void DRV_disp_int_process(u32 sel)
+{
+	g_disp_drv.wait_count[sel]++;
+	int flag = hal_interrupt_save();
+	if (count[sel] != g_disp_drv.wait_count[sel]) {
+		while(waiting[sel]) {
+			hal_sem_post(g_disp_drv.wait[sel]);
+			waiting[sel]--;
+		}
+	}
+	hal_interrupt_restore(flag);
+}
+
+static int fb_wait_for_vsync(u32 sel)
+{
+	int ret;
+	unsigned long flag;
+	int num_screens;
+
+	num_screens = bsp_disp_feat_get_num_screens();
+
+	if (sel < num_screens) {
+		struct disp_manager *mgr = g_disp_drv.mgr[sel];
+
+		if (!mgr || !mgr->device
+			|| (mgr->device->is_enabled == NULL))
+			return 0;
+
+		if (mgr->device->is_enabled(mgr->device) == 0)
+			return 0;
+		flag = hal_spin_lock_irqsave(&sync_wait_lock);
+		waiting[sel]++;
+		count[sel] = g_disp_drv.wait_count[sel];
+		hal_spin_unlock_irqrestore(&sync_wait_lock, flag);
+		ret = hal_sem_timedwait(g_disp_drv.wait[sel], MS_TO_OSTICK(50));
+		if (ret != 0) {
+			flag = hal_spin_lock_irqsave(&sync_wait_lock);
+			waiting[sel]--;
+			hal_spin_unlock_irqrestore(&sync_wait_lock, flag);
+			printf("timeout\n");
+			return -1;
+		}
+	}
+	return 0;
+}
+
+
 static s32 start_process(void)
 {
 	hal_workqueue_dowork(g_disp_work_queue, &g_disp_drv.start_work);
 	return 0;
 }
 
-static rt_err_t disp_init(void)
+static s32 disp_init(void)
 {
 	struct disp_bsp_init_para *para;
 	int i, disp, num_screens;
 	unsigned int value, value1, value2, output_type, output_mode;
 	unsigned int output_format, output_bits, output_eotf, output_cs;
-	rt_err_t ret = -1;
+	s32 ret = -1;
 
 	DE_INF("%s start\n", __func__);
 
@@ -827,31 +988,42 @@ static rt_err_t disp_init(void)
 
 	hal_work_init(&g_disp_drv.start_work, start_work, NULL);
 
+	INIT_LIST_HEAD(&g_disp_drv.sync_finish_proc_list.list);
+
 	ret = disp_sys_mutex_init(&g_disp_drv.mlock);
 	para = &g_disp_drv.para;
 	for (i = 0; i < DISP_MOD_NUM; i++) {
 		para->reg_base[i] = g_disp_drv.reg_base[i];
 		para->irq_no[i] = g_disp_drv.irq_no[i];
+#ifdef CONFIG_ARCH_SUN8IW19
+		para->mclk[i] = g_disp_drv.mclk[i];
+#endif
 		DE_INF("mod %d, base=0x%lx, irq=%d\n", i,
 		      para->reg_base[i], para->irq_no[i]);
 	}
-
+#ifndef CONFIG_ARCH_SUN8IW19
 	for (i = 0; i < DE_NUM; i++) {
 		para->clk_de[i] = g_disp_drv.clk_de[i];
 		para->clk_bus_de[i] = g_disp_drv.clk_bus_de[i];
+#if defined(CONFIG_ARCH_SUN20IW2)
+		para->clk_mbus_de[i] = g_disp_drv.clk_mbus_de[i];
+#endif
 	}
 	for (i = 0; i < DISP_DEVICE_NUM; i++) {
 		para->clk_bus_dpss_top[i] = g_disp_drv.clk_bus_dpss_top[i];
 		para->clk_tcon_lcd[i] = g_disp_drv.clk_tcon_lcd[i];
 		para->clk_bus_tcon_lcd[i] = g_disp_drv.clk_bus_tcon_lcd[i];
 	}
+#else
+#endif
 
 #if defined(SUPPORT_DSI)
+#ifndef CONFIG_ARCH_SUN8IW19
 	for (i = 0; i < CLK_DSI_NUM; i++) {
 		para->clk_mipi_dsi[i] = g_disp_drv.clk_mipi_dsi[i];
 		para->clk_bus_mipi_dsi[i] = g_disp_drv.clk_bus_mipi_dsi[i];
 	}
-
+#endif
 #endif
 	para->boot_info.dvi_hdmi =
 		g_disp_drv.disp_init.output_dvi_hdmi[para->boot_info.disp];
@@ -863,9 +1035,12 @@ static rt_err_t disp_init(void)
 		g_disp_drv.disp_init.output_aspect_ratio[para->boot_info.disp];
 	para->boot_info.sync = 0;
 	para->start_process = start_process;
+	para->disp_int_process = disp_sync_finish_process;
 
 	bsp_disp_init(para);
-
+#ifdef CONFIG_COMMAND_PQD
+	pq_init(para);
+#endif
 	num_screens = bsp_disp_feat_get_num_screens();
 	for (disp = 0; disp < num_screens; disp++)
 		g_disp_drv.mgr[disp] = disp_get_layer_manager(disp);
@@ -875,6 +1050,15 @@ static rt_err_t disp_init(void)
 
 	lcd_init();
 
+	g_disp_drv.wait[0] = hal_sem_create(0);
+	g_disp_drv.wait[1] = hal_sem_create(0);
+	g_disp_drv.wait[2] = hal_sem_create(0);
+
+	waiting[0] = 0;
+	waiting[1] = 0;
+	waiting[2] = 0;
+
+	disp_register_sync_finish_proc(DRV_disp_int_process);
 	g_disp_drv.inited = true;
 	start_process();
 
@@ -888,7 +1072,7 @@ static int disp_clk_get_wrap(struct disp_drv_info *disp_drv)
 {
 	int i;
 	char id[32];
-
+#ifndef CONFIG_ARCH_SUN8IW19
 	/* get clocks for de */
 	for (i = 0; i < DE_NUM; i++) {
 		sprintf(id, "clk_de%d", i);
@@ -902,6 +1086,14 @@ static int disp_clk_get_wrap(struct disp_drv_info *disp_drv)
 		if (disp_drv->clk_bus_de[i] == (hal_clk_id_t)-1) {
 			DE_WRN("failed to get clk for %s\n", id);
 		}
+
+#if defined(CONFIG_ARCH_SUN20IW2)
+		sprintf(id, "clk_mbus_de%d", i);
+		disp_drv->clk_mbus_de[i] = disp_getprop_clk(id);
+		if (disp_drv->clk_mbus_de[i] == (hal_clk_id_t)-1) {
+			DE_WRN("failed to get clk for %s\n", id);
+		}
+#endif
 	}
 	for (i = 0; i < DISP_DEVICE_NUM; i++) {
 		/* get clocks for dpss */
@@ -949,6 +1141,7 @@ static int disp_clk_get_wrap(struct disp_drv_info *disp_drv)
 			DE_WRN("failed to get rst for %s\n", id);
 		}
 	}
+#endif
 #endif
 
 	/*FIXME*/
@@ -1063,7 +1256,7 @@ int disp_resume(void *para)
 int disp_probe(void)
 {
 	int i;
-	rt_err_t ret;
+	int ret;
 	int counter = 0;
 	pm = NULL;
 
@@ -1191,10 +1384,89 @@ int disp_probe(void)
 		++counter;
 #endif
 
+#ifndef CONFIG_ARCH_SUN8IW19
 	/* get clk */
 	ret = disp_clk_get_wrap(&g_disp_drv);
 	if (ret)
 		return ret;
+#else
+	/* get clk via device-tree-supported interface */
+	/* de - [device(tcon-top)] - lcd0/1/2.. - lvds - dsi */
+	counter = 0;
+	g_disp_drv.mclk[DISP_MOD_DE] = disp_getprop_clk(FDT_DISP_PATH, counter);
+	if (!g_disp_drv.mclk[DISP_MOD_DE]) {
+		DE_WRN("fail to get clk for de\n");
+	}
+	++counter;
+
+#if defined(CONFIG_INDEPENDENT_DE)
+	g_disp_drv.mclk[DISP_MOD_DE1] = disp_getprop_clk(FDT_DISP_PATH, counter);
+	if (!g_disp_drv.mclk[DISP_MOD_DE1]) {
+		DE_WRN("fail to get clk for de\n");
+	}
+	++counter;
+#endif
+
+#if defined(HAVE_DEVICE_COMMON_MODULE)
+	g_disp_drv.mclk[DISP_MOD_DEVICE] = disp_getprop_clk(FDT_DISP_PATH, counter);
+	if (!g_disp_drv.mclk[DISP_MOD_DEVICE]) {
+		DE_WRN("fail to get clk for device common module\n");
+	}
+	++counter;
+#endif
+
+#if defined(CONFIG_INDEPENDENT_DE)
+	for (i = 0; i < DISP_DEVICE_NUM; i++) {
+		g_disp_drv.mclk[DISP_MOD_DPSS0 + i] = disp_getprop_clk(FDT_DISP_PATH, counter);
+		if (!g_disp_drv.mclk[DISP_MOD_DPSS0 + i]) {
+			DE_WRN("fail to get clk for DPSS%d\n", i);
+		}
+		++counter;
+	}
+#endif
+	for (i=0; i<DISP_DEVICE_NUM; i++) {
+		g_disp_drv.mclk[DISP_MOD_LCD0 + i] = disp_getprop_clk(FDT_DISP_PATH, counter);
+		if (!g_disp_drv.mclk[DISP_MOD_LCD0 + i]) {
+			DE_WRN("fail to get clk for timing controller%d\n", i);
+		}
+		++counter;
+	}
+
+#if defined(SUPPORT_LVDS)
+	for (i = 0; i < DEVICE_LVDS_NUM; i++) {
+		g_disp_drv.mclk[DISP_MOD_LVDS + i] = disp_getprop_clk(FDT_DISP_PATH, counter);
+		if (!g_disp_drv.mclk[DISP_MOD_LVDS + i]) {
+			DE_WRN("fail to get clk for lvds:%d\n", i);
+		}
+		++counter;
+	}
+#endif
+
+#if defined(SUPPORT_DSI)
+	for (i = 0; i < CLK_DSI_NUM; ++i) {
+		g_disp_drv.mclk[DISP_MOD_DSI0 + i] =
+		    disp_getprop_clk(FDT_DISP_PATH, counter);
+		if (!g_disp_drv.mclk[DISP_MOD_DSI0 + i])
+			DE_WRN("fail to get clk %d for dsi\n", i);
+		++counter;
+	}
+#endif
+
+#if defined(SUPPORT_EINK)
+	g_disp_drv.mclk[DISP_MOD_EINK] = disp_getprop_clk(FDT_DISP_PATH, counter);
+	if (!g_disp_drv.mclk[DISP_MOD_EINK]) {
+		DE_WRN("fail to get clk for eink\n");
+	}
+	++counter;
+
+	g_disp_drv.mclk[DISP_MOD_EDMA] = disp_getprop_clk(FDT_DISP_PATH, counter);
+	if (!g_disp_drv.mclk[DISP_MOD_EDMA]) {
+		DE_WRN("fail to get clk for edma\n");
+	}
+	++counter;
+#endif
+
+#endif
 
 	ret = disp_init();
 
@@ -1404,7 +1676,7 @@ ssize_t disp_colorbar_store(u32 disp, u32 val)
 
 	if (!mgr) {
 		DE_WRN("Null mgr!\n");
-		return -1; 
+		return -1;
 	}
 
 	/*val:*/
@@ -2238,6 +2510,7 @@ int disp_ioctl(int cmd, void *arg)
 			} else {
 				ret = -1;
 			}
+
 			disp_sys_mutex_unlock(&g_disp_drv.mlock);
 			break;
 		}
@@ -2277,6 +2550,43 @@ int disp_ioctl(int cmd, void *arg)
 				return 0;
 			}
 			return -1;
+			break;
+		}
+	case DISP_LCD_GET_GAMMA_TABLE:
+		{
+			if (dispdev && (dispdev->type == DISP_OUTPUT_TYPE_LCD)) {
+				u32 *gamma_tbl = disp_sys_malloc(LCD_GAMMA_TABLE_SIZE);
+				u32 size = ubuffer[2];
+
+				if (gamma_tbl == NULL) {
+					DE_WRN("kmalloc fail\n");
+					ret = -1;
+					break;
+				}
+
+				size = (size > LCD_GAMMA_TABLE_SIZE) ?
+					LCD_GAMMA_TABLE_SIZE : size;
+
+				if(dispdev->get_gamma_tbl) {
+					ret = dispdev->get_gamma_tbl(dispdev, gamma_tbl, size);
+					memcpy((void *)ubuffer[1], gamma_tbl,size);
+				}
+				disp_sys_free(gamma_tbl);
+			}
+			break;
+		}
+#ifdef CONFIG_COMMAND_PQD
+	case DISP_PQ_PROC:
+		{
+			printk("ioctl DISP_PQ_PROC");
+			ret = pq_ioctl(cmd, (unsigned long)ubuffer);
+			//ret = disp_ioctl_extend(cmd, (unsigned long)ubuffer);
+			break;
+		}
+#endif
+	case DISP_WAIT_VSYNC:
+		{
+			ret = fb_wait_for_vsync(ubuffer[0]);
 			break;
 		}
 
@@ -2323,4 +2633,5 @@ int disp_open(void)
 {
 	return 0;
 }
+
 

@@ -1,16 +1,33 @@
 /*
-**********************************************************************************************************************
-*                                                   ePOS
-*                                  the Easy Portable/Player Operation System
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                (c) Copyright 2007-2008, Steven.ZGJ.China
-*                                           All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : devman.c
-* By      : steven.ZGJ
-* Version : V1.00
-* update  : kevin.z.m, 2010-9-7 17:08, clear code.
-**********************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "devman.h"
 #include <kapi.h>
@@ -59,6 +76,13 @@ int32_t SetDevAttr(char *classname, char *devname, __dev_node_t *devnode)
             devnode->pletter    = PART_LETTER_ROOTFS;
             devnode->attrib     |= DEV_NODE_ATTR_SYNMNT;
         }
+#ifdef CONFIG_SOC_SUN20IW1
+        else if (!strcmp(devname, DEV_NAME_UDISK))
+        {
+            devnode->pletter    = PART_LETTER_UDISK;
+            devnode->attrib     |= DEV_NODE_ATTR_SYNMNT;
+        }
+#endif
         else if (!strcmp(devname, DEV_NAME_SYSDATAFS))
         {
             devnode->pletter    = PART_LETTER_SYSDATA;
@@ -76,9 +100,9 @@ int32_t SetDevAttr(char *classname, char *devname, __dev_node_t *devnode)
         }
         else if (!strncmp(devname, DEV_NAME_USERDISK, strlen(DEV_NAME_USERDISK)))
         {
-            /* ·½°¸ÓÃ»§×Ô¶¨Òå·ÖÇø£¬·ÖÇøÃû¸ñÊ½Îª"USERDISKxx",
-             * ÆäÖĞxx±íÊ¾00~99£¬ÓÃÓÚÇø·Ö¸÷·½°¸ÓÃ»§µÄ·ÖÇøÃû.
-             * ·½°¸ÓÃ»§×Ô¶¨Òå·ÖÇøÔÚW~U·¶Î§ÄÚ¸ù¾İ×¢²áË³Ğòµ¹Ğò(W~U)·ÖÅä.
+            /* æ–¹æ¡ˆç”¨æˆ·è‡ªå®šä¹‰åˆ†åŒºï¼Œåˆ†åŒºåæ ¼å¼ä¸º"USERDISKxx",
+             * å…¶ä¸­xxè¡¨ç¤º00~99ï¼Œç”¨äºåŒºåˆ†å„æ–¹æ¡ˆç”¨æˆ·çš„åˆ†åŒºå.
+             * æ–¹æ¡ˆç”¨æˆ·è‡ªå®šä¹‰åˆ†åŒºåœ¨W~UèŒƒå›´å†…æ ¹æ®æ³¨å†Œé¡ºåºå€’åº(W~U)åˆ†é….
              */
             devnode->pletter    = PART_LETTER_USER;
             devnode->attrib     |= DEV_NODE_ATTR_SYNMNT;
@@ -130,7 +154,7 @@ void* esDEV_DevReg(const char *classname, const char *name, const __dev_devop_t 
         return NULL;
     }
 
-    /* step 1: Ñ°ÕÒclassÀàĞÍÃû£¬Èç¹ûÃ»ÓĞÕÒµ½£¬ÔòĞÂ½¨Ò»¸öÀàĞÍÃû */
+    /* step 1: å¯»æ‰¾classç±»å‹åï¼Œå¦‚æœæ²¡æœ‰æ‰¾åˆ°ï¼Œåˆ™æ–°å»ºä¸€ä¸ªç±»å‹å */
     while (classnode)
     {
         if (strcmp(classname, classnode->name) == 0)
@@ -142,7 +166,7 @@ void* esDEV_DevReg(const char *classname, const char *name, const __dev_devop_t 
     }
     if (classnode == 0)
     {
-        /*ÉêÇë¿Õ¼ä                              */
+        /*ç”³è¯·ç©ºé—´                              */
         classnode       = k_malloc(sizeof(__dev_classnode_t) + strlen(classname) + 1/*'/0'*/);
         if (classnode == 0)
         {
@@ -150,7 +174,7 @@ void* esDEV_DevReg(const char *classname, const char *name, const __dev_devop_t 
             res     = NULL;
             goto out;
         }
-        /* ½«classnode¹Ò½Óµ½listÖĞ              */
+        /* å°†classnodeæŒ‚æ¥åˆ°listä¸­              */
         preclassnode->next      = classnode;
         classnode->next         = 0;
 
@@ -166,7 +190,7 @@ void* esDEV_DevReg(const char *classname, const char *name, const __dev_devop_t 
         newclassflag            = 1;
     }
 
-    /* step 2: Éè±¸¹ÜÀílistÀïÊÇ·ñÓĞÏàÍ¬µÄÉè±¸Ãû£¬Èç¹ûÓĞ£¬Ôò·µ»Ø´íÎó     */
+    /* step 2: è®¾å¤‡ç®¡ç†listé‡Œæ˜¯å¦æœ‰ç›¸åŒçš„è®¾å¤‡åï¼Œå¦‚æœæœ‰ï¼Œåˆ™è¿”å›é”™è¯¯     */
     devnode         = classnode->nodelist;
     predevnode      = 0;
 
@@ -187,12 +211,12 @@ void* esDEV_DevReg(const char *classname, const char *name, const __dev_devop_t 
         goto out;
     }
 
-    /* step 3: ¸ù¾İsizeofdrv´´½¨Éè±¸½Úµã    */
+    /* step 3: æ ¹æ®sizeofdrvåˆ›å»ºè®¾å¤‡èŠ‚ç‚¹    */
     devnode     = k_malloc(sizeof(__dev_node_t) + strlen(name) + 1/*'/0'*/);
     if (devnode == 0)
     {
         __wrn("k_malloc fail!");
-        if (newclassflag)       /* Èç¹ûclassÎªĞÂ½¨£¬ÊÍ·Å£¬²¢ÍÑÀëclass list */
+        if (newclassflag)       /* å¦‚æœclassä¸ºæ–°å»ºï¼Œé‡Šæ”¾ï¼Œå¹¶è„±ç¦»class list */
         {
             k_free(classnode);
             preclassnode->next = 0;
@@ -201,18 +225,18 @@ void* esDEV_DevReg(const char *classname, const char *name, const __dev_devop_t 
         goto out;
     }
 
-    //¼ÇÂ¼Éè±¸Ãû
+    //è®°å½•è®¾å¤‡å
     devnode->name       = (char *)((unsigned long)devnode + sizeof(__dev_node_t));
     strcpy(devnode->name, name);
-    //ÏÂÒ»¸öÎª¿Õ
+    //ä¸‹ä¸€ä¸ªä¸ºç©º
     devnode->next       = NULL;
-    //¼ÇÂ¼class
+    //è®°å½•class
     devnode->classnode  = classnode;
-    //´ò¿ª´ÎÊıÎª0
+    //æ‰“å¼€æ¬¡æ•°ä¸º0
     devnode->opentimes  = 0;
-    //»î½Úµã
+    //æ´»èŠ‚ç‚¹
     devnode->status     = DEV_STAT_ACTIVE;
-    //±£´ædevice²Ù×÷
+    //ä¿å­˜deviceæ“ä½œ
     devnode->DevOp      = *pDevOp;
     /* save open arg    */
     devnode->pOpenArg   = pOpenArg;
@@ -227,7 +251,7 @@ void* esDEV_DevReg(const char *classname, const char *name, const __dev_devop_t 
         goto out;
     }
 
-    /* ¹Ò½Óµ½listÖĞ(link to rear of the list    */
+    /* æŒ‚æ¥åˆ°listä¸­(link to rear of the list    */
     if (predevnode == 0)
     {
         classnode->nodelist = devnode;
@@ -239,10 +263,10 @@ void* esDEV_DevReg(const char *classname, const char *name, const __dev_devop_t 
 
     __inf("device \"%s\\%s\" is setup.", classname, name);
 
-    /* step 4: ÉèÖÃÉè±¸½ÚµãµÄÊôĞÔ */
+    /* step 4: è®¾ç½®è®¾å¤‡èŠ‚ç‚¹çš„å±æ€§ */
     SetDevAttr((char *)classname, (char *)name, devnode);
 
-    /* step 5: ³¢ÊÔ×¢²á·ÖÇøºÍÎÄ¼şÏµÍ³   */
+    /* step 5: å°è¯•æ³¨å†Œåˆ†åŒºå’Œæ–‡ä»¶ç³»ç»Ÿ   */
     if (devnode->attrib & DEV_NODE_ATTR_PART)
     {
         esFSYS_mntparts((__hdle)devnode);
@@ -281,10 +305,10 @@ int32_t  esDEV_DevUnreg(__hdle hNode)
         return EPDK_FAIL;
     }
 
-    /* Í¨ÖªÎÄ¼şÏµÍ³ */
+    /* é€šçŸ¥æ–‡ä»¶ç³»ç»Ÿ */
     esFSYS_umntparts(hNode, 1);
 
-    if (pNode->opentimes == 0)                      /* Èç¹ûnodeÃ»ÓĞ±»ÈÎºÎÓÃ»§Ê¹ÓÃ£¬É¾³ınode£¬ÊÍ·Å¿Õ¼ä */
+    if (pNode->opentimes == 0)                      /* å¦‚æœnodeæ²¡æœ‰è¢«ä»»ä½•ç”¨æˆ·ä½¿ç”¨ï¼Œåˆ é™¤nodeï¼Œé‡Šæ”¾ç©ºé—´ */
     {
         __dev_node_t *p, **pp = &(pNode->classnode->nodelist);
 
@@ -299,14 +323,14 @@ int32_t  esDEV_DevUnreg(__hdle hNode)
         *pp = pNode->next;
 
         esKRNL_SemDel(pNode->sem, 0, &err);
-        k_free((void *)pNode); /* ÊÍ·Ånode¿Õ¼ä  */
+        k_free((void *)pNode); /* é‡Šæ”¾nodeç©ºé—´  */
         res = EPDK_OK;
         goto out;
     }
-    else                                            /* ·ñÔò£¬ĞèÒª½«nodeµÄ×´Ì¬ÉèÖÃÎªËÀnode   */
+    else                                            /* å¦åˆ™ï¼Œéœ€è¦å°†nodeçš„çŠ¶æ€è®¾ç½®ä¸ºæ­»node   */
     {
-        pNode->DevOp.Close(pNode->hDev);            /* ¹Ø±ÕÉè±¸¾ä±ú                         */
-        pNode->status = DEV_STAT_INACTIVE;          /* ÖÃÉè±¸½ÚµãÎªËÀ½Úµã                   */
+        pNode->DevOp.Close(pNode->hDev);            /* å…³é—­è®¾å¤‡å¥æŸ„                         */
+        pNode->status = DEV_STAT_INACTIVE;          /* ç½®è®¾å¤‡èŠ‚ç‚¹ä¸ºæ­»èŠ‚ç‚¹                   */
     }
 
     res = EPDK_OK;
@@ -337,7 +361,7 @@ int32_t esDEV_Lock(__hdle hNode)
 **********************************************************************************************************************
 *                                     esDEV_Close
 *
-* Description: ¹Ø±ÕÉè±¸
+* Description: å…³é—­è®¾å¤‡
 *
 * Arguments  : void
 *
@@ -377,14 +401,14 @@ __hdle esDEV_Open(__hdle hNode, uint32_t Mode)
 
     if (pNode->opentimes == 0)
     {
-        hDev    = pNode->DevOp.Open(pNode->pOpenArg, Mode);/* ´ò¿ªÉè±¸ */
+        hDev    = pNode->DevOp.Open(pNode->pOpenArg, Mode);/* æ‰“å¼€è®¾å¤‡ */
         if (hDev == NULL)
         {
             __wrn("dev cannot be open!");
             return NULL;
         }
-        pNode->hDev = hDev;                     /* ±£´æÉè±¸¾ä±ú */
-    }                                           /* ·ÖÅäÉè±¸¹ÜÀí¾ä±ú¿Õ¼ä */
+        pNode->hDev = hDev;                     /* ä¿å­˜è®¾å¤‡å¥æŸ„ */
+    }                                           /* åˆ†é…è®¾å¤‡ç®¡ç†å¥æŸ„ç©ºé—´ */
 
     pDev = (__dev_dev_t *)k_malloc(sizeof(__dev_dev_t));
     if (pDev == NULL)
@@ -393,19 +417,19 @@ __hdle esDEV_Open(__hdle hNode, uint32_t Mode)
         return NULL;
     }
 
-    pDev->devnode   = pNode;                    /* ¼ÇÂ¼nodeÖ¸Õë */
-    pDev->DevOp     = pNode->DevOp;             /* Éè±¸²Ù×÷Èë¿Ú£¬Ö±½Ó´Ó__dev_node_tÀïcopy£¬ÒÔ·½±ãÊ¹ÓÃ */
-    pDev->hDev      = pNode->hDev;              /* Éè±¸¾ä±ú£¬Ö±½Ó´Ó__dev_node_tÀïcopy£¬ÒÔ·½±ãÊ¹ÓÃ */
+    pDev->devnode   = pNode;                    /* è®°å½•nodeæŒ‡é’ˆ */
+    pDev->DevOp     = pNode->DevOp;             /* è®¾å¤‡æ“ä½œå…¥å£ï¼Œç›´æ¥ä»__dev_node_té‡Œcopyï¼Œä»¥æ–¹ä¾¿ä½¿ç”¨ */
+    pDev->hDev      = pNode->hDev;              /* è®¾å¤‡å¥æŸ„ï¼Œç›´æ¥ä»__dev_node_té‡Œcopyï¼Œä»¥æ–¹ä¾¿ä½¿ç”¨ */
 
-    pNode->opentimes ++;                        /* Éè±¸½Úµã´ò¿ª´ÎÊı¼õ1 */
+    pNode->opentimes ++;                        /* è®¾å¤‡èŠ‚ç‚¹æ‰“å¼€æ¬¡æ•°å‡1 */
 
-    return pDev;                                /* ·µ»ØÉè±¸¹ÜÀí¾ä±ú */
+    return pDev;                                /* è¿”å›è®¾å¤‡ç®¡ç†å¥æŸ„ */
 }
 /*
 **********************************************************************************************************************
 *                                     esDEV_Close
 *
-* Description: ¹Ø±ÕÉè±¸
+* Description: å…³é—­è®¾å¤‡
 *
 * Arguments  : void
 *
@@ -421,12 +445,12 @@ int32_t  esDEV_Close(__hdle hDev)
 
     if (pNode->opentimes)
     {
-        pNode->opentimes--;    /* Éè±¸½Úµã´ò¿ª´ÎÊı¼õ1 */
+        pNode->opentimes--;    /* è®¾å¤‡èŠ‚ç‚¹æ‰“å¼€æ¬¡æ•°å‡1 */
     }
 
-    if (pNode->opentimes == 0)  /* Èç¹ûÉè±¸½ÚµãÒÑ¾­Ã»ÓĞÈËÔÙÊ¹ÓÃ */
+    if (pNode->opentimes == 0)  /* å¦‚æœè®¾å¤‡èŠ‚ç‚¹å·²ç»æ²¡æœ‰äººå†ä½¿ç”¨ */
     {
-        /* Èç¹ûÉè±¸½ÚµãÃ»ÓĞÓÃ»§Ê¹ÓÃ£¬Í¬Ê±ÆäÓÖÊÇËÀ½Úµã£¬×ö·´×¢²áµÄ²Ù×÷ */
+        /* å¦‚æœè®¾å¤‡èŠ‚ç‚¹æ²¡æœ‰ç”¨æˆ·ä½¿ç”¨ï¼ŒåŒæ—¶å…¶åˆæ˜¯æ­»èŠ‚ç‚¹ï¼Œåšåæ³¨å†Œçš„æ“ä½œ */
         if (pNode->status == DEV_STAT_INACTIVE)
         {
             __dev_node_t *p, **pp   = &(pNode->classnode->nodelist);
@@ -441,20 +465,20 @@ int32_t  esDEV_Close(__hdle hDev)
 
             *pp     = pNode->next;
 
-            /* ÊÍ·ÅÉè±¸½ÚµãÕ¼ÓÃµÄ¿Õ¼ä */
+            /* é‡Šæ”¾è®¾å¤‡èŠ‚ç‚¹å ç”¨çš„ç©ºé—´ */
             esKRNL_SemDel(pNode->sem, 0, &err);
             k_free((void *)pNode);
         }
-        else /* ·ñÔò£¬ÒÑ¾­Ã»ÓĞÓÃ»§´ò¿ª´ËÉè±¸½Úµã£¬Í¬Ê±´ËÉè±¸½Úµã²»ÊÇËÀ½Úµã */
+        else /* å¦åˆ™ï¼Œå·²ç»æ²¡æœ‰ç”¨æˆ·æ‰“å¼€æ­¤è®¾å¤‡èŠ‚ç‚¹ï¼ŒåŒæ—¶æ­¤è®¾å¤‡èŠ‚ç‚¹ä¸æ˜¯æ­»èŠ‚ç‚¹ */
         {
-            if (pDev->DevOp.Close(pNode->hDev) == EPDK_FAIL) /* ¹Ø±ÕÉè±¸¾ä±ú */
+            if (pDev->DevOp.Close(pNode->hDev) == EPDK_FAIL) /* å…³é—­è®¾å¤‡å¥æŸ„ */
             {
                 __err("close device[%s] fail!", pNode->name);
             }
         }
     }
 
-    k_free((void *)pDev);              /* ÊÍ·ÅÉè±¸¾ä±úÕ¼ÓÃµÄ¿Õ¼ä */
+    k_free((void *)pDev);              /* é‡Šæ”¾è®¾å¤‡å¥æŸ„å ç”¨çš„ç©ºé—´ */
 
     return EPDK_OK;
 }
@@ -462,14 +486,14 @@ int32_t  esDEV_Close(__hdle hDev)
 **********************************************************************************************************************
 *                                     esDEV_Read
 *
-* Description: ¶Á
+* Description: è¯»
 *
-* Arguments  :  pdata       ĞèÒª¶Á³öµÄÊı¾İÖ¸Õë
-*               size        ¿éµÄ´óĞ¡
-*               n           ¿éÊı
-*               hDev        Éè±¸¾ä±ú
+* Arguments  :  pdata       éœ€è¦è¯»å‡ºçš„æ•°æ®æŒ‡é’ˆ
+*               size        å—çš„å¤§å°
+*               n           å—æ•°
+*               hDev        è®¾å¤‡å¥æŸ„
 *
-* Returns    : Êµ¼Ê¶Á³öµÄ¿éÊı
+* Returns    : å®é™…è¯»å‡ºçš„å—æ•°
 *
 **********************************************************************************************************************
 */
@@ -491,14 +515,14 @@ uint32_t esDEV_Read(void *pdata, uint32_t size, uint32_t n, __hdle hDev)
 **********************************************************************************************************************
 *                                     esDEV_Write
 *
-* Description: Ğ´
+* Description: å†™
 *
-* Arguments  :  pdata       ĞèÒªĞ´ÈëµÄÊı¾İÖ¸Õë
-*               size        ¿éµÄ´óĞ¡
-*               n           ¿éÊı
-*               hDev        Éè±¸¾ä±ú
+* Arguments  :  pdata       éœ€è¦å†™å…¥çš„æ•°æ®æŒ‡é’ˆ
+*               size        å—çš„å¤§å°
+*               n           å—æ•°
+*               hDev        è®¾å¤‡å¥æŸ„
 *
-* Returns    : Êµ¼ÊĞ´ÈëµÄ¿éÊı
+* Returns    : å®é™…å†™å…¥çš„å—æ•°
 *
 **********************************************************************************************************************
 */
@@ -521,12 +545,12 @@ uint32_t  esDEV_Write(const void *pdata, uint32_t size, uint32_t n, __hdle hDev)
 **********************************************************************************************************************
 *                                     esDEV_Ioctrl
 *
-* Description: Éè±¸¿ØÖÆ
+* Description: è®¾å¤‡æ§åˆ¶
 *
-* Arguments  : hDev         Éè±¸¾ä±ú
-*              cmd          ÃüÁî
-*              aux          ²ÎÊı
-*              pbuffer      Êı¾İbuffer
+* Arguments  : hDev         è®¾å¤‡å¥æŸ„
+*              cmd          å‘½ä»¤
+*              aux          å‚æ•°
+*              pbuffer      æ•°æ®buffer
 *
 * Returns    : device defined
 *
@@ -621,7 +645,8 @@ int32_t dev_init(void)
 int32_t dev_exit(void)
 {
     uint32_t    x = EPDK_OK;
-   uint8_t     err = 0;
+
+   uint8_t     err = 0;
 
     if (pDevSem)
     {
@@ -631,4 +656,3 @@ int32_t dev_exit(void)
 
     return  x;
 }
-

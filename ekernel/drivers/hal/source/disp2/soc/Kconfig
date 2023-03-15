@@ -9,10 +9,10 @@ config V459_PERF1
 	  board v459 perf1
 
 config D1s_FPGA
-	bool "board fpga D1s"
+	bool "board fpga d1s"
 	default n
 	---help---
-	  board D1s fpga
+	  board d1s fpga
 
 config VVX07H005A10_MIPI
 	bool "board, disp with VVX07H005A10_mipi"
@@ -46,5 +46,11 @@ config ARCH_SUN20IW1
 	default n
 	---help---
 	  soc sun20iw1
+
+config ARCH_SUN20IW2
+	bool "soc sun20iw2 "
+	default n
+	---help---
+	  soc sun20iw2
 
 endmenu

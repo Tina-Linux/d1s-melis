@@ -7,12 +7,12 @@
 *
 * DISCLAIMER
 * THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
-* IF YOU NEED TO INTEGRATE THIRD PARTY¡¯S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
-* IN ALLWINNERS¡¯SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* IF YOU NEED TO INTEGRATE THIRD PARTY'S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS'SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
 * ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
 * ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
 * COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
-* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY¡¯S TECHNOLOGY.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY'S TECHNOLOGY.
 *
 *
 * THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
@@ -36,8 +36,10 @@
 #include <stdio.h>
 #include "platform.h"
 #include "irqs.h"
-#include "aw_types.h"
+#include <aw_types.h>
 #include <spinlock.h>
+#include <sunxi_hal_htimer.h>
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -90,6 +92,8 @@ int sunxi_htimer_set_periodic(uint32_t delay_us, uint32_t timer, timer_callback 
 void sunxi_htimer_stop(uint32_t timer);
 void sunxi_htimer_start(uint32_t timer, bool periodic);
 void sunxi_htimer_init();
+int sunxi_htimer_clk_init();
+
 
 #ifdef __cplusplus
 }

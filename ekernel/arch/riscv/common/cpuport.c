@@ -1,22 +1,34 @@
 /*
- * ===========================================================================================
- *
- *       Filename:  cpuport.c
- *
- *    Description:  glue layer of os with specific mach.
- *
- *        Version:  Melis3.0
- *         Create:  2020-06-28 19:12:26
- *       Revision:  none
- *       Compiler:  GCC:version 7.2.1 20170904 (release),ARM/embedded-7-branch revision 255204
- *
- *         Author:  caozilong@allwinnertech.com
- *   Organization:  BU1-PSW
- *  Last Modified:  2020-07-27 10:40:12
- *
- * ===========================================================================================
- */
-
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <rthw.h>
 #include <rtthread.h>
 #include "cpuport.h"
@@ -29,6 +41,9 @@
 #include <sbi.h>
 #include <debug.h>
 
+void awos_arch_save_fpu_status(fpu_context_t *);
+void awos_arch_restore_fpu_status(fpu_context_t *);
+
 /* ----------------------------------------------------------------------------*/
 /**
  * @brief  rt_hw_context_switch_to <trigger thread context switch>
@@ -36,37 +51,37 @@
  * @param to, stack pointer of the next thread.
  */
 /* ----------------------------------------------------------------------------*/
+volatile rt_uint32_t rt_thread_switch_interrupt_flag = 0;
+
 void rt_hw_context_switch_to(rt_ubase_t to)
 {
     rt_thread_t thread;
 
     thread = rt_container_of(to, struct rt_thread, sp);
 
-    // restore first task`s fpu context.
-    void awos_arch_restore_fpu_status(fpu_context_t *);
+    /* restore first task`s fpu context. */
     awos_arch_restore_fpu_status(&thread->fdext_ctx);
 
     void awos_arch_first_task_start(unsigned long to);
     return awos_arch_first_task_start(to);
 }
 
-void finish_task_switch(rt_thread_t ARG_UNUSED(last))
+void finish_task_switch(rt_thread_t last)
 {
     unsigned long sstatus;
 
+    (void)last;
     sstatus = arch_local_save_flags();
     RT_ASSERT((sstatus & SR_FS) == SR_FS_CLEAN);
 }
 
-void awos_arch_save_fpu_status(fpu_context_t *);
-void awos_arch_restore_fpu_status(fpu_context_t *);
 static inline void awos_switch_to_aux(rt_thread_t prev, rt_thread_t next)
 {
     unsigned long sstatus;
     switch_ctx_regs_t *regs_ctx;
 
     sstatus = arch_local_save_flags();
-    if (unlikely(sstatus & SR_SD))
+    if (unlikely((sstatus & SR_FS) == SR_FS_DIRTY))
     {
         awos_arch_save_fpu_status(&prev->fdext_ctx);
     }
@@ -136,7 +151,6 @@ void rt_hw_context_switch(rt_ubase_t from, rt_ubase_t to)
     __log("-----------------------------------------------------------");
 #endif
 }
-
 /*
  * preempt schedule during exit irq environment.
  */
@@ -206,4 +220,16 @@ void rt_hw_cpu_shutdown()
 
     rt_hw_interrupt_disable();
     sbi_shutdown();
+}
+
+static void arch_cpu_idle(void)
+{
+    arch_local_irq_disable();
+    wait_for_interrupt();
+    arch_local_irq_enable();
+}
+
+void cpu_do_idle(void)
+{
+    arch_cpu_idle();
 }

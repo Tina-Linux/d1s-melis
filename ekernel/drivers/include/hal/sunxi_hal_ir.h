@@ -30,16 +30,6 @@ extern "C"
 #include <hal_sem.h>
 #include <hal_clk.h>
 
-
-#define SUNXI_IRADC_PBASE         0X07040000 /* 0x34 */
-
-#define SUNXI_IRQ_IRADC                 155
-
-#define IRADC_PIN    GPIO_PH0
-#define IR_MUXSEL 4
-#define IR_DRVSEL 2
-
-
 /* Registers */
 #define IR_CTRL_REG		(0x00)	/* IR Control */
 #define IR_RXCFG_REG		(0x10)	/* Rx Config */

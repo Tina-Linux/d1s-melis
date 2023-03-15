@@ -182,7 +182,7 @@ int nor_read_status(unsigned char *sr)
     return 0;
 }
 
-static int nor_is_busy(void)
+static bool nor_is_busy(void)
 {
     int ret;
     unsigned char reg;
@@ -202,9 +202,9 @@ static int nor_is_busy(void)
  * 1. sleep on ms, which take mush time.
  * 2. check times on cpu. It will be ready soon in this case
  */
-int nor_wait_ready(unsigned int ms, unsigned int times)
+int nor_wait_ready(int ms, int times)
 {
-    unsigned int _ms = ms, _times = times;
+    int _ms = ms, _times = times;
 
     do {
         if (nor_is_busy() == false)
@@ -238,12 +238,15 @@ int nor_send_cmd(unsigned char cmd)
 static int nor_set_4byte(int enable)
 {
     int ret;
+    char cmd[1];
     struct nor_factory *f = nor->factory;
+
+    cmd[0] = enable ? NOR_CMD_EN4B : NOR_CMD_EX4B;
 
     if (f && f->set_4bytes_addr)
         return f->set_4bytes_addr(nor, enable);
 
-    ret = nor_send_cmd(NOR_CMD_EN4B);
+    ret = nor_send_cmd(cmd[0]);
     if (ret) {
         SPINOR_ERR("set 4byte %d fail", enable);
         return ret;
@@ -326,22 +329,46 @@ static int nor_reset(void)
     return ret;
 }
 
+static int nor_sip(void)
+{
+#ifdef CONFIG_ARCH_SUN20IW2
+	int HAL_PRCM_IsFlashSip(void);
+	return HAL_PRCM_IsFlashSip();
+#else
+	return 0;
+#endif
+}
+
+#ifdef CONFIG_DRIVERS_SPINOR_FREQ_READ_ID
+static int nor_spi_master_init(struct nor_spi_master *spim, uint32_t freq_hz)
+#else
 static int nor_spi_master_init(struct nor_spi_master *spim)
+#endif
 {
     int ret;
 
     spim->port = HAL_SPI_MASTER_0;
 
+#ifdef CONFIG_DRIVERS_SPINOR_FREQ_READ_ID
+    spim->cfg.clock_frequency = freq_hz;
+#else
 #ifdef CONFIG_DRIVERS_SPINOR_FREQ
     spim->cfg.clock_frequency = CONFIG_DRIVERS_SPINOR_FREQ;
 #else
     spim->cfg.clock_frequency = NOR_DEFAULT_FREQUENCY;
 #endif
     spim->cfg.clock_frequency *= 1000 * 1000;
+#endif
     spim->cfg.slave_port = HAL_SPI_MASTER_SLAVE_0;
     spim->cfg.cpha = HAL_SPI_MASTER_CLOCK_PHASE0;
     spim->cfg.cpol = HAL_SPI_MASTER_CLOCK_POLARITY0;
     spim->cfg.bit_order = HAL_SPI_MASTER_LSB_FIRST;
+    spim->cfg.flash = 1;
+    if (nor_sip())
+        spim->cfg.sip = 1;
+
+    printf("flash : %u\n", spim->cfg.flash);
+    printf("sip : %u\n", spim->cfg.sip);
 
     ret = hal_spi_init(spim->port, &spim->cfg);
     if (ret != HAL_SPI_MASTER_STATUS_OK)
@@ -396,8 +423,9 @@ static int nor_factory_register(void)
     nor_register_factory_esmt();
     nor_register_factory_fm();
     nor_register_factory_xmc();
-	nor_register_factory_puya();
-	nor_register_factory_zetta();
+    nor_register_factory_puya();
+    nor_register_factory_zetta();
+    nor_register_factory_boya();
     return 0;
 }
 
@@ -457,7 +485,14 @@ static int nor_scan(void)
     /* program property */
     nor->w_cmd_slen = nor->addr_width == 4 ? 5 : 4;
     nor->cmd_write = cmd_4bytes(NOR_CMD_PROG);
+#ifdef CONFIG_DRIVERS_SPINOR_HARDWARE_MAX_BIT
+    /* check both hardware and nor config */
+    if ((nor->info->flag & SUPPORT_QUAD_WRITE) &&
+            (CONFIG_DRIVERS_SPINOR_HARDWARE_MAX_BIT >= 4)) {
+#else
+    /* check nor config */
     if (nor->info->flag & SUPPORT_QUAD_WRITE) {
+#endif
         nor->cmd_write = cmd_4bytes(NOR_CMD_QUAD_PROG);
         if (nor->info->flag & USE_IO_PROG_X4) {
             nor->cmd_write = cmd_4bytes(NOR_CMD_QUAD_IO_PROG);
@@ -468,13 +503,27 @@ static int nor_scan(void)
     /* read property */
     nor->r_cmd_slen = nor->addr_width == 4 ? 6 : 5;
     nor->cmd_read = cmd_4bytes(NOR_CMD_FAST_READ);
+#ifdef CONFIG_DRIVERS_SPINOR_HARDWARE_MAX_BIT
+    /* check both hardware and nor config */
+    if ((nor->info->flag & SUPPORT_QUAD_READ) &&
+            (CONFIG_DRIVERS_SPINOR_HARDWARE_MAX_BIT >= 4)) {
+#else
+    /* check nor config */
     if (nor->info->flag & SUPPORT_QUAD_READ) {
+#endif
         nor->cmd_read = cmd_4bytes(NOR_CMD_QUAD_READ);
         if (nor->info->flag & USE_IO_READ_X4) {
             nor->cmd_read = cmd_4bytes(NOR_CMD_QUAD_IO_READ);
             nor->r_cmd_slen = 1;
         }
+#ifdef CONFIG_DRIVERS_SPINOR_HARDWARE_MAX_BIT
+    /* check both hardware and nor config */
+    } else if ((nor->info->flag & SUPPORT_DUAL_READ) &&
+            (CONFIG_DRIVERS_SPINOR_HARDWARE_MAX_BIT >= 2)) {
+#else
+    /* check nor config */
     } else if (nor->info->flag & SUPPORT_DUAL_READ) {
+#endif
         nor->cmd_read = cmd_4bytes(NOR_CMD_DUAL_READ);
         if (nor->info->flag & USE_IO_READ_X2) {
             nor->cmd_read = cmd_4bytes(NOR_CMD_DUAL_IO_READ);
@@ -512,10 +561,15 @@ int nor_init(void)
 
     nor_lock();
 
+#ifdef CONFIG_DRIVERS_SPINOR_FREQ_READ_ID
+    ret = nor_spi_master_init(&nor->spim, (CONFIG_DRIVERS_SPINOR_FREQ_READ_ID) * 1000000);
+    if (ret)
+        goto unlock;
+#else
     ret = nor_spi_master_init(&nor->spim);
     if (ret)
         goto unlock;
-
+#endif
     ret = nor_reset();
     if (ret)
         goto unlock;
@@ -524,10 +578,21 @@ int nor_init(void)
     if (ret)
         goto unlock;
 
+    printf("nor_scan\n");
     ret = nor_scan();
     if (ret)
         goto unlock;
 
+#ifdef CONFIG_DRIVERS_SPINOR_FREQ_READ_ID
+    ret = nor_spi_master_deinit(&nor->spim);
+    if (ret)
+        goto unlock;
+    ret = nor_spi_master_init(&nor->spim, (CONFIG_DRIVERS_SPINOR_FREQ) * 1000000 );
+    if (ret)
+        goto unlock;
+#endif
+
+    printf("nor_factory_init\n");
     ret = nor_factory_init();
     if (ret) {
         SPINOR_ERR("factory init failed");
@@ -571,7 +636,11 @@ out:
         SPINOR_ERR("init nor flash failed");
     else
         SPINOR_INFO("nor flash init ok");
-    return ret;
+   if (ret)
+        printf("init nor flash failed\n");
+    else
+        printf("nor flash init ok\n");
+   return ret;
 }
 
 int nor_deinit(void)
@@ -590,13 +659,14 @@ int nor_deinit(void)
 
 #ifdef CONFIG_DRIVERS_SPINOR_WRITE_LOCK
     nor_wr_unlock_all(nor);
+    nor_wr_lock_deinit(nor);
 #endif
 
     if (nor->info) {
         if (nor->addr_width == 4)
             nor_set_4byte(0);
         nor_spi_master_deinit(&nor->spim);
-	nor->info = NULL;
+        nor->info = NULL;
     }
 
     /* we do not unlock nor in case other task using nor after deinit */
@@ -861,7 +931,7 @@ int nor_read(unsigned int addr, char *buf, unsigned int len)
         goto unlock;
 
     while (len) {
-        unsigned int align_addr = ALIGN(addr + 1, NOR_PAGE_SIZE);
+        unsigned int align_addr = ALIGN_UP(addr + 1, NOR_PAGE_SIZE);
         unsigned int rlen = MIN(align_addr - addr, len);
 
         ret = nor_read_do(addr, buf, rlen);
@@ -937,7 +1007,7 @@ int nor_write(unsigned int addr, char *buf, unsigned int len)
         goto unlock;
 
     while (len) {
-        unsigned int align_addr = ALIGN(addr + 1, NOR_PAGE_SIZE);
+        unsigned int align_addr = ALIGN_UP(addr + 1, NOR_PAGE_SIZE);
         unsigned int wlen = MIN(align_addr - addr, len);
 
 #ifdef CONFIG_DRIVERS_SPINOR_WRITE_LOCK

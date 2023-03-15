@@ -536,6 +536,7 @@ static int clk_core_populate_parent_map(struct clk_core *core,
         return -1;
     }
 
+    memset(parents, 0, num_parents * sizeof(*parents));
     /* Copy everything over because it might be __initdata */
     for (i = 0, parent = parents; i < num_parents; i++, parent++)
     {
@@ -622,6 +623,7 @@ int clk_hw_register(struct clk_hw *hw)
         return -1;
     }
 
+    memset(core, 0, sizeof(*core));
     core->name = init->name;
     core->num_parents = init->num_parents;
     core->flags = init->flags;
@@ -635,8 +637,10 @@ int clk_hw_register(struct clk_hw *hw)
     if (!core->clk)
     {
         hal_log_err("out of memory\n");
-	goto fail_clk;
+        goto fail_clk;
     }
+
+    memset(core->clk, 0, sizeof(struct clk));
     core->clk->core = core;
     core->clk->name = core->name;
     core->clk->count = 0;
@@ -790,7 +794,9 @@ hal_clk_status_t clk_core_disable(struct clk_core *core)
         core->ops->disable(core->hw);
     }
 
+#ifndef NO_INFLUENCE_ON_CLOCK_SOURCE
     clk_core_disable(core->parent);
+#endif
 
     return 0;
 }
@@ -837,7 +843,7 @@ u32 clk_core_recalc_rate(struct clk_core *core, struct clk_core *p_core)
     p_rate = p_core->rate;
     if (core->ops->recalc_rate)
     {
-        return core->ops->recalc_rate(core->hw, p_rate);
+        core->rate = core->ops->recalc_rate(core->hw, p_rate);
     }
 
     return core->rate;
@@ -872,6 +878,8 @@ hal_clk_status_t clk_core_set_rate(struct clk_core *core, struct clk_core *p_cor
 
     if (core->ops->set_rate)
     {
+        if (core->enable_count >= 2)
+		printf("Warning: clk %s should not be changed, please recheck whether the operation is correct\n", core->name);
         ret = core->ops->set_rate(core->hw, rate, p_core->rate);
     }
 
@@ -971,8 +979,8 @@ struct clk_core *clk_core_get_parent(struct clk_core *core)
         return NULL;
     }
 
-    if (!core->parent)
-	core->parent = __clk_init_parent(core);
+    /* Ensure synchronization in case of multiple cores */
+    core->parent = __clk_init_parent(core);
 
     return core->parent;
 }
@@ -988,10 +996,12 @@ hal_clk_status_t clk_core_set_parent(struct clk_core *core, struct clk_core *par
         return 0;
     }
 
+#if 0
     if (core->parent == parent)
     {
         return 0;
     }
+#endif
 
     /* verify ops for for multi-parent clks */
     if ((core->num_parents > 1) && (!core->ops->set_parent))

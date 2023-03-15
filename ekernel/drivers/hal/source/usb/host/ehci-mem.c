@@ -35,8 +35,7 @@
 
 /* Allocate the key transfer structures from the previously allocated pool */
 
-static inline void ehci_qtd_init(struct ehci_hcd *ehci, struct ehci_qtd *qtd,
-				  dma_addr_t dma)
+static inline void ehci_qtd_init(struct ehci_hcd *ehci, struct ehci_qtd *qtd, dma_addr_t dma)
 {
 	memset(qtd, 0, sizeof *qtd);
 	qtd->qtd_dma = dma;
@@ -47,72 +46,71 @@ static inline void ehci_qtd_init(struct ehci_hcd *ehci, struct ehci_qtd *qtd,
 	hal_dcache_clean_invalidate((unsigned long)qtd->qtd_dma, sizeof(struct ehci_qtd));
 }
 
-static struct ehci_qtd *ehci_qtd_alloc (struct ehci_hcd *ehci, gfp_t flags)
+static struct ehci_qtd *ehci_qtd_alloc(struct ehci_hcd *ehci, gfp_t flags)
 {
-	struct ehci_qtd		*qtd;
-	dma_addr_t		dma;
+	struct ehci_qtd *qtd;
+	dma_addr_t dma;
 
-	//qtd = dma_pool_alloc (ehci->qtd_pool, flags, &dma);
-	qtd = usb_dma_malloc(sizeof(struct ehci_qtd), &dma);
-	if (qtd != NULL) {
-		EHCI_DEBUG_PRINTF("qtd virt = %p, phys = 0x%lx", qtd, dma);
+	// qtd = dma_pool_alloc (ehci->qtd_pool, flags, &dma);
+	qtd = usb_dma_malloc(sizeof(struct ehci_qtd), &dma, USB_DESC_MALLOC_ALIGN_SIZE);
+	if (qtd != NULL)
 		ehci_qtd_init(ehci, qtd, dma);
-	}
+
 	return qtd;
 }
 
-static inline void ehci_qtd_free (struct ehci_hcd *ehci, struct ehci_qtd *qtd)
+static inline void ehci_qtd_free(struct ehci_hcd *ehci, struct ehci_qtd *qtd)
 {
-	//dma_pool_free (ehci->qtd_pool, qtd, qtd->qtd_dma);
+	// dma_pool_free (ehci->qtd_pool, qtd, qtd->qtd_dma);
 	usb_dma_free(qtd, qtd->qtd_dma);
 }
-
 
 static void qh_destroy(struct ehci_hcd *ehci, struct ehci_qh *qh)
 {
 	/* clean qtds first, and know this is not linked */
-	if (!list_empty (&qh->qtd_list) || qh->qh_next.ptr) {
-		ehci_dbg ("unused qh not empty!\n");
+	if (!list_empty(&qh->qtd_list) || qh->qh_next.ptr) {
+		ehci_dbg("unused qh not empty!\n");
 	}
 	if (qh->dummy)
-		ehci_qtd_free (ehci, qh->dummy);
-	//dma_pool_free(ehci->qh_pool, qh->hw, qh->qh_dma);
+		ehci_qtd_free(ehci, qh->dummy);
+	// dma_pool_free(ehci->qh_pool, qh->hw, qh->qh_dma);
 	usb_dma_free((void *)qh->hw, qh->qh_dma);
 	hal_free(qh);
 }
 
-static struct ehci_qh *ehci_qh_alloc (struct ehci_hcd *ehci)
+static struct ehci_qh *ehci_qh_alloc(struct ehci_hcd *ehci)
 {
-	struct ehci_qh		*qh;
-	dma_addr_t		dma;
+	struct ehci_qh *qh;
+	dma_addr_t dma;
 
 	qh = hal_malloc(sizeof *qh);
 	if (!qh)
 		goto done;
-	//qh->hw = (struct ehci_qh_hw *)
+	memset(qh, 0, sizeof(struct ehci_qh));
+	// qh->hw = (struct ehci_qh_hw *)
 	//	dma_pool_alloc(ehci->qh_pool, flags, &dma);
-	qh->hw = (struct ehci_qh_hw *)
-		usb_dma_malloc(sizeof(struct ehci_qh_hw), &dma);
+	qh->hw = (struct ehci_qh_hw *)usb_dma_malloc(sizeof(struct ehci_qh_hw), &dma,
+						     USB_DESC_MALLOC_ALIGN_SIZE);
 	if (!qh->hw)
 		goto fail;
 	memset(qh->hw, 0, sizeof *qh->hw);
 	qh->qh_dma = dma;
-	INIT_LIST_HEAD (&qh->qtd_list);
+	INIT_LIST_HEAD(&qh->qtd_list);
 	INIT_LIST_HEAD(&qh->unlink_node);
 
 	/* dummy td enables safe urb queuing */
-	qh->dummy = ehci_qtd_alloc (ehci, 0);
+	qh->dummy = ehci_qtd_alloc(ehci, 0);
 	if (qh->dummy == NULL) {
-		ehci_dbg ("no dummy td\n");
+		ehci_dbg("no dummy td\n");
 		goto fail1;
 	}
 done:
 	return qh;
 fail1:
-	//dma_pool_free(ehci->qh_pool, qh->hw, qh->qh_dma);
+	// dma_pool_free(ehci->qh_pool, qh->hw, qh->qh_dma);
 	usb_dma_free(qh->hw, qh->qh_dma);
 fail:
-	//kfree(qh);
+	// kfree(qh);
 	hal_free(qh);
 	return NULL;
 }
@@ -124,31 +122,31 @@ fail:
  * This is the initialisation and cleanup code.
  */
 
-static void ehci_mem_cleanup (struct ehci_hcd *ehci)
+static void ehci_mem_cleanup(struct ehci_hcd *ehci)
 {
 	if (ehci->async)
 		qh_destroy(ehci, ehci->async);
 	ehci->async = NULL;
 
-	//if (ehci->dummy)
+	// if (ehci->dummy)
 	//	qh_destroy(ehci, ehci->dummy);
-	//ehci->dummy = NULL;
+	// ehci->dummy = NULL;
 
 	/* DMA consistent memory and pools */
-	//dma_pool_destroy(ehci->qtd_pool);
-	//ehci->qtd_pool = NULL;
-	//dma_pool_destroy(ehci->qh_pool);
-	//ehci->qh_pool = NULL;
-	//dma_pool_destroy(ehci->itd_pool);
-	//ehci->itd_pool = NULL;
-	//dma_pool_destroy(ehci->sitd_pool);
-	//ehci->sitd_pool = NULL;
+	// dma_pool_destroy(ehci->qtd_pool);
+	// ehci->qtd_pool = NULL;
+	// dma_pool_destroy(ehci->qh_pool);
+	// ehci->qh_pool = NULL;
+	// dma_pool_destroy(ehci->itd_pool);
+	// ehci->itd_pool = NULL;
+	// dma_pool_destroy(ehci->sitd_pool);
+	// ehci->sitd_pool = NULL;
 
 	if (ehci->periodic)
 		usb_dma_free(ehci->periodic, ehci->periodic_dma);
-		//dma_free_coherent (ehci_to_hcd(ehci)->self.controller,
-		//	ehci->periodic_size * sizeof (u32),
-		//	ehci->periodic, ehci->periodic_dma);
+	// dma_free_coherent (ehci_to_hcd(ehci)->self.controller,
+	//	ehci->periodic_size * sizeof (u32),
+	//	ehci->periodic, ehci->periodic_dma);
 	ehci->periodic = NULL;
 
 	/* shadow periodic table */
@@ -157,66 +155,67 @@ static void ehci_mem_cleanup (struct ehci_hcd *ehci)
 }
 
 /* remember to add cleanup code (above) if you add anything here */
-static int ehci_mem_init (struct ehci_hcd *ehci)
+static int ehci_mem_init(struct ehci_hcd *ehci)
 {
 	int i;
+	int pshadow_size = (ehci->periodic_size) * (sizeof(void *));
 
 	/* QTDs for control/bulk/intr transfers */
-	//ehci->qtd_pool = dma_pool_create ("ehci_qtd",
+	// ehci->qtd_pool = dma_pool_create ("ehci_qtd",
 	//		ehci_to_hcd(ehci)->self.controller,
 	//		sizeof (struct ehci_qtd),
 	//		32 /* byte alignment (for hw parts) */,
 	//		4096 /* can't cross 4K */);
-	//if (!ehci->qtd_pool) {
+	// if (!ehci->qtd_pool) {
 	//	goto fail;
 	//}
 
 	///* QHs for control/bulk/intr transfers */
-	//ehci->qh_pool = dma_pool_create ("ehci_qh",
+	// ehci->qh_pool = dma_pool_create ("ehci_qh",
 	//		ehci_to_hcd(ehci)->self.controller,
 	//		sizeof(struct ehci_qh_hw),
 	//		32 /* byte alignment (for hw parts) */,
 	//		4096 /* can't cross 4K */);
-	//if (!ehci->qh_pool) {
+	// if (!ehci->qh_pool) {
 	//	goto fail;
 	//}
-	ehci->async = ehci_qh_alloc (ehci);
+	ehci->async = ehci_qh_alloc(ehci);
 	if (!ehci->async) {
 		goto fail;
 	}
 
 	/* ITD for high speed ISO transfers */
-	//ehci->itd_pool = dma_pool_create ("ehci_itd",
+	// ehci->itd_pool = dma_pool_create ("ehci_itd",
 	//		ehci_to_hcd(ehci)->self.controller,
 	//		sizeof (struct ehci_itd),
 	//		32 /* byte alignment (for hw parts) */,
 	//		4096 /* can't cross 4K */);
-	//if (!ehci->itd_pool) {
+	// if (!ehci->itd_pool) {
 	//	goto fail;
 	//}
 
 	///* SITD for full/low speed split ISO transfers */
-	//ehci->sitd_pool = dma_pool_create ("ehci_sitd",
+	// ehci->sitd_pool = dma_pool_create ("ehci_sitd",
 	//		ehci_to_hcd(ehci)->self.controller,
 	//		sizeof (struct ehci_sitd),
 	//		32 /* byte alignment (for hw parts) */,
 	//		4096 /* can't cross 4K */);
-	//if (!ehci->sitd_pool) {
+	// if (!ehci->sitd_pool) {
 	//	goto fail;
 	//}
 
 	/* Hardware periodic table */
-	//ehci->periodic = (__le32 *)
+	// ehci->periodic = (__le32 *)
 	//	dma_alloc_coherent (ehci_to_hcd(ehci)->self.controller,
 	//		ehci->periodic_size * sizeof(__le32),
 	//		&ehci->periodic_dma, flags);
 	ehci->periodic = usb_dma_malloc(ehci->periodic_size * sizeof(uint32_t),
-				(dma_addr_t *)&ehci->periodic_dma);
+						   (dma_addr_t *)&ehci->periodic_dma, USB_EHCI_PERIODIC_MALLOC_ALIGN_SIZE);
 	if (ehci->periodic == NULL) {
 		goto fail;
 	}
 
-	//if (ehci->use_dummy_qh) {
+	// if (ehci->use_dummy_qh) {
 	//	struct ehci_qh_hw	*hw;
 	//	ehci->dummy = ehci_qh_alloc(ehci, flags);
 	//	if (!ehci->dummy)
@@ -232,19 +231,19 @@ static int ehci_mem_init (struct ehci_hcd *ehci)
 	//		ehci->periodic[i] = cpu_to_hc32(ehci,
 	//				ehci->dummy->qh_dma);
 	//} else {
-		for (i = 0; i < ehci->periodic_size; i++)
-			ehci->periodic[i] = EHCI_LIST_END(ehci);
+	for (i = 0; i < ehci->periodic_size; i++)
+		ehci->periodic[i] = EHCI_LIST_END(ehci);
 	//}
 
 	/* software shadow of hardware table */
-	//ehci->pshadow = kcalloc(ehci->periodic_size, sizeof(void *), flags);
-	ehci->pshadow = hal_malloc((ehci->periodic_size) * (sizeof(void *)));
-	memset(ehci->pshadow, 0, (ehci->periodic_size) * (sizeof(void *)));
+	// ehci->pshadow = kcalloc(ehci->periodic_size, sizeof(void *), flags);
+	ehci->pshadow = hal_malloc(pshadow_size);
+	memset(ehci->pshadow, 0, pshadow_size);
 	if (ehci->pshadow != NULL)
 		return 0;
 
 fail:
-	ehci_dbg ("couldn't init memory\n");
-	ehci_mem_cleanup (ehci);
+	ehci_dbg("couldn't init memory\n");
+	ehci_mem_cleanup(ehci);
 	return -ENOMEM;
 }

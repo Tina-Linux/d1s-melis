@@ -19,30 +19,30 @@
 *
 ********************************************************************************************************************
 */
-#ifndef  __CD_H__
-#define  __CD_H__
+#ifndef __CD_H__
+#define __CD_H__
 
 /* CD-ROM address types */
-#define CDROM_LBA 0x01  /* data-related.  "logical block": first frame is #0            */
-#define CDROM_MSF 0x02  /* audio-related. "minute-second-frame": binary, not bcd here!  */
+#define CDROM_LBA		0x01	/* data-related.  "logical block": first frame is #0            */
+#define CDROM_MSF		0x02	/* audio-related. "minute-second-frame": binary, not bcd here!  */
 
 /* Some generally useful CD-ROM information -- mostly based on the above */
-#define CD_MINS              74 /* max. minutes per CD, not really a limit  */
-#define CD_SECS              60 /* seconds per minute                       */
-#define CD_FRAMES            75 /* frames per second                        */
-#define CD_SYNC_SIZE         12 /* 12 sync bytes per raw data frame         */
-#define CD_MSF_OFFSET       150 /* MSF numbering offset of first frame      */
-#define CD_CHUNK_SIZE        24 /* lowest-level "data bytes piece"          */
-#define CD_NUM_OF_CHUNKS     98 /* chunks per frame                         */
-#define CD_FRAMESIZE_SUB     96 /* subchannel data "frame" size             */
-#define CD_HEAD_SIZE          4 /* header (address) bytes per raw data frame */
-#define CD_SUBHEAD_SIZE       8 /* subheader bytes per raw XA data frame    */
-#define CD_EDC_SIZE           4 /* bytes EDC per most raw data frame types  */
-#define CD_ZERO_SIZE          8 /* bytes zero per yellow book mode 1 frame  */
-#define CD_ECC_SIZE         276 /* bytes ECC per most raw data frame types  */
-#define CD_FRAMESIZE       2048 /* bytes per frame, "cooked" mode           */
-#define CD_FRAMESIZE_RAW   2352 /* bytes per frame, "raw" mode              */
-#define CD_FRAMESIZE_RAWER 2646 /* The maximum possible returned bytes      */
+#define CD_MINS			74	/* max. minutes per CD, not really a limit   */
+#define CD_SECS			60	/* seconds per minute                        */
+#define CD_FRAMES		75	/* frames per second                         */
+#define CD_SYNC_SIZE		12	/* 12 sync bytes per raw data frame          */
+#define CD_MSF_OFFSET		150	/* MSF numbering offset of first frame       */
+#define CD_CHUNK_SIZE		24	/* lowest-level "data bytes piece"           */
+#define CD_NUM_OF_CHUNKS	98	/* chunks per frame                          */
+#define CD_FRAMESIZE_SUB	96	/* subchannel data "frame" size              */
+#define CD_HEAD_SIZE		4	/* header (address) bytes per raw data frame */
+#define CD_SUBHEAD_SIZE		8	/* subheader bytes per raw XA data frame     */
+#define CD_EDC_SIZE		4	/* bytes EDC per most raw data frame types   */
+#define CD_ZERO_SIZE		8	/* bytes zero per yellow book mode 1 frame   */
+#define CD_ECC_SIZE		276	/* bytes ECC per most raw data frame types   */
+#define CD_FRAMESIZE		2048	/* bytes per frame, "cooked" mode            */
+#define CD_FRAMESIZE_RAW	2352	/* bytes per frame, "raw" mode               */
+#define CD_FRAMESIZE_RAWER	2646	/* The maximum possible returned bytes       */
 
 /* most drives don't deliver everything: */
 #define CD_FRAMESIZE_RAW1 (CD_FRAMESIZE_RAW - CD_SYNC_SIZE)                 /*2340*/
@@ -54,77 +54,74 @@
 
 
 /* capability flags used with the uniform CD-ROM driver */
-#define CDROM_CLOSE_TRAY        0x1         /* caddy systems _can't_ close          */
-#define CDROM_OPEN_TRAY         0x2         /* but _can_ eject.                     */
-#define CDROM_LOCK              0x4         /* disable manual eject                 */
-#define CDROM_SELECT_SPEED      0x8         /* programmable speed                   */
-#define CDROM_SELECT_DISC       0x10        /* select disc from juke-box            */
-#define CDROM_MULTI_SESSION     0x20        /* read sessions>1                      */
-#define CDROM_MCN               0x40        /* Medium Catalog Number                */
-#define CDROM_MEDIA_CHANGED     0x80        /* media changed                        */
-#define CDROM_PLAY_AUDIO        0x100       /* audio functions                      */
-#define CDROM_RESET             0x200       /* hard reset device                    */
-#define CDROM_DRIVE_STATUS      0x800       /* drive implements drive status        */
-#define CDROM_GENERIC_PACKET    0x1000      /* drive implements generic packets     */
-#define CDROM_CD_R              0x2000      /* drive is a CD-R                      */
-#define CDROM_CD_RW             0x4000      /* drive is a CD-RW                     */
-#define CDROM_DVD               0x8000      /* drive is a DVD                       */
-#define CDROM_DVD_R             0x10000     /* drive can write DVD-R                */
-#define CDROM_DVD_RAM           0x20000     /* drive can write DVD-RAM              */
-#define CDROM_MO_DRIVE          0x40000     /* drive is an MO device                */
-#define CDROM_MRW               0x80000     /* drive can read MRW                   */
-#define CDROM_MRW_W             0x100000    /* drive can write MRW                  */
-#define CDROM_RAM               0x200000    /* ok to open for WRITE                 */
+#define CDROM_CLOSE_TRAY	0x1         /* caddy systems _can't_ close      */
+#define CDROM_OPEN_TRAY		0x2         /* but _can_ eject.                 */
+#define CDROM_LOCK		0x4         /* disable manual eject             */
+#define CDROM_SELECT_SPEED	0x8         /* programmable speed               */
+#define CDROM_SELECT_DISC	0x10        /* select disc from juke-box        */
+#define CDROM_MULTI_SESSION	0x20        /* read sessions>1                  */
+#define CDROM_MCN		0x40        /* Medium Catalog Number            */
+#define CDROM_MEDIA_CHANGED	0x80        /* media changed                    */
+#define CDROM_PLAY_AUDIO	0x100       /* audio functions                  */
+#define CDROM_RESET		0x200       /* hard reset device                */
+#define CDROM_DRIVE_STATUS	0x800       /* drive implements drive status    */
+#define CDROM_GENERIC_PACKET	0x1000      /* drive implements generic packets */
+#define CDROM_CD_R		0x2000      /* drive is a CD-R                  */
+#define CDROM_CD_RW		0x4000      /* drive is a CD-RW                 */
+#define CDROM_DVD		0x8000      /* drive is a DVD                   */
+#define CDROM_DVD_R		0x10000     /* drive can write DVD-R            */
+#define CDROM_DVD_RAM		0x20000     /* drive can write DVD-RAM          */
+#define CDROM_MO_DRIVE		0x40000     /* drive is an MO device            */
+#define CDROM_MRW		0x80000     /* drive can read MRW               */
+#define CDROM_MRW_W		0x100000    /* drive can write MRW              */
+#define CDROM_RAM		0x200000    /* ok to open for WRITE             */
 
 /* bit to tell whether track is data or audio (cdrom_tocentry.cdte_ctrl) */
-#define  CDROM_DATA_TRACK       0x04
+#define  CDROM_DATA_TRACK	0x04
 
 /* The leadout track is always 0xAA, regardless of # of tracks on disc */
-#define  CDROM_LEADOUT          0xAA
+#define  CDROM_LEADOUT		0xAA
 
 /* frame address */
-typedef struct _MSF_LBA
-{
-    CDROM_MSF_ADDR_t msf;
-    unsigned int lba;
+typedef struct _MSF_LBA {
+	CDROM_MSF_ADDR_t msf;
+	unsigned int lba;
 } __attribute__((packed)) MSF_LBA_t;
 
-/* Ä³¸ö track µÄ Toc entry */
-typedef struct _CDROM_TocEntry
-{
-    unsigned int TrackNumber;      /* Toc ËùÊôµÄ track     */
-    unsigned int Format;           /* CD-ROM address types */
-    unsigned int Adr   : 4;        /* The type of information encode in the Q sub-channel of this blocks */
-    unsigned int Ctrl  : 4;        /* attributes of the track */
+/* æŸä¸ª track çš„ Toc entry */
+typedef struct _CDROM_TocEntry {
+	unsigned int TrackNumber; /* Toc æ‰€å±çš„ track     */
+	unsigned int Format;	  /* CD-ROM address types */
+	unsigned int Adr : 4;	  /* The type of information encode in the Q sub-channel of this blocks */
+	unsigned int Ctrl : 4;	  /* attributes of the track */
 
-    MSF_LBA_t Address;      /* Toc entry address    */
-    unsigned int DataMode;         /* is a data track?     */
+	MSF_LBA_t Address;     /* Toc entry address    */
+	unsigned int DataMode; /* is a data track?     */
 } CDROM_TocEntry_t;
 
-typedef struct _CD_Rom
-{
-    /* ¹âÇıµÄĞÅÏ¢ */
-    unsigned int DriveType;                    /* ¹âÇıµÄĞÍºÅ               */
-    unsigned int MaxSpeed;                     /* ¹âÇı×î´óµÄËÙ¶È           */
-    unsigned int CurrentSpeed;                 /* ¹âÇıµ±Ç°µÄËÙ¶È           */
-    unsigned int Readcd_cdda;                  /* reading audio data using READ_CD */
-    unsigned int WriteAble;                    /* ¹âÇıÊÇ·ñÖ§³ÖĞ´²Ù×÷       */
-    CDROM_Capitilities_t Capitilities;  /* ¹âÇıµÄÇı¶¯ÄÜÁ¦           */
-    unsigned int Eject;                        /* ÊÇ·ñÖ§³Ö¹âÇıÍË³ö         */
-    unsigned int PowerStatus;                  /* ¹âÇıµçÔ´×´Ì¬. Active, Idle, Standby ? */
+typedef struct _CD_Rom {
+	/* å…‰é©±çš„ä¿¡æ¯ */
+	unsigned int DriveType;		   /* å…‰é©±çš„å‹å·               */
+	unsigned int MaxSpeed;		   /* å…‰é©±æœ€å¤§çš„é€Ÿåº¦           */
+	unsigned int CurrentSpeed;	   /* å…‰é©±å½“å‰çš„é€Ÿåº¦           */
+	unsigned int Readcd_cdda;	   /* reading audio data using READ_CD */
+	unsigned int WriteAble;		   /* å…‰é©±æ˜¯å¦æ”¯æŒå†™æ“ä½œ       */
+	CDROM_Capitilities_t Capitilities; /* å…‰é©±çš„é©±åŠ¨èƒ½åŠ›           */
+	unsigned int Eject;		   /* æ˜¯å¦æ”¯æŒå…‰é©±é€€å‡º         */
+	unsigned int PowerStatus;	   /* å…‰é©±ç”µæºçŠ¶æ€. Active, Idle, Standby ? */
 
-    /* ¹âµúĞÅÏ¢ */
-    unsigned int DiscType;                     /* ¹âµúµÄĞÍºÅ               */
-    unsigned int DoubleDisc;                   /* ÊÇ·ñÊÇË«Ãæ¹âµú?          */
-    unsigned int LastWriteSector;              /* µ«Ç°ÒÑ¾­Ğ´µÄ×îºóÒ»¸öÉÈÇø */
-    unsigned int MultiSession;                 /* ¶àÇø¶Î                   */
-    unsigned int NumberOfSUinitPerMUnit;       /* MSFÖĞÃ¿M±£»¤µÄs¸öÊı      */
-    unsigned int NumberOfFUinitPerSUnit;       /* MSFÖĞÃ¿S±£»¤µÄF¸öÊı      */
-    unsigned int InactivityTimeMultiPlier;     /*                          */
+	/* å…‰ç¢Ÿä¿¡æ¯ */
+	unsigned int DiscType;		       /* å…‰ç¢Ÿçš„å‹å·               */
+	unsigned int DoubleDisc;	       /* æ˜¯å¦æ˜¯åŒé¢å…‰ç¢Ÿ?          */
+	unsigned int LastWriteSector;	       /* ä½†å‰å·²ç»å†™çš„æœ€åä¸€ä¸ªæ‰‡åŒº */
+	unsigned int MultiSession;	       /* å¤šåŒºæ®µ                   */
+	unsigned int NumberOfSUinitPerMUnit;   /* MSFä¸­æ¯Mä¿æŠ¤çš„sä¸ªæ•°      */
+	unsigned int NumberOfFUinitPerSUnit;   /* MSFä¸­æ¯Sä¿æŠ¤çš„Fä¸ªæ•°      */
+	unsigned int InactivityTimeMultiPlier; /*                          */
 
-    /* ¹âÇı¹ÜÀí */
-    unsigned int DriveStatus;                  /* ¹âÇı×´Ì¬                 */
-    unsigned int IsMeduimPrevent;              /* ÊÇ·ñÉèÖÃ½ûÖ¹½éÖÊÒÆ¶¯     */
+	/* å…‰é©±ç®¡ç† */
+	unsigned int DriveStatus;     /* å…‰é©±çŠ¶æ€                 */
+	unsigned int IsMeduimPrevent; /* æ˜¯å¦è®¾ç½®ç¦æ­¢ä»‹è´¨ç§»åŠ¨     */
 } CD_Rom_t;
 
 /*
@@ -132,7 +129,7 @@ typedef struct _CD_Rom
 *                     lba_to_msf
 *
 * Description:
-*    LBA×ª»»Îªmsf
+*    LBAè½¬æ¢ä¸ºmsf
 *
 * Parameters:
 *    lba    :  input.
@@ -141,21 +138,21 @@ typedef struct _CD_Rom
 *    f      :  input.
 *
 * Return value:
-*    ÎŞ
+*    æ— 
 *
 * note:
-*    ÎŞ
+*    æ— 
 *
 *******************************************************************************
 */
 static inline void lba_to_msf(int lba, u8 *m, u8 *s, u8 *f)
 {
-    lba += CD_MSF_OFFSET;
-    lba &= 0xffffff;        /* negative lbas use only 24 bits */
-    *m  = lba / (CD_SECS * CD_FRAMES);
-    lba %= (CD_SECS * CD_FRAMES);
-    *s  = lba / CD_FRAMES;
-    *f  = lba % CD_FRAMES;
+	lba += CD_MSF_OFFSET;
+	lba &= 0xffffff; /* negative lbas use only 24 bits */
+	*m = lba / (CD_SECS * CD_FRAMES);
+	lba %= (CD_SECS * CD_FRAMES);
+	*s = lba / CD_FRAMES;
+	*f = lba % CD_FRAMES;
 }
 
 /*
@@ -163,7 +160,7 @@ static inline void lba_to_msf(int lba, u8 *m, u8 *s, u8 *f)
 *                     msf_to_lba
 *
 * Description:
-*    msf×ª»»ÎªLBA
+*    msfè½¬æ¢ä¸ºLBA
 *
 * Parameters:
 *    m      :  input.
@@ -173,17 +170,15 @@ static inline void lba_to_msf(int lba, u8 *m, u8 *s, u8 *f)
 * Return value:
 *
 * note:
-*    ÎŞ
+*    æ— 
 *
 *******************************************************************************
 */
 static inline int msf_to_lba(u8 m, u8 s, u8 f)
 {
-    return (((m * CD_SECS) + s) * CD_FRAMES + f) - CD_MSF_OFFSET;
+	return (((m * CD_SECS) + s) * CD_FRAMES + f) - CD_MSF_OFFSET;
 }
 
 int CDIOCtrl(__UsbBlkDev_t *BlkDev, unsigned int Cmd, int Aux, void *pBuffer);
 
-#endif   //__CD_H__
-
-
+#endif	//__CD_H__

@@ -1,1 +1,2 @@
-obj-y += RT-Thread/
+obj-$(CONFIG_OS_MELIS) += RT-Thread/
+obj-$(CONFIG_KERNEL_FREERTOS) += FreeRTOS/

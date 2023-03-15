@@ -1,15 +1,20 @@
-obj-$(CONFIG_HAL_TEST_CCU) += ccmu/
+obj-$(CONFIG_HAL_TEST_CE) += ce/
+obj-$(CONFIG_HAL_TEST_CLK) += ccmu/
+obj-$(CONFIG_HAL_TEST_CCU) += ccmu-ng/
 obj-$(CONFIG_HAL_TEST_GPIO) += gpio/
 obj-$(CONFIG_HAL_TEST_DMA) += dma/
 obj-$(CONFIG_HAL_TEST_UART) += uart/
+obj-$(CONFIG_HAL_TEST_LPUART) += lpuart/
 obj-$(CONFIG_HAL_TEST_TWI) += twi/
 obj-$(CONFIG_HAL_TEST_SPI) += spi/
+obj-$(CONFIG_HAL_TEST_DBI) += dbi/
+obj-$(CONFIG_HAL_TEST_SPILCD) += spilcd/
 obj-$(CONFIG_HAL_TEST_PWM) += pwm/
+obj-$(CONFIG_HAL_TEST_LEDC) += ledc/
 obj-$(CONFIG_HAL_TEST_SPINOR) += spinor/
 obj-$(CONFIG_HAL_TEST_GPADC) += gpadc/
 obj-$(CONFIG_HAL_TEST_RTC) += rtc/
-obj-$(CONFIG_HAL_TEST_UDC) += usb/
-obj-$(CONFIG_HAL_TEST_HCI) += usb/host/
+obj-$(CONFIG_HAL_TEST_USB) += usb/
 obj-$(CONFIG_HAL_TEST_DISP) += disp2/
 obj-$(CONFIG_HAL_TEST_G2D) += g2d/
 obj-$(CONFIG_HAL_TEST_DI) += sunxi-di/
@@ -17,4 +22,22 @@ obj-$(CONFIG_HAL_TEST_LRADC) += lradc/
 obj-$(CONFIG_HAL_TEST_IR) += ir/
 obj-$(CONFIG_HAL_TEST_TIMER) += timer/
 obj-$(CONFIG_HAL_TEST_CIR) += cir/
+obj-$(CONFIG_HAL_TEST_CIR_TX) += cir_tx/
 obj-$(CONFIG_HAL_TEST_THERMAL) += thermal/
+obj-$(CONFIG_HAL_TEST_WATCHDOG) += watchdog/
+obj-$(CONFIG_HAL_TEST_MBUS) += mbus/
+obj-$(CONFIG_HAL_TEST_MSGBOX) += msgbox/
+obj-$(CONFIG_HAL_TEST_SYSCTL) += sysctl/
+obj-$(CONFIG_HAL_TEST_CSI) += csi/
+obj-$(CONFIG_HAL_TEST_HWSPINLOCK) += hwspinlock/
+obj-$(CONFIG_HAL_TEST_SMARTCARD) += smartcard/
+obj-$(CONFIG_HAL_TEST_REGULATOR) += regulator/
+obj-$(CONFIG_HAL_TEST_RCCAL) += rccal/
+obj-$(CONFIG_HAL_TEST_POWER) += power/
+obj-$(CONFIG_HAL_TEST_FLASHC_ENC) += flashc_enc/
+obj-$(CONFIG_HAL_TEST_FLASH_CTRL) += flash_ctrl/
+obj-$(CONFIG_HAL_TEST_TRNG) += trng/
+
+ifeq ($(CONFIG_KERNEL_FREERTOS), y)
+subdir-ccflags-y += -I components/common/aw/pm/include
+endif

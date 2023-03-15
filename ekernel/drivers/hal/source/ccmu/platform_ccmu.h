@@ -35,6 +35,9 @@
 
 #if defined(CONFIG_DRIVERS_SUNXI_CLK)
 #include "./sunxi/platform_clk.h"
+#if defined(CONFIG_SOC_SUN20IW3) || defined(CONFIG_ARCH_SUN8IW21)
+#include "./sunxi/sun8iw21p1/clk_sun8iw21.h"
+#endif
 #endif
 
 #if defined(CONFIG_DRIVERS_SUNXI_CCU)
@@ -46,6 +49,19 @@
 #include "./sunxi-ng/ccu-sun8iw20-rtc.h"
 #endif
 
+#if defined(CONFIG_ARCH_SUN20IW2)
+#include "./sunxi-ng/clk-fixed-rate.h"
+#include "./sunxi-ng/ccu-sun20iw2.h"
+#include "./sunxi-ng/ccu-sun20iw2-aon.h"
+#include "./sunxi-ng/ccu-sun20iw2-r.h"
 #endif
 
+#if defined(CONFIG_ARCH_SUN55IW3)
+#include "./sunxi-ng/clk-fixed-rate.h"
+#include "./sunxi-ng/ccu-sun55iw3.h"
+#include "./sunxi-ng/ccu-sun55iw3-dsp.h"
+#include "./sunxi-ng/ccu-sun55iw3-r.h"
+#endif
+
+#endif
 #endif /* __PLATFORM_CCMU_H__ */

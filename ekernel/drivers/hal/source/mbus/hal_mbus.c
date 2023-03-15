@@ -35,6 +35,12 @@
 #include "sunxi_hal_mbus.h"
 #include "mbus.h"
 
+hal_mbus_status_t hal_mbus_pmu_get_window(unsigned int *value)
+{
+	*value = mbus_get_window();
+	return HAL_MBUS_STATUS_OK;
+}
+
 hal_mbus_status_t hal_mbus_pmu_get_value(enum mbus_pmu type, unsigned int *value)
 {
 	switch (type) {
@@ -46,6 +52,12 @@ hal_mbus_status_t hal_mbus_pmu_get_value(enum mbus_pmu type, unsigned int *value
 			break;
 		case MBUS_PMU_VE :
 			*value = mbus_get_ve_ddr();
+			break;
+		case MBUS_PMU_CE :
+			*value = mbus_get_ce_ddr();
+			break;
+		case MBUS_PMU_DE :
+			*value = mbus_get_de_ddr();
 			break;
 		case MBUS_PMU_DISP :
 			*value = mbus_get_de_ddr();
@@ -73,6 +85,18 @@ hal_mbus_status_t hal_mbus_pmu_get_value(enum mbus_pmu type, unsigned int *value
 			break;
 		case MBUS_PMU_RV_SYS :
 			*value = mbus_get_rv_sys_ddr();
+			break;
+		case MBUS_PMU_DSP_SYS :
+			*value = mbus_get_dsp_sys_ddr();
+			break;
+		case MBUS_PMU_DMA0:
+			*value = mbus_get_dma0_ddr();
+			break;
+		case MBUS_PMU_DMA1:
+			*value = mbus_get_dma1_ddr();
+			break;
+		case MBUS_PMU_MAHB:
+			*value = mbus_get_mahb_ddr();
 			break;
 		default :
 			mbus_err("not support mbus type, %d\n", type);

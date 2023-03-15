@@ -19,38 +19,41 @@
 *
 ********************************************************************************************************************
 */
-#ifndef  __BLKDEV_H__
-#define  __BLKDEV_H__
+#ifndef __BLKDEV_H__
+#define __BLKDEV_H__
 
-#include  "usbh_disk_info.h"
+#include "usbh_disk_info.h"
 
-#define  USB_BLK_DEV_MAGIC              0x5a13d099
-#define  USB_BULK_DISK_MAX_NAME_LEN     32
+#define USB_BLK_DEV_MAGIC		0x5a13d099
+#define USB_BULK_DISK_MAX_NAME_LEN	32
 
-typedef struct __UsbBlkDev
-{
-    unsigned int   last_lun;               //Èç¹ûÎª1£¬±íÊ¾ÊÇ×îºóÒ»¸ö·ÖÇø
-    unsigned int   Magic;                  /* ±íÊ¾Éè±¸ÊÇ·ñºÏ·¨                 */
-    __mscLun_t *Lun;                /* sdºÍÆäËûscsi device¹²ÓĞµÄÊôĞÔ    */
+typedef struct __UsbBlkDev {
+	unsigned int last_lun; /*å¦‚æœä¸º1ï¼Œè¡¨ç¤ºæ˜¯æœ€åä¸€ä¸ªåˆ†åŒº */
+	unsigned int Magic;    /* è¡¨ç¤ºè®¾å¤‡æ˜¯å¦åˆæ³• */
+	__mscLun_t *Lun;       /* sdå’Œå…¶ä»–scsi deviceå…±æœ‰çš„å±æ€§ */
 
-    /* Disk information */
-    unsigned int used;                     /* ´ò¿ªÉè±¸¼ÆÊı                     */
-    __dev_devop_t DiskOp;           /* Éè±¸²Ù×÷º¯Êı                     */
+	/* Disk information */
+	unsigned int used; /* æ‰“å¼€è®¾å¤‡è®¡æ•° */
+#ifdef CONFIG_OS_MELIS
+	__dev_devop_t DiskOp; /* è®¾å¤‡æ“ä½œå‡½æ•° */
+#elif defined(CONFIG_KERNEL_FREERTOS)
+	struct devfs_node dev_node;
+#endif
 
-    /* Disk manager */
-    void *DevParaHdle;      /* openÊ±µÄ¾ä±ú                     */
-    void *DevRegHdle;       /* regÊ±µÄ¾ä±ú                      */
+	/* Disk manager */
+	void *DevParaHdle; /* openæ—¶çš„å¥æŸ„ */
+	void *DevRegHdle;  /* regæ—¶çš„å¥æŸ„ */
 
-    unsigned int DevNo;                                /* ´ËÉè±¸ºÅ, ËüÓÉhost_id, target_id, lun ×é³É   */
-    unsigned char ClassName[USB_BULK_DISK_MAX_NAME_LEN]; /* Éè±¸ÀàÃû, Èç"disk"               */
-    unsigned char DevName[USB_BULK_DISK_MAX_NAME_LEN];   /* ´ËÉè±¸Ãû, Èç"SCSI_DISK_000"      */
+	unsigned int DevNo; /* æ­¤è®¾å¤‡å·, å®ƒç”±host_id, target_id, lun ç»„æˆ */
+	unsigned char ClassName[USB_BULK_DISK_MAX_NAME_LEN]; /* è®¾å¤‡ç±»å, å¦‚"disk" */
+	unsigned char DevName[USB_BULK_DISK_MAX_NAME_LEN];   /* æ­¤è®¾å¤‡å, å¦‚"SCSI_DISK_000" */
 
-    unsigned int is_RegDisk;               /* ÊÇ·ñ×¢²á¹ıdiskÉè±¸                           */
-    unsigned int ErrCmdNr;                 /* test_unit_readyÆÚ¼ä, Î´Öª´íÎóµÄ´ÎÊı          */
+	unsigned int is_RegDisk; /* æ˜¯å¦æ³¨å†Œè¿‡diskè®¾å¤‡ */
+	unsigned int ErrCmdNr;	 /* test_unit_readyæœŸé—´, æœªçŸ¥é”™è¯¯çš„æ¬¡æ•° */
 
-    void *Extern;                   /* À©Õ¹ÊôĞÔ, Èçcd                               */
+	void *Extern; /* æ‰©å±•å±æ€§, å¦‚cd */
 
-    usbh_disk_device_info_t device_info;
+	usbh_disk_device_info_t device_info;
 } __UsbBlkDev_t;
 
 //------------------------------------------
@@ -65,7 +68,4 @@ void ShutDown(__UsbBlkDev_t *BlkDev);
 int UsbBlkDevReg(__UsbBlkDev_t *BlkDev, unsigned char *ClassName, unsigned int RegDisk);
 int UsbBlkDevUnReg(__UsbBlkDev_t *BlkDev);
 
-
-#endif   //__BLKDEV_H__
-
-
+#endif	//__BLKDEV_H__

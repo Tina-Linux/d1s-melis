@@ -34,6 +34,7 @@
 #define __HAL_GPIO_H__
 
 #include <stdlib.h>
+#include <stdbool.h>
 #include <hal_interrupt.h>
 
 #include <hal_log.h>
@@ -43,8 +44,8 @@
 extern "C" {
 #endif
 
-#define CONFIG_DRIVERS_GPIO_DEBUG
-#ifndef CONFIG_DRIVERS_GPIO_DEBUG
+//#define CONFIG_DRIVERS_GPIO_DEBUG
+#ifdef  CONFIG_DRIVERS_GPIO_DEBUG
 #define GPIO_INFO(fmt, arg...) hal_log_info(fmt, ##arg)
 #else
 #define GPIO_INFO(fmt, arg...) do {}while(0)
@@ -53,7 +54,7 @@ extern "C" {
 #define GPIO_ERR(fmt, arg...) hal_log_err(fmt, ##arg)
 
 /**This enum defines the GPIO MUX function*/
-#if defined(CONFIG_SOC_SUN20IW1) || defined(CONFIG_ARCH_SUN8IW20)
+#if defined(CONFIG_SOC_SUN20IW1) || defined(CONFIG_ARCH_SUN8IW20) || defined(CONFIG_ARCH_SUN20IW2) || defined(CONFIG_ARCH_SUN20IW3)
 typedef enum
 {
     GPIO_MUXSEL_IN = 0,
@@ -132,10 +133,11 @@ int hal_gpio_get_pull(gpio_pin_t pin, gpio_pull_status_t *pull);
 int hal_gpio_set_driving_level(gpio_pin_t pin, gpio_driving_level_t level);
 int hal_gpio_get_driving_level(gpio_pin_t pin, gpio_driving_level_t *level);
 int hal_gpio_pinmux_set_function(gpio_pin_t pin, gpio_muxsel_t function_index);
+int hal_gpio_pinmux_get_function(gpio_pin_t pin, gpio_muxsel_t *function_index);
 int hal_gpio_sel_vol_mode(gpio_pin_t pins, gpio_power_mode_t pm_sel);
 int hal_gpio_set_debounce(gpio_pin_t pin, unsigned value);
 int hal_gpio_to_irq(gpio_pin_t pin, uint32_t *irq);
-int hal_gpio_irq_request(uint32_t irq, irq_handler_t hdle, unsigned long flags, void *data);
+int hal_gpio_irq_request(uint32_t irq, hal_irq_handler_t hdle, unsigned long flags, void *data);
 int hal_gpio_irq_free(uint32_t irq);
 int hal_gpio_irq_enable(uint32_t irq);
 int hal_gpio_irq_disable(uint32_t irq);

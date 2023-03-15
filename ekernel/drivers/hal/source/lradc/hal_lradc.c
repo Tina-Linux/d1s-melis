@@ -83,7 +83,7 @@ static void lradc_register_callback(lradc_callback_t user_callback)
 	lradc_priv.func = user_callback;
 }
 
-static irqreturn_t lradc_irq_handler(int dummy, void *priv_data)
+static hal_irqreturn_t lradc_irq_handler(void *priv_data)
 {
 	lradc_func_data *lradc_priv = priv_data;
 	lradc_callback_t callback = lradc_priv->func;
@@ -103,11 +103,11 @@ static irqreturn_t lradc_irq_handler(int dummy, void *priv_data)
 static int32_t lradc_init_irq(void)
 {
 	uint32_t irqn = SUNXI_IRQ_LRADC;
-	if (request_irq(irqn, lradc_irq_handler, 0, "lradc", &lradc_priv) < 0) {
+	if (hal_request_irq(irqn, lradc_irq_handler, "lradc", &lradc_priv) < 0) {
 		return -1;
 	}
 
-	enable_irq(irqn);
+	hal_enable_irq(irqn);
 
 	return 0;
 }

@@ -1,124 +1,103 @@
 /*
- * ===========================================================================================
- *
- *       Filename:  startup.c
- *
- *    Description:  rtkernel os startup routine.
- *
- *        Version:  Melis3.0
- *         Create:  2020-06-24 10:32:22
- *       Revision:  none
- *       Compiler:  GCC:version 7.2.1 20170904 (release),ARM/embedded-7-branch revision 255204
- *
- *         Author:  caozilong@allwinnertech.com
- *   Organization:  BU1-PSW
- *  Last Modified:  2020-07-10 17:24:27
- *
- * ===========================================================================================
- */
-
-#include <port.h>
-#include <rtthread.h>
-#include <version.h>
-#include <kconfig.h>
-#include <preempt.h>
-#include <_newlib_version.h>
-#include <debug.h>
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <arch.h>
-#include <log.h>
-#if (CONFIG_LOG_DEFAULT_LEVEL == 0)
-#define printk(...)
-#endif
-static const char melis_banner [] =
+
+#include <compiler.h>
+#include <port.h>
+
+#include <rtthread.h>
+#include <hal_mem.h>
+#include <hal_thread.h>
+
+extern void common_init(void);
+void system_time_init(void);
+void show_melis_version(void);
+
+static int aw_application_init(pfun_krnl_init_t app_init)
 {
-    "|                   /'\\_/`\\       (_ )  _                       /'_  )    /'_ `\\   /' _`\\                     |\n\r"
-    "|                   |     |   __   | | (_)  ___  ______  _   _ (_)_) |   ( (_) |   | ( ) |                    |\n\r"
-    "|                   | (_) | /'__`\\ | | | |/',__)(______)( ) ( ) _(_ <     \\__, |   | | | |                    |\n\r"
-    "|                   | | | |(  ___/ | | | |\\__, \\        | \\_/ |( )_) | _     | | _ | (_) |                    |\n\r"
-    "|                   (_) (_)`\\____)(___)(_)(____/        `\\___/'`\\____)(_)    (_)(_)`\\___/'                    |\n\r"
-};
+    void *app_init_thread;
 
-#define MELIS_VERSION_STRING(major, minor, patch) \
-    #major"."#minor"."#patch
-
-const char *melis_banner_string(void)
-{
-    return ("V"MELIS_VERSION_STRING(3, 9, 0));
-}
-
-void show_melis_version(void)
-{
-    //use newlibc printk for long strings.
-    printk("\n\r");
-    printk("===============================================================================================================\n\r");
-    printk("%s", melis_banner);
-    printk("|version : %s%s%s\n\r", melis_banner_string(), XPOSTO(110), "|");
-    printk("|commitid: %.*s%s%s\n\r", 100, SDK_GIT_VERSION, XPOSTO(110), "|");
-#if defined(HAL_GIT_VERSION)
-    printk("|halgitid: %.*s%s%s\n\r", 100, HAL_GIT_VERSION, XPOSTO(110), "|");
-#endif
-    printk("|sunxiver: %x%s%s\n\r", MELIS_VERSION_CODE, XPOSTO(110), "|");
-    printk("|timever : %.*s%s%s\n\r", 100, SDK_UTS_VERSION, XPOSTO(110), "|");
-    printk("|compiler: %.*s%s%s\n\r", 100, GCC_VERSION, XPOSTO(110), "|");
-#ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
-    printk("|optimal : %.*s%s%s\n\r", 100, "-Os -g -gdwarf-2 -gstrict-dwarf", XPOSTO(110), "|");
-#else
-    printk("|optimal : %.*s%s%s\n\r", 100, "-O0 -g -gdwarf-2 -gstrict-dwarf", XPOSTO(110), "|");
-#endif
-    printk("|linker  : %.*s%s%s\n\r", 100, LNK_VERSION, XPOSTO(110), "|");
-    printk("|newlibc : %.*s%s%s\n\r", 100, _NEWLIB_VERSION, XPOSTO(110), "|");
-    printk("|author  : %.*s%s%s\n\r", 100, SDK_COMPILE_BY, XPOSTO(110), "|");
-    printk("===============================================================================================================\n\r");
-    printk("\n\r");
-}
-
-static int rt_application_init(pfun_krnl_init_t app_init)
-{
-    static rt_thread_t app_init_thread;
-
-    // highest priority to system bringup.
-    app_init_thread = rt_thread_create("kstartup", app_init, RT_NULL, 0x4000, 25, 10);
-    RT_ASSERT(app_init_thread != RT_NULL);
-
-    rt_thread_startup(app_init_thread);
-
+    /* highest priority to system bringup. */
+    app_init_thread = kthread_create(app_init, NULL, "kstartup", 0x4000, 25);
+    kthread_start(app_init_thread);
     return 0;
 }
 
-#define HEAP_TOP      (CONFIG_DRAM_VIRTBASE + CONFIG_DRAM_SIZE)
-
-void awos_init_bootstrap(pfun_bsp_init_t rt_system_bsp_init, pfun_krnl_init_t app_init, uint64_t ticks)
+void awos_init_bootstrap(pfun_bsp_init_t aw_system_bsp_init, pfun_krnl_init_t app_init, uint64_t ticks)
 {
     void *heap_start, *heap_end;
 
     extern unsigned long __bss_end[];
     heap_start = (void *)__bss_end;
-    heap_end   = (void *)HEAP_TOP;
+    heap_end   = (void *)(CONFIG_DRAM_VIRTBASE + CONFIG_DRAM_SIZE);
 
     rt_system_heap_init(heap_start, heap_end);
+
+    common_init();
+
+#ifdef CONFIG_DOUBLE_FREE_CHECK
+    void esKRNL_MemLeakChk(uint32_t en);
+    esKRNL_MemLeakChk(3);
+#endif
+
+    dma_alloc_coherent_init();
+
+#ifdef CONFIG_DMA_COHERENT_HEAP
+    dma_coherent_heap_init();
+#endif
+    system_time_init();
+
+    if (aw_system_bsp_init)
+    {
+        aw_system_bsp_init();
+    }
+
+    setbuf(stdout, NULL);
+    setbuf(stdin, 0);
+    setvbuf(stdin, NULL, _IONBF, 0);
+
+    show_melis_version();
+
     rt_system_timer_init();
 
     rt_system_scheduler_init();
     rt_system_timer_thread_init();
 
-    void system_time_init(void);
-    system_time_init();
-
-    if (rt_system_bsp_init)
-    {
-        rt_system_bsp_init();
-    }
-
-    setbuf(stdout, NULL);
-    show_melis_version();
-
     /* initialize idle thread */
     rt_thread_idle_init();
 
-    rt_application_init(app_init);
+    aw_application_init(app_init);
 
     rt_system_scheduler_start();
 

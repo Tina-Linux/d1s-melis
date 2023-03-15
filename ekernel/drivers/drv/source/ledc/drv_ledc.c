@@ -1,21 +1,34 @@
 /*
- * ===========================================================================================
- *
- *       Filename:  drv_leds.c
- *
- *    Description:  implemtaton of twi driver core based on hal.
- *
- *        Version:  Melis3.0
- *         Create:  2021-1-22
- *       Revision:  none
- *       Compiler:  GCC:version 9.2.1 20170904 (release),ARM/embedded-7-branch revision 255204
- *
- *         Author:  liuyu@allwinnertech.com
- *   Organization:  SWC-BPD
- *  Last Modified:  2021-2-1
- *
- * ===========================================================================================
- */
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <sunxi_drv_ledc.h>
 #include <sunxi_hal_ledc.h>
 #include <rtthread.h>
@@ -75,7 +88,7 @@ static int sunxi_ledc_complete(struct sunxi_led *led)
 	return 0;
 }
 
-static irqreturn_t sunxi_ledc_irq_handler(int irq, void *dummy)
+static hal_irqreturn_t sunxi_ledc_irq_handler(void *dummy)
 {
 	led_info("=======enter irq_handler=====\n");
 	struct sunxi_led *led = (struct sunxi_led *)dummy;
@@ -97,6 +110,8 @@ static irqreturn_t sunxi_ledc_irq_handler(int irq, void *dummy)
 	hal_sem_ret = hal_sem_post(led->hal_sem);
 	led->config.length = 0;
 	hal_ledc_reset();
+
+	return HAL_IRQ_OK;
 }
 
 
@@ -108,7 +123,7 @@ int sunxi_led_get_config(struct ledc_config *config)
 
 void sunxi_led_deinit(void)
 {
-	free_irq(SUNXI_IRQ_LEDC, led);
+	hal_free_irq(SUNXI_IRQ_LEDC, led);
 	hal_ledc_deinit();
 	free(led->config.data);
 	free(led);
@@ -146,19 +161,19 @@ int sunxi_led_init(void)
 
 	hal_ledc_init();
 
-	if (request_irq(SUNXI_IRQ_LEDC, sunxi_ledc_irq_handler, 0, "ledc-irq", led) < 0)
+	if (hal_request_irq(SUNXI_IRQ_LEDC, sunxi_ledc_irq_handler, "ledc-irq", led) < 0)
 	{
 		led_info("ledc request irq failed \n");
 		goto errirq;
 	}
 
-	enable_irq(SUNXI_IRQ_LEDC);
+	hal_enable_irq(SUNXI_IRQ_LEDC);
 	led_info("sunxi_led_init success\n");
 
 	return 0;
 
 errirq:
-	free_irq(SUNXI_IRQ_LEDC, led);
+	hal_free_irq(SUNXI_IRQ_LEDC, led);
 
 errsem:
 	hal_sem_delete(led->hal_sem);

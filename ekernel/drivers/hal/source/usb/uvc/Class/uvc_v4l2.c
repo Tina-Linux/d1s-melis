@@ -11,7 +11,7 @@
 *
 * Date			:  2013/03/26
 *
-* Description	:  USB VIDEO CONTROL DriverÖĞ¶ÔUSB½Ó¿ÚÉè±¸µÄ´¦Àí
+* Description	:  USB VIDEO CONTROL Driverä¸­å¯¹USBæ¥å£è®¾å¤‡çš„å¤„ç†
 *
 * Others		:  NULL
 *
@@ -21,29 +21,8 @@
 *
 ********************************************************************************
 */
-//#include  "usb_host_config.h"
-//#include  "usb_host_base_types.h"
-#include  "usb_os_platform.h"
-#include  "error.h"
 
-#include  "usb_utils_find_zero_bit.h"
-#include  "usb_list.h"
-#include  "list_head_ext.h"
-
-#include  "usb_host_common.h"
-#include  "usb_gen_dev_mod.h"
-#include  "urb.h"
-#include  "usb_core_interface.h"
-#include  "usb_msg.h"
-
-//#include  "usbh_disk_info.h"
-//#include  "usbh_buff_manager.h"
-//#include  "usbh_disk_remove_time.h"
-
-#include "video.h"
 #include "uvcvideo.h"
-
-
 
 /* ------------------------------------------------------------------------
  * V4L2 interface
@@ -64,8 +43,8 @@ static __u32 uvc_try_frame_interval(struct uvc_frame *frame, __u32 interval)
 
 		for (i = 0; i < frame->bFrameIntervalType; ++i) {
 			dist = interval > frame->dwFrameInterval[i]
-			     ? interval - frame->dwFrameInterval[i]
-			     : frame->dwFrameInterval[i] - interval;
+				   ? interval - frame->dwFrameInterval[i]
+				   : frame->dwFrameInterval[i] - interval;
 
 			if (dist > best)
 				break;
@@ -73,13 +52,13 @@ static __u32 uvc_try_frame_interval(struct uvc_frame *frame, __u32 interval)
 			best = dist;
 		}
 
-		interval = frame->dwFrameInterval[i-1];
+		interval = frame->dwFrameInterval[i - 1];
 	} else {
 		const __u32 min = frame->dwFrameInterval[0];
 		const __u32 max = frame->dwFrameInterval[1];
 		const __u32 step = frame->dwFrameInterval[2];
 
-		interval = min + (interval - min + step/2) / step * step;
+		interval = min + (interval - min + step / 2) / step * step;
 		if (interval > max)
 			interval = max;
 	}
@@ -88,8 +67,10 @@ static __u32 uvc_try_frame_interval(struct uvc_frame *frame, __u32 interval)
 }
 
 static int uvc_v4l2_try_format(struct uvc_streaming *stream,
-	struct v4l2_format *fmt, struct uvc_streaming_control *probe,
-	struct uvc_format **uvc_format, struct uvc_frame **uvc_frame)
+			       struct v4l2_format *fmt,
+			       struct uvc_streaming_control *probe,
+			       struct uvc_format **uvc_format,
+			       struct uvc_frame **uvc_frame)
 {
 	struct uvc_format *format = NULL;
 	struct uvc_frame *frame = NULL;
@@ -105,9 +86,9 @@ static int uvc_v4l2_try_format(struct uvc_streaming *stream,
 
 	fcc = (__u8 *)&fmt->fmt.pix.pixelformat;
 	hal_log_info("Trying format 0x%08x (%c%c%c%c): %ux%u.\n",
-			fmt->fmt.pix.pixelformat,
-			fcc[0], fcc[1], fcc[2], fcc[3],
-			fmt->fmt.pix.width, fmt->fmt.pix.height);
+		     fmt->fmt.pix.pixelformat,
+		     fcc[0], fcc[1], fcc[2], fcc[3],
+		     fmt->fmt.pix.width, fmt->fmt.pix.height);
 
 	/* Check if the hardware supports the requested format. */
 	for (i = 0; i < stream->nformats; ++i) {
@@ -118,7 +99,7 @@ static int uvc_v4l2_try_format(struct uvc_streaming *stream,
 
 	if (format == NULL || format->fcc != fmt->fmt.pix.pixelformat) {
 		hal_log_err("Unsupported format 0x%08x.\n",
-				fmt->fmt.pix.pixelformat);
+			    fmt->fmt.pix.pixelformat);
 		return -EINVAL;
 	}
 
@@ -135,7 +116,7 @@ static int uvc_v4l2_try_format(struct uvc_streaming *stream,
 		__u16 h = format->frame[i].wHeight;
 
 		d = min(w, rw) * min(h, rh);
-		d = w*h + rw*rh - 2*d;
+		d = w * h + rw * rh - 2 * d;
 		if (d < maxd) {
 			maxd = d;
 			frame = &format->frame[i];
@@ -147,7 +128,7 @@ static int uvc_v4l2_try_format(struct uvc_streaming *stream,
 
 	if (frame == NULL) {
 		hal_log_err("Unsupported size %ux%u.\n",
-				fmt->fmt.pix.width, fmt->fmt.pix.height);
+			    fmt->fmt.pix.width, fmt->fmt.pix.height);
 		return -EINVAL;
 	}
 
@@ -159,7 +140,7 @@ static int uvc_v4l2_try_format(struct uvc_streaming *stream,
 
 	/* Set the format index, frame index and frame interval. */
 	memset(probe, 0, sizeof *probe);
-	probe->bmHint = 1;	/* dwFrameInterval */
+	probe->bmHint = 1; /* dwFrameInterval */
 	probe->bFormatIndex = format->index;
 	probe->bFrameIndex = frame->bFrameIndex;
 	probe->dwFrameInterval = uvc_try_frame_interval(frame, interval);
@@ -175,14 +156,13 @@ static int uvc_v4l2_try_format(struct uvc_streaming *stream,
 	 * developers test their webcams with the Linux driver as well as with
 	 * the Windows driver).
 	 */
-//	mutex_lock(&stream->mutex);
+	//	mutex_lock(&stream->mutex);
 	if (stream->dev->quirks & UVC_QUIRK_PROBE_EXTRAFIELDS)
-		probe->dwMaxVideoFrameSize =
-			stream->ctrl.dwMaxVideoFrameSize;
+		probe->dwMaxVideoFrameSize = stream->ctrl.dwMaxVideoFrameSize;
 
 	/* Probe the device. */
 	ret = uvc_probe_video(stream, probe);
-//	mutex_unlock(&stream->mutex);
+	//	mutex_unlock(&stream->mutex);
 	if (ret < 0)
 		goto done_try_format;
 
@@ -203,8 +183,7 @@ done_try_format:
 	return ret;
 }
 
-static int uvc_v4l2_get_format(struct uvc_streaming *stream,
-	struct v4l2_format *fmt)
+static int uvc_v4l2_get_format(struct uvc_streaming *stream, struct v4l2_format *fmt)
 {
 	struct uvc_format *format;
 	struct uvc_frame *frame;
@@ -236,8 +215,7 @@ done_get_format:
 	return ret;
 }
 
-static int uvc_v4l2_set_format(struct uvc_streaming *stream,
-	struct v4l2_format *fmt)
+static int uvc_v4l2_set_format(struct uvc_streaming *stream, struct v4l2_format *fmt)
 {
 	struct uvc_streaming_control probe;
 	struct uvc_format *format;
@@ -258,7 +236,8 @@ static int uvc_v4l2_set_format(struct uvc_streaming *stream,
 //		goto done;
 //	}
 
-	memcpy(&stream->ctrl, &probe, sizeof probe);
+	stream->ctrl = probe;
+	//memcpy(&stream->ctrl, &probe, sizeof probe);
 	stream->cur_format = format;
 	stream->cur_frame = frame;
 
@@ -267,8 +246,7 @@ static int uvc_v4l2_set_format(struct uvc_streaming *stream,
 	return ret;
 }
 
-static __s32 uvc_v4l2_get_streamparm(struct uvc_streaming *stream,
-		struct v4l2_streamparm *parm)
+static __s32 uvc_v4l2_get_streamparm(struct uvc_streaming *stream, struct v4l2_streamparm *parm)
 {
 	__u32 numerator, denominator;
 
@@ -303,7 +281,7 @@ static __s32 uvc_v4l2_get_streamparm(struct uvc_streaming *stream,
 }
 
 static __s32 uvc_v4l2_set_streamparm(struct uvc_streaming *stream,
-		struct v4l2_streamparm *parm)
+				     struct v4l2_streamparm *parm)
 {
 	struct uvc_streaming_control probe;
 	struct v4l2_fract timeperframe;
@@ -319,9 +297,9 @@ static __s32 uvc_v4l2_set_streamparm(struct uvc_streaming *stream,
 		timeperframe = parm->parm.output.timeperframe;
 
 	interval = uvc_fraction_to_interval(timeperframe.numerator,
-		timeperframe.denominator);
+					    timeperframe.denominator);
 	hal_log_err("Setting frame interval to %u/%u (%u).\n",
-		timeperframe.numerator, timeperframe.denominator, interval);
+		    timeperframe.numerator, timeperframe.denominator, interval);
 
 //	mutex_lock(&stream->mutex);
 
@@ -331,8 +309,7 @@ static __s32 uvc_v4l2_set_streamparm(struct uvc_streaming *stream,
 //	}
 
 	memcpy(&probe, &stream->ctrl, sizeof probe);
-	probe.dwFrameInterval =
-		uvc_try_frame_interval(stream->cur_frame, interval);
+	probe.dwFrameInterval = uvc_try_frame_interval(stream->cur_frame, interval);
 
 	/* Probe the device with the new settings. */
 	ret = uvc_probe_video(stream, &probe);
@@ -348,7 +325,7 @@ static __s32 uvc_v4l2_set_streamparm(struct uvc_streaming *stream,
 	timeperframe.numerator = probe.dwFrameInterval;
 	timeperframe.denominator = 10000000;
 	uvc_simplify_fraction(&timeperframe.numerator,
-		&timeperframe.denominator, 8, 333);
+			      &timeperframe.denominator, 8, 333);
 
 	if (parm->type == V4L2_BUF_TYPE_VIDEO_CAPTURE)
 		parm->parm.capture.timeperframe = timeperframe;
@@ -358,6 +335,84 @@ static __s32 uvc_v4l2_set_streamparm(struct uvc_streaming *stream,
 	return 0;
 }
 
+/* -----------------------------------------------------------------------------
+ * V4L2 queue operations
+ */
+
+int uvc_request_buffers(struct uvc_streaming *stream, struct v4l2_requestbuffers *rb)
+{
+	int ret;
+	unsigned int buffer;
+	struct uvc_buffer *buf;
+
+	/*** free mem ***/
+	if (rb->count == 0 && stream->bufs_count != 0) {
+		for (buffer = 0; buffer < stream->bufs_count; ++buffer) {
+			buf = stream->bufs[buffer];
+			hal_free((void *)buf->buf.mem_buf);
+			hal_free(buf);
+			stream->bufs[buffer] = NULL;
+		}
+
+		stream->bufs_count = 0;
+		return 0;
+	}
+
+	if (rb->count < 0 || rb->count > UVC_MAX_FRAME) {
+		hal_log_err("ERR: %s rb->count %d input error\n", __func__, rb->count);
+		rb->count = 3;
+	}
+
+	stream->bufs_count = rb->count;
+	for (buffer = 0; buffer < rb->count; ++buffer) {
+		buf = hal_malloc(sizeof(*buf));
+		memset(buf, 0, sizeof(*buf));
+		buf->state = UVC_BUF_STATE_IDLE;
+		buf->error = 0;
+		buf->buf.index = buffer;
+		buf->buf.mem_buf = (__u32)hal_malloc(stream->ctrl.dwMaxVideoFrameSize);
+		buf->buf.length = stream->ctrl.dwMaxVideoFrameSize;
+		buf->buf.bytesused = 0;
+		stream->bufs[buffer] = buf;
+	}
+
+	return rb->count;
+}
+
+int uvc_queue_buffer(struct uvc_streaming *stream, struct v4l2_buffer *buf)
+{
+	struct uvc_buffer *uvc_buf;
+
+	uvc_buf = stream->bufs[buf->index];
+	uvc_buf->state = UVC_BUF_STATE_QUEUED;
+	uvc_buf->buf.bytesused = 0;
+
+	list_add_tail(&uvc_buf->queue, &stream->irq_queue);
+
+	return 0;
+}
+
+int uvc_dequeue_buffer(struct uvc_streaming *stream, struct v4l2_buffer *buf)
+{
+	struct uvc_buffer *uvc_buf;
+	int hal_sem_ret;
+
+	hal_sem_ret = hal_sem_timedwait(stream->uvc_frame_sem, MS_TO_OSTICK(2 * 1000));
+	if (hal_sem_ret != 0) {
+		hal_log_err("%s wait uvc frame timeout\n", __func__);
+		return -1;
+	}
+
+	uvc_buf = list_first_entry(&stream->done_queue, struct uvc_buffer, queue);
+	list_del(&uvc_buf->queue);
+
+	buf->index = uvc_buf->buf.index;
+	buf->mem_buf = uvc_buf->buf.mem_buf;
+	//buf->length = uvc_buf->buf.length;
+	buf->length = uvc_buf->buf.bytesused;
+
+	return 0;
+}
 /* ------------------------------------------------------------------------
  * Privilege management
  */
@@ -416,8 +471,8 @@ static int uvc_has_privileges(struct uvc_fh *handle)
 /* ------------------------------------------------------------------------
  * V4L2 file operations
  */
-//1.´ò¿ªÉè±¸ÎÄ¼ş
-struct uvc_fh * uvc_v4l2_open(struct uvc_streaming *stream)
+// 1.æ‰“å¼€è®¾å¤‡æ–‡ä»¶
+struct uvc_fh *uvc_v4l2_open(struct uvc_streaming *stream)
 {
 	struct uvc_fh *handle;
 
@@ -427,15 +482,19 @@ struct uvc_fh * uvc_v4l2_open(struct uvc_streaming *stream)
 		hal_log_err("esMEMS_Malloc() fail\n");
 		return NULL;
 	}
+	memset(handle, 0, sizeof(*handle));
 	hal_log_err("uvc_v4l2_open\n");
 
 	handle->stream = stream;
 	handle->state = UVC_HANDLE_PASSIVE;
 
+	INIT_LIST_HEAD(&stream->irq_queue);
+	INIT_LIST_HEAD(&stream->done_queue);
+
 	return handle;
 }
 
-//11.¹Ø±ÕÊÓÆµÉè±¸
+// 11.å…³é—­è§†é¢‘è®¾å¤‡
 __s32 uvc_v4l2_release(struct uvc_fh *handle)
 {
 	struct uvc_streaming *stream = handle->stream;
@@ -443,8 +502,14 @@ __s32 uvc_v4l2_release(struct uvc_fh *handle)
 	hal_log_err("uvc_v4l2_release\n");
 
 	/* Only free resources if this is a privileged handle. */
-//	if (uvc_has_privileges(handle))
-//		uvc_video_enable(stream, 0);
+	// if (uvc_has_privileges(handle))
+	// 	uvc_video_enable(stream, 0);
+
+	/*
+	 * Remove all buffers from videobuf's list...
+	 */
+	INIT_LIST_HEAD(&stream->irq_queue);
+	INIT_LIST_HEAD(&stream->done_queue);
 
 	/* Release the file handle. */
 	uvc_dismiss_privileges(handle);
@@ -462,36 +527,34 @@ __s32 uvc_v4l2_do_ioctl(struct uvc_fh *handle, unsigned int cmd, void *arg)
 
 	switch (cmd) {
 	/* Query capabilities */
-	case VIDIOC_QUERYCAP://2.È¡µÃÉè±¸µÄcapability£¬¿´¿´Éè±¸¾ßÓĞÊ²Ã´¹¦ÄÜ£¬±ÈÈçÊÇ·ñ¾ßÓĞÊÓÆµÊäÈë,»òÕßÒôÆµÊäÈëÊä³öµÈ¡£
+	case VIDIOC_QUERYCAP:  // 2.å–å¾—è®¾å¤‡çš„capabilityï¼Œçœ‹çœ‹è®¾å¤‡å…·æœ‰ä»€ä¹ˆåŠŸèƒ½ï¼Œæ¯”å¦‚æ˜¯å¦å…·æœ‰è§†é¢‘è¾“å…¥,æˆ–è€…éŸ³é¢‘è¾“å…¥è¾“å‡ºç­‰ã€‚
 	{
-//		struct v4l2_capability *cap = arg;
-//
-//		memset(cap, 0, sizeof *cap);
-//		uvc_strlcpy(cap->driver, "uvcvideo", sizeof cap->driver);
-//		uvc_strlcpy(cap->card, vdev->name, sizeof cap->card);
-//		usb_make_path(stream->dev->udev,
-//			      cap->bus_info, sizeof(cap->bus_info));
-//		cap->version = DRIVER_VERSION_NUMBER;
-//		if (stream->type == V4L2_BUF_TYPE_VIDEO_CAPTURE)
-//			cap->capabilities = V4L2_CAP_VIDEO_CAPTURE
-//					  | V4L2_CAP_STREAMING;
-//		else
-//			cap->capabilities = V4L2_CAP_VIDEO_OUTPUT
-//					  | V4L2_CAP_STREAMING;
+		struct v4l2_capability *cap = arg;
+
+		memset(cap, 0, sizeof *cap);
+		uvc_strlcpy(cap->driver, "uvcvideo", sizeof cap->driver);
+		uvc_strlcpy(cap->card, "sunxi", sizeof cap->card);
+		//usb_make_path(stream->dev->udev,
+		//	      cap->bus_info, sizeof(cap->bus_info));
+		cap->version = DRIVER_VERSION_NUMBER;
+		if (stream->type == V4L2_BUF_TYPE_VIDEO_CAPTURE)
+			cap->capabilities = V4L2_CAP_VIDEO_CAPTURE
+					  | V4L2_CAP_STREAMING;
+		else
+			cap->capabilities = V4L2_CAP_VIDEO_OUTPUT
+					  | V4L2_CAP_STREAMING;
 		break;
 	}
 
-	//»ñÈ¡µ±Ç°Çı¶¯Ö§³ÖµÄÊÓÆµ¸ñÊ½
+	//è·å–å½“å‰é©±åŠ¨æ”¯æŒçš„è§†é¢‘æ ¼å¼
 	/* Try, Get, Set & Enum format */
-	case VIDIOC_ENUM_FMT:
-	{
+	case VIDIOC_ENUM_FMT: {
 		struct v4l2_fmtdesc *fmt = arg;
 		struct uvc_format *format;
 		enum v4l2_buf_type type = fmt->type;
 		__u32 index = fmt->index;
 
-		if (fmt->type != stream->type ||
-		    fmt->index >= stream->nformats)
+		if (fmt->type != stream->type || fmt->index >= stream->nformats)
 			return -EINVAL;
 
 		memset(fmt, 0, sizeof(*fmt));
@@ -502,29 +565,26 @@ __s32 uvc_v4l2_do_ioctl(struct uvc_fh *handle, unsigned int cmd, void *arg)
 		fmt->flags = 0;
 		if (format->flags & UVC_FMT_FLAG_COMPRESSED)
 			fmt->flags |= V4L2_FMT_FLAG_COMPRESSED;
-		uvc_strlcpy(fmt->description, format->name,
-			sizeof fmt->description);
+		uvc_strlcpy(fmt->description, format->name, sizeof fmt->description);
 		fmt->description[sizeof fmt->description - 1] = 0;
 		fmt->pixelformat = format->fcc;
 		break;
 	}
-	//ÑéÖ¤µ±Ç°Çı¶¯µÄÏÔÊ¾¸ñÊ½
-	case VIDIOC_TRY_FMT:
-	{
+	//éªŒè¯å½“å‰é©±åŠ¨çš„æ˜¾ç¤ºæ ¼å¼
+	case VIDIOC_TRY_FMT: {
 		struct uvc_streaming_control probe;
 
 		return uvc_v4l2_try_format(stream, arg, &probe, NULL, NULL);
 	}
 
-	case VIDIOC_S_FMT://3.ÉèÖÃÊÓÆµÖ¡µÄ¸ñÊ½¸ö°üÀ¨¿í¶ÈºÍ¸ß¶ÈµÈ
+	case VIDIOC_S_FMT:  // 3.è®¾ç½®è§†é¢‘å¸§çš„æ ¼å¼ä¸ªåŒ…æ‹¬å®½åº¦å’Œé«˜åº¦ç­‰
 		if ((ret = uvc_acquire_privileges(handle)) < 0)
 			return ret;
 
 		return uvc_v4l2_set_format(stream, arg);
-	//¶ÁÈ¡ÊÓÆµÖ¡µÄ¸ñÊ½¸ö°üÀ¨¿í¶ÈºÍ¸ß¶ÈµÈ
+	//è¯»å–è§†é¢‘å¸§çš„æ ¼å¼ä¸ªåŒ…æ‹¬å®½åº¦å’Œé«˜åº¦ç­‰
 	case VIDIOC_G_FMT:
 		return uvc_v4l2_get_format(stream, arg);
-
 
 	/* Get & Set streaming parameters */
 	case VIDIOC_G_PARM:
@@ -535,10 +595,9 @@ __s32 uvc_v4l2_do_ioctl(struct uvc_fh *handle, unsigned int cmd, void *arg)
 			return ret;
 
 		return uvc_v4l2_set_streamparm(stream, arg);
-	//²éÑ¯Çı¶¯µÄĞŞ¼ôÄÜÁ¦
+	//æŸ¥è¯¢é©±åŠ¨çš„ä¿®å‰ªèƒ½åŠ›
 	/* Cropping and scaling */
-	case VIDIOC_CROPCAP:
-	{
+	case VIDIOC_CROPCAP: {
 		struct v4l2_cropcap *ccap = arg;
 
 		if (ccap->type != stream->type)
@@ -558,18 +617,17 @@ __s32 uvc_v4l2_do_ioctl(struct uvc_fh *handle, unsigned int cmd, void *arg)
 		ccap->pixelaspect.denominator = 1;
 		break;
 	}
-	//ÉèÖÃÊÓÆµĞÅºÅµÄ±ß¿ò
+	//è®¾ç½®è§†é¢‘ä¿¡å·çš„è¾¹æ¡†
 	case VIDIOC_G_CROP:
 	case VIDIOC_S_CROP:
 		return -EINVAL;
 
 	/* Buffers & streaming */
-	case VIDIOC_REQBUFS://4.ÏòÇı¶¯ÉêÇëÖ¡»º³å£¬Ò»°ã²»³¬¹ı5¸ö
+	case VIDIOC_REQBUFS:  // 4.å‘é©±åŠ¨ç”³è¯·å¸§ç¼“å†²ï¼Œä¸€èˆ¬ä¸è¶…è¿‡5ä¸ª
 	{
 		struct v4l2_requestbuffers *rb = arg;
 
-		if (rb->type != stream->type ||
-		    rb->memory != V4L2_MEMORY_MMAP)
+		if (rb->type != stream->type || rb->memory != V4L2_MEMORY_MMAP)
 			return -EINVAL;
 
 		if ((ret = uvc_acquire_privileges(handle)) < 0)
@@ -579,6 +637,7 @@ __s32 uvc_v4l2_do_ioctl(struct uvc_fh *handle, unsigned int cmd, void *arg)
 //		ret = uvc_alloc_buffers(&stream->queue, rb->count,
 //					stream->ctrl.dwMaxVideoFrameSize);
 //		mutex_unlock(&stream->mutex);
+		ret = uvc_request_buffers(stream, rb);
 		if (ret < 0)
 			return ret;
 
@@ -590,57 +649,50 @@ __s32 uvc_v4l2_do_ioctl(struct uvc_fh *handle, unsigned int cmd, void *arg)
 		break;
 	}
 
-	case VIDIOC_QBUF://6.½«ÉêÇëµ½µÄÖ¡»º³åÈ«²¿Èë¶ÓÁĞ£¬ÒÔ±ã´æ·Å²É¼¯µ½µÄÊı¾İ; 9.½«»º³åÖØĞÂÈë¶ÓÁĞÎ²,ÕâÑù¿ÉÒÔÑ­»·²É¼¯
-//		if (!uvc_has_privileges(handle))
-//			return -EBUSY;
-//
-//		return uvc_queue_buffer(&stream->queue, arg);
-		break;
+	case VIDIOC_QBUF:  // 6.å°†ç”³è¯·åˆ°çš„å¸§ç¼“å†²å…¨éƒ¨å…¥é˜Ÿåˆ—ï¼Œä»¥ä¾¿å­˜æ”¾é‡‡é›†åˆ°çš„æ•°æ®; 9.å°†ç¼“å†²é‡æ–°å…¥é˜Ÿåˆ—å°¾,è¿™æ ·å¯ä»¥å¾ªç¯é‡‡é›†
+		if (!uvc_has_privileges(handle))
+			return -EBUSY;
 
-	case VIDIOC_DQBUF://8.³ö¶ÓÁĞÒÔÈ¡µÃÒÑ²É¼¯Êı¾İµÄÖ¡»º³å£¬È¡µÃÔ­Ê¼²É¼¯Êı¾İ
-//		if (!uvc_has_privileges(handle))
-//			return -EBUSY;
-//
-//		return uvc_dequeue_buffer(&stream->queue, arg,
-//			file->f_flags & O_NONBLOCK);
-		break;
+		return uvc_queue_buffer(stream, arg);
 
-	case VIDIOC_STREAMON://7.¿ªÊ¼ÊÓÆµµÄ²É¼¯
+	case VIDIOC_DQBUF:  // 8.å‡ºé˜Ÿåˆ—ä»¥å–å¾—å·²é‡‡é›†æ•°æ®çš„å¸§ç¼“å†²ï¼Œå–å¾—åŸå§‹é‡‡é›†æ•°æ®
+		if (!uvc_has_privileges(handle))
+			return -EBUSY;
+
+		return uvc_dequeue_buffer(stream, arg);
+
+	case VIDIOC_STREAMON:  // 7.å¼€å§‹è§†é¢‘çš„é‡‡é›†
 	{
-		int type = (int)arg;
+		enum v4l2_buf_type type = *((enum v4l2_buf_type *)arg);
 
-		if (type != stream->type)
-		{
+		if (type != stream->type) {
 			hal_log_err("%d != %d\n", type, stream->type);
 			return -EINVAL;
 		}
 
-		if (!uvc_has_privileges(handle))
-		{
+		if (!uvc_has_privileges(handle)) {
 			hal_log_err("%d\n", handle->state);
 			return -EBUSY;
 		}
 
-//		mutex_lock(&stream->mutex);
+		// mutex_lock(&stream->mutex);
 		ret = uvc_video_enable(stream, 1);
-//		mutex_unlock(&stream->mutex);
+		// mutex_unlock(&stream->mutex);
 		if (ret < 0)
 			return ret;
 		break;
 	}
 
-	case VIDIOC_STREAMOFF://10.Í£Ö¹ÊÓÆµµÄ²É¼¯
+	case VIDIOC_STREAMOFF:	// 10.åœæ­¢è§†é¢‘çš„é‡‡é›†
 	{
-		int type = (int)arg;
+		enum v4l2_buf_type type = *((enum v4l2_buf_type *)arg);
 
-		if (type != stream->type)
-		{
+		if (type != stream->type) {
 			hal_log_err("%d != %d\n", type, stream->type);
 			return -EINVAL;
 		}
 
-		if (!uvc_has_privileges(handle))
-		{
+		if (!uvc_has_privileges(handle)) {
 			hal_log_err("%d\n", handle->state);
 			return -EBUSY;
 		}

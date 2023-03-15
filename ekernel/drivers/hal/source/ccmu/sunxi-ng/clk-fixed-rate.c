@@ -62,6 +62,7 @@ int clk_hw_register_fixed_rate_with_accuracy(
         return -1;
     }
 
+    memset(fixed, 0, sizeof(*fixed));
     init.name = name;
     init.ops = &clk_fixed_rate_ops;
     init.flags = flags;
@@ -106,23 +107,52 @@ int sunxi_fixed_clk_init(void)
         printf("register clock dcxo24M error\n");
     }
 
-    ret = clk_register_fixed_rate_with_accuracy("fix_losc", CLK_SRC_LOSC, NULL, 0, 32768, 0);
+    ret = clk_register_fixed_rate_with_accuracy("dcxo24_576M", CLK_SRC_HOSC24576M, NULL, 0, 24576000, 0);
     if (ret)
     {
-        printf("register clock dcxo24M error\n");
+        printf("register clock dcxo24_576M error\n");
+    }
+
+    ret = clk_register_fixed_rate_with_accuracy("dcxo26M", CLK_SRC_HOSC26M, NULL, 0, 26000000, 0);
+    if (ret)
+    {
+        printf("register clock dcxo26M error\n");
+    }
+
+    ret = clk_register_fixed_rate_with_accuracy("dcxo32M", CLK_SRC_HOSC32M, NULL, 0, 32000000, 0);
+    if (ret)
+    {
+        printf("register clock dcxo32M error\n");
+    }
+
+    ret = clk_register_fixed_rate_with_accuracy("dcxo40M", CLK_SRC_HOSC40M, NULL, 0, 40000000, 0);
+    if (ret)
+    {
+        printf("register dcxo40M error\n");
+    }
+
+    ret = clk_register_fixed_rate_with_accuracy("fix-losc", CLK_SRC_LOSC, NULL, 0, 32768, 0);
+    if (ret)
+    {
+        printf("register clock losc error\n");
     }
 
     ret = clk_register_fixed_rate_with_accuracy("rc-16m", CLK_SRC_RC_16M, NULL, 0, 16000000, 300000000);
     if (ret)
     {
-        printf("register clock dcxo24M error\n");
+        printf("register clock rc-16m error\n");
     }
 
     ret = clk_register_fixed_rate_with_accuracy("ext-32k", CLK_SRC_EXT_32K, NULL, 0, 32768, 0);
     if (ret)
     {
-        printf("register clock dcxo24M error\n");
+        printf("register clock ext-32k error\n");
     }
 
+    ret = clk_register_fixed_rate_with_accuracy("rc-hf", CLK_SRC_RC_HF, NULL, 0, 8192000, 0);
+    if (ret)
+    {
+        printf("register clock ext-32k error\n");
+    }
     return ret;
 }

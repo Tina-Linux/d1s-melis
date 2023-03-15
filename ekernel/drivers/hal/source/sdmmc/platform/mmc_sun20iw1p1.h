@@ -11,10 +11,15 @@
 #define SDC_CCM_BASE                    (0x2001000)
 #define SDC_GPIO_BASE                   (0x2000000)
 
-
-#define __GIC_SRC_MMC0        56 // (78)
-#define __GIC_SRC_MMC1        57 // (79)
-#define __GIC_SRC_MMC2	      58 // (80)
+#ifdef CONFIG_SOC_SUN20IW1
+#define __GIC_SRC_MMC0        56
+#define __GIC_SRC_MMC1        57
+#define __GIC_SRC_MMC2	      58
+#else
+#define __GIC_SRC_MMC0        72
+#define __GIC_SRC_MMC1        73
+#define __GIC_SRC_MMC2	      74
+#endif
 
 #define  SDC0_IRQn  __GIC_SRC_MMC0
 #define  SDC1_IRQn  __GIC_SRC_MMC1

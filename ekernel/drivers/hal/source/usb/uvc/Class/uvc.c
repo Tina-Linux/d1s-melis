@@ -11,7 +11,7 @@
 *
 * Date			:  2013/03/26
 *
-* Description	:  USB VIDEO CONTROL DriverÖÐ¶ÔUSB½Ó¿ÚÉè±¸µÄ´¦Àí
+* Description	:  USB VIDEO CONTROL Driverä¸­å¯¹USBæŽ¥å£è®¾å¤‡çš„å¤„ç†
 *
 * Others		:  NULL
 *
@@ -21,49 +21,29 @@
 *
 ********************************************************************************
 */
-//#include  "usb_host_config.h"
-//#include  "usb_host_base_types.h"
-#include  "usb_os_platform.h"
-#include  "error.h"
 
-#include  "usb_utils_find_zero_bit.h"
-#include  "usb_list.h"
-#include  "list_head_ext.h"
-
-#include  "usb_host_common.h"
-#include  "usb_gen_dev_mod.h"
-#include  "urb.h"
-#include  "usb.h"
-#include  "usb_core_interface.h"
-#include  "usb_msg.h"
-
-//#include  "usbh_disk_info.h"
-//#include  "usbh_buff_manager.h"
-//#include  "usbh_disk_remove_time.h"
-
-#include "video.h"
 #include "uvcvideo.h"
 #include "uvc_driver.h"
-
+#include "mod_devicetable.h"
 
 #define  UVC_DRV_NAME		"UVC Class"
 #define  UVC_DRV_AUTHOR		"Kingvan.Tong"
 
 //---------------------------------------------------------------
-//  ºê¶¨ÒåÇø
+//  å®å®šä¹‰åŒº
 //---------------------------------------------------------------
 
 //---------------------------------------------------------------
-//  È«¾Ö±äÁ¿Çø
+//  å…¨å±€å˜é‡åŒº
 //---------------------------------------------------------------
-static struct usb_host_func_drv UVCDrv;
-static __u32 UVCDev_id_array;				/* ¼ÇÂ¼ÁËÉè±¸µÄ±àºÅ */
+static struct usb_driver UVCDrv;
+static __u32 UVCDev_id_array;				/* è®°å½•äº†è®¾å¤‡çš„ç¼–å· */
 static void* UVCDev_attr;
 
 
 static unsigned char g_enter_flag = 0;
 
-static struct usb_drv_dev_match_table UVC_match_table[] = {
+static struct usb_device_id UVC_match_table[] = {
 		/* Genius eFace 2025 */
 		{ USB_DEVICE_ID_MATCH_DEVICE | USB_DEVICE_ID_MATCH_INT_INFO,
 		  0x0458, 0x706e,0,0,
@@ -294,7 +274,7 @@ static struct usb_drv_dev_match_table UVC_match_table[] = {
 };
 
 //---------------------------------------------------------------
-//  º¯ÊýÇø¶¨ÒåÇø
+//  å‡½æ•°åŒºå®šä¹‰åŒº
 //---------------------------------------------------------------
 
 static unsigned int get_UVCDev_id(void)
@@ -319,7 +299,7 @@ static int free_UVCDev_id(unsigned int bit)
 		return -1;
 	}
 
-    /* »ØÊÕ¸ÃÎ» */
+    /* å›žæ”¶è¯¥ä½ */
 	usb_clear_bit(bit, (volatile uint32_t *)&UVCDev_id_array);
 
     return 0;
@@ -327,28 +307,26 @@ static int free_UVCDev_id(unsigned int bit)
 
 static int UVCDevInit(UVCDev_t *UVCDev, struct usb_interface *intf)
 {
-    int ret = 0;
-	
-    if(UVCDev == NULL || intf == NULL){
+	int ret = 0;
+
+	if (UVCDev == NULL || intf == NULL) {
 		hal_log_err("ERR: UVCDevInit: input error\n");
 		return USB_ERR_BAD_ARGUMENTS;
 	}
 
-    UVCDev->pusb_dev 	= usb_mod_interface_to_usbdev(intf);
+	UVCDev->pusb_dev = interface_to_usbdev(intf);
 	if(UVCDev->pusb_dev == NULL){
 		hal_log_err("ERR: UVCDevInit: UVCDev->pusb_dev == NULL\n");
 		return USB_ERR_BAD_ARGUMENTS;
 	}
 
-	UVCDev->pusb_intf 	= intf;
-	UVCDev->DevNo       = get_UVCDev_id();
+	UVCDev->pusb_intf = intf;
+	UVCDev->DevNo = get_UVCDev_id();
 
 	/* Store our private data in the interface */
-	usb_mod_usb_set_intf_priv_data(intf, (void *)UVCDev);
+	usb_set_intfdata(intf, (void *)UVCDev);
 
-	
 	return USB_ERR_SUCCESS;
-
 }
 
 static int UVCDevFree(UVCDev_t *UVCDev)
@@ -361,7 +339,7 @@ static int UVCDevFree(UVCDev_t *UVCDev)
 	}
 
 	/* Remove our private data from the interface */
-	usb_mod_usb_set_intf_priv_data(UVCDev->pusb_intf, NULL);
+	usb_set_intfdata(UVCDev->pusb_intf, NULL);
 
 	free_UVCDev_id(UVCDev->DevNo);
 
@@ -383,14 +361,16 @@ void UVCSetDeviceState(UVCDev_t *UVCDev, UVCDev_State_t state)
 {
 	unsigned int cup_sr	= 0;
 
-    ENTER_CRITICAL(cup_sr);
-    UVCDev->State = state;
-	EXIT_CRITICAL(cup_sr);
+	// ENTER_CRITICAL(cup_sr);
+	hal_interrupt_disable();
+	UVCDev->State = state;
+	hal_interrupt_enable();
+	// EXIT_CRITICAL(cup_sr);
 }
 
-static int UVCDevScan(UVCDev_t *UVCDev, const struct usb_drv_dev_match_table * table_item)
+static int UVCDevScan(UVCDev_t *UVCDev, const struct usb_device_id * table_item)
 {
-	struct usb_host_virt_interface *cur_alt = NULL;
+	struct usb_host_interface *cur_alt = NULL;
 	int ret = 0;
 	unsigned int i = 0;
 
@@ -410,7 +390,7 @@ static int UVCDevScan(UVCDev_t *UVCDev, const struct usb_drv_dev_match_table * t
 		return USB_ERR_DEVICE_PROBE_FAILED;
 	}
 
-	if( usbWebcam_probe(UVCDev) != USB_ERR_SUCCESS){
+	if (usbWebcam_probe(UVCDev) != USB_ERR_SUCCESS){
 		hal_log_err("ERR: usbWebcamProbe failed\n");
 		return USB_ERR_DEVICE_PROBE_FAILED;
 	}
@@ -418,27 +398,27 @@ static int UVCDevScan(UVCDev_t *UVCDev, const struct usb_drv_dev_match_table * t
 	return USB_ERR_SUCCESS;
 }
 
-static int UVCDevAdd(UVCDev_t * UVCDev, const struct usb_drv_dev_match_table * table_item)
+static int UVCDevAdd(UVCDev_t * UVCDev, const struct usb_device_id * table_item)
 {
-    return UVCDevScan(UVCDev, table_item);
+	return UVCDevScan(UVCDev, table_item);
 }
 
 static int UVCDevDel(UVCDev_t * UVCDev)
 {
+
 	if( usbWebcam_remove(UVCDev) != USB_ERR_SUCCESS){
 		hal_log_err("ERR: usbWebcamRemove failed\n");
 		return USB_ERR_DEVICE_PROBE_FAILED;
 	}
+
 	return USB_ERR_SUCCESS;
 }
 
 
-static int32_t UVCDevProbe(struct usb_interface *intf, const struct usb_drv_dev_match_table * table_item)
+static int32_t UVCDevProbe(struct usb_interface *intf, const struct usb_device_id * table_item)
 {
 	UVCDev_t *UVCDev = NULL;
 	int ret = 0;
-//	unsigned char err  = 0;
-	
 	hal_log_info("UVCDevProbe begin\n");
 
 	if( g_enter_flag == 1 )
@@ -447,23 +427,22 @@ static int32_t UVCDevProbe(struct usb_interface *intf, const struct usb_drv_dev_
 		return -1;
 	}
 
-    if(intf == NULL || table_item == NULL){
+	if (!intf || !table_item) {
 		hal_log_err("ERR: UVCDevProbe: input error\n");
 		return -1;
 	}
 
 	//----------------------------------------------------------------
-	//   ´´½¨UVCDevÉè±¸
+	//   åˆ›å»ºUVCDevè®¾å¤‡
 	//----------------------------------------------------------------
-	/* ³õÊ¼»¯Ò»¸ömscDev */
+	/* åˆå§‹åŒ–ä¸€ä¸ªmscDev */
 	UVCDev = hal_malloc(sizeof(UVCDev_t));
-	if(UVCDev == NULL){
+	if (!UVCDev) {
 		hal_log_err("ERR: UVCDevProbe malloc failed\n");
 		goto error0;
 	}
 	
 	memset(UVCDev, 0, sizeof(UVCDev_t));
-
 	ret = UVCDevInit(UVCDev, intf);
 	if(ret != USB_ERR_SUCCESS){
 		hal_log_err("ERR: UVCDevProbe failed\n");
@@ -471,15 +450,15 @@ static int32_t UVCDevProbe(struct usb_interface *intf, const struct usb_drv_dev_
 		goto error1;
 	}
 
-	/* »ñµÃÉè±¸ÐÅÏ¢ */
+	/* èŽ·å¾—è®¾å¤‡ä¿¡æ¯ */
 	UVCGetDeviceInfo(UVCDev);
 
 	UVCSetDeviceState(UVCDev, UVC_DEV_ONLINE);
 
 	//----------------------------------------------------------------
-	//   Ê¶±ðUVCDevÉè±¸
+	//   è¯†åˆ«UVCDevè®¾å¤‡
 	//----------------------------------------------------------------
-    ret = UVCDevAdd(UVCDev, table_item);
+	ret = UVCDevAdd(UVCDev, table_item);
 	if(ret != USB_ERR_SUCCESS){
 		hal_log_err("ERR: UVCDevScan failed\n");
 		ret = -1;
@@ -527,17 +506,19 @@ static void UVCDevRemove(struct usb_interface *intf)
 		return ;
 	}
 
-	UVCDev = (UVCDev_t *)usb_mod_usb_get_intf_priv_data(intf);
+	UVCDev = (UVCDev_t *)usb_get_intfdata(intf);
 	if(UVCDev == NULL){
 		hal_log_err("ERR: UVCDev = NULL\n");
 		return ;
 	}
 
 	UVCSetDeviceState(UVCDev, UVC_DEV_OFFLINE);
-	
-    UVCDevDel(UVCDev);
 
-    uvc_disconnect(UVCDev);
+	UVCDevDel(UVCDev);
+
+	UVCDevDel(UVCDev);
+
+	// uvc_disconnect(UVCDev);
 
 	UVCDevFree(UVCDev);
 
@@ -550,37 +531,32 @@ static void UVCDevRemove(struct usb_interface *intf)
 	return ;
 }
 
-static int UVCDriverInit(struct usb_host_func_drv *drv)
+static int UVCDriverInit(struct usb_driver *drv)
 {
-    if(drv == NULL){
-		hal_log_err("ERR: mscDrv_init: input error\n");
+	if (!drv) {
+		hal_log_err("ERR: %s: input error\n", __func__);
 		return -1;
 	}
 
 	USB_INIT_LIST_HEAD(&(drv->virt_dev_list));
-	drv->func_drv_name 		= UVC_DRV_NAME;
-	drv->func_drv_auther 	= UVC_DRV_AUTHOR;
-	drv->probe 				= UVCDevProbe;
-	drv->disconnect 		= UVCDevRemove;
-	drv->suspend			= UVCDevSuspend;
-	drv->resume				= NULL;
-	drv->match_table 		= UVC_match_table;
+	drv->func_drv_name	= UVC_DRV_NAME;
+	drv->func_drv_auther	= UVC_DRV_AUTHOR;
+	drv->probe		= UVCDevProbe;
+	drv->disconnect		= UVCDevRemove;
+	drv->suspend		= UVCDevSuspend;
+	drv->resume		= NULL;
+	drv->match_table	= UVC_match_table;
 
 	return 0;
 }
+
 int UVCInit(void)
 {
 	int ret = 0;
 
-    memset(&UVCDrv, 0, sizeof(struct usb_host_func_drv));
+	memset(&UVCDrv, 0, sizeof(struct usb_driver));
 
-    UVCDev_attr = usbWebcam_init();
-    if( UVCDev_attr == NULL ){
-		hal_log_err("ERR: usbWebcam_init failed\n");
-		return -1;
-    }
-
-	if(UVCDriverInit(&UVCDrv) != 0){
+	if (UVCDriverInit(&UVCDrv) != 0) {
 		hal_log_err("ERR: UVCDriverInit failed\n");
 		return -1;
 	}
@@ -588,6 +564,12 @@ int UVCInit(void)
 	ret = usb_host_func_drv_reg(&UVCDrv);
 	if(ret != 0){
 		hal_log_err("ERR: UVCInit: Reg driver %s failed\n", UVCDrv.func_drv_name);
+		return -1;
+	}
+
+	UVCDev_attr = usbWebcam_init();
+	if (UVCDev_attr == NULL) {
+		hal_log_err("ERR: usbWebcam_init failed\n");
 		return -1;
 	}
 
@@ -612,17 +594,8 @@ int UVCExit(void)
 		return -1;
 	}
 
-    memset(&UVCDrv, 0, sizeof(struct usb_host_func_drv));
+    memset(&UVCDrv, 0, sizeof(struct usb_driver));
 
     return 0;
 }
-
-
-
-
-
-
-
-
-
 

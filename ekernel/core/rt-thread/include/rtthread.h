@@ -263,6 +263,13 @@ void rt_page_free(void *addr, rt_size_t npages);
 #ifdef RT_USING_HOOK
 void rt_malloc_sethook(void (*hook)(void *ptr, rt_size_t size));
 void rt_free_sethook(void (*hook)(void *ptr));
+void rt_page_alloc_sethook(void (*hook)(void *ptr, rt_size_t npages));
+void rt_page_free_sethook(void (*hook)(void *ptr, rt_size_t npages));
+void rt_malloc_large_sethook(void (*hook)(void *ptr, rt_size_t size));
+void rt_free_large_sethook(void (*hook)(void *ptr, rt_size_t size));
+void rt_malloc_small_sethook(void (*hook)(void *ptr, rt_size_t size));
+void rt_free_small_sethook(void (*hook)(void *ptr, rt_size_t size));
+void rt_realloc_small_sethook(void (*hook)(void *ptr, rt_size_t size));
 #endif
 
 #endif
@@ -279,6 +286,8 @@ rt_err_t rt_memheap_detach(struct rt_memheap *heap);
 void *rt_memheap_alloc(struct rt_memheap *heap, rt_size_t size);
 void *rt_memheap_realloc(struct rt_memheap *heap, void *ptr, rt_size_t newsize);
 void rt_memheap_free(void *ptr);
+void *rt_memheap_alloc_align(struct rt_memheap *heap, rt_size_t size, rt_size_t align);
+void rt_memheap_free_align(void *ptr);
 #endif
 
 /**@}*/

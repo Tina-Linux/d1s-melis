@@ -1,22 +1,34 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                                  File System
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2011-2014, Sunny China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : dir.c
-* By      : Sunny
-* Version : v1.0
-* Date    : 2011-1-15
-* Descript: directory operations of vfs, code is extracted from linux.
-* Update  : date                auther      ver     notes
-*           2011-3-15 15:10:18  Sunny       1.0     Create this file.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "file.h"
 #include "fs.h"
 #include "errno.h"
@@ -61,7 +73,7 @@ __hdle esFSYS_opendir(const char *pDirName)
         return NULL;
     }
 
-    /* ´ò¿ªµÄÎÄ¼ş¸öÊıÊÇ·ñÒÑ¾­´ïµ½ÉÏÏŞ */
+    /* æ‰“å¼€çš„æ–‡ä»¶ä¸ªæ•°æ˜¯å¦å·²ç»è¾¾åˆ°ä¸Šé™ */
     cpu_sr = awos_arch_lock_irq();
     temp_open_nr = ++nr_files;
     awos_arch_unlock_irq(cpu_sr);
@@ -73,7 +85,7 @@ __hdle esFSYS_opendir(const char *pDirName)
         goto dec_out;
     }
 
-    /* »ñÈ¡ÓÉpFileNameÂ·¾¶ÃûÖĞµÄÅÌ·ûÖ¸¶¨µÄ·ÖÇøÖ¸Õë£¬²¢ÎöÈ¡ÅÌ·ûÒÔÍâµÄÂ·¾¶Ãû */
+    /* è·å–ç”±pFileNameè·¯å¾„åä¸­çš„ç›˜ç¬¦æŒ‡å®šçš„åˆ†åŒºæŒ‡é’ˆï¼Œå¹¶æå–ç›˜ç¬¦ä»¥å¤–çš„è·¯å¾„å */
     sb = path_to_sb(pDirName, &realname);
     if (!sb)
     {
@@ -82,7 +94,7 @@ __hdle esFSYS_opendir(const char *pDirName)
         goto dec_out;
     }
 
-    /* ĞéÄâÎÄ¼şÏµÍ³´ò¿ª²Ù×÷ÄÚ²¿Á÷³Ì */
+    /* è™šæ‹Ÿæ–‡ä»¶ç³»ç»Ÿæ‰“å¼€æ“ä½œå†…éƒ¨æµç¨‹ */
     retval = do_sys_open(realname, O_DIRECTORY, 0, sb);
     if (IS_ERR_OR_NULL(PTR_ERR(retval)))
     {
@@ -95,7 +107,7 @@ __hdle esFSYS_opendir(const char *pDirName)
         fs_log_trace0("fd:%d,", retval->f_fd);
     }
 
-    /* ·ÖÅädirent¿Õ¼ä */
+    /* åˆ†é…direntç©ºé—´ */
     retval->private_data = (void *)__get_free_page(0); // kmalloc(sizeof(__fsys_dirent_t), 0);
     if (retval->private_data == NULL)
     {
@@ -115,7 +127,7 @@ __hdle esFSYS_opendir(const char *pDirName)
 
     unmount_check(sb);
 
-    /* ³É¹¦´ò¿ªÄ¿Â¼ */
+    /* æˆåŠŸæ‰“å¼€ç›®å½• */
     goto out;
 
 dec_out:
@@ -155,17 +167,17 @@ __s32 esFSYS_closedir(__hdle hDir)
         return EPDK_FAIL;
     }
 
-    /* Ïú»Ù dirent ¿Õ¼ä */
+    /* é”€æ¯ dirent ç©ºé—´ */
     if (((struct file *)hDir)->private_data)
     {
         free_page(((struct file *)hDir)->private_data);
     }
 
-    /* ¹Ø±Õ¶¯×÷ */
+    /* å…³é—­åŠ¨ä½œ */
     retval = filp_close((struct file *)hDir);
     unmount_check(NULL);
 
-    /* ÎÄ¼şÊı¼õÒ» */
+    /* æ–‡ä»¶æ•°å‡ä¸€ */
     nr_files--;
 
     if (retval && retval != EPDK_FAIL)
@@ -194,7 +206,7 @@ __s32 esFSYS_mkdir(const char *pDirName)
         return EPDK_FAIL;
     }
 
-    /* »ñÈ¡ÓÉpFileNameÂ·¾¶ÃûÖĞµÄÅÌ·ûÖ¸¶¨µÄ·ÖÇøÖ¸Õë£¬²¢ÎöÈ¡ÅÌ·ûÒÔÍâµÄÂ·¾¶Ãû */
+    /* è·å–ç”±pFileNameè·¯å¾„åä¸­çš„ç›˜ç¬¦æŒ‡å®šçš„åˆ†åŒºæŒ‡é’ˆï¼Œå¹¶æå–ç›˜ç¬¦ä»¥å¤–çš„è·¯å¾„å */
     sb = path_to_sb(pDirName, &realname);
     if (!sb)
     {
@@ -203,7 +215,7 @@ __s32 esFSYS_mkdir(const char *pDirName)
         goto out;
     }
 
-    /* ´´½¨Ä¿Â¼ */
+    /* åˆ›å»ºç›®å½• */
     error = sys_mkdirat(realname, sb, 0);
     unmount_check(sb);
 
@@ -234,7 +246,7 @@ __s32 esFSYS_rmdir(const char *pDirName)
         return EPDK_FAIL;
     }
 
-    /* »ñÈ¡ÓÉpFileNameÂ·¾¶ÃûÖĞµÄÅÌ·ûÖ¸¶¨µÄ·ÖÇøÖ¸Õë£¬²¢ÎöÈ¡ÅÌ·ûÒÔÍâµÄÂ·¾¶Ãû */
+    /* è·å–ç”±pFileNameè·¯å¾„åä¸­çš„ç›˜ç¬¦æŒ‡å®šçš„åˆ†åŒºæŒ‡é’ˆï¼Œå¹¶æå–ç›˜ç¬¦ä»¥å¤–çš„è·¯å¾„å */
     sb = path_to_sb(pDirName, &realname);
     if (!sb)
     {
@@ -336,7 +348,7 @@ static long __getdents(struct file *dir, struct linux_dirent64 *dirent,
 
     *outcnt = 0;
 
-    /* ¶ÁÈ¡Ä¿Â¼ */
+    /* è¯»å–ç›®å½• */
     res = dir->f_op->readdir(dir, &buf, filldir);
 
     file_accessed(dir);
@@ -413,7 +425,7 @@ __hdle esFSYS_readdir(__hdle hDir)
         goto err_out;
     }
 
-    /* Ä¿Â¼¾ä±ú¶ÔÓ¦µÄ½ÚµãÎŞfread²Ù×÷ */
+    /* ç›®å½•å¥æŸ„å¯¹åº”çš„èŠ‚ç‚¹æ— freadæ“ä½œ */
     if (!((struct file *)hDir)->f_op || !((struct file *)hDir)->f_op->readdir)
     {
         fs_log_error("dir has no readdir method.\n");
@@ -421,7 +433,7 @@ __hdle esFSYS_readdir(__hdle hDir)
         goto err_out;
     }
 
-    /* ÊÇ·ñÊÇËÀµÄÄ¿Â¼ */
+    /* æ˜¯å¦æ˜¯æ­»çš„ç›®å½• */
     if (IS_DEADDIR(((struct file *)hDir)->f_dentry->d_inode))
     {
         fs_err = -ENOENT;
@@ -429,7 +441,7 @@ __hdle esFSYS_readdir(__hdle hDir)
         goto err_out;
     }
 
-    /* ¶ÁÈ¡Ä¿Â¼ */
+    /* è¯»å–ç›®å½• */
     retval = __getonedir((struct file *)hDir);
     goto out;
 

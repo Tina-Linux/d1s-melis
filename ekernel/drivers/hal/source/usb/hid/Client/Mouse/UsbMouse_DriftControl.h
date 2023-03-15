@@ -2,8 +2,8 @@
 ********************************************************************************
 *                                USB Hid Driver
 *
-*                (c) Copyright 2006-2010, All winners Co,Ld. 
-*                        All Right Reserved 
+*                (c) Copyright 2006-2010, All winners Co,Ld.
+*                        All Right Reserved
 *
 * FileName		:  UsbMouse_DriftControl.h
 *
@@ -17,45 +17,43 @@
 *
 * History:
 *		<time> 		<version >		<author>	 	<desc>
-*	   2010.07.16	   1.0			 Javen			build this file 
+*	   2010.07.16	   1.0			 Javen			build this file
 *
 ********************************************************************************
 */
-#ifndef  __USBMOUSE_DRIFTCONTROL_H__
-#define  __USBMOUSE_DRIFTCONTROL_H__
+#ifndef __USBMOUSE_DRIFTCONTROL_H__
+#define __USBMOUSE_DRIFTCONTROL_H__
 
 //--------------------------------------------------------
-// 
+//
 //--------------------------------------------------------
-typedef struct _UsbMouseEventUnit{
-	unsigned int vaild;					/* ÊÇ·ñÓĞĞ§ */
-	USBHMouseEvent_t MouseEvent;	/* Êó±êÊÂ¼ş */
-}UsbMouseEventUnit_t;
+typedef struct _UsbMouseEventUnit {
+	unsigned int vaild;	     /* æ˜¯å¦æœ‰æ•ˆ */
+	USBHMouseEvent_t MouseEvent; /* é¼ æ ‡äº‹ä»¶ */
+} UsbMouseEventUnit_t;
 
-typedef struct _UsbMouseDriftControl{
+typedef struct _UsbMouseDriftControl {
 	usbMouse_t *usbMouse;
 
-    osal_timer_t TimerHdle;	/* timer ¾ä±ú 			*/
-	hal_sem_t ThreadSemi;		/* Ïß³ÌĞÅºÅÁ¿ 			*/
-	hal_sem_t notify_complete;	/* Ïß³ÌÍ¬²½ĞÅºÅÁ¿ 		*/
-	void *ThreadId;							/* Ïß³ÌID 				*/
-	
-	unsigned int ButtonDown;						/* °´¼ü°´ÏÂ 			*/
+	osal_timer_t TimerHdle;	   /* timer å¥æŸ„ */
+	hal_sem_t ThreadSemi;	   /* çº¿ç¨‹ä¿¡å·é‡ */
+	hal_sem_t notify_complete; /* çº¿ç¨‹åŒæ­¥ä¿¡å·é‡ */
+	void *ThreadId;		   /* çº¿ç¨‹ID */
 
-	UsbMouseEventUnit_t PreMouseEvent;		/* ÉÏÒ»´ÎµÄÊó±êÊÂ¼ş 	*/
-	UsbMouseEventUnit_t DubiousMouseEvent; 	/* ¿ÉÒÔµÄÊó±êÊÂ¼ş 		*/
-	UsbMouseEventUnit_t CurrentMouseEvent; 	/* µ±Ç°µÄÊó±êÊÂ¼ş 		*/
-	unsigned int DubiousCoordinate;				/* ¿ÉÒÉ×ø±ê, bit1:X, bit2:Y, bit3: X & Y */
-	unsigned int WaitEvent;						/* µÈ´ıÏÂÒ»´ÎµÄÊÂ¼ş 	*/
-}UsbMouseDriftControl_t;
+	unsigned int ButtonDown; /* æŒ‰é”®æŒ‰ä¸‹ */
 
+	UsbMouseEventUnit_t PreMouseEvent;     /* ä¸Šä¸€æ¬¡çš„é¼ æ ‡äº‹ä»¶ */
+	UsbMouseEventUnit_t DubiousMouseEvent; /* å¯ä»¥çš„é¼ æ ‡äº‹ä»¶ */
+	UsbMouseEventUnit_t CurrentMouseEvent; /* å½“å‰çš„é¼ æ ‡äº‹ä»¶ */
+	unsigned int DubiousCoordinate;	       /* å¯ç–‘åæ ‡, bit1:X, bit2:Y, bit3: X & Y */
+	unsigned int WaitEvent;		       /* ç­‰å¾…ä¸‹ä¸€æ¬¡çš„äº‹ä»¶ */
+} UsbMouseDriftControl_t;
 
 //--------------------------------------------------------
-// 
+//
 //--------------------------------------------------------
 void UsbMouse_AddToDriftArray(usbMouse_t *usbMouse, USBHMouseEvent_t *Event);
 int UsbMouse_DriftControl_Init(usbMouse_t *usbMouse);
 int UsbMouse_DriftControl_Exit(usbMouse_t *usbMouse);
 
-#endif   //__USBMOUSE_DRIFTCONTROL_H__
-
+#endif	//__USBMOUSE_DRIFTCONTROL_H__

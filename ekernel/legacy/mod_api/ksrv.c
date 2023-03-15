@@ -1,35 +1,53 @@
 /*
- * ===========================================================================================
- *
- *       Filename:  ksrv.c
- *
- *    Description:  kernel service definition.
- *
- *        Version:  Melis3.0
- *         Create:  2018-04-24 11:10:23
- *       Revision:  none
- *       Compiler:  GCC:version 7.2.1 20170904 (release),ARM/embedded-7-branch revision 255204
- *
- *         Author:  caozilong@allwinnertech.com
- *   Organization:  BU1-PSW
- *  Last Modified:  2020-05-08 20:34:27
- *
- * ===========================================================================================
- */
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include "ksrv.h"
 #include <kapi.h>
-#include <rthw.h>
 #include <log.h>
-#include <kconfig.h>
 #include <string.h>
 #include <stdio.h>
 #include <boot.h>
 #include <arch.h>
 
+#include <hal_status.h>
+#include <hal_mem.h>
+#include <hal_queue.h>
+#include <hal_thread.h>
+#include <hal_interrupt.h>
+#include <hal_time.h>
+
 extern boot_head_t  kernel_param;
-static rt_mailbox_t app_msgq_l;
-static rt_mailbox_t app_msgq_h;
-static rt_mailbox_t ksrv_msgq;
+static hal_mailbox_t app_msgq_l;
+static hal_mailbox_t app_msgq_h;
+static hal_mailbox_t ksrv_msgq;
 __ksrv_add_para     g_ksrv_add_para = { 0 };
 static void *display_hld;
 static unsigned long mixture_mp;
@@ -174,7 +192,7 @@ int32_t esKSRV_GetDramCfgPara(__dram_para_t *drampara)
         return EPDK_FAIL;
     }
 
-    //rt_memcpy(drampara, kernel_param.boot_data.dram_para, sizeof(__dram_para_t));
+    //memcpy(drampara, kernel_param.boot_data.dram_para, sizeof(__dram_para_t));
     return EPDK_OK;
 }
 
@@ -194,15 +212,15 @@ int32_t esKSRV_GetDramCfgPara(__dram_para_t *drampara)
 */
 unsigned long esKSRV_GetHighMsg(void)
 {
-    rt_err_t        err;
-    unsigned long   ret;
+    unsigned long err;
+    unsigned long ret;
 
-    if (app_msgq_h == RT_NULL)
+    if (app_msgq_h == NULL)
     {
         return 0;
     }
-    err = rt_mb_recv(app_msgq_h, (unsigned long *)&ret, 0);
-    if (err != RT_EOK)
+    err = hal_mailbox_recv(app_msgq_h, (unsigned long *)&ret, 0);
+    if (err != HAL_OK)
     {
         ret = 0;
     }
@@ -227,15 +245,15 @@ unsigned long esKSRV_GetHighMsg(void)
 */
 unsigned long esKSRV_GetLowMsg(void)
 {
-    rt_err_t        err;
+    long        err;
     unsigned long   ret;
 
-    if (app_msgq_l == RT_NULL)
+    if (app_msgq_l == NULL)
     {
         return 0;
     }
-    err = rt_mb_recv(app_msgq_l, (rt_ubase_t *)&ret, 0);
-    if (err != RT_EOK)
+    err = hal_mailbox_recv(app_msgq_l, (unsigned long *)&ret, 0);
+    if (err != HAL_OK)
     {
         ret = 0;
     }
@@ -259,22 +277,22 @@ unsigned long esKSRV_GetLowMsg(void)
 */
 unsigned long esKSRV_GetMsg(void)
 {
-    rt_err_t        err;
+    long        err;
     unsigned long   ret;
 
-    if (app_msgq_h == RT_NULL)
+    if (app_msgq_h == NULL)
     {
         return 0;
     }
-    if (app_msgq_l == RT_NULL)
+    if (app_msgq_l == NULL)
     {
         return 0;
     }
-    err = rt_mb_recv(app_msgq_h, (rt_ubase_t *)&ret, 0);
-    if (err != RT_EOK)
+    err = hal_mailbox_recv(app_msgq_h, (unsigned long *)&ret, 0);
+    if (err != HAL_OK)
     {
-        err = rt_mb_recv(app_msgq_l, (rt_ubase_t *)&ret, 0);
-        if (err != RT_EOK)
+        err = hal_mailbox_recv(app_msgq_l, (unsigned long *)&ret, 0);
+        if (err != HAL_OK)
         {
             ret = 0;
         }
@@ -327,7 +345,7 @@ uint8_t esKSRV_GetSocID(void)
 int32_t esKSRV_GetTargetPara(void *targetpara)
 {
     //*targetpara = kernel_param.target;
-    rt_kprintf("esKSRV_GetTargetPara change boot0, need to change the method for judging debug_log\n");
+    printf("esKSRV_GetTargetPara change boot0, need to change the method for judging debug_log\n");
     arch_break();
     return EPDK_OK;
 }
@@ -400,7 +418,7 @@ void esKSRV_Get_Mixture_Hld(int *mid, unsigned long *mp)
     {
             *mid = mixture_mid;
     }
-    if(mid > 0)
+    if(mid != NULL)
     {
        *mp = mixture_mp;
     }
@@ -427,7 +445,7 @@ void esKSRV_Save_Mixture_Hld(int mid, void *mp)
     }
     if(mid > 0)
     {
-      mixture_mp = mp;
+      mixture_mp = (unsigned long)mp;
     }
 }
 /*
@@ -530,7 +548,7 @@ uint32_t esKSRV_Random(uint32_t max)
     ramdomcnt   = ramdomcnt * 29 + 314;
     ramdomseed  += ramdomcnt;
 
-    ret = ramdomcnt + rt_tick_get();
+    ret = ramdomcnt + hal_tick_get();
     ret = ret + seedtbl[index++];
     ret = ret - (ret / max) * max;
 
@@ -592,26 +610,26 @@ extern void reset_cpu(void);
 */
 int32_t esKSRV_SendMsg(uint32_t msgid, uint32_t prio)
 {
-    rt_uint32_t ret;
+    unsigned long ret;
 
-    if (app_msgq_h == RT_NULL)
+    if (app_msgq_h == NULL)
     {
         return -1;
     }
     if (prio)
     {
-        while (rt_mb_send(app_msgq_h, msgid) == -RT_EFULL)
+        while (hal_mailbox_send(app_msgq_h, msgid) == -RT_EFULL)
         {
             __err("high message pool full!");
-            rt_mb_recv(app_msgq_h, (void *)&ret, 0);
+            hal_mailbox_recv(app_msgq_h, (void *)&ret, 0);
         }
     }
     else
     {
-        while (rt_mb_send(app_msgq_l, msgid) == -RT_EFULL)
+        while (hal_mailbox_send(app_msgq_l, msgid) == -RT_EFULL)
         {
             __err("low message pool full!");
-            rt_mb_recv(app_msgq_l, (void *)&ret, 0);
+            hal_mailbox_recv(app_msgq_l, (void *)&ret, 0);
         }
     }
     return EPDK_OK;
@@ -641,7 +659,7 @@ int32_t esKSRV_SendMsgEx(void *msg)
         return EPDK_FAIL;
     }
 
-    if (rt_interrupt_get_nest())
+    if (hal_interrupt_get_nest())
     {
         return EPDK_FAIL;
     }
@@ -655,7 +673,7 @@ int32_t esKSRV_SendMsgEx(void *msg)
             }
             if (ksrv_msgq)
             {
-                rt_mb_send(ksrv_msgq, (rt_ubase_t)msg);
+                hal_mailbox_send(ksrv_msgq, (unsigned long)msg);
             }
             return EPDK_OK;
 
@@ -666,24 +684,24 @@ int32_t esKSRV_SendMsgEx(void *msg)
                 {
                     (p_msg->l.cb)(p_msg->h.cb_u_arg, 0);
                 }
-                rt_free(msg);
+                hal_free(msg);
                 return EPDK_OK;
             }
             if (ksrv_msgq)
             {
-                rt_mb_send(ksrv_msgq, (rt_ubase_t)msg);
+                hal_mailbox_send(ksrv_msgq, (unsigned long)msg);
             }
             return EPDK_OK;
         case KMSG_TGT_BROADCST:
             if (ksrv_msgq)
             {
-                rt_mb_send(ksrv_msgq, (rt_ubase_t)msg);
+                hal_mailbox_send(ksrv_msgq, (unsigned long)msg);
             }
             return EPDK_OK;
         default:
             if (ksrv_msgq)
             {
-                rt_mb_send(ksrv_msgq, (rt_ubase_t)msg);
+                hal_mailbox_send(ksrv_msgq, (unsigned long)msg);
             }
             return EPDK_OK;
     }
@@ -705,15 +723,8 @@ int32_t esKSRV_SendMsgEx(void *msg)
 */
 int32_t esKSRV_SysInfo(void)
 {
-    rt_uint32_t total, used, max_used;
-
     esCLK_SysInfo("all");
-    rt_memory_info(&total, &used, &max_used);
-
-    printf("%14s %12s 0x%08x"
-            "%12s 0x%08x"
-            "%12s 0x%08x",
-            "Mem info:", "Total:", total, "Used:", used, "Summit:", max_used);
+	esMEMS_Info();
 
     return 0;
 }
@@ -736,14 +747,14 @@ int32_t esKSRV_SysInfo(void)
 static void kservice_maintask(void *p_arg)
 {
     __epos_kmsg_t   *msg;
-    rt_base_t       cpu_sr;
-    rt_err_t        err;
+    unsigned long   cpu_sr;
+    long        err;
 
     while (1)
     {
-        msg = RT_NULL;
-        err = rt_mb_recv(ksrv_msgq, (rt_ubase_t *)&msg, RT_WAITING_FOREVER);
-        if (err != RT_EOK)
+        msg = NULL;
+        err = hal_mailbox_recv(ksrv_msgq, (unsigned long *)&msg, HAL_WAIT_FOREVER);
+        if (err != HAL_OK)
         {
             __err("get message fail.");
             continue;
@@ -751,17 +762,17 @@ static void kservice_maintask(void *p_arg)
 
         switch (msg->target)
         {
-            case KMSG_TGT_INT_TAIL:                 /* ÁÙÊ±µÄÌØÊâ´¦Àí£¬Î´À´ÏëºÃµÄ¸üºÃµÄ°ì·¨ÔÙ¸üÐÂ                   */
+            case KMSG_TGT_INT_TAIL:                 /* ä¸´æ—¶çš„ç‰¹æ®Šå¤„ç†ï¼Œæœªæ¥æƒ³å¥½çš„æ›´å¥½çš„åŠžæ³•å†æ›´æ–°                   */
             {
-                /* ÓÉÓÚmsgÊÇ²»ÐèÒªÊÍ·ÅµÄ£¬ÎªÁË±ÜÃâºóÐøµÄÏûÏ¢ÓÃÏàÍ¬µÄmsgµ¥Ôª£¬ ¼ÓÉÏÁÙ½çÇø£¬²¢copyÒÔ¸ôÀë              */
-                /* ¶ÔÓÚÖÐ¶ÏÎ²£¬ÓÉÓÚÖÐ¶Ï¿ÉÄÜÀ´¶à´Î£¬ÏûÏ¢Ê±ÈÝÐíÓÃÏàÍ¬µÄÏûÏ¢µ¥ÔªµÄ£¬ÒòÎª²»ÐèÒªÊÍ·Å£¬¾²Ì¬·ÖÅäµÄ         */
-                /* ´Ë´¦ÓÃtmpmsg½«ÏûÏ¢±¸·ÝÆðÀ´ÔÙÊ¹ÓÃ£¬Ö÷ÒªÊÇÅÂÇ°ºóµÄÏûÏ¢µÄÏûÏ¢ÄÚÈÝÓÐ¿ÉÄÜ²»Ò»Ñù£¨Í¨³£Ò»Ñù£©           */
+                /* ç”±äºŽmsgæ˜¯ä¸éœ€è¦é‡Šæ”¾çš„ï¼Œä¸ºäº†é¿å…åŽç»­çš„æ¶ˆæ¯ç”¨ç›¸åŒçš„msgå•å…ƒï¼Œ åŠ ä¸Šä¸´ç•ŒåŒºï¼Œå¹¶copyä»¥éš”ç¦»              */
+                /* å¯¹äºŽä¸­æ–­å°¾ï¼Œç”±äºŽä¸­æ–­å¯èƒ½æ¥å¤šæ¬¡ï¼Œæ¶ˆæ¯æ—¶å®¹è®¸ç”¨ç›¸åŒçš„æ¶ˆæ¯å•å…ƒçš„ï¼Œå› ä¸ºä¸éœ€è¦é‡Šæ”¾ï¼Œé™æ€åˆ†é…çš„         */
+                /* æ­¤å¤„ç”¨tmpmsgå°†æ¶ˆæ¯å¤‡ä»½èµ·æ¥å†ä½¿ç”¨ï¼Œä¸»è¦æ˜¯æ€•å‰åŽçš„æ¶ˆæ¯çš„æ¶ˆæ¯å†…å®¹æœ‰å¯èƒ½ä¸ä¸€æ ·ï¼ˆé€šå¸¸ä¸€æ ·ï¼‰           */
                 __epos_kmsg_t tmpmsg;
 
                 memset(&tmpmsg, 0x00, sizeof(tmpmsg));
-                cpu_sr = rt_hw_interrupt_disable();
+                cpu_sr = hal_interrupt_save();
                 tmpmsg = *msg;
-                rt_hw_interrupt_enable(cpu_sr);
+                hal_interrupt_restore(cpu_sr);
 
                 (tmpmsg.l.cb)(tmpmsg.h.cb_u_arg, 0);
                 continue;
@@ -873,7 +884,7 @@ static void kservice_maintask(void *p_arg)
                 __err("msg->target = %d.", msg->target);
                 break;
         }
-        rt_free((void *)msg);
+        hal_free((void *)msg);
     }
 }
 
@@ -893,11 +904,11 @@ static void kservice_maintask(void *p_arg)
 */
 int32_t ksrv_init(void)
 {
-    rt_thread_t ksrv_t;
+    hal_thread_t ksrv_t;
 
-    ksrv_msgq   = rt_mb_create("ksrv_mq",     16,    0);
-    app_msgq_l  = rt_mb_create("appmsgql_mq", 32,    0);
-    app_msgq_h  = rt_mb_create("appmsgqh_mq", 128,   0);
+    ksrv_msgq   = hal_mailbox_create("ksrv_mq", 16);
+    app_msgq_l  = hal_mailbox_create("appmsgql_mq", 32);
+    app_msgq_h  = hal_mailbox_create("appmsgqh_mq", 128);
 
     if (!app_msgq_l || !app_msgq_h || !ksrv_msgq)
     {
@@ -905,13 +916,13 @@ int32_t ksrv_init(void)
         return -1;
     }
 
-    ksrv_t = rt_thread_create("kmsg2appq", kservice_maintask, RT_NULL, 0x1000, RT_TIMER_THREAD_PRIO - 2, 10);
-    if (ksrv_t == RT_NULL)
+    ksrv_t = kthread_create(kservice_maintask, NULL, "kmsg2appq", 0x1000, RT_TIMER_THREAD_PRIO - 2);
+    if (ksrv_t == NULL)
     {
         __err("create kernel service task failure.");
         return -1;
     }
-    rt_thread_startup(ksrv_t);
+    kthread_start(ksrv_t);
 
     return EPDK_OK;
 }
@@ -932,12 +943,12 @@ int32_t ksrv_init(void)
 */
 int32_t ksrv_exit(void)
 {
-    rt_mb_delete(ksrv_msgq);
-    rt_mb_delete(app_msgq_l);
-    rt_mb_delete(app_msgq_h);
-    ksrv_msgq   = RT_NULL;
-    app_msgq_l  = RT_NULL;
-    app_msgq_h  = RT_NULL;
+    hal_mailbox_delete(ksrv_msgq);
+    hal_mailbox_delete(app_msgq_l);
+    hal_mailbox_delete(app_msgq_h);
+    ksrv_msgq   = NULL;
+    app_msgq_l  = NULL;
+    app_msgq_h  = NULL;
 
     return EPDK_OK;
 }

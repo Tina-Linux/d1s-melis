@@ -56,19 +56,6 @@ static unsigned long base_addr;
 /* #define read_wvalue(addr) get_wvalue(addr) */
 
 /* byte input */
-#define get_bvalue(n)	(*(volatile uint8_t  *)(n))
-/* byte output */
-#define put_bvalue(n, c)	(*(volatile uint8_t  *)(n) = c)
-/* half word input */
-#define get_hvalue(n)	(*(volatile uint16_t *)(n))
-/* half word output */
-#define put_hvalue(n, c)	(*(volatile uint16_t *)(n) = (c))
-/* word input */
-#define get_wvalue(n)	(*(volatile uint32_t *)(n))
-/* word output */
-#define put_wvalue(n, c)	(*(volatile uint32_t *)(n) = (c))
-
-/* byte input */
 #define read_bvalue(offset)		get_bvalue(base_addr + offset)
 /* byte output */
 #define write_bvalue(offset, value)	put_bvalue(base_addr + offset, value)
@@ -557,6 +544,9 @@ __s32 g2d_lbc_rot_set_para(g2d_lbc_rot *para)
 	write_wvalue(ROT_CTL, tmp);
 
 	ret = g2d_wait_cmd_finish(WAIT_CMD_TIME_MS);
+
+	// Turning off LBC config to avoid BIT rotation abnormal.
+	write_wvalue(LBC_ENC_CTL, 0x0);
 
 /*	if (!src->use_phy_addr || !dst->use_phy_addr)
 		g2d_dma_unmap(dst_item);

@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <hal_poll.h>
 #include <aw_list.h>
 #include <rtthread.h>
@@ -11,7 +42,7 @@
 #include <kapi.h>
 
 
-#define POWER_ADC_SPMPLE_NUM 3//6¥ŒAD≤…—˘»°∆Ωæ˘
+#define POWER_ADC_SPMPLE_NUM 3//6Ê¨°ADÈááÊ†∑ÂèñÂπ≥Âùá
 
 #define NO_PMU_BATTERY_LEVEL0   0
 #define NO_PMU_BATTERY_LEVEL1   20
@@ -34,17 +65,6 @@ static __drv_power_ctl_t *power_ctl = NULL;
 static __drv_power_fuelguage_t *fuelguage = NULL;
 static  bool init_flag;
 
-/*
-void PowerTask(void *parg)
-{
-    while(1)
-    {
-        __log("task tick tock");
-        rt_thread_delay(100);
-    }
-
-}
-*/
 static void adc_power_lock(void)
 {
     int hal_sem_ret;
@@ -52,7 +72,6 @@ static void adc_power_lock(void)
     if (hal_sem_ret != 0)
     {
         __inf("power hal_sem_timedwait timeout\n");
-        return -1;
     }
 }
 
@@ -63,7 +82,6 @@ static void adc_power_unlock(void)
     if (hal_sem_ret != 0)
     {
         __inf("power hal_sem_post timeout\n");
-        return -1;
     }
 }
 
@@ -121,35 +139,35 @@ static __s32 power_get_bat_value(void)
 
         if (Voltage <= 3494)
         {
-            //µÕµÁπÿª˙µÁ—π
+            //‰ΩéÁîµÂÖ≥Êú∫ÁîµÂéã
             fuelguage->rest_vol = NO_PMU_BATTERY_LEVEL0;
-            //∑¢ÀÕµÕµÁπÿª˙œµÕ≥œ˚œ¢
+            //ÂèëÈÄÅ‰ΩéÁîµÂÖ≥Êú∫Á≥ªÁªüÊ∂àÊÅØ
             //__msg("low power voltage detect...");
             //esKSRV_SendMsg(KMSG_USR_KEY_POWEROFF, KMSG_PRIO_HIGH);
         }
         else if ((Voltage > 3494) && (Voltage <= 3636))
         {
-            //µÁ≥ÿµÁ¡øŒ™20%
+            //ÁîµÊ±†ÁîµÈáè‰∏∫20%
             fuelguage->rest_vol = NO_PMU_BATTERY_LEVEL1;
         }
         else if ((Voltage > 3636) && (Voltage <= 3781))
         {
-            //µÁ≥ÿµÁ¡øŒ™40%
+            //ÁîµÊ±†ÁîµÈáè‰∏∫40%
             fuelguage->rest_vol = NO_PMU_BATTERY_LEVEL2;
         }
         else if ((Voltage > 3781) && (Voltage <= 3924))
         {
-            //µÁ≥ÿµÁ¡øŒ™60%
+            //ÁîµÊ±†ÁîµÈáè‰∏∫60%
             fuelguage->rest_vol = NO_PMU_BATTERY_LEVEL3;
         }
         else if ((Voltage > 3924) && (Voltage <= 4044))
         {
-            //µÁ≥ÿµÁ¡øŒ™80%
+            //ÁîµÊ±†ÁîµÈáè‰∏∫80%
             fuelguage->rest_vol = NO_PMU_BATTERY_LEVEL4;
         }
         else if (Voltage > 4044)
         {
-            //µÁ≥ÿµÁ¡øŒ™100%
+            //ÁîµÊ±†ÁîµÈáè‰∏∫100%
             fuelguage->rest_vol = NO_PMU_BATTERY_LEVEL5;
             __inf("fuelguage->is_full_charge");
             fuelguage->is_full_charge = EPDK_TRUE;
@@ -160,35 +178,35 @@ static __s32 power_get_bat_value(void)
     {
         if (Voltage <= 3450)
         {
-            //µÕµÁπÿª˙µÁ—π
+            //‰ΩéÁîµÂÖ≥Êú∫ÁîµÂéã
             fuelguage->rest_vol = NO_PMU_BATTERY_LEVEL0;
-            //∑¢ÀÕµÕµÁπÿª˙œµÕ≥œ˚œ¢
+            //ÂèëÈÄÅ‰ΩéÁîµÂÖ≥Êú∫Á≥ªÁªüÊ∂àÊÅØ
             //__msg("low power voltage detect...");
             //esKSRV_SendMsg(KMSG_USR_KEY_POWEROFF, KMSG_PRIO_HIGH);
         }
         else if ((Voltage > 3450) && (Voltage <= 3536))
         {
-            //µÁ≥ÿµÁ¡øŒ™20%
+            //ÁîµÊ±†ÁîµÈáè‰∏∫20%
             fuelguage->rest_vol = NO_PMU_BATTERY_LEVEL1;
         }
         else if ((Voltage > 3536) && (Voltage <= 3681))
         {
-            //µÁ≥ÿµÁ¡øŒ™40%
+            //ÁîµÊ±†ÁîµÈáè‰∏∫40%
             fuelguage->rest_vol = NO_PMU_BATTERY_LEVEL2;
         }
         else if ((Voltage > 3681) && (Voltage <= 3824))
         {
-            //µÁ≥ÿµÁ¡øŒ™60%
+            //ÁîµÊ±†ÁîµÈáè‰∏∫60%
             fuelguage->rest_vol = NO_PMU_BATTERY_LEVEL3;
         }
         else if ((Voltage > 3824) && (Voltage <= 3919))
         {
-            //µÁ≥ÿµÁ¡øŒ™80%
+            //ÁîµÊ±†ÁîµÈáè‰∏∫80%
             fuelguage->rest_vol = NO_PMU_BATTERY_LEVEL4;
         }
         else if (Voltage > 3919)
         {
-            //µÁ≥ÿµÁ¡øŒ™100%
+            //ÁîµÊ±†ÁîµÈáè‰∏∫100%
             fuelguage->rest_vol = NO_PMU_BATTERY_LEVEL5;
         }
         fuelguage->is_full_charge = EPDK_FALSE;
@@ -200,12 +218,6 @@ static __s32 power_get_bat_value(void)
     return fuelguage->rest_vol;
 }
 
-/*
-static int power_adc_irq_callback(uint32_t data_type, uint32_t data)
-{
-    return 0;
-}
-*/
 static void power_check_dcin(void)
 {
     gpio_data_t data;
@@ -317,8 +329,6 @@ static rt_err_t power_open(struct rt_device *dev, rt_uint16_t oflag)
     __wrn("power_timer start");
     rt_timer_start(power_ctl->pTimer);
 
-    //ret = rt_thread_create("power_check", PowerTask, RT_NULL, 1024, 3, 20);
-    //rt_thread_startup(ret);
     return ret;
 
 err:
@@ -395,24 +405,7 @@ static rt_err_t power_control(struct rt_device *dev, int cmd, void *args)
         case DRV_POWER_CMD_GET_FUELGUAGE:
         {
             __drv_power_fuelguage_t *pbat = (__drv_power_fuelguage_t *)args;
-            /*
-            int hal_sem_ret;
-            hal_sem_ret = rt_sem_take(power_ctl->power_sem, 100);
-            if (hal_sem_ret != 0)
-            {
-                __inf("power hal_sem_timedwait timeout\n");
-                return -1;
-            }
-            */
             rt_memcpy(pbat, fuelguage, sizeof(__drv_power_fuelguage_t));
-            /*
-            hal_sem_ret = rt_sem_release(power_ctl->power_sem);
-            if (hal_sem_ret != 0)
-            {
-                __inf("power hal_sem_post timeout\n");
-                return -1;
-            }
-            */
             ret = EPDK_OK;
             break;
         }
@@ -422,25 +415,8 @@ static rt_err_t power_control(struct rt_device *dev, int cmd, void *args)
             gpio_pull_status_t pull_state;
             __drv_power_battery_status_t3 *pstatus = (__drv_power_battery_status_t3 *)args;
             rt_memset(pstatus, 0x00, sizeof(__drv_power_battery_status_t3));
-            /*
-            int hal_sem_ret;
-            hal_sem_ret = rt_sem_take(power_ctl->power_sem, 100);
-            if (hal_sem_ret != 0)
-            {
-                __inf("power hal_sem_timedwait timeout\n");
-                return -1;
-            }
-            */
             pstatus->charge_status = fuelguage->charge_status;
             __inf("pstatus->charge_status = %x", pstatus->charge_status);
-            /*
-            hal_sem_ret = rt_sem_release(power_ctl->power_sem);
-            if (hal_sem_ret != 0)
-            {
-                __inf("power hal_sem_post timeout\n");
-                return -1;
-            }
-            */
             return EPDK_OK;
         }
         case DRV_POWER_CMD_RELEASE_DEV:
@@ -451,7 +427,6 @@ static rt_err_t power_control(struct rt_device *dev, int cmd, void *args)
     }
     return ret;
 }
-
 
 static int init_power_device(struct rt_device *dev)
 {
@@ -478,7 +453,7 @@ static int init_power_device(struct rt_device *dev)
     return ret;
 }
 
-void init_adc_power(void)
+int init_adc_power(void)
 {
     struct rt_device *device;
 
@@ -486,59 +461,19 @@ void init_adc_power(void)
     if (!device)
     {
         __wrn("init_adc_power err");
-        return;
+        return -1;
     }
     init_power_device(device);
+    return 0;
 }
 device_initcall(init_adc_power);
 
-
-#if 0//power test
-static __drv_power_fuelguage_t bat;
-static rt_device_t fd;
-static __drv_power_battery_status_t3 charge_status;
-
-static int power_test(int argc, const char **argv)
-{
-
-    fd = rt_device_find("power");
-    if (fd == RT_NULL)
-    {
-        __log("fd == RT_NULL");
-        return -1;
-    }
-    rt_device_open(fd, RT_DEVICE_OFLAG_RDWR | RT_DEVICE_FLAG_STREAM);
-    //rt_device_control(fd, DRV_POWER_CMD_GET_FUELGUAGE, &bat);
-    //rt_device_close(fd);
-    return 0;
-}
-FINSH_FUNCTION_EXPORT_ALIAS(power_test, __cmd_power_test, power_test);
-
-
-
-
-static int power_chk(int argc, const char **argv)
-{
-    rt_device_control(fd, DRV_POWER_CMD_GET_DCIN, &charge_status);
-    __log("bat charge_status = %d", charge_status.charge_status);
-    return 0;
-}
-FINSH_FUNCTION_EXPORT_ALIAS(power_chk, __cmd_power_chk, power_chk);
-
-
-#endif
-
-//FOR PTD TEST
-int power_info(int *argc, char **argv)
+int power_info(int argc, char **argv)
 {
     char *chargeflag[2] = {"not charging", "charging"};
     __log("battery state : %s", chargeflag[fuelguage->charge_status]);
     __log("battery level   : %d%", fuelguage->rest_vol);
     __log("bat_power val   : %dmv", fuelguage->bat_power);
+    return 0;
 }
-FINSH_FUNCTION_EXPORT_ALIAS(power_info, __cmd_power_info, power_info);
-
-
-
-
-
+FINSH_FUNCTION_EXPORT_CMD(power_info, __cmd_power_info, power_info);

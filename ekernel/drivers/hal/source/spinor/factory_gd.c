@@ -29,6 +29,12 @@ static struct nor_info idt_gd[] =
         .total_size = SZ_16M,
         .flag = SUPPORT_GENERAL,
     },
+    {
+        .model = "GD25B512ME",
+        .id = {0xc8, 0x47, 0x1a},
+        .total_size = SZ_64M,
+        .flag = SUPPORT_GENERAL,
+    },
 };
 
 static int nor_gd_quad_mode(struct nor_flash *unused)

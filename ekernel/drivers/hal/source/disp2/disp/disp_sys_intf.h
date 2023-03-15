@@ -14,7 +14,11 @@
 #include "de/include.h"
 #include <sunxi_hal_regulator.h>
 
-#define MELIS_SYS_CONFIG_USE 1
+#if defined(CONFIG_ARCH_SUN8IW19) || defined(CONFIG_ARCH_SUN20IW2)
+#define RTOS_SYS_CONFIG_USE 0
+#else
+#define RTOS_SYS_CONFIG_USE 1
+#endif
 
 
 struct disp_gpio_set_t {
@@ -94,7 +98,11 @@ s32 disp_delay_us(u32 us);
 s32 disp_delay_ms(u32 ms);
 u32 disp_getprop_regbase(char *main_name, u32 index);
 u32 disp_getprop_irq(char *main_name, u32 index);
+#ifdef CONFIG_ARCH_SUN8IW19
+u32 disp_getprop_clk(char *main_name, u32 index);
+#else
 u32 disp_getprop_clk(char *main_name);
+#endif
 struct reset_control *disp_get_rst_by_name(char *main_name);
 void disp_sys_free(void *ptr);
 int disp_sys_mutex_init(hal_sem_t *lock);

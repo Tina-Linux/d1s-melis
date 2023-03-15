@@ -32,6 +32,9 @@
 #include "sunxi_hal_timer.h"
 #include "hal_clk.h"
 #include "sunxi_timer.h"
+#ifdef CONFIG_DRIVERS_WAKEUP_TIMER
+#include "sunxi_wuptimer.h"
+#endif
 
 void hal_timer_init(hal_timer_id_t timer)
 {
@@ -80,3 +83,56 @@ hal_timer_status_t hal_timer_set_periodic(hal_timer_id_t timer, uint32_t delay_u
 
     return HAL_TIMER_STATUS_OK;
 }
+
+#ifdef CONFIG_DRIVERS_WAKEUP_TIMER
+
+void hal_wuptimer_init(hal_timer_id_t timer)
+{
+    sunxi_wuptimer_init(timer);
+}
+
+void hal_wuptimer_uninit(hal_timer_id_t timer)
+{
+    sunxi_wuptimer_uninit(timer);
+}
+
+void hal_wuptimer_stop(hal_timer_id_t timer)
+{
+    sunxi_wuptimer_stop(timer);
+}
+
+void hal_wuptimer_start(hal_timer_id_t timer, bool periodic)
+{
+    sunxi_wuptimer_start(timer, periodic);
+}
+
+hal_timer_status_t hal_wuptimer_set_oneshot(hal_timer_id_t timer, uint32_t delay_us, timer_callback callback, void *callback_param)
+{
+    int ret = 0;
+
+    ret = sunxi_wuptimer_set_oneshot(delay_us, timer, callback, callback_param);
+
+    if (ret < 0)
+    {
+        return HAL_TIMER_STATUS_ERROR;
+    }
+
+    return HAL_TIMER_STATUS_OK;
+}
+
+hal_timer_status_t hal_wuptimer_set_periodic(hal_timer_id_t timer, uint32_t delay_us, timer_callback callback, void *callback_param)
+{
+    int ret = 0;
+
+    ret = sunxi_wuptimer_set_periodic(delay_us, timer, callback, callback_param);
+
+    if (ret < 0)
+    {
+        return HAL_TIMER_STATUS_ERROR;
+    }
+
+    return HAL_TIMER_STATUS_OK;
+}
+
+#endif
+

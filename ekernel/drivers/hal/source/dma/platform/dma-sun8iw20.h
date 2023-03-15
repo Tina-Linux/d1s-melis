@@ -41,7 +41,11 @@
 #define START_CHAN_OFFSET      8
 #else
 /* CPUX */
+#ifdef CONFIG_SOC_SUN20IW1
 #define DMA_IRQ_NUM		(66)	/* DMA 0~7 channel irq non-secure */
+#else
+#define DMA_IRQ_NUM		(82)	/* DMA 0~7 channel irq non-secure */
+#endif
 #define NR_MAX_CHAN		8	/* total of channels */
 #define START_CHAN_OFFSET      0
 #endif /* CONFIG_CORE_DSP0 */

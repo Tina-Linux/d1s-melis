@@ -35,7 +35,7 @@ struct disp_device_private_data {
 	hal_clk_id_t clk;
 	hal_clk_id_t bus_clk;
 	struct reset_control *rst_bus_clk;
-	struct clk *clk_parent;
+	hal_clk_id_t clk_parent;
 
 	u32 irq_no;
 

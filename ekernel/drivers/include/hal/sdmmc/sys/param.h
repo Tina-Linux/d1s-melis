@@ -61,8 +61,6 @@
 #define powerof2(x)	((((x)-1)&(x))==0)
 
 /* Macros for min/max. */
-#define	MIN(a,b) (((a)<(b))?(a):(b))
-#define	MAX(a,b) (((a)>(b))?(a):(b))
 #define DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))
 
 #define ct_assert(e) extern char (*ct_assert(void)) [sizeof(char[1 - 2*!(e)])]

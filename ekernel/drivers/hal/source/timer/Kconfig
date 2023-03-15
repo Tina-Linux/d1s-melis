@@ -4,9 +4,17 @@ config DRIVERS_TIMER
     bool "enable timer driver"
         default y
 
+config DRIVERS_TIMER_AVS
+    bool "enable avs timer driver"
+        default n
+
+config DRIVERS_WAKEUP_TIMER
+    bool "enable timer wakeup driver"
+        default n
+
 config HAL_TEST_TIMER
     bool "enable timer hal APIs test command"
-        depends on DRIVERS_TIMER
+        depends on DRIVERS_TIMER || DRIVERS_HTIMER
         default n
 
 config DRIVERS_HTIMER

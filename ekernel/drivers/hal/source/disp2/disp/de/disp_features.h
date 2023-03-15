@@ -28,7 +28,7 @@
 #include "./lowlevel_sun50iw1/de_feat.h"
 #elif defined(CONFIG_ARCH_SUN50IW2)
 #include "./lowlevel_v2x/de_feat.h"
-#elif defined(CONFIG_ARCH_SUN50IW8)
+#elif defined(CONFIG_ARCH_SUN50IW8) || defined(CONFIG_ARCH_SUN20IW2)
 #include "./lowlevel_v2x/de_feat.h"
 #elif defined(CONFIG_ARCH_SUN8IW12) || defined(CONFIG_ARCH_SUN8IW16)\
     || defined(CONFIG_ARCH_SUN8IW19) || defined(CONFIG_ARCH_SUN20IW1)

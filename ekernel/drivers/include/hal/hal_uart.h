@@ -25,6 +25,9 @@ extern "C"
 {
 #endif
 
+#ifdef CONFIG_STANDBY
+#include <standby/standby.h>
+#endif
 #include "sunxi_hal_common.h"
 /*
  * include the platform uart header file.
@@ -50,10 +53,10 @@ typedef enum
     UART_1,
     UART_2,
     UART_3,
+    UART_4,
+    UART_5,
     UART_MAX,
 } uart_port_t;
-
-#define CLI_UART_PORT  (UART_0)
 
 /* This enum defines baud rate of the UART frame. */
 typedef enum
@@ -121,7 +124,9 @@ typedef struct
 //======================================reg==========================================================//
 #define UART_INVAL_DATA_IND     (0xffffffff)
 
+#ifndef BIT
 #define BIT(nr)     (1UL << (nr))
+#endif
 
 //=================================reg===================================================//
 /*
@@ -232,6 +237,12 @@ typedef struct
     /* user callback */
     uart_callback_t func;
     void *arg;
+#ifdef CONFIG_STANDBY
+	struct dev_pm *pm;
+#endif
+#ifdef CONFIG_COMPONENTS_PM
+	_uart_config_t *uart_config;
+#endif
 } uart_priv_t;
 
 /**
@@ -406,6 +417,7 @@ typedef struct sunxi_hal_driver_usart
 sunxi_hal_version_t hal_uart_get_version(int32_t dev);
 sunxi_hal_uart_capabilities_t hal_uart_get_capabilities(int32_t dev);
 int32_t hal_uart_init(int32_t uart_port);
+int32_t hal_uart_init_for_amp_cli(int32_t uart_port);
 int32_t hal_uart_deinit(int32_t uart_port);
 int32_t hal_uart_power_control(int32_t dev, sunxi_hal_power_state_e state);
 int32_t hal_uart_send(int32_t dev, const uint8_t *data, uint32_t num);
@@ -430,6 +442,8 @@ void hal_uart_set_hardware_flowcontrol(uart_port_t uart_port);
 void hal_uart_disable_flowcontrol(uart_port_t uart_port);
 void hal_uart_set_loopback(uart_port_t uart_port, bool enable);
 void sunxi_driver_uart_init(void);
+int32_t hal_uart_enable_rx(int32_t uart_port);
+int32_t hal_uart_disable_rx(int32_t uart_port);
 
 #ifdef __cplusplus
 }

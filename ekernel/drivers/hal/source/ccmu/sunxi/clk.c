@@ -52,30 +52,6 @@ static hal_clk_status_t sunxi_clk_recalc_rate(hal_clk_id_t clk, u32 *rate);
 static hal_clk_status_t sunxi_clk_get_rate(hal_clk_id_t clk, u32 *rate);
 static hal_clk_status_t sunxi_clk_set_rate(hal_clk_id_t clk, u32 rate);
 
-static inline uint64_t read_cntpct(void)
-{
-    u64 val;
-    asm volatile("mrrc p15, 0, %Q0, %R0, c14" : "=r"(val));
-    return val;
-}
-
-static inline uint32_t read_cntfrq(void)
-{
-    u32 frq;
-    asm volatile("mrc p15, 0, %0, c14, c0, 0" : "=r"(frq));
-    return frq;
-}
-
-void clk_udelay(u32 us)
-{
-    u64 start, target;
-
-    start = read_cntpct();
-    target = read_cntfrq() / 1000000ULL * us;
-    while (read_cntpct() - start <= target) ;
-}
-
-
 clk_core_pt clk_get_core(hal_clk_id_t clk)
 {
     clk_core_pt pclk = NULL;
@@ -547,10 +523,11 @@ hal_clk_status_t sunxi_clk_get_rate(hal_clk_id_t clk, u32 *rate)
 
 hal_clk_status_t sunxi_clk_set_rate(hal_clk_id_t clk, u32 rate)
 {
-    u32 i, parent_rate;
+    u32 i;
     clk_core_pt pclk = NULL;
     clk_periph_pt periph_clk = NULL;
     clk_factor_pt factor_clk = NULL;
+    clk_core_pt parent_clk_core = NULL;
     hal_clk_status_t ret = HAL_CLK_STATUS_ERROR_CLK_NOT_FOUND;
 
     CCMU_TRACE();
@@ -574,8 +551,10 @@ hal_clk_status_t sunxi_clk_set_rate(hal_clk_id_t clk, u32 rate)
             {
                 return HAL_CLK_STATUS_OK;
             }
-            parent_rate = periph_clk->clk_core.parent_rate;
-            ret =  sunxi_clk_periph_set_rate(periph_clk, rate);
+            parent_clk_core = clk_get_core(periph_clk->clk_core.current_parent);
+            periph_clk->clk_core.parent_rate = parent_clk_core->clk_rate;
+
+            ret = sunxi_clk_periph_set_rate(periph_clk, rate);
             if (ret == HAL_CLK_STATUS_OK)
             {
                 periph_clk->clk_core.clk_rate = rate;

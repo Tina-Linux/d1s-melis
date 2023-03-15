@@ -36,7 +36,7 @@
  *
  *  Filename:  hal_pwm.c
  *
- *  Description:   spi driver core hal,be used by drv_pwm.c
+ *  Description:   pwm driver core hal,be used by drv_pwm.c
  *
  *  Version:  Melis3.0
  *  Create:  2019-12-23
@@ -57,10 +57,16 @@
 #include <hal_reset.h>
 #include <sunxi_hal_common.h>
 #include <sunxi_hal_pwm.h>
-#include "ccmu/sunxi/clk.h"
+#ifdef CONFIG_DRIVER_SYSCONFIG
 #include <hal_cfg.h>
 #include <script.h>
+#endif
+#ifdef CONFIG_STANDBY
 #include <standby/standby.h>
+#endif
+#ifdef CONFIG_COMPONENTS_PM
+#include <pm_devops.h>
+#endif
 
 hal_pwm_t sunxi_pwm;
 static int pwm_init = 0;
@@ -132,8 +138,6 @@ void hal_pwm_prescal_set(uint32_t channel_in, uint32_t prescal)
     hal_writel(reg_val, reg_addr);
 }
 
-
-
 /* active cycles  */
 void hal_pwm_set_active_cycles(uint32_t channel_in, uint32_t active_cycles)  //64
 {
@@ -184,6 +188,12 @@ static uint32_t get_pccr_reg_offset(uint32_t channel)
         case 7:
             return PWM_PCCR67;
             break;
+#ifndef CONFIG_ARCH_SUN20IW2
+        case 8:
+        case 9:
+            return PWM_PCCR8;
+            break;
+#endif
         default :
             PWM_ERR("channel is error \n");
             return PWM_PCCR01;
@@ -246,6 +256,7 @@ void hal_pwm_porality(uint32_t channel_in, hal_pwm_polarity polarity)
 
 static int hal_pwm_pinctrl_init(hal_pwm_t sunxi_pwm, int channel)
 {
+#ifdef CONFIG_DRIVER_SYSCONFIG
     user_gpio_set_t gpio_cfg = {0};
     char pwm_name[16];
     int count, ret;
@@ -273,7 +284,7 @@ static int hal_pwm_pinctrl_init(hal_pwm_t sunxi_pwm, int channel)
     ret = hal_gpio_set_driving_level(sunxi_pwm.pin[channel], gpio_cfg.drv_level);
     if (ret)
     {
-        PWM_ERR("[spi%d] PIN%u set driving level failed! return %d\n", channel, gpio_cfg.drv_level, ret);
+        PWM_ERR("[pwm%d] PIN%u set driving level failed! return %d\n", channel, gpio_cfg.drv_level, ret);
         return -1;
     }
 
@@ -282,7 +293,12 @@ static int hal_pwm_pinctrl_init(hal_pwm_t sunxi_pwm, int channel)
         return hal_gpio_set_pull(sunxi_pwm.pin[channel], gpio_cfg.pull);
     }
 
+    sunxi_pwm.pin_state[channel] = true;
     return 0;
+#else
+    PWM_ERR("[pwm%d] not support in sys_config\n", channel);
+    return -1;
+#endif
 }
 
 static int hal_pwm_pinctrl_exit(hal_pwm_t sunxi_pwm, uint32_t channel)
@@ -297,9 +313,128 @@ static int hal_pwm_pinctrl_exit(hal_pwm_t sunxi_pwm, uint32_t channel)
     }
 }
 
-/****the function provide for pwm driverr******************************************/
+#ifdef CONFIG_STANDBY
+int hal_pwm_resume(void *dev)
+{
+    if (hal_reset_control_assert(sunxi_pwm.pwm_reset))
+    {
+        return -1;
+    }
+
+    if (hal_reset_control_deassert(sunxi_pwm.pwm_reset))
+    {
+        return -1;
+    }
+
+    if (hal_clock_enable(sunxi_pwm.pwm_bus_clk))
+    {
+        return -1;
+    }
+
+    PWM_INFO("hal pwm resume");
+    return 0;
+}
+
+int hal_pwm_suspend(void *dev)
+{
+    if (hal_reset_control_assert(sunxi_pwm.pwm_reset))
+    {
+        return -1;
+    }
+
+    if (hal_clock_disable(sunxi_pwm.pwm_bus_clk))
+    {
+        return -1;
+    }
+
+    PWM_INFO("hal pwm suspend");
+    return 0;
+}
+#endif
+
+#ifdef CONFIG_COMPONENTS_PM
+static inline void sunxi_pwm_save_regs(hal_pwm_t *pwm)
+{
+    int i;
+
+    for (i = 0; i < ARRAY_SIZE(hal_pwm_regs_offset); i++)
+        pwm->regs_backup[i] = readl(PWM_BASE + hal_pwm_regs_offset[i]);
+}
+
+static inline void sunxi_pwm_restore_regs(hal_pwm_t *pwm)
+{
+    int i;
+
+    for (i = 0; i < ARRAY_SIZE(hal_pwm_regs_offset); i++)
+        writel(pwm->regs_backup[i], PWM_BASE + hal_pwm_regs_offset[i]);
+}
+
+static int sunxi_pwm_resume(struct pm_device *dev, suspend_mode_t mode)
+{
+    hal_pwm_t *pwm = &sunxi_pwm;
+    int i, err;
+
+    hal_reset_control_reset(sunxi_pwm.pwm_reset);
+    hal_clock_enable(sunxi_pwm.pwm_bus_clk);
+
+    for (i = 0; i < PWM_NUM; i++)
+    {
+        if (sunxi_pwm.pin_state[i])
+        {
+            PWM_INFO("the pwm%d is resume\n", i);
+            sunxi_pwm.pin_state[i] = false;
+            err = hal_pwm_pinctrl_init(sunxi_pwm, i);
+            if (err)
+            {
+                err = hal_gpio_pinmux_set_function(pwm_gpio[i].pwm_pin, pwm_gpio[i].pwm_function);
+                if (err)
+                {
+                    PWM_ERR("pinmux set failed\n");
+                    return -1;
+                }
+                sunxi_pwm.pin_state[i] = true;
+            }
+        }
+    }
+
+    sunxi_pwm_restore_regs(pwm);
+
+    PWM_INFO("hal pwm resume\n");
+    return 0;
+}
+
+static int sunxi_pwm_suspend(struct pm_device *dev, suspend_mode_t mode)
+{
+    hal_pwm_t *pwm = &sunxi_pwm;
+    int i;
+
+    sunxi_pwm_save_regs(pwm);
+
+    for (i = 0; i < PWM_NUM; i++)
+        hal_pwm_pinctrl_exit(sunxi_pwm, i);
+
+    hal_clock_disable(sunxi_pwm.pwm_bus_clk);
+    hal_reset_control_assert(sunxi_pwm.pwm_reset);
+
+    PWM_INFO("hal pwm suspend\n");
+    return 0;
+}
+
+struct pm_devops pm_pwm_ops = {
+    .suspend = sunxi_pwm_suspend,
+    .resume = sunxi_pwm_resume,
+};
+
+struct pm_device pm_pwm = {
+	.name = "sunxi_pwm",
+	.ops = &pm_pwm_ops,
+};
+#endif
+
 pwm_status_t hal_pwm_init(void)
 {
+    int i;
+
     PWM_INFO("pwm init start");
 
     if (pwm_init)
@@ -312,19 +447,16 @@ pwm_status_t hal_pwm_init(void)
     sunxi_pwm.pwm_bus_clk_id = SUNXI_PWM_CLK_ID;
     sunxi_pwm.pwm_reset_type = SUNXI_PWM_RESET_TYPE;
     sunxi_pwm.pwm_reset_id = SUNXI_PWM_RESET_ID;
+    for (i = 0; i < PWM_NUM; i++)
+        sunxi_pwm.pin_state[i] = false;
 
     if (!sunxi_pwm.pwm_reset)
-    {
         sunxi_pwm.pwm_reset = hal_reset_control_get(sunxi_pwm.pwm_reset_type, sunxi_pwm.pwm_reset_id);
-    }
 
-    hal_reset_control_deassert(sunxi_pwm.pwm_reset);
+    hal_reset_control_reset(sunxi_pwm.pwm_reset);
 
     if (!sunxi_pwm.pwm_bus_clk)
-    {
         sunxi_pwm.pwm_bus_clk = hal_clock_get(sunxi_pwm.pwm_clk_type, sunxi_pwm.pwm_bus_clk_id);
-        PWM_INFO("pwm_bus_clk name:%s", sunxi_pwm.pwm_bus_clk->name);
-    }
 
     if (hal_clock_enable(sunxi_pwm.pwm_bus_clk))
     {
@@ -335,6 +467,10 @@ pwm_status_t hal_pwm_init(void)
     register_pm_dev_notify(hal_pwm_suspend, hal_pwm_resume, NULL);
 #endif
 
+#ifdef CONFIG_COMPONENTS_PM
+    pm_devops_register(&pm_pwm);
+#endif
+
     PWM_INFO("pwm init end ");
 
     pwm_init++;
@@ -343,11 +479,23 @@ pwm_status_t hal_pwm_init(void)
 
 pwm_status_t hal_pwm_deinit(void)
 {
+    int i;
+
     if (pwm_init)
     {
         pwm_init--;
         if (!pwm_init)
         {
+
+#ifdef CONFIG_COMPONENTS_PM
+            pm_devops_unregister(&pm_pwm);
+#endif
+            for (i = 0; i < PWM_NUM; i++)
+            {
+                hal_pwm_pinctrl_exit(sunxi_pwm, i);
+                sunxi_pwm.pin_state[i] = false;
+            }
+
             hal_reset_control_assert(sunxi_pwm.pwm_reset);
             hal_reset_control_put(sunxi_pwm.pwm_reset);
 
@@ -363,14 +511,16 @@ pwm_status_t hal_pwm_control(int channel, struct pwm_config *config_pwm)
 {
     PWM_INFO("pwm control start");
 
-    uint32_t ret;
     unsigned int temp;
     unsigned long long c = 0;
     unsigned long entire_cycles = 256, active_cycles = 192;
     unsigned int reg_offset, reg_shift, reg_width;
-    unsigned int reg_bypass_shift /*, group_reg_offset*/;
+    unsigned int reg_bypass_shift;
     unsigned int reg_clk_src_shift, reg_clk_src_width;
     unsigned int reg_div_m_shift, reg_div_m_width, value;
+    int32_t clk_osc24m;
+    char pwm_name[16];
+    int err;
 
     PWM_INFO("period_ns = %ld", config_pwm->period_ns);
     PWM_INFO("duty_ns = %ld", config_pwm->duty_ns);
@@ -384,10 +534,16 @@ pwm_status_t hal_pwm_control(int channel, struct pwm_config *config_pwm)
     }
 
     /* pwm set port */
-    ret = hal_pwm_pinctrl_init(sunxi_pwm, channel);
-    if (ret)
+    err = hal_pwm_pinctrl_init(sunxi_pwm, channel);
+    if (err)
     {
-        hal_gpio_pinmux_set_function(pwm_gpio[channel].pwm_pin, pwm_gpio[channel].pwm_function);
+        err = hal_gpio_pinmux_set_function(pwm_gpio[channel].pwm_pin, pwm_gpio[channel].pwm_function);
+        if (err)
+        {
+            PWM_ERR("pinmux set failed\n");
+            return -1;
+        }
+        sunxi_pwm.pin_state[channel] = true;
     }
 
     /* pwm enable controller */
@@ -400,7 +556,7 @@ pwm_status_t hal_pwm_control(int channel, struct pwm_config *config_pwm)
     uint32_t pre_scal_id = 0, div_m = 0, prescale = 0;
     uint32_t pre_scal[][2] =
     {
-        /*reg_val   clk_pre_div*/
+        /* reg_val clk_pre_div */
         {0, 1},
         {1, 2},
         {2, 4},
@@ -416,39 +572,84 @@ pwm_status_t hal_pwm_control(int channel, struct pwm_config *config_pwm)
     reg_clk_src_width = PWM_CLK_SRC_WIDTH;
     reg_offset = get_pccr_reg_offset(channel);
 
+    sprintf(pwm_name, "pwm%d", channel);
+#ifdef CONFIG_DRIVER_SYSCONFIG
+    err = Hal_Cfg_GetKeyValue(pwm_name, "clk_osc24m", &clk_osc24m, 1);
+    if (err) {
+        clk_osc24m = 0;
+        PWM_ERR("[pwm%d] clk_osc24m not support in sys_config\n", channel);
+    }
+#else
+    clk_osc24m = 0;
+#endif
+
+    if (clk_osc24m) {
+	/* if need freq 24M, then direct output 24M clock,set clk_bypass. */
+	reg_bypass_shift = channel;
+        reg_offset = get_pccr_reg_offset(channel);
+
+        temp = hal_readl(PWM_BASE + PWM_PCGR);
+        temp = SET_BITS(reg_bypass_shift, 1, temp, 1); /* clk_gating set */
+	temp = SET_BITS(reg_bypass_shift + 16, 1, temp, 1); /* clk_bypass set */
+        hal_writel(temp, PWM_BASE + PWM_PCGR);
+
+        /* clk_src_reg */
+        temp = hal_readl(PWM_BASE + reg_offset);
+        temp = SET_BITS(reg_clk_src_shift, reg_clk_src_width, temp, 0); /* select clock source */
+        hal_writel(temp, PWM_BASE + reg_offset);
+
+        return 0;
+    }
+
     if (config_pwm->period_ns > 0 && config_pwm->period_ns <= 10)
     {
-        /* if freq lt 100M, then direct output 100M clock,set by pass. */
+#if defined(CONFIG_ARCH_SUN20IW2)
+	/* if freq lt 96M, then direct output 96M clock,set by pass. */
+	c = 96000000;
+#else
+	/* if freq lt 100M, then direct output 100M clock,set by pass. */
         c = 100000000;
+#endif /* CONFIG_ARCH_SUN20IW2 */
         reg_bypass_shift = channel;
         reg_offset = get_pccr_reg_offset(channel);
 
         temp = hal_readl(PWM_BASE + PWM_PCGR);
-        temp = SET_BITS(reg_bypass_shift, 1, temp, 1); /* bypass set */
+	temp = SET_BITS(reg_bypass_shift, 1, temp, 1); /* clk_gating set */
+	temp = SET_BITS(reg_bypass_shift + 16, 1, temp, 1); /* clk_bypass set */
         hal_writel(temp, PWM_BASE + PWM_PCGR);
-        /*clk_src_reg*/
+        /* clk_src_reg */
         temp = hal_readl(PWM_BASE + reg_offset);
-        temp = SET_BITS(reg_clk_src_shift, reg_clk_src_width, temp, 1);/*clock source*/
+        temp = SET_BITS(reg_clk_src_shift, reg_clk_src_width, temp, 1); /* select clock source */
         hal_writel(temp, PWM_BASE + reg_offset);
 
         return 0;
     }
     else if (config_pwm->period_ns > 10 && config_pwm->period_ns <= 334)
     {
-        /* if freq between 3M~100M, then select 100M as clock */
+#if defined(CONFIG_ARCH_SUN20IW2)
+	/* if freq between 3M~100M, then select 96M as clock */
+	c = 96000000;
+#else
+	/* if freq between 3M~100M, then select 100M as clock */
         c = 100000000;
+#endif /* CONFIG_ARCH_SUN20IW2 */
 
-        /*clk_src_reg : use APB1 clock */
+        /* clk_src_reg : use APB1 clock */
         temp = hal_readl(PWM_BASE + reg_offset);
         temp = SET_BITS(reg_clk_src_shift, reg_clk_src_width, temp, 1);
         hal_writel(temp, PWM_BASE + reg_offset);
     }
     else if (config_pwm->period_ns > 334)
     {
-        /* if freq < 3M, then select 24M clock */
+#if defined(CONFIG_ARCH_SUN20IW2)
+	/* if freq < 3M, then select 40M clock */
+	c = 40000000;
+#else
+	/* if freq < 3M, then select 24M clock */
         c = 24000000;
+#endif /* CONFIG_ARCH_SUN20IW2 */
 
-        /*clk_src_reg : use OSC24M clock */
+        /* clk_src_reg : use OSC24M clock */
         temp = hal_readl(PWM_BASE + reg_offset);
         temp = SET_BITS(reg_clk_src_shift, reg_clk_src_width, temp, 0);
         hal_writel(temp, PWM_BASE + reg_offset);
@@ -491,10 +692,17 @@ pwm_status_t hal_pwm_control(int channel, struct pwm_config *config_pwm)
     hal_writel(temp, PWM_BASE + reg_offset);
 
     /* config gating */
+#ifdef CONFIG_ARCH_SUN8IW18P1
+    reg_shift = PWM_CLK_GATING_SHIFT;
+    value = hal_readl(PWM_BASE + reg_offset);
+    value = SET_BITS(reg_shift, 1, value, 1); /* set gating */
+    hal_writel(value, PWM_BASE + reg_offset);
+#else
     reg_shift = channel;
     value = hal_readl(PWM_BASE + PWM_PCGR);
-    value = SET_BITS(reg_shift, 1, value, 1);/* set gating */
+    value = SET_BITS(reg_shift, 1, value, 1); /* set gating */
     hal_writel(value, PWM_BASE + PWM_PCGR);
+#endif
 
     /* config prescal */
     reg_offset = PWM_PCR + 0x20 * channel;
@@ -522,42 +730,5 @@ pwm_status_t hal_pwm_control(int channel, struct pwm_config *config_pwm)
 
     PWM_INFO("pwm control end ");
 
-    return 0;
-}
-
-pwm_status_t hal_pwm_resume(void)
-{
-    if (hal_reset_control_assert(sunxi_pwm.pwm_reset))
-    {
-        return -1;
-    }
-
-    if (hal_reset_control_deassert(sunxi_pwm.pwm_reset))
-    {
-        return -1;
-    }
-
-    if (hal_clock_enable(sunxi_pwm.pwm_bus_clk))
-    {
-        return -1;
-    }
-
-    PWM_INFO("hal pwm resume");
-    return 0;
-}
-
-pwm_status_t hal_pwm_suspend(void)
-{
-    if (hal_reset_control_assert(sunxi_pwm.pwm_reset))
-    {
-        return -1;
-    }
-
-    if (hal_clock_disable(sunxi_pwm.pwm_bus_clk))
-    {
-        return -1;
-    }
-
-    PWM_INFO("hal pwm suspend");
     return 0;
 }

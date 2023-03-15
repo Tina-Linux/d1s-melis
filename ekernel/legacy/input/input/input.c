@@ -1,19 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                    eMOD
-*                                         the melis Operation System
-*                                               input sub-system
-*                                          input system core module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2010-2012, sunny China
-*                                              All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File   : input.c
-* Version: V1.0
-* By     : Sunny
-* Date   : 2010-7-10
-* Note   : input system core module.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "input_i.h"
 #include <string.h>
@@ -611,25 +625,25 @@ static __bool INPUT_MatchDevice(__input_ldev_t *ldev, __input_dev_t *pdev)
     int32_t         i;
     __input_lid_t   *id = (__input_lid_t *)(ldev->id_table);
 
-    /* ����߼������豸��idʶ����û�����ã�������Ϊ֧���������������豸 */
+    /* 如果逻辑输入设备的id识别组没有设置，将被认为支持所有物理输入设备 */
     if (id == NULL)
     {
         return EPDK_FALSE;
     }
 
-    /* �߼������豸����ӵ�ж������������ʶ��ֻҪ���е�һ��ͬ���������豸ƥ�䣬
-     * ������Ϊ���������������豸�������߼������豸֧��
+    /* 逻辑输入设备可以拥有多组独立的身份识别，只要其中的一组同物理输入设备匹配，
+     * 即被认为被检查的物理输入设备将被该逻辑输入设备支持
      */
     for (; id->flags; id++)
     {
-        /* ��Ҫ�Ƚϲ�Ʒ�ͺ� */
+        /* 需要比较产品型号 */
         if (id->flags & INPUT_DEVICE_ID_MATCH_PRODUCT)
             if (id->product != pdev->id.product)
             {
                 continue;
             }
 
-        /* ��Ҫ�Ƚϲ�Ʒ�汾�� */
+        /* 需要比较产品版本号 */
         if (id->flags & INPUT_DEVICE_ID_MATCH_VERSION)
             if (id->version != pdev->id.version)
             {
@@ -637,10 +651,10 @@ static __bool INPUT_MatchDevice(__input_ldev_t *ldev, __input_dev_t *pdev)
             }
 
         /*
-         * �����������豸���߼������豸�������¼����ͺ��¼�����Ƚϣ�������������豸��
-         * �¼����͡��¼����뼯�ϴ��ڵ����߼������豸���¼����͡��¼����뼯�ϣ�����Ϊ��
-         * �������������豸����ƥ��ġ�
-         * �������ƥ���߼������豸����һ��id��
+         * 将物理输入设备和逻辑输入设备的所有事件类型和事件码相比较，如果物理输入设备的
+         * 事件类型、事件编码集合大于等于逻辑输入设备的事件类型、事件编码集合，则认为逻
+         * 辑和物理输入设备是相匹配的。
+         * 否则继续匹配逻辑输入设备的下一组id。
          */
         MATCH_BIT(evbit,  EV_MAX);
         MATCH_BIT(keybit, KEY_MAX);
@@ -982,4 +996,3 @@ int32_t esINPUT_UnregDev(__input_dev_t *dev)
     INPUT_Unlock();
     return EPDK_OK;
 }
-

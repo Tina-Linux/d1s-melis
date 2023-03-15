@@ -2,10 +2,9 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
-#include <rtthread.h>
-#include <log.h>
 #include <hal_mem.h>
 #include <video/sunxi_display2.h>
+#include "disp_mem.h"
 
 
 struct info_mm {
@@ -46,7 +45,7 @@ static void *disp_malloc(u32 num_bytes, void *phys_addr)
 		address = hal_malloc(actual_bytes);
 		*(uint32_t *)phys_addr = __va_to_pa((unsigned long)address);
 		if (address) {
-		__wrn	
+		printf
 				("hal_malloc ok, phy addr=0x%p, vir addr=%p size=0x%x\n",
 				 (void *)(*(unsigned long *)phys_addr), address, num_bytes);
 			return address;
@@ -75,7 +74,7 @@ static int disp_mem_release(int sel)
 	if (g_disp_mm[sel].info_base == NULL)
 		return -1;
 
-	__inf("disp_mem_release, mem_id=%d, phy_addr=0x%p\n", sel,
+	printf("disp_mem_release, mem_id=%d, phy_addr=0x%p\n", sel,
 	      (void *)g_disp_mm[sel].mem_start);
 	disp_free((void *)g_disp_mm[sel].info_base,
 		  (void *)g_disp_mm[sel].mem_start, g_disp_mm[sel].mem_len);
@@ -173,7 +172,7 @@ int disp_mem(u32 mem_id, u32 width, u32 height, u32 clear_flag, char *filename)
 	}
 
 FILE_CLOSE:
-	if(!fh)
+	if(fh != NULL)
 		fclose(fh);
 OUT:
 	return ret;
@@ -257,5 +256,5 @@ int parse_cmdline_and_alloc(int argc, char **argv)
 	}
 }
 
-FINSH_FUNCTION_EXPORT_ALIAS(parse_cmdline_and_alloc, disp_mem, disp mem);
+FINSH_FUNCTION_EXPORT_ALIAS(parse_cmdline_and_alloc, disp_mem, disp_mem);
 

@@ -1,5 +1,3 @@
-#if 0
-
 /*
  * OHCI HCD (Host Controller Driver) for USB.
  *
@@ -25,56 +23,55 @@
 
 /*-------------------------------------------------------------------------*/
 
-static void ohci_hcd_init (struct ohci_hcd *ohci)
+void ohci_hcd_init(struct ohci_hcd *ohci)
 {
-	ohci->next_statechange = jiffies;
-	spin_lock_init (&ohci->lock);
-	INIT_LIST_HEAD (&ohci->pending);
+	// ohci->next_statechange = jiffies;
+	// spin_lock_init (&ohci->lock);
+	INIT_LIST_HEAD(&ohci->pending);
 	INIT_LIST_HEAD(&ohci->eds_in_use);
 }
 
 /*-------------------------------------------------------------------------*/
 
-static int ohci_mem_init (struct ohci_hcd *ohci)
+static int ohci_mem_init(struct ohci_hcd *ohci)
 {
-	ohci->td_cache = dma_pool_create ("ohci_td",
-		ohci_to_hcd(ohci)->self.controller,
-		sizeof (struct td),
-		32 /* byte alignment */,
-		0 /* no page-crossing issues */);
-	if (!ohci->td_cache)
-		return -ENOMEM;
-	ohci->ed_cache = dma_pool_create ("ohci_ed",
-		ohci_to_hcd(ohci)->self.controller,
-		sizeof (struct ed),
-		16 /* byte alignment */,
-		0 /* no page-crossing issues */);
-	if (!ohci->ed_cache) {
-		dma_pool_destroy (ohci->td_cache);
-		return -ENOMEM;
-	}
+	// ohci->td_cache = dma_pool_create ("ohci_td",
+	// 	ohci_to_hcd(ohci)->self.controller,
+	// 	sizeof (struct td),
+	// 	32 /* byte alignment */,
+	// 	0 /* no page-crossing issues */);
+	// if (!ohci->td_cache)
+	// 	return -ENOMEM;
+	// ohci->ed_cache = dma_pool_create ("ohci_ed",
+	// 	ohci_to_hcd(ohci)->self.controller,
+	// 	sizeof (struct ed),
+	// 	16 /* byte alignment */,
+	// 	0 /* no page-crossing issues */);
+	// if (!ohci->ed_cache) {
+	// 	dma_pool_destroy (ohci->td_cache);
+	// 	return -ENOMEM;
+	// }
 	return 0;
 }
 
-static void ohci_mem_cleanup (struct ohci_hcd *ohci)
+static void ohci_mem_cleanup(struct ohci_hcd *ohci)
 {
-	if (ohci->td_cache) {
-		dma_pool_destroy (ohci->td_cache);
-		ohci->td_cache = NULL;
-	}
-	if (ohci->ed_cache) {
-		dma_pool_destroy (ohci->ed_cache);
-		ohci->ed_cache = NULL;
-	}
+	// if (ohci->td_cache) {
+	// 	dma_pool_destroy (ohci->td_cache);
+	// 	ohci->td_cache = NULL;
+	// }
+	// if (ohci->ed_cache) {
+	// 	dma_pool_destroy (ohci->ed_cache);
+	// 	ohci->ed_cache = NULL;
+	// }
 }
 
 /*-------------------------------------------------------------------------*/
 
 /* ohci "done list" processing needs this mapping */
-static inline struct td *
-dma_to_td (struct ohci_hcd *hc, dma_addr_t td_dma)
+static inline struct td *dma_to_td(struct ohci_hcd *hc, dma_addr_t td_dma)
 {
-	struct td *td;
+	struct td *td = NULL;
 
 	td_dma &= TD_MASK;
 	td = hc->td_hash [TD_HASH_FUNC(td_dma)];
@@ -84,25 +81,25 @@ dma_to_td (struct ohci_hcd *hc, dma_addr_t td_dma)
 }
 
 /* TDs ... */
-static struct td *
-td_alloc (struct ohci_hcd *hc, gfp_t mem_flags)
+static struct td *td_alloc(struct ohci_hcd *hc, gfp_t mem_flags)
 {
 	dma_addr_t	dma;
 	struct td	*td;
 
-	td = dma_pool_alloc (hc->td_cache, mem_flags, &dma);
+	// td = dma_pool_alloc (hc->td_cache, mem_flags, &dma);
+	td = (struct td *)usb_dma_malloc(sizeof(struct td), &dma, USB_DESC_MALLOC_ALIGN_SIZE);
 	if (td) {
 		/* in case hc fetches it, make it look dead */
-		memset (td, 0, sizeof *td);
-		td->hwNextTD = cpu_to_hc32 (hc, dma);
+		memset(td, 0, sizeof *td);
+		td->hwNextTD = cpu_to_hc32(hc, dma);
 		td->td_dma = dma;
 		/* hashed in td_fill */
+		hal_dcache_clean_invalidate((unsigned long)((struct td *)(td->td_dma)), sizeof(struct td));
 	}
 	return td;
 }
 
-static void
-td_free (struct ohci_hcd *hc, struct td *td)
+static void td_free(struct ohci_hcd *hc, struct td *td)
 {
 	struct td	**prev = &hc->td_hash [TD_HASH_FUNC (td->td_dma)];
 
@@ -112,31 +109,33 @@ td_free (struct ohci_hcd *hc, struct td *td)
 		*prev = td->td_hash;
 	else if ((td->hwINFO & cpu_to_hc32(hc, TD_DONE)) != 0)
 		ohci_dbg (hc, "no hash for td %p\n", td);
-	dma_pool_free (hc->td_cache, td, td->td_dma);
+	// dma_pool_free (hc->td_cache, td, td->td_dma);
+	usb_dma_free(td, td->td_dma);
+	td->td_dma = 0;
 }
 
 /*-------------------------------------------------------------------------*/
 
 /* EDs ... */
-static struct ed *
-ed_alloc (struct ohci_hcd *hc, gfp_t mem_flags)
+static struct ed *ed_alloc(struct ohci_hcd *hc, gfp_t mem_flags)
 {
 	dma_addr_t	dma;
 	struct ed	*ed;
 
-	ed = dma_pool_alloc (hc->ed_cache, mem_flags, &dma);
+	// ed = dma_pool_alloc (hc->ed_cache, mem_flags, &dma);
+	ed = (struct ed *)usb_dma_malloc(sizeof(struct ed), &dma, USB_DESC_MALLOC_ALIGN_SIZE);
 	if (ed) {
-		memset (ed, 0, sizeof (*ed));
-		INIT_LIST_HEAD (&ed->td_list);
+		memset(ed, 0, sizeof(*ed));
+		INIT_LIST_HEAD(&ed->td_list);
 		ed->dma = dma;
+		hal_dcache_clean_invalidate((unsigned long)((struct ed *)(ed->dma)), sizeof(struct ed));
 	}
 	return ed;
 }
 
-static void
-ed_free (struct ohci_hcd *hc, struct ed *ed)
+static void ed_free(struct ohci_hcd *hc, struct ed *ed)
 {
-	dma_pool_free (hc->ed_cache, ed, ed->dma);
+	// dma_pool_free (hc->ed_cache, ed, ed->dma);
+	usb_dma_free(ed, ed->dma);
+	ed->dma = 0;
 }
-
-#endif

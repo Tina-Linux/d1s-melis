@@ -32,9 +32,7 @@
 #ifndef __UDC_H__
 #define __UDC_H__
 
-#include <usb/ch9.h>
-#include <usb/sunxi_hal_udc.h>
-#include <hal_clk.h>
+#include "ch9.h"
 
 //#define UDC_LOG_DEBUG
 #define log_udc_info(fmt, ...)	hal_log_info("udc: "fmt, ##__VA_ARGS__)
@@ -74,12 +72,12 @@ typedef enum {
 } udc_ep0_state_t;
 
 typedef enum {
-	UDC_SPEED_UNKNOWN = 0,		/* enumerating */
-	UDC_SPEED_LOW, UDC_SPEED_FULL,	/* usb 1.1 */
-	UDC_SPEED_HIGH,			/* usb 2.0 */
-	UDC_SPEED_WIRELESS,		/* wireless (usb 2.5) */
-	UDC_SPEED_SUPER,		/* usb 3.0 */
-	UDC_SPEED_SUPER_PLUS,		/* usb 3.1 */
+	UDC_SPEED_UNKNOWN = 0, /* enumerating */
+	UDC_SPEED_LOW, UDC_SPEED_FULL,	      /* usb 1.1 */
+	UDC_SPEED_HIGH,	      /* usb 2.0 */
+	UDC_SPEED_WIRELESS,   /* wireless (usb 2.5) */
+	UDC_SPEED_SUPER,      /* usb 3.0 */
+	UDC_SPEED_SUPER_PLUS, /* usb 3.1 */
 } udc_speed_t;
 
 typedef struct {
@@ -90,31 +88,31 @@ typedef struct {
 } udc_fifo_t;
 
 typedef struct {
-	uint8_t				ep_addr;
-	void				*pdata;
-	uint32_t			data_len;
-	uint32_t			data_actual;
-	uint32_t			maxpacket;
+	uint8_t ep_addr;
+	void *pdata;
+	uint32_t data_len;
+	uint32_t data_actual;
+	uint32_t maxpacket;
 } udc_ep_t;
 
 typedef struct {
-	uint8_t				ep0state;
-	uint8_t				address;
-	udc_speed_t			speed;
+	uint8_t ep0state;
+	uint8_t address;
+	udc_speed_t speed;
 
-	struct usb_ctrlrequest		crq;
-	uint8_t				req_std;
-	struct usb_device_descriptor	*device_desc;
-	void				*config_desc;
-	uint32_t			config_desc_len;
-	struct usb_string_descriptor	*string_desc[UDC_MAX_NUM_STRING_DESC];
-	uint32_t			string_desc_num;
+	struct usb_ctrlrequest crq;
+	uint8_t req_std;
+	struct usb_device_descriptor *device_desc;
+	void *config_desc;
+	uint32_t config_desc_len;
+	struct usb_string_descriptor *string_desc[UDC_MAX_NUM_STRING_DESC];
+	uint32_t string_desc_num;
 
-	udc_ep_t			ep0;
-	udc_ep_t			epin[UDC_MAX_NUM_EP_TX];
-	udc_ep_t			epout[UDC_MAX_NUM_EP_RX];
+	udc_ep_t ep0;
+	udc_ep_t epin[UDC_MAX_NUM_EP_TX];
+	udc_ep_t epout[UDC_MAX_NUM_EP_RX];
 
-	udc_callback_t			callback;
+	udc_callback_t callback;
 } udc_priv_t;
 
 typedef struct {
@@ -131,8 +129,29 @@ typedef struct {
 	hal_clk_t phy_clk;
 	hal_clk_t otg_clk;
 
-	struct reset_control    *reset_phy;
-	struct reset_control    *reset_otg;
+	struct reset_control *reset_phy;
+	struct reset_control *reset_otg;
 } sunxi_udc_io_t;
+
+void* usbc_get_musb_phy(void);
+
+int32_t sunxi_udc_init(void);
+int32_t sunxi_udc_deinit(void);
+
+int32_t udc_ep_read(uint8_t ep_addr, void *buf, uint32_t len);
+int32_t udc_ep_write(uint8_t ep_addr, void *buf , uint32_t len);
+
+void udc_ep_disable(uint8_t ep_addr);
+void udc_ep_enable(uint8_t ep_addr, uint16_t maxpacket, uint32_t ts_type);
+void udc_ep_set_buf(uint8_t ep_addr, void *buf, uint32_t len);
+
+void udc_driverlevel_show(void);
+void udc_driverlevel_adjust(int driverlevel);
+void udc_ed_test(const char *buf, size_t count);
+
+void udc_device_desc_init(void *device_desc);
+void udc_config_desc_init(void *config_desc, uint32_t len);
+void udc_string_desc_init(const void *string_desc);
+void udc_register_callback(udc_callback_t user_callback);
 
 #endif /*__UDC_H__*/

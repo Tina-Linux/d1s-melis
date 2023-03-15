@@ -34,6 +34,9 @@
 #define __GPIO_I_H__
 
 #include "hal_interrupt.h"
+#ifdef CONFIG_COMPONENTS_PM
+#include <pm_devops.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -77,7 +80,7 @@ extern "C" {
 #define GIC_IRQ_NUM         140
 #define GPIO_IRQ_START      (GIC_IRQ_NUM + 1)
 
-#if defined(CONFIG_ARCH_SUN8IW20) || defined(CONFIG_SOC_SUN20IW1)
+#if defined(CONFIG_ARCH_SUN8IW20) || defined(CONFIG_SOC_SUN20IW1) || defined(CONFIG_SOC_SUN20IW3)
 #define BANK_MEM_SIZE       0x30
 #define PULL_REGS_OFFSET    0x24
 #define DLEVEL_PINS_PER_REG 8
@@ -190,7 +193,7 @@ struct gpio_irq_desc
     uint32_t virq;
     uint32_t pin;
     unsigned long flags;
-    irq_handler_t handle_irq;
+    hal_irq_handler_t handle_irq;
     void *data;
 };
 
@@ -229,13 +232,24 @@ struct gpio_pm_reg_cache
 #if defined(CONFIG_ARCH_SUN8IW20) || defined(CONFIG_SOC_SUN20IW1)
 #include "sun8iw20/platform-gpio.h"
 #endif
+#if defined(CONFIG_ARCH_SUN8IW21) || defined(CONFIG_SOC_SUN20IW3)
+#include "sun8iw21/platform-gpio.h"
+#endif
 #if defined(CONFIG_ARCH_SUN50IW11)
 #include "sun50iw11/platform-gpio.h"
 #endif
+#if defined(CONFIG_ARCH_SUN20IW2)
+#include "sun20iw2/platform-gpio.h"
+#endif
+#if defined(CONFIG_ARCH_SUN55IW3)
+#include "sun55iw3/platform-gpio.h"
+#endif
 
 const struct gpio_desc **gpio_get_platform_desc(void);
+#ifdef CONFIG_STANDBY
 int hal_gpio_suspend(void);
 int hal_gpio_resume(void);
+#endif
 int hal_gpio_r_irq_disable(uint32_t irq);
 int hal_gpio_r_irq_enable(uint32_t irq);
 int hal_gpio_r_all_irq_disable(void);

@@ -30,6 +30,7 @@
  */
 
 #include <stdio.h>
+#include "sunxi_hal_common.h"
 #include "stdint.h"
 #include "mbus.h"
 
@@ -69,6 +70,24 @@ uint32_t mbus_get_dma_ddr(void)
 {
 #ifdef CONFIG_DRIVERS_MBUS_DMA_BW
 	return MBUS_PMU->MC_DMA_BWCR;
+#else
+    return 0;
+#endif
+}
+
+uint32_t mbus_get_dma0_ddr(void)
+{
+#ifdef CONFIG_DRIVERS_MBUS_DMA0_BW
+	return MBUS_PMU->MC_DMA0_BWCR;
+#else
+    return 0;
+#endif
+}
+
+uint32_t mbus_get_dma1_ddr(void)
+{
+#ifdef CONFIG_DRIVERS_MBUS_DMA1_BW
+	return MBUS_PMU->MC_DMA1_BWCR;
 #else
     return 0;
 #endif
@@ -139,12 +158,29 @@ uint32_t mbus_get_iommu_ddr(void)
 
 uint32_t mbus_get_ve_ddr(void)
 {
+#ifdef CONFIG_DRIVERS_MBUS_VE_BW
 	return MBUS_PMU->MC_VE_BWCR;
+#else
+    return 0;
+#endif
 }
 
 uint32_t mbus_get_de_ddr(void)
 {
+#ifdef CONFIG_DRIVERS_MBUS_DE_BW
 	return MBUS_PMU->MC_DE_BWCR;
+#else
+    return 0;
+#endif
+}
+
+uint32_t mbus_get_disp_ddr(void)
+{
+#ifdef CONFIG_DRIVERS_MBUS_DISP_BW
+	return MBUS_PMU->MC_DISP_BWCR;
+#else
+    return 0;
+#endif
 }
 
 uint32_t mbus_get_oth_ddr(void)
@@ -157,8 +193,27 @@ uint32_t mbus_get_total_ddr(void)
 	return MBUS_PMU->MC_TOTAL_BWCR;
 }
 
+uint32_t mbus_get_window(void)
+{
+#ifdef MBUS_PMU_DBGCR
+	uint32_t windows_us = (hal_readl(MBUS_PMU_BASE) >> 16);
+	return windows_us;
+#else
+	return 0;
+#endif
+}
+
 void mbus_pmu_enable(void)
 {
+	MBUS_PMU->MC_MCGCR = MBUS_PMU->MC_MCGCR & ~0x1;
+
+/* changed for R128,20220601
+#ifdef CONFIG_ARCH_SUN20IW2
+	hal_writel((hal_readl(MBUS_PMU_DBGCR) & ~(0xFF<<8)) | (0x40 << 8), MBUS_PMU_DBGCR); //hardcode for fpga
+	hal_writel(1, MBUS_PMU_TMR); //hardcode for 16M clk/8M psram/2M msi
+#endif
+*/
 	//unit : 1Byte.
-	MBUS_PMU->MC_MCGCR = 0x10000001;
+	//window: 50ms window for total
+	MBUS_PMU->MC_MCGCR = (((50 * 1000) << 16) | 0x1);
 }

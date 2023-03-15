@@ -16,7 +16,6 @@
  */
 #ifndef __G2D_BSP_H
 #define __G2D_BSP_H
-#include <log.h>
 
 #include <stdlib.h>
 #include <string.h>

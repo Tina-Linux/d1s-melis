@@ -1,28 +1,33 @@
 /*
-********************************************************************************************************************
-*                                           Melis
-*                                   USB Host Driver Operation
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                       (c) Copyright 2006-2010, All winners Co,Ld.
-*                                   All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File Name     : usb_cd.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
-* Author        : javen
 *
-* Description   : USB¹âÇýµÄÏà¹Ø²Ù×÷
-*
-* History       :
-*      <author>         <time>          <version >          <desc>
-*       javen          2010-12-3          1.0          create this file
-*
-* Note          :
-*  1¡¢USB¹âÇýµÄÏà¹ØÃüÁî£¬Çë²Î¿¼"..\ePDK\includes\emod\drv_host.h"
-*  2¡¢USB¹âÇýÓÐ¹âµú²¢ÇÒÒÑ¾­×¢²á¿éÉè±¸Ê±£¬¿ÉÍ¨¹ý"b:\\DISK\\USB_CDROM_xx"ÕÒµ½USB¹âÇýÉè±¸
-*  3¡¢USB¹âÇýÃ»ÓÐ¹âµúÊ±£¬¿ÉÍ¨¹ý"b:\\USERDEF\\USB_CDROM_xx"ÕÒµ½USB¹âÇýÉè±¸
-*  4¡¢"USB_CDROM_xx"ÖÐ"xx"±íÊ¾±àºÅ£¬ÈçÓÐÁ½¸öUSB¹âÇý´æÔÚ£¬ÄÇÃ´Æä±àºÅÎ»"USB_CDROM_x00"¡¢"USB_CDROM_01"
-*
-********************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <typedef.h>
 #include <libc/elibs_stdio.h>
@@ -33,17 +38,17 @@
 *                     USB_GetCDROMInfo
 *
 * Description:
-*    »ñµÃ¹âÇýµÄÐÅÏ¢
+*    èŽ·å¾—å…‰é©±çš„ä¿¡æ¯
 *
 * Parameters:
-*    Path  :  input. Éè±¸ÃûÂ·¾¶. Èç"b:\\DISK\\USB_CDROM_xx"¡£
-*    Info  :  input. ¹âÇýµÄÐÅÏ¢
+*    Path  :  input. è®¾å¤‡åè·¯å¾„. å¦‚"b:\\DISK\\USB_CDROM_xx"ã€‚
+*    Info  :  input. å…‰é©±çš„ä¿¡æ¯
 *
 * Return value:
-*    ·µ»Ø³É¹¦»òÕßÊ§°Ü¡£
+*    è¿”å›žæˆåŠŸæˆ–è€…å¤±è´¥ã€‚
 *
 * note:
-*    ÎÞ
+*    æ— 
 *
 *******************************************************************************
 */
@@ -80,16 +85,16 @@ __s32 USB_GetCDROMInfo(char *Path, usbh_CDROM_Info_t *Info)
 *                     USB_GetDriveStatus
 *
 * Description:
-*    »ñµÃ¹âÇýµÄ×´Ì¬
+*    èŽ·å¾—å…‰é©±çš„çŠ¶æ€
 *
 * Parameters:
-*    Path  :  input. Éè±¸ÃûÂ·¾¶. Èç"b:\\DISK\\USB_CDROM_xx"¡£
+*    Path  :  input. è®¾å¤‡åè·¯å¾„. å¦‚"b:\\DISK\\USB_CDROM_xx"ã€‚
 *
 * Return value:
-*    ·µ»Ø¹âÇýµÄ×´Ì¬
+*    è¿”å›žå…‰é©±çš„çŠ¶æ€
 *
 * note:
-*    ÎÞ
+*    æ— 
 *
 *******************************************************************************
 */
@@ -127,16 +132,16 @@ __u32 USB_GetDriveStatus(char *Path)
 *                     USB_CDROM_Eject
 *
 * Description:
-*    µ¯³ö¹âµú
+*    å¼¹å‡ºå…‰ç¢Ÿ
 *
 * Parameters:
-*    Path  :  input. Éè±¸ÃûÂ·¾¶. Èç"b:\\DISK\\USB_CDROM_xx"¡£
+*    Path  :  input. è®¾å¤‡åè·¯å¾„. å¦‚"b:\\DISK\\USB_CDROM_xx"ã€‚
 *
 * Return value:
-*    ·µ»Ø³É¹¦»òÕßÊ§°Ü¡£
+*    è¿”å›žæˆåŠŸæˆ–è€…å¤±è´¥ã€‚
 *
 * note:
-*    ÎÞ
+*    æ— 
 *
 *******************************************************************************
 */
@@ -173,16 +178,16 @@ __s32 USB_CDEject(char *Path)
 *                     USB_CDROM_Load
 *
 * Description:
-*    ×°ÔØ¹âµú
+*    è£…è½½å…‰ç¢Ÿ
 *
 * Parameters:
-*    Path  :  input. Éè±¸ÃûÂ·¾¶. Èç"b:\\DISK\\USB_CDROM_xx"¡£
+*    Path  :  input. è®¾å¤‡åè·¯å¾„. å¦‚"b:\\DISK\\USB_CDROM_xx"ã€‚
 *
 * Return value:
-*    ·µ»Ø³É¹¦»òÕßÊ§°Ü¡£
+*    è¿”å›žæˆåŠŸæˆ–è€…å¤±è´¥ã€‚
 *
 * note:
-*    ÎÞ
+*    æ— 
 *
 *******************************************************************************
 */
@@ -219,16 +224,16 @@ __s32 USB_CDLoad(char *Path)
 *                     USB_PreventMediumRemoval
 *
 * Description:
-*    ½ûÖ¹½éÖÊÒÆ¶¯£¬¼´½ûÖ¹µ¯³ö¹âµú¡£
+*    ç¦æ­¢ä»‹è´¨ç§»åŠ¨ï¼Œå³ç¦æ­¢å¼¹å‡ºå…‰ç¢Ÿã€‚
 *
 * Parameters:
-*    Path  :  input. Éè±¸ÃûÂ·¾¶. Èç"b:\\DISK\\USB_CDROM_xx"¡£
+*    Path  :  input. è®¾å¤‡åè·¯å¾„. å¦‚"b:\\DISK\\USB_CDROM_xx"ã€‚
 *
 * Return value:
-*    ·µ»Ø³É¹¦»òÕßÊ§°Ü¡£
+*    è¿”å›žæˆåŠŸæˆ–è€…å¤±è´¥ã€‚
 *
 * note:
-*    ´ó¶àÓÃÔÚ²¥·ÅÊÓÆµ¡¢ÒôÀÖµÈ³¡ºÏ£¬·ÀÖ¹ÓÃ»§ÔÚ´ËÊ±Í¨¹ý¹âÇý¿ª¹Ø°Ñ¹âµúµ¯³ö¡£
+*    å¤§å¤šç”¨åœ¨æ’­æ”¾è§†é¢‘ã€éŸ³ä¹ç­‰åœºåˆï¼Œé˜²æ­¢ç”¨æˆ·åœ¨æ­¤æ—¶é€šè¿‡å…‰é©±å¼€å…³æŠŠå…‰ç¢Ÿå¼¹å‡ºã€‚
 *
 *******************************************************************************
 */
@@ -265,16 +270,16 @@ __s32 USB_PreventMediumRemoval(char *Path)
 *                     USB_AllowMediumRemoval
 *
 * Description:
-*    ÔÊÐí½éÖÊÒÆ¶¯
+*    å…è®¸ä»‹è´¨ç§»åŠ¨
 *
 * Parameters:
-*    Path  :  input. Éè±¸ÃûÂ·¾¶. Èç"b:\\DISK\\USB_CDROM_xx"¡£
+*    Path  :  input. è®¾å¤‡åè·¯å¾„. å¦‚"b:\\DISK\\USB_CDROM_xx"ã€‚
 *
 * Return value:
-*    ·µ»Ø³É¹¦»òÕßÊ§°Ü¡£
+*    è¿”å›žæˆåŠŸæˆ–è€…å¤±è´¥ã€‚
 *
 * note:
-*    ÎÞ
+*    æ— 
 *
 *******************************************************************************
 */
@@ -305,8 +310,3 @@ __s32 USB_AllowMediumRemoval(char *Path)
     eLIBs_fclose(pfile);
     return EPDK_OK;
 }
-
-
-
-
-

@@ -179,21 +179,24 @@ struct spdif_rate {
 	unsigned int rate_bit;
 };
 
-struct sunxi_spdif_info {
-	struct sunxi_dma_params playback_dma_param;
-	struct sunxi_dma_params capture_dma_param;
-	hal_clk_t pllclk;
-	hal_clk_t moduleclk;
-	hal_clk_t busclk;
-	struct reset_control *rstclk;
-	hal_clk_t pllclk1;
-	hal_clk_t pllclk1_div;
-	hal_clk_t moduleclk_rx;
-};
-
 /* aw1859 */
 #ifdef CONFIG_ARCH_SUN8IW20
 #include "platforms/spdif-sun8iw20.h"
 #endif
+/* aw1883 */
+#ifdef CONFIG_ARCH_SUN20IW2
+#include "platforms/spdif-sun20iw2.h"
+#endif
+/* aw1890 */
+#ifdef CONFIG_ARCH_SUN55IW3
+#include "platforms/spdif-sun55iw3.h"
+#endif
+
+struct sunxi_spdif_info {
+	struct sunxi_dma_params playback_dma_param;
+	struct sunxi_dma_params capture_dma_param;
+
+	struct sunxi_spdif_clk clk;
+};
 
 #endif /* __SUNXI_SPDIF_H_ */

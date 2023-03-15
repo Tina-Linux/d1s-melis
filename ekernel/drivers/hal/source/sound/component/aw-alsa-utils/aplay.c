@@ -38,6 +38,7 @@
 #include <fcntl.h>
 #include <hal_cmd.h>
 #include <aw-alsa-lib/pcm.h>
+#include <hal_time.h>
 #include <hal_timer.h>
 #include "common.h"
 #include "wav_parser.h"
@@ -65,50 +66,6 @@ static int fs_read(int fd, void *buf, size_t count)
 	return result;
 }
 #endif
-
-static int pcm_write(snd_pcm_t *handle, char *data, snd_pcm_uframes_t frames_total, unsigned int frame_bytes)
-{
-	int ret = 0;
-	snd_pcm_sframes_t size;
-	snd_pcm_uframes_t frames_loop = 400;
-	snd_pcm_uframes_t frames_count = 0;
-	snd_pcm_uframes_t frames = 0;
-
-	while (1) {
-		if ((frames_total - frames_count) < frames_loop)
-			frames = frames_total - frames_count;
-		if (frames == 0)
-			frames = frames_loop;
-		/*hal_usleep(500000);*/
-		size = snd_pcm_writei(handle, data, frames);
-		if (size != frames) {
-			printf("snd_pcm_writei return %ld\n", size);
-		}
-		if (size == -EAGAIN) {
-			hal_usleep(10000);
-			continue;
-		} else if (size == -EPIPE) {
-			xrun(handle);
-			continue;
-		} else if (size == -ESTRPIPE) {
-
-			continue;
-		} else if (size < 0) {
-			printf("-----snd_pcm_writei failed!!, return %ld\n", size);
-			return size;
-		}
-		data += (size * frame_bytes);
-		frames_count += size;
-		frames -= size;
-		if (frames_total == frames_count)
-			break;
-		/*printf("frames_count = %ld, frames_total = %ld\n", frames_count, frames_total);*/
-	}
-
-	return frames_count;
-}
-
-
 
 /*
  * arg0: aplay
@@ -442,7 +399,7 @@ static void usage(void)
 
 int cmd_aplay(int argc, char ** argv)
 {
-	int i = 0, c;
+	int c;
 	audio_mgr_t *audio_mgr = NULL;
 	g_hpcm_name = NULL;//"default";
 	g_pcm_name = "default";//"hw:snddaudio0";

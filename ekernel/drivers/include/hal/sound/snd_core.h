@@ -257,6 +257,8 @@ typedef int snd_ctl_elem_type_t;
 
 enum snd_platform_type {
 	SND_PLATFORM_TYPE_CPUDAI = 0,
+	SND_PLATFORM_TYPE_CPUDAI_DAC,
+	SND_PLATFORM_TYPE_CPUDAI_ADC,
 	SND_PLATFORM_TYPE_INTERNAL_I2S,
 	SND_PLATFORM_TYPE_DAUDIO0 = 5,
 	SND_PLATFORM_TYPE_DAUDIO1,
@@ -480,7 +482,7 @@ struct snd_pcm_runtime {
 struct snd_ctl_info {
 	unsigned int id;
 	snd_ctl_elem_type_t type;
-	const unsigned char *name;
+	const char *name;
 	unsigned long value;
 	int min,max;
 	int count;
@@ -497,7 +499,7 @@ typedef int (snd_kcontrol_set_t) (struct snd_kcontrol *, unsigned long);
 struct snd_kcontrol {
 	unsigned int id;
 	snd_ctl_elem_type_t type;
-	const unsigned char *name;
+	const char *name;
 	int reg;
 	unsigned int shift;
 	int min,max;

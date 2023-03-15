@@ -38,7 +38,6 @@
 #include <aw-alsa-lib/common.h>
 #include <hal_cmd.h>
 
-
 static void amixer_ctl_info_print(snd_ctl_info_t *info)
 {
 	if (info->type == SND_CTL_ELEM_TYPE_INTEGER) {
@@ -61,7 +60,7 @@ static void amixer_ctl_info_print(snd_ctl_info_t *info)
 
 static int amixer_controls(const char *card_name)
 {
-	int num, ret, i, count = 0;
+	int num, ret, i;
 	snd_ctl_info_t info;
 
 	if ((card_name == NULL) || (!strcmp(card_name, "default")))
@@ -86,14 +85,15 @@ static int amixer_controls(const char *card_name)
 	return 0;
 }
 
-static int parser_ctl_numid(const char *cmd, int *id)
+static int isnumber(const char *str)
 {
-	char *id_str = "numid=";
+	char *end;
 
-	if (strncmp(cmd, id_str, strlen(id_str)) != 0)
-		return -1;
-	*id = atoi(cmd+strlen(id_str));
-	return 0;
+	if (str == NULL || strlen(str) == 0)
+		return 0;
+
+	strtol(str, &end, 0);
+		return strlen(end) == 0;
 }
 
 static void amixer_usage(void)
@@ -110,9 +110,8 @@ static void amixer_usage(void)
 static int amixer(int argc, char *argv[])
 {
 	static char g_card_name[64] = "audiocodec";
-	int ret = 0;
 	int numid = 0;
-	char *ctl_name = NULL;
+	char *elem = NULL;
 	const char *card_name = NULL;
 	snd_ctl_info_t info;
 	int morehelp = 0;
@@ -123,6 +122,7 @@ static int amixer(int argc, char *argv[])
 		{NULL, 0, NULL, 0},
 	};
 
+	optind = 0;
 	while (1) {
 		int c;
 
@@ -149,7 +149,7 @@ static int amixer(int argc, char *argv[])
 					}
 				} else
 					strncpy(g_card_name, optarg, 64);
-				fprintf(stderr, "Card Name:%s.\n", g_card_name);
+				printf("Card Name:%s.\n", g_card_name);
 			}
 			break;
 		default:
@@ -174,20 +174,37 @@ static int amixer(int argc, char *argv[])
 		}
 	} else if (!strcmp("set", argv[optind])) {
 		int value = -1;
-		numid = atoi(argv[optind + 1]);
 		if (argc >= 4)
 			value = atoi(argv[optind + 2]);
 
-		if (value >= 0) {
-			if (snd_ctl_get_bynum(g_card_name, numid, &info) != 0) {
+		if (isnumber(argv[optind + 1])) {
+			numid = atoi(argv[optind + 1]);
+			if (snd_ctl_get_bynum(g_card_name, numid, &info)) {
+				printf("snd_ctl_get_bynum failed\n");
+				return -1;
+			}
+
+			if (value >= 0)
+				snd_ctl_set_bynum(g_card_name, numid, value);
+
+			if (!snd_ctl_get_bynum(g_card_name, numid, &info)) {
+				amixer_ctl_info_print(&info);
+				return 0;
+			}
+		} else {
+			elem = argv[optind + 1];
+			if (snd_ctl_get(g_card_name, elem, &info)) {
 				printf("snd_ctl_get failed\n");
 				return -1;
 			}
-			snd_ctl_set_bynum(g_card_name, numid, value);
-		}
-		if (!snd_ctl_get_bynum(g_card_name, numid, &info)) {
-			amixer_ctl_info_print(&info);
-			return 0;
+
+			if (value >= 0)
+				snd_ctl_set(g_card_name, elem, value);
+
+			if (!snd_ctl_get(g_card_name, elem, &info)) {
+				amixer_ctl_info_print(&info);
+				return 0;
+			}
 		}
 	} else {
 		amixer_usage();

@@ -1,33 +1,50 @@
 /*
- * ===========================================================================================
- *
- *       Filename:  interrupt.c
- *
- *    Description:  porting from linux.
- *
- *        Version:  Melis3.0
- *         Create:  2019-11-19 10:33:38
- *       Revision:  none
- *       Compiler:  GCC:version 7.2.1 20170904 (release),ARM/embedded-7-branch revision 255204
- *
- *         Author:  caozilong@allwinnertech.com
- *   Organization:  BU1-PSW
- *  Last Modified:  2020-04-27 16:51:40
- *
- * ===========================================================================================
- */
-
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+#include <stdlib.h>
 #include "interrupt.h"
 #include "irqdesc.h"
 #include "irq_internal.h"
 #include "gicv2_reg.h"
-#include <rtthread.h>
 #include <barrier.h>
-#include <typedef.h>
 #include <excep.h>
-#include <debug.h>
-#include <arch.h>
 #include <log.h>
+#include <arch.h>
+#include <sunxi_hal_common.h>
+
+#include <hal_interrupt.h>
+#include <hal_mem.h>
+
+#define GICC_IAR_INT_ID_MASK    (0x3ff)
+#define NR_IRQS (256)
 
 /*
  * Generic no controller implementation
@@ -35,12 +52,6 @@
 struct irq_chip no_irq_chip =
 {
     .name           = "none",
-    //.irq_startup    = NULL,
-    //.irq_shutdown   = NULL,
-    //.irq_enable     = NULL,
-    //.irq_disable    = NULL,
-    //.irq_ack        = NULL,
-    //.flags          = 0,
 };
 
 static void handle_level_irq(struct irq_desc *desc);
@@ -60,22 +71,20 @@ void handle_level_irq(struct irq_desc *desc)
 {
     unsigned int irq = desc->irq_data.irq;
     struct irqaction *action;
+    hal_irqreturn_t res;
 
-    for_each_action_of_desc(desc, action)
+    action = desc->action;
+    res = action->handler(action->dev_id);
+    action->irq_nums ++;
+
+    switch (res)
     {
-        irqreturn_t res;
-        res = action->handler(irq, action->dev_id);
-        action->irq_nums ++;
-
-        switch (res)
-        {
-            case IRQ_WAKE_THREAD:
-            /* Fall through - to add to randomness */
-            case IRQ_HANDLED:
-                break;
-            default:
-                break;
-        }
+        case HAL_IRQ_OK:
+        /* Fall through - to add to randomness */
+        case HAL_IRQ_ERR:
+            break;
+        default:
+            break;
     }
 }
 
@@ -100,20 +109,6 @@ struct irq_desc *irq_to_desc(unsigned int irq)
     return ((irq < NR_IRQS) && (irq < arm_gic_nlines())) ? irq_desc + irq : NULL;
 }
 
-/*
- * Internal function to register an irqaction - typically used to
- * allocate special interrupts that are part of the architecture.
- *
- * Locking rules:
- *
- * desc->request_mutex  Provides serialization against a concurrent free_irq()
- *   chip_bus_lock  Provides serialization for slow bus operations
- *     desc->lock   Provides serialization against hard interrupts
- *
- * chip_bus_lock and desc->lock are sufficient for all other management and
- * interrupt related functions. desc->request_mutex solely serializes
- * request/free_irq().
- */
 static int __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction *new)
 {
     struct irqaction *old, **old_ptr;
@@ -133,7 +128,7 @@ static int __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction
     }
 
     new->irq = irq;
-    desc->dev_name = &(new->name);
+    desc->dev_name = (const char *)&(new->name);
     desc->name = desc->dev_name;
     desc->number = 0;
 
@@ -151,41 +146,40 @@ static int __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction
         new->flags &= ~IRQF_ONESHOT;
     }
 
+    if (desc->action != NULL) {
+        if (desc->action->handler != new->handler) {
+            __err("irq has been bound\n \
+                \t\ttry to bind %s to irq %d \n \
+                irq already bind to %s func:%p.",
+                new->name, irq, desc->name,
+                desc->action->handler);
+                return -1;
+        } else {
+            __wrn("repeat binding irq %d", irq);
+            free(desc->action);
+            desc->action = NULL;
+        }
+    }
+
     /*
      * The following block of code has to be executed atomically
      * protected against a concurrent interrupt and any of the other
      * management calls which are not serialized via
      * desc->request_mutex or the optional bus lock.
      */
-    flags = awos_arch_lock_irq();
-    old_ptr = &desc->action;
-    old = *old_ptr;
-    if (old)
-    {
-        /* add new interrupt at end of irq queue */
-        do
-        {
-            old_ptr = &old->next;
-            old = *old_ptr;
-        } while (old);
-    }
+    flags = hal_interrupt_save();
 
-    *old_ptr = new;
-
-    /*
-     * Check whether we disabled the irq via the spurious handler
-     * before. Reenable it and give it another chance.
-     */
+    desc->action = new;
     void enable_irq(unsigned int irq);
     enable_irq(irq);
 
-    awos_arch_unlock_irq(flags);
+    hal_interrupt_restore(flags);
 
     return 0;
 }
 
-int request_threaded_irq(unsigned int irq, irq_handler_t handler,
-                         irq_handler_t thread_fn, unsigned long irqflags,
+int request_threaded_irq(unsigned int irq, hal_irq_handler_t handler,
+                         hal_irq_handler_t thread_fn, unsigned long irqflags,
                          const char *devname, void *dev_id)
 {
     struct irqaction *action;
@@ -228,7 +222,7 @@ int request_threaded_irq(unsigned int irq, irq_handler_t handler,
         return -1;
     }
 
-    action = rt_calloc(sizeof(struct irqaction), 1);
+    action = hal_malloc(sizeof(struct irqaction));
     if (!action)
     {
         __err("no free buffer.");
@@ -237,30 +231,18 @@ int request_threaded_irq(unsigned int irq, irq_handler_t handler,
 
     action->handler = handler;
     action->flags = irqflags;
-    strncpy((char *)action->name, devname, IRQACTION_NAME_MAX - 1);
+    if (devname)
+    {
+       strncpy((char *)action->name, devname, IRQACTION_NAME_MAX - 1);
+    }
     action->dev_id = dev_id;
     action->irq_nums = 0;
 
     retval = __setup_irq(irq, desc, action);
     if (retval)
     {
-        rt_free(action);
+        hal_free(action);
         action = NULL;
-    }
-
-    if (!retval && (irqflags & IRQF_SHARED))
-    {
-        /*
-        ¦* It's a shared IRQ -- the driver ought to be prepared for it
-        ¦* to happen immediately, so let's make sure....
-        ¦* We disable the irq to make sure that a 'real' IRQ doesn't
-        ¦* run in parallel with our fake.
-        ¦*/
-        unsigned long flags;
-
-        flags = awos_arch_lock_irq();
-        handler(irq, dev_id);
-        awos_arch_unlock_irq(flags);
     }
 
     return retval;
@@ -316,24 +298,22 @@ void gic_handle_irq(irq_regs_t *regs)
 {
     uint32_t irqstat, irqnr;
 
-    //__log("in");
     do
     {
-        irqstat = readl(GIC_CPU_AIAR_REG);
+        irqstat = hal_readl(GIC_CPU_AIAR_REG);
         irqnr = irqstat & GICC_IAR_INT_ID_MASK;
 
         if (likely(irqnr > 15 && irqnr < 1020))
         {
-            writel(irqstat, GIC_CPU_AEOI_REG);
+            hal_writel(irqstat, GIC_CPU_AEOI_REG);
             isb();
-            //__log("processing irqnr = %d", irqnr);
             handle_domain_irq(NULL, irqnr, regs);
             continue;
         }
         if (irqnr < 16)
         {
-            writel(irqstat, GIC_CPU_AEOI_REG);
-            writel(irqstat, GIC_CPU_DEACTIVATE);
+            hal_writel(irqstat, GIC_CPU_AEOI_REG);
+            hal_writel(irqstat, GIC_CPU_DEACTIVATE);
 #ifdef RT_USING_SMP
             /*
             ¦* Ensure any shared data written by the CPU sending
@@ -349,76 +329,30 @@ void gic_handle_irq(irq_regs_t *regs)
         }
         break;
     } while (1);
-    //__log("out");
 }
 
 /*
  * Internal function to unregister an irqaction - used to free
  * regular and special interrupts that are part of the architecture.
  */
-static struct irqaction *__free_irq(struct irq_desc *desc, void *dev_id)
+static struct irqaction *__free_irq(struct irq_desc *desc)
 {
     unsigned irq = desc->irq_data.irq;
-    struct irqaction *action, **action_ptr;
+    struct irqaction *action = desc->action;
     unsigned long flags;
 
     flags = awos_arch_lock_irq();
 
-    /*
-    ¦* There can be multiple actions per IRQ descriptor, find the right
-    ¦* one based on the dev_id:
-    ¦*/
-    action_ptr = &desc->action;
-    for (; ;)
-    {
-        action = *action_ptr;
-
-        if (!action)
-        {
-            __err("Trying to free already-free IRQ %d", irq);
-            awos_arch_unlock_irq(flags);
-            return NULL;
-        }
-
-        if (action->dev_id == dev_id)
-        {
-            break;
-        }
-        action_ptr = &action->next;
-    }
-
-    /* Found it - now remove it from the list of entries: */
-    *action_ptr = action->next;
-
-    /* If this was the last handler, shut down the IRQ line: */
-    if (!desc->action)
-    {
-        /* Only shutdown. Deactivate after synchronize_hardirq() */
-        void disable_irq(unsigned int irq);
-        disable_irq(irq);
-    }
+    void disable_irq(unsigned int irq);
+    disable_irq(irq);
+    desc->action = NULL;
 
     awos_arch_unlock_irq(flags);
 
     return action;
 }
-/**
- *      free_irq - free an interrupt allocated with request_irq
- *      @irq: Interrupt line to free
- *      @dev_id: Device identity to free
- *
- *      Remove an interrupt handler. The handler is removed and if the
- *      interrupt line is no longer in use by any driver it is disabled.
- *      On a shared IRQ the caller must ensure the interrupt is disabled
- *      on the card it drives before calling this function. The function
- *      does not return until any executing interrupts for this IRQ
- *      have completed.
- *
- *      This function must not be called from interrupt context.
- *
- *      Returns the devname argument passed to request_irq.
- */
-const void *free_irq(unsigned int irq, void *dev_id)
+
+const void *free_irq(int32_t irq)
 {
     struct irq_desc *desc = irq_to_desc(irq);
     struct irqaction *action;
@@ -430,7 +364,7 @@ const void *free_irq(unsigned int irq, void *dev_id)
         return NULL;
     }
 
-    action = __free_irq(desc, dev_id);
+    action = __free_irq(desc);
 
     if (!action)
     {
@@ -439,24 +373,17 @@ const void *free_irq(unsigned int irq, void *dev_id)
     }
 
     devname = action->name;
-    rt_free(action);
+    hal_free(action);
     return devname;
 }
 
-/**
- *      remove_irq - free an interrupt
- *      @irq: Interrupt line to free
- *      @act: irqaction for the interrupt
- *
- * Used to remove interrupts statically setup by the early boot process.
- */
-void remove_irq(unsigned int irq, struct irqaction *act)
+void remove_irq(unsigned int irq)
 {
     struct irq_desc *desc = irq_to_desc(irq);
 
     if (desc)
     {
-        __free_irq(desc, act->dev_id);
+        __free_irq(desc);
     }
 }
 
@@ -484,18 +411,7 @@ static int __disable_irq_nosync(unsigned int irq)
 
     return 0;
 }
-/**
- *      disable_irq - disable an irq and wait for completion
- *      @irq: Interrupt to disable
- *
- *      Disable the selected interrupt line.  Enables and Disables are
- *      nested.
- *      This function waits for any pending IRQ handlers for this interrupt
- *      to complete before returning. If you use this function while
- *      holding a resource the IRQ handler may need you will deadlock.
- *
- *      This function may be called - with care - from IRQ context.
- */
+
 void disable_irq(unsigned int irq)
 {
     __disable_irq_nosync(irq);
@@ -509,17 +425,6 @@ void __enable_irq(struct irq_desc *desc)
     irq_enable(desc->irq_data.irq);
 }
 
-/**
- *      enable_irq - enable handling of an irq
- *      @irq: Interrupt to enable
- *
- *      Undoes the effect of one call to disable_irq().  If this
- *      matches the last disable, processing of interrupts on this
- *      IRQ line is re-enabled.
- *
- *      This function may be called from IRQ context only when
- *      desc->irq_data.chip->bus_lock and desc->chip->bus_sync_unlock are NULL !
- */
 void enable_irq(unsigned int irq)
 {
     unsigned long flags;
@@ -538,51 +443,6 @@ void enable_irq(unsigned int irq)
     awos_arch_unlock_irq(flags);
 }
 
-/**
- *      disable_hardirq - disables an irq and waits for hardirq completion
- *      @irq: Interrupt to disable
- *
- *      Disable the selected interrupt line.  Enables and Disables are
- *      nested.
- *      This function waits for any pending hard IRQ handlers for this
- *      interrupt to complete before returning. If you use this function while
- *      holding a resource the hard IRQ handler may need you will deadlock.
- *
- *      When used to optimistically disable an interrupt from atomic context
- *      the return value must be checked.
- *
- *      Returns: false if a threaded handler is active.
- *
- *      This function may be called - with care - from IRQ context.
- */
-bool disable_hardirq(unsigned int irq)
-{
-    __disable_irq_nosync(irq);
-    return true;
-}
-
-/**
- *      disable_nmi_nosync - disable an nmi without waiting
- *      @irq: Interrupt to disable
- *
- *      Disable the selected interrupt line. Disables and enables are
- *      nested.
- *      The interrupt to disable must have been requested through request_nmi.
- *      Unlike disable_nmi(), this function does not ensure existing
- *      instances of the IRQ handler have completed before returning.
- */
-void disable_nmi_nosync(unsigned int irq)
-{
-    __disable_irq_nosync(irq);
-}
-
-/**
- *      setup_irq - setup an interrupt
- *      @irq: Interrupt line to setup
- *      @act: irqaction for the interrupt
- *
- * Used to statically setup interrupts in the early boot process.
- */
 int setup_irq(unsigned int irq, struct irqaction *act)
 {
     int retval;

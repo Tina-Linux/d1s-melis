@@ -78,5 +78,10 @@ void set_reg(unsigned long addr, u32 val, u8 bw, u8 bs);
 void set_reg_key(unsigned long addr,
                  u32 key, u8 kbw, u8 kbs,
                  u32 val, u8 bw, u8 bs);
+void sunxi_ccu_sleep_init(void *reg_base,
+			  struct ccu_common **rdump,
+			  unsigned long nr_rdump,
+			  const struct ccu_reg_dump *rsuspend,
+			  unsigned long nr_rsuspend);
 
 #endif /* _COMMON_H_ */

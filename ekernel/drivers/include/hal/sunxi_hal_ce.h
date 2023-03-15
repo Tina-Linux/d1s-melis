@@ -30,7 +30,7 @@ typedef struct {
 	uint8_t *iv_next;
 	uint8_t *key;
 	uint32_t key_length;
-	uint8_t padding[AES_BLOCK_SIZE];
+	__aligned(CACHELINE_LEN) uint8_t padding[AES_BLOCK_SIZE];
 	uint32_t padding_len;
 	uint32_t dir;
 	uint32_t mode;
@@ -58,9 +58,9 @@ typedef struct {
 	uint32_t src_length;
 	uint8_t *dst_buffer;
 	uint32_t dst_length;
-	uint8_t md[SHA_MAX_DIGEST_SIZE];
+	__aligned(CACHELINE_LEN) uint8_t md[SHA_MAX_DIGEST_SIZE];
 	uint32_t md_size;
-	uint8_t padding[SHA512_BLOCK_SIZE * 2];
+	__aligned(CACHELINE_LEN) uint8_t padding[SHA512_BLOCK_SIZE * 2];
 	uint32_t padding_len;
 	uint32_t type;
 	uint32_t dir;
@@ -97,7 +97,6 @@ int sunxi_ce_init(void);
 int sunxi_ce_uninit(void);
 int do_hash_crypto(crypto_hash_req_ctx_t *req_ctx);
 int do_rsa_crypto(crypto_rsa_req_ctx_t *req_ctx);
-int do_rsa_crypto_new(crypto_rsa_req_ctx_t *req_ctx);
 int do_rng_gen(crypto_rng_req_ctx_t *req_ctx);
 
 #ifdef __cplusplus

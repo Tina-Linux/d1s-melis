@@ -13,6 +13,8 @@
 typedef enum {
 	HAL_SUNXI_RESET = 0,
 	HAL_SUNXI_R_RESET,
+	HAL_SUNXI_DSP_RESET,
+	HAL_SUNXI_AON_RESET,
 	HAL_SUNXI_RESET_NUMBER,
 } hal_reset_type_t;
 

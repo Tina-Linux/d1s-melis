@@ -2,8 +2,8 @@
 ********************************************************************************
 *                                USB Hid Driver
 *
-*                (c) Copyright 2006-2010, All winners Co,Ld. 
-*                        All Right Reserved 
+*                (c) Copyright 2006-2010, All winners Co,Ld.
+*                        All Right Reserved
 *
 * FileName		:  usbMouse.h
 *
@@ -17,85 +17,89 @@
 *
 * History:
 *		<time> 		<version >		<author>	 	<desc>
-*	   2010.06.02	   1.0			 Javen			build this file 
+*	   2010.06.02	   1.0			 Javen			build this file
 *
 ********************************************************************************
 */
-#ifndef  __USBMOUSE_H__
-#define  __USBMOUSE_H__
+#ifndef __USBMOUSE_H__
+#define __USBMOUSE_H__
+
 #include "mod_usbhost.h"
+
+#ifdef CONFIG_OS_MELIS
 #include "drivers/sys_device.h"
+#endif
+
 
 #ifndef DATA_TYPE_X___hdle
 #define DATA_TYPE_X___hdle
-typedef unsigned int        __hdle;
+typedef unsigned int __hdle;
 #endif
-#define	 USB_OS_HANDLE	__hdle		//eposµÄhandle
 
-#define  USB_HID_MOUSE_DATA_LEN		64    	/* Êó±êÊı¾İµÄ×î´ó³¤¶È 	*/
-#define  USB_HID_MOUSE_DITHER_AREA	127  	/* Êó±êÈ¥¶¶¶¯·¶Î§ 		*/
+#define USB_OS_HANDLE	__hdle /*eposçš„handle */
+
+#define USB_HID_MOUSE_DATA_LEN			64	/* é¼ æ ‡æ•°æ®çš„æœ€å¤§é•¿åº¦ */
+#define USB_HID_MOUSE_DITHER_AREA		127	/* é¼ æ ‡å»æŠ–åŠ¨èŒƒå›´ */
 
 /* mouse report */
-#define  USB_HID_MOUSE_REPORT_BUTTON_LEFT_BIT	0	/* Êó±ê×ó¼ü */
-#define  USB_HID_MOUSE_REPORT_BUTTON_RIGHT_BIT	1	/* Êó±êÓÒ¼ü */
-#define  USB_HID_MOUSE_REPORT_BUTTON_MIDDLE_BIT	2	/* Êó±êÖĞ¼ü£¬ÖĞ¼ä¹öÂÖÏòÏÂ²úÉúµÄ°´¼ü */
-#define  USB_HID_MOUSE_REPORT_BUTTON_SIDE_BIT	3
-#define  USB_HID_MOUSE_REPORT_BUTTON_EXTRA_BIT	4
+#define USB_HID_MOUSE_REPORT_BUTTON_LEFT_BIT	0	/* é¼ æ ‡å·¦é”® */
+#define USB_HID_MOUSE_REPORT_BUTTON_RIGHT_BIT	1	/* é¼ æ ‡å³é”® */
+#define USB_HID_MOUSE_REPORT_BUTTON_MIDDLE_BIT	2	/* é¼ æ ‡ä¸­é”®ï¼Œä¸­é—´æ»šè½®å‘ä¸‹äº§ç”Ÿçš„æŒ‰é”® */
+#define USB_HID_MOUSE_REPORT_BUTTON_SIDE_BIT	3
+#define USB_HID_MOUSE_REPORT_BUTTON_EXTRA_BIT	4
 
-#if	 0
-#define DMSG_MOUSE_TEST   hal_log_info 
+#if 0
+#define DMSG_MOUSE_TEST	hal_log_info
 #else
-#define DMSG_MOUSE_TEST(...) 
+#define DMSG_MOUSE_TEST(...)
 #endif
 
+/* ä»é¼ æ ‡å–å›æ¥æ•°æ®çš„å®šä¹‰ */
+typedef struct _usbMouseDataDef {
+	usbHidEvnetExcursion_t Button; /* button */
+	usbHidEvnetExcursion_t X;      /* X */
+	usbHidEvnetExcursion_t Y;      /* Y */
+	usbHidEvnetExcursion_t Wheel;  /* Wheel */
+} usbMouseDataDef_t;
 
-/* ´ÓÊó±êÈ¡»ØÀ´Êı¾İµÄ¶¨Òå */
-typedef struct _usbMouseDataDef{
-	usbHidEvnetExcursion_t Button;	/* button 	*/
-	usbHidEvnetExcursion_t X;		/* X 		*/
-	usbHidEvnetExcursion_t Y;		/* Y 		*/
-	usbHidEvnetExcursion_t Wheel;	/* Wheel 	*/
-}usbMouseDataDef_t;
+#define USB_HID_DEV_MAGIC 0x5a13d099
+typedef struct _usbMouse {
+	unsigned int Magic; /* è¡¨ç¤ºè®¾å¤‡æ˜¯å¦åˆæ³• */
 
-#define  USB_HID_DEV_MAGIC    0x5a13d099
-typedef struct _usbMouse{
-	unsigned int Magic;	             	/* ±íÊ¾Éè±¸ÊÇ·ñºÏ·¨					*/
-	
 	HidDev_t *HidDev;
-	unsigned int DevNo;					/* ´ËÉè±¸ºÅ							*/
-    unsigned char  ClassName[32];			/* Éè±¸ÀàÃû, Èç"disk" 				*/
-    unsigned char  DevName[32];				/* ´ËÉè±¸Ãû, Èç"SCSI_DISK_000"		*/
+	unsigned int DevNo;	     /* æ­¤è®¾å¤‡å· */
+	unsigned char ClassName[32]; /* è®¾å¤‡ç±»å, å¦‚"disk" */
+	unsigned char DevName[32];   /* æ­¤è®¾å¤‡å, å¦‚"SCSI_DISK_000" */
 
-    /* Disk information */
-	unsigned int used;                     /* ´ò¿ªÉè±¸¼ÆÊı 					*/
-	__dev_devop_t MouseOp;			/* Éè±¸²Ù×÷º¯Êı 					*/
+	/* Disk information */
+	unsigned int used;     /* æ‰“å¼€è®¾å¤‡è®¡æ•° */
+	__dev_devop_t MouseOp; /* è®¾å¤‡æ“ä½œå‡½æ•° */
 
-    /* Disk manager */
-	USB_OS_HANDLE MouseParaHdle;	/* openÊ±µÄ¾ä±ú						*/
-	USB_OS_HANDLE MouseRegHdle;		/* regÊ±µÄ¾ä±ú 						*/
+	/* Disk manager */
+	USB_OS_HANDLE MouseParaHdle; /* openæ—¶çš„å¥æŸ„ */
+	USB_OS_HANDLE MouseRegHdle;  /* regæ—¶çš„å¥æŸ„ */
 
-    unsigned char Vendor[256];
+	unsigned char Vendor[256];
 	unsigned char Product[256];
-    unsigned char Serial[32];
+	unsigned char Serial[32];
 
-    void *MouseThdId;						/* ½ÓÊÕÊó±êÊÂ¼şÏß³ÌµÄID 			*/
+	void *MouseThdId; /* æ¥æ”¶é¼ æ ‡äº‹ä»¶çº¿ç¨‹çš„ID */
 	hal_sem_t MouseThreadSemi;
-	hal_sem_t notify_complete;	/* Í¬²½thread´´½¨/É¾³ı 				*/
+	hal_sem_t notify_complete; /* åŒæ­¥threadåˆ›å»º/åˆ é™¤ */
 
-	HidRequest_t HidReq;					/* hid´«ÊäÇëÇó 						*/
-	unsigned char Data[USB_HID_MOUSE_DATA_LEN];		/* ½ÓÊÕÊó±ê·µ»ØµÄÊı¾İ 				*/
-	usbMouseDataDef_t DataDef;				/* Êó±êÊı¾İµÄ¶¨Òå 					*/
-	unsigned int StopWork;							/* Êó±êÍ£Ö¹¹¤×÷¡£ÔÚcloseÊ±µ÷ÓÃ 		*/
+	HidRequest_t HidReq;			    /* hidä¼ è¾“è¯·æ±‚ */
+	unsigned char Data[USB_HID_MOUSE_DATA_LEN]; /* æ¥æ”¶é¼ æ ‡è¿”å›çš„æ•°æ® */
+	usbMouseDataDef_t DataDef;		    /* é¼ æ ‡æ•°æ®çš„å®šä¹‰ */
+	unsigned int StopWork;			    /* é¼ æ ‡åœæ­¢å·¥ä½œã€‚åœ¨closeæ—¶è°ƒç”¨ */
 
 	/* test */
-	unsigned int USBMouseTestFlag;					/* ²âÊÔ±êÖ¾ */
-	USBHMouseTest_t *USBHMouseTest;	
+	unsigned int USBMouseTestFlag; /* æµ‹è¯•æ ‡å¿— */
+	USBHMouseTest_t *USBHMouseTest;
 
-	USBHMouseEvent_t MouseEvent;	  		/* µ±Ç°·¢¸øappµÄÊó±êÊÂ¼ş */
+	USBHMouseEvent_t MouseEvent; /* å½“å‰å‘ç»™appçš„é¼ æ ‡äº‹ä»¶ */
 	USBHMouse_CallBack CallBack;
 
-	void *Extern;							/* À©Õ¹½á¹¹£¬ÈçMouseDriftControl_t */
-}usbMouse_t;
+	void *Extern; /* æ‰©å±•ç»“æ„ï¼Œå¦‚MouseDriftControl_t */
+} usbMouse_t;
 
-#endif   //__USBMOUSE_H__
-
+#endif	//__USBMOUSE_H__

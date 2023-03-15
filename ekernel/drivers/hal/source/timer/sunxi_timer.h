@@ -35,10 +35,15 @@
 #include <stdint.h>
 #include <sunxi_hal_common.h>
 #include <sunxi_hal_timer.h>
+#ifdef CONFIG_COMPONENTS_PM
+#include <pm_devops.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define TIMER_INFO(fmt, arg...) printf("TIMER : %s()%d "fmt, __func__, __LINE__, ##arg)
 
 #ifndef BIT
 #define BIT(_x) (1UL << (_x))
@@ -70,6 +75,9 @@ struct sunxi_timer
     uint32_t max_delta_ticks;
     timer_callback callback;
     void *param;
+#ifdef CONFIG_COMPONENTS_PM
+    struct pm_device pm;
+#endif
 };
 
 int sunxi_timer_set_oneshot(uint32_t delay_us, uint32_t timer, timer_callback callback, void *callback_param);
@@ -78,6 +86,15 @@ void sunxi_timer_stop(uint32_t timer);
 void sunxi_timer_start(uint32_t timer, bool periodic);
 void sunxi_timer_init(hal_timer_id_t id);
 void sunxi_timer_uninit(hal_timer_id_t id);
+
+#ifdef CONFIG_DRIVERS_WAKEUP_TIMER
+int sunxi_wuptimer_set_oneshot(uint32_t delay_us, uint32_t timer, timer_callback callback, void *callback_param);
+int sunxi_wuptimer_set_periodic(uint32_t delay_us, uint32_t timer, timer_callback callback, void *callback_param);
+void sunxi_wuptimer_init(hal_timer_id_t id);
+void sunxi_wuptimer_start(uint32_t timer, bool periodic);
+void sunxi_wuptimer_stop(uint32_t timer);
+void sunxi_wuptimer_uninit(hal_timer_id_t id);
+#endif
 
 #ifdef __cplusplus
 }

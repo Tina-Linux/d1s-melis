@@ -19,6 +19,8 @@
 #include <hal_mem.h>
 #include <hal_osal.h>
 
+#include <string.h>
+
 #define TAG "[DI_UTILS]"
 
 #define DI_ALIGN(value, align) ((align == 0) ? \

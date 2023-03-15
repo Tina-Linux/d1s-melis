@@ -41,7 +41,7 @@
 
 void lradc_irq_callback(uint32_t irq_status, uint32_t data)
 {
-	printf("reg_val:0x%lx\n", data);
+	printf("reg_val:0x%u\n", data);
 }
 
 int cmd_test_lradc(int argc, char **argv)

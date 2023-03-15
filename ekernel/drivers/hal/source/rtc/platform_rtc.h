@@ -42,7 +42,7 @@
 #if defined(CONFIG_ARCH_SUN50IW11)
 #include "platform/rtc_sun50iw11.h"
 #endif
-#if defined(CONFIG_SOC_SUN20IW1)
+#if defined(CONFIG_SOC_SUN20IW1) || defined(CONFIG_ARCH_SUN8IW20)
 #include "platform/rtc_sun20iw1.h"
 #endif
 #if defined(CONFIG_ARCH_SUN20IW2)

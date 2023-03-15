@@ -24,14 +24,10 @@
 #ifndef __USB_UVC_ASSESSIBILITY_H__
 #define __USB_UVC_ASSESSIBILITY_H__
 
-#include  "usb_os_platform.h"
-
 extern unsigned int uvc_strlcpy(char *dest, const char *src, unsigned int size);
 extern unsigned int uvc_strlcat(char *dest, const char *src, unsigned int count);
 
-extern unsigned short get_unaligned_le16( const void *p );
-extern unsigned int get_unaligned_le32( const void *p );
+extern unsigned short get_unaligned_le16(const void *p);
+extern unsigned int get_unaligned_le32(const void *p);
 
 #endif
-
-

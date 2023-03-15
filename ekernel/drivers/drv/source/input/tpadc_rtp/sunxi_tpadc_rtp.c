@@ -1,20 +1,34 @@
 /*
- * ===========================================================================================
- *
- *       Filename:  sunxi_tpadc_rtp.h
- *
- *    Description:  implemtaton of tpadc driver core based on hal.
- *
- *        Version:  Melis3.0
- *         Create:  2020-7-14
- *       Revision:  none
- *
- *         Author:  liujiaming@allwinnertech.com
- *   Organization:  PDC-PD1
- *  Last Modified:  2021-7-14
- *
- * ===========================================================================================
- */
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <sunxi_input.h>
@@ -166,9 +180,9 @@ __u32 upper_get_data(__u32 channel)
 }
 
 
-void tp_adjust_func(__s32 cnt,void *pbuffer)
+int tp_adjust_func(__s32 cnt,void *pbuffer)
 {
-    __s32           ret = EPDK_OK;
+    __s32 ret = EPDK_FAIL;
     __u8  err;
     __ev_tp_pos_t  *tp_ad = (__ev_tp_pos_t *)pbuffer;
 
@@ -303,6 +317,7 @@ void tp_adjust_func(__s32 cnt,void *pbuffer)
                 if(fac<0.95||fac>1.05||d1==0||d2==0)//不合格
                 {
                     __err("not right cali data");
+                    return EPDK_FAIL;
                 }
 
                 tem1=abs(pos_temp[0][0]-pos_temp[2][0]);//x1-x3
@@ -321,7 +336,8 @@ void tp_adjust_func(__s32 cnt,void *pbuffer)
                 if(fac<0.95||fac>1.05)//不合格
                 {
                     __err("not right cali data");
-                }//正确了 
+                    return EPDK_FAIL;
+                }
 
                 //对角线相等
                 tem1=abs(pos_temp[1][0]-pos_temp[2][0]);//x1-x3
@@ -340,7 +356,8 @@ void tp_adjust_func(__s32 cnt,void *pbuffer)
                 if(fac<0.95||fac>1.05)//不合格
                 {
                     __err("not right cali data");
-                }//正确了
+                    return EPDK_FAIL;
+                }
 
                 xfac=(float)( cali.lcd_x[1] -  cali.lcd_x[0])/(pos_temp[1][0]-pos_temp[0][0]);//得到xfac		 
                 xoff=(2*cali.lcd_x[4] - xfac*(pos_temp[1][0]+pos_temp[0][0]))/2;//得到xoff
@@ -351,8 +368,8 @@ void tp_adjust_func(__s32 cnt,void *pbuffer)
                 if(abs(xfac)>2||abs(yfac)>2)//触屏和预设的相反了.
                 {
                     __err("not right cali data");
+                    //return EPDK_FAIL;
                 }
-                cali.flag = 1;
                 esKRNL_SemDel(cali.tp_sem_adret, OS_DEL_ALWAYS, &err);
 
                 #if 1
@@ -367,7 +384,7 @@ void tp_adjust_func(__s32 cnt,void *pbuffer)
                 if(!fh)
                 {
                     __log("fh fail");
-                    return;
+                    return EPDK_FAIL;;
                 }
 
                 //fwrite((void *)kx, 10, 1, fh);
@@ -381,6 +398,7 @@ void tp_adjust_func(__s32 cnt,void *pbuffer)
                 fwrite((void *)&cali.lcd_y[4], 4, 1, fh);                
                 fclose(fh);
                 fh = NULL;
+                cali.flag = 1;
             }            
             break;
         }
@@ -396,6 +414,7 @@ void tp_adjust_func(__s32 cnt,void *pbuffer)
             ret = EPDK_FAIL;
             break;
         }
+        return EPDK_OK;
     }    
 }
 
@@ -537,11 +556,11 @@ static void rtpdata_sent_thread(void *parg)
                 {
                     if((firstx - msg.xpoint) > 50)
                     {
-                        msg.speed_dir = 1;
+                        msg.speed_dir = LEFTWARD;
                     }
                     else if((msg.xpoint - firstx) > 50)
                     {
-                        msg.speed_dir = 2;
+                        msg.speed_dir = RIGHTWARD;
                     }
                     else
                     {
@@ -552,11 +571,11 @@ static void rtpdata_sent_thread(void *parg)
                 {
                     if((firsty - msg.ypoint) > 50)
                     {
-                        msg.speed_dir = 3;
+                        msg.speed_dir = UPWARD;
                     }
                     else if((msg.ypoint - firsty) > 50)
                     {
-                        msg.speed_dir = 4;
+                        msg.speed_dir = DOWNWARD;
                     }
                     else
                     {
@@ -789,7 +808,7 @@ static rt_err_t rtp_control(struct rt_device *dev, int cmd, void *args)
     }
 
     __u64 para[3] = {0};
-
+    int ret = -1;
     if (args != NULL)
     {
         para[0] = *((__u64 *)args);                //argc0
@@ -800,10 +819,10 @@ static rt_err_t rtp_control(struct rt_device *dev, int cmd, void *args)
 	switch(cmd)
 	{
         case 0:
-            tp_adjust_func(para[0],para[1]);
+           ret = tp_adjust_func(para[0],para[1]);
             break;
 	}
-    return 0;
+    return ret;
 }
 
 static int init_tpadc_rtp_device(struct rt_device *dev)
@@ -846,4 +865,3 @@ int init_tpadc_rtp(void)
 	return 0;
 }
 device_initcall(init_tpadc_rtp);
-

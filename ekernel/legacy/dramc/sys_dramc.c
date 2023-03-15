@@ -1,20 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                             Memory driver Module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2006-2010, kevin.z China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : sys_mem.c
-* By      : kevin.z
-* Version : v2.0
-* Date    : 2010-11-27 12:54
-* Descript:
-* Update  : date                auther      ver     notes
-*           2010-11-27 12:54    kevin.z     2.0     build the file;
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <sys_mems.h>
 #include "sram_man.h"
@@ -171,8 +184,8 @@ int32_t _RequestDramWorkModeAll(__dram_user_mode_t mode)
     __dram_master_t master_de20;
     __dram_master_t master_ve;
 
-    rt_memset(&master_de20, 0x00, sizeof(master_de20));
-    rt_memset(&master_ve, 0x00, sizeof(master_ve));
+    memset(&master_de20, 0x00, sizeof(master_de20));
+    memset(&master_ve, 0x00, sizeof(master_ve));
 
     CSP_DRAMC_set_master_default(DRAM_DEVICE_ROT);
     CSP_DRAMC_set_master_default(DRAM_DEVICE_DE20);
@@ -242,8 +255,8 @@ static void dramc_bandw_task(void *arg)
     uint32_t    disp_bw;
     uint32_t    other_bw;
 
-    rt_memset(&bandw0, 0x00, sizeof(__dram_bandw_t));
-    rt_memset(&bandw1, 0x00, sizeof(__dram_bandw_t));
+    memset(&bandw0, 0x00, sizeof(__dram_bandw_t));
+    memset(&bandw1, 0x00, sizeof(__dram_bandw_t));
     while (1)
     {
         if (sys_mem.task_flag == 0)
@@ -316,7 +329,7 @@ int32_t mem_init(__dram_para_t *para)
 {
     __dram_bwconf_t bwconf;
 
-    rt_memset(&bwconf, 0x00, sizeof(bwconf));
+    memset(&bwconf, 0x00, sizeof(bwconf));
 
     //initialise sram manager
     mem_sram_init();
@@ -343,7 +356,7 @@ int32_t mem_init(__dram_para_t *para)
     }
     sys_mem.task_flag  = 0;
 
-    sys_mem.task_prio = awos_task_create("dramc_bw",  dramc_bandw_task, (void *)0, 0x1000, RT_TIMER_THREAD_PRIO - 4, 10);
+    sys_mem.task_prio = awos_task_create("dramc_bw",  dramc_bandw_task, (void *)0, 0x1000, CONFIG_RT_TIMER_THREAD_PRIO - 4, 10);
     if (!sys_mem.task_prio)
     {
         __err("Create mem manager main task failed!");
@@ -475,8 +488,8 @@ int32_t esMEM_MasterGet(__dram_dev_e mod, __dram_master_t *master)
 }
 
 /*
-    ±£¡Ù1663µƒ”≈œ»º∂µ˜’˚Ω”ø⁄£¨∏˘æ›≥°æ∞…Ëº∆
-    ≤ªÕ¨masterµƒ”≈œ»º∂
+    ‰øùÁïô1663ÁöÑ‰ºòÂÖàÁ∫ßË∞ÉÊï¥Êé•Âè£ÔºåÊ†πÊçÆÂú∫ÊôØËÆæËÆ°
+    ‰∏çÂêåmasterÁöÑ‰ºòÂÖàÁ∫ß
 */
 int32_t esMEM_RequestDramUsrMode(__dram_user_mode_t mode)
 {
@@ -490,8 +503,8 @@ int32_t esMEM_RequestDramUsrMode(__dram_user_mode_t mode)
 }
 
 /*
-    ±£¡Ù1663µƒ”≈œ»º∂µ˜’˚Ω”ø⁄£¨ªπ‘≠À˘”–masterµƒ
-    ”≈œ»º∂
+    ‰øùÁïô1663ÁöÑ‰ºòÂÖàÁ∫ßË∞ÉÊï¥Êé•Âè£ÔºåËøòÂéüÊâÄÊúâmasterÁöÑ
+    ‰ºòÂÖàÁ∫ß
 */
 int32_t esMEM_ReleaseDramUsrMode(__dram_user_mode_t mode)
 {

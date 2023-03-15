@@ -1,24 +1,66 @@
 menu "AW Sound Compenents"
 
-config COMPONENTS_AW_ALSA_LIB
-	bool "Allwinner alsa library"
+choice
+	prompt "Allwinner alsa library"
 	depends on DRIVERS_SOUND
-	default n
+	default COMPONENTS_AW_ALSA_LIB_NONE
+
+config COMPONENTS_AW_ALSA_LIB_NONE
+	bool "none"
+
+config COMPONENTS_AW_ALSA_LIB
+	bool "alsa library"
 	help
 	  This is library package for aw-alsa, only used for Allwinner FreeRTOS.
 
+config COMPONENTS_AW_TINY_ALSA_LIB
+	bool "tiny alsa library"
+	select SND_CORE_TINY
+	help
+	  This is library package for aw-tiny-alsa, only used for Allwinner FreeRTOS.
+endchoice
+
 config COMPONENTS_AW_ALSA_UTILS
-	bool "Allwinner alsa utilities"
-	depends on COMPONENTS_AW_ALSA_LIB
+	bool "alsa library utils select"
+	depends on COMPONENTS_AW_ALSA_LIB \
+		|| COMPONENTS_AW_TINY_ALSA_LIB
 	default n
 	help
-	  This is package for aw-alsa-lib utilities, only used for Allwinner Tina RTOS.
+	  This is the choice of alsa lib utils
 
-config BUILTIN_WAV_FILE
-	bool "builtin wav file"
+config COMPONENTS_AW_ALSA_UTILS_AMIXER
+	bool "alsa library utils amixer"
 	depends on COMPONENTS_AW_ALSA_UTILS
 	default y
 	help
-	  Say Y to use builtin wav file.
+	  This is the choice of compile amixer
 
+config COMPONENTS_AW_ALSA_UTILS_APLAY
+	bool "alsa library utils aplay"
+	depends on COMPONENTS_AW_ALSA_UTILS
+	default y
+	help
+	  This is the choice of compile aplay
+
+config COMPONENTS_AW_ALSA_UTILS_ARECORD
+	bool "alsa library utils arecord"
+	depends on COMPONENTS_AW_ALSA_UTILS
+	default y
+	help
+	  This is the choice of compile arecord
+
+config COMPONENTS_AW_ALSA_UTILS_ALOOP
+	bool "alsa library utils aloop"
+	depends on COMPONENTS_AW_ALSA_UTILS
+	default n
+	help
+	  This is the choice of compile aloop
+
+config BUILTIN_WAV_FILE
+	bool "builtin wav file"
+	depends on COMPONENTS_AW_ALSA_UTILS_APLAY \
+		|| COMPONENTS_AW_ALSA_UTILS_ALOOP
+	default n
+	help
+	  Say Y to use builtin wav file.
 endmenu

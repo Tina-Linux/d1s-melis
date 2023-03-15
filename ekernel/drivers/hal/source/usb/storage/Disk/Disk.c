@@ -19,12 +19,9 @@
 *
 ********************************************************************************************************************
 */
-#include  "usb_os_platform.h"
-#include  "error.h"
-#include  "usb_msc_i.h"
-#include  "Scsi2.h"
-#include  "LunMgr_i.h"
-#include  "BlkDev.h"
+#include "usb_msc_i.h"
+#include "Scsi2.h"
+#include "BlkDev.h"
 
 /*
 *******************************************************************************
@@ -37,91 +34,81 @@
 *
 *
 * Return value:
-*    ÎÞ
+*    æ— 
 *
 * note:
-*    ÎÞ
+*    æ— 
 *
 *******************************************************************************
 */
 static void DiskMediaChange(__mscLun_t *mscLun)
 {
-    __UsbBlkDev_t *BlkDev = NULL;
-    int ret = USB_STATUS_SUCCESS;
+	__UsbBlkDev_t *BlkDev = NULL;
+	int ret = USB_STATUS_SUCCESS;
 
-    if (mscLun == NULL)
-    {
-        hal_log_err("ERR: DiskMediaChange: mscLun == NULL");
-        return;
-    }
+	if (mscLun == NULL) {
+		hal_log_err("ERR: DiskMediaChange: mscLun == NULL");
+		return;
+	}
 
-    BlkDev = (__UsbBlkDev_t *)mscLun->sdev_data;
+	BlkDev = (__UsbBlkDev_t *)mscLun->sdev_data;
 
-    if (BlkDev == NULL)
-    {
-        hal_log_err("ERR: DiskMediaChange: BlkDev == NULL");
-        return;
-    }
+	if (BlkDev == NULL) {
+		hal_log_err("ERR: DiskMediaChange: BlkDev == NULL");
+		return;
+	}
 
-    hal_sem_wait(mscLun->Lock);
-    ret = ScsiTestUnitReady(mscLun);
-    hal_sem_post(mscLun->Lock);
+	hal_sem_wait(mscLun->Lock);
+	ret = ScsiTestUnitReady(mscLun);
+	hal_sem_post(mscLun->Lock);
 
-    switch (ret)
-    {
-        case USB_STATUS_SUCCESS:
+	switch (ret) {
+	case USB_STATUS_SUCCESS:
 
-            /* Ã»ÓÐ×¢²ádiskÉè±¸, ¾ÍÈ¥×¢²ádiskÉè±¸ */
-            if (!BlkDev->is_RegDisk)
-            {
-                /* »ñµÃ´ÅÅÌÐÅÏ¢ */
-                GetDiskInfo(BlkDev);
+		/* æ²¡æœ‰æ³¨å†Œdiskè®¾å¤‡, å°±åŽ»æ³¨å†Œdiskè®¾å¤‡ */
+		if (!BlkDev->is_RegDisk) {
+			/* èŽ·å¾—ç£ç›˜ä¿¡æ¯ */
+			GetDiskInfo(BlkDev);
 
-                /* ×¢²á¿éÉè±¸ */
-                if (mscLun->MediaPresent)
-                {
-                    UsbBlkDevUnReg(BlkDev);
-                    UsbBlkDevReg(BlkDev, DEV_CLASS_DISK, 1);
-                }
-            }
+			/* æ³¨å†Œå—è®¾å¤‡ */
+			if (mscLun->MediaPresent) {
+				UsbBlkDevUnReg(BlkDev);
+				UsbBlkDevReg(BlkDev, DEV_CLASS_DISK, 1);
+			}
+		}
 
-            break;
+		break;
 
-        case USB_STATUS_MEDIA_NOT_PRESENT:
-            if (BlkDev->is_RegDisk)
-            {
-                hal_log_err("ERR: DiskMediaChange: media is change");
-                UsbBlkDevUnReg(BlkDev);
-                UsbBlkDevReg(BlkDev, DEV_CLASS_USERDEF, 0);
-            }
+	case USB_STATUS_MEDIA_NOT_PRESENT:
+		if (BlkDev->is_RegDisk) {
+			hal_log_err("ERR: DiskMediaChange: media is change");
+			UsbBlkDevUnReg(BlkDev);
+			UsbBlkDevReg(BlkDev, DEV_CLASS_USERDEF, 0);
+		}
 
-            break;
+		break;
 
-        case USB_STATUS_NOT_READY_TO_READY_TRANSITION:
-            hal_log_info("[USB Disk]: media not ready to ready transition");
-            break;
+	case USB_STATUS_NOT_READY_TO_READY_TRANSITION:
+		hal_log_info("[USB Disk]: media not ready to ready transition");
+		break;
 
-        default:
-            BlkDev->ErrCmdNr++;
+	default:
+		BlkDev->ErrCmdNr++;
 
-            if (BlkDev->ErrCmdNr > 3)
-            {
-                hal_log_err("ERR: too much error during test unit ready");
-                BlkDev->ErrCmdNr = 0;
+		if (BlkDev->ErrCmdNr > 3) {
+			hal_log_err("ERR: too much error during test unit ready");
+			BlkDev->ErrCmdNr = 0;
 
-                if (BlkDev->is_RegDisk)
-                {
-                    UsbBlkDevUnReg(BlkDev);
-                    UsbBlkDevReg(BlkDev, DEV_CLASS_USERDEF, 0);
-                }
-                else
-                {
-                    hal_log_err("ERR: device is not regist a disk device");
-                }
-            }
-    }
+			if (BlkDev->is_RegDisk) {
+				UsbBlkDevUnReg(BlkDev);
+				UsbBlkDevReg(BlkDev, DEV_CLASS_USERDEF, 0);
+			} else {
+				hal_log_err("ERR: device is not regist a disk device");
+			}
+		}
+	}
 
-    return;
+	return;
 }
 
 /*
@@ -135,85 +122,78 @@ static void DiskMediaChange(__mscLun_t *mscLun)
 *
 *
 * Return value:
-*    0  £º³É¹¦
-*   !0  £ºÊ§°Ü
+*    0  ï¼šæˆåŠŸ
+*   !0  ï¼šå¤±è´¥
 *
 * note:
-*    ÎÞ
+*    æ— 
 *
 *******************************************************************************
 */
 int DiskProbe(__mscLun_t *mscLun)
 {
-    __UsbBlkDev_t *BlkDev = NULL;
-    unsigned int  cpu_sr;
-    int ret = 0;
+	__UsbBlkDev_t *BlkDev = NULL;
+	unsigned int cpu_sr;
+	int ret = 0;
 
-    if (mscLun == NULL)
-    {
-        hal_log_err("ERR: DiskProbe: input error");
-        return -1;
-    }
+	if (mscLun == NULL) {
+		hal_log_err("ERR: DiskProbe: input error");
+		return -1;
+	}
 
-    /* ³õÊ¼»¯Ò»¸ö¿éÉè±¸ */
-    BlkDev = UsbBlkDevAllocInit(mscLun);
+	/* åˆå§‹åŒ–ä¸€ä¸ªå—è®¾å¤‡ */
+	BlkDev = UsbBlkDevAllocInit(mscLun);
 
-    if (BlkDev == NULL)
-    {
-        hal_log_err("ERR: DiskProbe: alloc blkdev failed");
-        return -1;
-    }
+	if (BlkDev == NULL) {
+		hal_log_err("ERR: DiskProbe: alloc blkdev failed");
+		return -1;
+	}
 
-    mscLun->sdev_data = (void *)BlkDev;
+	mscLun->sdev_data = (void *)BlkDev;
 
-    if (mscLun->LunNo >= mscLun->mscDev->MaxLun - 1)
-    {
-        BlkDev->last_lun = 1;
-        __wrn("disk, send last lun msg.........");
-    }
-    else
-    {
-        BlkDev->last_lun = 0;
-    }
+	if (mscLun->LunNo >= mscLun->mscDev->MaxLun - 1) {
+		BlkDev->last_lun = 1;
+		__wrn("disk, send last lun msg.........");
+	} else {
+		BlkDev->last_lun = 0;
+	}
 
-    printf("mscLun->LunNo=%d\n", mscLun->LunNo);
-    printf("mscLun->mscDev->MaxLun=%d\n", mscLun->mscDev->MaxLun);
-    printf("BlkDev->last_lun=%d\n", BlkDev->last_lun);
-    /* »ñµÃ´ÅÅÌÐÅÏ¢ */
-    GetDiskInfo(BlkDev);
+	printf("mscLun->LunNo=%d\n", mscLun->LunNo);
+	printf("mscLun->mscDev->MaxLun=%d\n", mscLun->mscDev->MaxLun);
+	printf("BlkDev->last_lun=%d\n", BlkDev->last_lun);
+	/* èŽ·å¾—ç£ç›˜ä¿¡æ¯ */
+	GetDiskInfo(BlkDev);
 
-    /* ×¢²á¿éÉè±¸ */
-    if (!mscLun->MediaPresent)
-    {
-        ret = UsbBlkDevReg(BlkDev, DEV_CLASS_USERDEF, 0);
-    }
-    else
-    {
-        ret = UsbBlkDevReg(BlkDev, DEV_CLASS_DISK, 1);
-    }
+	/* æ³¨å†Œå—è®¾å¤‡ */
+	if (!mscLun->MediaPresent) {
+		ret = UsbBlkDevReg(BlkDev, DEV_CLASS_USERDEF, 0);
+	} else {
+		ret = UsbBlkDevReg(BlkDev, DEV_CLASS_DISK, 1);
+	}
 
-    if (ret != USB_ERR_SUCCESS)
-    {
-        //DMSG_PANIC("ERR: DiskProbe: UsbBlkDevReg failed");
-        return USB_ERR_REG_BLK_DEV_FAILED;
-    }
+	if (ret != USB_ERR_SUCCESS) {
+		// DMSG_PANIC("ERR: DiskProbe: UsbBlkDevReg failed");
+		return USB_ERR_REG_BLK_DEV_FAILED;
+	}
 
-    /* ¸æËßusb_monitor, scsi diskÊ¶±ðÉè±¸³É¹¦ */
-    {
-        u32 is_reg = 1;
-        //usbm_sendcmd(DEV_IOC_USR_HWSC_USBH_MSC_DEV_REG_SET, &is_reg);
-    }
-    /*
-         Ö»ÓÐ¿ÉÒÆ¶¯Éè±¸²ÅÐèÒª¼ì²éMediaChange£¬µ«ÊÇÔÚSata×ªUSB½Ó¿ÚµÄÉè±¸Àï£¬
-     Éè±¸±ê³Æ×Ô¼ºÊÇ²»¿ÉÒÆ¶¯Éè±¸£¬ÔÚhostÃ»ÓÐ·ÃÎÊËüµÄÊ±ºò£¬Éè±¸»á½øÈëµÍ¹¦ºÄÄ£Ê½£¬
-     Éè±¸µÄµç»ú²»×ªÁË¡£µ±host¶ÁÉè±¸Ê±£¬Éè±¸µÄµç»ú¿ªÊ¼¹¤×÷£¬ÔÚ´«ÊäÊý¾ÝÊ±£¬²úÉúepstall£¬
-     ¶ÔÉè±¸½øÐÐ¸´Î»ºó£¬Éè±¸Í»È»¶Ï¿ª¡£Òò´ËÖ»ÄÜÒ»Ö±¸øËü·¢test_unit_readyÃüÁî£¬²»ÈÃÆä
-     ½øÈëµÍ¹¦ºÄÄ£Ê½¡£
-     */
-    ENTER_CRITICAL(cpu_sr);
-    mscLun->MediaChange = DiskMediaChange;
-    EXIT_CRITICAL(cpu_sr);
-    return USB_ERR_SUCCESS;
+	/* å‘Šè¯‰usb_monitor, scsi diskè¯†åˆ«è®¾å¤‡æˆåŠŸ */
+	{
+		u32 is_reg = 1;
+		// usbm_sendcmd(DEV_IOC_USR_HWSC_USBH_MSC_DEV_REG_SET, &is_reg);
+	}
+	/*
+	 åªæœ‰å¯ç§»åŠ¨è®¾å¤‡æ‰éœ€è¦æ£€æŸ¥MediaChangeï¼Œä½†æ˜¯åœ¨Sataè½¬USBæŽ¥å£çš„è®¾å¤‡é‡Œï¼Œ
+	è®¾å¤‡æ ‡ç§°è‡ªå·±æ˜¯ä¸å¯ç§»åŠ¨è®¾å¤‡ï¼Œåœ¨hostæ²¡æœ‰è®¿é—®å®ƒçš„æ—¶å€™ï¼Œè®¾å¤‡ä¼šè¿›å…¥ä½ŽåŠŸè€—æ¨¡å¼ï¼Œ
+	è®¾å¤‡çš„ç”µæœºä¸è½¬äº†ã€‚å½“hostè¯»è®¾å¤‡æ—¶ï¼Œè®¾å¤‡çš„ç”µæœºå¼€å§‹å·¥ä½œï¼Œåœ¨ä¼ è¾“æ•°æ®æ—¶ï¼Œäº§ç”Ÿepstallï¼Œ
+	å¯¹è®¾å¤‡è¿›è¡Œå¤ä½åŽï¼Œè®¾å¤‡çªç„¶æ–­å¼€ã€‚å› æ­¤åªèƒ½ä¸€ç›´ç»™å®ƒå‘test_unit_readyå‘½ä»¤ï¼Œä¸è®©å…¶
+	è¿›å…¥ä½ŽåŠŸè€—æ¨¡å¼ã€‚
+	*/
+	// ENTER_CRITICAL(cpu_sr);
+	hal_interrupt_disable();
+	mscLun->MediaChange = DiskMediaChange;
+	hal_interrupt_enable();
+	// EXIT_CRITICAL(cpu_sr);
+	return USB_ERR_SUCCESS;
 }
 
 /*
@@ -227,48 +207,46 @@ int DiskProbe(__mscLun_t *mscLun)
 *
 *
 * Return value:
-*    0  £º³É¹¦
-*   !0  £ºÊ§°Ü
+*    0  ï¼šæˆåŠŸ
+*   !0  ï¼šå¤±è´¥
 *
 * note:
-*    ÎÞ
+*    æ— 
 *
 *******************************************************************************
 */
 int DiskRemove(__mscLun_t *mscLun)
 {
-    __UsbBlkDev_t *BlkDev = NULL;
-    unsigned int  cpu_sr;
+	__UsbBlkDev_t *BlkDev = NULL;
+	unsigned int cpu_sr;
 
-    if (mscLun == NULL)
-    {
-        hal_log_err("ERR: DiskRemove: input error");
-        return -1;
-    }
+	if (mscLun == NULL) {
+		hal_log_err("ERR: DiskRemove: input error");
+		return -1;
+	}
 
-    BlkDev = (__UsbBlkDev_t *)mscLun->sdev_data;
+	BlkDev = (__UsbBlkDev_t *)mscLun->sdev_data;
 
-    if (BlkDev == NULL)
-    {
-        hal_log_err("ERR: BlkDev == NULL");
-        return -1;
-    }
+	if (BlkDev == NULL) {
+		hal_log_err("ERR: BlkDev == NULL");
+		return -1;
+	}
 
-    /* ×¢Ïú¿éÉè±¸ */
-    UsbBlkDevUnReg(BlkDev);
-    /* ¸æËßusb_monitor scsi diskÉè±¸ÒÑ¾­×¢Ïú */
-    {
-        u32 is_reg = 0;
-        //usbm_sendcmd(DEV_IOC_USR_HWSC_USBH_MSC_DEV_REG_SET, &is_reg);
-    }
-    ShutDown(BlkDev);
-    /* media changeÏß³ÌÒÑ¾­Í£Ö¹ÁË, ËùÒÔÏÖÔÚ¿ÉÒÔÖ±½ÓÉ¾³ýMediaChange */
-    ENTER_CRITICAL(cpu_sr);
-    mscLun->MediaChange = NULL;
-    EXIT_CRITICAL(cpu_sr);
-    UsbBlkDevFree(BlkDev);
-    mscLun->sdev_data = NULL;
-    return USB_ERR_SUCCESS;
+	/* æ³¨é”€å—è®¾å¤‡ */
+	UsbBlkDevUnReg(BlkDev);
+	/* å‘Šè¯‰usb_monitor scsi diskè®¾å¤‡å·²ç»æ³¨é”€ */
+	{
+		u32 is_reg = 0;
+		// usbm_sendcmd(DEV_IOC_USR_HWSC_USBH_MSC_DEV_REG_SET, &is_reg);
+	}
+	ShutDown(BlkDev);
+	/* media changeçº¿ç¨‹å·²ç»åœæ­¢äº†, æ‰€ä»¥çŽ°åœ¨å¯ä»¥ç›´æŽ¥åˆ é™¤MediaChange */
+	// ENTER_CRITICAL(cpu_sr);
+	hal_interrupt_disable();
+	mscLun->MediaChange = NULL;
+	hal_interrupt_enable();
+	// EXIT_CRITICAL(cpu_sr);
+	UsbBlkDevFree(BlkDev);
+	mscLun->sdev_data = NULL;
+	return USB_ERR_SUCCESS;
 }
-
-

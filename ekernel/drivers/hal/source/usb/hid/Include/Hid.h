@@ -2,8 +2,8 @@
 ********************************************************************************
 *                                USB Hid Driver
 *
-*                (c) Copyright 2006-2010, All winners Co,Ld. 
-*                        All Right Reserved 
+*                (c) Copyright 2006-2010, All winners Co,Ld.
+*                        All Right Reserved
 *
 * FileName		:  Hid.h
 *
@@ -11,21 +11,20 @@
 *
 * Date			:  2010/06/02
 *
-* Description	:  Hid DriverÖĞ¶ÔUSB½Ó¿ÚÉè±¸µÄÃèÊö
+* Description	:  Hid Driverä¸­å¯¹USBæ¥å£è®¾å¤‡çš„æè¿°
 *
 * Others		:  NULL
 *
 * History:
 *		<time> 			<author>	 <version >		<desc>
-*	   2010.06.02		Javen			1.0			build this file 
+*	   2010.06.02		Javen			1.0			build this file
 *
 ********************************************************************************
 */
-#ifndef  __HID_H__
-#define  __HID_H__
+#ifndef __HID_H__
+#define __HID_H__
 
 int HidInit(void);
 int HidExit(void);
 
-#endif   //__HID_H__
-
+#endif	//__HID_H__

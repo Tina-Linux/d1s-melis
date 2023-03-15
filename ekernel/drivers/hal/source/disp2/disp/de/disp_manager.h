@@ -26,5 +26,6 @@ extern s32 __disp_config_transfer2inner(
 extern s32 __disp_config2_transfer2inner(
 	struct disp_layer_config_inner *config_inner,
 	struct disp_layer_config2 *config);
+int disp_get_current_output_format_by_device_type(u32 disp);
 
 #endif

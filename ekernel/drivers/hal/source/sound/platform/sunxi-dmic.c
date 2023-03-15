@@ -29,22 +29,47 @@
 * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 * OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#include <hal_timer.h>
+
 #include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <hal_dma.h>
+#include <hal_cmd.h>
+#include <hal_timer.h>
+#ifdef CONFIG_COMPONENTS_PM
+#include <pm_devops.h>
+#endif
 #include <sound/snd_core.h>
 #include <sound/snd_pcm.h>
 #include <sound/snd_dma.h>
 #include <sound/dma_wrap.h>
-#include <hal_dma.h>
-#include <hal_cmd.h>
+#include <sound/common/snd_sunxi_common.h>
 
 #include "sunxi-pcm.h"
 #include "sunxi-dmic.h"
+
+static struct audio_reg_label sunxi_reg_labels[] = {
+	REG_LABEL(SUNXI_DMIC_EN),
+	REG_LABEL(SUNXI_DMIC_SR),
+	REG_LABEL(SUNXI_DMIC_CTR),
+	/* REG_LABEL(SUNXI_DMIC_DATA), */
+	REG_LABEL(SUNXI_DMIC_INTC),
+	REG_LABEL(SUNXI_DMIC_INTS),
+	REG_LABEL(SUNXI_DMIC_FIFO_CTR),
+	REG_LABEL(SUNXI_DMIC_FIFO_STA),
+	REG_LABEL(SUNXI_DMIC_CH_NUM),
+	REG_LABEL(SUNXI_DMIC_CH_MAP),
+	REG_LABEL(SUNXI_DMIC_CNT),
+	REG_LABEL(SUNXI_DMIC_DATA0_1_VOL),
+	REG_LABEL(SUNXI_DMIC_DATA2_3_VOL),
+	REG_LABEL(SUNXI_DMIC_HPF_CTRL),
+	REG_LABEL(SUNXI_DMIC_HPF_COEF),
+	REG_LABEL(SUNXI_DMIC_HPF_GAIN),
+	REG_LABEL_END,
+};
 
 static const struct dmic_rate dmic_rate_s[] = {
 	{44100, 0x0},
@@ -231,13 +256,16 @@ static void sunxi_dmic_shutdown(struct snd_pcm_substream *substream,
 static int sunxi_dmic_set_sysclk(struct snd_dai *dai, int clk_id,
 						unsigned int freq, int dir)
 {
+	int ret;
 	struct snd_platform *platform = dai->component;
 	struct sunxi_dmic_info *sunxi_dmic = platform->private_data;
 
 	snd_print("\n");
-	if (hal_clk_set_rate(sunxi_dmic->pllclk, freq)) {
-		snd_err("set pllclk %u failed\n", freq);
-		return -EINVAL;
+
+	ret = snd_sunxi_dmic_clk_set_rate(&sunxi_dmic->clk, 0, freq, freq);
+	if (ret < 0) {
+		snd_err("snd_sunxi_dmic_clk_set_rate failed\n");
+		return -1;
 	}
 
 	return 0;
@@ -282,101 +310,126 @@ static struct snd_dai sunxi_dmic_dai = {
 	.ops		= &sunxi_dmic_dai_ops,
 };
 
-static int sunxi_dmic_clk_init(struct snd_platform *platform)
-{
-	struct sunxi_dmic_info *sunxi_dmic = platform->private_data;
-	hal_reset_type_t reset_type = HAL_SUNXI_RESET;
-	hal_clk_type_t clk_type = HAL_SUNXI_CCU;
-	int ret;
-
-	snd_print("\n");
-	sunxi_dmic->pllclk = hal_clock_get(clk_type, SUNXI_DMIC_CLK_PLL_AUDIO);
-	sunxi_dmic->moduleclk = hal_clock_get(clk_type, SUNXI_DMIC_CLK_DMIC);
-	sunxi_dmic->busclk = hal_clock_get(clk_type, SUNXI_DMIC_CLK_BUS);
-	sunxi_dmic->rstclk = hal_reset_control_get(reset_type, SUNXI_DMIC_CLK_RST);
-
-	ret = hal_clk_set_parent(sunxi_dmic->moduleclk, sunxi_dmic->pllclk);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("sunxi_dmic clk_set_parent failed.\n");
-		goto err_dmic_moduleclk_set_parent;
-	}
-
-	ret = hal_reset_control_deassert(sunxi_dmic->rstclk);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("dmic clk_deassert rstclk failed.\n");
-		goto err_dmic_rstclk_deassert;
-	}
-
-	ret = hal_clock_enable(sunxi_dmic->busclk);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("dmic clk_enable busclk failed.\n");
-		goto err_dmic_busclk_enable;
-	}
-	ret = hal_clock_enable(sunxi_dmic->pllclk);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("dmic clk_enable pllclk failed.\n");
-		goto err_dmic_pllclk_enable;
-	}
-	ret = hal_clock_enable(sunxi_dmic->moduleclk);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("dmic clk_enable moduleclk failed.\n");
-		goto err_dmic_moduleclk_enable;
-	}
-
-	return 0;
-
-err_dmic_moduleclk_enable:
-	hal_clock_disable(sunxi_dmic->pllclk);
-err_dmic_pllclk_enable:
-err_dmic_busclk_enable:
-err_dmic_rstclk_deassert:
-err_dmic_moduleclk_set_parent:
-	snd_free(sunxi_dmic);
-	return ret;
-}
-
 static int sunxi_dmic_gpio_init(bool enable)
 {
 	snd_print("\n");
 	if (enable) {
 		/*CLK*/
-		hal_gpio_pinmux_set_function(g_dmic_gpio.clk.gpio,
-					g_dmic_gpio.clk.mux);
+		if (g_dmic_gpio.clk.mux >= 0)
+			hal_gpio_pinmux_set_function(g_dmic_gpio.clk.gpio,
+						     g_dmic_gpio.clk.mux);
 		/*DATA0*/
-		hal_gpio_pinmux_set_function(g_dmic_gpio.din0.gpio,
-					g_dmic_gpio.din0.mux);
+		if (g_dmic_gpio.din0.mux >= 0)
+			hal_gpio_pinmux_set_function(g_dmic_gpio.din0.gpio,
+						     g_dmic_gpio.din0.mux);
 		/*DATA1*/
-		hal_gpio_pinmux_set_function(g_dmic_gpio.din1.gpio,
-					g_dmic_gpio.din1.mux);
+		if (g_dmic_gpio.din1.mux >= 0)
+			hal_gpio_pinmux_set_function(g_dmic_gpio.din1.gpio,
+						     g_dmic_gpio.din1.mux);
 		/*DATA2*/
-		hal_gpio_pinmux_set_function(g_dmic_gpio.din2.gpio,
-					g_dmic_gpio.din2.mux);
+		if (g_dmic_gpio.din2.mux >= 0)
+			hal_gpio_pinmux_set_function(g_dmic_gpio.din2.gpio,
+						     g_dmic_gpio.din2.mux);
 		/*DATA3*/
-		hal_gpio_pinmux_set_function(g_dmic_gpio.din3.gpio,
-					g_dmic_gpio.din3.mux);
+		if (g_dmic_gpio.din3.mux >= 0)
+			hal_gpio_pinmux_set_function(g_dmic_gpio.din3.gpio,
+						     g_dmic_gpio.din3.mux);
 	} else {
 		/*CLK*/
-		hal_gpio_pinmux_set_function(g_dmic_gpio.clk.gpio,
-					GPIO_MUXSEL_DISABLED);
+		if (g_dmic_gpio.clk.mux >= 0)
+			hal_gpio_pinmux_set_function(g_dmic_gpio.clk.gpio,
+						     GPIO_MUXSEL_DISABLED);
 		/*DATA0*/
-		hal_gpio_pinmux_set_function(g_dmic_gpio.din0.gpio,
-					GPIO_MUXSEL_DISABLED);
+		if (g_dmic_gpio.din0.mux >= 0)
+			hal_gpio_pinmux_set_function(g_dmic_gpio.din0.gpio,
+						     GPIO_MUXSEL_DISABLED);
 		/*DATA1*/
-		hal_gpio_pinmux_set_function(g_dmic_gpio.din1.gpio,
-					GPIO_MUXSEL_DISABLED);
+		if (g_dmic_gpio.din1.mux >= 0)
+			hal_gpio_pinmux_set_function(g_dmic_gpio.din1.gpio,
+						     GPIO_MUXSEL_DISABLED);
 		/*DATA2*/
-		hal_gpio_pinmux_set_function(g_dmic_gpio.din2.gpio,
-					GPIO_MUXSEL_DISABLED);
+		if (g_dmic_gpio.din2.mux >= 0)
+			hal_gpio_pinmux_set_function(g_dmic_gpio.din2.gpio,
+						     GPIO_MUXSEL_DISABLED);
 		/*DATA3*/
-		hal_gpio_pinmux_set_function(g_dmic_gpio.din3.gpio,
-					GPIO_MUXSEL_DISABLED);
+		if (g_dmic_gpio.din3.mux >= 0)
+			hal_gpio_pinmux_set_function(g_dmic_gpio.din3.gpio,
+						     GPIO_MUXSEL_DISABLED);
 	}
 
 	return 0;
 }
 
+/* suspend and resume */
+#ifdef CONFIG_COMPONENTS_PM
+static unsigned int snd_read_func(void *data, unsigned int reg)
+{
+	struct snd_platform *platform;
+
+	if (!data) {
+		snd_err("data is invailed\n");
+		return 0;
+	}
+
+	platform = data;
+	return snd_platform_read(platform, reg);
+}
+
+static void snd_write_func(void *data, unsigned int reg, unsigned int val)
+{
+	struct snd_platform *platform;
+
+	if (!data) {
+		snd_err("data is invailed\n");
+		return;
+	}
+
+	platform = data;
+	snd_platform_write(platform, reg, val);
+}
+
+static int sunxi_dmic_suspend(struct pm_device *dev, suspend_mode_t mode)
+{
+	struct snd_platform *platform = dev->data;
+	struct sunxi_dmic_info *sunxi_dmic = platform->private_data;
+
+	snd_print("\n");
+
+	snd_sunxi_save_reg(sunxi_reg_labels, (void *)platform, snd_read_func);
+	snd_sunxi_dmic_clk_disable(&sunxi_dmic->clk);
+
+	return 0;
+}
+
+static int sunxi_dmic_resume(struct pm_device *dev, suspend_mode_t mode)
+{
+	struct snd_platform *platform = dev->data;
+	struct sunxi_dmic_info *sunxi_dmic = platform->private_data;
+
+	snd_print("\n");
+
+	snd_sunxi_dmic_clk_enable(&sunxi_dmic->clk);
+	sunxi_dmic_init(platform);
+	snd_sunxi_echo_reg(sunxi_reg_labels, (void *)platform, snd_write_func);
+
+	return 0;
+}
+
+struct pm_devops pm_dmic_ops = {
+	.suspend = sunxi_dmic_suspend,
+	.resume = sunxi_dmic_resume,
+};
+
+struct pm_device pm_dmic = {
+	.name = "snddmic",
+	.ops = &pm_dmic_ops,
+};
+#endif
+
+/* dmic probe */
 static int sunxi_dmic_platform_probe(struct snd_platform *platform)
 {
+	int ret;
 	struct sunxi_dmic_info *sunxi_dmic;
 
 	snd_print("\n");
@@ -392,7 +445,11 @@ static int sunxi_dmic_platform_probe(struct snd_platform *platform)
 	platform->mem_base = (void *)SUNXI_DMIC_MEMBASE;
 
 	/* clk */
-	sunxi_dmic_clk_init(platform);
+	ret = snd_sunxi_dmic_clk_init(&sunxi_dmic->clk);
+	if (ret != 0) {
+		snd_err("snd_sunxi_dmic_clk_init failed\n");
+		goto err_dmic_set_clock;
+	}
 
 	/* pinctrl */
 	sunxi_dmic_gpio_init(true);
@@ -400,11 +457,23 @@ static int sunxi_dmic_platform_probe(struct snd_platform *platform)
 	/* dma config */
 	sunxi_dmic->capture_dma_param.src_maxburst = 8;
 	sunxi_dmic->capture_dma_param.dst_maxburst = 8;
-	sunxi_dmic->capture_dma_param.dma_addr =
-			(dma_addr_t)platform->mem_base + SUNXI_DMIC_DATA;
+	sunxi_dmic->capture_dma_param.dma_addr = (dma_addr_t)platform->mem_base + SUNXI_DMIC_DATA;
 	sunxi_dmic->capture_dma_param.dma_drq_type_num = DRQSRC_DMIC;
 
+#ifdef CONFIG_COMPONENTS_PM
+	pm_dmic.data = (void *)platform;
+	ret = pm_devops_register(&pm_dmic);
+	if (ret) {
+		snd_err("pm_devops_register failed\n");
+	}
+#endif
+
 	return 0;
+
+err_dmic_set_clock:
+	snd_sunxi_dmic_clk_exit(&sunxi_dmic->clk);
+
+	return -1;
 }
 
 static int sunxi_dmic_platform_remove(struct snd_platform *platform)
@@ -416,16 +485,7 @@ static int sunxi_dmic_platform_remove(struct snd_platform *platform)
 	if (!sunxi_dmic)
 		return 0;
 
-	hal_clock_disable(sunxi_dmic->busclk);
-	hal_clock_disable(sunxi_dmic->moduleclk);
-	hal_clock_disable(sunxi_dmic->pllclk);
-	hal_clock_put(sunxi_dmic->busclk);
-	hal_clock_put(sunxi_dmic->moduleclk);
-	hal_clock_put(sunxi_dmic->pllclk);
-
-	hal_reset_control_assert(sunxi_dmic->rstclk);
-	hal_reset_control_put(sunxi_dmic->rstclk);
-
+	snd_sunxi_dmic_clk_exit(&sunxi_dmic->clk);
 	sunxi_dmic_gpio_init(false);
 
 	snd_free(sunxi_dmic);
@@ -469,31 +529,6 @@ err_cpu_dai_malloc:
 }
 
 #ifdef SUNXI_DMIC_DEBUG_REG
-#define REG_LABEL(constant)		{#constant, constant}
-#define REG_LABEL_END			{NULL, 0}
-static struct dmic_label {
-	const char *name;
-	const unsigned int address;
-	/*int value;*/
-} reg_labels[] = {
-	REG_LABEL(SUNXI_DMIC_EN),
-	REG_LABEL(SUNXI_DMIC_SR),
-	REG_LABEL(SUNXI_DMIC_CTR),
-	REG_LABEL(SUNXI_DMIC_INTC),
-	REG_LABEL(SUNXI_DMIC_INTS),
-	REG_LABEL(SUNXI_DMIC_FIFO_CTR),
-	REG_LABEL(SUNXI_DMIC_FIFO_STA),
-	REG_LABEL(SUNXI_DMIC_CH_NUM),
-	REG_LABEL(SUNXI_DMIC_CH_MAP),
-	REG_LABEL(SUNXI_DMIC_CNT),
-	REG_LABEL(SUNXI_DMIC_DATA0_1_VOL),
-	REG_LABEL(SUNXI_DMIC_DATA2_3_VOL),
-	REG_LABEL(SUNXI_DMIC_HPF_CTRL),
-	REG_LABEL(SUNXI_DMIC_HPF_COEF),
-	REG_LABEL(SUNXI_DMIC_HPF_GAIN),
-	REG_LABEL_END,
-};
-
 /* for debug */
 #include <console.h>
 int cmd_dmic_dump(void)
@@ -504,11 +539,11 @@ int cmd_dmic_dump(void)
 
 	membase = (void *)SUNXI_DMIC_MEMBASE ;
 
-	while (reg_labels[i].name != NULL) {
+	while (sunxi_reg_labels[i].name != NULL) {
 		printf("%-20s[0x%03x]: 0x%-10x\n",
-			reg_labels[i].name,
-			reg_labels[i].address,
-			snd_readl(membase + reg_labels[i].address));
+			sunxi_reg_labels[i].name,
+			sunxi_reg_labels[i].address,
+			snd_readl(membase + sunxi_reg_labels[i].address));
 		i++;
 	}
 }

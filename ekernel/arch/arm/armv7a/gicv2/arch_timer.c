@@ -1,33 +1,40 @@
 /*
- * Allwinnertech rtos arch timer file.
- * Copyright (C) 2019  Allwinnertech Co., Ltd. or its affiliates.  All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
- */
-
-#include "interrupt.h"
-#include <of/of.h>
-#include <kconfig.h>
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <stdio.h>
+#include "interrupt.h"
 #include <log.h>
 
 static unsigned int timer_reload_val;
+uint32_t g_irq_arg[3] = { 0 };
 
 #define ARCH_TIMER_CTRL_ENABLE          (1 << 0)
 #define ARCH_TIMER_CTRL_IT_MASK         (1 << 1)
@@ -67,10 +74,10 @@ static void set_next_event(unsigned int reload)
     ctl |= ARCH_TIMER_CTRL_ENABLE;
     ctl &= ~ARCH_TIMER_CTRL_IT_MASK;
     write_cntp_tval(reload);
-    write_cntp_ctl(ctl); /* enable timer */
+    write_cntp_ctl(ctl);
 }
 
-static irqreturn_t platform_tick(int no, void *para)
+static hal_irqreturn_t platform_tick(void *para)
 {
     unsigned int ctl;
 
@@ -86,63 +93,18 @@ static irqreturn_t platform_tick(int no, void *para)
         awos_arch_tick_increase();
 
         set_next_event(timer_reload_val);
-        return IRQ_HANDLED;
+        return HAL_IRQ_OK;
     }
 
-    return IRQ_NONE;
+    return HAL_IRQ_OK;
 }
 
-uint32_t g_irq_arg[3] = { 0 };
 void arm_generic_timer_init(int irq, unsigned int freq_override)
 {
     unsigned int cntfrq = 0, *rate = NULL;
     int ret, len, irqnum;
     uint32_t intsize = 0;
 
-#ifdef CONFIG_OF
-    struct device_node *np = NULL, *nc = NULL;
-    nc = of_find_node_by_name(NULL, "arch-timer");
-    if (nc)
-    {
-        int i, res;
-
-        rate = (unsigned int *)of_get_property(nc, "clock-frequency", &len);
-        if (!rate || len != 4)
-        {
-            __err("cant get arch-timer properity value.");
-            return;
-        }
-
-        np = of_irq_find_parent(nc);
-        if (np == NULL)
-        {
-            __err("cant get arch-timer device_node parent.");
-            return;
-        }
-        of_property_read_u32(np, "#interrupt-cells", &intsize);
-        //__log("clock-freq = %d, intsize %d.nw->full_name %s.", __builtin_bswap32(*rate), intsize, np->full_name);
-        // cell0 is security mode, and cell1 is ns mode.
-        for (i = 0; i < intsize; i ++)
-        {
-            res = of_property_read_u32_index(nc, "interrupts",
-                                             (0 * intsize) + i,
-                                             g_irq_arg + i);
-            if (res)
-            {
-                __err("get arch-timer interrupts paramter failure.");
-                return;
-            }
-        }
-        irqnum = g_irq_arg[1];
-        cntfrq = __builtin_bswap32(*rate);
-
-        if (g_irq_arg[0]) // PPI interrupt
-        {
-            irqnum += 16;
-        }
-    }
-    else
-#endif
     {
         //ns:0 secuirty mode. ns:1 normal mode
         int ns = 0;
@@ -174,12 +136,11 @@ void arm_generic_timer_init(int irq, unsigned int freq_override)
     timer_reload_val = cntfrq / CONFIG_HZ;
     set_next_event(timer_reload_val);
 
-    ret = request_irq(irqnum, platform_tick, 0, "tick", NULL);
+    ret = hal_request_irq(irqnum, platform_tick, "tick", NULL);
     if (ret != 0)
     {
         __err("fatal error, request irq failure.");
-        while (1)
-            ;
+        while (1);
         return;
     }
 }

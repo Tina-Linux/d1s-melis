@@ -12,30 +12,6 @@
 #define SPINOR_DEBUG(fmt, arg...) hal_log_debug(SPINOR_FMT(fmt), ##arg)
 #define SPINOR_INFO(fmt, arg...) hal_log_info(SPINOR_FMT(fmt), ##arg)
 
-#ifndef BIT
-#define BIT(x) (1 << x)
-#endif
-
-#ifndef MIN
-#define MIN(a, b) ((a) > (b) ? (b) : (a))
-#endif
-
-#ifndef MAX
-#define MAX(a, b) ((a) > (b) ? (a) : (b))
-#endif
-
-#ifndef ARRAY_SIZE
-#define ARRAY_SIZE(array) (sizeof(array)/sizeof(array[0]))
-#endif
-
-#undef ALIGN
-#undef ALIGN_DOWN
-
-#define ALIGN(x, a) __ALIGN_KERNEL((x), (a))
-#define ALIGN_DOWN(x, a) __ALIGN_KERNEL((x) - ((a) - 1), (a))
-#define __ALIGN_KERNEL(x, a) __ALIGN_KERNEL_MASK(x, (typeof(x))(a) - 1)
-#define __ALIGN_KERNEL_MASK(x, mask) (((x) + (mask)) & ~(mask))
-
 #define DIV_ROUND_UP(n,d) (((n) + (d) - 1) / (d))
 #define BITS_PER_BYTE 8
 #define BITS_PER_LONG (sizeof(long) * BITS_PER_BYTE)
@@ -64,7 +40,7 @@
 #define SZ_64M      (64 * 1024 * 1024)
 
 #define MAX_ID_LEN 3
-#define MAX_WAIT_LOOP ((unsigned int)(-1))
+#define MAX_WAIT_LOOP (((unsigned int)(-1))/2)
 #define NOR_DEFAULT_FREQUENCY 50
 #define NOR_PAGE_SIZE 256
 #define NOR_HALF_BLK_SIZE (SZ_32K)
@@ -79,6 +55,7 @@
 #define FACTORY_ESMT    0x1C
 #define FACTORY_XTX     0x0B
 #define FACTORY_XMC     0x20
+#define FACTORY_BOYA    0x68
 
 struct nor_info
 {
@@ -113,6 +90,7 @@ struct nor_spi_master
     hal_spi_master_config_t cfg;
 };
 
+#ifdef CONFIG_DRIVERS_SPINOR
 struct nor_flash
 {
     unsigned char cmd_read;
@@ -131,6 +109,26 @@ struct nor_flash
 
     hal_sem_t hal_sem;
 };
+#else
+struct nor_flash
+{
+    unsigned char cmd_read;
+    unsigned char cmd_write;
+
+    unsigned int r_cmd_slen: 3;
+    unsigned int w_cmd_slen: 3;
+    unsigned int total_size;
+    unsigned int blk_size;
+    unsigned int page_size;
+    unsigned int addr_width;
+
+    struct nor_info *info;
+    struct nor_factory *factory;
+
+    hal_sem_t hal_sem;
+};
+
+#endif
 
 struct nor_factory {
     unsigned char factory;
@@ -160,12 +158,13 @@ int nor_register_factory_fm(void);
 int nor_register_factory_xmc(void);
 int nor_register_factory_puya(void);
 int nor_register_factory_zetta(void);
+int nor_register_factory_boya(void);
 
 int nor_transfer(int single_len, void *tbuf, int tlen, void *rbuf, int rlen);
 int nor_send_cmd(unsigned char cmd);
 int nor_read_status(unsigned char *sr);
 int nor_write_status(unsigned char *sr, unsigned int len);
-int nor_wait_ready(unsigned int ms, unsigned int times);
+int nor_wait_ready(int ms, int times);
 int nor_write_enable(void);
 
 int nor_init(void);
@@ -173,6 +172,7 @@ int nor_deinit(void);
 int nor_write(unsigned int addr, char *buf, unsigned int len);
 int nor_read(unsigned int addr, char *buf, unsigned int len);
 int nor_erase(unsigned int addr, unsigned int size);
+int nor_ioctrl(int cmd, void *buf, unsigned int size);
 struct nor_flash *get_nor_flash(void);
 
 #ifdef CONFIG_DRIVERS_SPINOR_CACHE

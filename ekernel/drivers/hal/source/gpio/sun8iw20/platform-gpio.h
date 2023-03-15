@@ -78,6 +78,7 @@ typedef enum
     GPIO_PB5 = GPIOB(5),
     GPIO_PB6 = GPIOB(6),
     GPIO_PB7 = GPIOB(7),
+    GPIO_PB8 = GPIOB(8),
 
     GPIO_PC0 = GPIOC(0),
     GPIO_PC1 = GPIOC(1),

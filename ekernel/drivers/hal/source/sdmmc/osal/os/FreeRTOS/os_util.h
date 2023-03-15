@@ -32,6 +32,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <hal_interrupt.h>
 #include "os_time.h"
 #include "os_debug.h"
 //#include "k_api.h"
@@ -45,10 +46,7 @@ extern volatile uint32_t ulPortInterruptNesting[];
 /*  check if in ISR context or not */
 static __always_inline int OS_IsISRContext(void)
 {
-      //return __get_IPSR();
-      //  return ulPortInterruptNesting;
-      //return (int)g_intrpt_nested_level[cpu_cur_get()];
-      return ulPortInterruptNesting[cur_cpu_id()];
+      return hal_interrupt_get_nest();
 }
 
 

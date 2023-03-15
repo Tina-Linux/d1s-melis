@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-#include <rtthread.h>
 #include <hal_mem.h>
+#include <hal_cmd.h>
 
 #include "../source/g2d_rcq/g2d_driver.h"
 extern int sunxi_g2d_control(int cmd, void *arg);

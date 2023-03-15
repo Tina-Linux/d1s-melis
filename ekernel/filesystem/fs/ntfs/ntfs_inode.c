@@ -514,6 +514,7 @@ void ntfs_drop_inode(struct inode *inode)
     else
     {
         ntfs_attr_close(ni->da);
+        ni->da = NULL;
 #if defined CONFIG_FSYS_NTFS_RW
         if (NInoDirty(ni))
         {

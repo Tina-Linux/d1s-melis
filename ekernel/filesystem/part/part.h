@@ -1,22 +1,34 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                                  File System
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2011-2014, Sunny China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : part.h
-* By      : Sunny
-* Version : v1.0
-* Date    : 2011-3-15
-* Descript: partition management of file system.
-* Update  : date                auther      ver     notes
-*           2011-3-15 14:58:06  Sunny       1.0     Create this file.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #ifndef __PART_H__
 #define __PART_H__
 #include <sys_fsys.h>
@@ -24,24 +36,24 @@
 #include "sys_fsys_i.h"
 
 
-typedef struct __FSYS_PART              __fsys_part_t;      /* ∑÷«¯         */
+typedef struct __FSYS_PART              __fsys_part_t;      /* ÂàÜÂå∫         */
 typedef struct fix_part_s               __fix_part_t;
-typedef struct __FSYS_PD                __fsys_pd_t;        /* ∑÷«¯«˝∂Øæ‰±˙ */
-typedef struct __FSYS_PDOPS             __fsys_pdops_t;     /* ∑÷«¯≤Ÿ◊˜     */
+typedef struct __FSYS_PD                __fsys_pd_t;        /* ÂàÜÂå∫È©±Âä®Âè•ÊüÑ */
+typedef struct __FSYS_PDOPS             __fsys_pdops_t;     /* ÂàÜÂå∫Êìç‰Ωú     */
 
-#define     FSYS_PARTSTATUS_UNUSED      (1<<0)      /* Œƒº˛œµÕ≥ π”√    */
-#define     FSYS_PARTSTATUS_FSUSED      (1<<1)      /* Œƒº˛œµÕ≥ π”√    */
-#define     FSYS_PARTSTATUS_RAWUSED     (1<<2)      /* ÷±Ω”∑÷«¯ π”√    */
-#define     FSYS_PARTSTATUS_DEAD        (1<<3)      /* ¥À∑÷«¯“—æ≠±ª–∂‘ÿ*/
+#define     FSYS_PARTSTATUS_UNUSED      (1<<0)      /* Êñá‰ª∂Á≥ªÁªü‰ΩøÁî®    */
+#define     FSYS_PARTSTATUS_FSUSED      (1<<1)      /* Êñá‰ª∂Á≥ªÁªü‰ΩøÁî®    */
+#define     FSYS_PARTSTATUS_RAWUSED     (1<<2)      /* Áõ¥Êé•ÂàÜÂå∫‰ΩøÁî®    */
+#define     FSYS_PARTSTATUS_DEAD        (1<<3)      /* Ê≠§ÂàÜÂå∫Â∑≤ÁªèË¢´Âç∏ËΩΩ*/
 #define     FSYS_PARTSTATUS_INVALID     (FSYS_PARTSTATUS_UNUSED | FSYS_PARTSTATUS_DEAD)
 
 #define     FSYS_PARTATTR_OPENRWM       0x03
-#define     FSYS_PARTATTR_OPENR         (1<<0)      /* ∑÷«¯“‘ø…∂¡¥Úø™ */
-#define     FSYS_PARTATTR_OPENW         (1<<1)      /* ∑÷«¯“‘ø…∂¡¥Úø™ */
+#define     FSYS_PARTATTR_OPENR         (1<<0)      /* ÂàÜÂå∫‰ª•ÂèØËØªÊâìÂºÄ */
+#define     FSYS_PARTATTR_OPENW         (1<<1)      /* ÂàÜÂå∫‰ª•ÂèØËØªÊâìÂºÄ */
 #define     FSYS_PARTATTR_DEVRWM        0x0c
-#define     FSYS_PARTATTR_DEVR          (1<<2)      /* ∑÷«¯◊‘¥¯µƒø…∂¡ Ù–‘ */
-#define     FSYS_PARTATTR_DEVW          (1<<3)      /* ∑÷«¯◊‘¥¯µƒø…–¥ Ù–‘ */
-#define     FSYS_PARTATTR_FS            (1<<4)      /* ∑÷«¯¥¯”–ø… ∂±µƒŒƒº˛œµÕ≥ */
+#define     FSYS_PARTATTR_DEVR          (1<<2)      /* ÂàÜÂå∫Ëá™Â∏¶ÁöÑÂèØËØªÂ±ûÊÄß */
+#define     FSYS_PARTATTR_DEVW          (1<<3)      /* ÂàÜÂå∫Ëá™Â∏¶ÁöÑÂèØÂÜôÂ±ûÊÄß */
+#define     FSYS_PARTATTR_FS            (1<<4)      /* ÂàÜÂå∫Â∏¶ÊúâÂèØËØÜÂà´ÁöÑÊñá‰ª∂Á≥ªÁªü */
 
 #define     PD_STAT_INACTIVE            0x00
 #define     PD_STAT_ACTIVE              0x01
@@ -65,27 +77,27 @@ struct __FSYS_PD
 {
     char                    *name;
     uint32_t                nUsr;
-    uint32_t                status;         /* Ω⁄µ„◊¥Ã¨£∫0±Ì æ’˝≥££¨0xff±Ì æŒ™À¿Ω⁄µ„£®«˝∂Ø≥Ã–Ú¥˙¬Î“—æ≠–∂‘ÿ£©*/
+    uint32_t                status;         /* ËäÇÁÇπÁä∂ÊÄÅÔºö0Ë°®Á§∫Ê≠£Â∏∏Ôºå0xffË°®Á§∫‰∏∫Ê≠ªËäÇÁÇπÔºàÈ©±Âä®Á®ãÂ∫è‰ª£Á†ÅÂ∑≤ÁªèÂç∏ËΩΩÔºâ*/
     __fsys_pd_t             *next;
-    __fsys_pdops_t          Ops;            /* ∑÷«¯≤Ÿ◊˜∫Ø ˝ºØ */
-    //uint32_t                last_lun;   // «∑Òu≈ÃªÚø®µƒ◊Ó∫Û“ª∏ˆ≈Ã∑˚
+    __fsys_pdops_t          Ops;            /* ÂàÜÂå∫Êìç‰ΩúÂáΩÊï∞ÈõÜ */
+    //uint32_t                last_lun;   //ÊòØÂê¶uÁõòÊàñÂç°ÁöÑÊúÄÂêé‰∏Ä‰∏™ÁõòÁ¨¶
 };
 
 struct __FSYS_PART
 {
-    char                    dname[MAX_PART_NAME_LEN];   /* ∑÷«¯√˚ */
-    char                    letter;                     /* ≈Ã∑˚ */
-    uint32_t                status;                     /* º˚≥£¡ø∂®“ÂFSYS_PARTSTATUS_XXX */
-    int32_t                 error;                      /* ∑÷«¯≤Ÿ◊˜≥ˆ¥ÌµƒºÕ¬º */
+    char                    dname[MAX_PART_NAME_LEN];   /* ÂàÜÂå∫Âêç */
+    char                    letter;                     /* ÁõòÁ¨¶ */
+    uint32_t                status;                     /* ËßÅÂ∏∏ÈáèÂÆö‰πâFSYS_PARTSTATUS_XXX */
+    int32_t                 error;                      /* ÂàÜÂå∫Êìç‰ΩúÂá∫ÈîôÁöÑÁ∫™ÂΩï */
     int32_t                 attr;                       /* access mode */
-    __fsys_pd_t             *pPD;                       /* ∑÷«¯«˝∂Ø */
-    __hdle                  hPDPrivate;                 /* ∑÷«¯«˝∂ØÀΩ”– ˝æ›øÈæ‰±˙ */
-    __hdle                  hFSPrivate;                 /* Œƒº˛œµÕ≥ÀΩ”– ˝æ›øÈæ‰±˙ */
-    __hdle                  hNode;                      /* …Ë±∏Ω⁄µ„æ‰±˙ */
-    __hdle                  hDev;                       /* …Ë±∏«˝∂Øµƒ≤Ÿ◊˜æ‰±˙ */
-    uint32_t                Unit;                       /* …Ë±∏ƒ⁄∑÷«¯∫≈ */
-    __bool                  updateflag;                 /* ∑÷«¯∏¸–¬±Íº« */
-    uint32_t                last_lun;                   // «∑Òu≈ÃªÚø®µƒ◊Ó∫Û“ª∏ˆ≈Ã∑˚
+    __fsys_pd_t             *pPD;                       /* ÂàÜÂå∫È©±Âä® */
+    __hdle                  hPDPrivate;                 /* ÂàÜÂå∫È©±Âä®ÁßÅÊúâÊï∞ÊçÆÂùóÂè•ÊüÑ */
+    __hdle                  hFSPrivate;                 /* Êñá‰ª∂Á≥ªÁªüÁßÅÊúâÊï∞ÊçÆÂùóÂè•ÊüÑ */
+    __hdle                  hNode;                      /* ËÆæÂ§áËäÇÁÇπÂè•ÊüÑ */
+    __hdle                  hDev;                       /* ËÆæÂ§áÈ©±Âä®ÁöÑÊìç‰ΩúÂè•ÊüÑ */
+    uint32_t                Unit;                       /* ËÆæÂ§áÂÜÖÂàÜÂå∫Âè∑ */
+    __bool                  updateflag;                 /* ÂàÜÂå∫Êõ¥Êñ∞Ê†áËÆ∞ */
+    uint32_t                last_lun;                   //ÊòØÂê¶uÁõòÊàñÂç°ÁöÑÊúÄÂêé‰∏Ä‰∏™ÁõòÁ¨¶
 };
 
 struct fix_part_s

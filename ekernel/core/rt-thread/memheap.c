@@ -610,6 +610,55 @@ void rt_memheap_free(void *ptr)
 }
 RTM_EXPORT(rt_memheap_free);
 
+void *rt_memheap_alloc_align(struct rt_memheap *heap, rt_size_t size, rt_size_t align)
+{
+    void *ptr;
+    void *align_ptr;
+    int uintptr_size;
+    rt_size_t align_size;
+
+    /* sizeof pointer */
+    uintptr_size = sizeof(void *);
+    uintptr_size -= 1;
+
+    /* align the alignment size to uintptr size byte */
+    align = ((align + uintptr_size) & ~uintptr_size);
+
+    /* get total aligned size */
+    align_size = ((size + uintptr_size) & ~uintptr_size) + align;
+    /* allocate memory block from heap */
+    ptr = rt_memheap_alloc(heap, align_size);
+    if (ptr != RT_NULL)
+    {
+        /* the allocated memory block is aligned */
+        if (((rt_ubase_t)ptr & (align - 1)) == 0)
+        {
+            align_ptr = (void *)((rt_ubase_t)ptr + align);
+        }
+        else
+        {
+            align_ptr = (void *)(((rt_ubase_t)ptr + (align - 1)) & ~(align - 1));
+        }
+
+        /* set the pointer before alignment pointer to the real pointer */
+        *((rt_ubase_t *)((rt_ubase_t)align_ptr - sizeof(void *))) = (rt_ubase_t)ptr;
+
+        ptr = align_ptr;
+    }
+
+    return ptr;
+}
+RTM_EXPORT(rt_memheap_alloc_align);
+
+void rt_memheap_free_align(void *ptr)
+{
+    void *real_ptr;
+
+    real_ptr = (void *) * (rt_ubase_t *)((rt_ubase_t)ptr - sizeof(void *));
+    rt_memheap_free(real_ptr);
+}
+RTM_EXPORT(rt_memheap_free_align);
+
 #ifdef RT_USING_MEMHEAP_AS_HEAP
 static struct rt_memheap _heap;
 
@@ -622,7 +671,7 @@ void rt_system_heap_init(void *begin_addr, void *end_addr)
                     (rt_uint32_t)end_addr - (rt_uint32_t)begin_addr);
 }
 
-void *rt_malloc(rt_size_t size)
+void *__internal_malloc(rt_size_t size)
 {
     void *ptr;
 
@@ -664,13 +713,13 @@ void *rt_malloc(rt_size_t size)
 
     return ptr;
 }
-RTM_EXPORT(rt_malloc);
+RTM_EXPORT(__internal_malloc);
 
-void rt_free(void *rmem)
+void __internal_free(void *rmem)
 {
     rt_memheap_free(rmem);
 }
-RTM_EXPORT(rt_free);
+RTM_EXPORT(__internal_free);
 
 void *rt_realloc(void *rmem, rt_size_t newsize)
 {

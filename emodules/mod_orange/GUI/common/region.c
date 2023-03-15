@@ -1,30 +1,33 @@
 /*
-*******************************************************************************************************************
-*                                                           Listmenu  Framework
-*                                                   the display dirver support module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2008, Softwinner Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name£∫    region.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
 *
-*Author£∫       William Wang
 *
-*Version :      1.1.0
-*
-*Date:          2009-8-4
-*
-*Description :  «¯”Ú‘ÀÀ„ µœ÷À„∑®
-*
-*Others :       None at present.
-*
-* History :
-*
-* <Author>          <time>       <version>     <description>
-*
-* William Wang     2009-8-4         1.1.0          Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "common_i.h"
 
@@ -76,7 +79,7 @@ typedef void (*voidProcp2)(__gui_clipregn_t *region, const __gui_cliprect_t *r, 
 *
 * date:             2009-7-21
 *
-* Description:      ≈–∂œƒ≥∏ˆµ„ «∑Ò‘⁄ƒ≥“ªºÙ«–”Ú÷–
+* Description:      Âà§Êñ≠Êüê‰∏™ÁÇπÊòØÂê¶Âú®Êüê‰∏ÄÂâ™ÂàáÂüü‰∏≠
 *
 * parameters:
 *
@@ -134,7 +137,7 @@ __bool PtInRegion(pclipregn    region, __s32 x, __s32 y)
 *
 * date:             2009-7-21
 *
-* Description:      ≈–∂œæÿ–Œ «∑Ò”–“ª≤ø∑÷‘⁄ƒ≥∏ˆ«¯”Úƒ⁄
+* Description:      Âà§Êñ≠Áü©ÂΩ¢ÊòØÂê¶Êúâ‰∏ÄÈÉ®ÂàÜÂú®Êüê‰∏™Âå∫ÂüüÂÜÖ
 *
 * parameters:
 *
@@ -193,7 +196,7 @@ __bool RectInRegion(pclipregn region, const __gui_rect_t *rect)
 *
 * date:             2009-7-21
 *
-* Description:      ≥ı ºªØ“ª∏ˆºÙ«–”Ú
+* Description:      ÂàùÂßãÂåñ‰∏Ä‰∏™Ââ™ÂàáÂüü
 *
 * parameters:
 *
@@ -221,7 +224,7 @@ void InitClipRgn(pclipregn pRgn, pmemblock heap)
 *
 * date:             2009-7-21
 *
-* Description:      ∑µªÿ“ª∏ˆ«¯”Úµƒ±ﬂΩÁæÿ–Œ
+* Description:      ËøîÂõû‰∏Ä‰∏™Âå∫ÂüüÁöÑËæπÁïåÁü©ÂΩ¢
 *
 * parameters:
 *
@@ -243,7 +246,7 @@ void GetClipRgnBoundRect(pclipregn pRgn, pguirect pRect)
 *
 * date:             2009-7-21
 *
-* Description:      ≈–∂œ“ª∏ˆ«¯”Ú «∑ÒŒ™ø’«¯”Ú
+* Description:      Âà§Êñ≠‰∏Ä‰∏™Âå∫ÂüüÊòØÂê¶‰∏∫Á©∫Âå∫Âüü
 *
 * parameters:
 *
@@ -271,7 +274,7 @@ __bool IsEmptyClipRgn(const __gui_clipregn_t *pRgn)
 *
 * date:             2009-7-21
 *
-* Description:      «Âø’“ª∏ˆ«¯”Ú
+* Description:      Ê∏ÖÁ©∫‰∏Ä‰∏™Âå∫Âüü
 *
 * parameters:
 *
@@ -308,7 +311,7 @@ void EmptyClipRgn(pclipregn pRgn)
 *
 * date:             2009-7-21
 *
-* Description:      ≥ı ºªØ“ª∏ˆºÙ«–”ÚŒ™“ª∏ˆæÿ–Œ
+* Description:      ÂàùÂßãÂåñ‰∏Ä‰∏™Ââ™ÂàáÂüü‰∏∫‰∏Ä‰∏™Áü©ÂΩ¢
 *
 * parameters:
 *
@@ -355,7 +358,7 @@ __bool SetClipRgn(pclipregn pRgn, const __gui_rect_t *pRect)
 *
 * date:             2009-7-21
 *
-* Description:      ºÙ«–”Úª•øΩ
+* Description:      Ââ™ÂàáÂüü‰∫íÊã∑
 *
 * parameters:
 *
@@ -385,7 +388,7 @@ __bool ClipRgnCopy(pclipregn   pDstRgn, const pclipregn pSrcRgn)
         return ORANGE_TRUE;
     }
 
-    /*∑÷≈‰“ª∏ˆ–¬µƒºÙ«–æÿ–Œ*/
+    /*ÂàÜÈÖç‰∏Ä‰∏™Êñ∞ÁöÑÂâ™ÂàáÁü©ÂΩ¢*/
     pnewcr = ClipRectAlloc(pDstRgn->heap);
     pDstRgn->head = pnewcr;
     pnewcr->clip_rect = pcr->clip_rect;
@@ -418,7 +421,7 @@ __bool ClipRgnCopy(pclipregn   pDstRgn, const pclipregn pSrcRgn)
 *
 * date:             2009-7-21
 *
-* Description:      ÷ÿ–¬º∆À„ºÙ«–”Úµƒ±ﬂΩÁæÿ–Œ«¯”Ú
+* Description:      ÈáçÊñ∞ËÆ°ÁÆóÂâ™ÂàáÂüüÁöÑËæπÁïåÁü©ÂΩ¢Âå∫Âüü
 *
 * parameters:
 *
@@ -472,7 +475,7 @@ static void REGION_SetExtents(pclipregn region)
 *
 * date:             2009-8-6
 *
-* Description:      ’˚∫œ«¯”Ú
+* Description:      Êï¥ÂêàÂå∫Âüü
 *
 * parameters:
 *
@@ -1793,4 +1796,3 @@ ok:
 }
 
 #endif
-

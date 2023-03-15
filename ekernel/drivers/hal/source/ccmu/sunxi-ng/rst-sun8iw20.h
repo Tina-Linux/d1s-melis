@@ -34,8 +34,6 @@
 #define RST_BUS_I2C1        25
 #define RST_BUS_I2C2        26
 #define RST_BUS_I2C3        27
-#define RST_BUS_CAN0        28
-#define RST_BUS_CAN1        29
 #define RST_BUS_SPI0        30
 #define RST_BUS_SPI1        31
 #define RST_BUS_EMAC0       32

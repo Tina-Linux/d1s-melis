@@ -44,13 +44,125 @@
 
 
 
-/*------------------------ PIN CONFIG FOR FPGA VERIFY -----------------------*/
+/*------------------------ PIN CONFIG FOR D1 EVB -----------------------*/
 dmic_gpio_t g_dmic_gpio = {
-	.clk	= {GPIOF(9), 2},
-	.din0	= {GPIOF(28), 2},
-	.din1	= {GPIOG(30), 2},
-	.din2	= {GPIOG(28), 2},
-	.din3	= {GPIOG(26), 2},
+	.clk	= {GPIOE(17), 6},
+	.din0	= {GPIOB(11), 2},
+	.din1	= {GPIOB(10), 2},
+	.din2	= {GPIOD(17), 4},
+	.din3	= {GPIOG(26), -1},	/* no use */
 };
+
+/*------------------------ CLK CONFIG FOR SUN8IW20 ---------------------------*/
+struct sunxi_dmic_clk {
+	struct reset_control *rstclk;
+
+	hal_clk_t pllclk;
+	hal_clk_t moduleclk;
+	hal_clk_t busclk;
+};
+
+static inline int snd_sunxi_dmic_clk_enable(struct sunxi_dmic_clk *clk)
+{
+	int ret;
+
+	ret = hal_reset_control_deassert(clk->rstclk);
+	if (ret != HAL_CLK_STATUS_OK) {
+		snd_err("dmic clk_deassert rstclk failed.\n");
+		goto err_dmic_rstclk_deassert;
+	}
+
+	ret = hal_clock_enable(clk->busclk);
+	if (ret != HAL_CLK_STATUS_OK) {
+		snd_err("dmic clk_enable busclk failed.\n");
+		goto err_dmic_busclk_enable;
+	}
+	ret = hal_clock_enable(clk->pllclk);
+	if (ret != HAL_CLK_STATUS_OK) {
+		snd_err("dmic clk_enable pllclk failed.\n");
+		goto err_dmic_pllclk_enable;
+	}
+	ret = hal_clock_enable(clk->moduleclk);
+	if (ret != HAL_CLK_STATUS_OK) {
+		snd_err("dmic clk_enable moduleclk failed.\n");
+		goto err_dmic_moduleclk_enable;
+	}
+
+	return HAL_CLK_STATUS_OK;
+
+err_dmic_moduleclk_enable:
+	hal_clock_disable(clk->pllclk);
+err_dmic_pllclk_enable:
+err_dmic_busclk_enable:
+err_dmic_rstclk_deassert:
+	return HAL_CLK_STATUS_ERROR;
+}
+
+static inline void snd_sunxi_dmic_clk_disable(struct sunxi_dmic_clk *clk)
+{
+	hal_clock_disable(clk->busclk);
+	hal_clock_disable(clk->moduleclk);
+	hal_clock_disable(clk->pllclk);
+
+	hal_reset_control_assert(clk->rstclk);
+}
+
+static inline int snd_sunxi_dmic_clk_init(struct sunxi_dmic_clk *clk)
+{
+	int ret;
+	hal_reset_type_t reset_type = HAL_SUNXI_RESET;
+	hal_clk_type_t clk_type = HAL_SUNXI_CCU;
+
+	clk->pllclk = hal_clock_get(clk_type, SUNXI_DMIC_CLK_PLL_AUDIO);
+	clk->moduleclk = hal_clock_get(clk_type, SUNXI_DMIC_CLK_DMIC);
+	clk->busclk = hal_clock_get(clk_type, SUNXI_DMIC_CLK_BUS);
+	clk->rstclk = hal_reset_control_get(reset_type, SUNXI_DMIC_CLK_RST);
+
+	ret = hal_clk_set_parent(clk->moduleclk, clk->pllclk);
+	if (ret != HAL_CLK_STATUS_OK) {
+		snd_err("clk clk_set_parent failed.\n");
+		goto err_dmic_moduleclk_set_parent;
+	}
+
+	ret = snd_sunxi_dmic_clk_enable(clk);
+	if (ret != HAL_CLK_STATUS_OK) {
+		snd_err("dmic snd_sunxi_dmic_clk_enable failed.\n");
+		goto err_clk_enable;
+	}
+
+	return HAL_CLK_STATUS_OK;
+
+err_clk_enable:
+err_dmic_moduleclk_set_parent:
+	return HAL_CLK_STATUS_ERROR;
+}
+
+static inline void snd_sunxi_dmic_clk_exit(struct sunxi_dmic_clk *clk)
+{
+	snd_sunxi_dmic_clk_disable(clk);
+
+	hal_clock_put(clk->busclk);
+	hal_clock_put(clk->moduleclk);
+	hal_clock_put(clk->pllclk);
+
+	hal_reset_control_put(clk->rstclk);
+}
+
+static inline int snd_sunxi_dmic_clk_set_rate(struct sunxi_dmic_clk *clk, int stream,
+					      unsigned int freq_in, unsigned int freq_out)
+{
+	int ret;
+
+	(void)stream;
+	(void)freq_in;
+
+	ret = hal_clk_set_rate(clk->pllclk, freq_out);
+	if (ret < 0) {
+		snd_err("set pllclk %u failed\n", freq_out);
+		return HAL_CLK_STATUS_ERROR;
+	}
+
+	return HAL_CLK_STATUS_OK;
+}
 
 #endif /* __SUN8IW20_DMIC_H_ */

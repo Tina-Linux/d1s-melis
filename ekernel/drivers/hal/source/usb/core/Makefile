@@ -1,7 +1,9 @@
-subdir-ccflags-y +=     -I$(srctree)/ekernel/drivers/hal/source/usb/include
-subdir-ccflags-y +=     -I$(srctree)/ekernel/drivers/hal/source/usb/storage/include
-subdir-ccflags-y +=     -I$(srctree)/ekernel/drivers/hal/source/usb/hid/Include
-subdir-ccflags-y +=     -I$(srctree)/ekernel/drivers/hal/source/usb/uvc/Include
+subdir-ccflags-y += -I drivers/hal/source/usb/storage/include
+subdir-ccflags-y += -I drivers/hal/source/usb/hid/Include
+subdir-ccflags-y += -I drivers/hal/source/usb/uvc/Include
+subdir-ccflags-y += -I drivers/hal/source/usb/carplay_host/
+subdir-ccflags-y += -I drivers/hal/source/usb/host
+subdir-ccflags-y += -I drivers/hal/source/usb/core
 
 obj-y += usb_virt_bus.o		\
 	usb_msg_base.o		\

@@ -1,22 +1,34 @@
 /*
- * =====================================================================================
- *
- *       Filename:  head_gnu.S
- *
- *    Description:  routine used to bringup board.
- *
- *        Version:  Melis3.0
- *         Create:  2017-04-24 11:52:57
- *       Revision:  none
- *       Compiler:  gcc version 6.3.0 (crosstool-NG crosstool-ng-1.23.0)
- *
- *         Author:  caozilong@allwinnertech.com
- *   Organization:  BU1-PSW
- *  Last Modified:  2020-06-11 15:07:12
- *
- * =====================================================================================
- */
-
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <cpu.h>
 #include <cfi.h>
 #include <kconfig.h>
@@ -32,13 +44,16 @@
 .extern mmu_unmap
 .extern start_kernel
 .extern armv_vector_table
+#ifdef CONFIG_KASAN
+.extern kasan_early_init
+#endif
 .global melis_exit
 .global melis_trampoline
 .global _start
 
 .balign 4
 @======================================================================================
-@    _start£¨œµÕ≥»Îø⁄£¨ÕÍ≥…≤ªÕ¨ƒ£ Ωœ¬ºƒ¥Ê∆˜µƒ≥ı ºªØπ§◊˜£¨ ≥ı ºªØMMU, ‘⁄ µµÿ÷∑‘À––.
+@    _startÔºåÁ≥ªÁªüÂÖ•Âè£ÔºåÂÆåÊàê‰∏çÂêåÊ®°Âºè‰∏ãÂØÑÂ≠òÂô®ÁöÑÂàùÂßãÂåñÂ∑•‰ΩúÔºå ÂàùÂßãÂåñMMU, Âú®ÂÆûÂú∞ÂùÄËøêË°å.
 @======================================================================================
 cfi_debug_info_begin _start
     mrrc   p15, 0, r7, r1, c14
@@ -96,7 +111,20 @@ exitsmp:
     @bic     r0, r0, #0x040          @ Clear bit 6
     @mcr     p15, 0, r0, c1, c0, 1   @ Write ACTLR 
 
+enablesmp:
+    @ SMP status is controlled by bit 6 of the CP15 Aux Ctrl Reg, enabled to use cache and ldrex/strex.
+    @ Even in a single core Cortex-A7 processor the ACTLR.SMP bit must be set. The caches are disabled when
+    @ ACTLR.SMP is set to 0 regardless of the value of the cache enable bit (SCTLR.C).
+    @ It must ensure the ACTLR.SMP bit is set to 1 before the caches and MMU are enabled
+    @ or any cache and TLB maintenance operations are performed. The only time this bit is set to 0 is
+    @ during a processor power-down sequence.
+
+    mrc     p15, 0, r0, c1, c0, 1   @ Read ACTLR
+    orr     r0, r0, #0x040          @ enable bit 6 .SMP
+    mcr     p15, 0, r0, c1, c0, 1   @ update ACTLR
+
     nop
+    isb
 
     @ disable datalignment check before exception handler install.
     mrc      p15, 0, r1, c1, c0, 0
@@ -127,10 +155,21 @@ exitsmp:
     mov     r0,  #0x0
     mcr     p15, 0, r0, c2, c0, 2
 
+clear_afe_and_tre:
+    mrc     p15, #0, r0, c1, c0, #0
+    bic     r0, r0, #3<<28
+    mcr     p15, #0, r0, c1, c0, #0    @ clear SCTLR.AFE and SCTLR.TRE bit
+    isb
+
 openneon:
     mrc     p15, 0, r0, c1, c0, 2              @ Read CP Access register
     ldr     r0, =(0xf << 20)                   @ Enable full access to NEON/VFP (Coprocessors 10 and 11)
     mcr     p15, 0, r0, c1, c0, 2              @ Write CP Access register
+
+    # flush the pipeline to avoid the process already have decoded the vmsr/vmrs as
+    # an undefined instructions.before upper mcr is executed.
+    # the isb ensure the update of the cacr is seen by processor when decoding the vmsr.
+    isb
 
     vmrs    r0, fpexc                          @ Switch on the VFP and NEON hardware
     orr     r0, r0, #0x40000000                @ Set EN bit in FPEXC
@@ -261,6 +300,10 @@ bss_clear_loop:
     cmp     r1,  r2
     strlo   r0,  [r1], #4
     blo     bss_clear_loop
+
+#ifdef CONFIG_KASAN
+    bl      kasan_early_init
+#endif
 
 @ set sp to mapped sram0 top address.
     ldr     sp,  =EPOS_STACK_SVC

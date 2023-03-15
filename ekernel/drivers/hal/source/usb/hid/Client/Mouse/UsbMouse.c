@@ -2,8 +2,8 @@
 ********************************************************************************
 *                                USB Hid Driver
 *
-*                (c) Copyright 2006-2010, All winners Co,Ld. 
-*                        All Right Reserved 
+*                (c) Copyright 2006-2010, All winners Co,Ld.
+*                        All Right Reserved
 *
 * FileName		:  usbMouse.c
 *
@@ -17,25 +17,18 @@
 *
 * History:
 *		<time> 		<version >		<author>	 	<desc>
-*	   2010.06.02	   1.0			 Javen			build this file 
+*	   2010.06.02	   1.0			 Javen			build this file
 *
 ********************************************************************************
 */
 
-//#include  "usb_host_config.h"
-//#include  "usb_host_base_types.h"
-#include "usb_os_platform.h"
-#include "usb_host_common.h"
-#include "error.h"
-#include "misc_lib.h"
-#include "HidSpec.h"
 #include "Hid_i.h"
-#include "HidFunDrv.h"
+#include "misc_lib.h"
 #include "UsbMouse.h"
 #include "UsbMouse_DriftControl.h"
 
 //---------------------------------------------------------
-//   ∫Ø ˝∂®“Â«¯
+//   ÂáΩÊï∞ÂÆö‰πâÂå∫
 //---------------------------------------------------------
 static void usbMouse_StartWork(usbMouse_t *usbMouse);
 static void usbMouse_StopWork(usbMouse_t *usbMouse);
@@ -45,34 +38,33 @@ static void usbMouse_StopWork(usbMouse_t *usbMouse);
 *                     usbMouseDone
 *
 * Description:
-*    
+*
 *
 * Parameters:
-*    
-* 
+*
+*
 * Return value:
 *
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
 static void usbMouseDone(HidRequest_t *HidReq)
 {
 	int val = 0;
-    usbMouse_t *usbMouse = NULL;
+	usbMouse_t *usbMouse = NULL;
 
-    usbMouse = (usbMouse_t *)HidReq->Extern;
-	if(usbMouse == NULL){
+	usbMouse = (usbMouse_t *)HidReq->Extern;
+	if (usbMouse == NULL) {
 		hal_log_err("ERR: usbMouseDone: usbMouse == NULL\n");
 		return;
 	}
 
-//	UsbThreadWakeUp(usbMouse->MouseThreadSemi);
-	if (!hal_sem_getvalue(usbMouse->MouseThreadSemi, &val))
-	{
-	    hal_sem_post(usbMouse->MouseThreadSemi);
+	//	UsbThreadWakeUp(usbMouse->MouseThreadSemi);
+	if (!hal_sem_getvalue(usbMouse->MouseThreadSemi, &val)) {
+		hal_sem_post(usbMouse->MouseThreadSemi);
 	}
 
 	return;
@@ -83,35 +75,35 @@ static void usbMouseDone(HidRequest_t *HidReq)
 *                     usbMouseOpen
 *
 * Description:
-*    
+*
 *
 * Parameters:
-*    
-* 
+*
+*
 * Return value:
 *
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
 static USB_OS_HANDLE usbMouseOpen(void *open_arg, uint32_t mode)
 {
-    usbMouse_t *usbMouse = NULL;
+	usbMouse_t *usbMouse = NULL;
 
-	if(open_arg == NULL){
+	if (open_arg == NULL) {
 		hal_log_err("ERR: usbMouseOpen: input error, open_arg = %x\n", open_arg);
 		return NULL;
 	}
 
 	usbMouse = (usbMouse_t *)open_arg;
-	if(usbMouse->Magic != USB_HID_DEV_MAGIC){
+	if (usbMouse->Magic != USB_HID_DEV_MAGIC) {
 		hal_log_err("ERR: usbMouseOpen: BlkDev Magic(%x) is invalid\n", usbMouse->Magic);
 		return NULL;
 	}
 
-    return (USB_OS_HANDLE)open_arg;
+	return (USB_OS_HANDLE)open_arg;
 }
 
 /*
@@ -119,31 +111,31 @@ static USB_OS_HANDLE usbMouseOpen(void *open_arg, uint32_t mode)
 *                     usbMouseClose
 *
 * Description:
-*    
+*
 *
 * Parameters:
-*    
-* 
+*
+*
 * Return value:
-*    0	£∫≥…π¶
-*	!0	£∫ ß∞‹
+*    0	ÔºöÊàêÂäü
+*	!0	ÔºöÂ§±Ë¥•
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
 static int32_t usbMouseClose(USB_OS_HANDLE hDev)
 {
-    usbMouse_t *usbMouse = NULL;
+	usbMouse_t *usbMouse = NULL;
 
-	if(hDev == NULL){
+	if (hDev == NULL) {
 		hal_log_err("ERR: usbMouseClose: input error\n");
 		return EPDK_FAIL;
 	}
 
 	usbMouse = (usbMouse_t *)hDev;
-	if(usbMouse->Magic != USB_HID_DEV_MAGIC){
+	if (usbMouse->Magic != USB_HID_DEV_MAGIC) {
 		hal_log_err("ERR: usbMouseClose: BlkDev Magic(%x) is invalid\n", usbMouse->Magic);
 		return EPDK_FAIL;
 	}
@@ -155,20 +147,20 @@ static int32_t usbMouseClose(USB_OS_HANDLE hDev)
 *                     usbMouseRead
 *
 * Description:
-*    
+*
 *
 * Parameters:
-*    
-* 
+*
+*
 * Return value:
 *
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
-static uint32_t usbMouseRead(void * pBuffer, uint32_t blk, uint32_t n, USB_OS_HANDLE hDev)
+static uint32_t usbMouseRead(void *pBuffer, uint32_t blk, uint32_t n, USB_OS_HANDLE hDev)
 {
 	hal_log_err("ERR: usbMouseRead not support\n");
 	return 0;
@@ -179,20 +171,20 @@ static uint32_t usbMouseRead(void * pBuffer, uint32_t blk, uint32_t n, USB_OS_HA
 *                     usbMouseWrite
 *
 * Description:
-*    
+*
 *
 * Parameters:
-*    
-* 
+*
+*
 * Return value:
 *
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
-static uint32_t usbMouseWrite(const void * pBuffer, uint32_t blk, uint32_t n, USB_OS_HANDLE hDev)
+static uint32_t usbMouseWrite(const void *pBuffer, uint32_t blk, uint32_t n, USB_OS_HANDLE hDev)
 {
 	hal_log_err("ERR: usbMouseWrite not support\n");
 	return 0;
@@ -203,97 +195,104 @@ static uint32_t usbMouseWrite(const void * pBuffer, uint32_t blk, uint32_t n, US
 *                     usbMouseIoctl
 *
 * Description:
-*    
+*
 *
 * Parameters:
-*    
-* 
+*
+*
 * Return value:
 *
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
 static int32_t usbMouseIoctl(USB_OS_HANDLE hDev, uint32_t Cmd, long Aux, void *pBuffer)
 {
-    usbMouse_t *usbMouse = NULL;
+	usbMouse_t *usbMouse = NULL;
 	HidDev_t *HidDev = NULL;
-	unsigned int cup_sr	= 0;
+	unsigned int cup_sr = 0;
 
-	if(hDev == NULL){
+	if (hDev == NULL) {
 		hal_log_err("ERR: usbMouseClose: input error\n");
 		return EPDK_FAIL;
 	}
 
 	usbMouse = (usbMouse_t *)hDev;
-	if(usbMouse->Magic != USB_HID_DEV_MAGIC){
+	if (usbMouse->Magic != USB_HID_DEV_MAGIC) {
 		hal_log_err("ERR: usbMouseClose: BlkDev Magic(%x) is invalid\n", usbMouse->Magic);
 		return EPDK_FAIL;
 	}
 
 	HidDev = usbMouse->HidDev;
-	if(HidDev == NULL){
+	if (HidDev == NULL) {
 		hal_log_err("ERR: HidDev == NULL\n");
 		return EPDK_FAIL;
 	}
 
-	switch(Cmd){
-		case USBH_HID_USER_CTRL_CMD_TEST_START:
-		{
-			hal_log_info("usb mouse test command: start-s\n");
-			if(pBuffer == NULL){
-				hal_log_err("ERR: Execute usb mouse test cmd START failed, for pBuffer is NULL\n");
-				return EPDK_FAIL;
-			}
-
-		    ENTER_CRITICAL(cup_sr);
-			usbMouse->USBHMouseTest = (USBHMouseTest_t *)pBuffer;
-			usbMouse->USBMouseTestFlag 	= 1;
-			EXIT_CRITICAL(cup_sr);
-
-			usbMouse_StartWork(usbMouse);
-			hal_log_info("usb mouse test command: start-e\n");
-		}
-		break;
-
-		case USBH_HID_USER_CTRL_CMD_TEST_STOP:
-			hal_log_info("usb mouse test command: stop-s\n");
-
-			if(usbMouse->USBMouseTestFlag){
-			    ENTER_CRITICAL(cup_sr);
-				usbMouse->USBHMouseTest 	= NULL;
-				usbMouse->USBMouseTestFlag 	= 0;
-				EXIT_CRITICAL(cup_sr);
-
-				usbMouse_StopWork(usbMouse);
-			}else{
-				hal_log_err("ERR: usb mouse test, can not stop test, for have not start test\n");
-				return EPDK_FAIL;
-			}
-
-			hal_log_info("usb mouse test command: stop-e\n");
-		break;
-
-		case USBH_HID_USER_CTRL_CMD_REG:
-			usbMouse->CallBack = (USBHMouse_CallBack)esKRNL_GetCallBack((__pCBK_t)(pBuffer));
-			if(usbMouse->CallBack == NULL){
-				hal_log_err("ERR: usb mouse CallBack is NULL\n");
-				return EPDK_FAIL;
-			}
-
-			usbMouse_StartWork(usbMouse);
-		break;
-
-		case USBH_HID_USER_CTRL_CMD_UNREG:
-			usbMouse->CallBack = NULL;
-			usbMouse_StopWork(usbMouse);
-		break;
-
-		default:
-			hal_log_err("ERR: unkown cmd(%x)\n", Cmd);
+	switch (Cmd) {
+	case USBH_HID_USER_CTRL_CMD_TEST_START: {
+		hal_log_info("usb mouse test command: start-s\n");
+		if (pBuffer == NULL) {
+			hal_log_err("ERR: Execute usb mouse test cmd START failed, for pBuffer is NULL\n");
 			return EPDK_FAIL;
+		}
+
+		// ENTER_CRITICAL(cup_sr);
+		hal_interrupt_disable();
+		usbMouse->USBHMouseTest = (USBHMouseTest_t *)pBuffer;
+		usbMouse->USBMouseTestFlag = 1;
+		hal_interrupt_enable();
+		// EXIT_CRITICAL(cup_sr);
+
+		usbMouse_StartWork(usbMouse);
+		hal_log_info("usb mouse test command: start-e\n");
+	}
+	break;
+
+	case USBH_HID_USER_CTRL_CMD_TEST_STOP:
+		hal_log_info("usb mouse test command: stop-s\n");
+
+		if (usbMouse->USBMouseTestFlag) {
+			// ENTER_CRITICAL(cup_sr);
+			hal_interrupt_disable();
+			usbMouse->USBHMouseTest = NULL;
+			usbMouse->USBMouseTestFlag = 0;
+			hal_interrupt_enable();
+			// EXIT_CRITICAL(cup_sr);
+
+			usbMouse_StopWork(usbMouse);
+		} else {
+			hal_log_err("ERR: usb mouse test, can not stop test, for have not start test\n");
+			return EPDK_FAIL;
+		}
+
+		hal_log_info("usb mouse test command: stop-e\n");
+		break;
+
+	case USBH_HID_USER_CTRL_CMD_REG:
+#ifdef CONFIG_OS_MELIS
+		usbMouse->CallBack = (USBHMouse_CallBack)esKRNL_GetCallBack((__pCBK_t)(pBuffer));
+#elif defined(CONFIG_KERNEL_FREERTOS)
+		/* to do */
+#endif
+		if (usbMouse->CallBack == NULL) {
+			hal_log_err("ERR: usb mouse CallBack is NULL\n");
+			return EPDK_FAIL;
+		}
+
+		usbMouse_StartWork(usbMouse);
+		break;
+
+	case USBH_HID_USER_CTRL_CMD_UNREG:
+		usbMouse->CallBack = NULL;
+		usbMouse_StopWork(usbMouse);
+		break;
+
+	default:
+		hal_log_err("ERR: unkown cmd(%x)\n", Cmd);
+		return EPDK_FAIL;
 	}
 
 	return EPDK_OK;
@@ -304,56 +303,57 @@ static int32_t usbMouseIoctl(USB_OS_HANDLE hDev, uint32_t Cmd, long Aux, void *p
 *                     usbMouse_StartWork
 *
 * Description:
-*    
+*
 *
 * Parameters:
-*    
-* 
+*
+*
 * Return value:
 *
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
 static void usbMouse_StartWork(usbMouse_t *usbMouse)
 {
 	HidDev_t *HidDev = NULL;
-	unsigned int cup_sr	= 0;
+	unsigned int cup_sr = 0;
 	int ret = 0, val = 0;
 
-	if(usbMouse == NULL){
+	if (usbMouse == NULL) {
 		hal_log_err("ERR: input error\n");
-		return ;
+		return;
 	}
 
 	HidDev = usbMouse->HidDev;
-	if(HidDev == NULL){
+	if (HidDev == NULL) {
 		hal_log_err("ERR: HidDev == NULL\n");
-		return ;
+		return;
 	}
 
-	if(HidDev->State == HID_DEV_OFFLINE){
+	if (HidDev->State == HID_DEV_OFFLINE) {
 		hal_log_err("ERR: device is offline, mouse can not start work\n");
-		return ;
+		return;
 	}
 
-    /* «Â≥˝ Û±Íµƒ◊¥Ã¨ */
+	/* Ê∏ÖÈô§Èº†Ê†áÁöÑÁä∂ÊÄÅ */
 	ret = HidDev->SoftReset(HidDev);
-	if(ret != USB_ERR_SUCCESS){
+	if (ret != USB_ERR_SUCCESS) {
 		hal_log_err("ERR: SoftReset failed\n");
-		/* ”…”⁄”––© Û±Í≤ª÷ß≥÷SetIdle√¸¡Ó£¨SoftResetø…ƒ‹ª· ß∞‹£¨“Ú¥À≤ªƒ‹÷±Ω”return */
+		/* Áî±‰∫éÊúâ‰∫õÈº†Ê†á‰∏çÊîØÊåÅSetIdleÂëΩ‰ª§ÔºåSoftResetÂèØËÉΩ‰ºöÂ§±Ë¥•ÔºåÂõ†Ê≠§‰∏çËÉΩÁõ¥Êé•return */
 	}
 
-    ENTER_CRITICAL(cup_sr);
-	usbMouse->StopWork       = 0;
+	// ENTER_CRITICAL(cup_sr);
+	hal_interrupt_disable();
+	usbMouse->StopWork = 0;
 	usbMouse->HidReq.Result = USB_HID_TRANSPORT_DEVICE_RESET;
-	EXIT_CRITICAL(cup_sr);
+	hal_interrupt_enable();
+	// EXIT_CRITICAL(cup_sr);
 
 	//	UsbThreadWakeUp(usbMouse->MouseThreadSemi);
-	if (!hal_sem_getvalue(usbMouse->MouseThreadSemi, &val))
-	{
+	if (!hal_sem_getvalue(usbMouse->MouseThreadSemi, &val)) {
 		hal_sem_post(usbMouse->MouseThreadSemi);
 	}
 
@@ -365,42 +365,44 @@ static void usbMouse_StartWork(usbMouse_t *usbMouse)
 *                     usbMouse_StopWork
 *
 * Description:
-*    
+*
 *
 * Parameters:
-*    
-* 
+*
+*
 * Return value:
 *
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
 static void usbMouse_StopWork(usbMouse_t *usbMouse)
 {
 	HidDev_t *HidDev = NULL;
-	unsigned int cup_sr	= 0;
+	unsigned int cup_sr = 0;
 
-	if(usbMouse == NULL){
+	if (usbMouse == NULL) {
 		hal_log_err("ERR: input error\n");
-		return ;
+		return;
 	}
 
 	HidDev = usbMouse->HidDev;
-	if(HidDev == NULL){
+	if (HidDev == NULL) {
 		hal_log_err("ERR: HidDev == NULL\n");
-		return ;
+		return;
 	}
 
-    ENTER_CRITICAL(cup_sr);
+	// ENTER_CRITICAL(cup_sr);
+	hal_interrupt_disable();
 	usbMouse->StopWork = 1;
-	EXIT_CRITICAL(cup_sr);
+	hal_interrupt_enable();
+	// EXIT_CRITICAL(cup_sr);
 
 	HidDev->StopTransport(HidDev);
 
-	return ;
+	return;
 }
 
 /*
@@ -408,16 +410,16 @@ static void usbMouse_StopWork(usbMouse_t *usbMouse)
 *                     usbMouse_StopWork
 *
 * Description:
-*    
+*
 *
 * Parameters:
-*    
-* 
+*
+*
 * Return value:
 *
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
@@ -428,115 +430,115 @@ static void usbMouseEvent(usbMouse_t *usbMouse)
 	USBHMouseEvent_t Event;
 	int TempData = 0;
 
-	if(usbMouse == NULL){
+	if (usbMouse == NULL) {
 		hal_log_err("ERR: input error\n");
-		return ;
+		return;
 	}
 
 	HidReq = &(usbMouse->HidReq);
-	if(HidReq == NULL){
+	if (HidReq == NULL) {
 		hal_log_err("ERR: HidReq == NULL\n");
-		return ;
+		return;
 	}
 
-    /* check request result */
-   	switch(HidReq->Result){
-		case USB_HID_TRANSPORT_SUCCESS:
-			//nothing to do
+	/* check request result */
+	switch (HidReq->Result) {
+	case USB_HID_TRANSPORT_SUCCESS:
+		// nothing to do
 		break;
 
-		case USB_HID_TRANSPORT_DEVICE_DISCONNECT:
-			hal_log_err("ERR: usbMouseEvent: mouse is disconnect\n");
-			return;
-		//break;
+	case USB_HID_TRANSPORT_DEVICE_DISCONNECT:
+		hal_log_err("ERR: usbMouseEvent: mouse is disconnect\n");
+		return;
+		// break;
 
-		case USB_HID_TRANSPORT_CANCEL_CMD:
-			hal_log_err("ERR: usbMouseEvent: driver cancel command\n");
-			return;
-		//break;
+	case USB_HID_TRANSPORT_CANCEL_CMD:
+		hal_log_err("ERR: usbMouseEvent: driver cancel command\n");
+		return;
+		// break;
 
-		default:
-			hal_log_err("ERR: unkown result %x\n", HidReq->Result);
-			goto next;
+	default:
+		hal_log_err("ERR: unkown result %x\n", HidReq->Result);
+		goto next;
 	}
 
 	DMSG_MOUSE_TEST("\n");
-	DMSG_MOUSE_TEST("[0]:%x, [1]:%x, [2]:%x, [3]:%x, [4]:%x, [5]:%x, [6]:%x\n", 
-		      usbMouse->Data[0], usbMouse->Data[1], usbMouse->Data[2], 
-		      usbMouse->Data[3], usbMouse->Data[4], usbMouse->Data[5], 
-		      usbMouse->Data[6]);
+	DMSG_MOUSE_TEST("[0]:%x, [1]:%x, [2]:%x, [3]:%x, [4]:%x, [5]:%x, [6]:%x\n",
+			usbMouse->Data[0], usbMouse->Data[1], usbMouse->Data[2],
+			usbMouse->Data[3], usbMouse->Data[4], usbMouse->Data[5],
+			usbMouse->Data[6]);
 
 	/* paser usb mouse event */
 	memset(&Event, 0, sizeof(USBHMouseEvent_t));
 
-    /* button */
-	if(usbMouse->DataDef.Button.BitCount){
+	/* button */
+	if (usbMouse->DataDef.Button.BitCount) {
 		TempData = 0;
-		/*’‚¿Ôø…ƒ‹ª·”–Œ Ã‚£¨¿Ô√Ê≤Ÿ◊˜ «∑Òª·≥¨π˝TempDataÀ˘‘⁄ƒ⁄¥Ê*/
-	    xGetDataFromBuffer(usbMouse->Data, 
-	                       usbMouse->DataDef.Button.BitOffset,
-	                       usbMouse->DataDef.Button.BitCount,
-	                       &TempData);
+		/*ËøôÈáåÂèØËÉΩ‰ºöÊúâÈóÆÈ¢òÔºåÈáåÈù¢Êìç‰ΩúÊòØÂê¶‰ºöË∂ÖËøáTempDataÊâÄÂú®ÂÜÖÂ≠ò*/
+		xGetDataFromBuffer(usbMouse->Data,
+				   usbMouse->DataDef.Button.BitOffset,
+				   usbMouse->DataDef.Button.BitCount,
+				   &TempData);
 		memcpy(&Event.Button, &TempData, sizeof(TempData));
 	}
 
-	/* X◊¯±Í */
-	if(usbMouse->DataDef.X.BitCount){
+	/* XÂùêÊ†á */
+	if (usbMouse->DataDef.X.BitCount) {
 		TempData = 0;
-		xGetDataFromBuffer(usbMouse->Data, 
-	                       usbMouse->DataDef.X.BitOffset,
-	                       usbMouse->DataDef.X.BitCount,
-	                       &TempData);
-		if(usb_test_bit((usbMouse->DataDef.X.BitCount - 1), (volatile uint32_t *)&TempData)){
+		xGetDataFromBuffer(usbMouse->Data,
+				   usbMouse->DataDef.X.BitOffset,
+				   usbMouse->DataDef.X.BitCount,
+				   &TempData);
+		if (usb_test_bit((usbMouse->DataDef.X.BitCount - 1), (volatile uint32_t *)&TempData)) {
 			TempData |= (0xffffffff << (usbMouse->DataDef.X.BitCount - 1));
 		}
 
-	    /* ∏˘æ› Û±Í‘≠≥ßµƒΩ®“È, ∞—≥¨π˝+127…Ë÷√Œ™+127, ≥¨π˝-127…Ë÷√Œ™-127 */
-		if(TempData <= -127){
+		/* Ê†πÊçÆÈº†Ê†áÂéüÂéÇÁöÑÂª∫ËÆÆ, ÊääË∂ÖËøá+127ËÆæÁΩÆ‰∏∫+127, Ë∂ÖËøá-127ËÆæÁΩÆ‰∏∫-127 */
+		if (TempData <= -127) {
 			Event.X = -127;
-		}else if(TempData > 127){
+		} else if (TempData > 127) {
 			Event.X = 127;
-		}else{
+		} else {
 			Event.X = TempData;
 		}
 	}
 
-	/* Y◊¯±Í */
-	if(usbMouse->DataDef.Y.BitCount){
+	/* YÂùêÊ†á */
+	if (usbMouse->DataDef.Y.BitCount) {
 		TempData = 0;
-		xGetDataFromBuffer(usbMouse->Data, 
-	                       usbMouse->DataDef.Y.BitOffset,
-	                       usbMouse->DataDef.Y.BitCount,
-	                       &TempData);
-		if(usb_test_bit((usbMouse->DataDef.Y.BitCount - 1), (volatile uint32_t *)&TempData)){
+		xGetDataFromBuffer(usbMouse->Data,
+				   usbMouse->DataDef.Y.BitOffset,
+				   usbMouse->DataDef.Y.BitCount,
+				   &TempData);
+		if (usb_test_bit((usbMouse->DataDef.Y.BitCount - 1), (volatile uint32_t *)&TempData)) {
 			TempData |= (0xffffffff << (usbMouse->DataDef.Y.BitCount - 1));
 		}
 
-		if(TempData <= -127){
+		if (TempData <= -127) {
 			Event.Y = -127;
-		}else if(TempData > 127){
+		} else if (TempData > 127) {
 			Event.Y = 127;
-		}else{
+		} else {
 			Event.Y = TempData;
 		}
 	}
 
 	/* wheel */
-	if(usbMouse->DataDef.Wheel.BitCount){
+	if (usbMouse->DataDef.Wheel.BitCount) {
 		TempData = 0;
-		xGetDataFromBuffer(usbMouse->Data, 
-	                       usbMouse->DataDef.Wheel.BitOffset,
-	                       usbMouse->DataDef.Wheel.BitCount,
-	                       &TempData);
-		if(usb_test_bit((usbMouse->DataDef.Wheel.BitCount - 1), (volatile uint32_t *)&TempData)){
+		xGetDataFromBuffer(usbMouse->Data,
+				   usbMouse->DataDef.Wheel.BitOffset,
+				   usbMouse->DataDef.Wheel.BitCount,
+				   &TempData);
+		if (usb_test_bit((usbMouse->DataDef.Wheel.BitCount - 1), (volatile uint32_t *)&TempData)){
 			TempData |= (0xffffffff << (usbMouse->DataDef.Wheel.BitCount - 1));
 		}
 
-		if(TempData <= -127){
+		if (TempData <= -127) {
 			Event.Wheel = -127;
-		}else if(TempData > 127){
+		} else if (TempData > 127) {
 			Event.Wheel = 127;
-		}else{
+		} else {
 			Event.Wheel = TempData;
 		}
 	}
@@ -558,14 +560,14 @@ static void usbMouseEvent(usbMouse_t *usbMouse)
 	UsbMouse_AddToDriftArray(usbMouse, &Event);
 
 next:
-    /* do next hid request */
+	/* do next hid request */
 	status = HidSentRequest(&(usbMouse->HidReq));
-   	if(status != USB_ERR_SUCCESS){
-   		hal_log_err("ERR: HidSentRequest failed\n");
-		return ;
-   	}
+	if (status != USB_ERR_SUCCESS) {
+		hal_log_err("ERR: HidSentRequest failed\n");
+		return;
+	}
 
-	return ;
+	return;
 }
 
 /*
@@ -573,16 +575,16 @@ next:
 *                     usbMouseThd
 *
 * Description:
-*    
+*
 *
 * Parameters:
-*    
-* 
+*
+*
 * Return value:
 *
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
@@ -592,20 +594,20 @@ static void usbMouseThread(void *p_arg)
 
 	hal_sem_post(usbMouse->notify_complete);
 
-	while(1){
-		//--<1>--…±À¿œﬂ≥Ã
-//    	TryToKillThreadSelf("usbMouseThread");
+	while (1) {
+		//--<1>--ÊùÄÊ≠ªÁ∫øÁ®ã
+		// TryToKillThreadSelf("usbMouseThread");
 
-//		/* sleep */
-//		UsbThreadSleep(usbMouse->MouseThreadSemi);
+		// /* sleep */
+		// UsbThreadSleep(usbMouse->MouseThreadSemi);
 		kthread_stop(usbMouse->MouseThdId);
 		hal_sem_wait(usbMouse->MouseThreadSemi);
 
-		if(usbMouse->HidDev->State == HID_DEV_OFFLINE || usbMouse->StopWork){
+		if (usbMouse->HidDev->State == HID_DEV_OFFLINE || usbMouse->StopWork) {
 			/* nothing to do */
-			hal_log_info("WRN: Usb mouse is offline(%d) or stop work(%d)\n", 
-			          usbMouse->HidDev->State, usbMouse->StopWork);
-		}else{
+			hal_log_info("WRN: Usb mouse is offline(%d) or stop work(%d)\n",
+				     usbMouse->HidDev->State, usbMouse->StopWork);
+		} else {
 			usbMouseEvent(usbMouse);
 		}
 	}
@@ -616,33 +618,33 @@ static void usbMouseThread(void *p_arg)
 *                     usbMouseProbe
 *
 * Description:
-*    
+*
 *
 * Parameters:
-*    
-* 
+*
+*
 * Return value:
 *
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
 int usbMouseProbe(HidDev_t *HidDev)
 {
-    usbMouse_t *usbMouse = NULL;
+	usbMouse_t *usbMouse = NULL;
 	unsigned char err = 0;
 	int ret = 0;
 
-	if(HidDev == NULL){
+	if (HidDev == NULL) {
 		hal_log_err("ERR: usbMouseProbe: input error\n");
 		return USB_ERR_BAD_ARGUMENTS;
 	}
 
-    /* ¥¥Ω®“ª∏ˆmouse…Ë±∏£¨≤¢«“≥ı ºªØ */
+	/* ÂàõÂª∫‰∏Ä‰∏™mouseËÆæÂ§áÔºåÂπ∂‰∏îÂàùÂßãÂåñ */
 	usbMouse = (usbMouse_t *)hal_malloc(sizeof(usbMouse_t));
-	if(usbMouse == NULL){
+	if (usbMouse == NULL) {
 		hal_log_err("ERR: hal_malloc failed\n");
 		return USB_ERR_MALLOC_FAILED;
 	}
@@ -665,70 +667,70 @@ int usbMouseProbe(HidDev_t *HidDev)
 	}
 */
 
-    /* init mouse data tansfer */
-    if(HidDev->OnceTransferLength > USB_HID_MOUSE_DATA_LEN){
+	/* init mouse data tansfer */
+	if (HidDev->OnceTransferLength > USB_HID_MOUSE_DATA_LEN) {
 		hal_log_err("ERR: HidDev OnceTransferLength is too big.(%d, %d)\n",
-			       HidDev->OnceTransferLength, USB_HID_MOUSE_DATA_LEN);
+			    HidDev->OnceTransferLength, USB_HID_MOUSE_DATA_LEN);
 		goto error0;
 	}
 
-    /* get button BitOffset and BitCount */
-	ret = HidGetInputReport(HidDev, 
-		                    USB_HID_USAGE_PAGE_BUTTON, 
-		                    USB_HID_GENERIC_DESKTOP_PAGE_UNDEFINED, 
-		                    &usbMouse->DataDef.Button.BitOffset, 
-		                    &usbMouse->DataDef.Button.BitCount);
-	if(ret != USB_ERR_SUCCESS){
+	/* get button BitOffset and BitCount */
+	ret = HidGetInputReport(HidDev,
+				USB_HID_USAGE_PAGE_BUTTON,
+				USB_HID_GENERIC_DESKTOP_PAGE_UNDEFINED,
+				&usbMouse->DataDef.Button.BitOffset,
+				&usbMouse->DataDef.Button.BitCount);
+	if (ret != USB_ERR_SUCCESS) {
 		hal_log_err("ERR: Get mouse button bitoffset and bitcount field\n");
 		goto error0;
 	}
 
-    /* get X BitOffset and BitCount */
-	ret = HidGetInputReport(HidDev, 
-		                    USB_HID_USAGE_PAGE_GENERIC_DESKTOP_CONTROLS, 
-		                    USB_HID_GENERIC_DESKTOP_PAGE_X, 
-		                    &usbMouse->DataDef.X.BitOffset, 
-		                    &usbMouse->DataDef.X.BitCount);
-	if(ret != USB_ERR_SUCCESS){
+	/* get X BitOffset and BitCount */
+	ret = HidGetInputReport(HidDev,
+				USB_HID_USAGE_PAGE_GENERIC_DESKTOP_CONTROLS,
+				USB_HID_GENERIC_DESKTOP_PAGE_X,
+				&usbMouse->DataDef.X.BitOffset,
+				&usbMouse->DataDef.X.BitCount);
+	if (ret != USB_ERR_SUCCESS) {
 		hal_log_err("ERR: Get mouse button bitoffset and bitcount field\n");
 		goto error0;
 	}
 
-    /* get Y BitOffset and BitCount */
-	ret = HidGetInputReport(HidDev, 
-		                    USB_HID_USAGE_PAGE_GENERIC_DESKTOP_CONTROLS, 
-		                    USB_HID_GENERIC_DESKTOP_PAGE_Y, 
-		                    &usbMouse->DataDef.Y.BitOffset, 
-		                    &usbMouse->DataDef.Y.BitCount);
-	if(ret != USB_ERR_SUCCESS){
+	/* get Y BitOffset and BitCount */
+	ret = HidGetInputReport(HidDev,
+				USB_HID_USAGE_PAGE_GENERIC_DESKTOP_CONTROLS,
+				USB_HID_GENERIC_DESKTOP_PAGE_Y,
+				&usbMouse->DataDef.Y.BitOffset,
+				&usbMouse->DataDef.Y.BitCount);
+	if (ret != USB_ERR_SUCCESS) {
 		hal_log_err("ERR: Get mouse button bitoffset and bitcount field\n");
 		goto error0;
 	}
 
-    /* get wheel BitOffset and BitCount */
-	ret = HidGetInputReport(HidDev, 
-		                    USB_HID_USAGE_PAGE_GENERIC_DESKTOP_CONTROLS, 
-		                    USB_HID_GENERIC_DESKTOP_PAGE_WHEEL, 
-		                    &usbMouse->DataDef.Wheel.BitOffset, 
-		                    &usbMouse->DataDef.Wheel.BitCount);
-	if(ret != USB_ERR_SUCCESS){
+	/* get wheel BitOffset and BitCount */
+	ret = HidGetInputReport(HidDev,
+				USB_HID_USAGE_PAGE_GENERIC_DESKTOP_CONTROLS,
+				USB_HID_GENERIC_DESKTOP_PAGE_WHEEL,
+				&usbMouse->DataDef.Wheel.BitOffset,
+				&usbMouse->DataDef.Wheel.BitCount);
+	if (ret != USB_ERR_SUCCESS) {
 		hal_log_err("ERR: Get mouse button bitoffset and bitcount field\n");
 		goto error0;
 	}
 
-	hal_log_info("Button: BitOffset = %d, BitCount = %d\n", 
-		      usbMouse->DataDef.Button.BitOffset, usbMouse->DataDef.Button.BitCount);
-	hal_log_info("X: BitOffset = %d, BitCount = %d\n", 
-		      usbMouse->DataDef.X.BitOffset, usbMouse->DataDef.X.BitCount);
-	hal_log_info("Y: BitOffset = %d, BitCount = %d\n", 
-		      usbMouse->DataDef.Y.BitOffset, usbMouse->DataDef.Y.BitCount);
-	hal_log_info("Wheel: BitOffset = %d, BitCount = %d\n", 
-		      usbMouse->DataDef.Wheel.BitOffset, usbMouse->DataDef.Wheel.BitCount);
+	hal_log_info("Button: BitOffset = %d, BitCount = %d\n",
+		     usbMouse->DataDef.Button.BitOffset, usbMouse->DataDef.Button.BitCount);
+	hal_log_info("X: BitOffset = %d, BitCount = %d\n",
+		     usbMouse->DataDef.X.BitOffset, usbMouse->DataDef.X.BitCount);
+	hal_log_info("Y: BitOffset = %d, BitCount = %d\n",
+		     usbMouse->DataDef.Y.BitOffset, usbMouse->DataDef.Y.BitCount);
+	hal_log_info("Wheel: BitOffset = %d, BitCount = %d\n",
+		     usbMouse->DataDef.Wheel.BitOffset, usbMouse->DataDef.Wheel.BitCount);
 
 	/* init device operation function */
-	usbMouse->MouseOp.Open  = usbMouseOpen;
+	usbMouse->MouseOp.Open = usbMouseOpen;
 	usbMouse->MouseOp.Close = usbMouseClose;
-	usbMouse->MouseOp.Read  = usbMouseRead;
+	usbMouse->MouseOp.Read = usbMouseRead;
 	usbMouse->MouseOp.Write = usbMouseWrite;
 	usbMouse->MouseOp.Ioctl = usbMouseIoctl;
 
@@ -741,35 +743,36 @@ int usbMouseProbe(HidDev_t *HidDev)
 	usbMouse->HidReq.Extern = (void *)usbMouse;
 	usbMouse->Magic = USB_HID_DEV_MAGIC;
 
-    /* stop mouse */
+	/* stop mouse */
 	usbMouse->StopWork = 1;
 
 	UsbMouse_DriftControl_Init(usbMouse);
 
 	/* create mouse thread */
 	usbMouse->MouseThreadSemi = hal_sem_create(0);
-	if(usbMouse->MouseThreadSemi == NULL){
+	if (usbMouse->MouseThreadSemi == NULL) {
 		hal_log_err("ERR: hal_sem_create MouseThreadSemi failed\n");
 		goto error1;
 	}
 
 	usbMouse->notify_complete = hal_sem_create(0);
-	if(usbMouse->notify_complete == NULL){
+	if (usbMouse->notify_complete == NULL) {
 		hal_log_err("ERR: hal_sem_create notify_complete failed\n");
 		goto error2;
 	}
 
 	usbMouse->MouseThdId = kthread_create((void *)usbMouseThread,
-										 	(void *)usbMouse,
-										 	"usbMouseThread");
-	if(usbMouse->MouseThdId == OS_NO_ERR){
+					      (void *)usbMouse,
+					      "usbMouseThread",
+					      HAL_THREAD_STACK_SIZE, HAL_THREAD_PRIORITY_SYS);
+	if (usbMouse->MouseThdId == OS_NO_ERR) {
 		hal_log_err("ERR: create usbMouseThd failed\n");
 		goto error3;
 	}
 
 	hal_sem_wait(usbMouse->notify_complete);
 
-	/* …˙≥……Ë±∏√˚ */
+	/* ÁîüÊàêËÆæÂ§áÂêç */
 	strcpy((char *)usbMouse->ClassName, "HID");
 	strcpy((char *)usbMouse->DevName, "USBMOUSE");
 
@@ -780,7 +783,7 @@ int usbMouseProbe(HidDev_t *HidDev)
 		strcat((char *)usbMouse->DevName, "_");
 
 		/* usb controler number */
-//		temp = usbh_get_usbd_port();
+		//		temp = usbh_get_usbd_port();
 		temp = 0;
 		memset(temp_buff, 0, 32);
 		Usb_uint2str_dec(temp, (char *)temp_buff);
@@ -792,12 +795,16 @@ int usbMouseProbe(HidDev_t *HidDev)
 		strcat((char *)usbMouse->DevName, (const char *)temp_buff);
 	}
 
-	/* œÚœµÕ≥◊¢≤·Hid…Ë±∏ */
-	usbMouse->MouseRegHdle = esDEV_DevReg((const char *)usbMouse->ClassName, 
-		                                    (const char *)usbMouse->DevName, 
-		                                    &(usbMouse->MouseOp), 
-		                                    (void *)usbMouse);
-	if(usbMouse->MouseRegHdle == NULL){
+	/* ÂêëÁ≥ªÁªüÊ≥®ÂÜåHidËÆæÂ§á */
+#ifdef CONFIG_OS_MELIS
+	usbMouse->MouseRegHdle = esDEV_DevReg((const char *)usbMouse->ClassName,
+					      (const char *)usbMouse->DevName,
+					      &(usbMouse->MouseOp),
+					      (void *)usbMouse);
+#elif defined(CONFIG_KERNEL_FREERTOS)
+	printf("\n ERR: ADD TO DO FUNCTION!!\n\n");
+#endif
+	if (usbMouse->MouseRegHdle == NULL) {
 		hal_log_err("ERR: Mouse USB_OS_DEV_REG failed\n");
 		goto error4;
 	}
@@ -805,26 +812,30 @@ int usbMouseProbe(HidDev_t *HidDev)
 	hal_log_info("\n");
 	hal_log_info("*****************************************************************\n");
 	hal_log_info("*                                                               *\n");
-	hal_log_info("* USB HOST Regist \"%s\" \"%s\" successful\n", 
-		         usbMouse->ClassName, usbMouse->DevName);
+	hal_log_info("* USB HOST Regist \"%s\" \"%s\" successful\n",
+		     usbMouse->ClassName, usbMouse->DevName);
 	hal_log_info("*                                                               *\n");
 	hal_log_info("*****************************************************************\n");
 	hal_log_info("\n");
 
-	/* Notice: ”…”⁄–¬µƒ…Ë±∏…œ¿¥“‘∫Û£¨œµÕ≥µƒ…Ë±∏π‹¿Ì∏Ê÷™”¶”√≥Ã–Ú£¨“Ú¥À÷ªƒ‹”…«˝∂Ø∏Ê÷™”¶”√≥Ã–Ú */
+	/* Notice: Áî±‰∫éÊñ∞ÁöÑËÆæÂ§á‰∏äÊù•‰ª•ÂêéÔºåÁ≥ªÁªüÁöÑËÆæÂ§áÁÆ°ÁêÜÂëäÁü•Â∫îÁî®Á®ãÂ∫èÔºåÂõ†Ê≠§Âè™ËÉΩÁî±È©±Âä®ÂëäÁü•Â∫îÁî®Á®ãÂ∫è */
+#ifdef CONFIG_OS_MELIS
 	esKSRV_SendMsg(KMSG_USR_SYSTEM_MOUSE_PLUGIN, KMSG_PRIO_HIGH);
+#elif defined(CONFIG_KERNEL_FREERTOS)
+	printf("\n ERR: ADD TO DO FUNCTION!!\n\n");
+#endif
 
 #ifdef USBH_HID_MOUSE_TEST
-	usbMouse->StopWork       = 0;
+	usbMouse->StopWork = 0;
 	usbMouse->HidReq.Result = USB_HID_TRANSPORT_DEVICE_RESET;
 	UsbThreadWakeUp(usbMouse->MouseThreadSemi);
 #endif
 
-    return USB_ERR_SUCCESS;
-	
+	return USB_ERR_SUCCESS;
+
 error4:
-	//UsbKillThread(usbMouse->MouseThdId , usbMouse->MouseThreadSemi);
-    kthread_stop(usbMouse->MouseThdId);
+	// UsbKillThread(usbMouse->MouseThdId , usbMouse->MouseThreadSemi);
+	kthread_stop(usbMouse->MouseThdId);
 
 error3:
 	hal_sem_delete(usbMouse->notify_complete);
@@ -847,76 +858,83 @@ error0:
 *                     usbMouseRemove
 *
 * Description:
-*    
+*
 *
 * Parameters:
-*    
+*
 * misc_lib.h
 * Return value:
 *
 *
 * note:
-*    Œﬁ
+*    Êó†
 *
 *******************************************************************************
 */
-int usbMouseRemove(HidDev_t * HidDev)
+int usbMouseRemove(HidDev_t *HidDev)
 {
-    usbMouse_t *usbMouse = NULL;
-	unsigned int cup_sr	= 0;
+	usbMouse_t *usbMouse = NULL;
+	unsigned int cup_sr = 0;
 	unsigned char err = 0;
-	
-    if(HidDev == NULL){
+
+	if (HidDev == NULL) {
 		hal_log_err("ERR: usbMouseRemove: input error\n");
 		return USB_ERR_BAD_ARGUMENTS;
 	}
 
 	usbMouse = HidDev->Extern;
-	if(usbMouse == NULL){
+	if (usbMouse == NULL) {
 		hal_log_err("ERR: usbMouseRemove: usbMouse == NULL\n");
 		return USB_ERR_BAD_ARGUMENTS;
 	}
-
+#ifdef CONFIG_OS_MELIS
 	esKSRV_SendMsg(KMSG_USR_SYSTEM_MOUSE_PLUGOUT, KMSG_PRIO_HIGH);
-
+#elif defined(CONFIG_KERNEL_FREERTOS)
+	printf("\n ERR: ADD TO DO FUNCTION!!\n\n");
+#endif
 	usbMouse_StopWork(usbMouse);
 
 	hal_log_info("\n");
 	hal_log_info("*****************************************************************\n");
 	hal_log_info("*                                                               *\n");
-	hal_log_info("* USB HOST UnRegist \"%s\" \"%s\" successful\n", 
-		         usbMouse->ClassName, usbMouse->DevName);
+	hal_log_info("* USB HOST UnRegist \"%s\" \"%s\" successful\n",
+		     usbMouse->ClassName, usbMouse->DevName);
 	hal_log_info("*                                                               *\n");
 	hal_log_info("*****************************************************************\n");
 	hal_log_info("\n");
 
-    /* unregist device */
-	if(usbMouse->MouseRegHdle){
-		esDEV_DevUnreg(usbMouse->MouseRegHdle);
+	/* unregist device */
+	if (usbMouse->MouseRegHdle) {
+#ifdef CONFIG_OS_MELIS
+	esDEV_DevUnreg(usbMouse->MouseRegHdle);
+#elif defined(CONFIG_KERNEL_FREERTOS)
+	printf("\n ERR: ADD TO DO FUNCTION!!\n\n");
+#endif
 	}
 
-    /* kill thread */
-//	UsbKillThread(usbMouse->MouseThdId , usbMouse->MouseThreadSemi);
+	/* kill thread */
+	//	UsbKillThread(usbMouse->MouseThdId , usbMouse->MouseThreadSemi);
 	kthread_stop(usbMouse->MouseThdId);
 
-	if(usbMouse->notify_complete){
+	if (usbMouse->notify_complete) {
 		hal_sem_delete(usbMouse->notify_complete);
 		usbMouse->notify_complete = NULL;
 	}
 
-	if(usbMouse->MouseThreadSemi){
+	if (usbMouse->MouseThreadSemi) {
 		hal_sem_delete(usbMouse->MouseThreadSemi);
 		usbMouse->MouseThreadSemi = NULL;
 	}
 
 	UsbMouse_DriftControl_Exit(usbMouse);
 
-    ENTER_CRITICAL(cup_sr);
+	// ENTER_CRITICAL(cup_sr);
+	hal_interrupt_disable();
 	HidDev->Extern = NULL;
-	EXIT_CRITICAL(cup_sr);
+	hal_interrupt_enable();
+	// EXIT_CRITICAL(cup_sr);
 
 	hal_free(usbMouse);
 
-    return USB_ERR_SUCCESS;
+	return USB_ERR_SUCCESS;
 }
-

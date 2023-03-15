@@ -34,8 +34,24 @@
 #define __PLATFORM_RST_H__
 
 #if defined(CONFIG_DRIVERS_SUNXI_CCU)
+
+#if defined(CONFIG_SOC_SUN20IW1) || defined(CONFIG_ARCH_SUN8IW20)
 #include "sunxi-ng/rst-sun8iw20.h"
 #include "sunxi-ng/rst-sun8iw20-r.h"
+#endif
+
+#if defined(CONFIG_ARCH_SUN20IW2)
+#include "sunxi-ng/rst-sun20iw2.h"
+#include "sunxi-ng/rst-sun20iw2-r.h"
+#include "sunxi-ng/rst-sun20iw2-aon.h"
+#endif
+
+#if defined(CONFIG_ARCH_SUN55IW3)
+#include "sunxi-ng/rst-sun55iw3.h"
+#include "sunxi-ng/rst-sun55iw3-dsp.h"
+#include "sunxi-ng/rst-sun55iw3-r.h"
+#endif
+
 #endif
 
 #endif /* __PLATFORM_RST_H__ */

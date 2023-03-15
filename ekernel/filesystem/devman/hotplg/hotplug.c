@@ -1,16 +1,33 @@
 /*
-**********************************************************************************************************************
-*                                                   ePOS
-*                                  the Easy Portable/Player Operation System
-*                                       device management subsystem
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                (c) Copyright 2007-2008, Steven.ZGJ.China
-*                                           All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : hotplug.c
-* By      : steven.ZGJ
-* Version : V1.00
-**********************************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "hotplug_private.h"
 #include <emodules/mod_defs.h>
@@ -55,17 +72,17 @@ __s32 esDEV_Insmod(char *modfile, __u32 devno, void *p_arg)
     __log("modfile = %s.", modfile);
 
     strncpy(drvfile, modfile, strlen(modfile) + 1);
-    if (*modfile == '\\')                           /* »•µÙø™ ºµƒ'\' */
+    if (*modfile == '\\')                           /* ÂéªÊéâÂºÄÂßãÁöÑ'\' */
     {
         modfile++;
     }
 
-    father = &DRVRoot;                              /* ∂®Œª∏∏Ω⁄µ„    */
+    father = &DRVRoot;                              /* ÂÆö‰ΩçÁà∂ËäÇÁÇπ    */
     while (1)
     {
         fathername = modfile;
         modfile = (char *)strchr(fathername, '\\');
-        if (modfile == NULL)                           /* ’“µΩ¡À◊Ó∫Ûµƒ¥˙±Ì…Ë±∏√˚µƒœ˚œ¢  */
+        if (modfile == NULL)                           /* ÊâæÂà∞‰∫ÜÊúÄÂêéÁöÑ‰ª£Ë°®ËÆæÂ§áÂêçÁöÑÊ∂àÊÅØ  */
         {
             myname = fathername++;
             break;
@@ -86,14 +103,14 @@ __s32 esDEV_Insmod(char *modfile, __u32 devno, void *p_arg)
             }
             if (strncmp(father->name, fathername, ((__u64)modfile - (__u64)fathername) - 1) == 0)
             {
-                break;                              /* »Áπ˚’“µΩfatherlist */
+                break;                              /* Â¶ÇÊûúÊâæÂà∞fatherlist */
             }
             father = father->brother;
         }
     }
 
     me = NULL;
-    brother = father->child;                        /* ≈–∂œ«˝∂Ø «∑Ò±ª∞≤◊∞ */
+    brother = father->child;                        /* Âà§Êñ≠È©±Âä®ÊòØÂê¶Ë¢´ÂÆâË£Ö */
     while (brother)
     {
         if (strcmp(brother->name, myname) == 0)
@@ -136,7 +153,7 @@ __s32 esDEV_Insmod(char *modfile, __u32 devno, void *p_arg)
                 return EPDK_FAIL;
             }
         }
-        me = (__dev_drv_t *)k_malloc(sizeof(__dev_drv_t) + strlen(myname) + 1); /*===¥¥Ω®Ω⁄µ„≤¢π“Ω”==*/
+        me = (__dev_drv_t *)k_malloc(sizeof(__dev_drv_t) + strlen(myname) + 1); /*===ÂàõÂª∫ËäÇÁÇπÂπ∂ÊåÇÊé•==*/
         if (me == NULL)
         {
             __err("driver install fail!");
@@ -147,7 +164,7 @@ __s32 esDEV_Insmod(char *modfile, __u32 devno, void *p_arg)
         me->name = (char *)((__u64)me + sizeof(__dev_drv_t));
         strncpy(me->name, myname, strlen(myname) + 1);
 
-        me->child       = NULL;                        /* Ω´meπ“Ω”µΩfather÷Æœ¬ */
+        me->child       = NULL;                        /* Â∞ÜmeÊåÇÊé•Âà∞father‰πã‰∏ã */
         me->brother     = father->child;
         father->child   = me;
     }
@@ -197,30 +214,30 @@ __s32 esDEV_Unimod(char *modfile, __u32 devno)
 
     __log("modfile = %s.", modfile);
 
-    /*=====ªÒ»°«˝∂ØΩ”µ„=============================================*/
-    if (*modfile == '\\')                           /* »•µÙø™ ºµƒ'/'                                                */
+    /*=====Ëé∑ÂèñÈ©±Âä®Êé•ÁÇπ=============================================*/
+    if (*modfile == '\\')                           /* ÂéªÊéâÂºÄÂßãÁöÑ'/'                                                */
     {
         modfile++;
     }
 
-    //if(esSVS_GetRegKey(driver, drvfile) == 0)                                    /* ≈–∂œ«˝∂ØŒƒº˛ «∑Ò“—æ≠◊¢≤·‘⁄œµÕ≥÷– */
+    //if(esSVS_GetRegKey(driver, drvfile) == 0)                                    /* Âà§Êñ≠È©±Âä®Êñá‰ª∂ÊòØÂê¶Â∑≤ÁªèÊ≥®ÂÜåÂú®Á≥ªÁªü‰∏≠ */
     //{
     //    __wrn("Driver file not installed!");
     //    return EPDK_FAIL;
     //}
     strncpy(drvfile, modfile, strlen(modfile) + 1);
-    /*=====ªÒ»°«˝∂Øπ“Ω”µ„===========================================*/
-    if (*modfile == '\\')                            /* »•µÙø™ ºµƒ'\'                                                */
+    /*=====Ëé∑ÂèñÈ©±Âä®ÊåÇÊé•ÁÇπ===========================================*/
+    if (*modfile == '\\')                            /* ÂéªÊéâÂºÄÂßãÁöÑ'\'                                                */
     {
         modfile++;
     }
 
-    father = &DRVRoot;                              /* ∂®Œª∏∏Ω⁄µ„                                                   */
+    father = &DRVRoot;                              /* ÂÆö‰ΩçÁà∂ËäÇÁÇπ                                                   */
     while (1)
     {
         fathername = modfile;
         modfile = (char *)strchr(fathername, '\\');
-        if (modfile == 0)                           /* ’“µΩ¡À◊Ó∫Ûµƒ¥˙±Ì…Ë±∏√˚µƒœ˚œ¢                                 */
+        if (modfile == 0)                           /* ÊâæÂà∞‰∫ÜÊúÄÂêéÁöÑ‰ª£Ë°®ËÆæÂ§áÂêçÁöÑÊ∂àÊÅØ                                 */
         {
             myname = fathername++;
             break;
@@ -241,14 +258,14 @@ __s32 esDEV_Unimod(char *modfile, __u32 devno)
             }
             if (strncmp(father->name, fathername, ((__u64)modfile - (__u64)fathername) - 1) == 0)
             {
-                break;                              /* »Áπ˚’“µΩfatherlist                                           */
+                break;                              /* Â¶ÇÊûúÊâæÂà∞fatherlist                                           */
             }
             father = father->brother;
         }
     }
 
     me = NULL;
-    brother = father->child;                        /* ≈–∂œ«˝∂Ø «∑Ò±ª∞≤◊∞                                           */
+    brother = father->child;                        /* Âà§Êñ≠È©±Âä®ÊòØÂê¶Ë¢´ÂÆâË£Ö                                           */
     brobro = (__dev_drv_t *)&brother;               /* save pre brother of me                                       */
     while (brother)
     {
@@ -450,5 +467,3 @@ int32_t esDEV_Plugout(char *plgmsg, uint32_t devno)
 
     return EPDK_OK;
 }
-
-

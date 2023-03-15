@@ -2,9 +2,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
-#include <rtthread.h>
 #include <hal_mem.h>
-#include <log.h>
 #include <video/sunxi_display2.h>
 #include "disp_layer_cfg.h"
 #include "disp_mem.h"

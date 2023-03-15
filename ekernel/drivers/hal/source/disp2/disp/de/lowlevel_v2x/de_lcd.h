@@ -85,6 +85,7 @@ u32 tcon_irq_query(u32 sel, enum __lcd_irq_id_t id);
 u32 tcon_get_start_delay(u32 sel, u32 tcon_index);
 u32 tcon_get_cur_line(u32 sel, u32 tcon_index);
 s32 tcon_gamma(u32 sel, u32 en, u32 *gamma_tbl);
+s32 de_gamma(u32 sel, u32 en, u32 *gamma_tbl);
 s32 tcon_get_status(u32 sel, u32 tcon_index);
 
 s32 tcon0_cfg(u32 sel, struct disp_panel_para *panel);

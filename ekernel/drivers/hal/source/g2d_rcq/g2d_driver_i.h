@@ -16,7 +16,12 @@
  */
 #ifndef __G2D_DRIVER_I_H
 #define __G2D_DRIVER_I_H
+
+#ifdef CONFIG_KERNEL_FREERTOS
+#include <aw_types.h>
+#else
 #include <typedef.h>
+#endif
 #include <hal_sem.h>
 #include <hal_clk.h>
 #include <hal_reset.h>

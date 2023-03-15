@@ -185,7 +185,7 @@ static int sdio_irq_thread(void *_host)
 		//set_current_state(TASK_INTERRUPTIBLE);
 		if (host->caps & MMC_CAP_SDIO_IRQ){
 			HAL_SDC_Enable_Sdio_Irq(host, 1);
-			OS_SemaphoreWait(&host->sdio_irq_signal,portMAX_DELAY);
+			OS_SemaphoreWait(&host->sdio_irq_signal,(uint32_t)portMAX_DELAY);
 			/*
 			while(1){
 				#define readl(addr)	    (*((volatile unsigned long  *)(addr)))

@@ -31,6 +31,7 @@
 #include "disp_eink_data.h"
 #endif
 
+#include "../../pq/drv_pq.h"
 struct lcd_clk_info {
 	enum disp_lcd_if lcd_if;
 	int tcon_div;
@@ -200,4 +201,6 @@ int disp_al_init_eink_ctrl_data_16(unsigned int disp, unsigned int wavedata_buf,
 #endif
 void disp_al_show_builtin_patten(u32 hwdev_index, u32 patten);
 
+unsigned long disp_al_get_reg_base(u32 sel, u32 *off, int need_update);
+unsigned long de_get_reg_base(u32 sel, u32 *off, int need_update);
 #endif

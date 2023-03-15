@@ -32,11 +32,6 @@
 #ifndef __UDC_PLATFORM_H__
 #define __UDC_PLATFORM_H__
 
-#include <stdint.h>
-
-#include <sunxi_hal_common.h>
-#include <usb/ch9.h>
-
 /* USB_POWER */
 #define USB_POWER_ENABLESUSPENDM	(0x01)   /* RW */
 #define USB_POWER_SUSPENDMODE		(0x02)   /* P: RO ; H: WO */ /*Read clear by the intr. register*/
@@ -263,6 +258,14 @@
 #define USB_ISCR_ID_CHANGE_DETECT_EN	(0X0002)
 #define USB_ISCR_DPDM_CHANGE_DETECT_EN	(0X0001)
 
+#if defined(CONFIG_ARCH_SUN20IW2)
+#define SUNXI_GPRCM_BASE		(0x40050000)
+#define USB_BIAS_CTRL			(0x0064)
+#define USB_BIAS_CTRL_EN		(0x0001)
+/* USB_PHY_CTL 40nm */
+#define USB_PHYCTL40NM_SIDDQ		(0X0002)
+#define USB_PHYCTL40NM_VCCLK		(0X0001)
+#endif
 /* USB_PHY_CTL 28nm */
 #define USB_PHYCTL28NM_SIDDQ		(0X0008)
 #define USB_PHYCTL28NM_VBUSVLDEXT	(0X0020)
@@ -284,117 +287,126 @@
 #define USB_DRV_WriteReg8(addr, data)	hal_writeb(data, addr)
 #define USB_DRV_Reg8(addr)		hal_readb(addr)
 
-#define USB_DRV_ClearBits(addr,data) { \
-	uint16_t temp; \
-	temp = DRV_Reg(addr); \
-	temp &=~(data); \
-	DRV_WriteReg(addr,temp); \
-}
+#define USB_DRV_ClearBits(addr, data)     \
+	{                                 \
+		uint16_t temp;            \
+		temp = DRV_Reg(addr);     \
+		temp &= ~(data);          \
+		DRV_WriteReg(addr, temp); \
+	}
 
-#define USB_DRV_SetBits(addr,data) { \
-	uint16_t temp; \
-	temp = DRV_Reg(addr); \
-	temp |= (data); \
-	DRV_WriteReg(addr,temp); \
-}
+#define USB_DRV_SetBits(addr, data)       \
+	{                                 \
+		uint16_t temp;            \
+		temp = DRV_Reg(addr);     \
+		temp |= (data);           \
+		DRV_WriteReg(addr, temp); \
+	}
 
-#define USB_DRV_SetData(addr, bitmask, value) { \
-	uint16_t temp;	\
-	temp = (~(bitmask)) & DRV_Reg(addr); \
-	temp |= ((value) & (bitmask)); \
-	DRV_WriteReg(addr,temp); \
-}
+#define USB_DRV_SetData(addr, bitmask, value)        \
+	{                                            \
+		uint16_t temp;                       \
+		temp = (~(bitmask)) & DRV_Reg(addr); \
+		temp |= ((value) & (bitmask));       \
+		DRV_WriteReg(addr, temp);            \
+	}
 
-#define USB_DRV_ClearBits32(addr,data) { \
-	uint32_t temp; \
-	temp = DRV_Reg32(addr); \
-	temp &=~(data); \
-	DRV_WriteReg32(addr,temp); \
-}
+#define USB_DRV_ClearBits32(addr, data)     \
+	{                                   \
+		uint32_t temp;              \
+		temp = DRV_Reg32(addr);     \
+		temp &= ~(data);            \
+		DRV_WriteReg32(addr, temp); \
+	}
 
-#define USB_DRV_SetBits32(addr,data) { \
-	uint32_t temp; \
-	temp = DRV_Reg32(addr); \
-	temp |= (data); \
-	DRV_WriteReg32(addr,temp); \
-}
+#define USB_DRV_SetBits32(addr, data)       \
+	{                                   \
+		uint32_t temp;              \
+		temp = DRV_Reg32(addr);     \
+		temp |= (data);             \
+		DRV_WriteReg32(addr, temp); \
+	}
 
-#define USB_DRV_SetData32(addr, bitmask, value) { \
-	uint32_t temp; \
-	temp = (~(bitmask)) & DRV_Reg32(addr); \
-	temp |= ((value) & (bitmask)); \
-	DRV_WriteReg32(addr,temp); \
-}
+#define USB_DRV_SetData32(addr, bitmask, value)        \
+	{                                              \
+		uint32_t temp;                         \
+		temp = (~(bitmask)) & DRV_Reg32(addr); \
+		temp |= ((value) & (bitmask));         \
+		DRV_WriteReg32(addr, temp);            \
+	}
 
-#define USB_DRV_ClearBits8(addr,data) { \
-	uint8_t temp; \
-	temp = DRV_Reg8(addr); \
-	temp &=~(data); \
-	DRV_WriteReg8(addr,temp); \
-}
+#define USB_DRV_ClearBits8(addr, data)     \
+	{                                  \
+		uint8_t temp;              \
+		temp = DRV_Reg8(addr);     \
+		temp &= ~(data);           \
+		DRV_WriteReg8(addr, temp); \
+	}
 
-#define USB_DRV_SetBits8(addr,data) { \
-	uint8_t temp; \
-	temp = DRV_Reg8(addr); \
-	temp |= (data); \
-	DRV_WriteReg8(addr,temp); \
-}
+#define USB_DRV_SetBits8(addr, data)       \
+	{                                  \
+		uint8_t temp;              \
+		temp = DRV_Reg8(addr);     \
+		temp |= (data);            \
+		DRV_WriteReg8(addr, temp); \
+	}
 
-#define USB_DRV_SetData8(addr, bitmask, value) { \
-	uint8_t temp; \
-	temp = (~(bitmask)) & DRV_Reg8(addr); \
-	temp |= ((value) & (bitmask)); \
-	DRV_WriteReg8(addr,temp); \
-}
+#define USB_DRV_SetData8(addr, bitmask, value)        \
+	{                                             \
+		uint8_t temp;                         \
+		temp = (~(bitmask)) & DRV_Reg8(addr); \
+		temp |= ((value) & (bitmask));        \
+		DRV_WriteReg8(addr, temp);            \
+	}
 
 typedef struct {
 	/* common registers */
 	/* fifo */
-	uint32_t	fifo0;		/* USBEndpoint0FIFORegister */
-	uint32_t	fifo1;		/* USBEndpoint1FIFORegister */
-	uint8_t		revered1[56];	/* 0x0000 + N*4 */
-	uint8_t		power;		/* 0x0040 */
-	uint8_t		devctl;		/* 0x0041 */
-	uint8_t		index;		/* 0x0042 */
-	uint8_t		vend0;		/* 0x0043 */
-	uint16_t	intrtx;		/* 0x0044 */
-	uint16_t	intrrx;		/* 0x0046 */
-	uint16_t	intrtxe;	/* 0x0048 */
-	uint16_t	intrrxe;	/* 0x004a */
-	uint32_t	intrusb;	/* 0x004c */
-	uint32_t	intrusbe;	/* 0x0050 */
-	uint32_t	frame;		/* 0x0054 */
-	uint32_t	reserved1[9];
-	uint32_t	testmode;	/* 0x007c */
+	uint32_t fifo0;	      /* USBEndpoint0FIFORegister */
+	uint32_t fifo1;	      /* USBEndpoint1FIFORegister */
+	uint8_t revered1[56]; /* 0x0000 + N*4 */
+	uint8_t power;	      /* 0x0040 */
+	uint8_t devctl;	      /* 0x0041 */
+	uint8_t index;	      /* 0x0042 */
+	uint8_t vend0;	      /* 0x0043 */
+	uint16_t intrtx;      /* 0x0044 */
+	uint16_t intrrx;      /* 0x0046 */
+	uint16_t intrtxe;     /* 0x0048 */
+	uint16_t intrrxe;     /* 0x004a */
+	uint32_t intrusb;     /* 0x004c */
+	uint32_t intrusbe;    /* 0x0050 */
+	uint32_t frame;	      /* 0x0054 */
+	uint32_t reserved1[9];
+	uint32_t testmode; /* 0x007c */
 	/* indexed registers */
-	uint16_t	txmap;		/* 0x0080 */
-	uint16_t	txcsr;		/* 0x0082 */
-	uint16_t	rxmap;		/* 0x0084 */
-	uint16_t	rxcsr;		/* 0x0086 */
-	uint32_t	rxcount;	/* 0x0088 */
-	uint8_t		txtype;		/* 0x008c */
-	uint8_t		txinterval;	/* 0x008d */
-	uint8_t		rxtype;		/* 0x008e */
-	uint8_t		rxinterval;	/* 0x008f */
+	uint16_t txmap;	    /* 0x0080 */
+	uint16_t txcsr;	    /* 0x0082 */
+	uint16_t rxmap;	    /* 0x0084 */
+	uint16_t rxcsr;	    /* 0x0086 */
+	uint32_t rxcount;   /* 0x0088 */
+	uint8_t txtype;	    /* 0x008c */
+	uint8_t txinterval; /* 0x008d */
+	uint8_t rxtype;	    /* 0x008e */
+	uint8_t rxinterval; /* 0x008f */
 	/* OTG, dynamic FIFO, version & vendor registers */
-	uint16_t	txfifosz;	/* 0x0090 */
-	uint16_t	txfifoadd;	/* 0x0092 */
-	uint16_t	rxfifosz;	/* 0x0094 */
-	uint16_t	rxfifoadd;	/* 0x0096 */
-	uint8_t		faddr;		/* 0x0098 */
+	uint16_t txfifosz;  /* 0x0090 */
+	uint16_t txfifoadd; /* 0x0092 */
+	uint16_t rxfifosz;  /* 0x0094 */
+	uint16_t rxfifoadd; /* 0x0096 */
+	uint8_t faddr;	    /* 0x0098 */
 } UDC_REGISTER_T;
 
 typedef struct {
-	uint32_t	iscr;		/* 0x0400 */
-	uint32_t	phyctrl40nm;	/* 0x0404 */
-	uint32_t	phybist;	/* 0x0408 */
-	uint32_t	reserved1;
-	uint32_t	phyctrl28nm;	/* 0x0410 */
-	uint32_t	phytest;	/* 0x0414 */
-	uint32_t	phytune;	/* 0x0418 */
-	uint32_t	reserved2;
-	uint32_t	physel;		/* 0x0420 */
-	uint32_t	physta;		/* 0x0424 */
+	uint32_t iscr;	      /* 0x0400 */
+	uint32_t phyctrl40nm; /* 0x0404 */
+	uint32_t phybist;     /* 0x0408 */
+	uint32_t reserved1;
+	uint32_t phyctrl28nm; /* 0x0410 */
+	uint32_t phytest;     /* 0x0414 */
+	uint32_t phytune;     /* 0x0418 */
+	uint32_t reserved2;
+	uint32_t physel; /* 0x0420 */
+	uint32_t physta; /* 0x0424 */
 } USBPHY_REGISTER_T;
 
 #endif /*__UDC_PLATFORM_H__*/

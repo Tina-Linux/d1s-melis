@@ -22,6 +22,86 @@
 
 struct intc_regs *pintc_regs;
 
+#ifdef CONFIG_COMPONENTS_PM
+#include "pm_syscore.h"
+
+#define INTC_BASE_ADDR_REG_ADDR	(SUNXI_R_INTC_PBASE + 0x04)
+#define INTC_NMI_CTRL_REG_ADDR	(SUNXI_R_INTC_PBASE + 0x0C)
+
+#define INTC_PENDING_REG_BASE	(SUNXI_R_INTC_PBASE + 0x10)
+#define INTC_ENABLE_REG_BASE	(SUNXI_R_INTC_PBASE + 0x40)
+#define INTC_MASK_REG_BASE	(SUNXI_R_INTC_PBASE + 0x50)
+#define INTC_FORCE_REG_BASE	(SUNXI_R_INTC_PBASE + 0x70)
+#define INTC_PRIORITY_REG_BASE	(SUNXI_R_INTC_PBASE + 0x80)
+#define INTC_GROUP_CONFIG_REG_BASE	(SUNXI_R_INTC_PBASE + 0xC0)
+
+
+#define INTC_GENERAL_CTRL_REG_NUM 4
+#define INTC_PRIORITY_REG_NUM 8
+//static uint32_t s_intc_vector_offset_reg_bak;
+static uint32_t s_intc_base_addr_reg_bak;
+static uint32_t s_intc_nmi_ctrl_reg_bak;
+
+static uint32_t s_intc_pending_reg_bak[INTC_GENERAL_CTRL_REG_NUM];
+static uint32_t s_intc_enable_reg_bak[INTC_GENERAL_CTRL_REG_NUM];
+static uint32_t s_intc_mask_reg_bak[INTC_GENERAL_CTRL_REG_NUM];
+static uint32_t s_intc_force_reg_bak[INTC_GENERAL_CTRL_REG_NUM];
+static uint32_t s_intc_priority_reg_bak[INTC_PRIORITY_REG_NUM];
+static uint32_t s_intc_group_config_reg_bak[INTC_GENERAL_CTRL_REG_NUM];
+
+static int intc_suspend(void *data, suspend_mode_t mode)
+{
+	int i;
+
+	s_intc_base_addr_reg_bak = readl(INTC_BASE_ADDR_REG_ADDR);
+	s_intc_nmi_ctrl_reg_bak = readl(INTC_NMI_CTRL_REG_ADDR);
+
+	for (i = 0; i < INTC_GENERAL_CTRL_REG_NUM; i++)
+	{
+		s_intc_pending_reg_bak[i] = readl(INTC_PENDING_REG_BASE + i * 4);
+		s_intc_enable_reg_bak[i] = readl(INTC_ENABLE_REG_BASE + i * 4);
+		s_intc_mask_reg_bak[i] = readl(INTC_MASK_REG_BASE + i * 4);
+		s_intc_force_reg_bak[i] = readl(INTC_FORCE_REG_BASE + i * 4);
+		s_intc_group_config_reg_bak[i] = readl(INTC_GROUP_CONFIG_REG_BASE + i * 4);
+	}
+
+	for (i = 0; i < INTC_PRIORITY_REG_NUM; i++)
+	{
+		s_intc_priority_reg_bak[i] = readl(INTC_PRIORITY_REG_BASE + i * 4);
+	}
+
+	return 0;
+}
+
+static void intc_resume(void *data, suspend_mode_t mode)
+{
+	int i;
+
+	writel(s_intc_base_addr_reg_bak, INTC_BASE_ADDR_REG_ADDR);
+	writel(s_intc_nmi_ctrl_reg_bak, INTC_NMI_CTRL_REG_ADDR);
+
+	for (i = 0; i < INTC_GENERAL_CTRL_REG_NUM; i++)
+	{
+		writel(s_intc_pending_reg_bak[i], INTC_PENDING_REG_BASE + i * 4);
+		writel(s_intc_enable_reg_bak[i], INTC_ENABLE_REG_BASE + i * 4);
+		writel(s_intc_mask_reg_bak[i], INTC_MASK_REG_BASE + i * 4);
+		writel(s_intc_force_reg_bak[i], INTC_FORCE_REG_BASE + i * 4);
+		writel(s_intc_group_config_reg_bak[i], INTC_GROUP_CONFIG_REG_BASE + i * 4);
+	}
+
+	for (i = 0; i < INTC_PRIORITY_REG_NUM; i++)
+	{
+		s_intc_priority_reg_bak[i] = readl(INTC_PRIORITY_REG_BASE + i * 4);
+	}
+}
+
+struct syscore_ops g_intc_pm_ops = {
+	.name = "intc_syscore_ops",
+	.suspend = intc_suspend,
+	.resume = intc_resume,
+};
+#endif /* CONFIG_COMPONENTS_PM */
+
 /*
 *********************************************************************************************************
 *                                           INTERRUPT INIT
@@ -193,8 +273,8 @@ s32 intc_set_group_config(u32 grp_irq_num, u32 mask)
 	} else if (grp_irq_num > 63 && grp_irq_num <= 95) {
 		pintc_regs->group_config2 &= ~(1 << (grp_irq_num - 64));
 		pintc_regs->group_config2 |= (mask << grp_irq_num);
-	} else {
-		pintc_regs->group_config3 &= ~(1 << (grp_irq_num - 64));
+	} else if (grp_irq_num > 95 && grp_irq_num <= 127) {
+		pintc_regs->group_config3 &= ~(1 << (grp_irq_num - 96));
 		pintc_regs->group_config3 |= (mask << grp_irq_num);
 	}
 

@@ -25,17 +25,9 @@
 #ifndef __USB_WEBCAM_PROC_H__
 #define __USB_WEBCAM_PROC_H__
 
-
 extern __s32 usbWebcam_v4l2_init(UVCDev_t *UVCDev);
 extern __s32 usbWebcam_v4l2_exit(UVCDev_t *UVCDev);
 extern __s32 usbWebcam_v4l2_capture_on(UVCDev_t *UVCDev);
 extern __s32 usbWebcam_v4l2_capture_off(UVCDev_t *UVCDev);
 
-
-
-
-
-
-
 #endif
-

@@ -49,6 +49,12 @@
 #define CCMU_TRACE_CLK(clk, rate)   do{} while(0)
 #endif
 
+typedef unsigned int hal_clk_id_t;
+
+#if !defined(CONFIG_DRIVERS_SUNXI_CLK) && !defined(CONFIG_DRIVERS_SUNXI_CCU)
+typedef hal_clk_id_t hal_clk_t;
+#endif
+
 /************************************************************************************************
 * Enum hal_clk_status_t
 * @Description: This enum defines the return status of Clock APIs. User should check the return value after calling the APIs
@@ -75,10 +81,10 @@ typedef enum
 #if defined(CONFIG_DRIVERS_SUNXI_CLK)
 
 #define HAL_SUNXI_CCU (0)
-typedef unsigned int hal_clk_id_t;
-typedef hal_clk_id_t hal_clk_t;
+#define HAL_SUNXI_FIXED_CCU (1)
 
 #include "sunxi/clk.h"
+typedef hal_clk_id_t hal_clk_t;
 
 #endif
 
@@ -92,15 +98,15 @@ typedef enum
     HAL_SUNXI_FIXED_CCU = 0,
     HAL_SUNXI_RTC_CCU,
     HAL_SUNXI_CCU,
+    HAL_SUNXI_AON_CCU,
     HAL_SUNXI_R_CCU,
+    HAL_SUNXI_DSP,
     HAL_SUNXI_CCU_NUMBER,
 } hal_clk_type_t;
 
-typedef u32 hal_clk_id_t;
-
 #include "sunxi-ng/clk.h"
+typedef struct clk* hal_clk_t;
 
-typedef struct clk *hal_clk_t;
 #endif
 
 #endif /* __COMMON_CCMU_H__ */

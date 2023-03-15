@@ -41,8 +41,16 @@
 #include "platform/timer_sun8iw19.h"
 #endif
 
-#if defined(CONFIG_SOC_SUN20IW1)
+#if defined(CONFIG_SOC_SUN20IW1) || defined(CONFIG_ARCH_SUN8IW20)
 #include "platform/timer_sun20iw1.h"
+#endif
+
+#if defined(CONFIG_ARCH_SUN20IW2)
+#include "platform/timer_sun20iw2.h"
+#endif
+
+#if defined(CONFIG_ARCH_SUN55IW3)
+#include "platform/timer_sun55iw3.h"
 #endif
 
 #endif /* __PLATFORM_TIMER_H__ */

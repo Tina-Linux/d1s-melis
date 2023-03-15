@@ -1,4 +1,4 @@
-subdir-ccflags-y += -I$(srctree)/ekernel/drivers/hal/source/usb/hid/Include/
+subdir-ccflags-y += -I drivers/hal/source/usb/hid/Include/
 
 obj-y += KeyBoard/
 obj-y += Mouse/

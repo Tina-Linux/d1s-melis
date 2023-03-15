@@ -9,6 +9,14 @@ config MOD_CEDAR_ENABLE
 	help
           enable cedar module support, use cedar to implement multimedia function.
 
+config AEC_ENABLE
+	bool "AEC function support"
+	default n
+	select SND_SOC_SUNXI_RXSYNC
+	depends on MOD_CEDAR_ENABLE
+	help
+          enable AEC function support
+
 config MOD_ORANGE_ENABLE
 	bool "orange module support"
 	default n if SOC_SUN8IW19P1
@@ -22,7 +30,7 @@ config MOD_DISPLAY_ENABLE
 	default y if SOC_SUN20IW1P1
 	help
           enable display module support
-		  
+
 config MOD_CHARSET_ENABLE
 	bool "charset module support"
 	default n if SOC_SUN8IW19P1
@@ -36,18 +44,47 @@ config MOD_WILLOW_ENABLE
 	default y if SOC_SUN20IW1P1
 	help
           enable willow module support
-          
+
+config MOD_UPDATE
+	bool "update module support"
+	default n if SOC_SUN8IW19P1
+	default y if SOC_SUN20IW1P1
+	help
+          enable update module support
+
+config MOD_FM
+	bool "fm module support"
+	default n if SOC_SUN8IW19P1
+	default y if SOC_SUN20IW1P1
+	help
+        enable update fm support
+
 config MOD_MIXTURE_ENABLE
 	bool "mixture module support"
 	default n if SOC_SUN8IW19P1
 	default y if SOC_SUN20IW1P1
 	help
-          enable mixture module support		
+          enable mixture module support
 
 config MOD_JPEG_CODEC_ENABLE
 	bool "jpg picture decode module support"
 	default n if SOC_SUN8IW19P1
 	default y if SOC_SUN20IW1P1
 	help
-          enable jpg picture decode module support			  
+          enable jpg picture decode module support
+
+config MOD_SLIB
+	bool "slib module support"
+	default n if SOC_SUN8IW19P1
+	default y if SOC_SUN20IW1P1
+	help
+          enable slib module module support
+
+config MOD_VIDEO_PLAY_ENABLE
+	bool "Vieo play module support"
+	default n if SOC_SUN8IW19P1
+	default y if SOC_SUN20IW1P1
+	help
+          enable Video play module support
+
 endmenu

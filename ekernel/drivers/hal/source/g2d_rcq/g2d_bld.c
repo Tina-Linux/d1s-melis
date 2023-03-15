@@ -72,6 +72,53 @@ OUT:
 	return ret;
 }
 
+__s32 bld_fc_set(struct blender_submodule *p_bld, __u32 sel, g2d_rect rect,
+		    int premul, __u32 color)
+{
+	__s32 ret = -1;
+
+	struct g2d_mixer_bld_reg *p_reg = NULL;
+	p_reg = p_bld->get_reg(p_bld);
+	if (!p_reg)
+		goto OUT;
+
+	p_reg->bld_en_ctrl.bits.p0_en = 1;
+	/* we use p0 (src pic) as bottom layer */
+	p_reg->bld_en_ctrl.bits.p0_fcen = 0;
+	if (premul)
+		p_reg->premulti_ctrl.bits.p0_alpha_mode = 1;
+
+	/* we use p1 (fill-color) as top layer */
+	p_reg->bld_en_ctrl.bits.p1_en = 1;
+	p_reg->bld_en_ctrl.bits.p1_fcen = 1;
+	p_reg->bld_fill_color[sel] = color;
+	G2D_INFO_MSG("p_reg->bld_fill_color[sel] 0x%x \n", p_reg->bld_fill_color[sel]);
+	if (premul)
+		p_reg->premulti_ctrl.bits.p1_alpha_mode = 1;
+
+	/* Set the area where pipe0 and pipe1 are mixed. */
+	sel = 0;
+	p_reg->mem_size[sel].bits.width = rect.w - 1;
+	p_reg->mem_size[sel].bits.height = rect.h - 1;
+
+	p_reg->mem_coor[sel].bits.xcoor = rect.x <= 0 ? 0 : rect.x - 1;
+	p_reg->mem_coor[sel].bits.ycoor = rect.y <= 0 ? 0 : rect.y - 1;
+
+	sel = 1;
+	p_reg->mem_size[sel].bits.width = rect.w - 1;
+	p_reg->mem_size[sel].bits.height = rect.h - 1;
+
+	p_reg->mem_coor[sel].bits.xcoor = rect.x <= 0 ? 0 : rect.x - 1;
+	p_reg->mem_coor[sel].bits.ycoor = rect.y <= 0 ? 0 : rect.y - 1;
+
+	ret = 0;
+
+	p_bld->set_block_dirty(p_bld, 0, 1);
+
+OUT:
+	return ret;
+}
+
 /**
  * set colorkey para.
  */

@@ -66,22 +66,16 @@ static void ehci_clear_command_bit(struct ehci_hcd *ehci, u32 bit)
  * Keep this list sorted by delay length, in the same order as
  * the event types indexed by enum ehci_hrtimer_event in ehci.h.
  */
-#if 0
-#define NSEC_PER_MSEC   1000000L
-#else
-#define NSEC_PER_MSEC   1L
-#endif
 
 #ifndef BIT
-#define BIT(n)  (1UL << (n))
+#define BIT(n) (1UL << (n))
 #endif
 
 static unsigned long event_delays_ns[] = {
 	1 * NSEC_PER_MSEC,	/* EHCI_HRTIMER_POLL_ASS */
 	1 * NSEC_PER_MSEC,	/* EHCI_HRTIMER_POLL_PSS */
 	1 * NSEC_PER_MSEC,	/* EHCI_HRTIMER_POLL_DEAD */
-	// 1125 * NSEC_PER_USEC,	/* EHCI_HRTIMER_UNLINK_INTR */
-	1 * NSEC_PER_MSEC,	/* EHCI_HRTIMER_UNLINK_INTR */
+	1125 * NSEC_PER_USEC,	/* EHCI_HRTIMER_UNLINK_INTR */
 	2 * NSEC_PER_MSEC,	/* EHCI_HRTIMER_FREE_ITDS */
 	2 * NSEC_PER_MSEC,	/* EHCI_HRTIMER_ACTIVE_UNLINK */
 	5 * NSEC_PER_MSEC,	/* EHCI_HRTIMER_START_UNLINK_INTR */
@@ -94,39 +88,32 @@ static unsigned long event_delays_ns[] = {
 
 /* Enable a pending hrtimer event */
 //高精度定时器，插入一个定时事件
-static void ehci_enable_event(struct ehci_hcd *ehci, unsigned event,
-		bool resched)
+void ehci_hrtimer_func(void *t);
+static void ehci_enable_event(struct ehci_hcd *ehci, unsigned long event, bool resched)
 {
 	unsigned long *timeout = &ehci->hr_timeouts[event];
-	unsigned long time_interval = 0;
+	unsigned long time_interval = ehci->hr_timeouts[event];
 
-	if (resched)
-	{
-		// *timeout = ktime_add(ktime_get(), ktime_set(0, event_delays_ns[event]));
-		time_interval = rt_tick_from_millisecond(event_delays_ns[event]);
-		*timeout = rt_tick_get() + time_interval;
-	}
+	if (resched) {
+		time_interval = event_delays_ns[event];
+		*timeout = hal_gettime_ns() + event_delays_ns[event];
+	} else
+		time_interval = *timeout - hal_gettime_ns();
 
 	ehci->enabled_hrtimer_events |= (1 << event);
 
 	/* Track only the lowest-numbered pending event */
 	if (event < ehci->next_hrtimer_event) {
-
-		unsigned long get_time=0;
-
 		ehci->next_hrtimer_event = event;
-		// hrtimer_start_range_ns(&ehci->hrtimer, *timeout,
-		// 		NSEC_PER_MSEC, HRTIMER_MODE_ABS);
-		osal_timer_control(ehci->hrtimer, OSAL_TIMER_CTRL_SET_TIME, &time_interval);
-		osal_timer_start(ehci->hrtimer);//ehci_hrtimer_func
+		// hrtimer_start_range_ns(&ehci->hrtimer, *timeout, NSEC_PER_MSEC, HRTIMER_MODE_ABS);
+		hal_timer_set_oneshot(ehci->hrtimer, time_interval / 1000, ehci_hrtimer_func, ehci);
 	}
 }
-
 
 /* Poll the STS_ASS status bit; see when it agrees with CMD_ASE */
 static void ehci_poll_ASS(struct ehci_hcd *ehci)
 {
-	unsigned	actual, want;
+	unsigned actual, want;
 
 	/* Don't enable anything if the controller isn't running (e.g., died) */
 	if (ehci->rh_state != EHCI_RH_RUNNING)
@@ -136,40 +123,24 @@ static void ehci_poll_ASS(struct ehci_hcd *ehci)
 	actual = ehci_readl(ehci, &ehci->regs->status) & STS_ASS;
 
 	if (want != actual) {
-
 		/* Poll again later, but give up after about 2-4 ms */
 		if (ehci->ASS_poll_count++ < 2) {
 			ehci_enable_event(ehci, EHCI_HRTIMER_POLL_ASS, true);
 			return;
 		}
-		// ehci_dbg(ehci, "Waited too long for the async schedule status (%x/%x), giving up\n",
-		// 		want, actual);
+		ehci_dbg("Waited too long for the async schedule status (%x/%x), giving up\n",
+			 want, actual);
 	}
 	ehci->ASS_poll_count = 0;
 
 	/* The status is up-to-date; restart or stop the schedule as needed */
-	if (want == 0)
-	{ /* Stopped */
+	if (want == 0) { /* Stopped */
 		if (ehci->async_count > 0)
-		{
-			// ehci_set_command_bit(ehci, CMD_ASE);
-			// mdelay(1000);
-			int cmd = ehci_readl(ehci, &ehci->regs->command) | CMD_ASE;
-			ehci_writel(ehci, cmd, &ehci->regs->command);
-
-			if (ehci_handshake(ehci, (uint32_t *)&ehci->regs->status, STS_ASS, STS_ASS, 100 * 1000) < 0)
-			{
-				hal_log_err("EHCI fail timeout STS_ASS set.\n");
-			}
-		}
-	}
-	else
-	{ /* Running */
-		if (ehci->async_count == 0)
-		{
+			ehci_set_command_bit(ehci, CMD_ASE);
+	} else { /* Running */
+		if (ehci->async_count == 0) {
 			/* Turn off the schedule after a while */
-			ehci_enable_event(ehci, EHCI_HRTIMER_DISABLE_ASYNC,
-							  true);
+			ehci_enable_event(ehci, EHCI_HRTIMER_DISABLE_ASYNC, true);
 		}
 	}
 }
@@ -180,11 +151,10 @@ static void ehci_disable_ASE(struct ehci_hcd *ehci)
 	ehci_clear_command_bit(ehci, CMD_ASE);
 }
 
-
 /* Poll the STS_PSS status bit; see when it agrees with CMD_PSE */
 static void ehci_poll_PSS(struct ehci_hcd *ehci)
 {
-	unsigned	actual, want;
+	unsigned actual, want;
 
 	/* Don't do anything if the controller isn't running (e.g., died) */
 	if (ehci->rh_state != EHCI_RH_RUNNING)
@@ -194,28 +164,24 @@ static void ehci_poll_PSS(struct ehci_hcd *ehci)
 	actual = ehci_readl(ehci, &ehci->regs->status) & STS_PSS;
 
 	if (want != actual) {
-
 		/* Poll again later, but give up after about 2-4 ms */
 		if (ehci->PSS_poll_count++ < 2) {
 			ehci_enable_event(ehci, EHCI_HRTIMER_POLL_PSS, true);
 			return;
 		}
-		// ehci_dbg(ehci, "Waited too long for the periodic schedule status (%x/%x), giving up\n",
-		// 		want, actual);
+		ehci_dbg("Waited too long for the periodic schedule status (%x/%x), giving up\n",
+			 want, actual);
 	}
 	ehci->PSS_poll_count = 0;
 
 	/* The status is up-to-date; restart or stop the schedule as needed */
-	if (want == 0) {	/* Stopped */
+	if (want == 0) { /* Stopped */
 		if (ehci->periodic_count > 0)
 			ehci_set_command_bit(ehci, CMD_PSE);
-
-	} else {		/* Running */
+	} else { /* Running */
 		if (ehci->periodic_count == 0) {
-
 			/* Turn off the schedule after a while */
-			ehci_enable_event(ehci, EHCI_HRTIMER_DISABLE_PERIODIC,
-					true);
+			ehci_enable_event(ehci, EHCI_HRTIMER_DISABLE_PERIODIC, true);
 		}
 	}
 }
@@ -226,19 +192,17 @@ static void ehci_disable_PSE(struct ehci_hcd *ehci)
 	ehci_clear_command_bit(ehci, CMD_PSE);
 }
 
-
 /* Poll the STS_HALT status bit; see when a dead controller stops */
 static void ehci_handle_controller_death(struct ehci_hcd *ehci)
 {
 	if (!(ehci_readl(ehci, &ehci->regs->status) & STS_HALT)) {
-
 		/* Give up after a few milliseconds */
 		if (ehci->died_poll_count++ < 5) {
 			/* Try again later */
 			ehci_enable_event(ehci, EHCI_HRTIMER_POLL_DEAD, true);
 			return;
 		}
-		// ehci_warn(ehci, "Waited too long for the controller to stop, giving up\n");
+		ehci_warn("Waited too long for the controller to stop, giving up\n");
 	}
 
 	/* Clean up the mess */
@@ -254,7 +218,7 @@ static void ehci_handle_controller_death(struct ehci_hcd *ehci)
 /* start to unlink interrupt QHs  */
 static void ehci_handle_start_intr_unlinks(struct ehci_hcd *ehci)
 {
-	bool		stopped = (ehci->rh_state < EHCI_RH_RUNNING);
+	bool stopped = (ehci->rh_state < EHCI_RH_RUNNING);
 
 	/*
 	 * Process all the QHs on the intr_unlink list that were added
@@ -264,12 +228,10 @@ static void ehci_handle_start_intr_unlinks(struct ehci_hcd *ehci)
 	 * process all the QHs on the list.
 	 */
 	while (!list_empty(&ehci->intr_unlink_wait)) {
-		struct ehci_qh	*qh;
+		struct ehci_qh *qh;
 
-		qh = list_first_entry(&ehci->intr_unlink_wait,
-				struct ehci_qh, unlink_node);
-		if (!stopped && (qh->unlink_cycle ==
-				ehci->intr_unlink_wait_cycle))
+		qh = list_first_entry(&ehci->intr_unlink_wait, struct ehci_qh, unlink_node);
+		if (!stopped && (qh->unlink_cycle == ehci->intr_unlink_wait_cycle))
 			break;
 		list_del_init(&qh->unlink_node);
 		qh->unlink_reason |= QH_UNLINK_QUEUE_EMPTY;
@@ -286,7 +248,7 @@ static void ehci_handle_start_intr_unlinks(struct ehci_hcd *ehci)
 /* Handle unlinked interrupt QHs once they are gone from the hardware */
 static void ehci_handle_intr_unlinks(struct ehci_hcd *ehci)
 {
-	bool		stopped = (ehci->rh_state < EHCI_RH_RUNNING);
+	bool stopped = (ehci->rh_state < EHCI_RH_RUNNING);
 
 	/*
 	 * Process all the QHs on the intr_unlink list that were added
@@ -297,10 +259,9 @@ static void ehci_handle_intr_unlinks(struct ehci_hcd *ehci)
 	 */
 	ehci->intr_unlinking = true;
 	while (!list_empty(&ehci->intr_unlink)) {
-		struct ehci_qh	*qh;
+		struct ehci_qh *qh;
 
-		qh = list_first_entry(&ehci->intr_unlink, struct ehci_qh,
-				unlink_node);
+		qh = list_first_entry(&ehci->intr_unlink, struct ehci_qh, unlink_node);
 		if (!stopped && qh->unlink_cycle == ehci->intr_unlink_cycle)
 			break;
 		list_del_init(&qh->unlink_node);
@@ -314,7 +275,6 @@ static void ehci_handle_intr_unlinks(struct ehci_hcd *ehci)
 	}
 	ehci->intr_unlinking = false;
 }
-
 
 /* Start another free-iTDs/siTDs cycle */
 static void start_free_itds(struct ehci_hcd *ehci)
@@ -333,8 +293,8 @@ static void start_free_itds(struct ehci_hcd *ehci)
 /* Wait for controller to stop using old iTDs and siTDs */
 static void end_free_itds(struct ehci_hcd *ehci)
 {
-	struct ehci_itd		*itd, *n;
-	struct ehci_sitd	*sitd, *sn;
+	struct ehci_itd *itd, *n;
+	struct ehci_sitd *sitd, *sn;
 
 	if (ehci->rh_state < EHCI_RH_RUNNING) {
 		ehci->last_itd_to_free = NULL;
@@ -343,24 +303,22 @@ static void end_free_itds(struct ehci_hcd *ehci)
 
 	list_for_each_entry_safe(itd, n, &ehci->cached_itd_list, itd_list) {
 		list_del(&itd->itd_list);
-		// dma_pool_free(ehci->itd_pool, itd, itd->itd_dma);//akira 20202020
+		// dma_pool_free(ehci->itd_pool, itd, itd->itd_dma);
 		usb_dma_free(itd, itd->itd_dma);
 		if (itd == ehci->last_itd_to_free)
 			break;
 	}
 	list_for_each_entry_safe(sitd, sn, &ehci->cached_sitd_list, sitd_list) {
 		list_del(&sitd->sitd_list);
-		// dma_pool_free(ehci->sitd_pool, sitd, sitd->sitd_dma);//akira 20202020
+		// dma_pool_free(ehci->sitd_pool, sitd, sitd->sitd_dma);
 		usb_dma_free(sitd, sitd->sitd_dma);
 		if (sitd == ehci->last_sitd_to_free)
 			break;
 	}
 
-	if (!list_empty(&ehci->cached_itd_list) ||
-			!list_empty(&ehci->cached_sitd_list))
+	if (!list_empty(&ehci->cached_itd_list) || !list_empty(&ehci->cached_sitd_list))
 		start_free_itds(ehci);
 }
-
 
 /* Handle lost (or very late) IAA interrupts */
 static void ehci_iaa_watchdog(struct ehci_hcd *ehci)
@@ -397,30 +355,25 @@ static void ehci_iaa_watchdog(struct ehci_hcd *ehci)
 		ehci_writel(ehci, STS_IAA, &ehci->regs->status);
 	}
 
-	// ehci_dbg(ehci, "IAA watchdog: status %x cmd %x\n", status, cmd);
-
+	ehci_dbg("IAA watchdog: status %x cmd %x\n", status, cmd);
 	end_iaa_cycle(ehci);
 }
-
 
 /* Enable the I/O watchdog, if appropriate */
 static void turn_on_io_watchdog(struct ehci_hcd *ehci)
 {
 	/* Not needed if the controller isn't running or it's already enabled */
-	if (ehci->rh_state != EHCI_RH_RUNNING ||
-			(ehci->enabled_hrtimer_events &
-				BIT(EHCI_HRTIMER_IO_WATCHDOG)))
+	if (ehci->rh_state != EHCI_RH_RUNNING
+	    || (ehci->enabled_hrtimer_events & BIT(EHCI_HRTIMER_IO_WATCHDOG)))
 		return;
 
 	/*
 	 * Isochronous transfers always need the watchdog.
 	 * For other sorts we use it only if the flag is set.
 	 */
-	if (ehci->isoc_count > 0 || (ehci->need_io_watchdog &&
-			ehci->async_count + ehci->intr_count > 0))
-	{
+	if (ehci->isoc_count > 0
+	    || (ehci->need_io_watchdog && ehci->async_count + ehci->intr_count > 0))
 		ehci_enable_event(ehci, EHCI_HRTIMER_IO_WATCHDOG, true);
-	}
 }
 
 /*
@@ -448,15 +401,15 @@ void ehci_hrtimer_func(void *t)
 // static enum hrtimer_restart ehci_hrtimer_func(struct hrtimer *t)
 {
 	// struct ehci_hcd	*ehci = container_of(t, struct ehci_hcd, hrtimer);
-	struct ehci_hcd	*ehci = (struct ehci_hcd *)t;
+	struct ehci_hcd *ehci = (struct ehci_hcd *)t;
 	// ktime_t		now;
-	unsigned long	now;
-	unsigned long	events;
-	unsigned long	flags;
-	unsigned	e;
+	unsigned long now;
+	unsigned long events;
+	unsigned long flags;
+	unsigned e;
 
-	// spin_lock_irqsave(&ehci->lock, flags);//akira 20202020
-	hal_spin_lock(&ehci->lock);
+	// spin_lock_irqsave(&ehci->lock, flags);
+	flags = hal_spin_lock_irqsave(&ehci->lock);
 
 	events = ehci->enabled_hrtimer_events;
 	ehci->enabled_hrtimer_events = 0;
@@ -466,26 +419,21 @@ void ehci_hrtimer_func(void *t)
 	 * Check each pending event.  If its time has expired, handle
 	 * the event; otherwise re-enable it.
 	 */
-	now = rt_tick_get();
-	// now = HAL_GetTimeNs();
+	now = hal_gettime_ns();
 
-	// for_each_set_bit(e, &events, EHCI_HRTIMER_NUM_EVENTS)//akira 20202020
-	for (int e = 0; e < EHCI_HRTIMER_NUM_EVENTS; e++)
-	{
-		if (events & BIT(e))
-		{
-			if (now >= ehci->hr_timeouts[e]) // if (now.tv64 >= ehci->hr_timeouts[e].tv64)
-			{
+	// for_each_set_bit(e, &events, EHCI_HRTIMER_NUM_EVENTS)
+	for (int e = 0; e < EHCI_HRTIMER_NUM_EVENTS; e++) {
+		if (events & BIT(e)) {
+			// if (now.tv64 >= ehci->hr_timeouts[e].tv64)
+			if (now >= ehci->hr_timeouts[e]) {
 				event_handlers[e](ehci);
-			}
-			else
-			{
+			} else {
 				ehci_enable_event(ehci, e, false);
 			}
 		}
 	}
 
-	hal_spin_unlock(&ehci->lock);
-	// spin_unlock_irqrestore(&ehci->lock, flags);//akira 20202020
-	// return HRTIMER_NORESTART;//akira 20202020
+	hal_spin_unlock_irqrestore(&ehci->lock, flags);
+	// spin_unlock_irqrestore(&ehci->lock, flags);
+	// return HRTIMER_NORESTART;
 }

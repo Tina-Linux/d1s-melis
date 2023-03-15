@@ -1,22 +1,34 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                                  File System
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2011-2014, Sunny China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : fstools.c
-* By      : Sunny
-* Version : v1.0
-* Date    : 2011-1-15
-* Descript: vfs tools, code is extracted from linux.
-* Update  : date                auther      ver     notes
-*           2011-3-15 15:25:05  Sunny       1.0     Create this file.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "sys_fsys_i.h"
 #include "errno.h"
 #include "fsys_debug.h"
@@ -59,7 +71,7 @@ int32_t esFSYS_format(const char *partname, const char *fstype, __hdle fmtpara)
 
     semap_on = 1;
 
-    /* Ê¶±ğÎÄ¼şÏµÍ³                 */
+    /* è¯†åˆ«æ–‡ä»¶ç³»ç»Ÿ                 */
     for (pFS = pFSRoot; pFS; pFS = pFS->next)
     {
         if (!strcmp(pFS->name, fstype))
@@ -142,7 +154,7 @@ int32_t esFSYS_statfs(const char *path, __hdle buf, uint32_t flags)
         return EPDK_FAIL;
     }
 
-    /* »ñÈ¡ÓÉpFileNameÂ·¾¶ÃûÖĞµÄÅÌ·ûÖ¸¶¨µÄ·ÖÇøÖ¸Õë£¬²¢ÎöÈ¡ÅÌ·ûÒÔÍâµÄÂ·¾¶Ãû */
+    /* è·å–ç”±pFileNameè·¯å¾„åä¸­çš„ç›˜ç¬¦æŒ‡å®šçš„åˆ†åŒºæŒ‡é’ˆï¼Œå¹¶æå–ç›˜ç¬¦ä»¥å¤–çš„è·¯å¾„å */
     sb  = path_to_sb(path, NULL);
     if (!sb)
     {
@@ -317,7 +329,7 @@ int32_t esFSYS_getfscharset(const char *partname, int32_t *pCharset)
         return EPDK_FAIL;
     }
 
-    /* »ñÈ¡ÎÄ¼şÏµÍ³µ±Ç°µÄ±àÂë */
+    /* è·å–æ–‡ä»¶ç³»ç»Ÿå½“å‰çš„ç¼–ç  */
     if (pCharset)
     {
         *pCharset = get_current_charset();

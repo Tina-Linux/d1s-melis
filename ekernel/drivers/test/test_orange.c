@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <mod_orange.h>
 #include <rtthread.h>
 #include <log.h>
@@ -14,28 +45,28 @@
 typedef struct _theme_t
 {
     __u32  id;
-    __u32  size;//ԭʼ�Ĵ�С
-    __u32  size_com;//�洢�Ĵ�С
+    __u32  size;//原始的大小
+    __u32  size_com;//存储的大小
     void  *buf;
 } theme_t, *HTHEME_i;
 
 
 typedef struct tag_HLANGLIST
 {
-    __u16       LangID;         //LangID�� �磺Ox400
-    __u32       StringTabOff;   //�ַ�������Ӧ��ʼ��ַ��
+    __u16       LangID;         //LangID号 如：Ox400
+    __u32       StringTabOff;   //字符串表对应起始地址；
 } HLANGLIST;
 
 typedef struct tag_HLANHEAD
 {
     FILE        *fp;
-    HLANGLIST   *pHLangList;    //ָ��������Ϣ����Ϣ��
-    __u32       LangTabOff;     //LANG����ʼ��ַƫ����
-    __u16       LangSize;       //LANG����ÿ����Ŀ��С
-    __u32       LangNum;        //LANG����Ŀ����,�������������
-    __u16       StringSize;     //�ַ���size
-    __u32       StringNum;      //�ַ���������
-    __u32       align;          //���ݱ߽����ģʽ��
+    HLANGLIST   *pHLangList;    //指向语言信息表信息；
+    __u32       LangTabOff;     //LANG表起始地址偏移量
+    __u16       LangSize;       //LANG表中每个条目大小
+    __u32       LangNum;        //LANG表条目个数,既语言种类个数
+    __u16       StringSize;     //字符串size
+    __u32       StringNum;      //字符串个数；
+    __u32       align;          //数据边界对齐模式；
     __u16       *pIdTab;
 } HHEAD;
 typedef void *HRES;
@@ -470,7 +501,7 @@ static HTHEME dsk_theme_open(__u32 theme_id)
         __log("xx az100.....");
         htheme->size = AZ100_GetUncompressSize(pbuf, htheme->size_com);
     }
-    else//δѹ��
+    else//未压缩
     {
         htheme->size = htheme->size_com;
     }

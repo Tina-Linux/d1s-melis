@@ -7,12 +7,12 @@
 *
 * DISCLAIMER
 * THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
-* IF YOU NEED TO INTEGRATE THIRD PARTY¡¯S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
-* IN ALLWINNERS¡¯SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* IF YOU NEED TO INTEGRATE THIRD PARTYÂ¡Â¯S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSÂ¡Â¯SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
 * ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
 * ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
 * COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
-* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY¡¯S TECHNOLOGY.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYÂ¡Â¯S TECHNOLOGY.
 *
 *
 * THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
@@ -45,34 +45,51 @@
 #define SUNXI_CLK_UART3 HAL_CLK_PERIPH_UART3
 #define SUNXI_RST_UART3 0
 
+#define SUNXI_CLK_UART4 0 /* no support */
+#define SUNXI_RST_UART4 0
 
-#define SUNXI_IRQ_UART0                (81)  /* 108 uart0 interrupt */
-#define SUNXI_IRQ_UART1                (82)  /* 109 uart1 interrupt */
-#define SUNXI_IRQ_UART2                (83)  /* 110 uart2 interrupt */
-#define SUNXI_IRQ_UART3                (84)  /* 111 uart3 interrupt */
+#define SUNXI_CLK_UART5 0 /* no support */
+#define SUNXI_RST_UART5 0
+
+
+#define SUNXI_IRQ_UART0		(81)  /* 108 uart0 interrupt */
+#define SUNXI_IRQ_UART1		(82)  /* 109 uart1 interrupt */
+#define SUNXI_IRQ_UART2		(83)  /* 110 uart2 interrupt */
+#define SUNXI_IRQ_UART3		(84)  /* 111 uart3 interrupt */
+#define SUNXI_IRQ_UART4		(0)  /* no support */
+#define SUNXI_IRQ_UART5		(0)  /* no support */
 /* base register infomation */
-#define SUNXI_UART0_BASE                           (0x05000000)
-#define SUNXI_UART1_BASE                           (0x05000400)
-#define SUNXI_UART2_BASE                           (0x05000800)
-#define SUNXI_UART3_BASE                           (0x05000c00)
+#define SUNXI_UART0_BASE	(0x05000000)
+#define SUNXI_UART1_BASE	(0x05000400)
+#define SUNXI_UART2_BASE	(0x05000800)
+#define SUNXI_UART3_BASE	(0x05000c00)
+#define SUNXI_UART4_BASE	(0xffffffff) /* no support */
+#define SUNXI_UART5_BASE	(0xffffffff) /* no support */
 
-#define UART_FIFO_SIZE                            (256)
-#define UART0_GPIO_FUNCTION                        (5)
-#define UART1_GPIO_FUNCTION                        (5)
-#define UART2_GPIO_FUNCTION                        (5)
-#define UART3_GPIO_FUNCTION                        (5)
+#define UART_FIFO_SIZE		(256)
+#define UART0_GPIO_FUNCTION	(5)
+#define UART1_GPIO_FUNCTION	(5)
+#define UART2_GPIO_FUNCTION	(5)
+#define UART3_GPIO_FUNCTION	(5)
+#define UART4_GPIO_FUNCTION	(5) /* no support */
+#define UART5_GPIO_FUNCTION	(5) /* no support */
 
-#define UART0_TX    GPIOH(9)
-#define UART0_RX   GPIOH(10)
+#define UART0_TX	GPIOH(9)
+#define UART0_RX	GPIOH(10)
 
-#define UART1_TX    GPIOG(6)
-#define UART1_RX   GPIOG(7)
+#define UART1_TX	GPIOG(6)
+#define UART1_RX	GPIOG(7)
 
-#define UART2_TX    GPIOH(5)
-#define UART2_RX   GPIOH(6)
+#define UART2_TX	GPIOH(5)
+#define UART2_RX	GPIOH(6)
 
-#define UART3_TX    GPIOH(0)
-#define UART3_RX   GPIOH(1)
+#define UART3_TX	GPIOH(0)
+#define UART3_RX	GPIOH(1)
 
+#define UART4_TX	GPIOH(0) /* no support */
+#define UART4_RX	GPIOH(1) /* no support */
+
+#define UART5_TX	GPIOH(0) /* no support */
+#define UART5_RX	GPIOH(1) /* no support */
 
 #endif /*__UART_SUN8IW19_H__  */

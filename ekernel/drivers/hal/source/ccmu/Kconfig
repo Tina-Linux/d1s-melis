@@ -7,12 +7,12 @@ config DRIVERS_CCMU
 config DRIVERS_SUNXI_CLK
     bool "enable sunxi ccmu driver"
 	depends on DRIVERS_CCMU
-        default y
+        default n
 
 config DRIVERS_SUNXI_CCU
     bool "enable sunxi-ng ccmu driver"
 	depends on DRIVERS_CCMU
-        default n
+        default y
 
 config HAL_TEST_CLK
     bool "enable sunxi ccmu hal APIs test command"
@@ -22,6 +22,11 @@ config HAL_TEST_CLK
 config HAL_TEST_CCU
     bool "enable sunxi-ng ccmu hal APIs test command"
 	depends on DRIVERS_SUNXI_CCU
+        default n
+
+config NO_INFLUENCE_ON_CLOCK_SOURCE
+    bool "donot disable parent when clk disable"
+	depends on DRIVERS_CCMU
         default n
 
 endmenu

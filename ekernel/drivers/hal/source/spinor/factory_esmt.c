@@ -16,7 +16,13 @@ static struct nor_info idt_esmt[] =
         .model = "en25qh128",
         .id = {0x1c, 0x70, 0x18},
         .total_size = SZ_16M,
-        .flag = SUPPORT_GENERAL,
+        .flag = SUPPORT_ALL_ERASE_BLK,
+    },
+    {
+        .model = "pn25f64b",
+        .id = {0x1c, 0x70, 0x17},
+        .total_size = SZ_8M,
+        .flag = SUPPORT_ALL_ERASE_BLK,
     },
 };
 

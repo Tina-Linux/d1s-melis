@@ -1,30 +1,33 @@
 /*
-*******************************************************************************************************************
-*                                                           Module Orange
-*                                                   the embedded Graphical module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                            Copyright(C), 2006-2008, Softwinner Microelectronic Co., Ltd.
-*                                                          All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-*File Name£∫    core_longname.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY‚ÄôS TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS‚ÄôSDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY‚ÄôS TECHNOLOGY.
 *
-*Author£∫       William Wang
 *
-*Version :      1.1.0
-*
-*Date:          2009-11-24
-*
-*Description :  long string move implement
-*
-*Others :       None at present.
-*
-* History :
-*
-* <Author>          <time>          <version>     <description>
-*
-* William Wang     2009-11-24         1.1.0          Create File
-*
-*******************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "core_i.h"
 #include <kconfig.h>
@@ -622,7 +625,7 @@ __s32  GUI_LongStringStop(__hdle hString)
     }
 
     LONGSTR_LOCK();
-    /*µ»¥˝moveΩ· ¯÷Æ∫Û£¨»ª∫Û∑µªÿ*/
+    /*Á≠âÂæÖmoveÁªìÊùü‰πãÂêéÔºåÁÑ∂ÂêéËøîÂõû*/
     show_info->status = LONGSTRING_STOP;
     LONGSTR_UNLOCK();
     return ORANGE_OK;
@@ -636,7 +639,7 @@ __s32  GUI_LongStringStop(__hdle hString)
 *
 * date:             2009-11-25
 *
-* Description:      œµÕ≥≥ı ºªØ ±µ˜”√£¨Œ™¡ÀΩ⁄ °◊ ‘¥£¨≤¢≤ª¬Ì…œ∑÷≈‰◊ ‘¥£¨Ωˆ‘⁄”– µ¿˝ ±≤≈∑÷≈‰◊ ‘¥
+* Description:      Á≥ªÁªüÂàùÂßãÂåñÊó∂Ë∞ÉÁî®Ôºå‰∏∫‰∫ÜËäÇÁúÅËµÑÊ∫êÔºåÂπ∂‰∏çÈ©¨‰∏äÂàÜÈÖçËµÑÊ∫êÔºå‰ªÖÂú®ÊúâÂÆû‰æãÊó∂ÊâçÂàÜÈÖçËµÑÊ∫ê
 *
 * parameters:
 *
@@ -659,7 +662,7 @@ void  GUI_LongStringInit(void)
 *
 * date:             2009-11-25
 *
-* Description:      ∑÷≈‰ µ÷ ◊ ‘¥£¨æ°‘⁄”–LongString µ¿˝¥¥Ω® ± π”√
+* Description:      ÂàÜÈÖçÂÆûË¥®ËµÑÊ∫êÔºåÂ∞ΩÂú®ÊúâLongStringÂÆû‰æãÂàõÂª∫Êó∂‰ΩøÁî®
 *
 * parameters:
 *
@@ -811,7 +814,7 @@ __hdle GUI_LongStringCreate(__show_info_move_t *str_move)
 
     if (str_Inited == ORANGE_FALSE)
     {
-        /*∑÷≈‰◊ ‘¥∏¯longstring∂‘œÛ*/
+        /*ÂàÜÈÖçËµÑÊ∫êÁªôlongstringÂØπË±°*/
         str_Inited = GUI_LongStringMalloc();
 
         if (str_Inited == ORANGE_FALSE)
@@ -914,7 +917,7 @@ __s32 GUI_LongStringDelete(__hdle hString)
         return ORANGE_FAIL;
     }
 
-    /*œ»Õ£÷π◊÷∑˚¥Æπˆ∂Ø*/
+    /*ÂÖàÂÅúÊ≠¢Â≠óÁ¨¶‰∏≤ÊªöÂä®*/
     __msg("before GUI_LongStringStop");
     GUI_LongStringStop(hString);
     __msg("after GUI_LongStringStop");
@@ -944,5 +947,3 @@ __s32 GUI_LongStringDelete(__hdle hString)
     LONGSTR_UNLOCK();
     return ORANGE_OK;
 }
-
-

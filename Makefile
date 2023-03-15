@@ -415,9 +415,9 @@ MELISINCLUDE    := \
                     -Iinclude/melis/of                                  \
                     -Iinclude/melis/sys                                 \
                     -Iinclude/melis/video                               \
-                    -Iekernel/subsys/finsh_cli                          \
+                    -Iekernel/components/thirdparty/finsh_cli           \
                     -Iekernel/core/rt-thread/include                    \
-                    -Iekernel/subsys/thirdparty/dfs/include             \
+                    -Iekernel/components/thirdparty/dfs/include         \
                     -Iekernel/drivers/hal/source                        \
                     -Iekernel/drivers/include/osal                      \
                     $(USERINCLUDE)
@@ -734,6 +734,7 @@ all: melis
 #
 include ekernel/arch/arch.mk
 
+include ekernel/arch/boot/Makefile
 
 ARCH_CPPFLAGS := $(ARCH_VFPUSED)
 ARCH_AFLAGS   := $(ARCH_VFPUSED)
@@ -751,7 +752,7 @@ ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= -Os -g -gdwarf-2 -gstrict-dwarf
 #KBUILD_CFLAGS	+= -Ofast -g -gdwarf-2 -gstrict-dwarf
 else
-KBUILD_CFLAGS	+= -O0 -g -gdwarf-2 -gstrict-dwarf
+KBUILD_CFLAGS	+= -O$(CONFIG_CC_OPTIMIZE_LEVEL) -g -gdwarf-2 -gstrict-dwarf
 endif
 KBUILD_CFLAGS   += -Wstrict-prototypes -Wundef
 #KBUILD_CFLAGS   += -Wshadow
@@ -930,7 +931,7 @@ KBUILD_CFLAGS   += $(call cc-option,-Werror=implicit-int)
 KBUILD_CFLAGS   += $(call cc-option,-Werror=strict-prototypes)
 
 # Prohibit date/time macros, which would make the build non-deterministic
-KBUILD_CFLAGS   += $(call cc-option,-Werror=date-time)
+#KBUILD_CFLAGS   += $(call cc-option,-Werror=date-time)
 
 # use the deterministic mode of AR if available
 KBUILD_ARFLAGS := $(call ar-option,D)
@@ -1137,6 +1138,17 @@ endif
 ifdef CONFIG_GDB_SCRIPTS
 	$(Q)ln -fsn `cd $(srctree) && /bin/pwd`/scripts/gdb/melis-gdb.py
 endif
+ifeq ($(CONFIG_KERNEL_COMPRESS), y)
+ifeq ($(CONFIG_RV32), y)
+	$(Q)$(MAKE) $(build)=ekernel/arch/riscv/compressed Image
+endif
+else
+	@cp ekernel/melis30.elf ekernel/arch/boot/Image
+	@cp ekernel/arch/boot/Image ekernel/arch/boot/zImage
+	$(Q)$(STRIP) ekernel/arch/boot/zImage
+	$(Q)$(OBJCOPY) -O binary ekernel/arch/boot/zImage \
+			ekernel/arch/boot/zImage.bin
+endif
 	+$(call if_changed,link-melis)
 
 # The actual objects are generated when descending,
@@ -1200,7 +1212,14 @@ prepare1: prepare2 $(version_h) include/generated/utsrelease.h \
                    include/config/auto.conf
 	$(cmd_crmodverdir)
 
-archprepare: archheaders archscripts prepare1 scripts_basic
+PHONY += prepare_fex
+prepare_fex:
+ifeq ($(CONFIG_DRIVER_SYSCONFIG), y)
+	@$(kecho) '  CC      sysconfig.fex'
+	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/mkfex.sh $(srctree) > /dev/null
+endif
+
+archprepare: archheaders archscripts prepare1 scripts_basic prepare_fex
 
 prepare0: archprepare FORCE
 	$(Q)$(MAKE) $(build)=.

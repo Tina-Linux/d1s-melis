@@ -1,55 +1,123 @@
+#include <stdlib.h>
+#include <interrupt.h>
+#include <hal_atomic.h>
 #include <hal_gpio.h>
 #include <hal_dma.h>
-#include <hal_clk.h>
-#include <hal_reset.h>
 #include <hal_cache.h>
 #include <sunxi_hal_ledc.h>
+#ifdef CONFIG_COMPONENTS_PM
+#include <pm_devops.h>
+#endif
 
+/* define this macro when debugging is required */
+/* #define LEDC_DEBUG */
 #ifdef LEDC_DEBUG
 #define ledc_info(fmt, args...)  printf("%s()%d - "fmt, __func__, __LINE__, ##args)
 #else
 #define ledc_info(fmt, args...)
 #endif
 
+#define led_err(fmt, args...)  printf("%s()%d - "fmt, __func__, __LINE__, ##args)
+
+#define LEDC_PIN_SLEEP 0
+
+struct ledc_config ledc_config = {
+	.led_count = 3,
+	.reset_ns = 84,
+	.t1h_ns = 800,
+	.t1l_ns = 450,
+	.t0h_ns = 400,
+	.t0l_ns = 850,
+	.wait_time0_ns = 84,
+	.wait_time1_ns = 84,
+	.wait_data_time_ns = 600000,
+	.output_mode = "GRB",
+};
+
 static unsigned long base_addr = LEDC_BASE;
 struct sunxi_dma_chan *dma_chan;
+struct sunxi_led *led;
+
+static hal_irqreturn_t sunxi_ledc_irq_handler(void *dummy)
+{
+	ledc_info("=======enter irq_handler=====\n");
+	struct sunxi_led *led = (struct sunxi_led *)dummy;
+	unsigned int irq_status;
+
+	irq_status = hal_ledc_get_irq_status();
+	hal_ledc_clear_all_irq();
+
+	if (irq_status & LEDC_TRANS_FINISH_INT)
+		led->result = RESULT_COMPLETE;
+
+	if (irq_status & LEDC_WAITDATA_TIMEOUT_INT)
+		led->result = RESULT_ERR;
+
+	if (irq_status & LEDC_FIFO_OVERFLOW_INT)
+		led->result = RESULT_ERR;
+
+	led->config.length = 0;
+	hal_ledc_reset();
+
+	return HAL_IRQ_OK;
+}
+
+int sunxi_led_get_config(struct ledc_config *config)
+{
+	*config = ledc_config;
+	return 0;
+}
 
 static int ledc_clk_init(void)
 {
 	hal_clk_type_t	clk_type = HAL_SUNXI_CCU;
 	hal_clk_id_t	mod_clk_id = CLK_LEDC;
 	hal_clk_id_t	bus_clk_id = CLK_BUS_LEDC;
-	hal_clk_t mod_clk;
-	hal_clk_t bus_clk;
-
 	hal_reset_type_t reset_type = HAL_SUNXI_RESET;
+#ifdef CONFIG_ARCH_SUN20IW2
+	hal_reset_id_t	reset_id = RST_LEDC;
+#else
 	hal_reset_id_t	reset_id = RST_BUS_LEDC;
-	struct reset_control *reset;
+#endif
 
-	reset = hal_reset_control_get(reset_type, reset_id);
-	if (hal_reset_control_deassert(reset))
+#ifdef CONFIG_ARCH_SUN8IW18P1
+	hal_clock_enable(CLK_BUS_LEDC);
+#else
+	led->reset = hal_reset_control_get(reset_type, reset_id);
+	if (hal_reset_control_deassert(led->reset))
 	{
 		ledc_info("ledc reset deassert  failed!");
 		return -1;
 	}
-	hal_reset_control_put(reset);
+	hal_reset_control_put(led->reset);
 
-	mod_clk = hal_clock_get(clk_type, mod_clk_id);
-	if (hal_clock_enable(mod_clk))
+	led->mod_clk = hal_clock_get(clk_type, mod_clk_id);
+	if (hal_clock_enable(led->mod_clk))
 	{
 		ledc_info("ledc clk enable mclk failed!");
 		return -1;
 	}
 
-	bus_clk = hal_clock_get(clk_type, bus_clk_id);
-	if (hal_clock_enable(bus_clk))
+	led->bus_clk = hal_clock_get(clk_type, bus_clk_id);
+	if (hal_clock_enable(led->bus_clk))
 	{
 		ledc_info("ledc clk enable mclk failed!");
 		return -1;
 	}
-
+#endif
 
 	return 0;
+}
+
+static void ledc_clk_exit(void)
+{
+#ifdef CONFIG_ARCH_SUN8IW18P1
+	hal_clock_disable(CLK_BUS_LEDC);
+#else
+	hal_clock_disable(led->bus_clk);
+	hal_clock_disable(led->bus_clk);
+	hal_reset_control_assert(led->reset);
+#endif
 }
 
 static int ledc_pinctrl_init(void)
@@ -62,6 +130,12 @@ static int ledc_pinctrl_init(void)
 
 	return 0;
 }
+
+static void ledc_pinctrl_exit(void)
+{
+	hal_gpio_pinmux_set_function(LEDC_PIN, LEDC_PIN_SLEEP);
+}
+
 static void ledc_dump_reg(void)
 {
 	ledc_info("LEDC_CTRL_REG = %0x\n", hal_readl(base_addr + LEDC_CTRL_REG));
@@ -192,7 +266,8 @@ static void ledc_set_wait_time0_ns(unsigned int wait_time0_ns)
 
 static void ledc_set_wait_time1_ns(unsigned long long wait_time1_ns)
 {
-	unsigned long long tmp, max = LEDC_WAIT_TIME1_MAX_NS;
+	//unsigned long tmp;
+	unsigned long long max = LEDC_WAIT_TIME1_MAX_NS;
 	unsigned int min = LEDC_WAIT_TIME1_MIN_NS;
 	unsigned int n, reg_val;
 
@@ -454,28 +529,175 @@ void hal_ledc_reset(void)
 	ledc_soft_reset();
 }
 
-void hal_ledc_deinit(void)
-{
-	hal_dma_chan_free(dma_chan);
-	hal_gpio_pinmux_set_function(GPIOE(2), 2);
-	//clk_deinit
-}
-
-void hal_ledc_init(void)
+#ifdef CONFIG_COMPONENTS_PM
+static inline void sunxi_ledc_save_regs(struct sunxi_led *led)
 {
 	int i;
-	unsigned int reg_val = 0;
+
+	for (i = 0; i < ARRAY_SIZE(sunxi_ledc_regs_offset); i++)
+		led->regs_backup[i] = readl(base_addr + sunxi_ledc_regs_offset[i]);
+}
+
+static inline void sunxi_ledc_restore_regs(struct sunxi_led *led)
+{
+	int i;
+
+	for (i = 0; i < ARRAY_SIZE(sunxi_ledc_regs_offset); i++)
+		writel(led->regs_backup[i], base_addr + sunxi_ledc_regs_offset[i]);
+}
+
+static int hal_ledc_resume(struct pm_device *dev, suspend_mode_t mode)
+{
+	int ret = 0;
 
 	if (ledc_clk_init())
 	{
-		ledc_info("ledc clk init failed \n");
+		led_err("ledc clk init failed \n");
+		ret = -1;
+		goto err0;
 	}
 
 	if (ledc_pinctrl_init())
 	{
-		ledc_info("ledc pinctrl init failed \n");
+		led_err("ledc pinctrl init failed \n");
+		ret = -1;
+		goto err1;
+	}
+	sunxi_ledc_restore_regs(led);
+	hal_enable_irq(SUNXI_IRQ_LEDC);
+	ledc_info("hal ledc resume");
+
+	return 0;
+
+err1:
+	ledc_clk_exit();
+err0:
+	return ret;
+}
+
+static int hal_ledc_suspend(struct pm_device *dev, suspend_mode_t mode)
+{
+	hal_disable_irq(SUNXI_IRQ_LEDC);
+	sunxi_ledc_save_regs(led);
+	ledc_pinctrl_exit();
+	ledc_clk_exit();
+	ledc_info("hal ledc suspend");
+	return 0;
+}
+
+struct pm_devops pm_ledc_ops = {
+	.suspend = hal_ledc_suspend,
+	.resume = hal_ledc_resume,
+};
+
+struct pm_device pm_ledc = {
+	.name = "sunxi_ledc",
+	.ops = &pm_ledc_ops,
+};
+#endif
+
+int hal_ledc_init(void)
+{
+	ledc_info("hal_led_init\n");
+
+	led = malloc(sizeof(struct sunxi_led));
+	if (NULL == led) {
+		led_err("sunxi led malloc err\n");
+		return -1;
+	}
+
+	sunxi_led_get_config(&led->config);
+
+	led->config.data = malloc(sizeof(unsigned int) * led->config.led_count);
+	if (NULL == led->config.data) {
+		led_err("sunxi led config data malloc err\n");
+		goto err1;
+	}
+
+	if (ledc_clk_init())
+	{
+		led_err("ledc clk init failed \n");
+	}
+
+	if (ledc_pinctrl_init())
+	{
+		led_err("ledc pinctrl init failed \n");
 	}
 
 	hal_dma_chan_request(&dma_chan);
+
+	if (hal_request_irq(SUNXI_IRQ_LEDC, sunxi_ledc_irq_handler, "ledc", led) < 0)
+	{
+		led_err("ledc request irq failed \n");
+		goto errirq;
+	}
+
+	hal_enable_irq(SUNXI_IRQ_LEDC);
+
+#ifdef CONFIG_COMPONENTS_PM
+	pm_devops_register(&pm_ledc);
+#endif
+
+	ledc_info("hal_led_init success\n");
+
+	return 0;
+
+errirq:
+	free(led->config.data);
+err1:
+	free(led);
+
+	return -1;
 }
 
+void hal_ledc_deinit(void)
+{
+#ifdef CONFIG_COMPONENTS_PM
+	pm_devops_unregister(&pm_ledc);
+#endif
+	hal_disable_irq(SUNXI_IRQ_LEDC);
+	hal_free_irq(SUNXI_IRQ_LEDC);
+	hal_dma_chan_free(dma_chan);
+	ledc_pinctrl_exit();
+	ledc_clk_exit();
+	free(led->config.data);
+	free(led);
+}
+
+int sunxi_set_all_led(unsigned int brightness)
+{
+	int i;
+
+	led->config.length = led->config.led_count;
+	for(i = 0;i < led->config.led_count;i++)
+		led->config.data[i] = brightness;
+
+	hal_ledc_trans_data(&led->config);
+
+	return 0;
+}
+
+int sunxi_set_led_brightness(int led_num, unsigned int brightness)
+{
+	u32 reg_val;
+
+	if (NULL == led) {
+		led_err("err : ledc is not init\n");
+		return -1;
+	}
+
+	if (led_num > led->config.led_count) {
+		led_err("has not the %d led\n", led_num);
+		return -1;
+	}
+
+	led->config.length = 1;
+	led->config.data[led_num-1] = brightness;
+
+	hal_ledc_trans_data(&led->config);
+
+	reg_val = hal_ledc_get_irq_status();
+	ledc_info("ledc interrupt status reg is %x", reg_val);
+
+	return 0;
+}

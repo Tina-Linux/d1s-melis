@@ -4,22 +4,85 @@
 #include "../platform-msgbox.h"
 #include "hal_msgbox.h"
 #include "hal_interrupt.h"
+#ifdef CONFIG_ARCH_SUN20IW2
+#ifdef CONFIG_ARCH_XTENXA /* only for dsp */
 #include "aw_io.h"
+#endif
+#endif
 #include "hal_clk.h"
 #include "hal_reset.h"
 #include "hal_mutex.h"
+#include "hal_log.h"
+#ifdef CONFIG_STANDBY
+#include <standby/standby.h>
+#endif
+
+#ifdef CONFIG_COMPONENTS_PM
+#include "pm_devops.h"
+#endif
 
 static struct msg_endpoint *it_edp = NULL;
 static hal_mutex_t it_edp_mutex;
 
 #define MSGBOX_MAX_QUEUE 8
 
+enum msgbox_err {
+	MSGBOX_OK = 0,
+	MSGBOX_ERR = -1,
+	MSGBOX_PM_ERR = -2,
+};
+
 static inline int calculte_n(int local, int remote)
 {
-	if (remote < local)
-		return remote;
-	else
-		return remote - 1;
+#if defined(CONFIG_ARCH_SUN8IW20)|| defined(CONFIG_SOC_SUN20IW1) \
+               || defined(CONFIG_SOC_SUN20IW3)
+/*
+ *                 | remote core (send)   |
+ *                 | ARM:0 | DSP:1 | RV:2 |
+ * local  |  ARM:0 |   /   |   0   |  1   |
+ * core   |  DSP:1 |   0   |   /   |  1   |
+ * (recv) |  RV :2 |   0   |   1   |  /   |
+*/
+static int to_coef_n[4][4] = {
+	{-1, 0, 1, -1},
+	{0, -1, 1, -1},
+	{0, 1, -1, -1},
+	{-1, -1, -1, -1}
+};
+	return to_coef_n[local][remote];
+#elif defined(CONFIG_ARCH_SUN20IW2)
+/*
+ *                 | remote core (send)   |
+ *                 | ARM:0 | DSP:1 | RV:2 |
+ * local  |  ARM:0 |   /   |   1   |  0   |
+ * core   |  DSP:1 |   0   |   /   |  1   |
+ * (recv) |  RV :2 |   0   |   1   |  /   |
+*/
+static int to_coef_n[4][4] = {
+	{-1, 1, 0, -1},
+	{0, -1, 1, -1},
+	{0, 1, -1, -1},
+	{-1, -1, -1, -1},
+};
+	return to_coef_n[local][remote];
+
+#elif defined(CONFIG_ARCH_SUN55IW3)
+/*
+ *                 | remote core (send)            |
+ *                 | ARM:0 | DSP:1 | CPUS:2 | RV:3 |
+ * local  | ARM:0  |   /   |   1   |  0     |  2   |
+ * core   | DSP:1  |   0   |   /   |  1     |  2   |
+ * (recv) | CPUS:2 |   0   |   1   |  /     |  2   |
+ *	  | RV:3   |   2   |   1   |  0     |  /   |
+*/
+static int to_coef_n[4][4] = {
+	{-1, 1, 0, 2},
+	{0, -1, 1, 2},
+	{0, 1, -1, 2},
+	{2, 1, 0, -1}
+};
+	return to_coef_n[local][remote];
+#endif
 }
 
 static void irq_msgbox_channel_handler(struct msg_endpoint *medp)
@@ -36,28 +99,138 @@ static void irq_msgbox_channel_handler(struct msg_endpoint *medp)
 	msg_irq_s = (void *)MSGBOX_RD_IRQ_STA_REG(
 		medp->local_amp, calculte_n(medp->local_amp, medp->remote_amp));
 
-	while (readl(msg_sts)) {
-		data = readl(msg_reg);
+	while (hal_readl(msg_sts)) {
+		data = hal_readl(msg_reg);
 		if (medp->rec)
 			medp->rec(data, medp->private);
 	}
 
-	writel(1 << (medp->read_ch * 2), msg_irq_s);
+	hal_writel(1 << (medp->read_ch * 2), msg_irq_s);
 }
 
-static int irq_msgbox_handler(int i, void *p)
+static hal_irqreturn_t irq_msgbox_handler(void *p)
 {
 	struct msg_endpoint *t;
 
-	hal_mutex_lock(it_edp_mutex);
+	/* shouled not use mutex in interrupt contex */
 	for (t = it_edp; t != NULL; t = t->next) {
 		irq_msgbox_channel_handler(t);
+	}
+
+	return HAL_IRQ_OK;
+}
+
+#ifdef CONFIG_STANDBY
+static void msgbox_enable_rec_int(struct msg_endpoint *medp);
+
+static int msgbox_suspend(void *data)
+{
+	hal_log_debug("msgbox suspend\r\n");
+	return 0;
+}
+
+static int msgbox_resume(void *data)
+{
+	struct reset_control *rst;
+	hal_clk_t clk;
+
+	hal_log_debug("msgbox resume\r\n");
+	rst = hal_reset_control_get(HAL_SUNXI_RESET, RST_MSGBOX);
+	hal_reset_control_deassert(rst);
+	hal_reset_control_put(rst);
+
+	clk = hal_clock_get(HAL_SUNXI_CCU, CLK_MSGBOX);
+	hal_clock_enable(clk);
+	hal_clock_put(clk);
+
+	hal_mutex_lock(it_edp_mutex);
+	/* add to global list */
+	if (it_edp != NULL) {
+		struct msg_endpoint *t = it_edp;
+		while (t) {
+			msgbox_enable_rec_int(t);
+			t = t->next;
+		}
 	}
 	hal_mutex_unlock(it_edp_mutex);
 
 	return 0;
 }
+#endif
 
+#ifdef CONFIG_COMPONENTS_PM
+static void msgbox_enable_rec_int(struct msg_endpoint *medp);
+static int hal_msgbox_suspend(struct pm_device *dev, suspend_mode_t mode)
+{
+	struct reset_control *rst;
+	hal_clk_t clk;
+
+	rst = hal_reset_control_get(HAL_SUNXI_RESET, RST_MSGBOX);
+	if (!rst)
+		return MSGBOX_PM_ERR;
+
+	hal_reset_control_assert(rst);
+	hal_reset_control_put(rst);
+
+	clk = hal_clock_get(HAL_SUNXI_CCU, CLK_MSGBOX);
+	if (!clk)
+		return MSGBOX_PM_ERR;
+
+	hal_clock_disable(clk);
+	hal_clock_put(clk);
+
+	hal_disable_irq(IRQ_MSGBOX);
+
+	return 0;
+}
+
+static int hal_msgbox_resume(struct pm_device *dev, suspend_mode_t mode)
+{
+
+	struct reset_control *rst;
+	hal_clk_t clk;
+
+	rst = hal_reset_control_get(HAL_SUNXI_RESET, RST_MSGBOX);
+	if (!rst)
+		return MSGBOX_PM_ERR;
+
+	hal_reset_control_deassert(rst);
+	hal_reset_control_put(rst);
+
+	clk = hal_clock_get(HAL_SUNXI_CCU, CLK_MSGBOX);
+	if (!clk)
+		return MSGBOX_PM_ERR;
+
+	hal_clock_enable(clk);
+	hal_clock_put(clk);
+
+	hal_mutex_lock(it_edp_mutex);
+
+	/* reinit all msgbox channel in resume */
+	if (it_edp != NULL) {
+		struct msg_endpoint *t = it_edp;
+		while (t) {
+			msgbox_enable_rec_int(t);
+			t = t->next;
+		}
+	}
+	hal_mutex_unlock(it_edp_mutex);
+
+	hal_enable_irq(IRQ_MSGBOX);
+
+	return 0;
+}
+
+static struct pm_devops msgbox_devops = {
+	.suspend = hal_msgbox_suspend,
+	.resume = hal_msgbox_resume,
+};
+
+static struct pm_device msgbox_dev = {
+	.name = "msgbox",
+	.ops = &msgbox_devops,
+};
+#endif
 uint32_t hal_msgbox_init(void)
 {
 	struct reset_control *rst;
@@ -70,49 +243,50 @@ uint32_t hal_msgbox_init(void)
 		return -1;
 	}
 
-	rst = hal_reset_control_get(HAL_SUNXI_RESET, RST_MSGBOX);
+	rst = hal_reset_control_get(RST_MSGBOX_TYPE, RST_MSGBOX);
 	hal_reset_control_deassert(rst);
 	hal_reset_control_put(rst);
 
-	clk = hal_clock_get(HAL_SUNXI_CCU, CLK_MSGBOX);
+	clk = hal_clock_get(CLK_MSGBOX_TYPE, CLK_MSGBOX);
 	hal_clock_enable(clk);
 	hal_clock_put(clk);
 
-	irq_request(IRQ_MSGBOX, irq_msgbox_handler, NULL);
-	irq_enable(IRQ_MSGBOX);
+	hal_request_irq(IRQ_MSGBOX, irq_msgbox_handler, "msgbox", it_edp);
+	hal_enable_irq(IRQ_MSGBOX);
 
+#ifdef CONFIG_COMPONENTS_PM
+	pm_devops_register(&msgbox_dev);
+#endif
+
+#ifdef CONFIG_STANDBY
+	register_pm_dev_notify(msgbox_suspend, msgbox_resume, NULL);
+#endif
 	return 0;
 }
 
 static void msgbox_enable_rec_int(struct msg_endpoint *medp)
 {
 	void *msg_irq_e;
-	u32 value;
 
 	msg_irq_e = (void *)MSGBOX_RD_IRQ_EN_REG(
 		medp->local_amp, calculte_n(medp->local_amp, medp->remote_amp));
 
-	value = readl(msg_irq_e);
-	value |= (1 << (medp->read_ch * 2));
-	writel(value, msg_irq_e);
-
+	hal_writel(hal_readl(msg_irq_e) | (1 << (medp->read_ch * 2)), msg_irq_e);
 }
 
 static void msgbox_disable_rec_int(struct msg_endpoint *medp)
 {
 	void *msg_irq_e;
-	u32 value;
 
 	msg_irq_e = (void *)MSGBOX_RD_IRQ_EN_REG(
 		medp->local_amp, calculte_n(medp->local_amp, medp->remote_amp));
 
-	value = readl(msg_irq_e);
-	value &= ~(1 << (medp->read_ch * 2));
-	writel(value, msg_irq_e);
+	hal_writel(hal_readl(msg_irq_e) & ~(1 << (medp->read_ch * 2)), msg_irq_e);
+
 }
 
-uint32_t hal_msgbox_alloc_channel(struct msg_endpoint *edp, uint32_t remote,
-			      uint32_t read, uint32_t write)
+uint32_t hal_msgbox_alloc_channel(struct msg_endpoint *edp, int32_t remote,
+			      int32_t read, int32_t write)
 {
 	edp->local_amp = THIS_MSGBOX_USE;
 	edp->remote_amp = remote;
@@ -136,29 +310,42 @@ uint32_t hal_msgbox_alloc_channel(struct msg_endpoint *edp, uint32_t remote,
 	edp->next = NULL;
 	hal_mutex_unlock(it_edp_mutex);
 
-	msgbox_enable_rec_int(edp);
+	if (read >= 0)
+		msgbox_enable_rec_int(edp);
 
 	return 0;
 }
 
 void hal_msgbox_free_channel(struct msg_endpoint *edp)
 {
-	msgbox_disable_rec_int(edp);
+	struct msg_endpoint *t = it_edp;
 
-	hal_mutex_lock(it_edp_mutex);
-	if (it_edp == edp) {
-		it_edp = it_edp->next;
+	if (t == edp) {
+		it_edp = t->next;
 	} else {
-		struct msg_endpoint *t = it_edp;
-		while (t->next) {
+		while (t) {
 			if (t->next == edp) {
-				t->next = edp->next;
+				t->next = t->next->next;
 				break;
 			}
 			t = t->next;
 		}
 	}
-	hal_mutex_unlock(it_edp_mutex);
+	edp->next = NULL;
+
+	int rev_int = 0;
+	t = it_edp;
+	while (t) {
+		if (t->read_ch >= 0) {
+			rev_int = 1;
+			break;
+		}
+	}
+
+	if (rev_int == 0)
+		msgbox_disable_rec_int(edp);
+
+	return ;
 }
 
 static void msgbox_channel_send_data(struct msg_endpoint *medp, u32 data)
@@ -172,14 +359,16 @@ static void msgbox_channel_send_data(struct msg_endpoint *medp, u32 data)
 		medp->remote_amp, calculte_n(medp->remote_amp, medp->local_amp),
 		medp->write_ch);
 
-	while (readl(msg_sts) == MSGBOX_MAX_QUEUE);
-	writel(data, msg_reg);
+	while (hal_readl(msg_sts) == MSGBOX_MAX_QUEUE);
+	hal_writel(data, msg_reg);
 }
 
 u32 hal_msgbox_channel_send(struct msg_endpoint *medp, uint8_t *bf,
 			    uint32_t len)
 {
 	u32 data, i;
+
+	data = 0;
 
 	for (i = 0; i < len; i++) {
 
@@ -195,5 +384,3 @@ u32 hal_msgbox_channel_send(struct msg_endpoint *medp, uint8_t *bf,
 
 	return 0;
 }
-
-

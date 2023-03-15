@@ -38,7 +38,7 @@
 
 /*------------------------ CLK CONFIG FOR NORMAL ---------------------------*/
 #define SUNXI_DAUDIO_CLK_PLL_AUDIO	CLK_PLL_AUDIO0
-#define SUNXI_DAUDIO_CLK_PLL_AUDIO1	CLK_PLL_AUDIO0_4X
+#define SUNXI_DAUDIO_CLK_PLL_AUDIO1	CLK_PLL_AUDIO1_DIV5
 #define SUNXI_DAUDIO_CLK_I2S_ASRC	CLK_I2S2_ASRC
 
 #define SUNXI_DAUDIO_CLK_I2S0		CLK_I2S0
@@ -98,6 +98,9 @@
 #define DAUDIO2_PIN_DIN	\
 {.gpio_pin = GPIOB(22), .mux = 4, .driv_level = GPIO_DRIVING_LEVEL1}
 
+#define DAUDIO_PA_PIN0 \
+{.pin = 0, .level = GPIO_DATA_HIGH, .msleep = 0, .used = false}
+
 /*
  * Daudio Params Setting
  *
@@ -141,6 +144,8 @@
 .msb_lsb_first	= 0, .frametype = 0, \
 .tx_data_mode = 0, .rx_data_mode = 0, \
 .tdm_config = 1, .mclk_div = 1,\
+.rx_sync_en = false,\
+.rx_sync_ctl = false,\
 }
 
 #define DAUDIO1_PARAMS \
@@ -150,6 +155,8 @@
 .msb_lsb_first	= 1, .frametype = 1, \
 .tx_data_mode = 0, .rx_data_mode = 0, \
 .tdm_config = 1, .mclk_div = 1,\
+.rx_sync_en = true,\
+.rx_sync_ctl = false,\
 }
 
 #define DAUDIO2_PARAMS \
@@ -159,6 +166,8 @@
 .msb_lsb_first	= 0, .frametype = 0, \
 .tx_data_mode = 0, .rx_data_mode = 0, \
 .tdm_config = 1, .mclk_div = 1,\
+.rx_sync_en = false,\
+.rx_sync_ctl = false,\
 }
 
 struct daudio_pinctrl daudio0_pinctrl[] = {
@@ -188,10 +197,202 @@ struct daudio_pinctrl daudio2_pinctrl[] = {
 	DAUDIO2_PIN_DIN,
 };
 
+struct pa_config daudio_pa_cfg[] = {
+	DAUDIO_PA_PIN0,
+};
+
 struct sunxi_daudio_param daudio_param[] = {
 	DAUDIO0_PARAMS,
 	DAUDIO1_PARAMS,
 	DAUDIO2_PARAMS,
 };
+
+/*------------------------ CLK CONFIG FOR SUN8IW20 ---------------------------*/
+struct sunxi_daudio_clk {
+	struct reset_control *rstclk;
+
+	hal_clk_t pllclk;
+	hal_clk_t moduleclk;
+	hal_clk_t busclk;
+	hal_clk_t pllclk1;
+	hal_clk_t asrcclk;
+};
+
+static inline int snd_sunxi_daudio_clk_enable(struct sunxi_daudio_clk *clk, uint8_t tdm_num)
+{
+	int ret;
+
+	ret = hal_reset_control_deassert(clk->rstclk);
+	if (ret != HAL_CLK_STATUS_OK) {
+		snd_err("daudio clk_deassert rstclk failed.\n");
+		goto err_daudio_rstclk_deassert;
+	}
+
+	ret = hal_clock_enable(clk->busclk);
+	if (ret != HAL_CLK_STATUS_OK) {
+		snd_err("daudio bus clk_enable busclk failed.\n");
+		goto err_daudio_busclk_enable;
+	}
+	ret = hal_clock_enable(clk->pllclk);
+	if (ret != HAL_CLK_STATUS_OK) {
+		snd_err("daudio%d clk_enable pllclk failed.\n", tdm_num);
+		goto err_daudio_pllclk_enable;
+	}
+	ret = hal_clock_enable(clk->moduleclk);
+	if (ret != HAL_CLK_STATUS_OK) {
+		snd_err("daudio%d clk_enable moduleclk failed.\n", tdm_num);
+		goto err_daudio_moduleclk_enable;
+	}
+	ret = hal_clock_enable(clk->pllclk1);
+	if (ret != HAL_CLK_STATUS_OK) {
+		snd_err("daudio%d clk_enable pllclk1 failed.\n", tdm_num);
+		goto err_daudio_moduleclk_enable;
+	}
+	ret = hal_clock_enable(clk->asrcclk);
+	if (ret != HAL_CLK_STATUS_OK) {
+		snd_err("daudio%d clk_enable asrcclk failed.\n", tdm_num);
+		goto err_daudio_moduleclk_enable;
+	}
+
+	return HAL_CLK_STATUS_OK;
+
+err_daudio_moduleclk_enable:
+	hal_clock_disable(clk->pllclk);
+	hal_clock_put(clk->pllclk);
+err_daudio_pllclk_enable:
+	hal_clock_disable(clk->busclk);
+	hal_clock_put(clk->busclk);
+err_daudio_busclk_enable:
+	hal_reset_control_assert(clk->rstclk);
+	hal_reset_control_put(clk->rstclk);
+err_daudio_rstclk_deassert:
+	return HAL_CLK_STATUS_ERROR;
+}
+
+static inline void snd_sunxi_daudio_clk_disable(struct sunxi_daudio_clk *clk)
+{
+	hal_clock_disable(clk->busclk);
+	hal_clock_disable(clk->moduleclk);
+	hal_clock_disable(clk->pllclk);
+	hal_clock_disable(clk->pllclk1);
+	hal_clock_disable(clk->asrcclk);
+	hal_reset_control_assert(clk->rstclk);
+
+	return;
+}
+
+static inline int snd_sunxi_daudio_clk_init(struct sunxi_daudio_clk *clk, uint8_t tdm_num)
+{
+	int ret;
+	hal_reset_type_t reset_type = HAL_SUNXI_RESET;
+	hal_clk_type_t clk_type = HAL_SUNXI_CCU;
+
+	snd_print("\n");
+	switch (tdm_num) {
+	case 0:
+		clk->moduleclk = hal_clock_get(clk_type, SUNXI_DAUDIO_CLK_I2S0);
+		clk->busclk = hal_clock_get(clk_type, SUNXI_DAUDIO_CLK_BUS_I2S0);
+		clk->rstclk = hal_reset_control_get(reset_type, SUNXI_DAUDIO_CLK_RST_I2S0);
+		break;
+#if DAUDIO_NUM_MAX > 1
+	case 1:
+		clk->moduleclk = hal_clock_get(clk_type, SUNXI_DAUDIO_CLK_I2S1);
+		clk->busclk = hal_clock_get(clk_type, SUNXI_DAUDIO_CLK_BUS_I2S1);
+		clk->rstclk = hal_reset_control_get(reset_type, SUNXI_DAUDIO_CLK_RST_I2S1);
+		break;
+#endif
+#if DAUDIO_NUM_MAX > 2
+	case 2:
+		clk->moduleclk = hal_clock_get(clk_type, SUNXI_DAUDIO_CLK_I2S2);
+		clk->busclk = hal_clock_get(clk_type, SUNXI_DAUDIO_CLK_BUS_I2S2);
+		clk->rstclk = hal_reset_control_get(reset_type, SUNXI_DAUDIO_CLK_RST_I2S2);
+		break;
+#endif
+#if DAUDIO_NUM_MAX > 3
+	case 3:
+		clk->moduleclk = hal_clock_get(clk_type, SUNXI_DAUDIO_CLK_I2S3);
+		clk->busclk = hal_clock_get(clk_type, SUNXI_DAUDIO_CLK_BUS_I2S3);
+		clk->rstclk = hal_reset_control_get(reset_type, SUNXI_DAUDIO_CLK_RST_I2S3);
+		break;
+#endif
+	default:
+		snd_err("tdm_num:%u overflow\n", tdm_num);
+		ret = -EFAULT;
+		goto err_daudio_get_moduleclk;
+	}
+
+	clk->pllclk = hal_clock_get(clk_type, SUNXI_DAUDIO_CLK_PLL_AUDIO);
+	clk->pllclk1 = hal_clock_get(clk_type, SUNXI_DAUDIO_CLK_PLL_AUDIO1);
+	clk->asrcclk = hal_clock_get(clk_type, SUNXI_DAUDIO_CLK_I2S_ASRC);
+
+	hal_clk_set_rate(clk->pllclk, 22579200);
+	hal_clk_set_rate(clk->pllclk1, 614400000);
+
+	ret = hal_clk_set_parent(clk->asrcclk, clk->pllclk1);
+	if (ret != HAL_CLK_STATUS_OK) {
+		snd_err("daudio[%d] asrc clk_set_parent failed.\n", tdm_num);
+		goto err_daudio_moduleclk_set_parent;
+	}
+
+	ret = hal_clk_set_parent(clk->moduleclk, clk->pllclk);
+	if (ret != HAL_CLK_STATUS_OK) {
+		snd_err("daudio[%d] clk_set_parent failed.\n", tdm_num);
+		goto err_daudio_moduleclk_set_parent;
+	}
+
+	ret = snd_sunxi_daudio_clk_enable(clk, tdm_num);
+	if (ret != HAL_CLK_STATUS_OK) {
+		snd_err("daudio snd_sunxi_daudio_clk_enable failed.\n");
+		goto err_clk_enable;
+	}
+
+	return HAL_CLK_STATUS_OK;
+
+err_clk_enable:
+err_daudio_moduleclk_set_parent:
+err_daudio_get_moduleclk:
+	return HAL_CLK_STATUS_ERROR;
+}
+
+static inline void snd_sunxi_daudio_clk_exit(struct sunxi_daudio_clk *clk)
+{
+	snd_sunxi_daudio_clk_disable(clk);
+
+	hal_clock_put(clk->busclk);
+	hal_clock_put(clk->moduleclk);
+	hal_clock_put(clk->pllclk);
+	hal_clock_put(clk->pllclk1);
+	hal_clock_put(clk->asrcclk);
+	hal_reset_control_put(clk->rstclk);
+
+	return;
+}
+
+static inline int snd_sunxi_daudio_clk_set_rate(struct sunxi_daudio_clk *clk, int stream,
+						unsigned int freq_in, unsigned int freq_out)
+{
+	int ret;
+
+	(void)stream;
+	(void)freq_in;
+
+	if (freq_out == 24576000) {
+		hal_clk_set_parent(clk->moduleclk, clk->pllclk1);
+	} else {
+		hal_clk_set_parent(clk->moduleclk, clk->pllclk);
+	}
+
+	if (hal_clk_set_rate(clk->moduleclk, freq_out)) {
+		snd_err("set pllclk rate %u failed\n", freq_out);
+		return -EINVAL;
+	}
+
+	if (hal_clk_set_rate(clk->asrcclk, 98304000)) {
+		snd_err("set pllclk rate %u failed\n", freq_out);
+		return -EINVAL;
+	}
+
+	return HAL_CLK_STATUS_OK;
+}
 
 #endif	/* __SUN8IW20_DAUDIO_H_ */

@@ -21,6 +21,14 @@
 #include "disp_private.h"
 #include "disp_tv.h"
 
+#ifdef CONFIG_KERNEL_FREERTOS
+#include "FreeRTOS.h"
+
+/* -------------------------------- jiffies -----------------------------*/
+#define HZ 1000
+#define jiffies ((unsigned long)xTaskGetTickCount())
+#endif
+
 struct disp_screen_t {
 	bool have_cfg_reg;
 	u32 cache_flag;

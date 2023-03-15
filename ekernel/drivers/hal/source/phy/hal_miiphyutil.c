@@ -30,21 +30,16 @@
 * OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-//#include <common.h>
-#include <typedef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
-#include <hal_thread.h>
 #include <sunxi_hal_common.h>
 #include <sunxi_hal_miiphy.h>
 #include <sunxi_hal_phy.h>
 
-//#include <asm/types.h>
-//#include <list.h>
+#include <hal_thread.h>
 #include <hal_mem.h>
-//#include <net.h>
 
 /* local debug macro */
 #undef MII_DEBUG

@@ -1,8 +1,39 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <hal_sem.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <list.h>
+#include <aw_list.h>
 #include <sunxi_input.h>
 #include <arch.h>
 
@@ -21,7 +52,7 @@ static inline int is_event_support(unsigned int code,
     return code <= max && input_test_bit(code, bm);
 }
 
-static struct sunxi_input_dev *find_input_dev_by_name(const char *name)
+struct sunxi_input_dev *find_input_dev_by_name(const char *name)
 {
     struct sunxi_input_dev *dev;
 
@@ -120,47 +151,78 @@ static void input_handle_event(struct sunxi_input_dev *dev,
     int report = 0;
     struct sunxi_input_event event;
 
-    switch (type)
-    {
-        case EV_SYN :
-            report = 1;
-            break;
-        case EV_KEY :
-            /*no repeat procedure like timer check when press down, comment by swb*/
-            if (is_event_support(code, dev->keybit, KEY_MAX) && !!__test_bit(code, dev->key) != value)
-            {
-                if (value)
-                {
-                    __change_bit(code, &dev->key);
-                }
-                else
-                {
-                    __clear_bit(&dev->key);
-                }
-                report = 1;
-            }
-            break;
-        case EV_ABS :
-            if (is_event_support(code, dev->absbit, ABS_MAX))
-            {
-                report = 1;
-            }
-            break;
-        case EV_REL :
-            if (is_event_support(code, dev->relbit, REL_MAX))
-            {
-                report = 1;
-            }
-            break;
-        case EV_MSC :
-            if (is_event_support(code, dev->mscbit, MSC_MAX))
-            {
-                report = 1;
-            }
-            break;
-        default :
-            break;
-    }
+    // switch (type)
+    // {
+    //     case EV_SYN :
+    //         report = 1;
+    //         break;
+    //     case EV_KEY :
+    //         /*no repeat procedure like timer check when press down, comment by swb*/
+    //         if (is_event_support(code, dev->keybit, KEY_MAX) && !!__test_bit(code, dev->key) != value)
+    //         {
+    //             if (value)
+    //             {
+    //                 __change_bit(code, &dev->key);
+    //             }
+    //             else
+    //             {
+    //                 __clear_bit(&dev->key);
+    //             }
+    //             report = 1;
+    //         }
+    //         break;
+    //     case EV_ABS :
+    //         if (is_event_support(code, dev->absbit, ABS_MAX))
+    //         {
+    //             report = 1;
+    //         }
+    //         break;
+    //     case EV_REL :
+    //         if (is_event_support(code, dev->relbit, REL_MAX))
+    //         {
+    //             report = 1;
+    //         }
+    //         break;
+    //     case EV_MSC :
+    //         if (is_event_support(code, dev->mscbit, MSC_MAX))
+    //         {
+    //             report = 1;
+    //         }
+    //         break;
+    //     default :
+    //         break;
+    // }
+
+    // if (report)
+    // {
+    //     event.type = type;
+    //     event.code = code;
+    //     event.value = value;
+    //     input_pass_event(dev, &event);
+    // }
+    switch (type) {
+		case EV_SYN :
+			report = 1;
+			break;
+		case EV_KEY :
+			if(is_event_support(code, dev->keybit, KEY_MAX))
+				report = 1;
+			break;
+		case EV_ABS :
+			if(is_event_support(code, dev->absbit, ABS_MAX))
+				report = 1;
+			break;
+		case EV_REL :
+			if(is_event_support(code, dev->relbit, REL_MAX))
+				report = 1;
+			break;
+		case EV_MSC :
+			if(is_event_support(code, dev->mscbit, MSC_MAX))
+				report = 1;
+			break;
+		default :
+			break;
+	}
 
     if (report)
     {

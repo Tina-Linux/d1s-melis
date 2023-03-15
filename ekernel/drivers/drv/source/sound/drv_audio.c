@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <log.h>
@@ -8,8 +39,8 @@
 
 void sleep(int seconds);
 
-static sunxi_driver_audio_t audio_play0, audio_play1;
-static sunxi_driver_audio_t audio_rec0, audio_rec1, audio_rec2;
+static sunxi_driver_audio_t audio_play0, audio_play1, audio_play2;
+static sunxi_driver_audio_t audio_rec0, audio_rec1;
 
 audio_config_mgr_t *audio_playback_config_mgr_create(void)
 {
@@ -24,8 +55,8 @@ audio_config_mgr_t *audio_playback_config_mgr_create(void)
 	audio_conf_mgr->format = SND_PCM_FORMAT_S16_LE;
 	audio_conf_mgr->sampleRate = 16000;
 	audio_conf_mgr->channels = 2;
-	audio_conf_mgr->periodSize = 1024;//1024;
-	audio_conf_mgr->bufferSize = 4096;//(4*1024)
+    audio_conf_mgr->periodSize = 1536;//1536;//1024;
+    audio_conf_mgr->bufferSize = 6144;//6144;//(4*1024)
 	audio_conf_mgr->can_paused = 1;
 
 	if(NULL == audio_conf_mgr->mixerInfo)
@@ -102,6 +133,32 @@ int alsa_set_pcm_params(audio_config_mgr_t *pcmMgr)
     int err = -1;
     int dir = 0;
 
+    switch (pcmMgr->sampleRate)
+    {
+        case 8000:
+        case 12000:
+        case 16000:
+        case 24000:
+        case 32000:
+        case 48000:
+        case 64000:
+        case 96000:
+
+        case 11025:
+        case 22050:
+        case 44100:
+        case 88200:
+        case 192000:
+            pcmMgr->nTargetSampleRate = pcmMgr->sampleRate;
+            break;
+        default:
+            pcmMgr->nTargetSampleRate = 44100;
+    }
+    if (SND_PCM_FORMAT_S32_LE == pcmMgr->format)        //32-bit audio and using IIS interface
+    {
+        pcmMgr->nTargetSampleRate = pcmMgr->sampleRate;
+    }
+
     if (pcmMgr->handle == NULL) {
         __err("PCM is not open yet!");
         return err;
@@ -114,38 +171,38 @@ int alsa_set_pcm_params(audio_config_mgr_t *pcmMgr)
     err = snd_pcm_hw_params_any(pcmMgr->handle, params);
     if (err < 0) {
         __err("Broken configuration for this PCM: no configurations available!");
-        return err;
+        goto set_para_err;
     }
 
     err = snd_pcm_hw_params_set_access(pcmMgr->handle, params, SND_PCM_ACCESS_RW_INTERLEAVED);
     if (err < 0) {
         __err("Access type not available");
-        return err;
+        goto set_para_err;
     }
 
     err = snd_pcm_hw_params_set_format(pcmMgr->handle, params, pcmMgr->format);
     if (err < 0) {
         __err("Sample format not available");
-        return err;
+        goto set_para_err;
     }
 
     err = snd_pcm_hw_params_set_channels(pcmMgr->handle, params, pcmMgr->channels);
     if (err < 0) {
         __err("Channels count not available");
-        return err;
+        goto set_para_err;
     }
 
-    err = snd_pcm_hw_params_set_rate(pcmMgr->handle, params, pcmMgr->sampleRate, 0);
+    err = snd_pcm_hw_params_set_rate(pcmMgr->handle, params, pcmMgr->nTargetSampleRate, 0);
     if (err < 0) {
-        __err("set_rate error!");
-        return err;
+        __err("set_rate error!target sample rate:%d", pcmMgr->nTargetSampleRate);
+        goto set_para_err;
     }
 
     err = snd_pcm_hw_params_set_period_size_near(pcmMgr->handle, params, &pcmMgr->periodSize, &dir);
     //err = snd_pcm_hw_params_set_period_size(pcmMgr->handle, params, pcmMgr->periodSize, &dir);
     if (err < 0) {
         __err("set_period_size error!");
-        return err;
+        goto set_para_err;
     }
 
     // double 1024-sample capacity -> 4
@@ -153,20 +210,20 @@ int alsa_set_pcm_params(audio_config_mgr_t *pcmMgr)
    	err =  snd_pcm_hw_params_set_buffer_size_near(pcmMgr->handle, params, &bufferSize);
     if (err < 0) {
         __err("set_buffer_size error!");
-        return err;
+        goto set_para_err;
     }
 
     err = snd_pcm_hw_params(pcmMgr->handle, params);
     if (err < 0) {
         __err("Unable to install hw params");
-        return err;
+        goto set_para_err;
     }
 
     snd_pcm_hw_params_get_period_size(params, &pcmMgr->periodSize, 0);
     snd_pcm_hw_params_get_buffer_size(params, &pcmMgr->bufferSize);
     if (pcmMgr->periodSize == pcmMgr->bufferSize) {
         __err("Can't use period equal to buffer size (%lu == %lu)", pcmMgr->periodSize, pcmMgr->bufferSize);
-        return err;
+        goto set_para_err;
     }
 
     /* SW params */
@@ -188,7 +245,7 @@ int alsa_set_pcm_params(audio_config_mgr_t *pcmMgr)
 	err = snd_pcm_sw_params(pcmMgr->handle ,sw_params);
 	if (err < 0) {
 		__err("Unable to install sw prams!\n");
-		return err;
+		goto set_para_err;
 	}
 
     pcmMgr->frameBytes = snd_pcm_frames_to_bytes(pcmMgr->handle, 1);
@@ -202,7 +259,48 @@ int alsa_set_pcm_params(audio_config_mgr_t *pcmMgr)
     __inf("--------can_paused:%d-------------",pcmMgr->can_paused);
     __inf(">>periodSize: %4d, BufferSize: %4d, frameBytes: %d",  pcmMgr->periodSize, (int)pcmMgr->bufferSize,pcmMgr->frameBytes);
 
-    return 0;
+set_para_err:
+    //snd_pcm_hw_params_free(params);
+    if (pcmMgr->sampleRate != pcmMgr->nTargetSampleRate)
+    {
+        int err0 = 0;
+        if (pcmMgr->nTargetChannels != pcmMgr->channels)
+        {
+            if (pcmMgr->resampler)
+            {
+                speex_resampler_destroy(pcmMgr->resampler);
+                pcmMgr->resampler = NULL;
+            }
+        }
+        if (!pcmMgr->resampler)
+        {
+            pcmMgr->nTargetChannels = pcmMgr->channels;
+            pcmMgr->resampler = speex_resampler_init_frac(pcmMgr->channels, pcmMgr->sampleRate, pcmMgr->nTargetSampleRate, \
+                                                                    pcmMgr->sampleRate, pcmMgr->nTargetSampleRate, 3, &err0);
+            if (!pcmMgr->resampler)
+            {
+                __err("resampler init failed err0:%d", err0);
+            }
+        }
+        else
+        {
+            speex_resampler_set_rate_frac(pcmMgr->resampler, pcmMgr->sampleRate, pcmMgr->nTargetSampleRate, \
+                                                                        pcmMgr->sampleRate, pcmMgr->nTargetSampleRate);
+        }
+
+        __wrn("samplerate:%d, after resample:%d", pcmMgr->sampleRate, pcmMgr->nTargetSampleRate);
+
+        if (!pcmMgr->buffer_out)
+        {
+            pcmMgr->buffer_out_size = 64 * 1024;
+            pcmMgr->buffer_out = malloc(pcmMgr->buffer_out_size);
+            if (pcmMgr->buffer_out)
+            {
+                memset(pcmMgr->buffer_out, 0, pcmMgr->buffer_out_size);
+            }
+        }
+    }
+    return err;
 }
 
 int alsa_open_pcm(audio_config_mgr_t *pcmMgr, const char *card, int pcmFlag)
@@ -215,7 +313,7 @@ int alsa_open_pcm(audio_config_mgr_t *pcmMgr, const char *card, int pcmFlag)
         __wrn("PCM is opened already!");
         return 0;
     }
-    __log("open pcm! card:[%s], pcmFlag:[%d](0-cap;1-play)", card, pcmFlag);
+    __log("alsa open pcm! card:[%s], pcmFlag:[%d](0-cap;1-play)", card, pcmFlag);
 
     // 0-cap; 1-play
     stream = (pcmFlag == 0) ? SND_PCM_STREAM_CAPTURE : SND_PCM_STREAM_PLAYBACK;
@@ -239,6 +337,22 @@ void alsa_close_pcm(audio_config_mgr_t *pcmMgr)
         __err("PCM is not open yet!");
         return;
     }
+
+    __log("alsa close pcm!");
+    if (pcmMgr->resampler)
+    {
+        __err("speex_resampler_destroy(%08lx)", pcmMgr->resampler);
+        speex_resampler_destroy(pcmMgr->resampler);
+        pcmMgr->resampler = NULL;
+    }
+    if (pcmMgr->buffer_out)
+    {
+        __err("free(%08lx)", pcmMgr->buffer_out);
+        free(pcmMgr->buffer_out);
+        pcmMgr->buffer_out = NULL;
+        pcmMgr->buffer_out_size = 0;
+    }
+
     __wrn("[]pcm status:%d\n",snd_pcm_state(pcmMgr->handle));
     snd_pcm_close(pcmMgr->handle);
     pcmMgr->handle = NULL;
@@ -307,6 +421,60 @@ ssize_t alsa_read_pcm(audio_config_mgr_t *pcmMgr, void *data, size_t rcount)
     return result;
 }
 
+ssize_t writeSoundDevice(audio_config_mgr_t *pcmMgr, void *pData, size_t wcount)
+{
+    ssize_t ret;
+    void *pData_used = pData;
+    size_t num_frames_used = wcount;
+    if (pcmMgr->sampleRate != pcmMgr->nTargetSampleRate)
+    {
+        if (pcmMgr->resampler && pcmMgr->buffer_out)
+        {
+            size_t in_frames = wcount;
+            size_t out_frames = pcmMgr->buffer_out_size / pcmMgr->frameBytes;
+            ret = speex_resampler_process_interleaved_int(pcmMgr->resampler, pData, &in_frames, \
+                                                            pcmMgr->buffer_out, &out_frames);
+            pData_used = pcmMgr->buffer_out;
+            num_frames_used = out_frames;
+            // NOTE: out_frames should be less than pcmMgr->buffer_out_size (which is 64 * 1024)
+            __inf("in:%d,out:%d,ret:%d", in_frames, out_frames, ret);
+        }
+        else
+        {
+            __err("resampler not init!");
+        }
+    }
+    ret = snd_pcm_writei(pcmMgr->handle, pData_used, num_frames_used);
+    if (ret < 0)
+    {
+        __err("ret(%d) < 0", ret);
+        return ret;
+    }
+    if ((pcmMgr->sampleRate != pcmMgr->nTargetSampleRate) && pcmMgr->resampler)
+    {
+        ssize_t ret_tmp = ret;
+        if (ret == num_frames_used)
+        {
+            ret = wcount;
+            //__log("%s() ret = %d(%d) all", __func__, ret, ret_tmp);
+        }
+        else
+        {
+            ret = ret * pcmMgr->sampleRate / pcmMgr->nTargetSampleRate;
+            if (0 == ret)
+            {
+                ret = 1;
+            }
+            __log("%s() ret = %d(%d)", __func__, ret, ret_tmp);
+        }
+    }
+    else
+    {
+        __inf("No need resample!");
+    }
+    return ret;
+}
+
 ssize_t alsa_write_pcm(audio_config_mgr_t *pcmMgr, void *data, size_t wcount)
 {
     ssize_t ret;
@@ -348,7 +516,8 @@ ssize_t alsa_write_pcm(audio_config_mgr_t *pcmMgr, void *data, size_t wcount)
         if (snd_pcm_state(pcmMgr->handle) == SND_PCM_STATE_SETUP) {
             snd_pcm_prepare(pcmMgr->handle);
         }
-        ret = snd_pcm_writei(pcmMgr->handle, data, wcount);
+        ret = writeSoundDevice(pcmMgr, data, wcount);
+        //ret = snd_pcm_writei(pcmMgr->handle, data, wcount);
         if (ret == -EAGAIN || (ret >= 0 && (size_t)ret < wcount)) {
             snd_pcm_wait(pcmMgr->handle, 100);
         } else if (ret == -EPIPE) {
@@ -531,6 +700,77 @@ int alsa_mixer_get_volume(audio_config_mgr_t *pcmMgr, int playFlag, long *value)
 
     *value = (long)n;        //volume range(0-60)
     __log("playback getVolume:%ld, dst:%ld, err:%d", pcmMgr->mixerInfo->value, *value, err);
+
+    return err;
+}
+
+int alsa_mixer_set_cap_rx_sync_mode(audio_config_mgr_t *pcmMgr,  int value)
+{
+    int err = 0;
+    char rx_sync_mode[64] = {0};
+
+    if (!strcmp(pcmMgr->cardName, SOUND_CARD_AUDIOCODEC))
+        strcpy(rx_sync_mode, AUDIO_CODEC_RX_SYNC_MODE);
+    else if (!strcmp(pcmMgr->cardName, SOUND_CARD_SNDDAUDIO1))
+        strcpy(rx_sync_mode, DAUDIO_RX_SYNC_MODE);
+
+    err = snd_ctl_get(pcmMgr->cardName, rx_sync_mode, pcmMgr->mixerInfo);
+    if (err < 0)
+    {
+        __err("card[%s] snd_ctl_get the AUDIO_CAP_RX_SYNC_MODE[%s] failed!\n", pcmMgr->cardName, rx_sync_mode);
+        return err;
+    }
+    err = snd_ctl_set(pcmMgr->cardName, rx_sync_mode, value);
+    if (err < 0)
+    {
+        __err("card[%s] snd_ctl_set the AUDIO_CAP_RX_SYNC_MODE[%s]:[%d] failed!\n", pcmMgr->cardName, rx_sync_mode, value);
+        return err;
+    }
+    return err;
+}
+
+int alsa_mixer_set_hub_mode(audio_config_mgr_t *pcmMgr,  int value)
+{
+    int err = 0;
+    char hub_mode[64] = {0};
+
+    if (!strcmp(pcmMgr->cardName, SOUND_CARD_AUDIOCODEC))
+        strcpy(hub_mode, AUDIO_CODEC_TX_HUB_MODE);
+    else if (!strcmp(pcmMgr->cardName, SOUND_CARD_SNDDAUDIO1))
+        strcpy(hub_mode, DAUDIO_TX_HUB_MODE);
+
+    err = snd_ctl_get(pcmMgr->cardName, hub_mode, pcmMgr->mixerInfo);
+    if (err < 0)
+    {
+        __err("card[%s] snd_ctl_get the HUB_MODE[%s] failed!\n", pcmMgr->cardName, hub_mode);
+        return err;
+    }
+
+    err = snd_ctl_set(pcmMgr->cardName, hub_mode, value);
+    if (err < 0)
+    {
+        __err("card[%s] snd_ctl_set the HUB_MODE[%s]:[%d] failed!\n", pcmMgr->cardName, hub_mode, value);
+        return err;
+    }
+
+    return err;
+}
+
+int alsa_mixer_set_daudio_loopback_enable(audio_config_mgr_t *pcmMgr,  int value)
+{
+    int err = 0;
+    err = snd_ctl_get(pcmMgr->cardName, DAUDIO_LOOPBACK_EN, pcmMgr->mixerInfo);
+    if (err < 0)
+    {
+        __err("card[%s] snd_ctl_get the DAUDIo0_LOOPBACK_EN[%s] failed!\n", pcmMgr->cardName, DAUDIO_LOOPBACK_EN);
+        return err;
+    }
+    err = snd_ctl_set(pcmMgr->cardName, DAUDIO_LOOPBACK_EN, value);
+    if (err < 0)
+    {
+        __err("card[%s] snd_ctl_set the DAUDIo0_LOOPBACK_EN[%s]:[%d] failed!\n", pcmMgr->cardName, DAUDIO_LOOPBACK_EN, value);
+        return err;
+    }
 
     return err;
 }
@@ -750,32 +990,32 @@ int sunxi_driver_audio_init(void)
             audio_play1.status = 0;
             init_audio_play_device(device1, &audio_play1, "audio_play1");
         }
+        if(i == 2)
+        {
+            device2 = &audio_play2.base;
+            device2->device_id = 2;
+            audio_play2.dev_id = 2;
+            audio_play2.status = 0;
+            init_audio_play_device(device2, &audio_play2, "audio_play2");  //audio_play2 plays using IIS
+        }
     }
     for (i = 0; i < AUDIO_REC_USER_MAX; ++i)
     {
         if(i == 0)
         {
-            device2 = &audio_rec0.base;
-            device2->device_id = 0;
+            device3 = &audio_rec0.base;
+            device3->device_id = 0;
             audio_rec0.dev_id = 0;
             audio_rec0.status = 0;
-            init_audio_rec_device(device2, &audio_rec0, "audio_rec0");
+            init_audio_rec_device(device3, &audio_rec0, "audio_rec0");
         }
         if(i == 1)
         {
-            device3 = &audio_rec1.base;
-            device3->device_id = 1;
+            device4 = &audio_rec1.base;
+            device4->device_id = 1;
             audio_rec1.dev_id = 1;
             audio_rec1.status = 0;
-            init_audio_rec_device(device3, &audio_rec1, "audio_rec1");
-        }
-        if(i == 2)
-        {
-            device4 = &audio_rec2.base;
-            device4->device_id = 2;
-            audio_rec2.dev_id = 2;
-            audio_rec2.status = 0;
-            init_audio_rec_device(device4, &audio_rec2, "audio_rec2");
+            init_audio_rec_device(device4, &audio_rec1, "audio_rec1");
         }
     }    
 

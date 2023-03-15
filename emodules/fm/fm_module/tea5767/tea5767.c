@@ -1,16 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                   ePDK
-*                                   the Easy Portable/Player Develop Kits
-*                                              hello world sample
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                               (c) Copyright 2006-2007, Steven.ZGJ China
-*                                           All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : tea5767.c
-* By      : xueli
-* Version : V1.00
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include  "tea5767.h"
 
@@ -28,7 +45,7 @@ static   __u8  fm_freq_table[4] = {0, 5, 7, 10};
 *
 * description:   iic write
 *
-* notes:         5×Ö½ÚÁ¬ÐøÐ´
+* notes:         5å­—èŠ‚è¿žç»­å†™
 *
 **********************************************/
 static __s32 fm_iic_write(__u8 *wfm_data)
@@ -54,7 +71,7 @@ static __s32 fm_iic_write(__u8 *wfm_data)
 *
 * description:   iic write
 *
-* notes:         5×Ö½ÚÁ¬Ðø¶Á
+* notes:         5å­—èŠ‚è¿žç»­è¯»
 *
 **********************************************/
 static __s32 fm_iic_read(__u8 *wfm_data)
@@ -71,7 +88,7 @@ static __s32 fm_iic_read(__u8 *wfm_data)
     return  eLIBs_fioctrl(fiic, TWI_READ_SPEC_RS, 0, (void *)&piic);
 }
 
-//ÓÉÆµÂÊ¼ÆËãPLL
+//ç”±é¢‘çŽ‡è®¡ç®—PLL
 static __s32  fm_get_pll(__s32 freq)
 {
     __s32 pll;
@@ -87,7 +104,7 @@ static __s32  fm_get_pll(__s32 freq)
 
     return pll;
 }
-//ÓÉPLL¼ÆËãÆµÂÊ
+//ç”±PLLè®¡ç®—é¢‘çŽ‡
 static __s32 fm_get_freq(__s32 pll)
 {
     __s32 freq;
@@ -116,9 +133,9 @@ __s32  fm_exit(void)
 /**********************************************
 * function:      fm_auto_search
 *
-* description:   ×Ô¶¯ËÑË÷£¬Ö§³ÖÏòÉÏËÑË÷ºÍÏòÏÂËÑË÷
+* description:   è‡ªåŠ¨æœç´¢ï¼Œæ”¯æŒå‘ä¸Šæœç´¢å’Œå‘ä¸‹æœç´¢
 *
-* notes:         ËÑË÷µ½Ò»¸öÆµµãºóÍË³ö£¬·µ»ØÖµÊÇÒ»¸öXX.X MHzµ¥Î»
+* notes:         æœç´¢åˆ°ä¸€ä¸ªé¢‘ç‚¹åŽé€€å‡ºï¼Œè¿”å›žå€¼æ˜¯ä¸€ä¸ªXX.X MHzå•ä½
 *
 **********************************************/
 __s32  fm_auto_search(__s32 freq, __u32 search_dir)
@@ -162,9 +179,9 @@ __s32  fm_auto_search(__s32 freq, __u32 search_dir)
         esKRNL_TimeDly(10);
         wfm_data[0] = 0x0;
         fm_iic_read(wfm_data);
-    } while (!(wfm_data[0] & 0x80)); //ËÑÌ¨³É¹¦±êÖ¾
+    } while (!(wfm_data[0] & 0x80)); //æœå°æˆåŠŸæ ‡å¿—
 
-    if (wfm_data[0] & 0x40)   //ËÑÌ¨µ½×î¸ßÆµÂÊ
+    if (wfm_data[0] & 0x40)   //æœå°åˆ°æœ€é«˜é¢‘çŽ‡
     {
         //if(((wfm_data[3] >> 4) & 0x0f) < fm_freq_table[tea5767_info.signal_level])
         {
@@ -191,9 +208,9 @@ __s32  fm_auto_search(__s32 freq, __u32 search_dir)
 /**********************************************
 * function:      fm_auto_search1
 *
-* description:   ×Ô¶¯ËÑË÷£¬Ö§³ÖÏòÉÏËÑË÷ºÍÏòÏÂËÑË÷
+* description:   è‡ªåŠ¨æœç´¢ï¼Œæ”¯æŒå‘ä¸Šæœç´¢å’Œå‘ä¸‹æœç´¢
 *
-* notes:         ËÑË÷µ½Ò»¸öÆµµãºóÍË³ö£¬·µ»ØÖµÊÇÒ»¸öXX.X MHzµ¥Î»
+* notes:         æœç´¢åˆ°ä¸€ä¸ªé¢‘ç‚¹åŽé€€å‡ºï¼Œè¿”å›žå€¼æ˜¯ä¸€ä¸ªXX.X MHzå•ä½
 *
 **********************************************/
 __s32  fm_auto_search1(__s32 freq, __u32 search_dir)
@@ -239,9 +256,9 @@ _auto_search_continue_:
         esKRNL_TimeDly(10);
         wfm_data[0] = 0x0;
         fm_iic_read(wfm_data);
-    } while (!(wfm_data[0] & 0x80)); //ËÑÌ¨³É¹¦±êÖ¾
+    } while (!(wfm_data[0] & 0x80)); //æœå°æˆåŠŸæ ‡å¿—
 
-    if (wfm_data[0] & 0x40)   //ËÑÌ¨µ½×î¸ßÆµÂÊ
+    if (wfm_data[0] & 0x40)   //æœå°åˆ°æœ€é«˜é¢‘çŽ‡
     {
         if (((wfm_data[3] >> 4) & 0x0f) < fm_freq_table[tea5767_info.signal_level])
         {
@@ -304,11 +321,11 @@ _auto_search_continue_:
 /**********************************************
 * function:      fm_play
 *
-* description:   ¸ù¾ÝÊäÈëµÄÆµÂÊ£¬²¥·Å´ËÆµÂÊµÄ
-*                µçÌ¨½ÚÄ¿£¬¼´Ê¹Ã»ÓÐ½ÚÄ¿Ö»ÓÐ
-*                ÔëÒô£¬ÕÕÑù²¥³ö
+* description:   æ ¹æ®è¾“å…¥çš„é¢‘çŽ‡ï¼Œæ’­æ”¾æ­¤é¢‘çŽ‡çš„
+*                ç”µå°èŠ‚ç›®ï¼Œå³ä½¿æ²¡æœ‰èŠ‚ç›®åªæœ‰
+*                å™ªéŸ³ï¼Œç…§æ ·æ’­å‡º
 *
-* notes:         Ö»·µ»Ø³É¹¦
+* notes:         åªè¿”å›žæˆåŠŸ
 *
 **********************************************/
 __s32 fm_play(__s32 freq)
@@ -373,8 +390,8 @@ __s32 fm_play(__s32 freq)
 /**********************************************
 * function:      fm_manual_search
 *
-* description:   ÊÖ¶¯ËÑË÷£¬Ê¹ÓÃfm_play
-*                ·µ»ØÖµÊÇÏÂÒ»¸öËÑË÷ÆµÂÊµã
+* description:   æ‰‹åŠ¨æœç´¢ï¼Œä½¿ç”¨fm_play
+*                è¿”å›žå€¼æ˜¯ä¸‹ä¸€ä¸ªæœç´¢é¢‘çŽ‡ç‚¹
 *
 * notes:
 *
@@ -386,10 +403,10 @@ __s32 fm_manual_search(__s32 freq, __u32 search_dir)
 /**********************************************
 * function:      fm_area_choose
 *
-* description:   µØÇøÑ¡Ôñ£¬Çø±ð²»Í¬µÄÆðÊ¼ºÍÖÕÖ¹
-*                ÆµÂÊ
+* description:   åœ°åŒºé€‰æ‹©ï¼ŒåŒºåˆ«ä¸åŒçš„èµ·å§‹å’Œç»ˆæ­¢
+*                é¢‘çŽ‡
 *
-* notes:         ÊäÈëÕýÈ·µØÇø·µ»Ø³É¹¦£¬·ñÔòÊ§°Ü
+* notes:         è¾“å…¥æ­£ç¡®åœ°åŒºè¿”å›žæˆåŠŸï¼Œå¦åˆ™å¤±è´¥
 *
 **********************************************/
 __s32 fm_area_choose(__s32 area, void *pbuffer)
@@ -422,7 +439,7 @@ __s32 fm_area_choose(__s32 area, void *pbuffer)
 /**********************************************
 * function:      fm_stereo_choose
 *
-* description:   ÒôÖÊÑ¡Ôñ£¬Á¢ÌåÉùºÍÆÕÍ¨ÉùÒô
+* description:   éŸ³è´¨é€‰æ‹©ï¼Œç«‹ä½“å£°å’Œæ™®é€šå£°éŸ³
 *
 * notes:
 *
@@ -447,7 +464,7 @@ __s32 fm_stereo_choose(__s32 audio_method)
 /**********************************************
 * function:      fm_mute
 *
-* description:   ¾²Òô¹¦ÄÜ
+* description:   é™éŸ³åŠŸèƒ½
 *
 * notes:
 *
@@ -487,8 +504,8 @@ __s32 fm_mute(__s32 voice_onoff)
 /**********************************************
 * function:      fm_signal_level
 *
-* description:   ÐÅºÅÇ¿¶ÈÑ¡Ôñ£¬ÒªÇóÐÅºÅÇ¿´óÔ½¸ß£¬ÊÕµ½µÄµçÌ¨Ô½ÉÙ
-*                   ÒªÇóÐÅºÅÇ¿´óÔ½¸ß£¬ÊÕµ½µÄµçÌ¨Ô½¶à£¬µ«ÎÞÐ§µçÌ¨Ò²¶à
+* description:   ä¿¡å·å¼ºåº¦é€‰æ‹©ï¼Œè¦æ±‚ä¿¡å·å¼ºå¤§è¶Šé«˜ï¼Œæ”¶åˆ°çš„ç”µå°è¶Šå°‘
+*                   è¦æ±‚ä¿¡å·å¼ºå¤§è¶Šé«˜ï¼Œæ”¶åˆ°çš„ç”µå°è¶Šå¤šï¼Œä½†æ— æ•ˆç”µå°ä¹Ÿå¤š
 *
 * notes:
 *
@@ -540,4 +557,3 @@ __s32  fm_get_status(void)
 }
 
 #endif
-

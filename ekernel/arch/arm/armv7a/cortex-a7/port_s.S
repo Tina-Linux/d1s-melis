@@ -1,23 +1,34 @@
 /*
- * =====================================================================================
- *
- *       Filename:  port_s.S
- *
- *    Description:  this file contain the arch dependent routines. common layer for both
- *                  RT-Thread and Zephyr Kernel.
- *
- *        Version:  Melis3.0
- *         Create:  2017-11-02 10:10:33
- *       Revision:  none
- *       Compiler:  gcc version 6.3.0 (crosstool-NG crosstool-ng-1.23.0)
- *
- *         Author:  caozilong@allwinnertech.com
- *   Organization:  BU1-PSW
- *  Last Modified:  2020-05-18 10:00:05
- *
- * =====================================================================================
- */
-
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <cpu.h>
 #include <cfi.h>
 #include <simd.h>
@@ -92,7 +103,7 @@ cfi_debug_info_begin awos_arch_task_switch
     stmfd   sp!, {r2}                @ push cpsr
 
     @ get fcse
-    mrc     p15, 0, r2, c13, c0, 0
+    mrc     p15, #0, r2, c13, c0, #0
     stmfd   sp!, {r2} 
 
     mov     r5,  r0
@@ -105,7 +116,7 @@ cfi_debug_info_begin awos_arch_task_switch
     restoreneonvfp r2, r3
 
     ldmfd   sp!, {r2}
-    mcr     p15, 0, r2, c13, c0, 0   @ restore new task fcse
+    mcr     p15, #0, r2, c13, c0, #0 @ restore new task fcse
     ldmfd   sp!, {r2}                @ pop new task spsr
     msr     spsr_cxsf, r2
     mov     r0, r5
@@ -137,7 +148,7 @@ cfi_debug_info_begin awos_arch_first_task_start
     restoreneonvfp  r0, r4
 
     ldmfd   sp!, {r0}
-    mcr     p15, 0, r0, c13, c0, 0   @ restore new task fcse
+    mcr     p15, #0, r0, c13, c0, #0 @ restore new task fcse
 
     ldmfd   sp!, {r0}                @ pop new task spsr
 #ifdef CONFIG_CONSISTENT_CONTEXT_SWITCH
@@ -161,7 +172,7 @@ cfi_debug_info_begin awos_arch_dbg_task_switch_to
     restoreneonvfp r0, r4
 
     ldmfd   sp!, {r4}
-    mcr     p15, 0, r4, c13, c0, 0   @ restore new task fcse
+    mcr     p15, #0, r4, c13, c0, #0 @ restore new task fcse
     ldmfd   sp!, {r4}                @ pop new task spsr
     msr     spsr_cxsf, r4
 #ifdef CONFIG_CONSISTENT_CONTEXT_SWITCH
@@ -190,5 +201,53 @@ cfi_debug_info_begin longjmp
     moveq   pc,  lr
     .word   0xe12fff1e
 cfi_debug_info_end longjmp
+
+@ Get the TPIDRPRW registor, TPIDRPRW can be R/W in priliedge mode.
+@ unsigned long awos_arch_prvdata_rd(void);
+cfi_debug_info_begin awos_arch_prvdata_rd
+    mrc     p15, #0, r0, c13, c0, #4
+    mov     pc,  lr
+    .word   0xe12fff1e
+cfi_debug_info_end awos_arch_prvdata_rd
+
+@ Set the TPIDRPRW registor, TPIDRPRW can be R/W in priliedge mode.
+@ void awos_arch_prvdata_wt(unsigned long ptr);
+cfi_debug_info_begin awos_arch_prvdata_wt
+    mcr     p15, #0, r0, c13, c0, #4   @ set tpidrprw register.
+    mov     pc,  lr
+    .word   0xe12fff1e
+cfi_debug_info_end awos_arch_prvdata_wt
+
+@ Get the TPIDRURW registor, TPIDRURW can be R/W in user mode.
+@ unsigned long awos_arch_usrdata_rd(void);
+cfi_debug_info_begin awos_arch_usrdata_rd
+    mrc     p15, #0, r0, c13, c0, #2
+    mov     pc,  lr
+    .word   0xe12fff1e
+cfi_debug_info_end awos_arch_usrdata_rd
+
+@ Set the TPIDRURW registor, TPIDRURW can be R/W in user mode.
+@ void awos_arch_usrdata_wt(unsigned long ptr);
+cfi_debug_info_begin awos_arch_usrdata_wt
+    mcr     p15, #0, r0, c13, c0, #2  @ set tpidrurw register.
+    mov     pc,  lr
+    .word   0xe12fff1e
+cfi_debug_info_end awos_arch_usrdata_wt
+
+@ Get the TPIDRURO registor, TPIDRURO only can be R in user mode.
+@ unsigned long awos_arch_usrdataro_rd(void);
+cfi_debug_info_begin awos_arch_usrdataro_rd
+    mrc     p15, #0, r0, c13, c0, #3
+    mov     pc,  lr
+    .word   0xe12fff1e
+cfi_debug_info_end awos_arch_usrdataro_rd
+
+@ Set the TPIDRURO registor, TPIDRURO only can be R in user mode.
+@ void awos_arch_usrdataro_wt(unsigned long ptr);
+cfi_debug_info_begin awos_arch_usrdataro_wt
+    mcr     p15, #0, r0, c13, c0, #3 @ set tpidruro register.
+    mov     pc,  lr
+    .word   0xe12fff1e
+cfi_debug_info_end awos_arch_usrdataro_wt
 
 .end

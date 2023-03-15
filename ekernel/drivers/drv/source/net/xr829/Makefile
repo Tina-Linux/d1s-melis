@@ -12,33 +12,35 @@
 # LWIP_VERSION_RC is set to LWIP_RC_DEVELOPMENT for Git versions
 # Numbers 1..31 are reserved for release candidates
 
+LWIP_PATH = $(srctree)/ekernel/components/thirdparty/net/rt-thread/lwip
+XR829_PATH = $(srctree)/ekernel/drivers/drv/source/net/xr829
 
 # The minimum set of files needed for lwIP.
-subdir-ccflags-y += 	-I$(srctree)/ekernel/subsys/net/rt-thread/lwip/src/include/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/subsys/net/rt-thread/lwip/src/include/lwip/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/subsys/net/rt-thread/lwip/src/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/subsys/net/rt-thread/lwip/src/core/ipv4/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/subsys/net/rt-thread/lwip/src/arch/include/
+subdir-ccflags-y += 	-I$(LWIP_PATH)/src/include/
+subdir-ccflags-y += 	-I$(LWIP_PATH)/src/include/lwip/
+subdir-ccflags-y += 	-I$(LWIP_PATH)/src/
+subdir-ccflags-y += 	-I$(LWIP_PATH)/src/core/ipv4/
+subdir-ccflags-y += 	-I$(LWIP_PATH)/src/arch/include/
 # xr829 include files
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/drv/source/net/xr829/include/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/drv/source/net/xr829/include/kernel/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/drv/source/net/xr829/include/kernel/os/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/drv/source/net/xr829/include/kernel/os/RT-Thread/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/drv/source/net/xr829/include/libc/sys/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/drv/source/net/xr829/include/net/ethernetif/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/drv/source/net/xr829/include/net/wlan/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/drv/source/net/xr829/include/sys/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/drv/source/net/xr829/lib/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/drv/source/net/xr829/src/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/drv/source/net/xr829/src/app/cmd/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/drv/source/net/xr829/src/app/iperf/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/drv/source/net/xr829/src/app/net_ctrl/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/drv/source/net/xr829/src/app/net_ctrl/sys_ctrl/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/drv/source/net/xr829/src/drv/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/drv/source/net/xr829/src/kernel/os/RT-Thread/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/drv/source/net/xr829/src/net/ethernetif/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/drv/source/net/xr829/src/src/sys/
-subdir-ccflags-y += 	-I$(srctree)/ekernel/drivers/drv/source/net/xr829/src/src/sys/mbuf/
+subdir-ccflags-y += 	-I$(XR829_PATH)/include/
+subdir-ccflags-y += 	-I$(XR829_PATH)/include/kernel/
+subdir-ccflags-y += 	-I$(XR829_PATH)/include/kernel/os/
+subdir-ccflags-y += 	-I$(XR829_PATH)/include/kernel/os/RT-Thread/
+subdir-ccflags-y += 	-I$(XR829_PATH)/include/libc/sys/
+subdir-ccflags-y += 	-I$(XR829_PATH)/include/net/ethernetif/
+subdir-ccflags-y += 	-I$(XR829_PATH)/include/net/wlan/
+subdir-ccflags-y += 	-I$(XR829_PATH)/include/sys/
+subdir-ccflags-y += 	-I$(XR829_PATH)/lib/
+subdir-ccflags-y += 	-I$(XR829_PATH)/src/
+subdir-ccflags-y += 	-I$(XR829_PATH)/src/app/cmd/
+subdir-ccflags-y += 	-I$(XR829_PATH)/src/app/iperf/
+subdir-ccflags-y += 	-I$(XR829_PATH)/src/app/net_ctrl/
+subdir-ccflags-y += 	-I$(XR829_PATH)/src/app/net_ctrl/sys_ctrl/
+subdir-ccflags-y += 	-I$(XR829_PATH)/src/drv/
+subdir-ccflags-y += 	-I$(XR829_PATH)/src/kernel/os/RT-Thread/
+subdir-ccflags-y += 	-I$(XR829_PATH)/src/net/ethernetif/
+subdir-ccflags-y += 	-I$(XR829_PATH)/src/src/sys/
+subdir-ccflags-y += 	-I$(XR829_PATH)/src/src/sys/mbuf/
 
 
 subdir-ccflags-y += -D__CONFIG_OS_RTTHREAD \

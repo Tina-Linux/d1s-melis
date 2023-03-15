@@ -24,6 +24,7 @@ static inline void regwrite(void *dst, void *src, unsigned int n)
 #define DE_OUTPUT_TYPE_HDMI  4
 #define DE_OUTPUT_TYPE_VGA   8
 #define DE_OUTPUT_TYPE_VDPO  16
+#define WB_HAS_CSC
 
 #define CVBS_PAL_WIDTH 720
 #define CVBS_PAL_HEIGHT 576
@@ -118,6 +119,20 @@ static inline void regwrite(void *dst, void *src, unsigned int n)
 #define SUPPORT_PALETTE
 #define SUPPORT_DITHER_OUTPUT
 #define DSI_VERSION_40
+#define TV_UGLY_CLK_RATE 216000000
+
+#elif defined(CONFIG_ARCH_SUN20IW2)
+#define DEVICE_NUM      1
+#define DE_NUM          1
+#define CHN_NUM         2
+#define VI_CHN_NUM      0
+#define UI_CHN_NUM      (CHN_NUM - VI_CHN_NUM)
+#define LAYER_NUM_PER_CHN_PER_VI_CHN    4
+#define LAYER_NUM_PER_CHN_PER_UI_CHN    4
+#define LAYER_MAX_NUM_PER_CHN 4
+#define SUPPORT_DITHER_OUTPUT
+#define HAVE_DEVICE_COMMON_MODULE
+#define DE_GAMMA
 
 #elif defined(CONFIG_ARCH_SUN8IW15)
 

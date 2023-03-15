@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -5,7 +36,7 @@
 
 #include <excep.h>
 #include <irqflags.h>
-#include <debug.h>
+#include <hal_debug.h>
 #include <csr.h>
 #include <io.h>
 #include <log.h>
@@ -13,40 +44,26 @@
 #include <interrupt.h>
 
 #define C906_PLIC_PHY_ADDR              (0x10000000)
+#define NR_IRQS       (207)
 #define C906_PLIC_NR_EXT_IRQS           (NR_IRQS)
-#define C906_NR_CPUS                    (NR_CPUS)
+#define C906_NR_CPUS                    (1)
 
-/* M and S mode context. */
 #define C906_NR_CONTEXT                 (2)
 
 #define MAX_DEVICES                     1024
 #define MAX_CONTEXTS                    15872
 
-/*
- *  Each interrupt source has a priority register associated with it.
- *  We always hardwire it to one in Linux.
- */
 #define PRIORITY_BASE                   0
 #define PRIORITY_PER_ID                 4
 
-/*
- *  Each hart context has a vector of interrupt enable bits associated with it.
- *  There's one bit for each interrupt source.
- */
 #define ENABLE_BASE                     0x2000
 #define ENABLE_PER_HART                 0x80
 
-/*
- *  Each hart context has a set of control registers associated with it.  Right
- *  now there's only two: a source priority threshold over which the hart will
- *  take an interrupt, and a register to claim interrupts.
- */
 #define CONTEXT_BASE                    0x200000
 #define CONTEXT_PER_HART                0x1000
 #define CONTEXT_THRESHOLD               0x00
 #define CONTEXT_CLAIM                   0x04
 
-static void *c906_plic_regs = NULL;
 
 struct plic_handler
 {
@@ -56,13 +73,15 @@ struct plic_handler
 };
 
 static inline void plic_toggle(struct plic_handler *handler, int hwirq, int enable);
+
 struct plic_handler c906_plic_handlers[C906_NR_CPUS];
+
+static void *c906_plic_regs = NULL;
 
 static inline void plic_irq_toggle(int hwirq, int enable)
 {
     int cpu = 0;
 
-    /* set priority of interrupt, interrupt 0 is zero. */
     writel(enable, c906_plic_regs + PRIORITY_BASE + hwirq * PRIORITY_PER_ID);
     struct plic_handler *handler = &c906_plic_handlers[cpu];
 
@@ -114,12 +133,6 @@ int irq_enable(unsigned int irq_no)
     return 0;
 }
 
-/*
- * Handling an interrupt is a two-step process: first you claim the interrupt
- * by reading the claim register, then you complete the interrupt by writing
- * that source ID back to the same claim register.  This automatically enables
- * and disables the interrupt, so there's nothing else to do.
- */
 void plic_handle_irq(irq_regs_t *regs)
 {
     int cpu = 0;
@@ -131,7 +144,7 @@ void plic_handle_irq(irq_regs_t *regs)
     if (c906_plic_regs == NULL || !handler->present)
     {
         __err("plic state not initialized.");
-        software_break();
+        hal_sys_abort();
         return;
     }
 
@@ -143,7 +156,7 @@ void plic_handle_irq(irq_regs_t *regs)
         if (irq == 0)
         {
             __err("irq no is zero.");
-            software_break();
+            hal_sys_abort();
         }
         else
         {
@@ -153,7 +166,6 @@ void plic_handle_irq(irq_regs_t *regs)
     csr_set(sie, SIE_SEIE);
     return;
 }
-
 
 static inline void plic_toggle(struct plic_handler *handler, int hwirq, int enable)
 {
@@ -190,7 +202,7 @@ void plic_init(void)
     if (!c906_plic_regs)
     {
         __err("fatal error, plic is reg space is null.");
-        software_break();
+        hal_sys_abort();
         return;
     }
 

@@ -44,6 +44,14 @@ int de_lti_set_reg_base(unsigned int sel, unsigned int chno, void *base)
 	return 0;
 }
 
+unsigned long de_lti_get_reg_base(unsigned int sel, unsigned int chno, int updata)
+{
+	if (updata) {
+		lti_block[sel][chno].dirty = 0x1;
+	}
+	return (unsigned long)lti_dev[sel][chno];
+}
+
 int de_lti_update_regs(unsigned int sel, unsigned int chno)
 {
 	if (lti_block[sel][chno].dirty == 0x1) {

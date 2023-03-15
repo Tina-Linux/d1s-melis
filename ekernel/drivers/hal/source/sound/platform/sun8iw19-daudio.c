@@ -243,7 +243,7 @@ static int sunxi_daudio_set_sysclk(struct snd_dai *dai,
 	struct sunxi_daudio_info *sunxi_daudio = platform->private_data;
 	struct sunxi_daudio_param *param = &sunxi_daudio->param;
 
-	if (hal_clk_set_rate(sunxi_daudio->pllclk, freq)) {
+	if (hal_clk_set_rate(sunxi_daudio->clk.pllclk, freq)) {
 		snd_err("set pllclk rate %u failed\n", freq);
 		return -EINVAL;
 	}
@@ -1083,13 +1083,13 @@ static int sunxi_daudio_platform_probe(struct snd_platform *platform)
 	}
 
 	/* clk */
-	sunxi_daudio->pllclk = HAL_CLK_PLL_AUDIO;
+	sunxi_daudio->clk.pllclk = HAL_CLK_PLL_AUDIO;
 	switch (sunxi_daudio->param.tdm_num) {
 	case 0:
-		sunxi_daudio->moduleclk = HAL_CLK_PERIPH_I2S0;
+		sunxi_daudio->clk.moduleclk = HAL_CLK_PERIPH_I2S0;
 		break;
 	case 1:
-		sunxi_daudio->moduleclk = HAL_CLK_PERIPH_I2S1;
+		sunxi_daudio->clk.moduleclk = HAL_CLK_PERIPH_I2S1;
 		break;
 	default:
 		snd_err("tdm_num:%u overflow\n", sunxi_daudio->param.tdm_num);
@@ -1097,22 +1097,22 @@ static int sunxi_daudio_platform_probe(struct snd_platform *platform)
 		goto err_daudio_get_moduleclk;
 	}
 
-	sunxi_daudio->pllclk = HAL_CLK_PLL_AUDIO;
+	sunxi_daudio->clk.pllclk = HAL_CLK_PLL_AUDIO;
 
-	ret = hal_clk_set_parent(sunxi_daudio->moduleclk, sunxi_daudio->pllclk);
+	ret = hal_clk_set_parent(sunxi_daudio->clk.moduleclk, sunxi_daudio->clk.pllclk);
 	if (ret != HAL_CLK_STATUS_OK) {
 		snd_err("daudio[%d] clk_set_parent failed.\n",
 					sunxi_daudio->param.tdm_num);
 		goto err_daudio_moduleclk_set_parent;
 	}
 
-	ret = hal_clock_enable(sunxi_daudio->pllclk);
+	ret = hal_clock_enable(sunxi_daudio->clk.pllclk);
 	if (ret != HAL_CLK_STATUS_OK) {
 		snd_err("daudio%d clk_enable pllclk failed.\n",
 			sunxi_daudio->param.tdm_num);
 		goto err_daudio_pllclk_enable;
 	}
-	ret = hal_clock_enable(sunxi_daudio->moduleclk);
+	ret = hal_clock_enable(sunxi_daudio->clk.moduleclk);
 	if (ret != HAL_CLK_STATUS_OK) {
 		snd_err("daudio%d clk_enable moduleclk failed.\n",
 			sunxi_daudio->param.tdm_num);
@@ -1194,9 +1194,9 @@ static int sunxi_daudio_platform_probe(struct snd_platform *platform)
 	return 0;
 
 err_daudio_tdm_num_over:
-	hal_clock_disable(sunxi_daudio->moduleclk);
+	hal_clock_disable(sunxi_daudio->clk.moduleclk);
 err_daudio_moduleclk_enable:
-	hal_clock_disable(sunxi_daudio->pllclk);
+	hal_clock_disable(sunxi_daudio->clk.pllclk);
 err_daudio_pllclk_enable:
 err_daudio_moduleclk_set_parent:
 err_daudio_get_moduleclk:

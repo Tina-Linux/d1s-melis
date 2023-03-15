@@ -1,20 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                                  File System
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2011-2014, Sunny China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : fsman.c
-* By      : Sunny
-* Version : v1.0
-* Date    : 2011-1-15
-* Descript: vfs manager, code is extracted from linux.
-* Update  : date                auther      ver     notes
-*           2011-3-15 15:22:55  Sunny       1.0     Create this file.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "fsys_debug.h"
 #include "errno.h"
@@ -35,8 +48,6 @@ int32_t             fs_err = 0;
 int buffer_init(void);
 int kmem_cache_init(void);
 int kmem_cache_sizes_init(void);
-int dfs_mount(const char *device_name, const char *path, const char *filesystemtype, unsigned long rwflag, const void *data);
-int dfs_unmount(const char *specialfile);
 
 /*
 **********************************************************************************************************************
@@ -113,7 +124,7 @@ int32_t fsys_vfs_exit(void)
 *             fsys_regist_part
 *
 *  Description:
-*   ×¢²á¿éÉè±¸µ½ÎÄ¼şÏµÍ³ÖĞ
+*   æ³¨å†Œå—è®¾å¤‡åˆ°æ–‡ä»¶ç³»ç»Ÿä¸­
 *
 *  Parameters:
 *   pFullName   - Fully qualified name.
@@ -141,7 +152,7 @@ int32_t esFSYS_fsreg(__hdle hFS)
 
     cpu_sr = awos_arch_lock_irq();
 
-    /* ÅĞ¶ÏÎÄ¼şÏµÍ³ÊÇ·ñÒÑ¾­±»×¢²á */
+    /* åˆ¤æ–­æ–‡ä»¶ç³»ç»Ÿæ˜¯å¦å·²ç»è¢«æ³¨å†Œ */
     for (p = pFSRoot; p; p = p->next)
     {
         if (strcmp(p->name, fs->name) == 0)
@@ -173,7 +184,7 @@ out:
 *             fsys_regist_part
 *
 *  Description:
-*   °Î³ı¿éÉè±¸
+*   æ‹”é™¤å—è®¾å¤‡
 *
 *  Parameters:
 *   pFullName   - Fully qualified name.
@@ -265,24 +276,29 @@ int32_t esFSYS_mntfs(__hdle part)
 
             if (pFS->identify(part) == EPDK_TRUE)
             {
-                /* ·ÖÇø¿ÉÒÔ±»Ê¶±ğ   */
+                /* åˆ†åŒºå¯ä»¥è¢«è¯†åˆ«   */
                 if (pFS->mount(part) == EPDK_OK)
                 {
-                    /* ·ÖÇø¿ÉÒÔ±»¹Ò½Ó   */
+                    /* åˆ†åŒºå¯ä»¥è¢«æŒ‚æ¥   */
                     cpu_sr  = awos_arch_lock_irq();
                     pFS->use_cnt--;
                     awos_arch_unlock_irq(cpu_sr);
 
 #ifdef CONFIG_MELIS_LAYERFS
-                    char    letter = 0;
-                    char    path[32];
+                    char letter = 0;
+                    char path[32];
 
-                    memset(&path,   0,  sizeof(path));
-                    memcpy(path,    CONFIG_MELIS_LAYERFS_DIR_PATH,  strlen(CONFIG_MELIS_LAYERFS_DIR_PATH));
+                    memset(&path, 0, sizeof(path));
+                    memcpy(path, CONFIG_MELIS_LAYERFS_DIR_PATH,  strlen(CONFIG_MELIS_LAYERFS_DIR_PATH));
 
                     esFSYS_pioctrl(part, PART_IOC_SYS_GETLETTER, 0, &letter);
                     path[strlen(CONFIG_MELIS_LAYERFS_DIR_PATH)] = letter;
-                    dfs_mount(NULL, path, "layerfs", 0, (const void *)(unsigned int)letter);
+                    int mount(const char *device_name, const char *path,
+                                  const char *filesystemtype,
+                                  unsigned long rwflag,
+                                  const void *data);
+
+                    mount(NULL, path, pFS->name, 0, (const void *)(uintptr_t)letter);
 #endif
                     break;
                 }
@@ -304,7 +320,7 @@ int32_t esFSYS_mntfs(__hdle part)
         __epos_kmsg_t *msg;
         char           letter;
 
-        /* ·¢ËÍ¹ã²¥ÏûÏ¢£¬¸æÖªÏµÍ³ÉÏ²ãÎÄ¼şÏµÍ³ÒÑ¾­±»Ğ¶ÔØ */
+        /* å‘é€å¹¿æ’­æ¶ˆæ¯ï¼Œå‘ŠçŸ¥ç³»ç»Ÿä¸Šå±‚æ–‡ä»¶ç³»ç»Ÿå·²ç»è¢«å¸è½½ */
         msg = (__epos_kmsg_t *)malloc(sizeof(__epos_kmsg_t));
         if (!msg)
         {
@@ -345,7 +361,7 @@ int32_t esFSYS_umntfs(__hdle part, int32_t force)
         return EPDK_FAIL;
     }
 
-    /* ´ÓÎÄ¼şÏµÍ³ÉÏunmount·ÖÇø  */
+    /* ä»æ–‡ä»¶ç³»ç»Ÿä¸Šunmountåˆ†åŒº  */
     esFSYS_pioctrl(part, PART_IOC_SYS_GETFSPRIV, 0, &sb);
     if (sb)
     {
@@ -372,8 +388,8 @@ int32_t esFSYS_umntfs(__hdle part, int32_t force)
                 char *partname;
                 char  letter;
 
-                /* suppber block¿ÉÄÜÒÑ¾­±»µ±³¡Ïú»Ù£¬ĞèÒª´Ó·ÖÇøÊı
-                   ¾İ½á¹¹ÖĞ»ñÈ¡·ÖÇøÃû                           */
+                /* suppber blockå¯èƒ½å·²ç»è¢«å½“åœºé”€æ¯ï¼Œéœ€è¦ä»åˆ†åŒºæ•°
+                   æ®ç»“æ„ä¸­è·å–åˆ†åŒºå                           */
                 esFSYS_pioctrl(part, PART_IOC_SYS_GETNAME, 0, &partname);
                 esFSYS_pioctrl(part, PART_IOC_SYS_GETLETTER, 0, &letter);
                 __log("part \"%c:[%s]\" is unmounted from \"%s\" fs.", letter, partname, pFS->name);
@@ -384,9 +400,10 @@ int32_t esFSYS_umntfs(__hdle part, int32_t force)
                 memcpy(path, CONFIG_MELIS_LAYERFS_DIR_PATH, strlen(CONFIG_MELIS_LAYERFS_DIR_PATH));
 
                 path[strlen(CONFIG_MELIS_LAYERFS_DIR_PATH)] = letter;
-                dfs_unmount(path);
+                int umount(const char *specialfile);
+                umount(path);
 #endif
-                /* ·¢ËÍ¹ã²¥ÏûÏ¢£¬¸æÖªÏµÍ³ÉÏ²ãÎÄ¼şÏµÍ³ÒÑ¾­±»Ğ¶ÔØ */
+                /* å‘é€å¹¿æ’­æ¶ˆæ¯ï¼Œå‘ŠçŸ¥ç³»ç»Ÿä¸Šå±‚æ–‡ä»¶ç³»ç»Ÿå·²ç»è¢«å¸è½½ */
                 msg = (__epos_kmsg_t *)malloc(sizeof(__epos_kmsg_t));
                 if (!msg)
                 {

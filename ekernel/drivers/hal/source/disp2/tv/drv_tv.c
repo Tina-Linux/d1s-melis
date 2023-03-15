@@ -15,7 +15,7 @@
 #define IS_ERR_OR_NULL(pointer) (pointer == NULL)
 #define CVBSOUT_TOP     0x05600000
 #define CVBSOUT         0x05604000
-#define TV_CLK_NUM 3
+#define TV_CLK_NUM 4
 #define TV_RST_NUM 2
 
 static int suspend = 0;
@@ -617,7 +617,7 @@ s32 tv_detect_enable(u32 sel)
 	/* only one thread to detect hot pluging */
 	if (!tve_task) {
 		tve_task = kthread_create(tv_detect_thread, (void *)0,
-						"tve detect");
+						"tve detect", HAL_THREAD_STACK_SIZE, HAL_THREAD_PRIORITY_SYS);
 		if (IS_ERR(tve_task)) {
 			s32 err = 0;
 
@@ -651,7 +651,7 @@ static bool hpd_status = 0;
 int get_tve_hpg_status(void)
 {
 	int status = 0;
-	
+
 	tv_lock_data = hal_spin_lock_irqsave(&tv_lock);
 	status = (int)hpd_status;
 	hal_spin_unlock_irqrestore(&tv_lock, tv_lock_data);
@@ -687,7 +687,7 @@ void tv_detect_thread(void *parg)
 	int i = 0;
 
 	while (1) {
-		kthread_mdelay(20);
+		disp_delay_ms(20);
 
 		if (!suspend) {
 			for (i = 0; i < SCREEN_COUNT; i++) {
@@ -713,7 +713,7 @@ s32 tv_detect_enable(u32 sel)
 	/* only one thread to detect hot pluging */
 	if (!tve_task) {
 		tve_task = kthread_create(tv_detect_thread, (void *)0,
-						"tve detect");
+						"tve detect", HAL_THREAD_STACK_SIZE, HAL_THREAD_PRIORITY_SYS);
 		if (IS_ERR((long)tve_task)) {
 			s32 err = 0;
 
@@ -807,7 +807,7 @@ static void tve_clk_init(u32 sel)
 		return;
 	}
 
-	g_tv_info.screen[sel].clk_parent = hal_clk_get_parent(g_tv_info.screen[sel].clk);
+	// g_tv_info.screen[sel].clk_parent = hal_clk_get_parent(g_tv_info.screen[sel].clk);
 }
 
 #if defined(TVE_TOP_SUPPORT)
@@ -937,7 +937,14 @@ static void tve_clk_config(u32 sel, u32 tv_mode)
 	signed long rate_diff = 0, prate_diff = 0, accuracy = 1000000;
 	unsigned int div = 1;
 
+	ret = hal_clk_set_parent(g_tv_info.screen[sel].clk, g_tv_info.screen[sel].clk_parent);
+
+	if (!ret) {
+		printf("[err] set clk relationship failed !");
+	}
+
 	ret = tve_get_pixclk(&rate, &tv_mode);
+
 	if (ret)
 		TV_ERR("%s:tve_get_pixclk fail!\n", __func__);
 
@@ -945,7 +952,7 @@ static void tve_clk_config(u32 sel, u32 tv_mode)
 		TV_ERR("screen[%d] clk_parent is NULL\n", sel);
 		return;
 	}
-	hal_clk_set_rate(g_tv_info.screen[sel].clk_parent, 2 * rate);
+	hal_clk_set_rate(g_tv_info.screen[sel].clk_parent, rate);
 
 	if (!g_tv_info.screen[sel].clk) {
 		TV_ERR("screen[%d] clk is NULL\n", sel);
@@ -1530,9 +1537,10 @@ int tv_probe(void)
 	hal_reset_type_t reset_type = HAL_SUNXI_RESET;
 	hal_clk_type_t clk_type = HAL_SUNXI_CCU;
 	hal_clk_id_t clk_id[TV_CLK_NUM] = {
-	                CLK_BUS_TVE_TOP,
-			CLK_TVE,
-			CLK_BUS_TVE,
+						CLK_BUS_TVE_TOP,
+						CLK_TVE,
+						CLK_BUS_TVE,
+						CLK_PLL_VIDEO1,
 	};
 
 
@@ -1572,6 +1580,13 @@ int tv_probe(void)
 	index++;
 	g_tv_info.screen[tv_id].bus_clk = hal_clock_get(clk_type, clk_id[index]);
 	if (IS_ERR_OR_NULL(g_tv_info.screen[tv_id].bus_clk)) {
+		pr_err("fail to get clk for tve%d's!\n", tv_id);
+		goto err_iomap;
+	}
+
+	index++;
+	g_tv_info.screen[tv_id].clk_parent = hal_clock_get(clk_type, clk_id[index]);
+	if (IS_ERR_OR_NULL(g_tv_info.screen[tv_id].clk_parent)) {
 		pr_err("fail to get clk for tve%d's!\n", tv_id);
 		goto err_iomap;
 	}

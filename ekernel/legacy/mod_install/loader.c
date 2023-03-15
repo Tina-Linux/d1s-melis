@@ -1,27 +1,41 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                             MELIS ELF FILE LOADER
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2011-2014, Sunny China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : loader.c
-* By      : Sunny
-* Version : v1.0
-* Date    : 2011-4-8
-* Descript: elf file loader handing functions.
-* Update  : date                auther      ver     notes
-*           2011-4-8 13:24:52   Sunny       1.0     Create this file.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "loader.h"
 #include "eelf.h"
 #include <sys_fsys.h>
 #include <log.h>
 #include <dfs_posix.h>
-//#include <elibs_stdio.h>
+
+#include <hal_mem.h>
 
 extern int             fioctrl(FILE* fp, int Cmd, void *args);
 
@@ -44,15 +58,15 @@ open_elf_t *LDR_LoadELFFile(__hdle hFile)
     __elf32_head_t    ELFHdr;       //52 byte
     __elf32_shead_t   SecHdr;       //40 byte
     __magic_common_t  Magic;        //64 byte
-    rt_uint32_t       MagicIdx;
-    rt_uint32_t       Offset;
-    rt_uint32_t       FileType;
-    rt_uint32_t       Idx;
+    uint32_t       MagicIdx;
+    uint32_t       Offset;
+    uint32_t       FileType;
+    uint32_t       Idx;
     char             *shstrtbl;
 
-    rt_memset(&ELFHdr, 0x00, sizeof(__elf32_head_t));
-    rt_memset(&SecHdr, 0x00, sizeof(__elf32_shead_t));
-    rt_memset(&Magic,  0x00, sizeof(__magic_common_t));
+    memset(&ELFHdr, 0x00, sizeof(__elf32_head_t));
+    memset(&SecHdr, 0x00, sizeof(__elf32_shead_t));
+    memset(&Magic,  0x00, sizeof(__magic_common_t));
 
     //seek to file begin
     //esFSYS_fseek(hFile, 0, SEEK_SET);
@@ -74,7 +88,7 @@ open_elf_t *LDR_LoadELFFile(__hdle hFile)
     fseek(hFile, Offset, SEEK_SET);
     //esFSYS_fread(&SecHdr, ELFHdr.shentsize, 1, hFile);
     fread(&SecHdr, ELFHdr.shentsize, 1, hFile);
-    shstrtbl = rt_malloc(SecHdr.size);
+    shstrtbl = hal_malloc(SecHdr.size);
     if (shstrtbl == NULL)
     {
         __err("allocate buffer for elf file string table failed");
@@ -97,18 +111,18 @@ open_elf_t *LDR_LoadELFFile(__hdle hFile)
         fseek(hFile, Offset, SEEK_SET);
         //esFSYS_fread(&SecHdr, ELFHdr.shentsize, 1, hFile);
         fread(&SecHdr, ELFHdr.shentsize, 1, hFile);
-        if (rt_strncmp(&shstrtbl[SecHdr.name], "MAGIC", 5) == 0)
+        if (strncmp(&shstrtbl[SecHdr.name], "MAGIC", 5) == 0)
         {
             //esFSYS_fseek(hFile, SecHdr.offset, SEEK_SET);
             //esFSYS_fread(&Magic, sizeof(Magic), 1, hFile);
             fseek(hFile, SecHdr.offset, SEEK_SET);
 			fread(&Magic, sizeof(Magic), 1, hFile);
-            if (rt_strncmp(Magic.magic, "ePDK.mod", 8) == 0)
+            if (strncmp(Magic.magic, "ePDK.mod", 8) == 0)
             {
                 //module file
                 FileType = LDR_MODULE_FILE;
             }
-            else if (rt_strncmp(Magic.magic, "ePDK.exf", 8) == 0)
+            else if (strncmp(Magic.magic, "ePDK.exf", 8) == 0)
             {
                 //process file
                 FileType = LDR_PROCESS_FILE;
@@ -120,7 +134,7 @@ open_elf_t *LDR_LoadELFFile(__hdle hFile)
     }
 
     //free string table
-    rt_free(shstrtbl);
+    hal_free(shstrtbl);
     if (MagicIdx == LDR_INVALID_INDEX || FileType == LDR_INVALID_FILE)
     {
         __err("invalid elf file to loader");
@@ -128,7 +142,7 @@ open_elf_t *LDR_LoadELFFile(__hdle hFile)
     }
 
     //valid standard elf file for melis system
-    pOPENELF = rt_malloc(sizeof(open_elf_t));
+    pOPENELF = hal_malloc(sizeof(open_elf_t));
     if (pOPENELF == NULL)
     {
         __err("allocate memory for open elf file failed");
@@ -162,10 +176,10 @@ open_elf_t *LDR_LoadELFFile(__hdle hFile)
 * Note       :
 *********************************************************************************************************
 */
-rt_int32_t LDR_GetELFFileSecROMHdr(open_elf_t *pOPENELF, rt_uint32_t Index, __section_rom_hdr_t *pROMHdr)
+int32_t LDR_GetELFFileSecROMHdr(open_elf_t *pOPENELF, uint32_t Index, __section_rom_hdr_t *pROMHdr)
 {
     __elf32_shead_t     SecHdr;   //40 byte
-    rt_uint32_t         Offset;
+    uint32_t         Offset;
 
     //load section header
     Offset = pOPENELF->shoff + Index * sizeof(__elf32_shead_t);
@@ -198,10 +212,10 @@ rt_int32_t LDR_GetELFFileSecROMHdr(open_elf_t *pOPENELF, rt_uint32_t Index, __se
 * Note       :
 *********************************************************************************************************
 */
-rt_int32_t LDR_GetELFFileSecData(open_elf_t *pOPENELF, rt_uint32_t Index, void *pData)
+int32_t LDR_GetELFFileSecData(open_elf_t *pOPENELF, uint32_t Index, void *pData)
 {
     __elf32_shead_t     SecHdr;   //40 byte
-    rt_uint32_t         Offset;
+    uint32_t         Offset;
 
     //load section header
     Offset = pOPENELF->shoff + Index * sizeof(__elf32_shead_t);
@@ -267,9 +281,9 @@ __hdle LDR_LoadFile(const char *filepath)
     {
         __magic_common_t magic;
 
-        rt_memset(&magic, 0x00, sizeof(magic));
+        memset(&magic, 0x00, sizeof(magic));
         //valid minfs elf file
-        pOPENELF = rt_malloc(sizeof(open_elf_t));
+        pOPENELF = hal_malloc(sizeof(open_elf_t));
         if (pOPENELF == NULL)
         {
             __err("allocate memory for open elf file failed");
@@ -278,7 +292,7 @@ __hdle LDR_LoadFile(const char *filepath)
             return NULL;
         }
 
-        rt_memset(pOPENELF, 0x00, sizeof(open_elf_t));
+        memset(pOPENELF, 0x00, sizeof(open_elf_t));
         pOPENELF->IsMFSROMELF   = 1;
         pOPENELF->FileType      = LDR_INVALID_FILE;
         pOPENELF->hFile         = (__hdle)hFile;
@@ -297,12 +311,12 @@ __hdle LDR_LoadFile(const char *filepath)
 		fioctrl(hFile, ROMLDR_IOC_GET_SECTION_DATA, (void *)args);
         //esFSYS_fioctrl(hFile, ROMLDR_IOC_GET_SECTION_DATA, MagicIdx, &magic);
 
-        if (rt_strncmp(magic.magic, "ePDK.mod", 8) == 0)
+        if (strncmp(magic.magic, "ePDK.mod", 8) == 0)
         {
             //module file
             pOPENELF->FileType = LDR_MODULE_FILE;
         }
-        else if (rt_strncmp(magic.magic, "ePDK.exf", 8) == 0)
+        else if (strncmp(magic.magic, "ePDK.exf", 8) == 0)
         {
             //process file
             pOPENELF->FileType = LDR_PROCESS_FILE;
@@ -345,7 +359,7 @@ __hdle LDR_LoadFile(const char *filepath)
 * Note       :
 *********************************************************************************************************
 */
-rt_int32_t LDR_UnloadFile(__hdle hLDR)
+int32_t LDR_UnloadFile(__hdle hLDR)
 {
     open_elf_t  *pOPENELF;
 
@@ -361,7 +375,7 @@ rt_int32_t LDR_UnloadFile(__hdle hLDR)
     fclose(pOPENELF->hFile);
 
     //release open elf structure
-    rt_free(pOPENELF);
+    hal_free(pOPENELF);
 
     return EPDK_OK;
 }
@@ -379,7 +393,7 @@ rt_int32_t LDR_UnloadFile(__hdle hLDR)
 * Note       :
 *********************************************************************************************************
 */
-rt_uint32_t LDR_GetFileType(__hdle hLDR)
+uint32_t LDR_GetFileType(__hdle hLDR)
 {
     open_elf_t  *pOPENELF;
 
@@ -406,7 +420,7 @@ rt_uint32_t LDR_GetFileType(__hdle hLDR)
 * Note       :
 *********************************************************************************************************
 */
-rt_uint32_t LDR_GetMagicIndex(__hdle hLDR)
+uint32_t LDR_GetMagicIndex(__hdle hLDR)
 {
     open_elf_t  *pOPENELF;
 
@@ -433,7 +447,7 @@ rt_uint32_t LDR_GetMagicIndex(__hdle hLDR)
 * Note       :
 *********************************************************************************************************
 */
-rt_uint32_t LDR_GetSecNumber(__hdle hLDR)
+uint32_t LDR_GetSecNumber(__hdle hLDR)
 {
     open_elf_t  *pOPENELF;
 
@@ -462,7 +476,7 @@ rt_uint32_t LDR_GetSecNumber(__hdle hLDR)
 * Note       :
 *********************************************************************************************************
 */
-rt_int32_t LDR_GetSecData(__hdle hLDR, rt_uint32_t Index, void *pData)
+int32_t LDR_GetSecData(__hdle hLDR, uint32_t Index, void *pData)
 {
     open_elf_t      *pOPENELF;
     unsigned long   args[3] = {0, 0, 0};
@@ -505,7 +519,7 @@ rt_int32_t LDR_GetSecData(__hdle hLDR, rt_uint32_t Index, void *pData)
 * Note       :
 *********************************************************************************************************
 */
-rt_int32_t LDR_GetSecROMHdr(__hdle hLDR, rt_uint32_t Index, __section_rom_hdr_t *pROMHdr)
+int32_t LDR_GetSecROMHdr(__hdle hLDR, uint32_t Index, __section_rom_hdr_t *pROMHdr)
 {
     open_elf_t      *pOPENELF;
     unsigned long   args[3] = {0, 0, 0};

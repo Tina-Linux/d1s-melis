@@ -1,22 +1,34 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                                  File System
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2011-2014, Sunny China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : dev_inode.c
-* By      : Sunny
-* Version : v1.0
-* Date    : 2011-3-16
-* Descript: device file system inode handing functions.
-* Update  : date                auther      ver     notes
-*           2011-3-16 14:05:49  Sunny       1.0     Create this file.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include "devfs.h"
 #include "errno.h"
 #include "slab.h"
@@ -99,7 +111,7 @@ struct inode *devfs_iget(struct super_block *sb, unsigned int key)
     struct devfs_inode_info *i;
     struct inode *inode = NULL;
 
-    /* ÔÚË½ÓÐ³¬¼¶¿éµÄÉè±¸inodeÁ´ÖÐË³Ðò±È½Ï²éÕÒinode½ÚµãÊÇ·ñ´æÔÚ */
+    /* åœ¨ç§æœ‰è¶…çº§å—çš„è®¾å¤‡inodeé“¾ä¸­é¡ºåºæ¯”è¾ƒæŸ¥æ‰¾inodeèŠ‚ç‚¹æ˜¯å¦å­˜åœ¨ */
     list_for_each_entry(i, &(sbi->inode_list), i_list)
     {
         BUG_ON(i->vfs_inode.i_sb != sb);
@@ -124,7 +136,7 @@ static int devfs_fill_inode(struct inode *inode, dms_node_info_fs_t *dinfo)
     inode->i_version++;
     inode->i_generation = 0;//get_seconds();
 
-    /* Ìî³äÉè±¸Àà½Úµã */
+    /* å¡«å……è®¾å¤‡ç±»èŠ‚ç‚¹ */
     if ((dinfo->type == DEVFS_CLASS_TYPE))
     {
         inode->i_generation &= ~1;
@@ -134,7 +146,7 @@ static int devfs_fill_inode(struct inode *inode, dms_node_info_fs_t *dinfo)
 
         inode->i_nlink = 2;
     }
-    /* Ìî³äÉè±¸½Úµã */
+    /* å¡«å……è®¾å¤‡èŠ‚ç‚¹ */
     else   /* not a directory */
     {
         inode->i_generation |= 1;
@@ -154,14 +166,14 @@ struct inode *devfs_build_inode(struct super_block *sb, dms_node_info_fs_t *dinf
     struct devfs_inode_info *devi;
     int err;
 
-    /* É¨ÃèÉè±¸inodeÁ´£¬¿´´ý´´½¨µÄinodeÊÇ·ñÒÑ¾­±»½¨Á¢ */
+    /* æ‰«æè®¾å¤‡inodeé“¾ï¼Œçœ‹å¾…åˆ›å»ºçš„inodeæ˜¯å¦å·²ç»è¢«å»ºç«‹ */
     inode = devfs_iget(sb, dinfo->key);
     if (inode)
     {
         goto out;
     }
 
-    /* ÉêÇëÉè±¸inode¿Õ¼ä */
+    /* ç”³è¯·è®¾å¤‡inodeç©ºé—´ */
     inode = new_inode(sb);
     if (!inode)
     {
@@ -171,7 +183,7 @@ struct inode *devfs_build_inode(struct super_block *sb, dms_node_info_fs_t *dinf
     inode->i_ino = iunique(sb, DEVFS_ROOT_INO);
     inode->i_version = 1;
 
-    /* Ìî³äinodeÄÚÈÝ */
+    /* å¡«å……inodeå†…å®¹ */
     err = devfs_fill_inode(inode, dinfo);
     if (err)
     {
@@ -180,9 +192,9 @@ struct inode *devfs_build_inode(struct super_block *sb, dms_node_info_fs_t *dinf
         goto out;
     }
 
-    /* ¼ÓÈëÐÂ½¨Á¢µÄÉè±¸inodeµ½³¬¼¶¿éµÄinodeÁ´ÖÐ */
+    /* åŠ å…¥æ–°å»ºç«‹çš„è®¾å¤‡inodeåˆ°è¶…çº§å—çš„inodeé“¾ä¸­ */
     list_add(&(DEVFS_I(inode)->i_list), &(DEVFS_SB(sb)->inode_list));
-    /* ¼ÓÈëÐÂ½¨Á¢µÄvfsinodeµ½ÐéÄâÎÄ¼þÏµÍ³µÄhash±íÖÐ */
+    /* åŠ å…¥æ–°å»ºç«‹çš„vfsinodeåˆ°è™šæ‹Ÿæ–‡ä»¶ç³»ç»Ÿçš„hashè¡¨ä¸­ */
     insert_inode_hash(inode);
 
 out:
@@ -248,7 +260,7 @@ __s32 devfs_fill_super(struct super_block *sb, void *data, __s32 silent)
     long error;
     char buf[50];
 
-    /* ÉêÇëË½ÓÐ³¬¼¶¿é¿Õ¼ä */
+    /* ç”³è¯·ç§æœ‰è¶…çº§å—ç©ºé—´ */
     sbi = calloc(sizeof(struct devfs_sb_info), 1);
     if (!sbi)
     {
@@ -256,7 +268,7 @@ __s32 devfs_fill_super(struct super_block *sb, void *data, __s32 silent)
     }
     sb->s_fs_info = sbi;
 
-    /* ³õÊ¼»¯³¬¼¶¿é */
+    /* åˆå§‹åŒ–è¶…çº§å— */
     sb->s_flags |= MS_NODIRATIME;// | MS_SYNCHRONOUS;   //debug for MS_SYNCHRONOUS
     sb->s_magic = DEVFS_SUPER_MAGIC;
     sb->s_op = &devfs_sops;
@@ -265,9 +277,9 @@ __s32 devfs_fill_super(struct super_block *sb, void *data, __s32 silent)
     sbi->dir_ops = &devfs_dir_inode_operations;
     INIT_LIST_HEAD(&sbi->inode_list);
 
-    /* ¹Ò½Ó×Ö·û¼¯ */
+    /* æŒ‚æŽ¥å­—ç¬¦é›† */
 
-    /* ½¨Á¢¸ùÄ¿Â¼inode½Úµã */
+    /* å»ºç«‹æ ¹ç›®å½•inodeèŠ‚ç‚¹ */
     error = -ENOMEM;
     root_inode = new_inode(sb);
     if (!root_inode)
@@ -282,7 +294,7 @@ __s32 devfs_fill_super(struct super_block *sb, void *data, __s32 silent)
         goto out_fail;
     }
 
-    /* ½¨Á¢¸ùÄ¿Â¼dentry½Úµã */
+    /* å»ºç«‹æ ¹ç›®å½•dentryèŠ‚ç‚¹ */
     error = -ENOMEM;
     insert_inode_hash(root_inode);
     sb->s_root = d_alloc_root(root_inode);
@@ -309,6 +321,3 @@ out_fail:
     sb->s_fs_info = NULL;
     return error;
 }
-
-
-

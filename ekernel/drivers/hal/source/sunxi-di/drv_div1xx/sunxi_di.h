@@ -178,6 +178,7 @@ struct di_mem_arg {
 
 #define DI_IOC_MEM_REQUEST    DI_IOWR(0x10, struct di_mem_arg)
 #define DI_IOC_MEM_RELEASE    DI_IOWR(0x11, struct di_mem_arg)
+#define DI_IOC_GET_CLIENT     DI_IOR(0x12, int)
 
 //#define DI_IOC_SET_DEMO_CROP  DI_IOW(0x12, struct di_demo_crop_arg)
 

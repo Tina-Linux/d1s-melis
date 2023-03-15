@@ -264,7 +264,7 @@ static void di_dev_reset(void)
 	struct di_reg *reg = di_dev_get_reg_base();
 
 	reg->ctrl.bits.reset = 1;
-	udelay(1);
+	hal_udelay(1);
 	reg->ctrl.bits.reset = 0;
 }
 

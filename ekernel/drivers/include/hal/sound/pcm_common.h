@@ -653,8 +653,15 @@ static inline int snd_range_empty(const snd_interval_t *i)
 
 static inline int snd_range_single(const snd_interval_t *i)
 {
+#if 0
 	return (i->range.min == i->range.max ||
 		(i->range.min + 1 == i->range.max && i->range.openmax));
+#else
+	/* fix hw params install error, maybe not the best way */
+	return (i->range.min == i->range.max ||
+		((i->range.min + 1 == i->range.max) && i->range.openmax) ||
+		((i->range.min + 2 == i->range.max) && i->range.openmax && i->range.openmin));
+#endif
 }
 
 static inline int snd_range_value(const snd_interval_t *i)

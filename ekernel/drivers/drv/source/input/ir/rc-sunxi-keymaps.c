@@ -12,6 +12,7 @@
 
 #include "rc-map.h"
 #include <sunxi_drv_ir.h>
+#include <input_event_codes.h>
 
 /*It is used for sunxi legacy ir addr mapping in kernel mode*/
 #ifdef CONFIG_SUNXI_KEYMAPPING_SUPPORT

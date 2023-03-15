@@ -1,21 +1,34 @@
 /*
- * =====================================================================================
- *
- *       Filename:  syscall.c
- *
- *    Description:  syscall layer for melis user module(drivers, mod or plugins).
- *
- *        Version:  Melis3.0
- *         Create:  2017-11-06 19:36:51
- *       Revision:  none
- *       Compiler:  gcc version 6.3.0 (crosstool-NG crosstool-ng-1.23.0)
- *
- *         Author:  zhijinzeng@allwinnertech.com
- *   Organization:  BU1-PSW
- *  Last Modified:  2019-05-13 18:46:46
- *
- * =====================================================================================
- */
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <stdio.h>
 #include <kapi.h>
 #include <syscall.h>
@@ -562,7 +575,7 @@ int32_t esFSYS_file2fd(void *hFile)
     return result;
 }
 
-int32_t esFSYS_fioctrl(void *hFile, int32_t Cmd, int32_t Aux, void *pBuffer)
+int32_t esFSYS_fioctrl(void *hFile, int32_t Cmd, long Aux, void *pBuffer)
 {
     int32_t result ;
     result = (int32_t)__syscall4((long)SYSCALL_FSYS(esFSYS_fioctrl), (long)hFile, (long)Cmd, (long)Aux, (long)pBuffer);
@@ -1517,6 +1530,13 @@ uint16_t esKRNL_Version(void)
     return result;
 }
 
+long esKRNL_Ioctrl(void *hdle, int cmd, void *args)
+{
+    long result;
+    result = (long) __syscall3((long)SYSCALL_KRNL(esKRNL_Ioctrl), (long)hdle, (long)cmd, (long)args);
+    return result;
+}
+
 // KRSV
 int32_t esKSRV_ClearWatchDog(void)
 {
@@ -1634,14 +1654,12 @@ void esKSRV_Save_Mixture_Hld(int mid, void *mp)
 {
     void *result ;
     result = (void *)__syscall2((long)SYSCALL_KSRV(esKSRV_Save_Mixture_Hld), (long)mid, (long)mp);
-    return result;
 }
 
 void esKSRV_Get_Mixture_Hld(int *mid, unsigned long *mp)
 {
     void *result ;
     result = (void *)__syscall2((long)SYSCALL_KSRV(esKSRV_Get_Mixture_Hld), (long)mid, (long)mp);
-    return result;
 }
 
 int32_t esKSRV_memcpy(void *pdest, const void *psrc, size_t size)
@@ -2677,7 +2695,6 @@ int32_t esTIME_StopTimer(int32_t timer_id)
     return result;
 }
 
-
 #ifdef CONFIG_DYNAMIC_LOG_LEVEL_SUPPORT
 int get_log_level(void)
 {
@@ -2700,5 +2717,96 @@ int backtrace(char *name, void *output[], int size, int offset, print_function p
     result = (int32_t)__syscall5((long)SYSCALL_KRNL(backtrace), (unsigned long)name, (unsigned long)output,
                                  (unsigned long)size, (unsigned long)offset, (unsigned long)p);
     return result;
+}
+#endif
+
+int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout)
+{
+    int32_t result;
+    result = (int32_t)__syscall5((long)SYSCALL_KRNL(select), (unsigned long)nfds, (unsigned long)readfds,
+                                 (unsigned long)writefds, (unsigned long)exceptfds, (unsigned long)exceptfds);
+    return result;
+}
+void *mmap(void *addr, size_t length, int prot, int flags,int fd, off_t offset)
+{
+    unsigned long result;
+    result = (unsigned long)__syscall6((long)SYSCALL_KRNL(select), (unsigned long)addr, (unsigned long)length,
+                                 (unsigned long)prot, (unsigned long)flags, (unsigned long)fd,(unsigned long)offset);
+    return (void *)result;
+}
+
+#ifdef CONFIG_KASAN
+
+#define __alias(symbol) __attribute__((alias(#symbol)))
+
+#define DEFINE_ASAN_LOAD_STORE(size)                    \
+    void __asan_load##size(unsigned long addr)          \
+    {                               \
+        __syscall1((long)SYSCALL_KASANOPS(__asan_load##size), (unsigned long)addr); \
+    }                               \
+    __alias(__asan_load##size)                  \
+    void __asan_load##size##_noabort(unsigned long);        \
+    void __asan_store##size(unsigned long addr)         \
+    {                               \
+        __syscall1((long)SYSCALL_KASANOPS(__asan_store##size), (unsigned long)addr); \
+    }                               \
+    __alias(__asan_store##size)                 \
+    void __asan_store##size##_noabort(unsigned long);       \
+
+DEFINE_ASAN_LOAD_STORE(1);
+DEFINE_ASAN_LOAD_STORE(2);
+DEFINE_ASAN_LOAD_STORE(4);
+DEFINE_ASAN_LOAD_STORE(8);
+DEFINE_ASAN_LOAD_STORE(16);
+
+void __asan_loadN(unsigned long addr, size_t size)
+{
+    __syscall2((long)SYSCALL_KASANOPS(__asan_loadN), (unsigned long)addr, (unsigned long)size);
+}
+
+__alias(__asan_loadN)
+void __asan_loadN_noabort(unsigned long, size_t);
+
+void __asan_storeN(unsigned long addr, size_t size)
+{
+    __syscall2((long)SYSCALL_KASANOPS(__asan_storeN), (unsigned long)addr, (unsigned long)size);
+}
+
+__alias(__asan_storeN)
+void __asan_storeN_noabort(unsigned long, size_t);
+
+void __asan_poison_stack_memory(const void *addr, size_t size)
+{
+    __syscall2((long)SYSCALL_KASANOPS(__asan_poison_stack_memory), (unsigned long)addr, (unsigned long)size);
+}
+
+void __asan_unpoison_stack_memory(const void *addr, size_t size)
+{
+    __syscall2((long)SYSCALL_KASANOPS(__asan_unpoison_stack_memory), (unsigned long)addr, (unsigned long)size);
+}
+
+void __asan_alloca_poison(unsigned long addr, size_t size)
+{
+    __syscall2((long)SYSCALL_KASANOPS(__asan_alloca_poison), (unsigned long)addr, (unsigned long)size);
+}
+
+void __asan_allocas_unpoison(const void *stack_top, const void *stack_bottom)
+{
+    __syscall2((long)SYSCALL_KASANOPS(__asan_alloca_unpoison), (unsigned long)stack_top, (unsigned long)stack_bottom);
+}
+
+void __asan_handle_no_return(void)
+{
+    __syscall0((long)SYSCALL_KASANOPS(__asan_handle_no_return));
+}
+
+void __asan_unregister_globals(void)
+{
+    __syscall0((long)SYSCALL_KASANOPS(__asan_unregister_globals));
+}
+
+void __asan_register_globals(void)
+{
+    __syscall0((long)SYSCALL_KASANOPS(__asan_register_globals));
 }
 #endif

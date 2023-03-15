@@ -1,20 +1,33 @@
 /*
-*********************************************************************************************************
-*                                                    MELIS
-*                                    the Easy Portable/Player Develop Kits
-*                                                File system module
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                                    (c) Copyright 2011-2014, Sunny China
-*                                             All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File    : fsys_debug.c
-* By      : Sunny
-* Version : v1.0
-* Date    : 2011-3-8
-* Descript: debug sevices for file system.
-* Update  : date                auther      ver     notes
-*           2011-3-8 14:26:42   Sunny       1.0     Create this file.
-*********************************************************************************************************
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "fsys_debug.h"
 #include "fsys_libs.h"
@@ -27,19 +40,19 @@ debug_para_msg_t debug_para;
 
 __s32 esFSYS_fsdbg(const char *cmd, const char *para)
 {
-    if ((rt_strncmp(cmd, "log", 3) == 0) || (rt_strncmp(cmd, "LOG", 3) == 0))
+    if ((strncmp(cmd, "log", 3) == 0) || (strncmp(cmd, "LOG", 3) == 0))
     {
         fs_log_parse_option(para);
     }
-    else if ((rt_strncmp(cmd, "dump", 4) == 0) || (rt_strncmp(cmd, "DUMP", 4) == 0))
+    else if ((strncmp(cmd, "dump", 4) == 0) || (strncmp(cmd, "DUMP", 4) == 0))
     {
         fs_dump_parse_option(para);
     }
-    else if ((rt_strncmp(cmd, "timer", 5) == 0) || (rt_strncmp(cmd, "TIMER", 5) == 0))
+    else if ((strncmp(cmd, "timer", 5) == 0) || (strncmp(cmd, "TIMER", 5) == 0))
     {
         fs_timer_parse_option(para);
     }
-    else if ((rt_strncmp(cmd, "fatchunk", 8) == 0) || (rt_strncmp(cmd, "FATCHUNK", 8) == 0))
+    else if ((strncmp(cmd, "fatchunk", 8) == 0) || (strncmp(cmd, "FATCHUNK", 8) == 0))
     {
         ES_FILE *fatfile;
 
@@ -54,15 +67,15 @@ __s32 esFSYS_fsdbg(const char *cmd, const char *para)
             esFSYS_fclose(fatfile);
         }
     }
-    else if ((rt_strncmp(cmd, "showopenfiles", 13) == 0) || (rt_strncmp(cmd, "SHOWOPENFILES", 13) == 0))
+    else if ((strncmp(cmd, "showopenfiles", 13) == 0) || (strncmp(cmd, "SHOWOPENFILES", 13) == 0))
     {
         __debug_dump_openfiles();
     }
-    else if ((rt_strncmp(cmd, "fmt.", 4) == 0) || (rt_strncmp(cmd, "FMT.", 4) == 0))
+    else if ((strncmp(cmd, "fmt.", 4) == 0) || (strncmp(cmd, "FMT.", 4) == 0))
     {
         esFSYS_format(para, cmd + 4, 0);
     }
-    else if ((rt_strncmp(cmd, "help", 4) == 0) || (rt_strncmp(cmd, "HELP", 4) == 0))
+    else if ((strncmp(cmd, "help", 4) == 0) || (strncmp(cmd, "HELP", 4) == 0))
     {
         __inf("==================================================================================================");
         __inf("=                                     Filesystem debuger helper.                                 =");

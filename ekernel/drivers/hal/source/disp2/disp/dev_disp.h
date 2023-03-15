@@ -23,6 +23,10 @@ enum disp_standby_flags {
 	DISPLAY_BLANK = 4,
 };
 
+struct proc_list {
+	void (*proc)(u32 screen_id);
+	struct list_head list;
+};
 
 struct disp_init_para {
 	bool b_init;
@@ -58,8 +62,12 @@ struct disp_drv_info {
 	uintptr_t reg_base[DISP_MOD_NUM];
 	u32 irq_no[DISP_MOD_NUM];
 
+#ifndef CONFIG_ARCH_SUN8IW19
 	hal_clk_id_t clk_de[DE_NUM];
 	hal_clk_id_t clk_bus_de[DE_NUM];
+#if defined(CONFIG_ARCH_SUN20IW2)
+	hal_clk_id_t clk_mbus_de[DE_NUM];
+#endif
 	hal_clk_id_t clk_bus_dpss_top[DISP_DEVICE_NUM];
 	hal_clk_id_t clk_tcon_lcd[DISP_DEVICE_NUM];
 	hal_clk_id_t clk_bus_tcon_lcd[DISP_DEVICE_NUM];
@@ -68,9 +76,13 @@ struct disp_drv_info {
 	hal_clk_id_t clk_mipi_dsi[CLK_DSI_NUM];
 	hal_clk_id_t clk_bus_mipi_dsi[CLK_DSI_NUM];
 #endif
+#else
+	u32 mclk[DISP_MOD_NUM];
+#endif
 
 	struct disp_init_para disp_init;
 	struct disp_manager *mgr[DISP_SCREEN_NUM];
+	struct proc_list sync_finish_proc_list;
 	hal_sem_t mlock;
 	hal_work start_work;
 
@@ -78,6 +90,8 @@ struct disp_drv_info {
 	bool b_lcd_enabled[DISP_SCREEN_NUM];
 	bool inited;		/* indicate driver if init */
 	struct disp_bsp_init_para para;
+	hal_sem_t wait[3];
+	unsigned long wait_count[3];
 };
 
 struct sunxi_disp_mod {
@@ -198,7 +212,9 @@ extern s32 disp_lcd_close(u32 sel);
 extern s32 fb_exit(void);
 extern unsigned long fb_get_address_info(u32 fb_id, u32 phy_virt_flag);
 extern int lcd_init(void);
-
+#ifdef CONFIG_COMMAND_PQD
+extern s32 pq_init(struct disp_bsp_init_para *para);
+#endif
 s32 disp_set_hdmi_func(struct disp_device_func *func);
 s32 disp_set_vdpo_func(struct disp_tv_func *func);
 s32 sunxi_get_fb_addr_para(struct __fb_addr_para *fb_addr_para);
@@ -220,6 +236,7 @@ int disp_enhance_mode_store(u32 disp, u32 value);
 int disp_enhance_saturation_store(u32 disp, u32 value);
 int disp_enhance_bright_store(u32 disp, u32 value);
 int disp_enhance_contrast_store(u32 disp, u32 value);
+int disp_enhance_hue_store(u32 disp, u32 value);
 int disp_color_temperature_store(u32 disp, s32 value);
 int disp_enhance_denoise_store(u32 disp, u32 value);
 int disp_enhance_detail_store(u32 disp, u32 value);
@@ -228,6 +245,7 @@ int disp_enhance_mode_show(u32 disp, char *buf);
 int disp_enhance_saturation_show(u32 disp, char *buf);
 int disp_enhance_bright_show(u32 disp, char *buf);
 int disp_enhance_contrast_show(u32 disp, char *buf);
+int disp_enhance_hue_show(u32 disp, char *buf);
 int disp_color_temperature_show(u32 disp, char *buf);
 int disp_enhance_denoise_show(u32 disp, char *buf);
 int disp_enhance_detail_show(u32 disp, char *buf);

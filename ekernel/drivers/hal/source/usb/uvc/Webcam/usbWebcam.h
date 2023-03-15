@@ -3,7 +3,7 @@
 *                                USB UVC Driver
 *
 *                (c) Copyright 2010-2015, All winners Co,Ld.
-*                        All Right Reserved 
+*                        All Right Reserved
 *
 * FileName		:  usbWebcam.h
 *
@@ -21,20 +21,21 @@
 *
 ********************************************************************************
 */
-#ifndef  __USBWEBCAM_H__
-#define  __USBWEBCAM_H__
-#include  "usbWebcam_proc.h"
+#ifndef __USBWEBCAM_H__
+#define __USBWEBCAM_H__
 
-typedef struct _usbWebcam{
+#include "usbWebcam_proc.h"
 
-	UVCDev_t	*UVCDev;
+typedef void *__hdle;
 
-	FILE		*webcamHdl;
-	uvc_irq_t   uvc_irq;
+typedef struct _usbWebcam {
+	UVCDev_t *UVCDev;
 
-	__u32		urb_mem[UVC_URBS];
+	FILE *webcamHdl;
+	uvc_irq_t uvc_irq;
 
-}usbWebcam_t;
+	__u32 urb_mem[UVC_URBS];
 
-#endif   //__USBWEBCAM_H__
+} usbWebcam_t;
 
+#endif	//__USBWEBCAM_H__

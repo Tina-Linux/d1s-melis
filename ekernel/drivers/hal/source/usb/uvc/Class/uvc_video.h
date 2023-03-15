@@ -11,7 +11,7 @@
 *
 * Date			:  2013/03/26
 *
-* Description	:  USB VIDEO CONTROL DriverÖĞ¶ÔUSB½Ó¿ÚÉè±¸µÄ´¦Àí
+* Description	:  USB VIDEO CONTROL Driverä¸­å¯¹USBæ¥å£è®¾å¤‡çš„å¤„ç†
 *
 * Others		:  NULL
 *
@@ -24,21 +24,4 @@
 #ifndef __USB_UVC_VIDEO_H__
 #define __USB_UVC_VIDEO_H__
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#endif//__USB_UVC_VIDEO_H__
-
+#endif	//__USB_UVC_VIDEO_H__

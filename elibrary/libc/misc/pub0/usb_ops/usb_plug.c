@@ -1,26 +1,33 @@
 /*
-*************************************************************************************
-*                                           Melis
-*                                   USB Host Driver Operation
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                       (c) Copyright 2006-2010, All winners Co,Ld.
-*                                  All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File Name     : usb_plug.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
-* Author        : javen
 *
-* Description   : usb ²Ù×÷¿â¡£
-*
-* Note          : ¾ßÌåÃüÁî¿É²Î¿¼ "D:\winners\ePDK\includes\emod\sys_hwsc.h"
-*                                "D:\winners\ePDK\includes\emod\drv_host.h"
-*                                "D:\winners\ePDK\includes\emod\drv_udisk.h"
-*
-* History       :
-*      <author>         <time>          <version >          <desc>
-*       javen          2010-12-13          1.0          create this file
-*
-*************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <typedef.h>
 #include <libc/elibs_stdio.h>
@@ -34,17 +41,17 @@
 *                     App_InsmodUsbDeivceDriver
 *
 * Description:
-*    Ïò usbh_monitor ·¢ËÍ¼ÓÔØ deivce Çı¶¯ÃüÁî
+*    å‘ usbh_monitor å‘é€åŠ è½½ deivce é©±åŠ¨å‘½ä»¤
 *
 * Arguments:
-*    usbc_no   :  input. USB¿ØÖÆÆ÷±àºÅ
+*    usbc_no   :  input. USBæ§åˆ¶å™¨ç¼–å·
 *
 * Returns:
-*    EPDK_OK   :  ·¢ËÍ³É¹¦
-*    EPDK_FAIL :  ·¢ËÍÊ§°Ü
+*    EPDK_OK   :  å‘é€æˆåŠŸ
+*    EPDK_FAIL :  å‘é€å¤±è´¥
 *
 * note:
-*    ÃüÁî·¢ËÍÍê±Ïºó£¬delay 2s È·±£¼ÓÔØ³É¹¦
+*    å‘½ä»¤å‘é€å®Œæ¯•åï¼Œdelay 2s ç¡®ä¿åŠ è½½æˆåŠŸ
 *
 *********************************************************************
 */
@@ -53,7 +60,7 @@ __s32 App_InsmodUsbDeivceDriver(__u32 usbc_no)
     ES_FILE *usbm_dev_hadle = NULL;
     __s32 ret = 0;
     __inf("%s %d :App_InsmodUsbDeivceDriver usbc_no = %d\n", __FUNCTION__, __LINE__, usbc_no);
-    /* ´ò¿ª hwsc Éè±¸ */
+    /* æ‰“å¼€ hwsc è®¾å¤‡ */
     usbm_dev_hadle = eLIBs_fopen("b:\\HWSC\\hwsc", "r");
 
     if (usbm_dev_hadle == NULL)
@@ -62,7 +69,7 @@ __s32 App_InsmodUsbDeivceDriver(__u32 usbc_no)
         return EPDK_FAIL;
     }
 
-    /* ·¢ËÍ¼ÓÔØhostÃüÁî */
+    /* å‘é€åŠ è½½hostå‘½ä»¤ */
     ret = eLIBs_fioctrl(usbm_dev_hadle, DEV_IOC_USR_HWSC_APP_INSMOD_USBD, 0, NULL);
 
     if (ret == EPDK_FAIL)
@@ -73,7 +80,7 @@ __s32 App_InsmodUsbDeivceDriver(__u32 usbc_no)
         return EPDK_FAIL;
     }
 
-    /* ¹Ø±Õ hwsc Éè±¸ */
+    /* å…³é—­ hwsc è®¾å¤‡ */
     eLIBs_fclose(usbm_dev_hadle);
     usbm_dev_hadle = NULL;
     /*wait to install host driver less than 2 second*/
@@ -86,17 +93,17 @@ __s32 App_InsmodUsbDeivceDriver(__u32 usbc_no)
 *                     App_RmmodUsbDeivceDriver
 *
 * Description:
-*    Ïò usbh_monitor ·¢ËÍĞ¶ÔØ device Çı¶¯ÃüÁî
+*    å‘ usbh_monitor å‘é€å¸è½½ device é©±åŠ¨å‘½ä»¤
 *
 * Arguments:
-*    usbc_no   :  input. USB¿ØÖÆÆ÷±àºÅ
+*    usbc_no   :  input. USBæ§åˆ¶å™¨ç¼–å·
 *
 * Returns:
-*    EPDK_OK   :  ·¢ËÍ³É¹¦
-*    EPDK_FAIL :  ·¢ËÍÊ§°Ü
+*    EPDK_OK   :  å‘é€æˆåŠŸ
+*    EPDK_FAIL :  å‘é€å¤±è´¥
 *
 * note:
-*    ÃüÁî·¢ËÍÍê±Ïºó£¬delay 1s È·±£Ğ¶ÔØ³É¹¦
+*    å‘½ä»¤å‘é€å®Œæ¯•åï¼Œdelay 1s ç¡®ä¿å¸è½½æˆåŠŸ
 *
 *********************************************************************
 */
@@ -105,7 +112,7 @@ __s32 App_RmmodUsbDeivceDriver(__u32 usbc_no)
     ES_FILE *usbm_dev_hadle = NULL;
     __s32 ret = 0;
     __inf("%s %d :App_RmmodUsbDeivceDriver usbc_no = %d\n", __FUNCTION__, __LINE__, usbc_no);
-    /* ´ò¿ª hwsc Éè±¸ */
+    /* æ‰“å¼€ hwsc è®¾å¤‡ */
     usbm_dev_hadle = eLIBs_fopen("b:\\HWSC\\hwsc", "r");
 
     if (usbm_dev_hadle == NULL)
@@ -114,7 +121,7 @@ __s32 App_RmmodUsbDeivceDriver(__u32 usbc_no)
         return EPDK_FAIL;
     }
 
-    /* ·¢ËÍ¼ÓÔØhostÃüÁî */
+    /* å‘é€åŠ è½½hostå‘½ä»¤ */
     ret = eLIBs_fioctrl(usbm_dev_hadle, DEV_IOC_USR_HWSC_APP_RMMOD_USBD, 0, NULL);
 
     if (ret == EPDK_FAIL)
@@ -125,10 +132,10 @@ __s32 App_RmmodUsbDeivceDriver(__u32 usbc_no)
         return EPDK_FAIL;
     }
 
-    /* ¹Ø±Õ hwsc Éè±¸ */
+    /* å…³é—­ hwsc è®¾å¤‡ */
     eLIBs_fclose(usbm_dev_hadle);
     usbm_dev_hadle = NULL;
-    /* delay 1s È·±£usb_monitorÓĞ×ã¹»µÄÊ±¼äĞ¶ÔØ */
+    /* delay 1s ç¡®ä¿usb_monitoræœ‰è¶³å¤Ÿçš„æ—¶é—´å¸è½½ */
     //  esKRNL_TimeDly(200);
     return EPDK_OK;
 }
@@ -138,17 +145,17 @@ __s32 App_RmmodUsbDeivceDriver(__u32 usbc_no)
 *                     App_InsmodUsbHostDriver
 *
 * Description:
-*    Ïòusbh_monitor·¢ËÍ¼ÓÔØhostÇı¶¯ÃüÁî
+*    å‘usbh_monitorå‘é€åŠ è½½hosté©±åŠ¨å‘½ä»¤
 *
 * Arguments:
-*    usbc_no   :  input. USB¿ØÖÆÆ÷±àºÅ
+*    usbc_no   :  input. USBæ§åˆ¶å™¨ç¼–å·
 *
 * Returns:
-*    EPDK_OK   :  ·¢ËÍ³É¹¦
-*    EPDK_FAIL :  ·¢ËÍÊ§°Ü
+*    EPDK_OK   :  å‘é€æˆåŠŸ
+*    EPDK_FAIL :  å‘é€å¤±è´¥
 *
 * note:
-*    ÃüÁî·¢ËÍÍê±Ïºó£¬delay 2s È·±£¼ÓÔØ³É¹¦
+*    å‘½ä»¤å‘é€å®Œæ¯•åï¼Œdelay 2s ç¡®ä¿åŠ è½½æˆåŠŸ
 *
 *********************************************************************
 */
@@ -157,7 +164,7 @@ __s32 App_InsmodUsbHostDriver(__u32 usbc_no)
     ES_FILE *usbm_dev_hadle = NULL;
     __s32 ret = 0;
     __inf("%s %d : App_InsmodUsbHostDriver usbc_no = %d\n", __FUNCTION__, __LINE__, usbc_no);
-    /* ´ò¿ª hwsc Éè±¸ */
+    /* æ‰“å¼€ hwsc è®¾å¤‡ */
     usbm_dev_hadle = eLIBs_fopen("b:\\HWSC\\hwsc", "r");
 
     if (usbm_dev_hadle == NULL)
@@ -166,7 +173,7 @@ __s32 App_InsmodUsbHostDriver(__u32 usbc_no)
         return EPDK_FAIL;
     }
 
-    /* ·¢ËÍ¼ÓÔØhostÃüÁî */
+    /* å‘é€åŠ è½½hostå‘½ä»¤ */
     if (usbc_no == 0)
     {
         ret = eLIBs_fioctrl(usbm_dev_hadle, DEV_IOC_USR_HWSC_APP_INSMOD_USBH, 0, NULL);
@@ -192,7 +199,7 @@ __s32 App_InsmodUsbHostDriver(__u32 usbc_no)
         return EPDK_FAIL;
     }
 
-    /* ¹Ø±Õ hwsc Éè±¸ */
+    /* å…³é—­ hwsc è®¾å¤‡ */
     eLIBs_fclose(usbm_dev_hadle);
     usbm_dev_hadle = NULL;
     /*wait to install host driver less than 2 second*/
@@ -205,17 +212,17 @@ __s32 App_InsmodUsbHostDriver(__u32 usbc_no)
 *                     App_RmmodUsbHostDriver
 *
 * Description:
-*    Ïòusbh_monitor·¢ËÍĞ¶ÔØhostÇı¶¯ÃüÁî
+*    å‘usbh_monitorå‘é€å¸è½½hosté©±åŠ¨å‘½ä»¤
 *
 * Arguments:
-*    usbc_no   :  input. USB¿ØÖÆÆ÷±àºÅ
+*    usbc_no   :  input. USBæ§åˆ¶å™¨ç¼–å·
 *
 * Returns:
-*    EPDK_OK   :  ·¢ËÍ³É¹¦
-*    EPDK_FAIL :  ·¢ËÍÊ§°Ü
+*    EPDK_OK   :  å‘é€æˆåŠŸ
+*    EPDK_FAIL :  å‘é€å¤±è´¥
 *
 * note:
-*    ÃüÁî·¢ËÍÍê±Ïºó£¬delay 1s È·±£Ğ¶ÔØ³É¹¦
+*    å‘½ä»¤å‘é€å®Œæ¯•åï¼Œdelay 1s ç¡®ä¿å¸è½½æˆåŠŸ
 *
 *********************************************************************
 */
@@ -224,7 +231,7 @@ __s32 App_RmmodUsbHostDriver(__u32 usbc_no)
     ES_FILE *usbm_dev_hadle = NULL;
     __s32 ret = 0;
     __inf("%s %d : App_RmmodUsbHostDriver usbc_no = %d\n", __FUNCTION__, __LINE__, usbc_no);
-    /* ´ò¿ª hwsc Éè±¸ */
+    /* æ‰“å¼€ hwsc è®¾å¤‡ */
     usbm_dev_hadle = eLIBs_fopen("b:\\HWSC\\hwsc", "r");
 
     if (usbm_dev_hadle == NULL)
@@ -233,7 +240,7 @@ __s32 App_RmmodUsbHostDriver(__u32 usbc_no)
         return EPDK_FAIL;
     }
 
-    /* ·¢ËÍ¼ÓÔØhostÃüÁî */
+    /* å‘é€åŠ è½½hostå‘½ä»¤ */
     if (usbc_no == 0)
     {
         ret = eLIBs_fioctrl(usbm_dev_hadle, DEV_IOC_USR_HWSC_APP_RMMOD_USBH, 0, NULL);
@@ -259,10 +266,10 @@ __s32 App_RmmodUsbHostDriver(__u32 usbc_no)
         return EPDK_FAIL;
     }
 
-    /* ¹Ø±Õ hwsc Éè±¸ */
+    /* å…³é—­ hwsc è®¾å¤‡ */
     eLIBs_fclose(usbm_dev_hadle);
     usbm_dev_hadle = NULL;
-    /* delay 1s È·±£usb_monitorÓĞ×ã¹»µÄÊ±¼äĞ¶ÔØ */
+    /* delay 1s ç¡®ä¿usb_monitoræœ‰è¶³å¤Ÿçš„æ—¶é—´å¸è½½ */
     //  esKRNL_TimeDly(200);
     return EPDK_OK;
 }
@@ -272,21 +279,21 @@ __s32 App_RmmodUsbHostDriver(__u32 usbc_no)
 *                     App_IsUsbHostReomveComplete
 *
 * Description:
-*    ²éÑ¯ usb host Çı¶¯ÊÇ·ñĞ¶ÔØÍê³É
+*    æŸ¥è¯¢ usb host é©±åŠ¨æ˜¯å¦å¸è½½å®Œæˆ
 *
 * Parameters:
-*    usbc_no   :  input. USB¿ØÖÆÆ÷±àºÅ
+*    usbc_no   :  input. USBæ§åˆ¶å™¨ç¼–å·
 *
 * Return value:
-*    0  : Ã»ÓĞÍêÈ«Ğ¶ÔØ
-*    !0 : ÒÑ¾­ÍêÈ«Ğ¶ÔØÁË
+*    0  : æ²¡æœ‰å®Œå…¨å¸è½½
+*    !0 : å·²ç»å®Œå…¨å¸è½½äº†
 *
 * note:
-*    ÎŞÉè±¸²åÈë : Ğ¶ÔØÊ±¼äĞ¡ÓÚ 1s
-*    ÒÆ¶¯Ó²ÅÌ   : Ğ¶ÔØÊ±¼ä´óÓÚ 10s
-*    ¹âÇı       : Ğ¶ÔØÊ±¼ä´óÓÚ 10s
-*    UÅÌ        : Ğ¶ÔØÊ±¼äĞ¡ÓÚ 1s
-*    ¶Á¿¨Æ÷     : Ğ¶ÔØÊ±¼äĞ¡ÓÚ 1s
+*    æ— è®¾å¤‡æ’å…¥ : å¸è½½æ—¶é—´å°äº 1s
+*    ç§»åŠ¨ç¡¬ç›˜   : å¸è½½æ—¶é—´å¤§äº 10s
+*    å…‰é©±       : å¸è½½æ—¶é—´å¤§äº 10s
+*    Uç›˜        : å¸è½½æ—¶é—´å°äº 1s
+*    è¯»å¡å™¨     : å¸è½½æ—¶é—´å°äº 1s
 *
 *******************************************************************************
 */
@@ -295,7 +302,7 @@ __u32 App_IsUsbHostReomveComplete(__u32 usbc_no)
     ES_FILE *pHdle = NULL;
     __s32 ret = 0;
     __u32 status = 0;
-    /* ´ò¿ª hwsc Éè±¸ */
+    /* æ‰“å¼€ hwsc è®¾å¤‡ */
     pHdle = eLIBs_fopen("b:\\HWSC\\hwsc", "r");
 
     if (pHdle == NULL)
@@ -304,7 +311,7 @@ __u32 App_IsUsbHostReomveComplete(__u32 usbc_no)
         return 0;
     }
 
-    /* ·¢ËÍÃüÁî */
+    /* å‘é€å‘½ä»¤ */
     if (usbc_no == 0)
     {
         ret = eLIBs_fioctrl(pHdle, DEV_IOC_USR_HWSC_GET_USBH_WORK_STATUS, 0, NULL);
@@ -322,11 +329,11 @@ __u32 App_IsUsbHostReomveComplete(__u32 usbc_no)
         __wrn("ERR: unkown usb controller number, usbc_no = %d\n", usbc_no);
     }
 
-    /* ¹Ø±Õ hwsc Éè±¸ */
+    /* å…³é—­ hwsc è®¾å¤‡ */
     eLIBs_fclose(pHdle);
     pHdle = NULL;
 
-    /* ¸ù¾İ·µ»Ø×´Ì¬£¬×÷³öÏàÓ¦µÄÅĞ¶Ï */
+    /* æ ¹æ®è¿”å›çŠ¶æ€ï¼Œä½œå‡ºç›¸åº”çš„åˆ¤æ–­ */
     if (ret)
     {
         status = 1;
@@ -344,19 +351,19 @@ __u32 App_IsUsbHostReomveComplete(__u32 usbc_no)
 *                     App_WaitForUsbHostReomveComplete
 *
 * Description:
-*    µÈ´ı USB HOST Çı¶¯Ğ¶ÔØÍê±Ï¡£ÒòÎªÔÚÓĞÒÆ¶¯Ó²ÅÌ²åÈëµÄÇé¿öÏÂ£¬hostÇı¶¯Ğ¶ÔØ
-* ĞèÒª»¨ 10s µÄÊ±¼ä£¬Òò´ËĞ¶ÔØµÄÊ±¼ä´óÓÚ 10s ¡£
+*    ç­‰å¾… USB HOST é©±åŠ¨å¸è½½å®Œæ¯•ã€‚å› ä¸ºåœ¨æœ‰ç§»åŠ¨ç¡¬ç›˜æ’å…¥çš„æƒ…å†µä¸‹ï¼Œhosté©±åŠ¨å¸è½½
+* éœ€è¦èŠ± 10s çš„æ—¶é—´ï¼Œå› æ­¤å¸è½½çš„æ—¶é—´å¤§äº 10s ã€‚
 *
 * Parameters:
-*    usbc_no   :  input. USB¿ØÖÆÆ÷±àºÅ
+*    usbc_no   :  input. USBæ§åˆ¶å™¨ç¼–å·
 *
 * Return value:
-*    EPDK_OK    :  ³É¹¦
-*    EPDK_FAIL  :  Ê§°Ü
+*    EPDK_OK    :  æˆåŠŸ
+*    EPDK_FAIL  :  å¤±è´¥
 *
 * note:
-*    Èç¹ûÓĞÔÚ¹Ø»úµÄÇé¿öÏÂĞ¶ÔØ host Çı¶¯£¬¿ÉÒÔÔÚ delay ÆÚ¼äÈ¥¹Ø±Õ LCD£¬±ÜÃâ
-* ÓÉÓÚ host Çı¶¯Ğ¶ÔØ¹ı¾Ã£¬Ôì³É¹Ø»úÊ±¼äÌ«³¤¡£
+*    å¦‚æœæœ‰åœ¨å…³æœºçš„æƒ…å†µä¸‹å¸è½½ host é©±åŠ¨ï¼Œå¯ä»¥åœ¨ delay æœŸé—´å»å…³é—­ LCDï¼Œé¿å…
+* ç”±äº host é©±åŠ¨å¸è½½è¿‡ä¹…ï¼Œé€ æˆå…³æœºæ—¶é—´å¤ªé•¿ã€‚
 *
 *******************************************************************************
 */

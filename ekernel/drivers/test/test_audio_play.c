@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <stdio.h>
 #include <string.h>
 #include <mod_cedar.h>
@@ -15,6 +46,8 @@ __mp *audio_robin_hcedar = NULL;
 int audio_fd = -1;
 
 #define MAX_FILENAME  260     /* max file name length */
+
+void main_audio_close_test(void);
 
 char *get_name(const char *name)
 {
@@ -62,7 +95,7 @@ void free_name(char *name)
 
 #define AUDIO_DEV "/dev/audio_play0"
 
-int main_audio_test(int argc, const char **argv)
+int main_audio_play_test(int argc, const char **argv)
 {
     __cedar_media_file_inf  file_info;
    // FILE* audio_fp = NULL;
@@ -102,13 +135,25 @@ int main_audio_test(int argc, const char **argv)
     audio_robin_hcedar = esMODS_MOpen(audio_mid_cedar, 0);
 
     esMODS_MIoctrl(audio_robin_hcedar, CEDAR_CMD_SET_MEDIAFILE, 0, (void *)&file_info);
+    esMODS_MIoctrl(audio_robin_hcedar, CEDAR_CMD_SET_VOL, 30, NULL);
     esMODS_MIoctrl(audio_robin_hcedar, CEDAR_CMD_STOP, 0, NULL);
     esMODS_MIoctrl(audio_robin_hcedar, CEDAR_CMD_PLAY, 0, NULL);
-
-	    printf("aplay \n");
-
+#if 0
+    esKRNL_TimeDly(10);
+    __log("Please enter 'q' or Ctrl-C to quit audio_play_test command.\n");
+    while (1)
+    {
+        char ch = getchar();
+        if (ch == 'q' || ch == 3)
+        {
+            main_audio_close_test();
+            break;
+        }
+    }
+#endif
     return 0;
 }
+
 void main_audio_close_test(void)
 {
 	int ret = -1;
@@ -146,7 +191,7 @@ void main_audio_close_test(void)
 	
 }
 
-FINSH_FUNCTION_EXPORT_ALIAS(main_audio_test, __cmd_audio_test, audio_play_test);
-FINSH_FUNCTION_EXPORT_ALIAS(main_audio_close_test, __cmd_audio_close_test, audio_close_test);
+FINSH_FUNCTION_EXPORT_ALIAS(main_audio_play_test, __cmd_audio_play_test, audio_play_test);
+FINSH_FUNCTION_EXPORT_ALIAS(main_audio_close_test, __cmd_play_close, play_close_test);
 
 

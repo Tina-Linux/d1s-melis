@@ -309,7 +309,7 @@ struct mmc_host {
 	GPIO_Pin                cd_pin;
 	uint32_t                cd_irq;
 	gpio_pin_t		cd_gpio_pin;
-	irq_handler_t		cd_gpio_isr;
+	hal_irq_handler_t	cd_gpio_isr;
 	uint16_t                cd_delay;       /* delay interval (in ms) to wait power stable */
 	uint8_t                 wait_voltage_stable;	/* card voltage stable*/
 	GPIO_PinState           cd_pin_present_val;

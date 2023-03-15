@@ -60,7 +60,7 @@ u32 disp_get_property_value(const char *main_name, const char *sub_name, void *v
 	u32 i = 0, len = 0;
 	struct property_t *cur = NULL;
 
-#if (MELIS_SYS_CONFIG_USE == 1)
+#if (RTOS_SYS_CONFIG_USE == 1)
 	return 0;
 #endif
 
@@ -104,7 +104,7 @@ struct disp_gpio_set_t *disp_get_all_pin_property(const char *main_name,
 	static struct disp_gpio_set_t gpio_list[MAX_PIN_NUM];
 	u32 i = 0, len = 0, j = 0;
 	struct property_t *cur = NULL;
-#if (MELIS_SYS_CONFIG_USE == 1)
+#if (RTOS_SYS_CONFIG_USE == 1)
 	return NULL;
 #endif
 	memset(gpio_list, 0, 30 * sizeof(struct disp_gpio_set_t));

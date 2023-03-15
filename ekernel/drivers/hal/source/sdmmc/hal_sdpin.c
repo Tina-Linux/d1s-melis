@@ -40,6 +40,8 @@
 #endif
 #include "_sdhost.h"
 #include "_sd_define.h"
+#include "script.h"
+#include "hal_cfg.h"
 
 #ifndef SDC_MAX_PIN_NUM
 #define SDC_MAX_PIN_NUM   13
@@ -75,8 +77,8 @@ int32_t sdmmc_pinctl_set_from_cfg(struct mmc_host *host, char *sdc_str, uint32_t
 	}
 
 	for (i = 0;i < pin_num; i++) {
-		SDC_LOGE("name %s,port %d,port_num %d,mul_sel %d, pull %d, drv_level %d\n",\
-				gpiocfg[i].gpio_name, gpiocfg[i].port, gpiocfg[i].port_num, \
+		SDC_LOGE("name ???,port %d,port_num %d,mul_sel %d, pull %d, drv_level %d\n",\
+				gpiocfg[i].port, gpiocfg[i].port_num, \
 				gpiocfg[i].mul_sel, gpiocfg[i].pull, gpiocfg[i].drv_level);
 	}
 

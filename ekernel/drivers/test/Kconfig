@@ -124,4 +124,16 @@ menu "Drivers Test Sample"
 			select LWIP
 			default n
 	endmenu
+
+	config  SUNXI_AUDIO_TEST
+	bool "audio record and play test"
+	default n
+
+	config  SUNXI_AEC_TEST
+	bool "Aec test"
+	default n
+
+    config  SUNXI_MOD_VIDEO_PLAY_TEST
+    bool "mod_video_play Test"
+    default n
 endmenu

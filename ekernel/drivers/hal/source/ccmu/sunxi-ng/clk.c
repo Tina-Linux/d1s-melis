@@ -7,6 +7,7 @@ extern int sunxi_fixed_clk_init(void);
 extern int sunxi_ccu_init(void);
 extern int sunxi_r_ccu_init(void);
 extern int sunxi_rtc_ccu_init(void);
+extern int sunxi_dsp_init(void);
 
 hal_clk_status_t clk_init(void)
 {
@@ -14,6 +15,7 @@ hal_clk_status_t clk_init(void)
     sunxi_rtc_ccu_init();
     sunxi_r_ccu_init();
     sunxi_ccu_init();
+    sunxi_dsp_init();
     return 0;
 }
 
@@ -119,11 +121,6 @@ hal_clk_status_t clk_set_parent(struct clk *clk, struct clk *p_clk)
     }
 
     ret = clk_core_set_parent(clk->core, p_clk->core);
-
-    if (ret)
-    {
-        return ret;
-    }
 
     return ret;
 }

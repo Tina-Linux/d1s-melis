@@ -44,7 +44,6 @@
 #include <sunxi_hal_common.h>
 #include <hal_dma.h>
 
-
 #define DMA_ERR(fmt, arg...) printf("%s()%d " fmt, __func__, __LINE__, ##arg)
 
 static struct sunxi_dma_chan    dma_chan_source[NR_MAX_CHAN];
@@ -126,14 +125,15 @@ static void sunxi_dump_lli(struct sunxi_dma_chan *chan, struct sunxi_dma_lli *ll
 #ifdef DMA_DEBUG
     printf("channum:%x\n"
            "\t\tdesc:desc - 0x%08x desc p - 0x%08x desc v - 0x%08x\n"
-           "\t\tlli: v- 0x%08x v_lln - 0x%08x s - 0x%08x d - 0x%08x\n"
-           "\t\tlen - 0x%08x para - 0x%08x p_lln - 0x%08x\n",
+           "\t\tlli: v- 0x%08x v_lln - 0x%08x s - 0x%08x d - 0x%08x c - 0x%08x\n"
+           "\t\tdist - 0x%08x len - 0x%08x para - 0x%08x p_lln - 0x%08x\n",
            chan->chan_count,
 	   (uint32_t)chan->desc, (uint32_t)chan->desc->p_lln, (uint32_t)chan->desc->vlln,
-	   (uint32_t)lli, (uint32_t)lli->vlln, (uint32_t)lli->src,
+	   (uint32_t)lli, (uint32_t)lli->vlln, (uint32_t)lli->src, (uint32_t)lli->dst, (uint32_t)lli->cfg,
            (uint32_t)lli->dst, (uint32_t)lli->len, (uint32_t)lli->para, (uint32_t)lli->p_lln);
 #endif
 }
+
 
 static void sunxi_dump_com_regs(void)
 {
@@ -214,17 +214,21 @@ static void *sunxi_lli_list(struct sunxi_dma_lli *prev, struct sunxi_dma_lli *ne
     return next;
 }
 
-static irqreturn_t sunxi_dma_irq_handle(int irq,  void *ptr)
+static hal_irqreturn_t sunxi_dma_irq_handle(void *ptr)
 {
 
     uint32_t status_l = 0, status_h = 0;
     int i = 0;
 
+#if START_CHAN_OFFSET < HIGH_CHAN
     status_l = hal_readl(DMA_IRQ_STAT(0));
+#endif
 #if NR_MAX_CHAN + START_CHAN_OFFSET > HIGH_CHAN
     status_h = hal_readl(DMA_IRQ_STAT(1));
 #endif
+#if START_CHAN_OFFSET < HIGH_CHAN
     hal_writel(status_l, DMA_IRQ_STAT(0));
+#endif
 #if NR_MAX_CHAN + START_CHAN_OFFSET > HIGH_CHAN
     hal_writel(status_h, DMA_IRQ_STAT(1));
 #endif
@@ -301,19 +305,24 @@ static int sunxi_dma_clk_init(bool enable)
     hal_reset_type_t reset_type = HAL_SUNXI_RESET;
     u32  reset_id;
     hal_clk_type_t clk_type = HAL_SUNXI_CCU;
-    hal_clk_id_t clk_id;
+    hal_clk_id_t clk_id, mbus_clk_id;
     hal_clk_t clk;
     struct reset_control *reset;
 
     clk_id = SUNXI_CLK_DMA;
     reset_id = SUNXI_RST_DMA;
+    mbus_clk_id = SUNXI_CLK_MBUS_DMA;
+
     if (enable)
     {
-	reset = hal_reset_control_get(reset_type, reset_id);
-	hal_reset_control_deassert(reset);
-	hal_reset_control_put(reset);
+	if (reset_id) {
+		reset = hal_reset_control_get(reset_type, reset_id);
+		hal_reset_control_deassert(reset);
+		hal_reset_control_put(reset);
+	}
+	if (mbus_clk_id)
+		hal_clock_enable(hal_clock_get(clk_type, SUNXI_CLK_MBUS_DMA));
 
-	hal_clock_enable(hal_clock_get(clk_type, SUNXI_CLK_MBUS_DMA));
 	clk = hal_clock_get(clk_type, clk_id);
 	ret = hal_clock_enable(clk);
 	if (ret != HAL_CLK_STATUS_OK)
@@ -325,7 +334,8 @@ static int sunxi_dma_clk_init(bool enable)
 	ret = hal_clock_disable(clk);
 	if (ret != HAL_CLK_STATUS_OK)
 	    DMA_ERR("DMA clock disable failed.\n");
-	hal_clock_disable(hal_clock_get(clk_type, SUNXI_CLK_MBUS_DMA));
+	if (mbus_clk_id)
+		hal_clock_disable(hal_clock_get(clk_type, SUNXI_CLK_MBUS_DMA));
 	hal_clock_put(clk);
     }
 
@@ -442,7 +452,7 @@ hal_dma_status_t hal_dma_prep_device(struct sunxi_dma_chan *chan,
     if (!l_item)
     {
         hal_spin_unlock_irqrestore(&dma_lock, __cpsr);
-	return HAL_DMA_STATUS_NO_MEM;
+        return HAL_DMA_STATUS_NO_MEM;
     }
     memset(l_item, 0, sizeof(struct sunxi_dma_lli));
 
@@ -721,7 +731,8 @@ hal_dma_status_t hal_dma_start(struct sunxi_dma_chan *chan)
     irq_val |= SHIFT_IRQ_MASK(chan->irq_type, chan->chan_count);
     hal_writel(irq_val, DMA_IRQ_EN(high));
 
-    SET_OP_MODE(chan->chan_count, SRC_HS_MASK | DST_HS_MASK);
+    /* FlashCtrl cannot support handshake mode  */
+    /* SET_OP_MODE(chan->chan_count, SRC_HS_MASK | DST_HS_MASK); */
 
     for (prev = chan->desc; prev != NULL; prev = prev->vlln)
     {
@@ -813,27 +824,38 @@ hal_dma_status_t hal_dma_chan_desc_free(struct sunxi_dma_chan *chan)
 /* only need to be executed once */
 void hal_dma_init(void)
 {
-    uint32_t i = 0, high = 0;
+    uint32_t i = 0, high = 0, secure = 0;
 
     memset((void *)dma_chan_source, 0, NR_MAX_CHAN * sizeof(struct sunxi_dma_chan));
 
-    for (i = 0; i < NR_MAX_CHAN; i++)
+    for (i = START_CHAN_OFFSET; i < START_CHAN_OFFSET + NR_MAX_CHAN; i++)
     {
         high = (i >= HIGH_CHAN) ? 1 : 0;
         /*disable all dma irq*/
         hal_writel(0, DMA_IRQ_EN(high));
         /*clear all dma irq pending*/
         hal_writel(0xffffffff, DMA_IRQ_STAT(high));
+	/*set non-secure*/
+	secure = hal_readl(DMA_SECURE);
+	if ((secure & (1 << i)) == 0)
+		hal_writel(secure | (1 << i), DMA_SECURE);
     }
     /* disable auto gating */
     hal_writel(DMA_MCLK_GATE | DMA_COMMON_GATE | DMA_CHAN_GATE, DMA_GATE);
     sunxi_dma_clk_init(true);
 
     /*request dma irq*/
-    if (request_irq(DMA_IRQ_NUM, sunxi_dma_irq_handle, 0, "dma-ctl", NULL) < 0)
+    if (hal_request_irq(DMA_IRQ_NUM, sunxi_dma_irq_handle, "dma", NULL) < 0)
     {
         DMA_ERR("[dma] request irq error\n");
     }
-    enable_irq(DMA_IRQ_NUM);
+    hal_enable_irq(DMA_IRQ_NUM);
+#ifdef ENABLE_SECURE_DMA
+    if (hal_request_irq(DMA_SECURE_IRQ_NUM, sunxi_dma_irq_handle, "dma-s", NULL) < 0)
+    {
+        DMA_ERR("[dma] request secure irq error\n");
+    }
+    hal_enable_irq(DMA_SECURE_IRQ_NUM);
+#endif
 }
 

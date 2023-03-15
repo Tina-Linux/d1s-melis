@@ -14,11 +14,12 @@
 
 #include "rc-core.h"
 #include "rc-core-priv.h"
-#include <list.h>
+#include <aw_list.h>
 #include <stdlib.h>
 #include <hal_atomic.h>
 #include <sunxi_input.h>
 #include <init.h>
+#include <input_event_codes.h>
 
 /* Sizes are in bytes, 256 bytes allows for 32 entries on x64 */
 #define IR_TAB_MIN_SIZE 256

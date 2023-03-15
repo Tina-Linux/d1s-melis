@@ -1,3 +1,34 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 #include "fm_all_drv.h"
 #include <sunxi_hal_twi.h>
@@ -137,10 +168,10 @@ static __s32 fm_read_data_rtc6207m( __u8 *data,__s32 n_byte)
 /**********************************************
 * function:      fm_area_choose
 *
-* description:   ����ѡ������ͬ����ʼ����ֹ
-*                Ƶ��
+* description:   地区选择，区别不同的起始和终止
+*                频率
 *
-* notes:         ������ȷ�������سɹ�������ʧ��
+* notes:         输入正确地区返回成功，否则失败
 *
 **********************************************/
 __s32 fm_area_choose_rtc6207m(__s32 area, void *pbuffer)
@@ -171,8 +202,8 @@ __s32 fm_area_choose_rtc6207m(__s32 area, void *pbuffer)
 /**********************************************
 * function:      fm_manual_search
 *
-* description:   �ֶ�������ʹ��fm_play
-*                ����ֵ����һ������Ƶ�ʵ�
+* description:   手动搜索，使用fm_play
+*                返回值是下一个搜索频率点
 *
 * notes:
 *
@@ -185,7 +216,7 @@ __s32 fm_manual_search_rtc6207m(__s32 freq, __u32 search_dir)
 /**********************************************
 * function:      fm_mute
 *
-* description:   ��������
+* description:   静音功能
 *
 * notes:
 *
@@ -213,11 +244,11 @@ __s32 fm_mute_rtc6207m(__s32 voice_onoff)
 /**********************************************
 * function:      fm_play
 *
-* description:   ���������Ƶ�ʣ����Ŵ�Ƶ�ʵ�
-*                ��̨��Ŀ����ʹû�н�Ŀֻ��
-*                ��������������
+* description:   根据输入的频率，播放此频率的
+*                电台节目，即使没有节目只有
+*                噪音，照样播出
 *
-* notes:         ֻ���سɹ�
+* notes:         只返回成功
 *
 **********************************************/
 __s32 fm_play_rtc6207m(__s32 curFreq)//875000
@@ -969,7 +1000,7 @@ __s32 fm_vol_get_qn8065(void)
 *
 * description:   iic write
 *
-* notes:         5�ֽ�����д
+* notes:         5字节连续写
 *
 **********************************************/
 
@@ -1018,8 +1049,8 @@ __s32 fm_play_qn8065(__s32 freq)
 /**********************************************
 * function:      fm_manual_search
 *
-* description:   �ֶ�������ʹ��fm_play
-*                ����ֵ����һ������Ƶ�ʵ�
+* description:   手动搜索，使用fm_play
+*                返回值是下一个搜索频率点
 *
 * notes:
 *
@@ -1077,10 +1108,10 @@ while(1)
 /**********************************************
 * function:      fm_area_choose
 *
-* description:   ����ѡ������ͬ����ʼ����ֹ
-*                Ƶ��
+* description:   地区选择，区别不同的起始和终止
+*                频率
 *
-* notes:         ������ȷ�������سɹ�������ʧ��
+* notes:         输入正确地区返回成功，否则失败
 *
 **********************************************/                    //OK
 __s32 fm_area_choose_qn8065(__s32 area, void *pbuffer)
@@ -1120,7 +1151,7 @@ __s32 fm_area_choose_qn8065(__s32 area, void *pbuffer)
 /**********************************************
 * function:      fm_mute
 *
-* description:   ��������
+* description:   静音功能
 *
 * notes:
 *
@@ -1164,10 +1195,10 @@ __bool is_online_qn8065(void)
 
 //#define ADRW 	0x20
 //#define ADRR 	0x21
-#define             _SHARE_CRYSTAL_24MHz_   //����24MHz������򿪴˺�
-//#define             _SHARE_CRYSTAL_12MHz_   //����12MHz������򿪴˺�
-//#define             _SHARE_CRYSTAL_32KHz_   //����32KHz������򿪴˺�
-//#define             _FM_STEP_50K_           //50K��������򿪴˺�
+#define             _SHARE_CRYSTAL_24MHz_   //共用24MHz晶振，请打开此宏
+//#define             _SHARE_CRYSTAL_12MHz_   //共用12MHz晶振，请打开此宏
+//#define             _SHARE_CRYSTAL_32KHz_   //共用32KHz晶振，请打开此宏
+//#define             _FM_STEP_50K_           //50K步进，请打开此宏
 
 static __u16 gChipID 	= 0;
 static __u8 RDA5807P_REG[10];
@@ -1192,9 +1223,9 @@ __u8 RDA5807P_initialization_reg[]={
     0x00, 0x10,
 #endif
     0x04, 0x00,        
-    0x84, 0xAF, //05H: 		0x80~0x8fԽС̨Խ��
+    0x84, 0xAF, //05H: 		0x80~0x8f越小台越多
     0x00, 0x00,        
-    0x5E, 0xC6, //07H:		[7:2]ֵԽС̨Խ��  
+    0x5E, 0xC6, //07H:		[7:2]值越小台越多  
     0x50, 0x96,        
     0x00, 0x00,        
     0x40, 0x00, //0AH: 
@@ -1311,9 +1342,9 @@ __u8 RDA5807PH_initialization_reg[]={
 #endif
     0x00,0x10,
     0x04,0x00,
-    0x88,0xB0, //05h://86    ���20H�Ĵ��������ڴ˵���̨����,��SP��һ����0X80��̨���
+    0x88,0xB0, //05h://86    如打开20H寄存器，可在此调搜台个数,与SP版一样，0X80搜台最多
     0x40,0x00,
-    0x7E,0xc6,					//���¼Ĵ������ò���ʡȥ
+    0x7E,0xc6,					//以下寄存器配置不可省去
     0x00,0x00,
     0x00,0x00,
     0x00,0x00,  //0x0ah
@@ -1338,10 +1369,10 @@ __u8 RDA5807PH_initialization_reg[]={
     0x81,0x6a,
     0x46,0x08,
     0x00,0x86,  //0x1fh
-    0x06,0x61,// 0x16,0x61, 20h  //0X16Ϊ�򿪵�05H�Ĵ���������05H����̨��
+    0x06,0x61,// 0x16,0x61, 20h  //0X16为打开第05H寄存器，可在05H调搜台数
     0x00,0x00,
     0x10,0x9e,
-    0x25,0x4A,//0x24,0Xc9̨��  //   0x23,0x46 //0x25,0x4a //0x25,0xCB  //0x26,0x4c̨�����,�����̨���࣬���ݿͻ�����ѡ��  //23h  ��̨����ֵ����
+    0x25,0x4A,//0x24,0Xc9台多  //   0x23,0x46 //0x25,0x4a //0x25,0xCB  //0x26,0x4c台相对少,但清楚台更多，根据客户需求选择  //23h  搜台门限值调整
     0x04,0x08,//0830
     0x0c,0x16,//0x06,0x08,  //0x06,0x08,//0830  //0x25h
     0xe1,0x05,
@@ -1377,7 +1408,7 @@ __u8 RDA5807N_initialization_reg[]={
 //#endif
     0x00, 0x10,
     0x04, 0x00,
-    0xc4, 0xef, //05h 		0x86 ֻ�ж�������̨���ܶ�һ��,  0xc3 �����������,Ч�������
+    0xc4, 0xef, //05h 		0x86 只判断能量杂台可能多一点,  0xc3 能量跟信噪比,效果会更好
     0x60, 0x00,
     0x42, 0x12,//07h
     0x00, 0x00,
@@ -1414,11 +1445,11 @@ __u8 RDA5807N_initialization_reg[]={
     0xBB, 0x6C,
     0x2B, 0xEC,
 };
-#define RDA5807_WR_ADDRESS  0x20       ///<RDA5807 д��ַ
-#define RDA5807_RD_ADDRESS  0x21       ///<RDA5807 ����ַ
+#define RDA5807_WR_ADDRESS  0x20       ///<RDA5807 写地址
+#define RDA5807_RD_ADDRESS  0x21       ///<RDA5807 读地址
 __bool OperationRDAFM_2w(__u8 rw,  __u8 *data,__s32 n_byte)
 {
-	__twi_dev_para_ex_t  piic;        //Ҫд��TEA5767������
+	__twi_dev_para_ex_t  piic;        //要写入TEA5767的数据
 	__s32 ret;
     __u64 arg[4] = {0,0,0,0};
 
@@ -1463,10 +1494,10 @@ __bool ReadRDAFM(__u8 addr, __u8 *data,__s32 n_byte)
 /**********************************************
 * function:      fm_area_choose
 *
-* description:   ����ѡ������ͬ����ʼ����ֹ
-*                Ƶ��
+* description:   地区选择，区别不同的起始和终止
+*                频率
 *
-* notes:         ������ȷ�������سɹ�������ʧ��
+* notes:         输入正确地区返回成功，否则失败
 *
 **********************************************/
 __s32 fm_area_choose_rda5807(__s32 area, void *pbuffer)
@@ -1501,7 +1532,7 @@ __s32 fm_area_choose_rda5807(__s32 area, void *pbuffer)
 /**********************************************
 * function:      fm_stereo_choose
 *
-* description:   ����ѡ������������ͨ����
+* description:   音质选择，立体声和普通声音
 *
 * notes:
 *
@@ -1521,7 +1552,7 @@ __s32 fm_stereo_choose_rda5807(__s32 audio_method)
 /**********************************************
 * function:      fm_mute
 *
-* description:   ��������
+* description:   静音功能
 *
 * notes:
 *
@@ -1589,11 +1620,11 @@ __u16 RDA5807P_FreqToChan(__u16 n_frequency)
 /**********************************************
 * function:      fm_play
 *
-* description:   ���������Ƶ�ʣ����Ŵ�Ƶ�ʵ�
-*                ��̨��Ŀ����ʹû�н�Ŀֻ��
-*                ��������������
+* description:   根据输入的频率，播放此频率的
+*                电台节目，即使没有节目只有
+*                噪音，照样播出
 *
-* notes:         ֻ���سɹ�
+* notes:         只返回成功
 *
 **********************************************/
 __s32 fm_play_rda5807(__s32 curFreq)
@@ -1697,14 +1728,14 @@ __u8 RDA5807P_GetSigLvl( __u16 curf )
     OperationRDAFM_2w(READ,&(RDA5807P_reg_data[0]), 4);
     //ReadRDAFM(0x0A,RDA5807P_reg_data,4);
 
-    return  (RDA5807P_reg_data[2]>>1);  /*����rssi*/
+    return  (RDA5807P_reg_data[2]>>1);  /*返回rssi*/
 }
 
 /**********************************************
 * function:      fm_manual_search
 *
-* description:   �ֶ�������ʹ��fm_play
-*                ����ֵ����һ������Ƶ�ʵ�
+* description:   手动搜索，使用fm_play
+*                返回值是下一个搜索频率点
 *
 * notes:
 *
@@ -1976,7 +2007,7 @@ __bool is_online_rda5807(void)
 #endif
 
 #if FM_SEEK_50K_STEP
-#define __RTCFM_STEP_50K__                      //�򿪺�ʹ��50k�������ر�ʹ��100k����
+#define __RTCFM_STEP_50K__                      //打开宏使用50k步进，关闭使用100k步进
 #define __RTCFM_STEP_50K_CHOOSE_BEST_FROM_TW0__
 #endif
 
@@ -2278,7 +2309,7 @@ __u8 RTC6222_seek(__u16 channel_freq)
     #ifdef __RTCFM_STEP_50K_CHOOSE_BEST_FROM_TW0__
     __u16 IF_Shift_1 = 0, IF_Shift_2 = 0;
     __u8 Status1 =0;
-    __u8 shiftindex=0; //�뿴����ͷ�ķ���ֵ˵����0��ʾ��ǰ�ϲ㴫���ײ���l�㣬1��ʾ�ϲ㴫���ײ���l����+50k�����ѵ�̨ʱ�������ϲ��̨�ͷ���ѡ����ȷ���l�㡣
+    __u8 shiftindex=0; //请看函数头的返回值说明，0表示当前上层传给底层的頻点，1表示上层传给底层的頻点再+50k。在搜到台时来告诉上层存台和放音选择正确的頻点。
     #endif
     
     Status0 = RTC6222_set_freq(channel_freq);  // Check Seek_States is 0 ornot by Danny 20150702 
@@ -2358,10 +2389,10 @@ __u16 RTC6222_read_cur_seeking_freq(void)
 /**********************************************
 * function:      fm_area_choose
 *
-* description:   ����ѡ������ͬ����ʼ����ֹ
-*                Ƶ��
+* description:   地区选择，区别不同的起始和终止
+*                频率
 *
-* notes:         ������ȷ�������سɹ�������ʧ��
+* notes:         输入正确地区返回成功，否则失败
 *
 **********************************************/
 __s32 fm_area_choose_rtc6222(__s32 area, void *pbuffer)
@@ -2394,7 +2425,7 @@ __s32 fm_area_choose_rtc6222(__s32 area, void *pbuffer)
 /**********************************************
 * function:      fm_mute
 *
-* description:   ��������
+* description:   静音功能
 *
 * notes:
 *
@@ -2409,11 +2440,11 @@ __s32 fm_mute_rtc6222(__s32 voice_onoff)
 /**********************************************
 * function:      fm_play
 *
-* description:   ���������Ƶ�ʣ����Ŵ�Ƶ�ʵ�
-*                ��̨��Ŀ����ʹû�н�Ŀֻ��
-*                ��������������
+* description:   根据输入的频率，播放此频率的
+*                电台节目，即使没有节目只有
+*                噪音，照样播出
 *
-* notes:         ֻ���سɹ�
+* notes:         只返回成功
 *
 **********************************************/
 __s32 fm_play_rtc6222(__s32 curFreq)
@@ -2425,8 +2456,8 @@ __s32 fm_play_rtc6222(__s32 curFreq)
 /**********************************************
 * function:      fm_manual_search
 *
-* description:   �ֶ�������ʹ��fm_play
-*                ����ֵ����һ������Ƶ�ʵ�
+* description:   手动搜索，使用fm_play
+*                返回值是下一个搜索频率点
 *
 * notes:
 *
@@ -2619,7 +2650,7 @@ static void MPIO2_OUTVALUE(__u32 value)
 ////////////////////////////////////////HV PARALLEL:TD043MGEB1 800_480 ////////////////////////////////////////////////////////////////////
 
 
-//����IO,����IO״̬Ϊ���HIGHT
+//申请IO,设置IO状态为输出HIGHT
 static void  I2C_io_init(__u32 sel)
 {	
     return;
@@ -2651,7 +2682,7 @@ static void  I2C_io_init(__u32 sel)
 	MPIO2_OUTVALUE(1);
 }
 
-//����IO״̬Ϊ���LOW,�ͷ�IO
+//设置IO状态为输出LOW,释放IO
 static void I2C_io_exit(__u32 sel)
 {
 return ;
@@ -2700,7 +2731,7 @@ __u16 HW_Reg[]=
 	0x3A50,
 	0xEAF0,
 	0x3000,//31
-	0x0200,//	0x0200���μ�̨
+	0x0200,//	0x0200屏蔽假台
 	0x0000,
 };
 
@@ -3140,14 +3171,14 @@ __u8 BK1080_ValidStop(__u16 freq,__u16 start_freq)
 		return 0;//false
 	}
 
-	if(TmpData8[7]<5) //RSSI<10                //5    5~10	Խ��̨Խ��
+	if(TmpData8[7]<5) //RSSI<10                //5    5~10	越大台越少
 	{
 		last_tuned_freq=freq;//save last tuned freqency
 		g_last_freq_deviation_value=cur_freq_deviation;
 		return 0;//false
 	}
 
-	if( (TmpData8[1]&0xf) <2) //SNR<2                //2	1~3 Խ��̨Խ��
+	if( (TmpData8[1]&0xf) <2) //SNR<2                //2	1~3 越大台越少
 	{
 		last_tuned_freq=freq;//save last tuned freqency
 		g_last_freq_deviation_value=cur_freq_deviation;
@@ -3156,7 +3187,7 @@ __u8 BK1080_ValidStop(__u16 freq,__u16 start_freq)
 
 //add frequency devation check
 
-	if( (cur_freq_deviation>=280)&&(cur_freq_deviation<=(0xfff-280)))//              200~300	Խ��̨Խ��
+	if( (cur_freq_deviation>=280)&&(cur_freq_deviation<=(0xfff-280)))//              200~300	越大台越多
 	{
 		last_tuned_freq=freq;//save last tuned freqency
 		g_last_freq_deviation_value=cur_freq_deviation;
@@ -3271,7 +3302,7 @@ __s32 fm_vol_get_bk1080(void)
 	return VolValue;
 }
 
-__u16 fm_read_id_bk1080(void)//����֤
+__u16 fm_read_id_bk1080(void)//待验证
 {
 	__u8 TmpData8[4];
 	__u16 fm_id;	
@@ -3333,8 +3364,8 @@ __s32 fm_play_bk1080(__s32 freq)
 /**********************************************
 * function:      fm_manual_search
 *
-* description:   �ֶ�������ʹ��fm_play
-*                ����ֵ����һ������Ƶ�ʵ�
+* description:   手动搜索，使用fm_play
+*                返回值是下一个搜索频率点
 *
 * notes:
 *
@@ -3392,10 +3423,10 @@ __s32  fm_auto_search_bk1080(__s32 freq, __u32 search_dir)
 /**********************************************
 * function:      fm_area_choose
 *
-* description:   ����ѡ������ͬ����ʼ����ֹ
-*                Ƶ��
+* description:   地区选择，区别不同的起始和终止
+*                频率
 *
-* notes:         ������ȷ�������سɹ�������ʧ��
+* notes:         输入正确地区返回成功，否则失败
 *
 **********************************************/
 __s32 fm_area_choose_bk1080(__s32 area, void *pbuffer)
@@ -3432,7 +3463,7 @@ __u8 fm_type = 0;
 #define FM_RTC6207E		2
 #define FM_QN8065		3
 #define FM_RDA5807		4
-#define FM_BK1080		5	//����ģʽ,ʹӲ��IICʧЧ
+#define FM_BK1080		5	//两线模式,使硬件IIC失效
 __s32  fm_init(void)
 {
 	__s32 ret;	
@@ -3613,8 +3644,8 @@ __s32  fm_get_status(void)
 /**********************************************
 * function:      fm_signal_level
 *
-* description:   �ź�ǿ��ѡ��Ҫ���ź�ǿ��Խ�ߣ��յ��ĵ�̨Խ��
-*                   Ҫ���ź�ǿ��Խ�ߣ��յ��ĵ�̨Խ�࣬����Ч��̨Ҳ��
+* description:   信号强度选择，要求信号强大越高，收到的电台越少
+*                   要求信号强大越高，收到的电台越多，但无效电台也多
 *
 * notes:
 *
@@ -3626,7 +3657,7 @@ __s32  fm_signal_level(__s32 signal_level)
 /**********************************************
 * function:      fm_send
 *
-* description:   ���书��
+* description:   发射功能
 *
 * notes:
 *
@@ -3650,7 +3681,7 @@ __s32  fm_pa_gain(__u8 pagain)
 /**********************************************
 * function:      fm_stereo_choose
 *
-* description:   ����ѡ������������ͨ����
+* description:   音质选择，立体声和普通声音
 *
 * notes:
 *

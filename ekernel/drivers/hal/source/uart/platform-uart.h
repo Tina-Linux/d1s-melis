@@ -42,8 +42,19 @@
 #if defined(CONFIG_ARCH_SUN8IW20) || defined (CONFIG_SOC_SUN20IW1)
 #include "platform/uart-sun8iw20.h"
 #endif
+#if defined(CONFIG_ARCH_SUN8IW21) || defined (CONFIG_SOC_SUN20IW3)
+#include "platform/uart-sun8iw21.h"
+#endif
 #if defined(CONFIG_ARCH_SUN50IW11)
 #include "platform/uart-sun50iw11.h"
+#endif
+#if defined(CONFIG_ARCH_SUN20IW2)
+#include "../ccmu/sunxi-ng/ccu-sun20iw2.h"
+#include "platform/uart-sun20iw2p1.h"
+#endif
+#if defined(CONFIG_ARCH_SUN55IW3)
+#include "../ccmu/sunxi-ng/ccu-sun55iw3.h"
+#include "platform/uart-sun55iw3.h"
 #endif
 
 #endif /* __DMA_PLATFORM_H__ */

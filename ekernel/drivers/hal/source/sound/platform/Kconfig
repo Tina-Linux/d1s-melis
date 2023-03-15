@@ -14,6 +14,7 @@ config SND_PLATFORM_SUNXI_CPUDAI
 config SND_PLATFORM_SUNXI_DAUDIO
 	bool "Allwinner Digital Audio Support"
 	select SND_PLATFORM_SUNXI_PCM
+	select SND_COMMON_SUNXI_COMMON
  	depends on (!ARCH_SUN8IW19)
 	default n
 	help
@@ -61,6 +62,7 @@ config SND_PLATFORM_SUNXI_DMIC
 	bool "Allwinner DMIC Support"
 	select SND_PLATFORM_SUNXI_PCM
 	select SND_CODEC_DUMMY
+	select SND_COMMON_SUNXI_COMMON
 	default n
 	help
 	  Select Y to add support for DMIC module in Allwinner SoCs.
@@ -69,9 +71,23 @@ config SND_PLATFORM_SUNXI_SPDIF
 	bool "Allwinner SPDIF Support"
 	select SND_PLATFORM_SUNXI_PCM
 	select SND_CODEC_DUMMY
+	select SND_COMMON_SUNXI_COMMON
 	default n
 	help
 	  Select Y to add support for SPDIF module in Allwinner SoCs.
+
+config SND_PLATFORM_SUNXI_MAD
+	bool "Allwinner MAD Support"
+	default n
+	help
+	  Select Y to add support for MAD module in Allwinner SoCs.
+
+config SND_SUNXI_MAD_DEBUG
+	bool "Allwinner MAD Debug Support"
+	depends on SND_PLATFORM_SUNXI_MAD
+	default n
+	help
+	  Select Y to add support for MAD debug in Allwinner SoCs.
 
 config SND_SUNXI_DEBUG
 	bool "Allwinner Audio Debug Support"

@@ -1,7 +1,7 @@
-#ifndef COMMON_H
-#define COMMON_H
+#ifndef _AW_COMMON_H
+#define _AW_COMMON_H
 
-#define ARRAY_SIZE(x)       (sizeof(x) / sizeof((x)[0]))
+#include <sunxi_hal_common.h>
 
 #ifndef offsetof
 #define offsetof(TYPE, MEMBER) ((size_t) &((TYPE *)0)->MEMBER)
@@ -14,10 +14,13 @@
  * @member:	the name of the member within the struct.
  *
  */
+#ifndef container_of
 #define container_of(ptr, type, member) ({			\
 	const typeof(((type *)0)->member) * __mptr = (ptr);	\
 	(type *)((char *)__mptr - offsetof(type, member)); })
+#endif
 
-#define UNUSED(var) {(void)var;}
 
-#endif  /*COMMON_H*/
+#define UNUSED(x) (void)x
+
+#endif  /*_AW_COMMON_H*/

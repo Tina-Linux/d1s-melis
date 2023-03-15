@@ -57,9 +57,9 @@ void print_hex_dump_words(const void *addr, unsigned int len)
 	unsigned int i;
 	const unsigned int *p = addr;
 
-	if ((unsigned int)p & 0x03) {
+	if ((unsigned long)p & 0x03) {
 		OS_SYSLOG("addr should be align 4B!\n");
-		p =  (const void *)(((unsigned int)p) & ~0x03);
+		p =  (const void *)(((unsigned long)p) & ~0x03);
 		return ;
 	}
 	len = DIV_ROUND_UP(len, 4);

@@ -1,30 +1,33 @@
 /*
-************************************************************************************************************************
-*                                                        BITMAP
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*                             Copyright(C), 2006-2009, SoftWinners Microelectronic Co., Ltd.
-*                                                  All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File Name : bmp.c
-*
-* Author : Gary.Wang
-*
-* Version : 1.1.0
-*
-* Date : 2009.04.07
-*
-* Description :
-*
-* Others : None at present.
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTYâ€™S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERSâ€™SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTYâ€™S TECHNOLOGY.
 *
 *
-* History :
-*
-*  <Author>        <time>       <version>      <description>
-*
-* Gary.Wang      2009.04.07       1.1.0        build the file
-*
-************************************************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef  __bmp_c
 #define  __bmp_c
@@ -32,6 +35,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <log.h>
+
+#include <hal_mem.h>
 
 #define abs(x)          ((x) >= 0 ? (x):-(x))
 #define PALETTE_OFF     ( sizeof(bmp_file_head_t) + sizeof(bmp_info_head_t) )
@@ -85,7 +90,7 @@ HBMP open_bmp(const char *bmp_file, HBMP_i_t *hbmp_hdl_buf)
     file_len = ftell(fp);
     __log("file_len=%d", file_len);
 
-    pbuf = (char *)rt_malloc(file_len);
+    pbuf = (char *)hal_malloc(file_len);
     if (!pbuf)
     {
         __err("palloc fail...");
@@ -101,7 +106,7 @@ HBMP open_bmp(const char *bmp_file, HBMP_i_t *hbmp_hdl_buf)
         goto error;
     }
 
-    //Î´Ñ¹ËõµÄ±³¾°
+    //æœªåŽ‹ç¼©çš„èƒŒæ™¯
     if (0 == AZ100_IsCompress(pbuf, file_len))
     {
         __log("bg pic is uncompress...");
@@ -111,14 +116,14 @@ HBMP open_bmp(const char *bmp_file, HBMP_i_t *hbmp_hdl_buf)
         file_len = 0;
         __log("uncompress_buf=%x", uncompress_buf);
     }
-    else//´øÑ¹ËõµÄ±³¾°
+    else//å¸¦åŽ‹ç¼©çš„èƒŒæ™¯
     {
         int32_t ret_val;
 
         __log("bg pic is compress...");
         uncompress_len = AZ100_GetUncompressSize(pbuf, file_len);
 
-        uncompress_buf = (char *)rt_malloc(uncompress_len);
+        uncompress_buf = (char *)hal_malloc(uncompress_len);
         __log("esMEMS_Palloc: uncompress_buf=%x", uncompress_buf);
 
         if (!uncompress_buf)
@@ -135,7 +140,7 @@ HBMP open_bmp(const char *bmp_file, HBMP_i_t *hbmp_hdl_buf)
             hdl = NULL;
             goto error;
         }
-        rt_free(pbuf);
+        hal_free(pbuf);
         __log("esMEMS_Pfree: pbuf=%x, file_len=%d", pbuf, file_len);
         pbuf = NULL;
         file_len = 0;
@@ -181,13 +186,13 @@ error:
 
     if (pbuf)
     {
-        rt_free(pbuf);
+        hal_free(pbuf);
         pbuf = NULL;
     }
 
     if (uncompress_buf)
     {
-        rt_free(uncompress_buf);
+        hal_free(uncompress_buf);
         uncompress_buf = NULL;
     }
 
@@ -230,14 +235,14 @@ HBMP open_ram_bmp(const unsigned long base, const uint32_t size, HBMP_i_t *hbmp_
         pbuf = NULL;
         file_len = 0;
     }
-    else//´øÑ¹ËõµÄ±³¾°
+    else//å¸¦åŽ‹ç¼©çš„èƒŒæ™¯
     {
         int32_t ret_val;
 
         __log("bg pic is compress...");
         uncompress_len  = AZ100_GetUncompressSize(pbuf, file_len);
 
-        uncompress_buf  = (char *)rt_malloc(uncompress_len);
+        uncompress_buf  = (char *)hal_malloc(uncompress_len);
 
         if (!uncompress_buf)
         {
@@ -253,7 +258,7 @@ HBMP open_ram_bmp(const unsigned long base, const uint32_t size, HBMP_i_t *hbmp_
             hdl = NULL;
             goto error;
         }
-        rt_free(pbuf);
+        hal_free(pbuf);
         pbuf = NULL;
     }
 
@@ -297,13 +302,13 @@ error:
 
     if (pbuf)
     {
-        rt_free(pbuf);
+        hal_free(pbuf);
         pbuf = NULL;
     }
 
     if (uncompress_buf)
     {
-        rt_free(uncompress_buf);
+        hal_free(uncompress_buf);
         uncompress_buf = NULL;
     }
 
@@ -323,7 +328,7 @@ int32_t close_bmp(HBMP hbmp)
     if (g_pbmp_buf)
     {
         __log("esMEMS_Pfree: g_pbmp_buf=%x, g_bmp_size=%d", g_pbmp_buf, g_bmp_size);
-        rt_free(g_pbmp_buf);
+        hal_free(g_pbmp_buf);
         g_pbmp_buf = NULL;
         g_bmp_size = 0;
     }

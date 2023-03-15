@@ -23,6 +23,10 @@
 #include "hal_clk.h"
 #include "hal_reset.h"
 
+#ifdef CONFIG_COMPONENTS_PM
+#include <pm_devops.h>
+#endif
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -101,6 +105,12 @@ extern "C"
 #define CIR_NOISE_THR_NEC	32
 #define CIR_NOISE_THR_RC5	22
 
+/* Idle Threshold = (11+1)*128clock*10.7us = 16ms > 9ms */
+#define RXIDLE_VAL		(11)
+
+/* Active Threshold (1+1)*128clock*10.7us = 2.6ms */
+#define ACTIVE_T_SAMPLE		(32)
+
 typedef enum {
    CIR_MASTER_0 = 0,
    CIR_MASTER_NUM,
@@ -142,6 +152,13 @@ typedef struct {
 
 typedef int (*cir_callback_t)(cir_port_t port, uint32_t data_type, uint32_t data);
 
+static u32 sunxi_irrx_regs_offset[] = {
+	CIR_CTRL,
+	CIR_RXCTRL,
+	CIR_RXINT,
+	CIR_CONFIG,
+};
+
 typedef struct {
     cir_port_t port;
     unsigned long base;
@@ -166,6 +183,10 @@ typedef struct {
     hal_clk_type_t test_clk_type;
 
     struct reset_control *cir_reset;
+    u32 regs_backup[ARRAY_SIZE(sunxi_irrx_regs_offset)];
+#ifdef CONFIG_COMPONENTS_PM
+    struct pm_device pm;
+#endif
 } sunxi_cir_t;
 
 void sunxi_cir_callback_register(cir_port_t port, cir_callback_t callback);

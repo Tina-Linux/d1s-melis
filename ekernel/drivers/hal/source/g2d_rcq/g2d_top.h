@@ -16,7 +16,12 @@
  */
 #ifndef _G2D_TOP_H
 #define _G2D_TOP_H
+
+#ifdef CONFIG_KERNEL_FREERTOS
+#include <aw_types.h>
+#else
 #include <typedef.h>
+#endif
 
 
 void g2d_top_set_base(unsigned long base);

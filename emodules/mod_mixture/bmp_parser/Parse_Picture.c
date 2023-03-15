@@ -1,24 +1,34 @@
 /*
-*************************************************************************************
-*                                   eGon
-*                           Application Of eGon2.0
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
 *
-*               (c) Copyright 2006-2010, All winners Co,Ld.
-*                           All Rights Reserved
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
 *
-* File Name     : Parse_Picture.c
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
 *
-* Author        : javen
 *
-* Description   : ͼƬ����
-*
-* History       :
-*      <author>         <time>          <version >          <desc>
-*       javen          2010-09-10          1.0            create this file
-*
-*************************************************************************************
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 //#include  "Esh_shell_private.h"
 #include <typedef.h>
 #include <libc.h>
@@ -34,12 +44,12 @@
 *                     Parse_Pic_BMP_ByBuffer
 *
 * Description:
-*    ����������ڴ��е�ͼƬ
+*    解析存放在内存中的图片
 *
 * Parameters:
-*    Pic_Buffer     :  input.  ���ͼƬ�����
-*    Pic_BufferSize :  input.  ��������С
-*    PictureInfo    :  output. ͼƬ���������Ϣ
+*    Pic_Buffer     :  input.  存放图片的入口
+*    Pic_BufferSize :  input.  缓冲区大小
+*    PictureInfo    :  output. 图片解析后的信息
 *
 * Return value:
 *    void
@@ -67,13 +77,13 @@ __s32 Parse_Pic_BMP_ByBuffer(void *Pic_Buffer, __u32 Pic_BufferSize, Picture_t *
 *                     Parse_Pic_BMP
 *
 * Description:
-*    ��·����������ͼƬ, ���Ұѽ���������ͼƬ������ָ���ĵ�ַ��
-* ���ָ���ĵ�ַΪNULL, ����Դ�����κε�ַ��
+*    以路径名来解析图片, 并且把解析处理的图片拷贝到指定的地址，
+* 如果指定的地址为NULL, 则可以存放在任何地址。
 *
 * Parameters:
-*    Path           :  input.  ͼƬ·��
-*    PictureInfo    :  output. ͼƬ���������Ϣ
-*    Addr           :  input.  ��Ž������ͼƬ,
+*    Path           :  input.  图片路径
+*    PictureInfo    :  output. 图片解析后的信息
+*    Addr           :  input.  存放解析后的图片,
 *
 * Return value:
 *    void
@@ -176,4 +186,3 @@ error:
 
     return -1;
 }
-

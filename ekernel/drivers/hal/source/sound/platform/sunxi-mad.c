@@ -30,18 +30,28 @@
 * OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <FreeRTOS.h>
 #include <timers.h>
 #include <semphr.h>
-
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <hal_timer.h>
+//#ifdef CONFIG_COMPONENTS_PM
+#include <pm_task.h>
+#include <pm_wakesrc.h>
+#include <pm_rpcfunc.h>
+#include <pm_devops.h>
+#include <pm_wakecnt.h>
+//#endif
+#include "irqs.h"
 #include "sunxi-mad.h"
 
-#ifdef CONFIG_SUNXI_MAD_DEBUG
+#ifdef CONFIG_SND_SUNXI_MAD_DEBUG
 QueueHandle_t mad_sleep;
+void sunxi_mad_schd_wakeup(SemaphoreHandle_t semaphore);
 #endif
 
 /****************************************************************************/
@@ -59,6 +69,7 @@ struct sunxi_mad_sram_size {
  * for alignment data when overflow.
  * Tips: sram dma width is 32bit.
  */
+#if 0
 static const struct sunxi_mad_sram_size mad_sram_size[] = {
 	{1, 1, 128, 64, 64, 64},
 	{2, 2, 128, 64, 64, 64},
@@ -69,6 +80,18 @@ static const struct sunxi_mad_sram_size mad_sram_size[] = {
 	{7, 7, 112, 56, 56, 56},	/* 112 % (7 * 2 * 2) == 0 */
 	{8, 8, 128, 64, 64, 64},	/* 128 % (8 * 2) == 0 */
 };
+#else
+static const struct sunxi_mad_sram_size mad_sram_size[] = {
+	{1, 1, 64, 32, 32, 32},
+	{2, 2, 64, 32, 32, 32},
+	{3, 3, 60, 30, 30, 30},	/* 120 % (3 * 2 * 2) == 0 */
+	{4, 4, 64, 32, 32, 32},	/* 128 % (4 * 2) == 0 */
+	{5, 5, 60, 30, 30, 30},	/* 120 % (5 * 2 * 2) == 0 */
+	{6, 6, 60, 30, 30, 30},	/* 120 % (6 * 2) == 0 */
+	{7, 7, 56, 28, 28, 28},	/* 112 % (7 * 2 * 2) == 0 */
+	{8, 8, 64, 32, 32, 32},	/* 128 % (8 * 2) == 0 */
+};
+#endif
 
 /****************************************************************************/
 /*
@@ -96,16 +119,16 @@ static int lpsd_ecnt = 2;//default: 0x32;
 /****************************************************************************/
 
 struct sunxi_mad_info *sunxi_mad;
-
+static hal_spinlock_t sunxi_mad_lock;
 
 unsigned int snd_mad_read(struct sunxi_mad_info *mad_info, unsigned int reg)
 {
 	unsigned int val = 0;
 	uint32_t __cpsr;
 
-	__cpsr = hal_spin_lock_irqsave();
+	__cpsr = hal_spin_lock_irqsave(&sunxi_mad_lock);
 	val = snd_readl(mad_info->mem_base + reg);
-	hal_spin_unlock_irqrestore(__cpsr);
+	hal_spin_unlock_irqrestore(&sunxi_mad_lock, __cpsr);
 	snd_info("reg=0x%x, val=0x%x\n", reg, val);
 	return val;
 }
@@ -115,10 +138,11 @@ int snd_mad_write(struct sunxi_mad_info *mad_info, unsigned int reg, unsigned in
 	int ret = 0;
 	uint32_t __cpsr;
 
-	__cpsr = hal_spin_lock_irqsave();
+	__cpsr = hal_spin_lock_irqsave(&sunxi_mad_lock);
 	ret = snd_writel(val, mad_info->mem_base + reg);
-	hal_spin_unlock_irqrestore(__cpsr);
+	hal_spin_unlock_irqrestore(&sunxi_mad_lock, __cpsr);
 	snd_info("reg=0x%x, val=0x%x\n", reg, val);
+	return ret;
 }
 
 int snd_mad_update_bits(struct sunxi_mad_info *mad_info, unsigned int reg,
@@ -129,18 +153,77 @@ int snd_mad_update_bits(struct sunxi_mad_info *mad_info, unsigned int reg,
 	bool change;
 	uint32_t __cpsr;
 
-	__cpsr = hal_spin_lock_irqsave();
+	__cpsr = hal_spin_lock_irqsave(&sunxi_mad_lock);
 	old = snd_readl(mad_info->mem_base + reg);
 	new = (old & ~mask) | (value & mask);
 	change = old != new;
 	if (change)
 		ret = snd_writel(new, mad_info->mem_base + reg);
-	hal_spin_unlock_irqrestore(__cpsr);
+	hal_spin_unlock_irqrestore(&sunxi_mad_lock, __cpsr);
 	snd_info("reg=0x%x, mask=0x%x, val=0x%x, change=%u\n", reg, mask, value, change);
 	return ret;
 }
 
 /****************************************************************************/
+int sunxi_mad_bind_set(enum mad_path_sel path_sel, bool enable)
+{
+	switch (path_sel) {
+	case MAD_PATH_CODEC:
+	case MAD_PATH_CODECADC:
+		sunxi_mad->mad_bind.mad_bind_codecadc = enable;
+	break;
+	case MAD_PATH_DMIC:
+		sunxi_mad->mad_bind.mad_bind_dmic = enable;
+	break;
+	case MAD_PATH_I2S0:
+		sunxi_mad->mad_bind.mad_bind_i2s0 = enable;
+	break;
+	case MAD_PATH_I2S1:
+		sunxi_mad->mad_bind.mad_bind_i2s1 = enable;
+	break;
+	case MAD_PATH_I2S2:
+		sunxi_mad->mad_bind.mad_bind_i2s2 = enable;
+	break;
+	case MAD_PATH_NONE:
+	default:
+		return -EINVAL;
+	break;
+	}
+
+	return 0;
+}
+
+int sunxi_mad_bind_get(enum mad_path_sel path_sel, bool *enable)
+{
+	bool val;
+
+	switch (path_sel) {
+	case MAD_PATH_CODEC:
+	case MAD_PATH_CODECADC:
+		val = sunxi_mad->mad_bind.mad_bind_codecadc;
+	break;
+	case MAD_PATH_DMIC:
+		val = sunxi_mad->mad_bind.mad_bind_dmic;
+	break;
+	case MAD_PATH_I2S0:
+		val = sunxi_mad->mad_bind.mad_bind_i2s0;
+	break;
+	case MAD_PATH_I2S1:
+		val = sunxi_mad->mad_bind.mad_bind_i2s1;
+	break;
+	case MAD_PATH_I2S2:
+		val = sunxi_mad->mad_bind.mad_bind_i2s2;
+	break;
+	case MAD_PATH_NONE:
+	default:
+		*enable = false;
+		return -EINVAL;
+	break;
+	}
+
+	*enable = val;
+	return 0;
+}
 
 void sunxi_mad_lpsd_init(void)
 {
@@ -245,45 +328,45 @@ struct sunxi_mad_info *sunxi_mad_get_mad_info(void)
 void sunxi_mad_clk_enable(bool val)
 {
 	if (val)
-		hal_clock_enable(sunxi_mad->mad_clk);
+		hal_clock_enable(sunxi_mad->clk.mad_clk);
 	else
-		hal_clock_disable(sunxi_mad->mad_clk);
+		hal_clock_disable(sunxi_mad->clk.mad_clk);
 }
 
 void sunxi_mad_ad_clk_enable(bool val)
 {
 	if (val)
-		hal_clock_enable(sunxi_mad->mad_ad_clk);
+		hal_clock_enable(sunxi_mad->clk.mad_ad_clk);
 	else
-		hal_clock_disable(sunxi_mad->mad_ad_clk);
+		hal_clock_disable(sunxi_mad->clk.mad_ad_clk);
 }
 
 void sunxi_mad_cfg_clk_enable(bool val)
 {
 	if (val)
-		hal_clock_enable(sunxi_mad->mad_cfg_clk);
+		hal_clock_enable(sunxi_mad->clk.mad_cfg_clk);
 	else
-		hal_clock_disable(sunxi_mad->mad_cfg_clk);
+		hal_clock_disable(sunxi_mad->clk.mad_cfg_clk);
 }
 
 void sunxi_lpsd_clk_enable(bool val)
 {
 	if (val)
-		hal_clock_enable(sunxi_mad->lpsd_clk);
+		hal_clock_enable(sunxi_mad->clk.lpsd_clk);
 	else
-		hal_clock_disable(sunxi_mad->lpsd_clk);
+		hal_clock_disable(sunxi_mad->clk.lpsd_clk);
 }
 
 void sunxi_mad_module_clk_enable(bool val)
 {
 	if (val) {
-		hal_clock_enable(sunxi_mad->mad_clk);
-		hal_clock_enable(sunxi_mad->mad_ad_clk);
-		hal_clock_enable(sunxi_mad->mad_cfg_clk);
+		hal_clock_enable(sunxi_mad->clk.mad_clk);
+		hal_clock_enable(sunxi_mad->clk.mad_ad_clk);
+		hal_clock_enable(sunxi_mad->clk.mad_cfg_clk);
 	} else {
-		hal_clock_disable(sunxi_mad->mad_cfg_clk);
-		hal_clock_disable(sunxi_mad->mad_ad_clk);
-		hal_clock_disable(sunxi_mad->mad_clk);
+		hal_clock_disable(sunxi_mad->clk.mad_cfg_clk);
+		hal_clock_disable(sunxi_mad->clk.mad_ad_clk);
+		hal_clock_disable(sunxi_mad->clk.mad_clk);
 	}
 }
 
@@ -387,6 +470,9 @@ static int sunxi_mad_sram_chan_com_config(unsigned int audio_src_chan_num,
 		mad_sram_chan_num = 2;
 		break;
 	case 2:
+		mad_sram_chan_num = 3;
+		break;
+	case 3:
 		mad_sram_chan_num = 4;
 		break;
 	default:
@@ -429,6 +515,8 @@ static int sunxi_mad_sram_chan_com_config(unsigned int audio_src_chan_num,
 			return -EINVAL;
 		}
 	} else if (mad_standby_chan_sel == 2) {
+		chan_ch = MAD_CH_COM_NON;
+	} else if (mad_standby_chan_sel == 3) {
 		switch (audio_src_chan_num) {
 		case 4:
 			chan_ch = MAD_CH_COM_NON;
@@ -526,7 +614,7 @@ static void sunxi_lpsd_irq_status_clear(struct sunxi_mad_info *sunxi_mad)
 	}
 }
 
-static void sunxi_lpsd_irq_handle(int unused, void *data)
+static hal_irqreturn_t sunxi_lpsd_irq_handle(void *data)
 {
 	struct sunxi_mad_info *sunxi_mad = data;
 	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
@@ -557,7 +645,7 @@ static void sunxi_lpsd_irq_handle(int unused, void *data)
 	if (sunxi_mad->status != SUNXI_MAD_SUSPEND) {
 		sunxi_lpsd_irq_status_clear(sunxi_mad);
 		snd_err("device was not be suspended!\n");
-		return;
+		return HAL_IRQ_ERR;
 	}
 
 //	if (device_may_wakeup(sunxi_mad->dev)) {
@@ -581,19 +669,18 @@ static void sunxi_lpsd_irq_handle(int unused, void *data)
 	snd_mad_update_bits(sunxi_mad, SUNXI_MAD_CTRL,
 		0x1 << KEY_WORD_OK, 0x1 << KEY_WORD_OK);
 
-	if (sunxi_mad->suspend_flag & SUNXI_MAD_STANDBY_SRAM_MEM)
+	if (sunxi_mad->suspend_flag & SUNXI_MAD_STANDBY_SRAM_MEM) {
 		sunxi_mad_dma_type(SUNXI_MAD_DMA_IO);
+	}
 
 	sunxi_mad_sram_chan_com_config(sunxi_mad->mad_priv.audio_src_chan_num,
 			sunxi_mad->mad_priv.standby_chan_sel, true);
 
 #ifdef SUNXI_MAD_DATA_INT_USE
-	snd_print("\n");
 	/* enable the data req and wake req */
 	snd_mad_update_bits(sunxi_mad, SUNXI_MAD_INT_MASK,
 		0x1 << DATA_REQ_INT_MASK, 0x1 << DATA_REQ_INT_MASK);
 #else
-	snd_print("\n");
 	pvItemToQueue = SUNXI_MAD_LPSD_IRQ_WORK;
 	ret = xQueueSendToBackFromISR(sunxi_mad->irq_queue, (void *)&pvItemToQueue,
 					&xHigherPriorityTaskWoken);
@@ -603,10 +690,13 @@ static void sunxi_lpsd_irq_handle(int unused, void *data)
 	portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 #endif
 
+	pm_wakecnt_inc();
 	snd_print("Stop.\n");
+
+	return HAL_IRQ_OK;
 }
 
-static void sunxi_mad_irq_handle(int unused, void *data)
+static hal_irqreturn_t sunxi_mad_irq_handle(void *data)
 {
 	struct sunxi_mad_info *sunxi_mad = data;
 	unsigned int val = 0;
@@ -637,7 +727,7 @@ static void sunxi_mad_irq_handle(int unused, void *data)
 
 	snd_print("Stop.\n");
 
-	return;
+	return HAL_IRQ_OK;
 }
 
 void sunxi_sram_dma_config(struct sunxi_dma_params *capture_dma_param)
@@ -652,20 +742,17 @@ void sunxi_mad_dma_type(enum sunxi_mad_dma_type dma_type)
 	switch (dma_type) {
 	case SUNXI_MAD_DMA_MEM:
 	default:
-		snd_mad_update_bits(sunxi_mad, SUNXI_MAD_CTRL,
-				0x1 << DMA_TYPE, 0x0 << DMA_TYPE);
+		snd_mad_update_bits(sunxi_mad, SUNXI_MAD_CTRL, 0x1 << DMA_TYPE, 0x0 << DMA_TYPE);
 		break;
 	case SUNXI_MAD_DMA_IO:
-		snd_mad_update_bits(sunxi_mad, SUNXI_MAD_CTRL,
-				0x1 << DMA_TYPE, 0x1 << DMA_TYPE);
+		snd_mad_update_bits(sunxi_mad, SUNXI_MAD_CTRL, 0x1 << DMA_TYPE, 0x1 << DMA_TYPE);
 		break;
 	}
 }
 
 void sunxi_mad_dma_enable(bool enable)
 {
-	snd_mad_update_bits(sunxi_mad, SUNXI_MAD_CTRL,
-		0x1 << DMA_EN, enable << DMA_EN);
+	snd_mad_update_bits(sunxi_mad, SUNXI_MAD_CTRL, 0x1 << DMA_EN, enable << DMA_EN);
 }
 
 int sunxi_mad_open(void)
@@ -748,42 +835,51 @@ int sunxi_mad_hw_params(unsigned int mad_channels, unsigned int sample_rate)
 	return 0;
 }
 
-int sunxi_mad_audio_source_sel(unsigned int path_sel, unsigned int enable)
+int sunxi_mad_audio_source_sel(enum mad_path_sel path_sel, unsigned int enable)
 {
 	char *path_str = NULL;
+	unsigned int path_sel_map = 0;
 
 	switch (path_sel) {
-	case 0:
+	case MAD_PATH_NONE:
 		path_str = "No-Audio";
+		path_sel_map = 0;
 	break;
-	case 1:
-		path_str = "I2S0-Input";
-	break;
-	case 2:
+	case MAD_PATH_CODEC:
+	case MAD_PATH_CODECADC:
 		path_str = "Codec-Input";
+		path_sel_map = 2;
 	break;
-	case 3:
+	case MAD_PATH_DMIC:
 		path_str = "DMIC-Input";
+		path_sel_map = 3;
 	break;
-	case 4:
+	case MAD_PATH_I2S0:
+		path_str = "I2S0-Input";
+		path_sel_map = 4;
+	break;
+	case MAD_PATH_I2S1:
 		path_str = "I2S1-Input";
+		path_sel_map = 4;
 	break;
-	case 5:
+	case MAD_PATH_I2S2:
 		path_str = "I2S2-Input";
+		path_sel_map = 4;
 	break;
 	default:
 		path_str = "Error-Input";
+		path_sel_map = 0;
 		return -EINVAL;
 	break;
 	}
-	printf("[%s] %s\n", __func__, path_str);
+	snd_print("%s, path_sel_map -> %u\n", path_str, path_sel_map);
 
 	if (enable) {
-		if ((path_sel >= 1) && (path_sel <= 5)) {
+		if ((path_sel_map >= 1) && (path_sel_map <= 5)) {
 			snd_mad_update_bits(sunxi_mad,
 					SUNXI_MAD_AD_PATH_SEL,
 					MAD_AD_PATH_SEL_MASK,
-					path_sel << MAD_AD_PATH_SEL);
+					path_sel_map << MAD_AD_PATH_SEL);
 			sunxi_mad->audio_src_path = path_sel;
 		} else
 			return -EINVAL;
@@ -821,8 +917,7 @@ int sunxi_mad_suspend_external(void)
 		return 0;
 	}
 
-	snd_mad_update_bits(sunxi_mad, SUNXI_MAD_CTRL,
-		0x1 << DMA_EN, 0x0 << DMA_EN);
+	snd_mad_update_bits(sunxi_mad, SUNXI_MAD_CTRL, 0x1 << DMA_EN, 0x0 << DMA_EN);
 
 	/*
 	 * config sunxi_mad_sram as memory
@@ -832,9 +927,10 @@ int sunxi_mad_suspend_external(void)
 	if (sunxi_mad->suspend_flag & SUNXI_MAD_STANDBY_SRAM_MEM) {
 		sunxi_mad_dma_type(SUNXI_MAD_DMA_MEM);
 		sunxi_mad_sram_chan_params(0);
-	} else
+	} else {
 		sunxi_mad_sram_chan_com_config(sunxi_mad->mad_priv.audio_src_chan_num,
-			sunxi_mad->mad_priv.standby_chan_sel, false);
+					       sunxi_mad->mad_priv.standby_chan_sel, false);
+	}
 
 #ifndef SUNXI_LPSD_CLK_ALWAYS_ON
 	sunxi_lpsd_clk_enable(true);
@@ -884,26 +980,27 @@ int sunxi_mad_resume_external(void)
 		return 0;
 	}
 
-	__cpsr = hal_spin_lock_irqsave();
+	__cpsr = hal_spin_lock_irqsave(&sunxi_mad_lock);
 
 	if (sunxi_mad->status == SUNXI_MAD_RESUME) {
 		snd_err("sunxi mad has resume!\n");
-		hal_spin_unlock_irqrestore(__cpsr);
+		hal_spin_unlock_irqrestore(&sunxi_mad_lock, __cpsr);
 		return 0;
 	}
 	sunxi_mad->status = SUNXI_MAD_RESUME;
 
-	hal_spin_unlock_irqrestore(__cpsr);
+	hal_spin_unlock_irqrestore(&sunxi_mad_lock, __cpsr);
 
 	/* not a lpsd interrupt resume */
-	if (sunxi_mad->suspend_flag & SUNXI_MAD_STANDBY_SRAM_MEM)
+	if (sunxi_mad->suspend_flag & SUNXI_MAD_STANDBY_SRAM_MEM) {
 		sunxi_mad_dma_type(SUNXI_MAD_DMA_IO);
+	}
 
 	sunxi_mad_sram_chan_com_config(sunxi_mad->mad_priv.audio_src_chan_num,
 			sunxi_mad->mad_priv.standby_chan_sel, true);
 
 	pvItemToQueue = SUNXI_MAD_NULL_IRQ_WORK;
-	ret = xQueueSendToBack(sunxi_mad->irq_queue, (void *)&pvItemToQueue, 
+	ret = xQueueSendToBack(sunxi_mad->irq_queue, (void *)&pvItemToQueue,
 				pdMS_TO_TICKS(1 * 100UL));
 	if (ret == errQUEUE_FULL) {
 		snd_err("xQueueSendToBack failed.\n");
@@ -913,6 +1010,7 @@ int sunxi_mad_resume_external(void)
 	return 0;
 }
 
+#if defined(CONFIG_ARCH_SUN8IW18P1)
 static void sunxi_mad_sram_set_bmode(bool mode)
 {
 	unsigned int reg = 0;
@@ -924,6 +1022,7 @@ static void sunxi_mad_sram_set_bmode(bool mode)
 		reg &= ~(0x1 << MAD_SRAM_BMODE_CTRL);
 	writel(reg, SRAM_BMODE_CTRL_REG);
 }
+#endif
 
 static void sunxi_mad_work_resume(struct sunxi_mad_info *sunxi_mad)
 {
@@ -931,11 +1030,11 @@ static void sunxi_mad_work_resume(struct sunxi_mad_info *sunxi_mad)
 	unsigned int __cpsr = 0;
 	unsigned int reg_val = 0;
 
-	__cpsr = hal_spin_lock_irqsave();
+	__cpsr = hal_spin_lock_irqsave(&sunxi_mad_lock);
 
 	sunxi_mad->status = SUNXI_MAD_RESUME;
 
-	hal_spin_unlock_irqrestore(__cpsr);
+	hal_spin_unlock_irqrestore(&sunxi_mad_lock, __cpsr);
 
 	snd_print("Start.\n");
 
@@ -963,9 +1062,10 @@ static void sunxi_mad_work_resume(struct sunxi_mad_info *sunxi_mad)
 //		if (break_flag == 0x3)
 		if (break_flag & 0x2)
 			break;
-		usleep(10000);
+		hal_msleep(10);
 	}
 
+/*#define CONFIG_SUNXI_AUDIO_DEBUG*/
 #ifdef CONFIG_SUNXI_AUDIO_DEBUG
 	/* SUNXI_MAD_DMA_TF_SIZE[0x4C] */
 	reg_val = snd_mad_read(sunxi_mad, SUNXI_MAD_DMA_TF_SIZE);
@@ -992,7 +1092,7 @@ static void sunxi_mad_work_resume(struct sunxi_mad_info *sunxi_mad)
 	if (sunxi_mad->wakeup_flag & SUNXI_MAD_WAKEUP_MAD_IRQ)
 		sunxi_mad->wakeup_flag &= ~SUNXI_MAD_WAKEUP_MAD_IRQ;
 
-#ifdef CONFIG_SUNXI_MAD_DEBUG
+#ifdef CONFIG_SND_SUNXI_MAD_DEBUG
 	sunxi_mad_schd_wakeup(mad_sleep);
 #endif
 	snd_print("Stop.\n");
@@ -1004,7 +1104,7 @@ static void sunxi_mad_irq_task(void *pvParameters)
 	BaseType_t xStatus;
 	struct sunxi_mad_info *sunxi_mad = pvParameters;
 	const TickType_t xTicksToWait = pdMS_TO_TICKS(1 * 1000UL);
- 
+
 	for( ;; ) {
 		if(uxQueueMessagesWaiting(sunxi_mad->irq_queue) != 0) {
 			snd_print("Queue should have been empty!\r\n");
@@ -1023,7 +1123,7 @@ static void sunxi_mad_irq_task(void *pvParameters)
 	}
 }
 
-#ifdef CONFIG_SUNXI_MAD_DEBUG
+#ifdef CONFIG_SND_SUNXI_MAD_DEBUG
 int sunxi_mad_schd_timeout(SemaphoreHandle_t semaphore, long ms)
 {
 	BaseType_t ret;
@@ -1051,7 +1151,7 @@ void sunxi_mad_schd_wakeup(SemaphoreHandle_t semaphore)
 	snd_print("\n");
 	ret = xSemaphoreGive(semaphore);
 	if (ret == pdPASS) {
-		portEND_SWITCHING_ISR(taskwoken);
+		portYIELD_FROM_ISR(taskwoken);
 		snd_print("\n");
 		return;
 	}
@@ -1059,10 +1159,9 @@ void sunxi_mad_schd_wakeup(SemaphoreHandle_t semaphore)
 }
 #endif
 
-int sunxi_mad_platform_probe(struct snd_platform *platform)
+int sunxi_mad_platform_probe()
 {
 	int ret = 0;
-	int i = 0;
 
 	snd_print("\n");
 	if (sunxi_mad != NULL) {
@@ -1078,81 +1177,44 @@ int sunxi_mad_platform_probe(struct snd_platform *platform)
 	}
 	sunxi_mad->ref_count++;
 
+#if defined(CONFIG_ARCH_SUN8IW18P1)
 	sunxi_mad_sram_set_bmode(MAD_SRAM_BMODE_NORMAL);
+#endif
 
 	/* clk */
-	sunxi_mad->pll_clk = HAL_CLK_PLL_AUDIO;
-	sunxi_mad->lpsd_clk = HAL_CLK_PERIPH_LPSD;
-	ret = hal_clk_set_parent(sunxi_mad->lpsd_clk, sunxi_mad->pll_clk);
+	ret = snd_sunxi_mad_clk_init(&sunxi_mad->clk);
 	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("sunxi_mad clk_set_parent failed.\n");
-		goto err_mad_lpsd_clk_set_parent;
+		snd_err("snd_sunxi_mad_clk_init failed.\n");
+		goto err_mad_set_clock;
 	}
-
-	ret = hal_clock_enable(sunxi_mad->pll_clk);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("mad clk_enable pll_clk failed.\n");
-		goto err_mad_pllclk_enable;
-	}
-
-#ifdef SUNXI_LPSD_CLK_ALWAYS_ON
-	ret = hal_clock_enable(sunxi_mad->lpsd_clk);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("mad clk_enable lpsd_clk failed.\n");
-		goto err_mad_lpsd_clk_enable;
-	}
-#endif
-
-	sunxi_mad->mad_clk = HAL_CLK_PERIPH_MAD;
-#ifdef MAD_CLK_ALWAYS_ON
-	ret = hal_clock_enable(sunxi_mad->mad_clk);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("mad clk_enable mad_clk failed.\n");
-		goto err_mad_clk_enable;
-	}
-#endif
-
-	sunxi_mad->mad_ad_clk = HAL_CLK_PERIPH_MAD_AD;
-#ifdef MAD_CLK_ALWAYS_ON
-	ret = hal_clock_enable(sunxi_mad->mad_ad_clk);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("mad clk_enable mad_ad_clk failed.\n");
-		goto err_mad_ad_clk_enable;
-	}
-#endif
-
-	sunxi_mad->mad_cfg_clk = HAL_CLK_PERIPH_MAD_CFG;
-#ifdef MAD_CLK_ALWAYS_ON
-	ret = hal_clock_enable(sunxi_mad->mad_cfg_clk);
-	if (ret != HAL_CLK_STATUS_OK) {
-		snd_err("mad clk_enable mad_cfg_clk failed.\n");
-		goto err_mad_cfg_clk_enable;
-	}
-#endif
 
 	/* mem base */
 	sunxi_mad->mem_base = (void *)MAD_BASE;
 
 	/*request irq*/
-	sunxi_mad->lpsd_irq = SUNXI_IRQ_MAD_WAKE;
-	ret = irq_request(sunxi_mad->lpsd_irq, sunxi_lpsd_irq_handle, sunxi_mad);
+	sunxi_mad->lpsd_irq = MAD_WAKE_IRQn;
+	ret = hal_request_irq(sunxi_mad->lpsd_irq, sunxi_lpsd_irq_handle, "lpsd", sunxi_mad);
 	if (ret < 0) {
 		snd_err("lpsd irq request failed.\n");
 		goto err_lpsd_irq_request;
 	}
-	ret = irq_enable(sunxi_mad->lpsd_irq);
+	ret = pm_set_wakeirq(MAD_WAKE_IRQn);
+	if (ret) {
+		snd_err("pm_set_wakeirq for mad-lpsd failed\n");
+	}
+	ret = hal_enable_irq(sunxi_mad->lpsd_irq);
 	if (ret < 0) {
 		snd_err("lpsd irq enable failed.\n");
 		goto err_lpsd_irq_enable;
 	}
 
-	sunxi_mad->mad_irq = SUNXI_IRQ_MAD_DATA_REQ;
-	ret = irq_request(sunxi_mad->mad_irq, sunxi_mad_irq_handle, sunxi_mad);
+	sunxi_mad->mad_irq = MAD_DATA_REQ_IRQn;
+	ret = hal_request_irq(sunxi_mad->mad_irq, sunxi_mad_irq_handle, "mad", sunxi_mad);
 	if (ret < 0) {
 		snd_err("mad irq request failed.\n");
 		goto err_mad_irq_request;
 	}
-	ret = irq_enable(sunxi_mad->mad_irq);
+	ret = hal_enable_irq(sunxi_mad->mad_irq);
 	if (ret < 0) {
 		snd_err("mad irq enable failed.\n");
 		goto err_mad_irq_enable;
@@ -1171,8 +1233,12 @@ int sunxi_mad_platform_probe(struct snd_platform *platform)
 		ret =  -EFAULT;
 		goto err_mad_irq_task_create;
 	}
+	ret = pm_task_register(sunxi_mad->pxMadIrqTask, PM_TASK_TYPE_PM);
+	if (ret) {
+		snd_err("pm_task_register for mad-lpsd irq task failed\n");
+	}
 
-#ifdef CONFIG_SUNXI_MAD_DEBUG
+#ifdef CONFIG_SND_SUNXI_MAD_DEBUG
 	mad_sleep = xSemaphoreCreateBinary();
 	if (!mad_sleep) {
 		snd_err("semaphore mad_sleep create failed\n");
@@ -1184,7 +1250,7 @@ int sunxi_mad_platform_probe(struct snd_platform *platform)
 
 	return 0;
 
-#ifdef CONFIG_SUNXI_MAD_DEBUG
+#ifdef CONFIG_SND_SUNXI_MAD_DEBUG
 err_mad_sleep_semaphore_create:
 	vTaskDelete(sunxi_mad->pxMadIrqTask);
 #endif
@@ -1193,28 +1259,16 @@ err_mad_irq_task_create:
 err_mad_irq_queue_create:
 err_mad_irq_enable:
 err_mad_irq_request:
-	irq_disable(sunxi_mad->lpsd_irq);
+	hal_disable_irq(sunxi_mad->lpsd_irq);
 err_lpsd_irq_enable:
 err_lpsd_irq_request:
-#ifdef MAD_CLK_ALWAYS_ON
-err_mad_cfg_clk_enable:
-	hal_clock_disable(sunxi_mad->mad_ad_clk);
-err_mad_ad_clk_enable:
-	hal_clock_disable(sunxi_mad->mad_clk);
-err_mad_clk_enable:
-#endif
-#ifdef SUNXI_LPSD_CLK_ALWAYS_ON
-	hal_clock_disable(sunxi_mad->lpsd_clk);
-err_mad_lpsd_clk_enable:
-#endif
-	hal_clock_disable(sunxi_mad->pll_clk);
-err_mad_pllclk_enable:
-err_mad_lpsd_clk_set_parent:
+err_mad_set_clock:
+	snd_sunxi_mad_clk_exit(&sunxi_mad->clk);
 	snd_free(sunxi_mad);
 	return ret;
 }
 
-int sunxi_mad_platform_remove(struct snd_platform *platform)
+int sunxi_mad_platform_remove()
 {
 	/* struct sunxi_mad_info *sunxi_mad = platform->private_data; */
 
@@ -1227,28 +1281,19 @@ int sunxi_mad_platform_remove(struct snd_platform *platform)
 		return 0;
 	}
 
-#ifdef CONFIG_SUNXI_MAD_DEBUG
+#ifdef CONFIG_SND_SUNXI_MAD_DEBUG
 	vSemaphoreDelete(mad_sleep);
 #endif
 
 	vQueueDelete(sunxi_mad->irq_queue);
 	vTaskDelete(sunxi_mad->pxMadIrqTask);
 
-	irq_disable(sunxi_mad->lpsd_irq);
-	irq_disable(sunxi_mad->mad_irq);
+	hal_disable_irq(sunxi_mad->lpsd_irq);
+	hal_disable_irq(sunxi_mad->mad_irq);
 
-#ifdef MAD_CLK_ALWAYS_ON
-	hal_clock_disable(sunxi_mad->mad_cfg_clk);
-	hal_clock_disable(sunxi_mad->mad_ad_clk);
-	hal_clock_disable(sunxi_mad->mad_clk);
-#endif
-#ifdef SUNXI_LPSD_CLK_ALWAYS_ON
-	hal_clock_disable(sunxi_mad->lpsd_clk);
-#endif
-	hal_clock_disable(sunxi_mad->pll_clk);
+	snd_sunxi_mad_clk_exit(&sunxi_mad->clk);
 
 	snd_free(sunxi_mad);
 	sunxi_mad = NULL;
 	return 0;
 }
-

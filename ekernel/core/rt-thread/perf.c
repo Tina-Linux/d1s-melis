@@ -17,17 +17,15 @@
  * ===========================================================================================
  */
 
-#include <rtthread.h>
-#include <typedef.h>
-#include <ktimer.h>
-#include <excep.h>
 #include <stdio.h>
-#include <debug.h>
-#include <init.h>
-#include <log.h>
+
+#include <rtthread.h>
 #include <rthw.h>
 
+#include <excep.h>
+
 extern int kthread_get_fpustat(void);
+void dump_memory(rt_uint32_t *buf, rt_int32_t len);
 static  rt_thread_t rt_perf_task = RT_NULL;
 static  rt_tick_t   mon_start_time;
 extern  struct rt_object_information rt_object_container[];
@@ -62,7 +60,6 @@ void monitor_start(void)
     return;
 }
 
-void dump_memory(rt_uint32_t *buf, rt_int32_t len);
 /* ----------------------------------------------------------------------------*/
 /** @brief  monitor_end stop the current monitor session. */
 /* ----------------------------------------------------------------------------*/
@@ -193,16 +190,11 @@ void monitor_end(void)
     return;
 }
 
-/* ----------------------------------------------------------------------------*/
-/**
- * @brief  rt_perf_thread  control monitor task.
- *
- * @param arg not used.
- */
-/* ----------------------------------------------------------------------------*/
-static void rt_perf_thread(void *ARG_UNUSED(arg))
+static void rt_perf_thread(void *arg)
 {
     printf("\e[1;1H\e[2J");
+	(void)arg;
+
     while (1)
     {
         monitor_start();
@@ -227,16 +219,13 @@ static void rt_sched_hook(struct rt_thread *from, struct rt_thread *to)
     }
 }
 
-/* ----------------------------------------------------------------------------*/
-/** @brief  rt_perf_init startup the perf. test. */
-/* ----------------------------------------------------------------------------*/
 void rt_perf_init(void)
 {
     rt_ubase_t level;
 
     if (rt_perf_task)
     {
-        __err("performance task already exist.");
+        printf("performance task already exist.");
         return;
     }
 
@@ -248,7 +237,7 @@ void rt_perf_init(void)
     rt_perf_task = rt_thread_create("perf", rt_perf_thread, RT_NULL, 0x2000, 1, 30);
     if (!rt_perf_task)
     {
-        __err("fatal error, create task failure.");
+        printf("fatal error, create task failure.");
         return;
     }
     rt_thread_startup(rt_perf_task);
@@ -256,9 +245,6 @@ void rt_perf_init(void)
     return;
 }
 
-/* ----------------------------------------------------------------------------*/
-/** @brief  rt_perf_exit stop the perf. function. */
-/* ----------------------------------------------------------------------------*/
 void rt_perf_exit(void)
 {
     rt_ubase_t level;

@@ -14,8 +14,8 @@
 #include "dev_disp.h"
 #include <platform_resource.h>
 #include <disp_board_config.h>
-#include <debug.h>
 #include <hal_timer.h>
+#include <hal_time.h>
 #include <hal_cfg.h>
 #include <script.h>
 
@@ -169,7 +169,8 @@ s32 disp_delay_us(u32 us)
 void *disp_sys_malloc(u32 size)
 {
 	void *ptr = hal_malloc(size);
-	memset(ptr, 0, size);
+	if(ptr != NULL)
+		memset(ptr, 0, size);
 	return ptr;
 }
 
@@ -237,23 +238,22 @@ int disp_sys_register_irq(u32 IrqNo, u32 Flags, void *Handler, void *pArg,
 {
 	DE_INF("%s, irqNo=%ld, Handler=0x%p, pArg=0x%p\n", __func__, IrqNo,
 	      Handler, pArg);
-	return request_irq(IrqNo, (irq_handler_t) Handler, 0x0,
-			   "display", pArg);
+	return hal_request_irq(IrqNo, (hal_irq_handler_t) Handler, "disp", pArg);
 }
 
 void disp_sys_unregister_irq(u32 IrqNo, void *Handler, void *pArg)
 {
-	free_irq(IrqNo, pArg);
+	hal_free_irq(IrqNo);
 }
 
 void disp_sys_enable_irq(u32 IrqNo)
 {
-	enable_irq(IrqNo);
+	hal_enable_irq(IrqNo);
 }
 
 void disp_sys_disable_irq(u32 IrqNo)
 {
-	disable_irq(IrqNo);
+	hal_disable_irq(IrqNo);
 }
 
 /* type: 0:invalid, 1: int; 2:str, 3: gpio */
@@ -299,7 +299,7 @@ s32 disp_sys_script_get_item(char *main_name, char *sub_name, s32 value[],
 
 exit:
 	return ret;
-#elif MELIS_SYS_CONFIG_USE == 1
+#elif RTOS_SYS_CONFIG_USE == 1
 	int ret;
 	int gpio_count = 0;
 	int i;
@@ -556,7 +556,7 @@ u32 disp_getprop_regbase(char *main_name, u32 index)
 
 	ret = of_property_read_u32_array(node, "reg", (uint32_t*)value);
 	if (0 > ret)
-		__wrn("fdt_getprop_u32 %s.%s fail\n", main_name, sub_name);
+		DE_WRN("fdt_getprop_u32 %s.%s fail\n", main_name, sub_name);
 	else {
 		reg_base = value[index * 4] + value[index * 4 + 1];
 	}
@@ -583,18 +583,18 @@ u32 disp_getprop_irq(char *main_name, u32 index)
 
 	len = sprintf(compat, "%s", main_name);
 	if (len > 32)
-		__wrn("size of mian_name is out of range\n");
+		DE_WRN("size of mian_name is out of range\n");
 
 	//node = fdt_path_offset(working_fdt,compat);
 	node = disp_fdt_nodeoffset(compat);
 	if (node < 0) {
-		__wrn("fdt_path_offset %s fail\n", compat);
+		DE_WRN("fdt_path_offset %s fail\n", compat);
 		goto exit;
 	}
 
 	ret = fdt_getprop_u32(working_fdt, node, sub_name, (uint32_t*)value);
 	if (0 > ret)
-		__wrn("fdt_getprop_u32 %s.%s fail\n", main_name, sub_name);
+		DE_WRN("fdt_getprop_u32 %s.%s fail\n", main_name, sub_name);
 	else {
 		irq = value[index * 3 + 1];
 		if (0 == value[index * 3])
@@ -612,12 +612,20 @@ exit:
 #endif
 }
 
+#ifdef CONFIG_ARCH_SUN8IW19
+u32 disp_getprop_clk(char *main_name, u32 index)
+#else
 u32 disp_getprop_clk(char *main_name)
+#endif
 {
 #ifdef CONFIG_OF
 #else
 	hal_clk_id_t clk_no = (hal_clk_id_t)-1;
+#ifndef CONFIG_ARCH_SUN8IW19
 	if(plat_get_clk(main_name, &clk_no))
+#else
+	if(plat_get_clk(index, &clk_no))
+#endif
 		DE_WRN("Get clk no %s fail!\n", main_name);
 	return clk_no;
 #endif
